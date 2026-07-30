@@ -11,7 +11,7 @@
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.334930 (EXP-003)
-- 최고 Public LB Macro F1: N/A
+- 최고 Public LB Macro F1: 0.228167518 (EXP-003)
 - 최고 재현 검증 모델: EXP-003 (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-07-30
 
@@ -19,18 +19,19 @@
 
 | ID | 상태 | 실행자 | Issue | 모델·메모(선택) | OOF Macro F1 | Public LB | 재현 상태 | 판단 | 상세 기록 |
 |---|---|---|---|---|---:|---:|---|---|---|
-| EXP-003 | COMPLETED | fabxoe | #3 | XGBoost mutation-presence baseline | 0.334930 | 미제출 | INFERENCE_VERIFIED | 비교 기준 | [보고서](reports/exp003_xgb_baseline/README.md) |
+| EXP-003 | COMPLETED | fabxoe | #3 | XGBoost mutation-presence baseline | 0.334930 | 0.228167518 | INFERENCE_VERIFIED | 비교 기준 | [보고서](reports/exp003_xgb_baseline/README.md) |
 
 ## 리더보드 제출 이력
 
 | 제출 시각 | 실험 ID | Issue | 제출 파일 | SHA-256 | Public 점수 | 순위 | 재현 상태 |
 |---|---|---|---|---|---:|---:|---|
+| 2026-07-30T18:20:48+09:00 | EXP-003 | #3 | `submissions/exp003_xgb_baseline.csv` (제출 ID `1506230`) | `6e8b64726c86b5a6d52ee58f7f042b74b302852aa8a59c9bfe13332bfee424a5` | 0.228167518 | 3 (확인 당시) | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
 | 검증 시각 | 실험 ID | 검증자 | 소스 커밋·태그 | 데이터 일치 | 제출 재생성 | 재학습 검증 | 결과 | 증빙 |
 |---|---|---|---|---|---|---|---|---|
-| 2026-07-30T09:14:20Z | EXP-003 | fabxoe | `7306182669c3676e7b17024d3cf1f821131d909b` | SHA-256 일치 | byte-level SHA-256 일치 | 미수행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp003_xgb_baseline/comparison.json) |
+| 2026-07-30T09:14:20Z | EXP-003 | fabxoe | `7306182669c3676e7b17024d3cf1f821131d909b` / [`exp-003-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-003-repro-v1) | SHA-256 일치 | byte-level SHA-256 일치 | 미수행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp003_xgb_baseline/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -54,13 +55,15 @@
 
 - Fold Macro F1: 0.330432, 0.342344, 0.342316, 0.324125, 0.325573
 - OOF Macro F1: 0.334930
-- Public LB: 미제출
+- Public LB: 0.228167518, 제출 ID `1506230`, 제출 직후 3위
 - 재현 상태: INFERENCE_VERIFIED
 
 #### 산출물과 결론
 
 - Metrics/Report/Reproduction: `reports/exp003_xgb_baseline/`,
   `reproducibility/exp003_xgb_baseline/`
+- Checkpoint Release:
+  [`exp-003-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-003-repro-v1)
 - 체크포인트 추론 검증: 원본·재생성 제출 SHA-256
   `6e8b64726c86b5a6d52ee58f7f042b74b302852aa8a59c9bfe13332bfee424a5`,
   test 라벨 일치율 100%, 확률 최대 절대 차이 0
