@@ -8,6 +8,23 @@
 
 ## 1. AI 에이전트 시작 지침
 
+처음 clone한 팀원의 VS Code·`uv` 환경 설정은
+[`docs/VSCODE_SETUP.md`](docs/VSCODE_SETUP.md)를 따른다.
+
+저장소에는 다음 AI 도구별 연결 파일이 있으며, 모두 이 문서와
+`EXPERIMENT_HISTORY.md`를 작업 전에 읽도록 지시한다.
+
+| 도구 | 저장소 지시 파일 |
+|---|---|
+| GitHub Copilot Chat | `.github/copilot-instructions.md` |
+| OpenAI Codex | `AGENTS.md` |
+| Claude Code | `CLAUDE.md` |
+| Cursor | `.cursor/rules/project-context.mdc` |
+
+도구가 저장소 지시를 지원하더라도 새 대화에서 문서를 읽었는지 확인한다. 단순히
+저장소를 clone하거나 파일이 존재하는 것만으로 모든 AI가 자동 인식한다고 가정하지
+않는다.
+
 새 대화나 새 작업을 시작할 때 다음 지침을 AI에 전달한다.
 
 ```text
