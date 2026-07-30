@@ -8,7 +8,8 @@ body:
     attributes:
       value: |
         실행 전에 `PROJECT_CONTEXT.md`와 `EXPERIMENT_HISTORY.md`를 확인하세요.
-        아직 예약하지 않았다면 실험 ID에는 `예약 예정`이라고 적고 브랜치에서 예약하세요.
+        이 Issue가 생성되면 번호가 실험 ID가 됩니다. 예: Issue #12 → EXP-012.
+        별도의 실험 ID를 예약하거나 직접 입력하지 않습니다.
   - type: input
     id: owner
     attributes:
@@ -17,19 +18,11 @@ body:
     validations:
       required: true
   - type: input
-    id: experiment_id
-    attributes:
-      label: 실험 ID
-      description: EXP-001 또는 예약 예정
-      placeholder: EXP-001
-    validations:
-      required: true
-  - type: input
     id: parent
     attributes:
       label: 부모 실험
-      description: 비교 기준 EXP-ID, 최초 실험이면 N/A
-      placeholder: N/A
+      description: 비교 기준 실험의 GitHub Issue 번호, 최초 실험이면 N/A
+      placeholder: "#3 또는 N/A"
     validations:
       required: true
   - type: textarea
