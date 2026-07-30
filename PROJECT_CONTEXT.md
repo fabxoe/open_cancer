@@ -142,7 +142,7 @@ notebooks/         EDA와 프로토타입; 운영 실험은 scripts로 이전
 models/            fold별 checkpoint, Git 제외
 oof/               학습 데이터 OOF 확률, Git 제외
 preds/             테스트 확률, Git 제외
-reports/           지표 JSON, 경량 CSV, 분석 Markdown
+reports/           실험별 README, 지표 JSON, 경량 CSV와 분석 자료
 reproducibility/   재현성 manifest와 비교 증빙; 대형 번들은 Release에 저장
 submissions/       검증을 통과한 제출 CSV
 schemas/           지표·재현성 JSON Schema
@@ -161,10 +161,68 @@ models/exp012_<slug>/fold_00.<ext>
 oof/exp012_<slug>.csv
 preds/exp012_<slug>_test_proba.csv
 reports/exp012_<slug>/metrics.json
-reports/exp012_<slug>/report.md
+reports/exp012_<slug>/README.md
 submissions/exp012_<slug>.csv
 reproducibility/exp012_<slug>/
 ```
+
+### 실험 보고서 구조
+
+`EXPERIMENT_HISTORY.md`는 전체 실험을 한눈에 찾는 단일 색인과 사실 장부로
+유지한다. 파일이 길어진다는 이유로 `EXPERIMENT_HISTORY_1.md`,
+`EXPERIMENT_HISTORY_2.md`처럼 번호를 붙여 분할하지 않는다.
+
+개념 설명, 피처 변환 예시, 모델 해석과 긴 분석은 다음 파일에 둔다.
+
+```text
+reports/exp012_<slug>/README.md
+```
+
+GitHub는 폴더 안의 `README.md`를 자동으로 표시하므로 팀원이 reports 폴더에서 바로
+읽을 수 있다. 공통 작성법과 복사 가능한 양식은
+[`reports/README.md`](reports/README.md)와
+[`reports/EXPERIMENT_REPORT_TEMPLATE.md`](reports/EXPERIMENT_REPORT_TEMPLATE.md)를
+따른다.
+
+- 베이스라인, 새로운 피처, 리더보드 제출, 현재 최고·최종 후보는 README 작성을
+  권장한다.
+- 작은 파라미터 변경은 긴 보고서를 만들지 않고 History와 metrics만 남겨도 된다.
+- 보고서가 있으면 History 요약표와 상세 로그, PR 본문에서 같은 파일을 연결한다.
+- 실제 점수와 산출물이 없는 상태에서 템플릿의 자리표시자를 결과처럼 기록하지 않는다.
+
+### AI에 실험·제출 보고서 요청하기
+
+팀원은 Codex 또는 Claude의 새 채팅에서 Issue 번호만 바꿔 다음 최소 프롬프트를
+사용한다.
+
+```text
+PROJECT_CONTEXT.md를 먼저 읽고 규칙을 따라줘.
+Issue #<번호> 실험의 제출별 보고서를 만들거나 갱신하고
+EXPERIMENT_HISTORY.md와 현재 PR에 연결해줘.
+실제 파일에 있는 사실만 사용하고, 초보 팀원도 이해할 수 있게 설명해줘.
+검증 후 현재 Issue 브랜치에 push하되 merge하지 마.
+```
+
+이 요청을 받은 AI는 별도의 상세 프롬프트가 없어도 다음 순서로 처리한다.
+
+1. `PROJECT_CONTEXT.md`, `EXPERIMENT_HISTORY.md`와
+   `reports/EXPERIMENT_REPORT_TEMPLATE.md`를 읽는다.
+2. 현재 브랜치와 GitHub Issue 번호가 일치하는지 확인한다.
+3. config, resolved config, metrics, notebook, 로그와 산출물에서 실제 사실을
+   확인한다. 문서 작성을 위해 모델을 임의로 재학습하거나 결과를 새로 만들지 않는다.
+4. 확인할 수 없는 값은 추측하지 않고 `N/A` 또는 `미제출`과 그 사유로 기록한다.
+5. `reports/expNNN_<slug>/README.md`를 만들거나 기존 보고서를 갱신한다.
+6. 원본 데이터가 어떻게 모델 입력으로 바뀌는지, 모델이 무엇을 학습하는지,
+   검증 방법과 실제 결과, 한계와 다음 실험 후보를 초보자도 이해할 수 있게 설명한다.
+7. `EXPERIMENT_HISTORY.md`에는 긴 설명을 복사하지 않고 결과 요약과 보고서
+   상대경로 링크만 기록한다.
+8. 현재 PR 본문에도 GitHub에서 열 수 있는 보고서 링크를 추가한다.
+9. 관련 테스트와 문서 검증을 실행하고 현재 Issue 브랜치에 push하지만,
+   팀원 승인 전에는 merge하지 않는다.
+
+보고서는 실험 Issue에서 파생된 `EXP-NNN` 단위로 관리한다. 같은 실험의 리더보드
+제출이 여러 번이면 보고서 안에 제출별 변경점과 점수를 구분하고,
+`EXPERIMENT_HISTORY.md`의 리더보드 제출 이력에는 제출 CSV마다 한 행씩 기록한다.
 
 ### 파일 인터페이스
 
@@ -409,7 +467,8 @@ reproducibility/exp012_<slug>/
 ## 9. `EXPERIMENT_HISTORY.md` 갱신 규칙
 
 History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 기록으로 복사할 때는
-반드시 실행 결과로 교체한다.
+반드시 실행 결과로 교체한다. History는 여러 번호 파일로 나누지 않고, 긴 설명은
+실험별 `reports/expNNN_<slug>/README.md`로 분리해 연결한다.
 
 ### 상세 로그 양식
 
@@ -425,6 +484,7 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
 #### 실행
 - Config: `{실제 경로}`
 - Metrics: `{실제 경로}`
+- Report: `{reports/expNNN_<slug>/README.md 또는 N/A}`
 
 #### 결과
 - Fold Macro F1: {실제 목록 또는 N/A와 사유}
@@ -448,6 +508,7 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
 - 재현 검증마다 비작성자와 증빙 경로를 재현성 검증 이력에 추가한다.
 - 일반 Local 실험 완료에는 resolved config, metrics와 History만 필요하다.
 - report는 분석이 필요할 때, 재현 manifest는 리더보드에 제출할 때 추가한다.
+- 보고서가 있으면 History에 내용을 복사하지 않고 상대경로 링크만 추가한다.
 - 가설, 부모 실험과 변경 변수 설명은 필수가 아니다. 파라미터 전체를 History에
   복사하지 말고 resolved config를 연결한다.
 - AI 또는 실행 코드가 실제 값으로 기록하며, 작성자가 파라미터를 수작업으로
