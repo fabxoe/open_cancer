@@ -269,7 +269,8 @@ for fold in range(5):
 - `scripts/create_folds.py`는 공용 split 유지보수용입니다. 일반 실험 시작 때마다
   실행하는 스크립트가 아닙니다.
 - 다른 seed, fold 수, group split 등을 검증하려면 별도 GitHub Issue와 새
-  EXP-ID를 만들고 기존 파일을 덮어쓰지 않는 새 이름으로 저장합니다.
+  Issue 번호 기반 EXP-ID를 사용하고 기존 파일을 덮어쓰지 않는 새 이름으로
+  저장합니다.
 - 실험의 resolved config와 재현성 manifest에는 split 경로와 SHA-256을 기록합니다.
 
 현재 split을 연결하는 실행 가능한 예시는
@@ -324,8 +325,9 @@ Codex는 저장소의 `AGENTS.md`를 작업 지침으로 읽습니다. Claude Co
 
 ```text
 저장소 루트의 PROJECT_CONTEXT.md와 EXPERIMENT_HISTORY.md를 처음부터 끝까지
-읽어줘. 현재 실제 실험 수, 다음 EXP-ID, 현재 Git 브랜치와 연결된 Issue,
-이번 작업 후 실행할 검증 명령을 먼저 요약해줘.
+읽어줘. 현재 실제 실험 수, 현재 Git 브랜치와 연결된 Issue, 공식 실험이면
+Issue 번호에서 자동 파생되는 EXP-ID, 이번 작업 후 실행할 검증 명령을 먼저
+요약해줘.
 
 문서에 없는 실험 결과·점수·산출물은 만들지 말고, 공용 split은 별도 실험
 Issue가 없는 한 변경하지 마.
@@ -333,22 +335,25 @@ Issue가 없는 한 변경하지 마.
 
 AI가 다음 네 가지를 정확히 답했는지 확인한 뒤 작업을 요청합니다.
 
-- 실제 실험 수와 다음 EXP-ID
+- 실제 실험 수와 Issue 기반 실험 ID 규칙
 - 현재 브랜치
 - 연결된 GitHub Issue 번호
 - 작업 후 실행할 테스트·검증 명령
 
 ### 실제 작업 요청 방식
 
-첫 확인이 끝나면 Issue 번호와 완료 조건을 구체적으로 전달합니다.
+첫 확인이 끝나면 Issue 번호와 하려는 모델만 전달해도 됩니다. 별도 요청이 없으면
+프로젝트의 공용 split과 모델 기본값을 사용하고, 실제 적용값은 AI가 resolved
+config에 저장합니다.
 
 ```text
 Issue #12 작업이야.
-목표: EXP-001 XGBoost baseline을 공용 5-fold split으로 구현해줘.
-완료 조건: config, OOF, fold/전체 Macro F1, 재현성 manifest, History 갱신,
-pytest와 실험 기록 검증 통과.
-작업 전 변경 범위를 설명하고, 끝나면 실제 실행 결과만 보고해줘.
+EXP-012 XGBoost baseline을 기본 설정으로 실행해줘.
+실제 적용한 설정과 결과는 프로젝트 규칙에 맞게 저장하고 결과만 알려줘.
 ```
+
+가설, 부모 실험, 특정 파라미터 override가 필요할 때만 메시지에 추가합니다. 작성하지
+않으면 없음으로 처리하며 AI가 임의의 가설이나 변경 변수를 만들어 내지 않습니다.
 
 Codex와 Claude Code 중 어느 도구를 쓰더라도 다음 원칙은 같습니다.
 
@@ -381,7 +386,8 @@ uv run pytest
 코드, 문서, 실험, 버그 수정은 모두 GitHub Issue에서 시작합니다.
 
 1. GitHub에서 작업 하나당 Issue 하나를 등록합니다.
-2. 최신 `main`을 받은 뒤 Issue 번호가 들어간 브랜치를 만듭니다.
+2. 최신 `main`을 받은 뒤 Issue 번호가 들어간 브랜치를 만듭니다. `12`처럼
+   숫자만 사용해도 되며 설명이 포함된 형식을 권장합니다.
 
 ```bash
 git switch main
@@ -392,16 +398,19 @@ git switch -c issue-<번호>-<짧은설명>
 예를 들어 Issue #12의 baseline 실험 브랜치는 다음과 같습니다.
 
 ```bash
-git switch -c issue-12-exp001-baseline
+git switch -c issue-12-exp-xgb-baseline
 ```
+
+팀원이 숫자 전용 이름을 선호하면 `git switch -c 12`도 허용됩니다. 두 형식 모두
+코드가 Issue 번호 12를 읽어 공식 실험에서 `EXP-012`를 생성합니다.
 
 작업과 테스트 후 같은 번호를 넣어 커밋하고 push합니다.
 
 ```bash
 git status
 git add <변경한-파일>
-git commit -m "exp(#12): EXP-001 baseline"
-git push -u origin issue-12-exp001-baseline
+git commit -m "exp(#12): EXP-012 baseline"
+git push -u origin issue-12-exp-xgb-baseline
 ```
 
 그다음 `main`을 대상으로 PR을 만들고 본문 첫 부분에 `Closes #12`를 적습니다.
