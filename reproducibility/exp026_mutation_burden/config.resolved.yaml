@@ -1,0 +1,196 @@
+experiment:
+  slug: mutation_burden
+data:
+  train_path: data/raw/train.csv
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
+  split_path: data/splits/stratified_5fold_seed42.csv
+run:
+  seed: 42
+  n_splits: 5
+  n_jobs: 8
+features:
+  encoding: mutation_presence
+  include_mutation_burden: true
+  empty_value_policy: treat_as_wild_type
+  matrix_format: csr_float32
+model:
+  library: xgboost
+  class_name: XGBClassifier
+  use_balanced_sample_weight: false
+  params:
+    objective: multi:softprob
+    num_class: 26
+    n_estimators: 800
+    learning_rate: 0.05
+    max_depth: 4
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.2
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    gamma: 0.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 50
+    tree_method: hist
+    device: cpu
+    verbosity: 0
+identity:
+  experiment_id: EXP-026
+  issue_number: 26
+  branch: issue-26-exp-mutation-burden
+  owner: fabxoe
+  git_commit: cb9c19679811104ba83eb2e7ce766166c484589e
+  dirty_worktree_at_start: false
+  started_at: '2026-07-30T14:48:49Z'
+  finished_at: '2026-07-30T14:51:45Z'
+data_manifest:
+  train_rows: 6201
+  test_rows: 2546
+  gene_columns: 4384
+  class_count: 26
+  classes:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+  feature_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  files:
+    train:
+      path: data/raw/train.csv
+      sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+    test:
+      path: data/raw/test.csv
+      sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+    sample_submission:
+      path: data/raw/sample_submission.csv
+      sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  split:
+    path: data/splits/stratified_5fold_seed42.csv
+    sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+    n_splits: 5
+    fold_counts:
+      '0': 1241
+      '1': 1240
+      '2': 1240
+      '3': 1240
+      '4': 1240
+feature_manifest:
+  matrix_shape_train:
+  - 6201
+  - 4385
+  matrix_shape_test:
+  - 2546
+  - 4385
+  train_nonzero: 225000
+  test_nonzero: 201445
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+environment:
+  os: macOS-26.2-arm64-arm-64bit
+  machine: arm64
+  python: 3.11.10
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scipy: 1.17.1
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  pythonhashseed: '42'
+  uv_lock_sha256: cea0d1a7c46efd4675ebb3982a309c56b85c793f0712ba24d04d1a7c6bd110ae
+resolved_model_params:
+  objective: multi:softprob
+  num_class: 26
+  n_estimators: 800
+  learning_rate: 0.05
+  max_depth: 4
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.2
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  gamma: 0.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 50
+  tree_method: hist
+  device: cpu
+  verbosity: 0
+  n_jobs: 8
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  use_balanced_sample_weight: false
+  best_iterations:
+  - 502
+  - 517
+  - 563
+  - 481
+  - 556
+command:
+  train: PYTHONHASHSEED=42 uv run python scripts/run_xgb_baseline.py --config configs/exp026_mutation_burden.yaml
+outputs:
+  config: reproducibility/exp026_mutation_burden/config.resolved.yaml
+  oof_predictions: oof/exp026_mutation_burden/oof_predictions.csv
+  oof_probabilities: oof/exp026_mutation_burden/oof_probabilities.npy
+  test_probabilities: preds/exp026_mutation_burden/test_probabilities.npy
+  submission: submissions/exp026_mutation_burden.csv
+  class_f1: reports/exp026_mutation_burden/class_f1.csv
+  models: models/exp026_mutation_burden
+  test_probability_csv: preds/exp026_mutation_burden/test_probabilities.csv
+  metrics: reports/exp026_mutation_burden/metrics.json
+  submission_sha256: 53d835335d6d23945c80acef4b70d0112f14abdaf1b5d504a63fd1ea7b16ef00
+  checkpoints:
+  - models/exp026_mutation_burden/fold_00.json
+  - models/exp026_mutation_burden/fold_01.json
+  - models/exp026_mutation_burden/fold_02.json
+  - models/exp026_mutation_burden/fold_03.json
+  - models/exp026_mutation_burden/fold_04.json
