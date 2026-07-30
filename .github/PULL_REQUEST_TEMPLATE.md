@@ -32,7 +32,7 @@ uv run python scripts/validate_experiment.py
 - [ ] 공식 실험이면 Issue #N과 자동 파생 `EXP-NNN`이 일치합니다.
 - [ ] 최신 `origin/main`이 반영되어 있습니다.
 - [ ] 테스트와 CI `quality`가 통과했습니다.
-- [ ] `data/raw/` 원본을 변경했다면 별도 데이터 Issue에서 크기·SHA-256·문서를 함께 갱신했습니다.
+- [ ] `data/raw/` 원본과 원본 기반 PDF가 tracked·staged되지 않았습니다.
 - [ ] 가공 데이터, 모델, OOF, 비밀 파일을 커밋하지 않았습니다.
 - [ ] 실제로 측정하지 않은 실험 결과를 기록하지 않았습니다.
 - [ ] 관련 팀원을 reviewer 또는 mention으로 알렸습니다.
