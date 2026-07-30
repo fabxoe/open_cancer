@@ -36,4 +36,6 @@ Codex의 `AGENTS.md`와 Claude Code의 `CLAUDE.md`는 위 두 문서를 먼저 �
 
 모든 작업은 GitHub Issue에서 시작하며 `번호`, `번호-설명`, `issue-번호` 또는
 `issue-번호-설명` 브랜치와 PR을 통해 `main`에 반영합니다. 공식 실험 ID는 Issue
-#N에서 `EXP-NNN`으로 자동 파생합니다. 상세 절차는 `PROJECT_CONTEXT.md`를 따릅니다.
+#N에서 `EXP-NNN`으로 자동 파생합니다. 모델 실험 Issue는 제목만 작성해도 되며
+가설·부모 실험·변경 메모는 선택 사항입니다. 상세 절차와 기본값은
+`PROJECT_CONTEXT.md`를 따릅니다.

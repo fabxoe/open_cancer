@@ -47,7 +47,7 @@ AI는 작업 전에 다음을 확인한다.
 3. 현재 브랜치에서 연결된 Issue 번호를 정확히 추출할 수 있는가.
 4. 원본 데이터 해시가 기준과 일치하며, 가공 데이터·모델·OOF·비밀 파일이 Git에
    포함되지 않는가.
-5. 작업 후 실행할 검증 명령과 완료 조건이 Issue에 적혀 있는가.
+5. 공식 실험이라면 실행 코드가 기본값까지 포함한 resolved config를 저장하는가.
 
 ---
 
@@ -242,9 +242,27 @@ Issue 번호는 저장소 전체에서 공유되므로 실험 번호가 연속�
 `EXP-012` 다음 실험이 `EXP-017`이어도 정상이다. 숫자 전용 브랜치도 허용하지만
 사람이 목적을 알아보기 쉬운 `issue-12-exp-xgb-baseline` 형식을 권장한다.
 
+### Issue 번호와 EXP-ID의 역할
+
+두 번호의 숫자는 같지만 역할은 다르다.
+
+| 구분 | 용도 |
+|---|---|
+| GitHub Issue `#12` | 할 일, 대화, 담당자, 브랜치와 PR을 연결하는 협업 공간 |
+| 실험 ID `EXP-012` | 실행 결과, config, OOF, 모델과 제출 파일을 묶는 산출물 키 |
+
+- GitHub가 Issue 번호를 한 번만 발급하므로 팀원끼리 EXP-ID가 겹치지 않는다.
+- 같은 실험을 함께 구현하거나 재현하면 같은 Issue와 `EXP-012`를 공유한다.
+- 같은 Issue 안에서는 합의한 하나의 config를 공식 결과로 남긴다. 다른 모델이나
+  비교 변형을 공식 결과로 남기려면 새 Experiment Issue를 만든다.
+- 단순 탐색과 임시 Notebook 실행은 `RUN_MODE="explore"`로 수행하며 EXP-ID나
+  History 기록을 만들지 않는다.
+- EXP-ID는 사람이 입력하는 값이 아니다. 브랜치와 Issue 번호에서 코드가 자동
+  생성한다.
+
 ### 허용 실험 상태
 
-- `PLANNED`: Experiment Issue를 생성하고 가설과 설정을 정의함
+- `PLANNED`: Experiment Issue를 생성함
 - `RUNNING`: 학습 또는 분석 실행 중
 - `COMPLETED`: 실행과 필수 기록이 정상 완료됨
 - `FAILED`: 오류 또는 검증 실패로 완료하지 못함
@@ -258,32 +276,56 @@ threshold 또는 후처리가 달라져 예측이 바뀌면 새 Experiment Issue
 
 ## 7. 실험 설정 계약
 
-하이퍼파라미터를 실행 코드에만 하드코딩하지 않는다. 사람이 작성한 config와,
-기본값까지 병합된 실제 실행 config를 모두 보존한다.
+### 기본값 우선 원칙
+
+Issue를 만들 때 하이퍼파라미터를 일일이 작성하지 않는다. 별도 요청이 없으면 다음
+프로젝트 기본값을 사용한다.
+
+| 항목 | 기본값 |
+|---|---|
+| 평가 지표 | 전체 OOF Macro F1 |
+| split | `data/splits/stratified_5fold_seed42.csv` |
+| fold 수 / seed | 5 / 42 |
+| 클래스 순서 | 이 문서의 고정 26개 순서 |
+| 재현 상태 | `NOT_STARTED` |
+| 부모 실험·가설·사람이 작성한 변경 메모 | 없음 |
+| 외부 데이터 | 사용 안 함 |
+| 앙상블·TTA·threshold·후처리 | 사용 안 함 |
+
+모델별 기본 하이퍼파라미터는 config 또는 실행 코드에서 제공한다. 사용자가 일부
+값만 덮어쓰면 실행 코드가 나머지 기본값을 병합한다. 사람이 Issue와 History에
+전체 파라미터를 다시 옮겨 적지 않는다.
+
+실제 공식 실행에서는 코드가 기본값과 사용자 override를 모두 합친
+`config.resolved.yaml`을 저장한다. 이 파일이 “실제로 사용한 값”의 단일 원본이다.
+하이퍼파라미터를 Issue 본문이나 실행 코드에만 남기지 않는다.
 
 ```text
 configs/exp012_<slug>.yaml
 reproducibility/exp012_<slug>/config.resolved.yaml
 ```
 
-resolved config에는 다음 항목이 빠짐없이 들어가야 한다.
+resolved config에는 실행에 실제 적용된 항목만 기록한다.
 
-- 브랜치에서 추출한 Issue 번호, 자동 파생 실험 ID, 담당자, 부모 실험, 가설
-- 소스 commit SHA, dirty worktree 여부
+- 자동 수집: Issue 번호, 실험 ID, 실행자, commit SHA, dirty worktree 여부
 - train/test/sample submission SHA-256
 - 유전자 컬럼 목록 또는 목록 파일과 순서 해시
 - 클래스 순서
-- 외부 데이터 출처, 버전, 라이선스, 해시
+- 외부 데이터를 사용한 경우에만 출처, 버전, 라이선스, 해시
 - split 파일, 해시, 방식, fold 수, seed
 - 결측, 인코딩, 피처 생성·선택, 스케일링 파라미터
 - 모델 클래스, 라이브러리 버전, 전체 모델 파라미터
 - objective, eval metric, class/sample weight
-- early stopping, best iteration, checkpoint 선택 기준
+- 사용하는 경우에만 early stopping, best iteration, checkpoint 선택 기준
 - Python, NumPy, 모델, fold별 seed
 - 스레드 수, `PYTHONHASHSEED`, deterministic 옵션
-- epoch, batch size, optimizer, scheduler, learning rate
-- 앙상블 구성, 가중치, threshold, TTA와 후처리
+- 해당 모델에서 사용하는 경우에만 epoch, batch size, optimizer, scheduler
+- 사용한 경우에만 앙상블 구성, 가중치, threshold, TTA와 후처리
 - 학습·추론 명령과 입력·출력 경로
+
+부모 실험, 가설, 사람이 설명한 변경점은 선택 정보다. 작성자가 판단하기에 비교나
+의사결정에 도움이 될 때만 Issue 또는 config의 `notes`에 기록한다. 변경된 실제
+파라미터는 `config.resolved.yaml`과 Git diff로 확인하며 사람이 중복 기록하지 않는다.
 
 ---
 
@@ -299,6 +341,19 @@ resolved config에는 다음 항목이 빠짐없이 들어가야 한다.
 
 리더보드 제출 전 최소 `INFERENCE_VERIFIED`가 필요하다. 현재 최고 모델과 최종 수상
 후보는 `TRAINING_VERIFIED`가 아니면 최종 모델로 지정할 수 없다.
+
+재현성 파일을 모든 탐색 실험에서 사람이 완성할 필요는 없다.
+
+| 단계 | 기본 재현 상태 | 필요한 기록 |
+|---|---|---|
+| 탐색 실행 | EXP-ID 없음 | 필요 없음 |
+| 공식 Local 실험 | `NOT_STARTED` 허용 | resolved config, metrics, History |
+| 리더보드 제출 | `INFERENCE_VERIFIED` 이상 | manifest, checkpoint 추론, 제출 SHA-256 |
+| 현재 최고·최종 후보 | `TRAINING_VERIFIED` | 비작성자의 독립 재학습 검증 |
+
+따라서 일반 Local 실험을 시작할 때 manifest 경로, Release, 검증자 등을 미리
+작성하지 않는다. 모델이 실제로 제출 또는 최종 후보가 되었을 때 해당 증빙을
+추가한다.
 
 ### 실험별 증빙 구조
 
@@ -362,20 +417,14 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
 ### [{EXP_ID}] {실제 실험명}
 
 - 상태: {PLANNED|RUNNING|COMPLETED|FAILED|ABORTED}
-- 담당자: {GitHub ID}
+- 실행자: {GitHub ID 또는 자동 수집 값}
 - Issue/브랜치: #{ISSUE} / {실제 브랜치명}
-- 부모 실험: {EXP-ID 또는 N/A}
 - 소스 commit: {실제 SHA}
 - 시작/종료: {ISO-8601}
 
-#### 가설과 변경점
-{부모 실험 대비 한 가지 핵심 가설과 실제 변경}
-
 #### 실행
 - Config: `{실제 경로}`
-- 명령: `{실제 실행 명령}`
-- 데이터/split hash: `{실제 SHA-256}`
-- 환경: `{environment.json 경로}`
+- Metrics: `{실제 경로}`
 
 #### 결과
 - Fold Macro F1: {실제 목록 또는 N/A와 사유}
@@ -386,7 +435,9 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
 #### 산출물과 결론
 - Metrics/Report/Reproduction: {실제 경로}
 - 결론: {채택/보류/실패와 근거}
-- 다음 행동: {구체적인 다음 실험 또는 종료}
+
+#### 선택 메모
+{가설, 부모 실험, 변경 의도나 다음 행동이 필요할 때만 작성; 없으면 이 절 생략}
 ```
 
 ### 기록 원칙
@@ -395,7 +446,12 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
 - Public LB는 실제 제출 후 사용자가 확인한 값만 기록한다.
 - 제출 CSV마다 제출 이력 행을 별도로 추가한다.
 - 재현 검증마다 비작성자와 증빙 경로를 재현성 검증 이력에 추가한다.
-- 실험 완료 커밋에는 config, metrics, report, History와 재현 manifest가 함께 있어야 한다.
+- 일반 Local 실험 완료에는 resolved config, metrics와 History만 필요하다.
+- report는 분석이 필요할 때, 재현 manifest는 리더보드에 제출할 때 추가한다.
+- 가설, 부모 실험과 변경 변수 설명은 필수가 아니다. 파라미터 전체를 History에
+  복사하지 말고 resolved config를 연결한다.
+- AI 또는 실행 코드가 실제 값으로 기록하며, 작성자가 파라미터를 수작업으로
+  중복 입력하지 않는다.
 - 일별 작업 내역은 중복되는 데일리 로그 대신 Git commit과 Issue/PR에 남긴다.
 
 ---
@@ -494,18 +550,20 @@ push를 허용한다. 실제 프로젝트 파일은 프로젝트 초기화 Issue
 - [ ] `experiment` label이 붙는 GitHub Experiment Issue를 등록했다.
 - [ ] 최신 main에서 Issue 브랜치를 만들었다.
 - [ ] 브랜치에서 Issue 번호가 추출되고 `EXP-NNN`이 자동 파생되는지 확인했다.
-- [ ] 부모 실험과 단일 핵심 가설을 정의했다.
-- [ ] config에 모든 변경 변수를 명시했다.
 - [ ] 공용 fold 파일과 데이터 hash를 확인했다.
+- [ ] 별도 override가 없다면 프로젝트와 모델의 기본값을 사용한다.
 
 ### 실험 후
 
 - [ ] 전체 OOF와 Macro F1을 생성했다.
-- [ ] resolved config, metrics와 manifest를 저장했다.
+- [ ] resolved config와 metrics를 저장했다.
 - [ ] 실패·중단을 포함해 History를 실제 값으로 갱신했다.
-- [ ] 제출 파일 검증을 통과했다.
-- [ ] checkpoint 추론으로 제출을 재생성했다.
 - [ ] 테스트와 schema 검증을 통과했다.
+
+리더보드에 제출한 경우에만:
+
+- [ ] 제출 파일 검증과 SHA-256 기록을 완료했다.
+- [ ] manifest를 저장하고 checkpoint 추론으로 제출을 재생성했다.
 
 ### PR과 merge 전
 

@@ -24,6 +24,8 @@ uv run python scripts/validate_experiment.py
 - 재현 상태: N/A
 - 재현 증빙/Release:
 
+<!-- 공식 실험이 아니라면 이 절은 N/A 그대로 두어도 됩니다. -->
+
 ## 체크리스트
 
 - [ ] 브랜치(`N`, `N-*`, `issue-N`, `issue-N-*`) 번호가 연결된 Issue와 일치합니다.

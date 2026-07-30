@@ -15,3 +15,9 @@ reproducibility, artifact, testing, and Git workflow rules. Never invent experim
 results or leaderboard scores. Use the canonical split unless a separate experiment
 Issue explicitly changes it. Run the relevant `uv` validation commands before
 finishing.
+
+The experiment Issue title is the only required human input. Hypothesis, parent
+experiment, change notes, acceptance criteria, artifact plans, and reproducibility
+target are optional. Apply repository/model defaults when no override is requested,
+save the fully resolved runtime config, and do not ask a person to duplicate
+parameters in the Issue or History.
