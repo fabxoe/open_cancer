@@ -26,7 +26,7 @@ from sklearn.utils.class_weight import compute_sample_weight
 
 from open_cancer.constants import CLASS_LABELS, PROBABILITY_COLUMNS
 from open_cancer.experiment import resolve_experiment_context
-from open_cancer.hashing import sha256_file
+from open_cancer.hashing import sha256_file, sha256_lines
 from open_cancer.validation import (
     validate_competition_data,
     validate_json_document,
@@ -37,6 +37,7 @@ from open_cancer.xgb_baseline import (
     encode_fixed_labels,
     load_resolved_baseline_config,
     mutation_presence_matrix,
+    select_gene_columns,
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -131,6 +132,22 @@ def main() -> None:
         keep_default_na=False,
     )
     gene_columns = list(train.columns[2:])
+    gene_whitelist_path_value = config["features"].get("gene_whitelist_path")
+    gene_selection_manifest: dict[str, Any] = {
+        "gene_whitelist_path": None,
+        "gene_whitelist_sha256": None,
+        "gene_count": len(gene_columns),
+        "gene_order_sha256": sha256_lines(gene_columns),
+    }
+    if gene_whitelist_path_value:
+        gene_whitelist_path = (PROJECT_ROOT / gene_whitelist_path_value).resolve()
+        gene_columns = select_gene_columns(gene_columns, gene_whitelist_path)
+        gene_selection_manifest = {
+            "gene_whitelist_path": _relative(gene_whitelist_path),
+            "gene_whitelist_sha256": sha256_file(gene_whitelist_path),
+            "gene_count": len(gene_columns),
+            "gene_order_sha256": sha256_lines(gene_columns),
+        }
     y = encode_fixed_labels(train["SUBCLASS"])
     n_splits = int(config["run"]["n_splits"])
     fold_ids = align_fold_ids(train["ID"], fold_table, n_splits)
@@ -330,7 +347,17 @@ def main() -> None:
             "class_f1": _relative(class_f1_path),
             "models": _relative(model_dir),
         },
-        "notes": "순수 mutation-presence, mutation burden와 class weight 미사용",
+        "notes": (
+            "순수 mutation-presence, mutation burden와 class weight 미사용. "
+            + (
+                f"유전자 화이트리스트 적용: {gene_selection_manifest['gene_count']}개 "
+                f"(원본 경로 라이선스 제한으로 미커밋, config.resolved.yaml의 "
+                f"feature_manifest.gene_selection 참고, "
+                f"gene_order_sha256={gene_selection_manifest['gene_order_sha256']})"
+                if gene_whitelist_path_value
+                else f"전체 {gene_selection_manifest['gene_count']}개 유전자 컬럼 사용"
+            )
+        ),
     }
 
     resolved_config: dict[str, Any] = {
@@ -363,6 +390,7 @@ def main() -> None:
             "train_nonzero": int(x_train.nnz),
             "test_nonzero": int(x_test.nnz),
             "class_order": list(CLASS_LABELS),
+            "gene_selection": gene_selection_manifest,
         },
         "environment": {
             "os": platform.platform(),
