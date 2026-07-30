@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/fabxoe/open_cancer/schemas/reproducibility_manifest.schema.json",
+  "title": "Cancer classification reproducibility artifact manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "experiment_id",
+    "reproducibility_status",
+    "source_commit",
+    "dirty_worktree",
+    "data_manifest",
+    "environment",
+    "artifacts"
+  ],
+  "properties": {
+    "experiment_id": {
+      "type": "string",
+      "pattern": "^EXP-[0-9]{3,}$"
+    },
+    "reproducibility_status": {
+      "enum": [
+        "NOT_STARTED",
+        "MANIFEST_COMPLETE",
+        "INFERENCE_VERIFIED",
+        "TRAINING_VERIFIED",
+        "FAILED"
+      ]
+    },
+    "source_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{7,40}$"
+    },
+    "source_tag": {
+      "type": ["string", "null"],
+      "pattern": "^exp-[0-9]{3,}-repro-v[0-9]+$"
+    },
+    "dirty_worktree": {
+      "const": false
+    },
+    "data_manifest": {
+      "type": "string",
+      "minLength": 1
+    },
+    "environment": {
+      "type": "string",
+      "minLength": 1
+    },
+    "release_url": {
+      "type": ["string", "null"],
+      "format": "uri"
+    },
+    "verifier": {
+      "type": "string",
+      "minLength": 1
+    },
+    "verified_at": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "format": "date-time"
+        }
+      ]
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "path", "size_bytes", "sha256"],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "size_bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "storage_uri": {
+            "type": ["string", "null"]
+          }
+        }
+      }
+    },
+    "verification": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "data_hashes_match": {
+          "type": "boolean"
+        },
+        "submission_sha256_match": {
+          "type": "boolean"
+        },
+        "oof_label_agreement": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "test_label_agreement": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "probability_atol": {
+          "type": "number",
+          "minimum": 0
+        },
+        "probability_rtol": {
+          "type": "number",
+          "minimum": 0
+        },
+        "oof_macro_f1_delta": {
+          "type": "number",
+          "minimum": 0
+        },
+        "passed": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "reproducibility_status": {
+            "enum": ["INFERENCE_VERIFIED", "TRAINING_VERIFIED"]
+          }
+        }
+      },
+      "then": {
+        "required": ["verification"],
+        "properties": {
+          "verification": {
+            "required": ["data_hashes_match", "submission_sha256_match", "passed"],
+            "properties": {
+              "passed": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "reproducibility_status": {
+            "const": "TRAINING_VERIFIED"
+          }
+        }
+      },
+      "then": {
+        "required": ["verifier", "verified_at", "verification"],
+        "properties": {
+          "verified_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "verification": {
+            "required": [
+              "oof_label_agreement",
+              "test_label_agreement",
+              "probability_atol",
+              "probability_rtol",
+              "oof_macro_f1_delta"
+            ],
+            "properties": {
+              "oof_label_agreement": {
+                "const": 1
+              },
+              "test_label_agreement": {
+                "const": 1
+              },
+              "probability_atol": {
+                "maximum": 0.000001
+              },
+              "probability_rtol": {
+                "maximum": 0.000001
+              },
+              "oof_macro_f1_delta": {
+                "maximum": 0.000001
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
