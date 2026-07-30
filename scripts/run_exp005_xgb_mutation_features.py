@@ -295,7 +295,7 @@ def main() -> None:
             "models": str(model_dir.relative_to(ROOT)),
             "submission_sha256": submission_validation["sha256"],
         },
-        "notes": "Sparse gene-by-mutation-type features; no HGVS/MANE or target-derived features.",
+        "notes": "Sparse gene-by-mutation-type features; no target-derived features.",
     }
     write_json(metrics_path, metrics)
     validate_json_document(metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json")
