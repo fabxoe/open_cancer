@@ -5,8 +5,8 @@
 
 ## 기준
 
-- 학습 소스 commit: `7306182669c3676e7b17024d3cf1f821131d909b`
-- 검증 스크립트 commit: `1934c6b69e7aaec5f731f1dd92a1ee4b14ccebb7`
+- 학습 소스 commit: `e58c5f0a02dff92030d4a2363fdf7622eccb5686`
+- 검증 스크립트 commit: `620f92ac6cc33f1409374fe46930445c0638d655`
 - 기대 제출 SHA-256: `6e8b64726c86b5a6d52ee58f7f042b74b302852aa8a59c9bfe13332bfee424a5`
 
 ## 실행
@@ -14,6 +14,7 @@
 ```bash
 uv sync --frozen
 
+# 주최측 공식 경로로 받은 CSV 3개를 data/raw/에 배치한다.
 mkdir -p models/exp003_xgb_baseline
 
 curl -fL -o models/exp003_xgb_baseline/fold_00.json \
