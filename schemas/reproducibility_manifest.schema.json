@@ -6,6 +6,7 @@
   "additionalProperties": false,
   "required": [
     "experiment_id",
+    "issue_number",
     "reproducibility_status",
     "source_commit",
     "dirty_worktree",
@@ -17,6 +18,10 @@
     "experiment_id": {
       "type": "string",
       "pattern": "^EXP-[0-9]{3,}$"
+    },
+    "issue_number": {
+      "type": "integer",
+      "minimum": 1
     },
     "reproducibility_status": {
       "enum": [

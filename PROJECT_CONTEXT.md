@@ -27,11 +27,13 @@
 
 ```text
 저장소 루트의 PROJECT_CONTEXT.md를 처음부터 끝까지 읽고 준수하세요.
-이어서 EXPERIMENT_HISTORY.md를 읽어 현재 실험 수, 다음 EXP-ID, 최고 모델과
-진행 중인 실험을 확인하세요.
+이어서 EXPERIMENT_HISTORY.md를 읽어 현재 실험 수, 최고 모델과 진행 중인
+실험을 확인하세요.
 
-모든 작업은 GitHub Issue에 연결해야 합니다. 최신 main에서 Issue 번호가 포함된
-브랜치를 만든 뒤 작업하고, 테스트와 문서 갱신을 마친 후 PR을 생성하세요.
+모든 작업은 GitHub Issue에 연결해야 합니다. 최신 main에서 `N`, `N-<slug>`,
+`issue-N` 또는 `issue-N-<slug>` 브랜치를 만든 뒤 작업하고, 테스트와 문서 갱신을
+마친 후 PR을 생성하세요. 공식 실험은 Issue #N에서 EXP-NNN을 자동으로 파생하며
+별도 EXP-ID를 예약하지 않습니다.
 
 실행하지 않은 실험, 측정하지 않은 점수, 존재하지 않는 산출물을 추정하거나
 예시에서 복사하지 마세요. 실험을 수행했다면 성공, 실패, 중단 여부와 관계없이
@@ -42,7 +44,7 @@ AI는 작업 전에 다음을 확인한다.
 
 1. 현재 브랜치가 해당 Issue 번호를 포함하는가.
 2. `main`에서 분기했으며 최신 `origin/main`이 반영되었는가.
-3. 다음 EXP-ID가 다른 작업자에게 예약되지 않았는가.
+3. 현재 브랜치에서 연결된 Issue 번호를 정확히 추출할 수 있는가.
 4. 원본 데이터 해시가 기준과 일치하며, 가공 데이터·모델·OOF·비밀 파일이 Git에
    포함되지 않는가.
 5. 작업 후 실행할 검증 명령과 완료 조건이 Issue에 적혀 있는가.
@@ -149,18 +151,19 @@ tests/             데이터가 없어도 실행 가능한 단위 테스트
 
 ### 파일 명명 규칙
 
-`EXP-001`의 파일 slug는 `exp001_<short_slug>`로 통일한다.
+Experiment Issue #12에서 파생된 `EXP-012`의 파일 slug는
+`exp012_<short_slug>`로 통일한다.
 
 ```text
-configs/exp001_<slug>.yaml
-scripts/run_exp001_<slug>.py
-models/exp001_<slug>/fold_00.<ext>
-oof/exp001_<slug>.csv
-preds/exp001_<slug>_test_proba.csv
-reports/exp001_<slug>/metrics.json
-reports/exp001_<slug>/report.md
-submissions/exp001_<slug>.csv
-reproducibility/exp001_<slug>/
+configs/exp012_<slug>.yaml
+scripts/run_exp012_<slug>.py
+models/exp012_<slug>/fold_00.<ext>
+oof/exp012_<slug>.csv
+preds/exp012_<slug>_test_proba.csv
+reports/exp012_<slug>/metrics.json
+reports/exp012_<slug>/report.md
+submissions/exp012_<slug>.csv
+reproducibility/exp012_<slug>/
 ```
 
 ### 파일 인터페이스
@@ -207,7 +210,7 @@ data/splits/stratified_5fold_seed42.csv
 - 생성 방식: `StratifiedKFold(n_splits=5, shuffle=True, random_state=42)`
 - 저장 컬럼: `ID,fold`
 - 모든 비교 실험은 같은 fold ID와 파일 해시를 사용한다.
-- 다른 split은 별도 실험으로 간주하고 새 EXP-ID를 발급한다.
+- 다른 split은 별도 실험으로 간주하고 새 Experiment Issue를 생성한다.
 - 전체 OOF를 모두 채운 뒤 `f1_score(y_true, y_pred, average="macro")`를 계산한다.
 - fold 평균만 보고하지 말고 전체 OOF 점수, fold별 점수와 표준편차를 함께 기록한다.
 - 결측 처리, vocabulary, 인코더, scaler, feature selection은 fold train에서만 fit한다.
@@ -216,29 +219,40 @@ data/splits/stratified_5fold_seed42.csv
 
 ---
 
-## 6. 실험 ID와 상태
+## 6. Issue 기반 실험 ID와 상태
 
-### ID 예약
+### ID 생성
 
-1. 최신 `main`의 `EXPERIMENT_HISTORY.md`에서 다음 ID를 확인한다.
-2. 실험 실행 전에 요약표에 담당자와 `PLANNED` 상태를 기록한다.
-3. `다음 실험 ID`를 다음 번호로 올린다.
-4. 해당 변경을 Issue 브랜치에 커밋한 뒤 실행한다.
+실험 ID는 별도로 예약하지 않고 GitHub Experiment Issue 번호에서 파생한다.
 
-여러 팀원이 동시에 같은 ID를 예약했다면 먼저 main에 merge된 예약을 우선하고,
-나머지는 최신 main을 반영한 뒤 새 ID를 발급한다.
+```text
+GitHub Experiment Issue #12 → EXP-012 → 파일 prefix exp012
+GitHub Experiment Issue #105 → EXP-105 → 파일 prefix exp105
+```
+
+1. `.github/ISSUE_TEMPLATE/experiment.yml`로 실험 Issue를 생성한다.
+2. GitHub가 부여한 Issue 번호 `N`을 브랜치에 넣는다.
+3. 브랜치 형식은 `N`, `N-<slug>`, `issue-N`, `issue-N-<slug>`를 허용한다.
+4. 공식 실험은 `RUN_MODE="experiment"`로 실행한다.
+5. `open_cancer.experiment`가 현재 브랜치에서 Issue 번호를 읽고 `EXP-NNN`을
+   자동 생성한다.
+6. 일반 task, bug, 문서 Issue와 `RUN_MODE="explore"`에는 EXP-ID를 만들지 않는다.
+
+Issue 번호는 저장소 전체에서 공유되므로 실험 번호가 연속일 필요가 없다.
+`EXP-012` 다음 실험이 `EXP-017`이어도 정상이다. 숫자 전용 브랜치도 허용하지만
+사람이 목적을 알아보기 쉬운 `issue-12-exp-xgb-baseline` 형식을 권장한다.
 
 ### 허용 실험 상태
 
-- `PLANNED`: 가설과 설정을 정의하고 ID를 예약함
+- `PLANNED`: Experiment Issue를 생성하고 가설과 설정을 정의함
 - `RUNNING`: 학습 또는 분석 실행 중
 - `COMPLETED`: 실행과 필수 기록이 정상 완료됨
 - `FAILED`: 오류 또는 검증 실패로 완료하지 못함
 - `ABORTED`: 근거를 기록하고 의도적으로 중단함
 
 실패와 중단도 삭제하지 않는다. 동일 설정에서 실행 환경만 복구한 재시도는 같은
-EXP-ID 아래 attempt를 추가한다. 모델, 피처, split, seed, 앙상블, threshold 또는
-후처리가 달라져 예측이 바뀌면 새 EXP-ID를 발급한다.
+Issue/EXP-ID 아래 attempt를 추가한다. 모델, 피처, split, seed, 앙상블,
+threshold 또는 후처리가 달라져 예측이 바뀌면 새 Experiment Issue를 생성한다.
 
 ---
 
@@ -248,13 +262,13 @@ EXP-ID 아래 attempt를 추가한다. 모델, 피처, split, seed, 앙상블, t
 기본값까지 병합된 실제 실행 config를 모두 보존한다.
 
 ```text
-configs/exp001_<slug>.yaml
-reproducibility/exp001_<slug>/config.resolved.yaml
+configs/exp012_<slug>.yaml
+reproducibility/exp012_<slug>/config.resolved.yaml
 ```
 
 resolved config에는 다음 항목이 빠짐없이 들어가야 한다.
 
-- 실험 ID, 담당자, Issue 번호, 부모 실험, 가설
+- 브랜치에서 추출한 Issue 번호, 자동 파생 실험 ID, 담당자, 부모 실험, 가설
 - 소스 commit SHA, dirty worktree 여부
 - train/test/sample submission SHA-256
 - 유전자 컬럼 목록 또는 목록 파일과 순서 해시
@@ -289,7 +303,7 @@ resolved config에는 다음 항목이 빠짐없이 들어가야 한다.
 ### 실험별 증빙 구조
 
 ```text
-reproducibility/exp001_<slug>/
+reproducibility/exp012_<slug>/
 ├── REPRODUCE.md
 ├── config.resolved.yaml
 ├── environment.json
@@ -329,7 +343,7 @@ reproducibility/exp001_<slug>/
 - raw data는 정확한 실험 commit에 Git으로 포함되어 있으므로 재현 번들에 중복
   포함하지 않는다. 실험 manifest에는 파일 SHA-256을 계속 기록한다.
 - 리더보드 제출 모델의 checkpoint와 재현 번들은 GitHub Release asset으로 보관한다.
-- Release tag는 `exp-001-repro-v1` 형식으로 정확한 실험 commit을 가리킨다.
+- Release tag는 `exp-012-repro-v1` 형식으로 정확한 실험 commit을 가리킨다.
 - asset의 URL, 크기와 SHA-256을 manifest와 History에 기록한다.
 - 기존 asset을 덮어쓰지 않고 변경 시 `v2`를 만든다.
 - asset 하나는 2 GiB 미만이어야 하며, 초과하면 fold별 또는 분할 압축한다.
@@ -349,7 +363,7 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
 
 - 상태: {PLANNED|RUNNING|COMPLETED|FAILED|ABORTED}
 - 담당자: {GitHub ID}
-- Issue/브랜치: #{ISSUE} / issue-{ISSUE}-{slug}
+- Issue/브랜치: #{ISSUE} / {실제 브랜치명}
 - 부모 실험: {EXP-ID 또는 N/A}
 - 소스 commit: {실제 SHA}
 - 시작/종료: {ISO-8601}
@@ -399,27 +413,30 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
    git pull --ff-only origin main
    ```
 
-4. Issue 번호가 일치하는 브랜치를 만든다.
+4. Issue 번호가 일치하는 브랜치를 만든다. 숫자 전용 브랜치도 허용하지만
+   설명이 포함된 형식을 권장한다.
 
    ```bash
    git switch -c issue-<번호>-<짧은설명>
    ```
 
-   예: `issue-12-exp001-xgb-baseline`
+   허용 예: `12`, `12-xgb-baseline`, `issue-12`, `issue-12-xgb-baseline`
+
+   실험 권장 예: `issue-12-exp-xgb-baseline`
 
 5. 구현과 테스트 후 다음 형식으로 커밋한다.
 
    ```text
    feat(#12): ...
    fix(#12): ...
-   exp(#12): EXP-001 ...
+   exp(#12): EXP-012 ...
    docs(#12): ...
    ```
 
 6. 작업 브랜치를 push한다.
 
    ```bash
-   git push -u origin issue-12-exp001-xgb-baseline
+   git push -u origin issue-12-exp-xgb-baseline
    ```
 
 7. base가 `main`인 PR을 만들고 첫 부분에 `Closes #12`를 작성한다.
@@ -474,9 +491,9 @@ push를 허용한다. 실제 프로젝트 파일은 프로젝트 초기화 Issue
 
 ### 실험 전
 
-- [ ] GitHub Issue를 등록했다.
+- [ ] `experiment` label이 붙는 GitHub Experiment Issue를 등록했다.
 - [ ] 최신 main에서 Issue 브랜치를 만들었다.
-- [ ] EXP-ID를 중복 없이 예약했다.
+- [ ] 브랜치에서 Issue 번호가 추출되고 `EXP-NNN`이 자동 파생되는지 확인했다.
 - [ ] 부모 실험과 단일 핵심 가설을 정의했다.
 - [ ] config에 모든 변경 변수를 명시했다.
 - [ ] 공용 fold 파일과 데이터 hash를 확인했다.

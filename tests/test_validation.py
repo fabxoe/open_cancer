@@ -10,6 +10,8 @@ from open_cancer.validation import (
     ValidationError,
     create_stratified_folds,
     validate_competition_data,
+    validate_experiment_record_identity,
+    validate_history,
     validate_json_document,
     validate_submission,
 )
@@ -83,10 +85,10 @@ def test_stratified_fold_map_is_deterministic(tmp_path: Path) -> None:
 def test_experiment_metrics_schema(tmp_path: Path) -> None:
     root = Path(__file__).resolve().parents[1]
     document = {
-        "experiment_id": "EXP-001",
+        "experiment_id": "EXP-012",
         "status": "COMPLETED",
         "owner": "tester",
-        "issue_number": 2,
+        "issue_number": 12,
         "parent_experiment": None,
         "git_commit": "0123456789abcdef",
         "started_at": "2026-07-30T01:00:00Z",
@@ -95,26 +97,28 @@ def test_experiment_metrics_schema(tmp_path: Path) -> None:
         "split_id": "stratified_5fold_seed42",
         "folds": [{"fold": 0, "macro_f1": 0.5}],
         "oof": {"macro_f1": 0.5},
-        "artifacts": {"report": "reports/exp001_test/report.md"},
+        "artifacts": {"report": "reports/exp012_test/report.md"},
     }
     path = tmp_path / "metrics.json"
     path.write_text(json.dumps(document), encoding="utf-8")
     validate_json_document(path, root / "schemas/experiment_metrics.schema.json")
+    assert validate_experiment_record_identity(path)["issue_number"] == 12
 
 
 def test_reproducibility_schema(tmp_path: Path) -> None:
     root = Path(__file__).resolve().parents[1]
     document = {
-        "experiment_id": "EXP-001",
+        "experiment_id": "EXP-012",
+        "issue_number": 12,
         "reproducibility_status": "MANIFEST_COMPLETE",
         "source_commit": "0123456789abcdef",
         "dirty_worktree": False,
-        "data_manifest": "reproducibility/exp001_test/data_manifest.json",
-        "environment": "reproducibility/exp001_test/environment.json",
+        "data_manifest": "reproducibility/exp012_test/data_manifest.json",
+        "environment": "reproducibility/exp012_test/environment.json",
         "artifacts": [
             {
                 "kind": "submission",
-                "path": "submissions/exp001_test.csv",
+                "path": "submissions/exp012_test.csv",
                 "size_bytes": 10,
                 "sha256": "a" * 64,
                 "storage_uri": None,
@@ -124,3 +128,61 @@ def test_reproducibility_schema(tmp_path: Path) -> None:
     path = tmp_path / "artifact_manifest.json"
     path.write_text(json.dumps(document), encoding="utf-8")
     validate_json_document(path, root / "schemas/reproducibility_manifest.schema.json")
+    assert validate_experiment_record_identity(path)["issue_number"] == 12
+
+
+def test_experiment_record_rejects_mismatched_issue(tmp_path: Path) -> None:
+    path = tmp_path / "metrics.json"
+    path.write_text(
+        json.dumps({"experiment_id": "EXP-012", "issue_number": 13}),
+        encoding="utf-8",
+    )
+    with pytest.raises(ValidationError, match="Issue #12"):
+        validate_experiment_record_identity(path)
+
+
+def test_history_accepts_issue_derived_id_and_numeric_branch(tmp_path: Path) -> None:
+    history = tmp_path / "EXPERIMENT_HISTORY.md"
+    history.write_text(
+        """# 실험 기록
+
+- 실제 실험 수: 1
+
+| ID | 상태 | 담당자 | Issue | 모델 |
+|---|---|---|---|---|
+| EXP-012 | COMPLETED | tester | #12 | baseline |
+
+### [EXP-012] baseline
+
+- Issue/브랜치: #12 / 12
+""",
+        encoding="utf-8",
+    )
+    summary = validate_history(history)
+    assert summary == {
+        "declared": 1,
+        "summary": 1,
+        "details": 1,
+        "issue_aligned": 1,
+    }
+
+
+def test_history_rejects_mismatched_issue_id(tmp_path: Path) -> None:
+    history = tmp_path / "EXPERIMENT_HISTORY.md"
+    history.write_text(
+        """# 실험 기록
+
+- 실제 실험 수: 1
+
+| ID | 상태 | 담당자 | Issue | 모델 |
+|---|---|---|---|---|
+| EXP-012 | COMPLETED | tester | #13 | baseline |
+
+### [EXP-012] baseline
+
+- Issue/브랜치: #13 / issue-13-exp-baseline
+""",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValidationError, match="Issue #12"):
+        validate_history(history)

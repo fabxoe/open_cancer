@@ -17,6 +17,7 @@ from open_cancer.constants import (
     EXPECTED_TEST_ROWS,
     EXPECTED_TRAIN_ROWS,
 )
+from open_cancer.experiment import extract_issue_number, validate_experiment_issue_pair
 from open_cancer.hashing import sha256_file, sha256_lines
 
 
@@ -164,14 +165,12 @@ def validate_json_document(document_path: Path, schema_path: Path) -> None:
 
 
 def validate_history(history_path: str | Path) -> dict[str, int]:
-    """Check experiment counts, IDs, and next-ID bookkeeping in History."""
+    """Check experiment counts and Issue-derived IDs in History."""
     history_path = Path(history_path)
     text = history_path.read_text(encoding="utf-8")
 
     declared_match = re.search(r"^- 실제 실험 수: (\d+)$", text, flags=re.MULTILINE)
-    next_match = re.search(r"^- 다음 실험 ID: EXP-(\d+)$", text, flags=re.MULTILINE)
     _require(declared_match is not None, "History의 실제 실험 수를 찾을 수 없습니다.")
-    _require(next_match is not None, "History의 다음 실험 ID를 찾을 수 없습니다.")
 
     summary_ids = re.findall(r"^\| (EXP-\d+) \|", text, flags=re.MULTILINE)
     detail_ids = re.findall(r"^### \[(EXP-\d+)\]", text, flags=re.MULTILINE)
@@ -181,6 +180,73 @@ def validate_history(history_path: str | Path) -> dict[str, int]:
 
     declared_count = int(declared_match.group(1))
     _require(declared_count == len(summary_ids), "실제 실험 수와 요약표 행 수가 다릅니다.")
-    expected_next = max((int(item.split("-")[1]) for item in summary_ids), default=0) + 1
-    _require(int(next_match.group(1)) == expected_next, "다음 실험 ID가 실제 최대 ID+1이 아닙니다.")
-    return {"declared": declared_count, "summary": len(summary_ids), "details": len(detail_ids)}
+
+    summary_pairs: list[tuple[str, int]] = []
+    for line in text.splitlines():
+        if not re.match(r"^\| EXP-\d+ \|", line):
+            continue
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        _require(len(cells) >= 4, f"History 실험 요약 행 형식이 올바르지 않습니다: {line}")
+        issue_match = re.fullmatch(r"#?([1-9][0-9]*)", cells[3])
+        _require(issue_match is not None, f"History Issue 번호가 올바르지 않습니다: {cells[3]}")
+        summary_pairs.append((cells[0], int(issue_match.group(1))))
+
+    for experiment_id, issue_number in summary_pairs:
+        try:
+            validate_experiment_issue_pair(experiment_id, issue_number)
+        except ValueError as error:
+            raise ValidationError(str(error)) from error
+
+    detail_blocks = re.findall(
+        r"^### \[(EXP-\d+)\].*?(?=^### \[|\Z)",
+        text,
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    for experiment_id in detail_blocks:
+        block_match = re.search(
+            rf"^### \[{re.escape(experiment_id)}\].*?(?=^### \[|\Z)",
+            text,
+            flags=re.MULTILINE | re.DOTALL,
+        )
+        _require(block_match is not None, f"{experiment_id} 상세 로그를 찾을 수 없습니다.")
+        issue_branch_match = re.search(
+            r"^- Issue/브랜치:\s*#([1-9][0-9]*)\s*/\s*`?([^`\s]+)`?\s*$",
+            block_match.group(0),
+            flags=re.MULTILINE,
+        )
+        _require(
+            issue_branch_match is not None,
+            f"{experiment_id} 상세 로그의 Issue/브랜치 형식이 올바르지 않습니다.",
+        )
+        issue_number = int(issue_branch_match.group(1))
+        branch = issue_branch_match.group(2)
+        try:
+            validate_experiment_issue_pair(experiment_id, issue_number)
+        except ValueError as error:
+            raise ValidationError(str(error)) from error
+        _require(
+            extract_issue_number(branch) == issue_number,
+            f"{experiment_id}의 브랜치와 Issue 번호가 다릅니다: {branch} / #{issue_number}",
+        )
+
+    return {
+        "declared": declared_count,
+        "summary": len(summary_ids),
+        "details": len(detail_ids),
+        "issue_aligned": len(summary_pairs),
+    }
+
+
+def validate_experiment_record_identity(document_path: str | Path) -> dict[str, int | str]:
+    """Validate EXP-NNN against the Issue number stored in a JSON record."""
+    document_path = Path(document_path)
+    document = json.loads(document_path.read_text(encoding="utf-8"))
+    experiment_id = document.get("experiment_id")
+    issue_number = document.get("issue_number")
+    _require(isinstance(experiment_id, str), f"{document_path}: experiment_id가 필요합니다.")
+    _require(isinstance(issue_number, int), f"{document_path}: issue_number가 필요합니다.")
+    try:
+        validate_experiment_issue_pair(experiment_id, issue_number)
+    except ValueError as error:
+        raise ValidationError(f"{document_path}: {error}") from error
+    return {"experiment_id": experiment_id, "issue_number": issue_number}
