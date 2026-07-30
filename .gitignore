@@ -27,9 +27,7 @@ htmlcov/
 *.pem
 *.key
 
-# Competition data
-data/raw/*
-!data/raw/.gitkeep
+# Generated data
 data/processed/*
 !data/processed/.gitkeep
 
