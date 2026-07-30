@@ -84,13 +84,13 @@ Codex만 사용하는 팀원도 Claude Code 확장을 반드시 사용할 필요
 VS Code에서 **Terminal → New Terminal**을 열고 실행합니다.
 
 ```bash
-uv python install 3.11.10
-uv sync --frozen --group dev
+uv sync --frozen
 ```
 
-이 명령은 저장소의 `.venv` 가상환경을 만들고 `uv.lock`에 기록된 정확한 버전을
-설치합니다. `--frozen`은 초기 설정 중 팀 공통 lock 파일을 임의로 바꾸지 않게
-합니다.
+`uv`는 `.python-version`의 Python 3.11.10을 확인하고, 컴퓨터에 없으면 자동으로
+다운로드합니다. 이어서 저장소의 `.venv` 가상환경을 만들고 `uv.lock`에 기록된
+정확한 패키지 버전을 설치합니다. 기본 `dev` 그룹도 자동으로 포함됩니다.
+`--frozen`은 초기 설정 중 팀 공통 lock 파일을 임의로 바꾸지 않게 합니다.
 
 설치를 확인합니다.
 
@@ -417,7 +417,7 @@ git push -u origin issue-12-exp001-baseline
 
 ### `.venv`가 인터프리터 목록에 없음
 
-저장소 루트에서 `uv sync --frozen --group dev`를 다시 실행하고 VS Code의
+저장소 루트에서 `uv sync --frozen`을 다시 실행하고 VS Code의
 **Developer: Reload Window** 후 **Python: Select Interpreter**를 실행합니다.
 
 ### `uv.lock`이 바뀜

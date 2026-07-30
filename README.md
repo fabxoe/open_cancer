@@ -9,8 +9,7 @@
 따릅니다.
 
 ```bash
-uv python install 3.11.10
-uv sync --frozen --group dev
+uv sync --frozen
 uv run python scripts/validate_data.py
 uv run pytest
 ```
