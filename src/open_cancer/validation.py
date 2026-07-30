@@ -191,27 +191,32 @@ def validate_history(history_path: str | Path) -> dict[str, int]:
         _require(issue_match is not None, f"History Issue 번호가 올바르지 않습니다: {cells[3]}")
         summary_pairs.append((cells[0], int(issue_match.group(1))))
 
+    _require(
+        len(summary_pairs) == len(summary_ids),
+        "History 실험 요약에서 EXP-ID와 Issue 번호를 모두 읽을 수 없습니다.",
+    )
     for experiment_id, issue_number in summary_pairs:
         try:
             validate_experiment_issue_pair(experiment_id, issue_number)
         except ValueError as error:
             raise ValidationError(str(error)) from error
 
-    detail_blocks = re.findall(
-        r"^### \[(EXP-\d+)\].*?(?=^### \[|\Z)",
-        text,
-        flags=re.MULTILINE | re.DOTALL,
-    )
-    for experiment_id in detail_blocks:
-        block_match = re.search(
-            rf"^### \[{re.escape(experiment_id)}\].*?(?=^### \[|\Z)",
+    detail_blocks = list(
+        re.finditer(
+            r"^### \[(EXP-\d+)\][^\n]*\n(?P<body>.*?)(?=^### \[|\Z)",
             text,
             flags=re.MULTILINE | re.DOTALL,
         )
-        _require(block_match is not None, f"{experiment_id} 상세 로그를 찾을 수 없습니다.")
+    )
+    _require(
+        len(detail_blocks) == len(detail_ids),
+        "History 상세 로그 블록을 모두 읽을 수 없습니다.",
+    )
+    for block_match in detail_blocks:
+        experiment_id = block_match.group(1)
         issue_branch_match = re.search(
             r"^- Issue/브랜치:\s*#([1-9][0-9]*)\s*/\s*`?([^`\s]+)`?\s*$",
-            block_match.group(0),
+            block_match.group("body"),
             flags=re.MULTILINE,
         )
         _require(
