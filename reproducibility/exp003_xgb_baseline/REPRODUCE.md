@@ -14,8 +14,20 @@
 ```bash
 uv sync --frozen
 
-# artifact_manifest.json에 적힌 SHA-256과 일치하는 checkpoint 5개를
-# models/exp003_xgb_baseline/에 배치한다.
+mkdir -p models/exp003_xgb_baseline
+
+curl -fL -o models/exp003_xgb_baseline/fold_00.json \
+  https://github.com/fabxoe/open_cancer/releases/download/exp-003-repro-v1/exp003_xgb_baseline_fold_00.json
+curl -fL -o models/exp003_xgb_baseline/fold_01.json \
+  https://github.com/fabxoe/open_cancer/releases/download/exp-003-repro-v1/exp003_xgb_baseline_fold_01.json
+curl -fL -o models/exp003_xgb_baseline/fold_02.json \
+  https://github.com/fabxoe/open_cancer/releases/download/exp-003-repro-v1/exp003_xgb_baseline_fold_02.json
+curl -fL -o models/exp003_xgb_baseline/fold_03.json \
+  https://github.com/fabxoe/open_cancer/releases/download/exp-003-repro-v1/exp003_xgb_baseline_fold_03.json
+curl -fL -o models/exp003_xgb_baseline/fold_04.json \
+  https://github.com/fabxoe/open_cancer/releases/download/exp-003-repro-v1/exp003_xgb_baseline_fold_04.json
+
+shasum -a 256 -c reproducibility/exp003_xgb_baseline/checksums.sha256
 uv run python scripts/verify_xgb_baseline_inference.py
 ```
 
@@ -23,6 +35,7 @@ uv run python scripts/verify_xgb_baseline_inference.py
 `submissions/exp003_xgb_baseline.csv`와 byte 단위로 같고,
 `comparison.json`의 `passed`가 `true`가 된다.
 
-현재 checkpoint의 `storage_uri`가 `null`이면 이 로컬 검증에는 사용되었지만 아직
-GitHub Release에 업로드되지 않았다는 뜻이다. 실제 리더보드 제출 모델로 확정할 때
-Release asset을 만들고 `artifact_manifest.json`에 URL을 기록한다.
+checkpoint 5개는
+[`exp-003-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-003-repro-v1)
+Release에 보관되어 있다. 각 파일의 크기, SHA-256과 다운로드 URL은
+`artifact_manifest.json`을 따른다.

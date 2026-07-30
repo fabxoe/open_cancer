@@ -220,8 +220,17 @@ Fold F1 평균 ± 표준편차: 0.332958 ± 0.007932
 맞히기에는 부족하다는 것을 보여줍니다. 특히 Macro F1은 낮은 클래스의 성능도 같은
 비중으로 평가하므로 약한 클래스 개선이 중요합니다.
 
-Public LB에는 아직 제출하지 않았습니다. 생성된 CSV는 제출 후보일 뿐이며 실제
-리더보드 점수나 순위는 없습니다.
+2026-07-30 18:20:48 KST에 `exp003_xgb_baseline.csv`를 리더보드에 제출했습니다.
+
+| 제출 ID | Public Macro F1 | 확인 당시 순위 | 제출 파일 SHA-256 |
+|---:|---:|---:|---|
+| 1506230 | 0.228167518 | 3위 | `6e8b64726c86b5a6d52ee58f7f042b74b302852aa8a59c9bfe13332bfee424a5` |
+
+순위는 다른 팀의 제출에 따라 달라질 수 있으므로 제출 직후 확인값으로 기록했습니다.
+Local OOF Macro F1은 0.334930, Public LB는 0.228167518로 약 0.106763
+낮았습니다. Public leaderboard가 test 전체가 아닌 공개 평가 구간만 사용하는
+점도 고려해야 하지만, train과 test의 변이 밀도 차이와 단순 mutation-presence
+피처의 일반화 한계를 다음 실험에서 우선 확인할 필요가 있습니다.
 
 ## 8. 한계와 다음 실험 후보
 
@@ -259,8 +268,9 @@ EXP-003은 비교 기준을 만드는 것이 목적이므로 의도적으로 단
 따라서 현재 제출 후보는 “저장된 모델만으로 같은 파일을 다시 만들 수 있음”이
 확인되었습니다. 이 상태는 모델을 처음부터 다시 학습해도 같다는
 `TRAINING_VERIFIED`와는 다릅니다. checkpoint는 현재 로컬에 보관되어 있으며,
-실제 리더보드 제출 모델로 확정하면 GitHub Release에 올리고 manifest에 URL을
-기록해야 합니다.
+동일한 checkpoint 5개는
+[`exp-003-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-003-repro-v1)
+GitHub Release에도 보관했습니다.
 
 검증 증빙:
 
@@ -269,6 +279,7 @@ EXP-003은 비교 기준을 만드는 것이 목적이므로 의도적으로 단
 - [산출물 manifest](../../reproducibility/exp003_xgb_baseline/artifact_manifest.json)
 - [데이터 manifest](../../reproducibility/exp003_xgb_baseline/data_manifest.json)
 - [검증 환경](../../reproducibility/exp003_xgb_baseline/environment.json)
+- [Checkpoint Release](https://github.com/fabxoe/open_cancer/releases/tag/exp-003-repro-v1)
 
 ## 10. 관련 파일
 
@@ -276,7 +287,8 @@ EXP-003은 비교 기준을 만드는 것이 목적이므로 의도적으로 단
 - 실제 적용 설정: [`config.resolved.yaml`](../../reproducibility/exp003_xgb_baseline/config.resolved.yaml)
 - 전체 지표: [`metrics.json`](metrics.json)
 - 클래스별 F1: [`class_f1.csv`](class_f1.csv)
-- 제출 후보: [`submissions/exp003_xgb_baseline.csv`](../../submissions/exp003_xgb_baseline.csv)
+- 실제 제출 파일: [`submissions/exp003_xgb_baseline.csv`](../../submissions/exp003_xgb_baseline.csv)
+- Public LB: `0.228167518` (제출 ID `1506230`, 제출 직후 3위)
 - Source commit: `7306182669c3676e7b17024d3cf1f821131d909b`
 - Reproduction status: `INFERENCE_VERIFIED`
 

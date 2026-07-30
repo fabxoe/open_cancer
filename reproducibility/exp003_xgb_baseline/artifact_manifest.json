@@ -3,11 +3,11 @@
   "issue_number": 3,
   "reproducibility_status": "INFERENCE_VERIFIED",
   "source_commit": "7306182669c3676e7b17024d3cf1f821131d909b",
-  "source_tag": null,
+  "source_tag": "exp-003-repro-v1",
   "dirty_worktree": false,
   "data_manifest": "reproducibility/exp003_xgb_baseline/data_manifest.json",
   "environment": "reproducibility/exp003_xgb_baseline/environment.json",
-  "release_url": null,
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-003-repro-v1",
   "verifier": "fabxoe",
   "verified_at": "2026-07-30T09:14:20Z",
   "artifacts": [
@@ -16,35 +16,35 @@
       "path": "models/exp003_xgb_baseline/fold_00.json",
       "size_bytes": 16961414,
       "sha256": "dea0a42d82df4a5d5911c4eea92b2e2bc0eb238c82eecff674ee2bfbfd007d68",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-003-repro-v1/exp003_xgb_baseline_fold_00.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp003_xgb_baseline/fold_01.json",
       "size_bytes": 16163718,
       "sha256": "69555a958a0d4e9d46fde50b25357e5a2dd83c57ed31c36a04c24dabcbdc4a6a",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-003-repro-v1/exp003_xgb_baseline_fold_01.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp003_xgb_baseline/fold_02.json",
       "size_bytes": 18138590,
       "sha256": "b3b83e651b85300981090f3d3a5e8935ddf3ad2614309eb182ccfa27c076235a",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-003-repro-v1/exp003_xgb_baseline_fold_02.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp003_xgb_baseline/fold_03.json",
       "size_bytes": 14253211,
       "sha256": "4e89ba47cd4a3c1bc29f036f7921bee5f973fbfce287c8716d24083c8b406812",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-003-repro-v1/exp003_xgb_baseline_fold_03.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp003_xgb_baseline/fold_04.json",
       "size_bytes": 17030642,
       "sha256": "00061e57354fe9baeac3ede464bf4f412ca95405bde4729ac1ec96bba20ab453",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-003-repro-v1/exp003_xgb_baseline_fold_04.json"
     },
     {
       "kind": "resolved_config",
@@ -112,8 +112,8 @@
     {
       "kind": "reproduce_guide",
       "path": "reproducibility/exp003_xgb_baseline/REPRODUCE.md",
-      "size_bytes": 1088,
-      "sha256": "1927e6aa20671393cbf2d5582ef46f0923ab7e28bc8f6e888efe97f1a6350f92",
+      "size_bytes": 1828,
+      "sha256": "9cccc1f2871fa779086c5bcd50e340434d7f2db97c9d967164c90601bd5046d1",
       "storage_uri": null
     }
   ],
