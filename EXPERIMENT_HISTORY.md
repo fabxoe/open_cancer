@@ -32,7 +32,7 @@
 
 | 검증 시각 | 실험 ID | 검증자 | 소스 커밋·태그 | 데이터 일치 | 제출 재생성 | 재학습 검증 | 결과 | 증빙 |
 |---|---|---|---|---|---|---|---|---|
-| 2026-07-30T09:14:20Z | EXP-003 | fabxoe | `7306182669c3676e7b17024d3cf1f821131d909b` / [`exp-003-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-003-repro-v1) | SHA-256 일치 | byte-level SHA-256 일치 | 미수행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp003_xgb_baseline/comparison.json) |
+| 2026-07-30T09:14:20Z | EXP-003 | fabxoe | `e58c5f0a02dff92030d4a2363fdf7622eccb5686` / [`exp-003-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-003-repro-v1) | SHA-256 일치 | byte-level SHA-256 일치 | 미수행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp003_xgb_baseline/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -43,7 +43,7 @@
 - 상태: COMPLETED
 - 실행자: fabxoe
 - Issue/브랜치: #3 / 3
-- 소스 commit: `7306182669c3676e7b17024d3cf1f821131d909b`
+- 소스 commit: `e58c5f0a02dff92030d4a2363fdf7622eccb5686`
 - 시작/종료: 2026-07-30T08:15:12Z / 2026-07-30T08:18:02Z
 
 #### 실행

@@ -2,7 +2,7 @@
   "experiment_id": "EXP-003",
   "issue_number": 3,
   "reproducibility_status": "INFERENCE_VERIFIED",
-  "source_commit": "7306182669c3676e7b17024d3cf1f821131d909b",
+  "source_commit": "e58c5f0a02dff92030d4a2363fdf7622eccb5686",
   "source_tag": "exp-003-repro-v1",
   "dirty_worktree": false,
   "data_manifest": "reproducibility/exp003_xgb_baseline/data_manifest.json",
@@ -50,14 +50,14 @@
       "kind": "resolved_config",
       "path": "reproducibility/exp003_xgb_baseline/config.resolved.yaml",
       "size_bytes": 4301,
-      "sha256": "d3736bab07549f57c5d3266a08d66b8c624549c83e7a8fc6d732059fd23384cd",
+      "sha256": "25d073a03d8fcab6d3b40c5b68301d80c5f1c56156db90e7e5eaf22f98dc3b8e",
       "storage_uri": null
     },
     {
       "kind": "original_metrics",
       "path": "reproducibility/exp003_xgb_baseline/original_metrics.json",
       "size_bytes": 11071,
-      "sha256": "3ce1da71ed847a312a5681a8f6d440595530ca9cf938b0ccf42bf78135bf017c",
+      "sha256": "e92b50b532823e05bbfb3be305bfda187507381c42d9068546d20e5c60250021",
       "storage_uri": null
     },
     {
@@ -92,7 +92,7 @@
       "kind": "environment",
       "path": "reproducibility/exp003_xgb_baseline/environment.json",
       "size_bytes": 395,
-      "sha256": "a79fb41cd99d3fa1a2af50475012317a740bc572099bd260a581d17111fcffd4",
+      "sha256": "90e8b66ac192f0edc944636dcc0801cd08dd772e3aebf8cfcf3b8a37afd44601",
       "storage_uri": null
     },
     {
@@ -112,8 +112,8 @@
     {
       "kind": "reproduce_guide",
       "path": "reproducibility/exp003_xgb_baseline/REPRODUCE.md",
-      "size_bytes": 1828,
-      "sha256": "9cccc1f2871fa779086c5bcd50e340434d7f2db97c9d967164c90601bd5046d1",
+      "size_bytes": 1903,
+      "sha256": "2555ed6144cb62fd04f5cc1f15e84490af568a91de13e6666955ce7205f38fe8",
       "storage_uri": null
     }
   ],
