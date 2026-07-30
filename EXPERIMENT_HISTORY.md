@@ -5,10 +5,10 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 0
+- 실제 실험 수: 1
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: N/A
+- 최고 Local OOF Macro F1: 0.334930 (EXP-003)
 - 최고 Public LB Macro F1: N/A
 - 최고 재현 검증 모델: N/A
 - 최종 갱신일: 2026-07-30
@@ -17,6 +17,7 @@
 
 | ID | 상태 | 실행자 | Issue | 모델·메모(선택) | OOF Macro F1 | Public LB | 재현 상태 | 판단 | 상세 기록 |
 |---|---|---|---|---|---:|---:|---|---|---|
+| EXP-003 | COMPLETED | fabxoe | #3 | XGBoost mutation-presence baseline | 0.334930 | 미제출 | NOT_STARTED | 비교 기준 | [상세](#exp-003-xgboost-mutation-presence-baseline) |
 
 ## 리더보드 제출 이력
 
@@ -31,3 +32,29 @@
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-003] XGBoost mutation-presence baseline
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #3 / 3
+- 소스 commit: `7306182669c3676e7b17024d3cf1f821131d909b`
+- 시작/종료: 2026-07-30T08:15:12Z / 2026-07-30T08:18:02Z
+
+#### 실행
+
+- Config: `reproducibility/exp003_xgb_baseline/config.resolved.yaml`
+- Metrics: `reports/exp003_xgb_baseline/metrics.json`
+
+#### 결과
+
+- Fold Macro F1: 0.330432, 0.342344, 0.342316, 0.324125, 0.325573
+- OOF Macro F1: 0.334930
+- Public LB: 미제출
+- 재현 상태: NOT_STARTED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction: `reports/exp003_xgb_baseline/`,
+  `reproducibility/exp003_xgb_baseline/`
+- 결론: 순수 mutation-presence XGBoost의 이후 비교 기준으로 채택
