@@ -1,4 +1,4 @@
-# EXP-001 Claude Code 핸드오프
+# EXP-012 Claude Code 핸드오프
 
 이슈: https://github.com/fabxoe/open_cancer/issues/12
 (데이터전처리_COSMIC 보호 유전자(cosmic_protected_genes) 기반 Feature 보호 전략 분석)
@@ -47,13 +47,13 @@ Top mutation rate genes (train 기준):
 
 ## 2. Claude Code에서 실행할 작업 (이슈 #12 체크리스트 순서대로)
 
-첨부한 `exp001_feature_analysis.py`를 레포에 넣고 실행하면 아래를 자동으로 만들어줍니다.
+첨부한 `exp012_feature_analysis.py`를 레포에 넣고 실행하면 아래를 자동으로 만들어줍니다.
 단, **`cosmic_protected_genes` 목록 파일 경로는 스크립트 상단 `COSMIC_LIST_PATH`를
 실제 레포에 이미 구축된 파일 경로로 바꿔야 합니다** (claude.ai에는 이 파일이 없어서
 스크립트에는 더미 폴백만 넣어뒀습니다).
 
 1. [ ] `COSMIC_LIST_PATH` 를 실제 파일로 연결 (레포에 이미 있다고 하셨던 그 파일)
-2. [ ] 스크립트 실행 -> `reports/EXP-001/` 아래에 아래 산출물 생성됨:
+2. [ ] 스크립트 실행 -> `reports/exp012_feature_analysis/` 아래에 아래 산출물 생성됨:
    - `mutation_rate_distribution.csv` : 전체 4,384개 유전자 변이율 + 화이트리스트 여부
    - `whitelist_vs_rest_summary.csv` : 화이트리스트 vs 비화이트리스트 분포 비교 통계
    - `whitelist_low_mutation_187.csv` : 화이트리스트 중 변이율 1% 미만 187개 목록
@@ -68,7 +68,7 @@ Top mutation rate genes (train 기준):
    - 임계값 근거를 수치로 EXPERIMENT_HISTORY.md에 남길 것
 4. [ ] 최종 `protected_genes_final.csv` / `dropped_genes_final.csv` 작성
    (이게 이후 인코딩/모델 학습 이슈의 입력값이 됨)
-5. [ ] EXPERIMENT_HISTORY.md에 EXP-001로 기록 (목적/설정/결과/다음 단계 템플릿 사용)
+5. [ ] EXPERIMENT_HISTORY.md에 EXP-012로 기록 (목적/설정/결과/다음 단계 템플릿 사용)
 
 ## 3. 이번 이슈에서 하지 않는 것 (범위 밖, 다음 이슈로 분리됨)
 
@@ -76,5 +76,5 @@ Top mutation rate genes (train 기준):
 - 인코딩 방식 구현 (이진화 vs 화이트리스트 세분화)
 - sample_weight 적용, 오버샘플링 비교
 
-이 항목들은 EXP-001 산출물(protected/dropped gene 목록)을 입력으로 받는
+이 항목들은 EXP-012 산출물(protected/dropped gene 목록)을 입력으로 받는
 후속 이슈에서 다룹니다.

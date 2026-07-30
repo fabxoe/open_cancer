@@ -1,5 +1,5 @@
 """
-EXP-001: COSMIC 보호 유전자(cosmic_protected_genes) 기반 Feature 보호 전략 분석
+EXP-012: COSMIC 보호 유전자(cosmic_protected_genes) 기반 Feature 보호 전략 분석
 
 이슈: https://github.com/fabxoe/open_cancer/issues/12
 
@@ -27,7 +27,7 @@ TRAIN_PATH = Path("./data/raw/train.csv")
 TEST_PATH = Path("./data/raw/test.csv")
 COSMIC_LIST_PATH = Path("./data/external/gene_whitelist_cosmic_subtype.csv")
 
-OUT_DIR = Path("./reports/EXP-001")
+OUT_DIR = Path("./reports/exp012_feature_analysis")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
@@ -205,7 +205,7 @@ def main():
     print(
         "\n[NEXT] 이 초안(protected_dropped_draft.csv)을 팀 리뷰 후 확정해서 "
         "protected_genes_final.csv / dropped_genes_final.csv로 분리 저장하고, "
-        "EXPERIMENT_HISTORY.md에 EXP-001로 기록하세요. "
+        "EXPERIMENT_HISTORY.md에 EXP-012로 기록하세요. "
         "특히 'protect_review' 항목은 화이트리스트 근거만으로 자동 보호하지 말고 "
         "팀 논의를 거쳐 protect/drop 중 하나로 확정하세요."
     )
