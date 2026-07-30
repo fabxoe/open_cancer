@@ -6,7 +6,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from open_cancer.validation import validate_history, validate_json_document
+from open_cancer.validation import (
+    validate_experiment_record_identity,
+    validate_history,
+    validate_json_document,
+)
 
 
 def main() -> None:
@@ -20,8 +24,10 @@ def main() -> None:
 
     for path in metrics_files:
         validate_json_document(path, metrics_schema)
+        validate_experiment_record_identity(path)
     for path in manifest_files:
         validate_json_document(path, reproducibility_schema)
+        validate_experiment_record_identity(path)
 
     print(
         json.dumps(
