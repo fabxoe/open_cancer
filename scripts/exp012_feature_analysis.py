@@ -7,13 +7,21 @@ data leakage 방지: 이 스크립트는 train.csv만 사용해서 변이율/통
 test.csv는 결측치 패턴 확인(6번 항목)에만 사용하고, 어떠한 통계 계산(fit)에도
 쓰지 않는다.
 
-화이트리스트 파일: data/external/gene_whitelist_cosmic_subtype.csv
-  컬럼: gene, in_COSMIC_CGC(bool), subtype_defining_marker(bool), mutation_rate_pct(float)
-  - 340개 전부 in_COSMIC_CGC=True (COSMIC CGC 723개 ∩ 우리 4,384개 컬럼)
-  - subtype_defining_marker=True: 특정 SUBCLASS를 구분짓는 대표 마커 유전자 (14개)
-  - mutation_rate_pct: 화이트리스트 파일 자체에 이미 계산되어 있는 변이율(%).
+라이선스 주의: 화이트리스트 파일(gene_whitelist_cosmic_v104.csv)은 COSMIC
+공식 사이트에서 등록 사용자 권한으로 받은 파생 자료이며, COSMIC 라이선스상
+Public 레포에 커밋할 수 없다 (.gitignore 처리됨, 로컬 전용).
+이 스크립트가 만드는 산출물(reports/exp012_feature_analysis/*.csv)에도 유전자 목록이
+그대로 포함되므로, 해당 산출물을 커밋할지는 팀 리뷰 후 결정할 것.
+
+화이트리스트 파일: data/external/gene_whitelist_cosmic_v104.csv
+    출처: COSMIC 공식 사이트(cancer.sanger.ac.uk), v104, GRCh38, 2026-07-30 다운로드
+    컬럼: gene, tier(1|2), mutation_rate_pct(float), role_in_cancer(str, 콤마구분)
+    - 361개 (COSMIC CGC v104 ∩ 우리 4,384개 컬럼)
+    - tier 1: 297개 / tier 2: 64개 (COSMIC 자체 신뢰도/근거 등급)
+    - role_in_cancer: oncogene / TSG / fusion 조합 (예: "oncogene, TSG, fusion")
+    - mutation_rate_pct: 화이트리스트 파일 자체에 이미 계산되어 있는 변이율(%).
     본 스크립트는 train.csv에서 직접 재계산한 값을 기준으로 쓰되, 두 값이
-    일치하는지 검증 단계에서 대조한다.
+    일치하는지 검증 단계에서 대조한다 (반올림으로 인한 경계값 오차 감지 목적).
 """
 
 import pandas as pd
@@ -25,21 +33,22 @@ from pathlib import Path
 # ------------------------------------------------------------------
 TRAIN_PATH = Path("./data/raw/train.csv")
 TEST_PATH = Path("./data/raw/test.csv")
-COSMIC_LIST_PATH = Path("./data/external/gene_whitelist_cosmic_subtype.csv")
+COSMIC_LIST_PATH = Path("./data/external/gene_whitelist_cosmic_v104.csv")
 
 OUT_DIR = Path("./reports/exp012_feature_analysis")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def load_cosmic_protected_genes() -> pd.DataFrame:
-    """cosmic_protected_genes(gene_whitelist_cosmic_subtype.csv) 로드."""
+    """cosmic_protected_genes(gene_whitelist_cosmic_v104.csv) 로드."""
     if not COSMIC_LIST_PATH.exists():
         raise FileNotFoundError(
-            f"{COSMIC_LIST_PATH} 를 찾을 수 없습니다. "
-            "COSMIC_LIST_PATH를 gene_whitelist_cosmic_subtype.csv 실제 경로로 수정하세요."
+            f"{COSMIC_LIST_PATH} 를 찾을 수 없습니다. COSMIC 공식 사이트에서 "
+            "정식 다운로드한 v104 화이트리스트를 로컬에 배치하세요 "
+            "(로그인 계정 필요, 파일은 절대 커밋하지 말 것)."
         )
     df = pd.read_csv(COSMIC_LIST_PATH)
-    required_cols = {"gene", "in_COSMIC_CGC", "subtype_defining_marker", "mutation_rate_pct"}
+    required_cols = {"gene", "tier", "mutation_rate_pct", "role_in_cancer"}
     missing_cols = required_cols - set(df.columns)
     if missing_cols:
         raise ValueError(f"화이트리스트 파일에 누락된 컬럼: {missing_cols}")
@@ -69,7 +78,7 @@ def main():
     mut_rate_df = mut_rate.reset_index().rename(columns={"index": "gene"})
     mut_rate_df["is_cosmic_protected"] = mut_rate_df["gene"].isin(protected_set)
     mut_rate_df = mut_rate_df.merge(
-        cosmic_df[["gene", "subtype_defining_marker", "mutation_rate_pct"]],
+        cosmic_df[["gene", "tier", "role_in_cancer", "mutation_rate_pct"]],
         on="gene", how="left"
     )
     mut_rate_df = mut_rate_df.sort_values("mutation_rate", ascending=False)
@@ -114,17 +123,27 @@ def main():
     print("\n=== cosmic_protected vs rest 비교 ===")
     print(summary)
 
+    # tier별 분포도 같이 확인 (tier 1이 COSMIC 내에서 더 근거가 확실한 유전자)
+    tier_summary = mut_rate_df[mut_rate_df["is_cosmic_protected"]].groupby("tier").agg(
+        n_genes=("gene", "count"),
+        mean_mutation_rate=("mutation_rate", "mean"),
+        pct_below_1pct=("mutation_rate", lambda s: (s < 0.01).mean() * 100),
+    )
+    tier_summary.to_csv(OUT_DIR / "whitelist_tier_summary.csv")
+    print("\n=== tier별 분포 ===")
+    print(tier_summary)
+
     # ------------------------------------------------------------------
-    # 3) 화이트리스트 중 변이율 1% 미만 + subtype_defining_marker 매핑
+    # 3) 화이트리스트 중 변이율 1% 미만 + tier/role_in_cancer 매핑
     # ------------------------------------------------------------------
     low_mut_protected = mut_rate_df[
         mut_rate_df["is_cosmic_protected"] & (mut_rate_df["mutation_rate"] < 0.01)
     ].copy()
     low_mut_protected.to_csv(OUT_DIR / "whitelist_low_mutation.csv", index=False)
     print(f"\n화이트리스트 중 변이율 1% 미만: {len(low_mut_protected)}개")
-    n_marker_in_low = low_mut_protected["subtype_defining_marker"].sum()
-    print(f"  -> 그 중 subtype_defining_marker=True: {n_marker_in_low}개 "
-          "(저변이율인데 특정 암종의 대표 마커인 경우 -> 보호 우선순위 최상위로 취급 권장)")
+    n_tier1_in_low = (low_mut_protected["tier"] == 1).sum()
+    print(f"  -> 그 중 tier 1: {n_tier1_in_low}개 "
+          "(저변이율이지만 COSMIC 신뢰도가 가장 높은 유전자 -> 보호 우선순위 최상위로 취급 권장)")
 
     # 화이트리스트인데 변이율이 아예 0%인 유전자 (train 기준 관측 자체가 없음)
     zero_mut_protected = mut_rate_df[
@@ -133,7 +152,7 @@ def main():
     zero_mut_protected.to_csv(OUT_DIR / "whitelist_zero_mutation.csv", index=False)
     print(f"\n화이트리스트인데 train에서 변이율 0%(전부 WT): {len(zero_mut_protected)}개")
     if len(zero_mut_protected) > 0:
-        print(zero_mut_protected[["gene", "subtype_defining_marker"]])
+        print(zero_mut_protected[["gene", "tier", "role_in_cancer"]])
         print(
             "[NOTE] 이 유전자들은 '보호 규칙: 화이트리스트는 무조건 보호'를 그대로 적용하면 "
             "살아남지만, train에서 단 한 번도 관측되지 않아 feature로서 정보량이 사실상 없습니다. "
@@ -166,8 +185,8 @@ def main():
     print(
         "[TODO] 이 유전자들이 driver로 알려진 암종(예: KRAS/NRAS-대장암/폐암, "
         "BAP1-신장암/중피종, PBRM1/SETD2-신장암)이 26개 SUBCLASS에 포함되는지 "
-        "직접 확인하고, 해당 암종 예측 시 대체 신호(같은 pathway의 다른 유전자, 혹은 "
-        "화이트리스트의 subtype_defining_marker 유전자 중 겹치는 암종)가 있는지 검토하세요."
+        "직접 확인하고, 해당 암종 예측 시 대체 신호(같은 role_in_cancer를 공유하는 "
+        "화이트리스트 유전자 등)가 있는지 검토하세요."
     )
 
     # ------------------------------------------------------------------
@@ -207,7 +226,10 @@ def main():
         "protected_genes_final.csv / dropped_genes_final.csv로 분리 저장하고, "
         "EXPERIMENT_HISTORY.md에 EXP-012로 기록하세요. "
         "특히 'protect_review' 항목은 화이트리스트 근거만으로 자동 보호하지 말고 "
-        "팀 논의를 거쳐 protect/drop 중 하나로 확정하세요."
+        "팀 논의를 거쳐 protect/drop 중 하나로 확정하세요.\n"
+        "[주의] reports/exp012_feature_analysis/*.csv 산출물에는 COSMIC 화이트리스트 유전자 목록이 "
+        "그대로 포함되어 있습니다. Public 레포에 커밋 가능한지 라이선스 관점에서 "
+        "먼저 확인하세요 (원본/파생 목록과 마찬가지로 제한될 수 있음)."
     )
 
 
