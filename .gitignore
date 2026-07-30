@@ -35,6 +35,14 @@ data/raw/*
 data/processed/*
 !data/processed/.gitkeep
 
+# Externally licensed data (e.g. COSMIC) - not redistributable
+data/external/
+
+# EXP-012 output contains raw COSMIC gene symbols; license/redistribution
+# status not yet confirmed with the team (see Issue #12). Keep local until
+# cleared.
+reports/exp012_feature_analysis/
+
 # Large experiment artifacts
 models/*
 !models/.gitkeep
