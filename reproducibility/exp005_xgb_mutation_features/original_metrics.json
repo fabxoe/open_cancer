@@ -829,5 +829,5 @@
     "models": "models/exp005_xgb_mutation_features",
     "submission_sha256": "7bc3e64e1904d9b4007bc141dde771a39e7527172f3cd24c25c408000103183c"
   },
-  "notes": "Sparse gene-by-mutation-type features; no HGVS/MANE or target-derived features. Dacon submission ID 1506233; rank 1 is the rank shown at submission time. Checkpoint inference verified at 2026-07-30T09:38:54.622845+00:00; reproduced submission SHA-256 matched exactly."
+  "notes": "Sparse gene-by-mutation-type features; no HGVS/MANE or target-derived features. Dacon submission ID 1506233; rank 1 is the rank shown at submission time."
 }
