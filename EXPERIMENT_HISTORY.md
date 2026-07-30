@@ -17,7 +17,7 @@
 
 | ID | 상태 | 실행자 | Issue | 모델·메모(선택) | OOF Macro F1 | Public LB | 재현 상태 | 판단 | 상세 기록 |
 |---|---|---|---|---|---:|---:|---|---|---|
-| EXP-003 | COMPLETED | fabxoe | #3 | XGBoost mutation-presence baseline | 0.334930 | 미제출 | NOT_STARTED | 비교 기준 | [상세](#exp-003-xgboost-mutation-presence-baseline) |
+| EXP-003 | COMPLETED | fabxoe | #3 | XGBoost mutation-presence baseline | 0.334930 | 미제출 | NOT_STARTED | 비교 기준 | [보고서](reports/exp003_xgb_baseline/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -45,6 +45,7 @@
 
 - Config: `reproducibility/exp003_xgb_baseline/config.resolved.yaml`
 - Metrics: `reports/exp003_xgb_baseline/metrics.json`
+- Report: `reports/exp003_xgb_baseline/README.md`
 
 #### 결과
 
