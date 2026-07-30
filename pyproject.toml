@@ -5,11 +5,14 @@ description = "Reproducible cancer subtype classification from genomic mutation 
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
 dependencies = [
+    "ipykernel>=6.29",
     "jsonschema>=4.23",
+    "jupyterlab>=4.2",
     "koreanize-matplotlib>=0.1.1",
     "matplotlib>=3.9",
     "numpy>=2.1",
     "pandas>=2.2",
+    "pytest>=8.3",
     "pyyaml>=6.0.2",
     "scikit-learn>=1.5",
     "scipy>=1.14",
@@ -25,11 +28,6 @@ build-backend = "hatchling.build"
 packages = ["src/open_cancer"]
 
 [dependency-groups]
-dev = [
-    "ipykernel>=6.29",
-    "jupyterlab>=4.2",
-    "pytest>=8.3",
-]
 experiment = [
     "catboost>=1.2",
     "lightgbm>=4.5",

@@ -10,7 +10,6 @@ from open_cancer.validation import (
     ValidationError,
     create_stratified_folds,
     validate_competition_data,
-    validate_history,
     validate_json_document,
     validate_submission,
 )
@@ -79,15 +78,6 @@ def test_stratified_fold_map_is_deterministic(tmp_path: Path) -> None:
     assert first.read_bytes() == second.read_bytes()
     assert first_meta["sha256"] == second_meta["sha256"]
     assert first_meta["fold_counts"] == {0: 2, 1: 2, 2: 2, 3: 2, 4: 2}
-
-
-def test_initial_history_has_no_experiments() -> None:
-    root = Path(__file__).resolve().parents[1]
-    assert validate_history(root / "EXPERIMENT_HISTORY.md") == {
-        "declared": 0,
-        "summary": 0,
-        "details": 0,
-    }
 
 
 def test_experiment_metrics_schema(tmp_path: Path) -> None:

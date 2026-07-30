@@ -445,6 +445,13 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
 - force push와 branch 삭제 차단
 - merge commit만 허용
 
+### GitHub Actions의 역할
+
+이 저장소의 `quality` Action은 배포나 모델 학습을 수행하지 않는다. PR과 main
+변경 시 `uv sync --frozen`, 경량 fixture 단위 테스트, History와 재현성 JSON
+Schema 검증만 실행한다. 원본 데이터와 checkpoint가 없는 환경에서도 공유 코드,
+제출 검증 함수와 실험 장부 구조가 깨지지 않았는지 확인하는 안전장치다.
+
 참고:
 <https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets>
 
