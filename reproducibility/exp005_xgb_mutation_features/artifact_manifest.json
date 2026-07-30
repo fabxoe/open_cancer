@@ -1,0 +1,79 @@
+{
+  "experiment_id": "EXP-005",
+  "issue_number": 5,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "816d0a5e070c29d2f549e4fb25b81ec5c0ad5f7b",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp005_xgb_mutation_features/data_manifest.json",
+  "environment": "reproducibility/exp005_xgb_mutation_features/environment.json",
+  "release_url": null,
+  "verifier": "2heej",
+  "verified_at": "2026-07-30T09:38:54.622845+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp005_xgb_mutation_features/fold_00.json",
+      "size_bytes": 12578098,
+      "sha256": "6a54dc16e62224cbcc5605d57e7e1a30ceb5fa0046b84068083ad1805803fbce",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp005_xgb_mutation_features/fold_01.json",
+      "size_bytes": 14694794,
+      "sha256": "43b26c0aded5c9cbe2062db4932b17ce8ed39d54644cde70b15e049bbba8c763",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp005_xgb_mutation_features/fold_02.json",
+      "size_bytes": 14702267,
+      "sha256": "ef6f44e8f8120f0a2a5c45abfaafbed719f39f6b020a5c22b1d8e206aa8e8b5f",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp005_xgb_mutation_features/fold_03.json",
+      "size_bytes": 13180322,
+      "sha256": "b568bf4a9f1f8f9c90191b7349f728e737122e8f277dd84d1079c9ddf03b9711",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp005_xgb_mutation_features/fold_04.json",
+      "size_bytes": 14342988,
+      "sha256": "e7bec9ad1c24f21928f7ac0bee8cac3e73af218c20b6654805089e4688abb414",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp005_xgb_mutation_features.csv",
+      "size_bytes": 38136,
+      "sha256": "7bc3e64e1904d9b4007bc141dde771a39e7527172f3cd24c25c408000103183c",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp005_xgb_mutation_features_test_proba.csv",
+      "size_bytes": 835323,
+      "sha256": "7e0e5f1c877e23cb9644859eb273f06d4162ef4d16765ca150565f0efb117f18",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp005_xgb_mutation_features/config.resolved.yaml",
+      "size_bytes": 3460,
+      "sha256": "c98eef3f4d81d1e8dd2df25ef516db981595c6dc896855842470c528961b6e2a",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
