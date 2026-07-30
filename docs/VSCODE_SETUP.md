@@ -364,15 +364,15 @@ Codex와 Claude Code 중 어느 도구를 쓰더라도 다음 원칙은 같습�
 
 ## 8. 초기 검증
 
-아래 명령이 모두 통과하면 개발 준비가 끝난 것입니다.
+아래 명령이 통과하면 개발 준비가 끝난 것입니다.
 
 ```bash
 uv run pytest
-uv run python scripts/validate_experiment.py
 ```
 
-`validate_experiment.py` 결과의 실험 수가 초기에는 0으로 나오는 것이 정상입니다.
-공용 split 파일이 있어도 실제 모델 실험을 수행한 것은 아닙니다.
+실험 장부와 재현성 Schema는 PR의 GitHub Actions가 자동으로 검증하므로 초기 설정
+중 팀원이 별도 명령을 실행할 필요가 없습니다. 공용 split 파일이 있어도 실제
+모델 실험을 수행한 것은 아닙니다.
 
 ## 9. 첫 GitHub 작업 시작
 
