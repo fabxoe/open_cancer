@@ -4,13 +4,10 @@ title: "[TASK] "
 labels:
   - task
 body:
-  - type: input
-    id: owner
+  - type: markdown
     attributes:
-      label: 담당자
-      placeholder: GitHub ID
-    validations:
-      required: true
+      value: |
+        담당자는 오른쪽 **Assignees**에서 선택합니다. 본문에 GitHub ID를 다시 적지 않습니다.
   - type: textarea
     id: purpose
     attributes:
@@ -21,16 +18,20 @@ body:
     id: scope
     attributes:
       label: 작업 범위
-      description: 포함할 변경과 제외할 변경을 적습니다.
+      description: 기본 범위와 다를 때만 수정하세요.
+      value: |
+        - 포함: Issue 제목에 명시한 작업
+        - 제외: 별도로 합의하지 않은 추가 변경
     validations:
-      required: true
+      required: false
   - type: textarea
     id: acceptance
     attributes:
       label: 완료 조건
+      description: 해당하지 않는 항목은 지우거나 그대로 두어도 됩니다.
       value: |
-        - [ ] 구현 완료
-        - [ ] 테스트 완료
-        - [ ] 관련 문서 갱신
+        - [ ] 요청한 작업 완료
+        - [ ] 필요한 확인 또는 테스트 완료
+        - [ ] 관련 문서가 있다면 갱신
     validations:
-      required: true
+      required: false
