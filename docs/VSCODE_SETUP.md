@@ -8,7 +8,7 @@
 
 - 팀과 같은 Python 3.11.10 및 패키지 버전을 사용합니다.
 - VS Code가 저장소의 `.venv`를 Python 환경으로 사용합니다.
-- clone에 포함된 원본 데이터가 팀 기준 파일과 같은지 확인합니다.
+- 별도로 배치한 로컬 원본 데이터가 팀 기준 파일과 같은지 확인합니다.
 - 공용 5-fold split의 의미와 사용법을 이해합니다.
 - Codex와 Claude Code가 같은 프로젝트·실험·Git 규칙을 읽습니다.
 
@@ -118,7 +118,9 @@ Windows: <저장소>\.venv\Scripts\python.exe
 
 ## 5. 대회 데이터 확인
 
-저장소를 clone하면 팀에서 버전을 고정한 다음 원본 CSV가 이미 포함되어 있습니다.
+대회 원본 데이터는 주최측 정책에 따라 GitHub에 포함되지 않습니다. 주최측 공식
+다운로드 또는 팀에서 승인한 비공개 전달 방법으로 다음 CSV 3개를 받은 뒤 저장소의
+`data/raw/`에 직접 배치합니다.
 
 ```text
 data/raw/train.csv
@@ -126,15 +128,15 @@ data/raw/test.csv
 data/raw/sample_submission.csv
 ```
 
-따라서 팀원이 Dacon에서 매번 다시 다운로드하거나 복사할 필요가 없습니다.
-파일명, 행·열 수, ID 순서, 클래스, 유전자 컬럼과 SHA-256을 한 번에 확인합니다.
+이 파일을 commit, Issue, PR 또는 Release에 올리지 마세요. 파일명, 행·열 수,
+ID 순서, 클래스, 유전자 컬럼과 SHA-256을 한 번에 확인합니다.
 
 ```bash
 uv run python scripts/validate_data.py
 ```
 
-원본 CSV는 팀 공용 읽기 전용 입력이므로 직접 수정하지 않습니다. 가공한 데이터는
-`data/processed/`에 저장합니다. 검증에 실패하면 `git status`와
+원본 CSV는 팀 공용 읽기 전용 입력이므로 직접 수정하지 않습니다. `data/raw/*`는
+Git에서 무시되며 가공한 데이터는 `data/processed/`에 저장합니다. 검증에 실패하면
 `data/README.md`의 SHA-256을 확인하고, 팀 데이터와 다른 상태에서는 모델 실험을
 시작하지 않습니다.
 

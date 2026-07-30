@@ -45,8 +45,8 @@ AI는 작업 전에 다음을 확인한다.
 1. 현재 브랜치가 해당 Issue 번호를 포함하는가.
 2. `main`에서 분기했으며 최신 `origin/main`이 반영되었는가.
 3. 현재 브랜치에서 연결된 Issue 번호를 정확히 추출할 수 있는가.
-4. 원본 데이터 해시가 기준과 일치하며, 가공 데이터·모델·OOF·비밀 파일이 Git에
-   포함되지 않는가.
+4. 로컬 원본 데이터 해시가 기준과 일치하며, 원본·가공 데이터·모델·OOF·비밀
+   파일이 Git에 포함되지 않는가.
 5. 공식 실험이라면 실행 코드가 기본값까지 포함한 resolved config를 저장하는가.
 
 ---
@@ -120,12 +120,19 @@ SKCM, STES, TGCT, THCA, THYM, UCEC
 - 외부 데이터를 사용할 경우 출처, 버전, 라이선스, 다운로드 일시와 파일 해시를
   반드시 기록한다.
 
-`data/raw/`의 현재 원본 CSV와 데이터 리포트 PDF는 팀 편의를 위해 Git에 버전을
-고정한다. clone한 팀원은 별도 다운로드 없이 동일한 파일을 받는다. 이 파일들은
-읽기 전용 입력으로 취급하며 실험이나 EDA 중 직접 수정하지 않는다. 가공 결과는
-`data/processed/`에 저장하고 Git에 커밋하지 않는다. 기준 크기와 SHA-256은
-`data/README.md`에서 관리한다. 공식 원본이 교체되는 경우에만 별도 Issue와 PR에서
-파일, 해시와 데이터 계약을 함께 갱신한다.
+대회 원본 CSV와 여기서 직접 생성한 데이터 리포트는 주최측 정책에 따라 GitHub에
+올리지 않는다. 팀원은 주최측 공식 다운로드 또는 팀에서 승인한 비공개 전달
+방법으로 원본 CSV 3개를 받은 뒤 로컬 `data/raw/`에 배치한다. `data/raw/*`는
+`.gitignore`로 제외하며 commit, Issue, PR, Release asset에도 첨부하지 않는다.
+원본은 읽기 전용 입력으로 취급하고 실험이나 EDA 중 직접 수정하지 않는다. 가공
+결과는 `data/processed/`에 저장하고 Git에 커밋하지 않는다. 기준 크기와 SHA-256은
+`data/README.md`에서 관리한다. 공식 원본이 교체되면 별도 Issue와 PR에서 코드,
+해시와 데이터 계약만 갱신하고 원본 파일 자체는 올리지 않는다.
+
+2026-07-30 이전 clone은 raw data 제거를 위한 history 재작성 전 commit을 포함한다.
+해당 clone에서 pull, merge 또는 push하지 말고
+[`docs/TEAM_RECLONE_AFTER_HISTORY_REWRITE.md`](docs/TEAM_RECLONE_AFTER_HISTORY_REWRITE.md)
+에 따라 새로 clone한다.
 
 ---
 
@@ -133,7 +140,7 @@ SKCM, STES, TGCT, THCA, THYM, UCEC
 
 ```text
 configs/           실험 전 사람이 작성하는 YAML 설정
-data/raw/          버전 고정 원본 CSV와 데이터 리포트 PDF, Git 추적·직접 수정 금지
+data/raw/          팀원 로컬 전용 원본 CSV, Git 제외·직접 수정 금지
 data/processed/    가공 데이터와 캐시, Git 제외
 data/splits/       팀 공용 fold ID와 split 메타데이터, Git 추적
 src/open_cancer/   재사용 가능한 로더, 평가, 검증 코드
@@ -453,8 +460,8 @@ reproducibility/exp012_<slug>/
 
 ### 체크포인트 보관
 
-- raw data는 정확한 실험 commit에 Git으로 포함되어 있으므로 재현 번들에 중복
-  포함하지 않는다. 실험 manifest에는 파일 SHA-256을 계속 기록한다.
+- raw data는 Git commit, 재현 번들과 Release asset에 포함하지 않는다. 재현 시
+  주최측 공식 경로로 별도 확보하며, 실험 manifest에는 파일 SHA-256만 기록한다.
 - 리더보드 제출 모델의 checkpoint와 재현 번들은 GitHub Release asset으로 보관한다.
 - Release tag는 `exp-012-repro-v1` 형식으로 정확한 실험 commit을 가리킨다.
 - asset의 URL, 크기와 SHA-256을 manifest와 History에 기록한다.
@@ -629,7 +636,8 @@ push를 허용한다. 실제 프로젝트 파일은 프로젝트 초기화 Issue
 ### PR과 merge 전
 
 - [ ] PR 본문에 `Closes #번호`가 있다.
-- [ ] `data/raw/` 원본의 크기와 해시가 기준과 일치한다.
+- [ ] 로컬 `data/raw/` 원본의 크기와 해시가 기준과 일치하고 Git에 추적·staged되지
+  않았다.
 - [ ] 가공 데이터, 모델, OOF, 비밀 파일이 Git에 없다.
 - [ ] CI `quality`가 통과했다.
 - [ ] 팀원들이 최신 변경을 확인했다.

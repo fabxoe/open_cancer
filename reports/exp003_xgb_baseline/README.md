@@ -289,7 +289,7 @@ GitHub Release에도 보관했습니다.
 - 클래스별 F1: [`class_f1.csv`](class_f1.csv)
 - 실제 제출 파일: [`submissions/exp003_xgb_baseline.csv`](../../submissions/exp003_xgb_baseline.csv)
 - Public LB: `0.228167518` (제출 ID `1506230`, 제출 직후 3위)
-- Source commit: `7306182669c3676e7b17024d3cf1f821131d909b`
+- Source commit: `e58c5f0a02dff92030d4a2363fdf7622eccb5686`
 - Reproduction status: `INFERENCE_VERIFIED`
 
 학습 명령:
