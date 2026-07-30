@@ -1,0 +1,78 @@
+name: 모델 실험
+description: 새로운 모델, 피처, split, 앙상블 또는 후처리 실험
+title: "[EXP] "
+labels:
+  - experiment
+body:
+  - type: markdown
+    attributes:
+      value: |
+        실행 전에 `PROJECT_CONTEXT.md`와 `EXPERIMENT_HISTORY.md`를 확인하세요.
+        아직 예약하지 않았다면 실험 ID에는 `예약 예정`이라고 적고 브랜치에서 예약하세요.
+  - type: input
+    id: owner
+    attributes:
+      label: 담당자
+      placeholder: GitHub ID
+    validations:
+      required: true
+  - type: input
+    id: experiment_id
+    attributes:
+      label: 실험 ID
+      description: EXP-001 또는 예약 예정
+      placeholder: EXP-001
+    validations:
+      required: true
+  - type: input
+    id: parent
+    attributes:
+      label: 부모 실험
+      description: 비교 기준 EXP-ID, 최초 실험이면 N/A
+      placeholder: N/A
+    validations:
+      required: true
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: 가설
+      description: 한 번에 검증할 핵심 가설을 한 가지로 적습니다.
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: 변경 변수
+      description: 부모 실험 대비 달라지는 데이터, 피처, 모델, seed, 후처리를 적습니다.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 완료 조건
+      description: metric, 테스트, 산출물과 재현성 완료 조건을 적습니다.
+      value: |
+        - [ ] 전체 OOF Macro F1 계산
+        - [ ] resolved config와 metrics 저장
+        - [ ] 데이터·산출물 manifest 저장
+        - [ ] EXPERIMENT_HISTORY 갱신
+        - [ ] 테스트와 schema 검증 통과
+    validations:
+      required: true
+  - type: dropdown
+    id: target_reproducibility
+    attributes:
+      label: 목표 재현성 상태
+      options:
+        - MANIFEST_COMPLETE
+        - INFERENCE_VERIFIED
+        - TRAINING_VERIFIED
+    validations:
+      required: true
+  - type: textarea
+    id: artifacts
+    attributes:
+      label: 예상 산출물
+      description: config, script, OOF, model, report, submission 경로를 적습니다.
+    validations:
+      required: true

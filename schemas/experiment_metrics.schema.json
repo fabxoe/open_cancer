@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/fabxoe/open_cancer/schemas/experiment_metrics.schema.json",
+  "title": "Cancer classification experiment metrics",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "experiment_id",
+    "status",
+    "owner",
+    "issue_number",
+    "git_commit",
+    "started_at",
+    "primary_metric",
+    "folds",
+    "artifacts"
+  ],
+  "properties": {
+    "experiment_id": {
+      "type": "string",
+      "pattern": "^EXP-[0-9]{3,}$"
+    },
+    "status": {
+      "enum": ["PLANNED", "RUNNING", "COMPLETED", "FAILED", "ABORTED"]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "issue_number": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "parent_experiment": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^EXP-[0-9]{3,}$"
+        }
+      ]
+    },
+    "git_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{7,40}$"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "finished_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "primary_metric": {
+      "const": "macro_f1"
+    },
+    "split_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "folds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["fold", "macro_f1"],
+        "properties": {
+          "fold": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "macro_f1": {
+            "type": ["number", "null"],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "accuracy": {
+            "type": ["number", "null"],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "log_loss": {
+            "type": ["number", "null"],
+            "minimum": 0
+          },
+          "best_iteration": {
+            "type": ["integer", "null"],
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "oof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["macro_f1"],
+      "properties": {
+        "macro_f1": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "fold_mean": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "fold_std": {
+          "type": "number",
+          "minimum": 0
+        },
+        "accuracy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "log_loss": {
+          "type": "number",
+          "minimum": 0
+        },
+        "per_class_f1": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "confusion_matrix": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "leaderboard": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "public_score": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "private_score": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "rank": {
+          "type": ["integer", "null"],
+          "minimum": 1
+        },
+        "submitted_at": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        }
+      }
+    },
+    "runtime": {
+      "type": ["object", "null"],
+      "additionalProperties": true,
+      "properties": {
+        "seconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "hardware": {
+          "type": "string"
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["string", "null"]
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "COMPLETED"
+          }
+        }
+      },
+      "then": {
+        "required": ["finished_at", "oof", "split_id"]
+      }
+    }
+  ]
+}

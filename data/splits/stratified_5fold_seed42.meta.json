@@ -1,0 +1,15 @@
+{
+  "path": "data/splits/stratified_5fold_seed42.csv",
+  "sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf",
+  "rows": 6201,
+  "n_splits": 5,
+  "seed": 42,
+  "fold_counts": {
+    "0": 1241,
+    "1": 1240,
+    "2": 1240,
+    "3": 1240,
+    "4": 1240
+  },
+  "train_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab"
+}
