@@ -1,0 +1,11 @@
+experiment:
+  slug: xgb_baseline
+
+# 아래에 적지 않은 값은 src/open_cancer/xgb_baseline.py의 기본값을 사용합니다.
+# 실제 적용값 전체는 실행 후 config.resolved.yaml에 자동 저장됩니다.
+features:
+  encoding: mutation_presence
+  include_mutation_burden: false
+
+model:
+  use_balanced_sample_weight: false
