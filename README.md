@@ -3,6 +3,10 @@
 암환자의 4,384개 유전자 변이 정보를 이용해 26개 암종(`SUBCLASS`)을 분류하는
 해커톤 프로젝트입니다. 공식 평가지표는 **Macro F1**입니다.
 
+> **2026-07-30 이전에 clone한 팀원:** 원본 데이터 제거를 위해 Git history가
+> 재작성되었습니다. 기존 clone에서 pull·merge·push하지 말고
+> [재clone 안내](docs/TEAM_RECLONE_AFTER_HISTORY_REWRITE.md)를 따르세요.
+
 ## 시작하기
 
 처음 clone한 팀원은 [VS Code + uv 초기 설정](docs/VSCODE_SETUP.md)을 순서대로
@@ -14,7 +18,9 @@ uv run python scripts/validate_data.py
 uv run pytest
 ```
 
-clone하면 팀에서 버전을 고정한 원본 데이터가 다음 위치에 함께 내려옵니다.
+대회 원본 데이터는 주최측 정책에 따라 GitHub에 포함하지 않습니다. 주최측 공식
+다운로드 또는 팀에서 승인한 비공개 전달 방법으로 다음 파일을 받은 뒤 로컬에
+배치합니다.
 
 ```text
 data/raw/train.csv
@@ -22,9 +28,9 @@ data/raw/test.csv
 data/raw/sample_submission.csv
 ```
 
-각 CSV의 구조를 정리한 PDF 리포트도 같은 폴더에 포함되어 있습니다. 원본 CSV와
-PDF를 직접 수정하지 말고, 데이터 파일의 해시는
-[data/README.md](data/README.md)에서 확인합니다.
+`data/raw/*`는 `.gitignore`로 제외되며 Issue, PR, commit, Release asset에도
+업로드하지 않습니다. 원본 CSV를 직접 수정하지 말고, 파일 배치와 무결성 확인은
+[data/README.md](data/README.md)를 따릅니다.
 
 ## 작업 전 반드시 읽을 문서
 

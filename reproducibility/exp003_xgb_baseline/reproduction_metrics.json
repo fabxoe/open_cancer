@@ -1,0 +1,21 @@
+{
+  "experiment_id": "EXP-003",
+  "verification_type": "checkpoint_inference",
+  "verified_at": "2026-07-30T09:14:20Z",
+  "runtime_seconds": 9.564763583010063,
+  "test_rows": 2546,
+  "checkpoint_count": 5,
+  "submission_sha256": "6e8b64726c86b5a6d52ee58f7f042b74b302852aa8a59c9bfe13332bfee424a5",
+  "test_label_agreement": 1.0,
+  "probability_comparison": {
+    "available": true,
+    "original_path": "preds/exp003_xgb_baseline/test_probabilities.npy",
+    "original_sha256": "9417f2443568d3d56046dde2593b270321b41d3e822f56efec4dc68801ef5c1b",
+    "reproduced_path": "reproducibility/exp003_xgb_baseline/reproduced_test_probabilities.npy",
+    "reproduced_sha256": "9417f2443568d3d56046dde2593b270321b41d3e822f56efec4dc68801ef5c1b",
+    "max_absolute_difference": 0.0,
+    "atol": 1e-06,
+    "rtol": 1e-06,
+    "allclose": true
+  }
+}
