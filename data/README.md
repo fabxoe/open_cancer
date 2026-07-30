@@ -41,3 +41,27 @@ GitHub에 올리지 않습니다.
 이 파일은 모델 결과가 아니라 모든 팀원이 같은 검증 조건을 사용하기 위한 ID별
 fold 배정표입니다. 개념과 실제 코드는
 [`docs/VSCODE_SETUP.md`](../docs/VSCODE_SETUP.md#6-공용-split이란)를 확인합니다.
+
+## 변이 유형 피처
+
+Issue #5의 모델 입력 피처는 원본 변이 문자열에서 직접 파싱한 희소 숫자 피처를
+사용한다.
+
+- 샘플별 변이 유전자 수, 전체 변이 수, 복수 변이 유전자 수
+- `missense`, `synonymous`, `nonsense`, `frameshift`, `complex` 유형별 개수
+- 유전자별 변이 여부와 유전자 × 변이 유형 indicator
+- 결측 셀의 유전자별·샘플별 indicator
+
+`SUBCLASS`는 피처 생성에 사용하지 않고 별도 label 파일로만 복사한다. 신뢰할 수
+있는 원 transcript와 단백질 길이가 없으므로 상대 위치 피처는 포함하지 않는다.
+train과 test는 같은 유전자 순서와 피처 순서를 사용한다.
+
+생성:
+
+```bash
+uv run python scripts/build_mutation_features.py
+```
+
+산출물은 Git 제외 경로인 `data/processed/mutation_type_features/`에 저장한다.
+`feature_report.json`에 입력·출력 해시, shape, 피처 순서 해시와 결측 정책을
+기록한다.

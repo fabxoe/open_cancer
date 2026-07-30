@@ -1,0 +1,86 @@
+{
+  "verified_at": "2026-07-30T09:38:54.622845+00:00",
+  "files": [
+    {
+      "path": "data/raw/train.csv",
+      "size_bytes": 82568501,
+      "sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+      "shape": [
+        6201,
+        4386
+      ]
+    },
+    {
+      "path": "data/raw/test.csv",
+      "size_bytes": 35068585,
+      "sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0",
+      "shape": [
+        2546,
+        4385
+      ]
+    },
+    {
+      "path": "data/raw/sample_submission.csv",
+      "size_bytes": 35656,
+      "sha256": "1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84",
+      "shape": [
+        2546,
+        2
+      ]
+    },
+    {
+      "path": "data/splits/stratified_5fold_seed42.csv",
+      "size_bytes": 80621,
+      "sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf",
+      "shape": [
+        6201,
+        2
+      ]
+    },
+    {
+      "path": "data/processed/mutation_type_features/train_features.npz",
+      "size_bytes": 872722,
+      "sha256": "4a196b662887ec77918548405f39302b6a4b084c991a917e90a7c6980c798650",
+      "shape": null
+    },
+    {
+      "path": "data/processed/mutation_type_features/test_features.npz",
+      "size_bytes": 727999,
+      "sha256": "b423030c90cfac74a02b6215a5abee2c56c0b9c6751508fb82f6b74d09323489",
+      "shape": null
+    },
+    {
+      "path": "data/processed/mutation_type_features/train_ids.csv",
+      "size_bytes": 68214,
+      "sha256": "76d4b6e523b4509d16c9b65e458f9616c94b7262a844ec107971649de20e95d1",
+      "shape": [
+        6201,
+        1
+      ]
+    },
+    {
+      "path": "data/processed/mutation_type_features/test_ids.csv",
+      "size_bytes": 25463,
+      "sha256": "39321e5b32cdf9400476db97c38800a28fa58d20ddb25730da31fbcf91f3ebfe",
+      "shape": [
+        2546,
+        1
+      ]
+    },
+    {
+      "path": "data/processed/mutation_type_features/train_labels.csv",
+      "size_bytes": 31644,
+      "sha256": "ca66b734a3adefc9ce38348a71e29edc4c6061ffaab72e468c574a70fa6d2a06",
+      "shape": [
+        6201,
+        1
+      ]
+    },
+    {
+      "path": "data/processed/mutation_type_features/feature_names.json",
+      "size_bytes": 587304,
+      "sha256": "b4c9d5e68bf179bece3bf39bec88c015c6878b51cf83e67b83372da1e4ecd0f3",
+      "shape": null
+    }
+  ]
+}
