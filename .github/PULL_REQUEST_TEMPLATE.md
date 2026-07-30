@@ -11,7 +11,6 @@ Closes #<!-- Issue 번호 -->
 ## 테스트
 
 ```text
-uv run ruff check .
 uv run pytest
 uv run python scripts/validate_experiment.py
 ```

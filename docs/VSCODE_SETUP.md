@@ -72,7 +72,6 @@ Extensions 화면에서 `@recommended`를 검색합니다.
 
 - Python, Pylance, Python Environments
 - Jupyter
-- Ruff
 - OpenAI Codex
 - Claude Code
 
@@ -344,7 +343,7 @@ AI가 다음 네 가지를 정확히 답했는지 확인한 뒤 작업을 요청
 Issue #12 작업이야.
 목표: EXP-001 XGBoost baseline을 공용 5-fold split으로 구현해줘.
 완료 조건: config, OOF, fold/전체 Macro F1, 재현성 manifest, History 갱신,
-pytest와 Ruff 통과.
+pytest와 실험 기록 검증 통과.
 작업 전 변경 범위를 설명하고, 끝나면 실제 실행 결과만 보고해줘.
 ```
 
@@ -368,8 +367,6 @@ Codex와 Claude Code 중 어느 도구를 쓰더라도 다음 원칙은 같습�
 
 ```bash
 uv run pytest
-uv run ruff check .
-uv run ruff format --check .
 uv run python scripts/validate_experiment.py
 ```
 

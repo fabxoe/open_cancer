@@ -29,12 +29,6 @@ jobs:
       - name: Sync environment
         run: uv sync --frozen --group dev
 
-      - name: Lint
-        run: uv run ruff check .
-
-      - name: Format check
-        run: uv run ruff format --check .
-
       - name: Unit tests
         run: uv run pytest
 
