@@ -1,5 +1,6 @@
-# Project Instructions
+# Open Cancer Claude Code Instructions
 
-Read `PROJECT_CONTEXT.md` and then `EXPERIMENT_HISTORY.md` completely before
-planning, coding, or running an experiment. Follow their experiment, reproducibility,
-testing, and GitHub Issue/PR rules. Do not infer or fabricate metrics and artifacts.
+@AGENTS.md
+
+Claude Code intentionally imports the shared `AGENTS.md` so Codex and Claude Code
+follow one set of repository instructions without duplicated rules.

@@ -16,10 +16,8 @@
 
 | 도구 | 저장소 지시 파일 |
 |---|---|
-| GitHub Copilot Chat | `.github/copilot-instructions.md` |
 | OpenAI Codex | `AGENTS.md` |
-| Claude Code | `CLAUDE.md` |
-| Cursor | `.cursor/rules/project-context.mdc` |
+| Claude Code | `CLAUDE.md`에서 `AGENTS.md` 가져오기 |
 
 도구가 저장소 지시를 지원하더라도 새 대화에서 문서를 읽었는지 확인한다. 단순히
 저장소를 clone하거나 파일이 존재하는 것만으로 모든 AI가 자동 인식한다고 가정하지
@@ -192,6 +190,14 @@ ID,SUBCLASS
 ```text
 data/splits/stratified_5fold_seed42.csv
 ```
+
+이 파일은 모델 결과가 아니라 각 train `ID`가 어느 검증 fold에 들어갈지를 미리
+정한 배정표다. 원본 train의 `ID`와 `SUBCLASS`만 사용해 생성했으며 모델 학습,
+예측, 점수 계산은 하지 않았다. 따라서 실험이 0건인 초기 저장소에 존재할 수 있는
+공용 검증 인프라다. 사전에 고정하면 팀원마다 우연히 쉬운/어려운 검증 표본을
+받아서 점수가 달라지는 문제를 줄이고, 모델 변경 효과를 같은 조건에서 비교할 수
+있다. 개념과 실제 사용 코드는
+[`docs/VSCODE_SETUP.md`](docs/VSCODE_SETUP.md#6-공용-split이란)에 설명한다.
 
 - 생성 방식: `StratifiedKFold(n_splits=5, shuffle=True, random_state=42)`
 - 저장 컬럼: `ID,fold`

@@ -29,3 +29,6 @@ uv run python scripts/validate_data.py
 `data/splits/`의 공용 fold 파일은 원본 train 해시와 함께 생성 메타데이터를 보관합니다.
 현재 `stratified_5fold_seed42.csv`의 SHA-256은
 `1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf`입니다.
+이 파일은 모델 결과가 아니라 모든 팀원이 같은 검증 조건을 사용하기 위한 ID별
+fold 배정표입니다. 개념과 실제 코드는
+[`docs/VSCODE_SETUP.md`](../docs/VSCODE_SETUP.md#6-공용-split이란)를 확인합니다.

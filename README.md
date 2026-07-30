@@ -30,7 +30,7 @@ data/raw/sample_submission.csv
 1. [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md): 데이터, 실험, 재현성, GitHub 작업 규칙
 2. [EXPERIMENT_HISTORY.md](EXPERIMENT_HISTORY.md): 실제 실험과 제출 결과 장부
 
-Copilot, Codex, Claude Code, Cursor용 저장소 지시 파일은 위 두 문서를 먼저 읽도록
+Codex의 `AGENTS.md`와 Claude Code의 `CLAUDE.md`는 위 두 문서를 먼저 읽도록
 연결되어 있습니다. 새 AI 대화를 시작할 때도 두 문서를 읽었는지 먼저 확인합니다.
 
 모든 작업은 GitHub Issue에서 시작하며 `issue-<번호>-<설명>` 브랜치와 PR을 통해

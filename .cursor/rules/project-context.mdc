@@ -1,9 +1,0 @@
----
-description: Canonical project, experiment, reproducibility, and Git workflow rules
-alwaysApply: true
----
-
-Read `PROJECT_CONTEXT.md` completely, then read `EXPERIMENT_HISTORY.md` before
-making changes. Follow the Issue branch, experiment ID, artifact, reproducibility,
-testing, and PR rules defined there. Never add example or estimated experiment
-results to `EXPERIMENT_HISTORY.md`.
