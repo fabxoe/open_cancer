@@ -78,3 +78,34 @@ Top mutation rate genes (train 기준):
 
 이 항목들은 EXP-012 산출물(protected/dropped gene 목록)을 입력으로 받는
 후속 이슈에서 다룹니다.
+
+## 4. protected/dropped 유전자 목록 재현 방법 (로컬 전용)
+
+`data/external/gene_whitelist_cosmic_v104.csv`와
+`reports/exp012_feature_analysis/`의 산출물(`protected_genes_final.csv`,
+`dropped_genes_final.csv` 포함)은 COSMIC CGC v104 유전자 심볼을 그대로
+포함하고 있어 COSMIC 학술 라이선스(등록 필요, 재배포 금지) 확인 전까지
+`.gitignore` 처리했습니다. **Git에 커밋되어 있지 않으므로 새 clone이나 다른
+팀원 환경에는 이 파일들이 없습니다.** 후속 baseline 실험에서 필요하면 아래
+순서로 로컬에서 다시 만드세요.
+
+1. COSMIC 공식 사이트(<https://cancer.sanger.ac.uk/cosmic/census>)에 학술
+   계정으로 로그인해 CGC(Cancer Gene Census) v104 export를 다운로드합니다.
+2. train.csv의 4,384개 유전자 컬럼과 교집합만 남긴
+   `data/external/gene_whitelist_cosmic_v104.csv`(컬럼: `gene`, `tier`,
+   `mutation_rate_pct`, `role_in_cancer`)와 출처·버전·라이선스·다운로드 일시를
+   기록한 `data/external/gene_whitelist_cosmic_v104.meta.json`을 준비합니다.
+3. `uv run python scripts/exp012_feature_analysis.py`를 실행해
+   `reports/exp012_feature_analysis/protected_dropped_draft.csv`를 만듭니다.
+4. EXP-012에서 확정한 규칙을 그대로 적용합니다.
+   - `protect_review`(NSD2, KNL1, TENT5C — train 변이 0건이지만 COSMIC 임상적
+     중요도 우선)는 `protect`로 재분류합니다.
+   - 최종 결과는 `protect` 361개 / `drop` 151개 / `keep`(중립) 3,872개여야
+     합니다. 다르면 화이트리스트 파일 버전이나 train 데이터가 팀 기준과
+     다른 것이니 재확인하세요.
+5. `decision_draft` 컬럼 기준으로 `protected_genes_final.csv`(protect 361개),
+   `dropped_genes_final.csv`(drop 151개)를 분리 저장합니다.
+
+집계 수치(교집합 361개, tier1/tier2 분포, protect/drop/keep 카운트 등)는
+`EXPERIMENT_HISTORY.md`의 EXP-012 상세 로그에 이미 기록되어 있으니, 원본
+유전자 목록 없이도 그 수치로 결과를 검증할 수 있습니다.
