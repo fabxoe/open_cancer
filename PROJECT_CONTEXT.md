@@ -190,6 +190,40 @@ GitHub는 폴더 안의 `README.md`를 자동으로 표시하므로 팀원이 re
 - 보고서가 있으면 History 요약표와 상세 로그, PR 본문에서 같은 파일을 연결한다.
 - 실제 점수와 산출물이 없는 상태에서 템플릿의 자리표시자를 결과처럼 기록하지 않는다.
 
+### AI에 실험·제출 보고서 요청하기
+
+팀원은 Codex 또는 Claude의 새 채팅에서 Issue 번호만 바꿔 다음 최소 프롬프트를
+사용한다.
+
+```text
+PROJECT_CONTEXT.md를 먼저 읽고 규칙을 따라줘.
+Issue #<번호> 실험의 제출별 보고서를 만들거나 갱신하고
+EXPERIMENT_HISTORY.md와 현재 PR에 연결해줘.
+실제 파일에 있는 사실만 사용하고, 초보 팀원도 이해할 수 있게 설명해줘.
+검증 후 현재 Issue 브랜치에 push하되 merge하지 마.
+```
+
+이 요청을 받은 AI는 별도의 상세 프롬프트가 없어도 다음 순서로 처리한다.
+
+1. `PROJECT_CONTEXT.md`, `EXPERIMENT_HISTORY.md`와
+   `reports/EXPERIMENT_REPORT_TEMPLATE.md`를 읽는다.
+2. 현재 브랜치와 GitHub Issue 번호가 일치하는지 확인한다.
+3. config, resolved config, metrics, notebook, 로그와 산출물에서 실제 사실을
+   확인한다. 문서 작성을 위해 모델을 임의로 재학습하거나 결과를 새로 만들지 않는다.
+4. 확인할 수 없는 값은 추측하지 않고 `N/A` 또는 `미제출`과 그 사유로 기록한다.
+5. `reports/expNNN_<slug>/README.md`를 만들거나 기존 보고서를 갱신한다.
+6. 원본 데이터가 어떻게 모델 입력으로 바뀌는지, 모델이 무엇을 학습하는지,
+   검증 방법과 실제 결과, 한계와 다음 실험 후보를 초보자도 이해할 수 있게 설명한다.
+7. `EXPERIMENT_HISTORY.md`에는 긴 설명을 복사하지 않고 결과 요약과 보고서
+   상대경로 링크만 기록한다.
+8. 현재 PR 본문에도 GitHub에서 열 수 있는 보고서 링크를 추가한다.
+9. 관련 테스트와 문서 검증을 실행하고 현재 Issue 브랜치에 push하지만,
+   팀원 승인 전에는 merge하지 않는다.
+
+보고서는 실험 Issue에서 파생된 `EXP-NNN` 단위로 관리한다. 같은 실험의 리더보드
+제출이 여러 번이면 보고서 안에 제출별 변경점과 점수를 구분하고,
+`EXPERIMENT_HISTORY.md`의 리더보드 제출 이력에는 제출 CSV마다 한 행씩 기록한다.
+
 ### 파일 인터페이스
 
 OOF CSV:
