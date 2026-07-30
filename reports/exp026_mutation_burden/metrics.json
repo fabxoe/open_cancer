@@ -811,7 +811,12 @@
       ]
     ]
   },
-  "leaderboard": null,
+  "leaderboard": {
+    "public_score": 0.2575936484,
+    "private_score": null,
+    "rank": null,
+    "submitted_at": "2026-07-30T23:56:29+09:00"
+  },
   "runtime": {
     "seconds": 176.73402529209852,
     "hardware": "macOS-26.2-arm64-arm-64bit"
@@ -822,8 +827,9 @@
     "oof_probabilities": "oof/exp026_mutation_burden/oof_probabilities.npy",
     "test_probabilities": "preds/exp026_mutation_burden/test_probabilities.npy",
     "submission": "submissions/exp026_mutation_burden.csv",
+    "submission_sha256": "53d835335d6d23945c80acef4b70d0112f14abdaf1b5d504a63fd1ea7b16ef00",
     "class_f1": "reports/exp026_mutation_burden/class_f1.csv",
     "models": "models/exp026_mutation_burden"
   },
-  "notes": "순수 mutation-presence, mutation burden와 class weight 미사용"
+  "notes": "4,384개 mutation-presence 피처에 mutated-gene count 1개를 추가했다. 이 파생값은 임상적 TMB가 아니다. Balanced sample weight는 사용하지 않았다. Dacon submission ID 1506469. 화면의 팀 2위는 최종 선택된 EXP-005 기준이며 EXP-026 자체 순위가 아니다."
 }
