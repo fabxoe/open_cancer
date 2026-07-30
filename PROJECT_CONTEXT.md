@@ -142,7 +142,7 @@ notebooks/         EDA와 프로토타입; 운영 실험은 scripts로 이전
 models/            fold별 checkpoint, Git 제외
 oof/               학습 데이터 OOF 확률, Git 제외
 preds/             테스트 확률, Git 제외
-reports/           지표 JSON, 경량 CSV, 분석 Markdown
+reports/           실험별 README, 지표 JSON, 경량 CSV와 분석 자료
 reproducibility/   재현성 manifest와 비교 증빙; 대형 번들은 Release에 저장
 submissions/       검증을 통과한 제출 CSV
 schemas/           지표·재현성 JSON Schema
@@ -161,10 +161,34 @@ models/exp012_<slug>/fold_00.<ext>
 oof/exp012_<slug>.csv
 preds/exp012_<slug>_test_proba.csv
 reports/exp012_<slug>/metrics.json
-reports/exp012_<slug>/report.md
+reports/exp012_<slug>/README.md
 submissions/exp012_<slug>.csv
 reproducibility/exp012_<slug>/
 ```
+
+### 실험 보고서 구조
+
+`EXPERIMENT_HISTORY.md`는 전체 실험을 한눈에 찾는 단일 색인과 사실 장부로
+유지한다. 파일이 길어진다는 이유로 `EXPERIMENT_HISTORY_1.md`,
+`EXPERIMENT_HISTORY_2.md`처럼 번호를 붙여 분할하지 않는다.
+
+개념 설명, 피처 변환 예시, 모델 해석과 긴 분석은 다음 파일에 둔다.
+
+```text
+reports/exp012_<slug>/README.md
+```
+
+GitHub는 폴더 안의 `README.md`를 자동으로 표시하므로 팀원이 reports 폴더에서 바로
+읽을 수 있다. 공통 작성법과 복사 가능한 양식은
+[`reports/README.md`](reports/README.md)와
+[`reports/EXPERIMENT_REPORT_TEMPLATE.md`](reports/EXPERIMENT_REPORT_TEMPLATE.md)를
+따른다.
+
+- 베이스라인, 새로운 피처, 리더보드 제출, 현재 최고·최종 후보는 README 작성을
+  권장한다.
+- 작은 파라미터 변경은 긴 보고서를 만들지 않고 History와 metrics만 남겨도 된다.
+- 보고서가 있으면 History 요약표와 상세 로그, PR 본문에서 같은 파일을 연결한다.
+- 실제 점수와 산출물이 없는 상태에서 템플릿의 자리표시자를 결과처럼 기록하지 않는다.
 
 ### 파일 인터페이스
 
@@ -409,7 +433,8 @@ reproducibility/exp012_<slug>/
 ## 9. `EXPERIMENT_HISTORY.md` 갱신 규칙
 
 History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 기록으로 복사할 때는
-반드시 실행 결과로 교체한다.
+반드시 실행 결과로 교체한다. History는 여러 번호 파일로 나누지 않고, 긴 설명은
+실험별 `reports/expNNN_<slug>/README.md`로 분리해 연결한다.
 
 ### 상세 로그 양식
 
@@ -425,6 +450,7 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
 #### 실행
 - Config: `{실제 경로}`
 - Metrics: `{실제 경로}`
+- Report: `{reports/expNNN_<slug>/README.md 또는 N/A}`
 
 #### 결과
 - Fold Macro F1: {실제 목록 또는 N/A와 사유}
@@ -448,6 +474,7 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
 - 재현 검증마다 비작성자와 증빙 경로를 재현성 검증 이력에 추가한다.
 - 일반 Local 실험 완료에는 resolved config, metrics와 History만 필요하다.
 - report는 분석이 필요할 때, 재현 manifest는 리더보드에 제출할 때 추가한다.
+- 보고서가 있으면 History에 내용을 복사하지 않고 상대경로 링크만 추가한다.
 - 가설, 부모 실험과 변경 변수 설명은 필수가 아니다. 파라미터 전체를 History에
   복사하지 말고 resolved config를 연결한다.
 - AI 또는 실행 코드가 실제 값으로 기록하며, 작성자가 파라미터를 수작업으로
