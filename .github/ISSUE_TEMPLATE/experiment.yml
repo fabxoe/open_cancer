@@ -7,65 +7,18 @@ body:
   - type: markdown
     attributes:
       value: |
-        실행 전에 `PROJECT_CONTEXT.md`와 `EXPERIMENT_HISTORY.md`를 확인하세요.
-        이 Issue가 생성되면 번호가 실험 ID가 됩니다. 예: Issue #12 → EXP-012.
-        별도의 실험 ID를 예약하거나 직접 입력하지 않습니다.
-  - type: input
-    id: owner
-    attributes:
-      label: 담당자
-      placeholder: GitHub ID
-    validations:
-      required: true
-  - type: input
-    id: parent
-    attributes:
-      label: 부모 실험
-      description: 비교 기준 실험의 GitHub Issue 번호, 최초 실험이면 N/A
-      placeholder: "#3 또는 N/A"
-    validations:
-      required: true
+        제목만 작성해도 됩니다. Issue가 생성되면 번호로 실험 ID가 자동 결정됩니다.
+        예: Issue #12 → EXP-012. 실험 ID를 직접 입력하거나 예약하지 않습니다.
+
+        담당자는 Issue 작성자·Assignee로 확인합니다. 기본 metric, 공용 split,
+        재현성 기록과 산출물 규칙은 `PROJECT_CONTEXT.md`의 기본값을 사용합니다.
   - type: textarea
-    id: hypothesis
+    id: notes
     attributes:
-      label: 가설
-      description: 한 번에 검증할 핵심 가설을 한 가지로 적습니다.
+      label: 실험 메모 (선택)
+      description: 가설, 비교할 부모 실험, 특별히 바꿀 값이 있을 때만 자유롭게 적습니다. 비워도 됩니다.
+      placeholder: |
+        예: XGBoost baseline을 먼저 확인
+        예: EXP-003과 비교해 max_depth만 변경
     validations:
-      required: true
-  - type: textarea
-    id: change
-    attributes:
-      label: 변경 변수
-      description: 부모 실험 대비 달라지는 데이터, 피처, 모델, seed, 후처리를 적습니다.
-    validations:
-      required: true
-  - type: textarea
-    id: acceptance
-    attributes:
-      label: 완료 조건
-      description: metric, 테스트, 산출물과 재현성 완료 조건을 적습니다.
-      value: |
-        - [ ] 전체 OOF Macro F1 계산
-        - [ ] resolved config와 metrics 저장
-        - [ ] 데이터·산출물 manifest 저장
-        - [ ] EXPERIMENT_HISTORY 갱신
-        - [ ] 테스트와 schema 검증 통과
-    validations:
-      required: true
-  - type: dropdown
-    id: target_reproducibility
-    attributes:
-      label: 목표 재현성 상태
-      options:
-        - MANIFEST_COMPLETE
-        - INFERENCE_VERIFIED
-        - TRAINING_VERIFIED
-    validations:
-      required: true
-  - type: textarea
-    id: artifacts
-    attributes:
-      label: 예상 산출물
-      description: config, script, OOF, model, report, submission 경로를 적습니다.
-    validations:
-      required: true
+      required: false
