@@ -1,0 +1,68 @@
+# macOS / editors
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+
+# Python
+.python-version.local
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Competition data
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Large experiment artifacts
+models/*
+!models/.gitkeep
+oof/*
+!oof/.gitkeep
+preds/*
+!preds/.gitkeep
+
+# Local logs and temporary files
+logs/
+tmp/
+temp/
+*.log
+
+# Large report and archive formats
+reports/**/*.pdf
+reports/**/*.png
+reports/**/*.jpg
+reports/**/*.jpeg
+reports/**/*.zip
+reports/**/*.tar
+reports/**/*.gz
+
+# Reproducibility bundles are stored as GitHub Release assets.
+reproducibility/**/*.pt
+reproducibility/**/*.pth
+reproducibility/**/*.ckpt
+reproducibility/**/*.pkl
+reproducibility/**/*.joblib
+reproducibility/**/*.bin
+reproducibility/**/*.zip
+reproducibility/**/*.tar
+reproducibility/**/*.gz
