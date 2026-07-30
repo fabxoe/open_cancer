@@ -143,7 +143,13 @@ def main() -> None:
             "seed": config["seed"],
         },
         "features": feature_report["feature_contract"],
-        "feature_outputs": feature_report["outputs"],
+        "feature_outputs": {
+            name: {
+                **metadata,
+                "path": str(Path(metadata["path"]).relative_to(ROOT)),
+            }
+            for name, metadata in feature_report["outputs"].items()
+        },
         "model": {
             "class": "xgboost.XGBClassifier",
             "parameters": model_params,
