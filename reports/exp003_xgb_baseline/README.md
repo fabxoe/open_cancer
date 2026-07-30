@@ -242,7 +242,35 @@ EXP-003은 비교 기준을 만드는 것이 목적이므로 의도적으로 단
 3. 유전자 칸 안의 변이 토큰과 개수 피처 추가
 4. 약한 클래스의 confusion matrix를 바탕으로 관련 피처 보강
 
-## 9. 재현과 관련 파일
+## 9. 체크포인트 추론 재현 검증
+
+저장된 fold checkpoint 5개만 불러와 test를 다시 예측했습니다. 모델을 다시
+학습하지 않았으며, 기존 제출 파일도 덮어쓰지 않았습니다.
+
+| 확인 항목 | 결과 |
+|---|---|
+| train/test/sample submission/split 해시 | 모두 일치 |
+| 원본과 재생성 test 라벨 | 2,546개 전부 일치 |
+| 원본과 재생성 test 확률 | 최대 절대 차이 0 |
+| 원본 제출 SHA-256 | `6e8b64726c86b5a6d52ee58f7f042b74b302852aa8a59c9bfe13332bfee424a5` |
+| 재생성 제출 SHA-256 | 원본과 byte 단위로 동일 |
+| 재현 상태 | `INFERENCE_VERIFIED` |
+
+따라서 현재 제출 후보는 “저장된 모델만으로 같은 파일을 다시 만들 수 있음”이
+확인되었습니다. 이 상태는 모델을 처음부터 다시 학습해도 같다는
+`TRAINING_VERIFIED`와는 다릅니다. checkpoint는 현재 로컬에 보관되어 있으며,
+실제 리더보드 제출 모델로 확정하면 GitHub Release에 올리고 manifest에 URL을
+기록해야 합니다.
+
+검증 증빙:
+
+- [재현 실행 방법](../../reproducibility/exp003_xgb_baseline/REPRODUCE.md)
+- [원본·재생성 비교](../../reproducibility/exp003_xgb_baseline/comparison.json)
+- [산출물 manifest](../../reproducibility/exp003_xgb_baseline/artifact_manifest.json)
+- [데이터 manifest](../../reproducibility/exp003_xgb_baseline/data_manifest.json)
+- [검증 환경](../../reproducibility/exp003_xgb_baseline/environment.json)
+
+## 10. 관련 파일
 
 - 입력 override: [`configs/exp003_xgb_baseline.yaml`](../../configs/exp003_xgb_baseline.yaml)
 - 실제 적용 설정: [`config.resolved.yaml`](../../reproducibility/exp003_xgb_baseline/config.resolved.yaml)
@@ -250,11 +278,17 @@ EXP-003은 비교 기준을 만드는 것이 목적이므로 의도적으로 단
 - 클래스별 F1: [`class_f1.csv`](class_f1.csv)
 - 제출 후보: [`submissions/exp003_xgb_baseline.csv`](../../submissions/exp003_xgb_baseline.csv)
 - Source commit: `7306182669c3676e7b17024d3cf1f821131d909b`
-- Reproduction status: `NOT_STARTED`
+- Reproduction status: `INFERENCE_VERIFIED`
 
-실행 명령:
+학습 명령:
 
 ```bash
 PYTHONHASHSEED=42 uv run python scripts/run_xgb_baseline.py \
   --config configs/exp003_xgb_baseline.yaml
+```
+
+저장 checkpoint 추론 검증 명령:
+
+```bash
+uv run python scripts/verify_xgb_baseline_inference.py
 ```

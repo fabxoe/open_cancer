@@ -1,0 +1,128 @@
+{
+  "experiment_id": "EXP-003",
+  "issue_number": 3,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "7306182669c3676e7b17024d3cf1f821131d909b",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp003_xgb_baseline/data_manifest.json",
+  "environment": "reproducibility/exp003_xgb_baseline/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-07-30T09:14:20Z",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp003_xgb_baseline/fold_00.json",
+      "size_bytes": 16961414,
+      "sha256": "dea0a42d82df4a5d5911c4eea92b2e2bc0eb238c82eecff674ee2bfbfd007d68",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp003_xgb_baseline/fold_01.json",
+      "size_bytes": 16163718,
+      "sha256": "69555a958a0d4e9d46fde50b25357e5a2dd83c57ed31c36a04c24dabcbdc4a6a",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp003_xgb_baseline/fold_02.json",
+      "size_bytes": 18138590,
+      "sha256": "b3b83e651b85300981090f3d3a5e8935ddf3ad2614309eb182ccfa27c076235a",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp003_xgb_baseline/fold_03.json",
+      "size_bytes": 14253211,
+      "sha256": "4e89ba47cd4a3c1bc29f036f7921bee5f973fbfce287c8716d24083c8b406812",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp003_xgb_baseline/fold_04.json",
+      "size_bytes": 17030642,
+      "sha256": "00061e57354fe9baeac3ede464bf4f412ca95405bde4729ac1ec96bba20ab453",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp003_xgb_baseline/config.resolved.yaml",
+      "size_bytes": 4301,
+      "sha256": "d3736bab07549f57c5d3266a08d66b8c624549c83e7a8fc6d732059fd23384cd",
+      "storage_uri": null
+    },
+    {
+      "kind": "original_metrics",
+      "path": "reproducibility/exp003_xgb_baseline/original_metrics.json",
+      "size_bytes": 11071,
+      "sha256": "3ce1da71ed847a312a5681a8f6d440595530ca9cf938b0ccf42bf78135bf017c",
+      "storage_uri": null
+    },
+    {
+      "kind": "original_submission",
+      "path": "submissions/exp003_xgb_baseline.csv",
+      "size_bytes": 38458,
+      "sha256": "6e8b64726c86b5a6d52ee58f7f042b74b302852aa8a59c9bfe13332bfee424a5",
+      "storage_uri": null
+    },
+    {
+      "kind": "reproduced_submission",
+      "path": "reproducibility/exp003_xgb_baseline/reproduced_submission.csv",
+      "size_bytes": 38458,
+      "sha256": "6e8b64726c86b5a6d52ee58f7f042b74b302852aa8a59c9bfe13332bfee424a5",
+      "storage_uri": null
+    },
+    {
+      "kind": "reproduced_test_probabilities",
+      "path": "reproducibility/exp003_xgb_baseline/reproduced_test_probabilities.npy",
+      "size_bytes": 264912,
+      "sha256": "9417f2443568d3d56046dde2593b270321b41d3e822f56efec4dc68801ef5c1b",
+      "storage_uri": null
+    },
+    {
+      "kind": "data_manifest",
+      "path": "reproducibility/exp003_xgb_baseline/data_manifest.json",
+      "size_bytes": 1618,
+      "sha256": "251f8dc59f0ad87b020262e03180e5c90be6286897e7a53ef04503f18ab3e35a",
+      "storage_uri": null
+    },
+    {
+      "kind": "environment",
+      "path": "reproducibility/exp003_xgb_baseline/environment.json",
+      "size_bytes": 395,
+      "sha256": "a79fb41cd99d3fa1a2af50475012317a740bc572099bd260a581d17111fcffd4",
+      "storage_uri": null
+    },
+    {
+      "kind": "reproduction_metrics",
+      "path": "reproducibility/exp003_xgb_baseline/reproduction_metrics.json",
+      "size_bytes": 835,
+      "sha256": "5dbe82b33a095c310ec25d20965e79aa9992b62154b8ee87d55585e3368cf9dc",
+      "storage_uri": null
+    },
+    {
+      "kind": "comparison",
+      "path": "reproducibility/exp003_xgb_baseline/comparison.json",
+      "size_bytes": 1144,
+      "sha256": "93624cf72d5c4d5d6a0492a5917da04e7bb373d1c8c240e003a94d9ce834ce2b",
+      "storage_uri": null
+    },
+    {
+      "kind": "reproduce_guide",
+      "path": "reproducibility/exp003_xgb_baseline/REPRODUCE.md",
+      "size_bytes": 1088,
+      "sha256": "1927e6aa20671393cbf2d5582ef46f0923ab7e28bc8f6e888efe97f1a6350f92",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
