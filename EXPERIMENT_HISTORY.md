@@ -28,7 +28,7 @@
 | 제출 시각 | 실험 ID | Issue | 제출 파일 | SHA-256 | Public 점수 | 순위 | 재현 상태 |
 |---|---|---|---|---|---:|---:|---|
 | 2026-07-30T18:20:48+09:00 | EXP-003 | #3 | `submissions/exp003_xgb_baseline.csv` (제출 ID `1506230`) | `6e8b64726c86b5a6d52ee58f7f042b74b302852aa8a59c9bfe13332bfee424a5` | 0.228167518 | 3 (확인 당시) | INFERENCE_VERIFIED |
-| 2026-07-30T18:26:30+09:00 | EXP-005 | #5 | `submissions/exp005_xgb_mutation_features.csv` | `7bc3e64e1904d9b4007bc141dde771a39e7527172f3cd24c25c408000103183c` | 0.2987843366 | 1 (제출 시점) | INFERENCE_VERIFIED |
+| 2026-07-30T18:26:30+09:00 | EXP-005 | #5 | `submissions/exp005_xgb_mutation_features.csv` | `7bc3e64e1904d9b4007bc141dde771a39e7527172f3cd24c25c408000103183c` | 0.2987843366 | 제출 시점 1위 → 2026-07-30 23:13 KST 기준 2위 | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -89,12 +89,16 @@
 #### 결과
 - Fold Macro F1: [0.3957389475242374, 0.41264527023707276, 0.4011635978874454, 0.39173710435471243, 0.4130462426049025]
 - OOF Macro F1: 0.4043796587000222
-- Public LB: 0.2987843366 (제출 ID 1506233, 제출 시점 1위)
+- Public LB: 0.2987843366 (제출 ID 1506233, 제출 시점 1위,
+  2026-07-30 23:13 KST 기준 2위)
 - 재현 상태: INFERENCE_VERIFIED
 
 #### 산출물과 결론
 - Metrics/Report/Reproduction: `reports/exp005_xgb_mutation_features/metrics.json` / `reports/exp005_xgb_mutation_features/README.md` / `reproducibility/exp005_xgb_mutation_features/artifact_manifest.json`
-- 결론: Public 0.2987843366으로 제출 시점 1위. 저장 checkpoint 추론으로 제출 SHA-256과 라벨 100% 일치를 확인해 `INFERENCE_VERIFIED`로 승격함. 비작성자 재학습과 GitHub Release 보관은 아직 완료하지 않음.
+- 결론: Public 0.2987843366으로 제출 시점 1위였으며 2026-07-30 23:13 KST
+  기준 2위. 저장 checkpoint 추론으로 제출 SHA-256과 라벨 100% 일치를
+  확인해 `INFERENCE_VERIFIED`로 승격함. 비작성자 재학습과 GitHub Release
+  보관은 아직 완료하지 않음.
 ### [EXP-012] COSMIC 보호 유전자 기반 Feature 보호 전략 분석
 
 - 상태: COMPLETED
