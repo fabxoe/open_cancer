@@ -43,7 +43,8 @@ AI는 작업 전에 다음을 확인한다.
 1. 현재 브랜치가 해당 Issue 번호를 포함하는가.
 2. `main`에서 분기했으며 최신 `origin/main`이 반영되었는가.
 3. 다음 EXP-ID가 다른 작업자에게 예약되지 않았는가.
-4. 원본 데이터, 모델, OOF, 비밀 파일이 Git에 포함되지 않는가.
+4. 원본 데이터 해시가 기준과 일치하며, 가공 데이터·모델·OOF·비밀 파일이 Git에
+   포함되지 않는가.
 5. 작업 후 실행할 검증 명령과 완료 조건이 Issue에 적혀 있는가.
 
 ---
@@ -117,8 +118,12 @@ SKCM, STES, TGCT, THCA, THYM, UCEC
 - 외부 데이터를 사용할 경우 출처, 버전, 라이선스, 다운로드 일시와 파일 해시를
   반드시 기록한다.
 
-`data/raw/`와 `data/processed/`는 Git에 커밋하지 않는다. 팀원은
-`data/README.md`의 SHA-256과 자신의 파일을 비교해 동일한 데이터를 사용해야 한다.
+`data/raw/`의 현재 원본 CSV와 데이터 리포트 PDF는 팀 편의를 위해 Git에 버전을
+고정한다. clone한 팀원은 별도 다운로드 없이 동일한 파일을 받는다. 이 파일들은
+읽기 전용 입력으로 취급하며 실험이나 EDA 중 직접 수정하지 않는다. 가공 결과는
+`data/processed/`에 저장하고 Git에 커밋하지 않는다. 기준 크기와 SHA-256은
+`data/README.md`에서 관리한다. 공식 원본이 교체되는 경우에만 별도 Issue와 PR에서
+파일, 해시와 데이터 계약을 함께 갱신한다.
 
 ---
 
@@ -126,7 +131,7 @@ SKCM, STES, TGCT, THCA, THYM, UCEC
 
 ```text
 configs/           실험 전 사람이 작성하는 YAML 설정
-data/raw/          대회 원본 데이터, Git 제외
+data/raw/          버전 고정 원본 CSV와 데이터 리포트 PDF, Git 추적·직접 수정 금지
 data/processed/    가공 데이터와 캐시, Git 제외
 data/splits/       팀 공용 fold ID와 split 메타데이터, Git 추적
 src/open_cancer/   재사용 가능한 로더, 평가, 검증 코드
@@ -321,7 +326,8 @@ reproducibility/exp001_<slug>/
 
 ### 체크포인트 보관
 
-- raw data는 Git 또는 재현 번들에 포함하지 않는다.
+- raw data는 정확한 실험 commit에 Git으로 포함되어 있으므로 재현 번들에 중복
+  포함하지 않는다. 실험 manifest에는 파일 SHA-256을 계속 기록한다.
 - 리더보드 제출 모델의 checkpoint와 재현 번들은 GitHub Release asset으로 보관한다.
 - Release tag는 `exp-001-repro-v1` 형식으로 정확한 실험 commit을 가리킨다.
 - asset의 URL, 크기와 SHA-256을 manifest와 History에 기록한다.
@@ -449,8 +455,9 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
 
 이 저장소의 `quality` Action은 배포나 모델 학습을 수행하지 않는다. PR과 main
 변경 시 `uv sync --frozen`, 경량 fixture 단위 테스트, History와 재현성 JSON
-Schema 검증만 실행한다. 원본 데이터와 checkpoint가 없는 환경에서도 공유 코드,
-제출 검증 함수와 실험 장부 구조가 깨지지 않았는지 확인하는 안전장치다.
+Schema 검증만 실행한다. 모델 학습이나 배포는 수행하지 않으며 checkpoint 없이도
+공유 코드, 제출 검증 함수와 실험 장부 구조가 깨지지 않았는지 확인하는
+안전장치다.
 
 참고:
 <https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets>
@@ -486,7 +493,8 @@ push를 허용한다. 실제 프로젝트 파일은 프로젝트 초기화 Issue
 ### PR과 merge 전
 
 - [ ] PR 본문에 `Closes #번호`가 있다.
-- [ ] 원본 데이터, 모델, OOF, 비밀 파일이 Git에 없다.
+- [ ] `data/raw/` 원본의 크기와 해시가 기준과 일치한다.
+- [ ] 가공 데이터, 모델, OOF, 비밀 파일이 Git에 없다.
 - [ ] CI `quality`가 통과했다.
 - [ ] 팀원들이 최신 변경을 확인했다.
 - [ ] 현재 최고/최종 후보는 비작성자의 재학습 검증을 통과했다.
