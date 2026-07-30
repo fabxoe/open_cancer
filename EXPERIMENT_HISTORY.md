@@ -2,6 +2,8 @@
 
 > 실제로 실행하거나 제출한 내용만 기록합니다.
 > 작성 규칙은 [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)를 따릅니다.
+> 긴 개념 설명과 분석은 [reports 작성 안내](reports/README.md)에 따라 실험별
+> `README.md`에 기록하고 이 파일에는 링크만 둡니다.
 
 ## 현재 상태
 
