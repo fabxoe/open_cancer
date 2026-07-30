@@ -31,6 +31,9 @@ htmlcov/
 data/processed/*
 !data/processed/.gitkeep
 
+# Externally licensed data (e.g. COSMIC) - not redistributable
+data/external/
+
 # Large experiment artifacts
 models/*
 !models/.gitkeep
