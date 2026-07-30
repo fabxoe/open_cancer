@@ -1,0 +1,11 @@
+experiment:
+  slug: balanced_weight
+
+# EXP-003과 동일한 mutation-presence 입력을 사용하고,
+# balanced sample weight만 활성화합니다.
+features:
+  encoding: mutation_presence
+  include_mutation_burden: false
+
+model:
+  use_balanced_sample_weight: true
