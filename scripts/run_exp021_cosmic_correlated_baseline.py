@@ -308,6 +308,7 @@ def main() -> None:
     avg_total_genes = float(np.mean([item["total_gene_count"] for item in fold_gene_selection]))
     metrics: dict[str, Any] = {
         "experiment_id": context.experiment_id,
+        "record_role": config["experiment"]["record_role"],
         "status": "COMPLETED",
         "owner": owner,
         "issue_number": context.issue_number,

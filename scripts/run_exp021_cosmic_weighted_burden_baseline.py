@@ -331,6 +331,7 @@ def main() -> None:
     split_sha256 = sha256_file(data_paths["split_path"])
     metrics: dict[str, Any] = {
         "experiment_id": context.experiment_id,
+        "record_role": config["experiment"]["record_role"],
         "status": "COMPLETED",
         "owner": owner,
         "issue_number": context.issue_number,

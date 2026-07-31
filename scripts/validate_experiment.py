@@ -12,6 +12,7 @@ from open_cancer.validation import (
     validate_history,
     validate_json_document,
     validate_portable_artifact_paths,
+    validate_repository_contract,
     validate_split_metadata,
     validate_submission_storage_policy,
 )
@@ -34,6 +35,10 @@ def main() -> None:
     reproducibility_schema = root / "schemas/reproducibility_manifest.schema.json"
 
     history_summary = validate_history(root / "EXPERIMENT_HISTORY.md")
+    repository_contract_summary = validate_repository_contract(
+        root,
+        root / "EXPERIMENT_HISTORY.md",
+    )
     split_summary = validate_split_metadata(
         root / "data/splits/stratified_5fold_seed42.csv",
         root / "data/splits/stratified_5fold_seed42.meta.json",
@@ -60,6 +65,7 @@ def main() -> None:
         json.dumps(
             {
                 "history": history_summary,
+                "repository_contract": repository_contract_summary,
                 "canonical_split": split_summary,
                 "submission_storage": storage_summary,
                 "metrics_files": len(metrics_files),

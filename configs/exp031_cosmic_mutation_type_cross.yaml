@@ -1,4 +1,5 @@
 run_mode: experiment
+record_role: exploratory_ablation
 slug: cosmic_mutation_type_cross
 seed: 42
 split:
