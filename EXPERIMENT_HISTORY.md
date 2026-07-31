@@ -48,12 +48,12 @@
 |---|---|---|---|---|---:|---:|---|
 | 2026-07-30T18:20:48+09:00 | EXP-003 | #3 | `submissions/exp003_xgb_baseline.csv` (제출 ID `1506230`) | `6e8b64726c86b5a6d52ee58f7f042b74b302852aa8a59c9bfe13332bfee424a5` | 0.228167518 | 3 (확인 당시) | INFERENCE_VERIFIED |
 | 2026-07-30T18:26:30+09:00 | EXP-005 | #5 | `submissions/exp005_xgb_mutation_features.csv` | `7bc3e64e1904d9b4007bc141dde771a39e7527172f3cd24c25c408000103183c` | 0.2987843366 | 제출 시점 1위 → 2026-07-30 23:13 KST 기준 2위 | INFERENCE_VERIFIED |
-| 2026-07-30T23:28:27+09:00 | EXP-021 | #21 | `submissions/exp021_cosmic_weighted_burden_baseline.csv` (제출 ID `1506440`) | `cb75da2609631bc86310a637e2d4f2e244bfe85dac71da4f154559ebf19a07b0` | 0.2544194867 | 미확인(Dacon 제출 화면에 순위 미표시) | NOT_STARTED |
-| 2026-07-30T23:56:29+09:00 | EXP-026 | #26 | `submissions/exp026_mutation_burden.csv` (제출 ID `1506469`) | `53d835335d6d23945c80acef4b70d0112f14abdaf1b5d504a63fd1ea7b16ef00` | 0.2575936484 | 미선택·개별 순위 미확인 | NOT_STARTED |
+| 2026-07-30T23:28:27+09:00 | EXP-021 | #21 | `submissions/exp021_cosmic_weighted_burden_baseline.csv` (제출 ID `1506440`) | `cb75da2609631bc86310a637e2d4f2e244bfe85dac71da4f154559ebf19a07b0` | 0.2544194867 | 당시 팀 최고 EXP-005<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span> | NOT_STARTED |
+| 2026-07-30T23:56:29+09:00 | EXP-026 | #26 | `submissions/exp026_mutation_burden.csv` (제출 ID `1506469`) | `53d835335d6d23945c80acef4b70d0112f14abdaf1b5d504a63fd1ea7b16ef00` | 0.2575936484 | 당시 팀 최고 EXP-005<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span> | NOT_STARTED |
 | 2026-07-31T15:50:02+09:00 | EXP-031 | #31 | `submissions/exp031_hotspot_extended.csv` (제출 ID `1506950`, attempt 5) | `54de49396b8910fd8134b5a854beed344e369a9a791c67c6c9caf0da38cec27d` | 0.3170803849 | 제출 당시 전체 2위 → 2026-08-01 확인 기준 참가 4팀 중 4위 | FAILED |
-| 2026-07-31T18:46:30+09:00 | EXP-030 | #30 | `submissions/exp030_sparse_variant_xgb.csv` (제출 ID `1507123`) | `bd523ea4e872301e7d11f44ea375cf16d8c282de549f5f408d67ba3146670cba` | 0.2993610323 | 개별 순위 미확인 | INFERENCE_VERIFIED |
-| 2026-07-31T22:44:57+09:00 | EXP-058 | #58 | `submissions/exp058_cooccurrence_pair_ablation.csv` (제출 ID `1507272`) | `0a53d0a7aea3b0c34baba586e56175c6bc8df2c738875a2bef30c5ebad905eb3` | 0.3044672015 | 개별 순위 미확인 | INFERENCE_VERIFIED |
-| 2026-07-31T23:55:33+09:00 | EXP-085 | #85 | `submissions/exp085_hotspot_clean.csv` (제출 ID `1507333`) | `d319c6967ea98b75c158265fe3b46a5ebb12db207a19cd87964476154eecfe5d` | 0.3103760308 | 개별 순위 미확인 | INFERENCE_VERIFIED |
+| 2026-07-31T18:46:30+09:00 | EXP-030 | #30 | `submissions/exp030_sparse_variant_xgb.csv` (제출 ID `1507123`) | `bd523ea4e872301e7d11f44ea375cf16d8c282de549f5f408d67ba3146670cba` | 0.2993610323 | EXP-031 최고 점수<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span> | INFERENCE_VERIFIED |
+| 2026-07-31T22:44:57+09:00 | EXP-058 | #58 | `submissions/exp058_cooccurrence_pair_ablation.csv` (제출 ID `1507272`) | `0a53d0a7aea3b0c34baba586e56175c6bc8df2c738875a2bef30c5ebad905eb3` | 0.3044672015 | EXP-031 최고 점수<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span> | INFERENCE_VERIFIED |
+| 2026-07-31T23:55:33+09:00 | EXP-085 | #85 | `submissions/exp085_hotspot_clean.csv` (제출 ID `1507333`) | `d319c6967ea98b75c158265fe3b46a5ebb12db207a19cd87964476154eecfe5d` | 0.3103760308 | EXP-031 최고 점수<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">팀 내부 8개 제출 중 2위</span> | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -102,6 +102,25 @@
 - OOF Macro F1: 0.4125795545
 - Public LB: 0.3103760308 (제출 ID `1507333`, 2026-07-31 23:55:33 KST)
 - 재현 상태: INFERENCE_VERIFIED
+
+#### 리더보드 제출 결과와 순위 해석
+
+- 제출 파일: `submissions/exp085_hotspot_clean.csv`
+- 제출 ID: `1507333`
+- 제출 시각: 2026-07-31 23:55:33 KST
+- 제출 SHA-256:
+  `d319c6967ea98b75c158265fe3b46a5ebb12db207a19cd87964476154eecfe5d`
+- Public Macro F1: `0.3103760308`
+- 팀 내부 제출 점수 순위: 확인 당시 8개 제출 중 2위
+  (`EXP-031 0.3170803849 > EXP-085 0.3103760308 > EXP-058 0.3044672015`)
+- EXP-031과의 차이: `-0.0067043541`
+- EXP-031의 팀 최고 점수를 넘지 못해 리더보드 팀 점수와 순위는 갱신되지
+  않았습니다.
+- 플랫폼은 선택하지 않은 제출의 공식 전체 개별 순위를 별도로 표시하지
+  않으므로 EXP-085의 전체 개별 순위는 확인할 수 없습니다.
+- 2026-08-01 확인 당시 팀 대표 제출은 EXP-031이었고, 그 점수를 기준으로
+  8조의 공식 팀 순위는 참가 4팀 중 4위였습니다. 이 `4위`를 EXP-085의
+  개별 순위로 해석하지 않습니다.
 
 #### 산출물과 결론
 
