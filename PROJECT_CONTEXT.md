@@ -150,6 +150,7 @@ models/            fold별 checkpoint, Git 제외
 oof/               학습 데이터 OOF 확률, Git 제외
 preds/             테스트 확률, Git 제외
 reports/           실험별 README, 지표 JSON, 경량 CSV와 분석 자료
+reports/plans/     여러 Issue에 걸친 장기 실행 계획과 단계별 진행 상태
 reproducibility/   재현성 manifest와 비교 증빙; 대형 번들은 Release에 저장
 submissions/       검증을 통과한 제출 CSV
 schemas/           지표·재현성 JSON Schema
@@ -234,6 +235,14 @@ GitHub는 폴더 안의 `README.md`를 자동으로 표시하므로 팀원이 re
 - 작은 파라미터 변경은 긴 보고서를 만들지 않고 History와 metrics만 남겨도 된다.
 - 보고서가 있으면 History 요약표와 상세 로그, PR 본문에서 같은 파일을 연결한다.
 - 실제 점수와 산출물이 없는 상태에서 템플릿의 자리표시자를 결과처럼 기록하지 않는다.
+
+여러 Issue와 실험에 걸친 장기 실행 계획은 `reports/plans/`에 둔다. 해당 계획을
+사용하는 작업은 시작할 때 이 문서, `EXPERIMENT_HISTORY.md`와 관련 로드맵을 함께
+읽는다. 로드맵은 작업 순서와 중단 조건을 관리하며, 실제 점수의 단일 원본은
+`EXPERIMENT_HISTORY.md`와 실험별 `metrics.json`이다. 로드맵에는 예상 점수나
+실행하지 않은 결과를 기록하지 않는다. 현재 residue-position·hotspot 후속 계획은
+[`reports/plans/residue_position_hotspot_roadmap.md`](reports/plans/residue_position_hotspot_roadmap.md)를
+따른다.
 
 ### AI에 실험·제출 보고서 요청하기
 
