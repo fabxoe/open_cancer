@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 3
+- 실제 실험 수: 4
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4043796587000222 (`EXP-005`)
@@ -22,6 +22,7 @@
 | EXP-003 | COMPLETED | fabxoe | #3 | XGBoost mutation-presence baseline | 0.334930 | 0.228167518 | INFERENCE_VERIFIED | 비교 기준 | [보고서](reports/exp003_xgb_baseline/README.md) |
 | EXP-005 | COMPLETED | 2heej | #5 | XGBoost + 유전자×변이유형 희소 피처 | 0.4043796587000222 | 0.2987843366 | INFERENCE_VERIFIED | 제출 재생성 검증 완료·Release 보관 필요 | [보고서](reports/exp005_xgb_mutation_features/README.md) |
 | EXP-012 | COMPLETED | Kangho-Park | #12 | COSMIC 보호 유전자 기반 feature 보호 전략 분석 (모델 학습 없음) | N/A (분석 전용) | 미제출 | NOT_STARTED | 채택 | [상세](#exp-012-cosmic-보호-유전자-기반-feature-보호-전략-분석) |
+| EXP-026 | COMPLETED | fabxoe | #26 | XGBoost mutation-presence + mutated-gene count | 0.3817476632 | 0.2575936484 | NOT_STARTED | EXP-003 대비 개선, EXP-005보다 낮음 | [보고서](reports/exp026_mutation_burden/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -29,6 +30,7 @@
 |---|---|---|---|---|---:|---:|---|
 | 2026-07-30T18:20:48+09:00 | EXP-003 | #3 | `submissions/exp003_xgb_baseline.csv` (제출 ID `1506230`) | `6e8b64726c86b5a6d52ee58f7f042b74b302852aa8a59c9bfe13332bfee424a5` | 0.228167518 | 3 (확인 당시) | INFERENCE_VERIFIED |
 | 2026-07-30T18:26:30+09:00 | EXP-005 | #5 | `submissions/exp005_xgb_mutation_features.csv` | `7bc3e64e1904d9b4007bc141dde771a39e7527172f3cd24c25c408000103183c` | 0.2987843366 | 제출 시점 1위 → 2026-07-30 23:13 KST 기준 2위 | INFERENCE_VERIFIED |
+| 2026-07-30T23:56:29+09:00 | EXP-026 | #26 | `submissions/exp026_mutation_burden.csv` (제출 ID `1506469`) | `53d835335d6d23945c80acef4b70d0112f14abdaf1b5d504a63fd1ea7b16ef00` | 0.2575936484 | 미선택·개별 순위 미확인 | NOT_STARTED |
 
 ## 재현성 검증 이력
 
@@ -146,3 +148,35 @@
   약관 확인 전이라 로컬 보관으로 보류.
 - 다음 행동: 이 산출물을 입력으로 하는 "COSMIC 보호 유전자 기반 피처 선택
   XGBoost baseline" 작업을 새 GitHub Issue로 분리해 진행.
+
+### [EXP-026] XGBoost mutation-presence + mutated-gene count
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #26 / issue-26-exp-mutation-burden
+- 학습 소스 commit: `cb9c19679811104ba83eb2e7ce766166c484589e`
+- 시작/종료: 2026-07-30T14:48:49Z / 2026-07-30T14:51:45Z
+
+#### 실행
+
+- Config: `reproducibility/exp026_mutation_burden/config.resolved.yaml`
+- Metrics: `reports/exp026_mutation_burden/metrics.json`
+- Report: `reports/exp026_mutation_burden/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.3755728860, 0.3901946095, 0.3852622979,
+  0.3863606499, 0.3624281412
+- OOF Macro F1: 0.3817476632
+- Public LB: 0.2575936484 (제출 ID `1506469`)
+- 재현 상태: NOT_STARTED
+
+#### 산출물과 결론
+
+- 입력은 EXP-003의 4,384개 유전자별 mutation-presence 피처와 동일하며,
+  환자별 변이 유전자 개수인 `mutated-gene count` 한 개를 추가함.
+- `mutated-gene count`는 패널 내 유전자 변이 존재 개수이며 임상적 TMB가 아님.
+- EXP-003 대비 OOF `+0.046817` 및 Public LB `+0.0294261304`로 개선됨.
+- EXP-005보다 OOF와 Public LB가 모두 낮아 최종 제출 후보로 선택하지 않음.
+- 제출 파일 형식과 SHA-256은 확인했지만 저장 체크포인트로 제출 파일을
+  독립 재생성하는 검증은 아직 수행하지 않았으므로 `NOT_STARTED`로 기록함.

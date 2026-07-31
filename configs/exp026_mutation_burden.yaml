@@ -1,0 +1,11 @@
+experiment:
+  slug: mutation_burden
+
+# EXP-003과 동일한 mutation-presence 입력에 환자별 mutated-gene count
+# 한 개만 추가합니다. 이 값은 임상적 TMB가 아닙니다.
+features:
+  encoding: mutation_presence
+  include_mutation_burden: true
+
+model:
+  use_balanced_sample_weight: false
