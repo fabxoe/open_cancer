@@ -481,8 +481,14 @@ reproducibility/exp012_<slug>/
 - raw data는 Git commit, 재현 번들과 Release asset에 포함하지 않는다. 재현 시
   주최측 공식 경로로 별도 확보하며, 실험 manifest에는 파일 SHA-256만 기록한다.
 - 리더보드 제출 모델의 checkpoint와 재현 번들은 GitHub Release asset으로 보관한다.
+- 재현 번들에는 최소한 fold checkpoint, OOF 확률, test 확률, 제출 CSV와
+  `config.resolved.yaml`을 포함한다. 원본 데이터와 가공 데이터 원본은 포함하지
+  않는다.
 - Release tag는 `exp-012-repro-v1` 형식으로 정확한 실험 commit을 가리킨다.
 - asset의 URL, 크기와 SHA-256을 manifest와 History에 기록한다.
+- `INFERENCE_VERIFIED`를 유지하려면 다른 팀원이 clone한 뒤 manifest만 읽어도
+  번들의 실제 다운로드 위치를 찾을 수 있어야 한다. 제출 후보의 `storage_uri`와
+  `release_url`을 `null`로 남기지 않는다.
 - 기존 asset을 덮어쓰지 않고 변경 시 `v2`를 만든다.
 - asset 하나는 2 GiB 미만이어야 하며, 초과하면 fold별 또는 분할 압축한다.
 - 참고: <https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases>

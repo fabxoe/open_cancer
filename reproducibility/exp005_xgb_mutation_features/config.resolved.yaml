@@ -1,11 +1,11 @@
 experiment:
   issue_number: 5
   experiment_id: EXP-005
-  branch: issue-5-hgvs-protein-normalization
-  owner: 2heej
-  source_commit: 816d0a5e070c29d2f549e4fb25b81ec5c0ad5f7b
+  branch: issue-5-exp005-local-reproduction
+  owner: fabxoe
+  source_commit: 4e5533a80ef093ef4a9b76a039f5f1ee6b1cf365
   dirty_worktree: false
-  started_at: '2026-07-30T09:13:28.135923+00:00'
+  started_at: '2026-07-31T04:38:45.403336+00:00'
 data:
   train:
     path: data/raw/train.csv
@@ -60,6 +60,7 @@ features:
   - nonsense
   - frameshift
   - complex
+  robust_aggregate_features: []
   missing_policy: separate per-gene and per-sample missing indicators
   position_features: excluded because a reliable source transcript/protein length
     is unavailable
@@ -119,8 +120,8 @@ training:
   - 46
   command: uv run python scripts/run_exp005_xgb_mutation_features.py
 environment:
-  python: 3.11.10 (main, Oct 16 2024, 08:56:36) [Clang 18.1.8 ]
-  platform: macOS-26.5.2-arm64-arm-64bit
+  python: 3.11.10 (main, Oct 11 2024, 15:45:30) [Clang 15.0.0 (clang-1500.3.9.4)]
+  platform: macOS-26.2-arm64-arm-64bit
   numpy: 2.4.6
   pandas: 3.0.5
   scikit_learn: 1.9.0
