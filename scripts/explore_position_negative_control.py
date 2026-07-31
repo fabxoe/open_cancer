@@ -69,6 +69,21 @@ def interpretation(signal_delta: float) -> str:
 
 
 def render_report(result: dict[str, Any]) -> str:
+    fold_deltas = [
+        fold["delta_vs_reference"]
+        for run in result["runs"]
+        for fold in run["folds"]
+    ]
+    changed_values = [
+        fold["changed_values"]
+        for run in result["runs"]
+        for fold in run["permutation"]
+    ]
+    support_mismatches = sum(
+        fold["support_mismatches"]
+        for run in result["runs"]
+        for fold in run["permutation"]
+    )
     lines = [
         "# Residue-position permutation negative control",
         "",
@@ -94,6 +109,9 @@ def render_report(result: dict[str, Any]) -> str:
         f"- permutation 평균 OOF Macro F1: `{result['summary']['mean_oof_macro_f1']:.10f}`",
         f"- 원본 - permutation 평균: `{result['summary']['signal_delta']:+.10f}`",
         f"- 판단: `{result['summary']['interpretation']}`",
+        f"- 원본보다 낮아진 fold: `{sum(delta < 0 for delta in fold_deltas)}/15`",
+        f"- fold당 실제로 이동한 위치값: `{min(changed_values):,}~{max(changed_values):,}`개",
+        f"- sparse support 변경: `{support_mismatches}`건",
         "",
         "| permutation seed | OOF Macro F1 | 원본 대비 | fold 표준편차 | Log Loss |",
         "|---:|---:|---:|---:|---:|",

@@ -1,0 +1,453 @@
+{
+  "analysis": "residue_position_permutation_negative_control",
+  "run_mode": "explore",
+  "issue_number": 91,
+  "branch": "issue-91-position-negative-control",
+  "started_at": "2026-07-31T16:29:36.561492+00:00",
+  "finished_at": "2026-07-31T17:07:17.621700+00:00",
+  "runtime_seconds": 2261.0400555829983,
+  "target_used_for_permutation": false,
+  "test_data_used": false,
+  "validation_positions_permuted": false,
+  "reference": {
+    "experiment_id": "EXP-069",
+    "metrics_path": "reports/exp069_xgb_max_residue_position/metrics.json",
+    "metrics_sha256": "627dd683048cf5d79dc621cb854913a11278ac425399015b439702951f83ab36",
+    "oof_macro_f1": 0.413100799295573
+  },
+  "inputs": {
+    "train_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+    "split_sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf",
+    "feature_names_sha256": "130e34f35490ba014bda2fc34e18864a670f3c3bb6d0cbfb1c4d11b44ba35ea7",
+    "train_features_sha256": "57a88d963572f3efc2b1cd4a7d687356c65fbebfeef24e998e4964096de1e8d1"
+  },
+  "runs": [
+    {
+      "permutation_seed": 42,
+      "oof_macro_f1": 0.40647123611125807,
+      "delta_vs_reference": -0.006629563184314902,
+      "fold_mean": 0.4055269934702343,
+      "fold_std": 0.006961838913851311,
+      "accuracy": 0.4075149169488792,
+      "log_loss": 1.8658504486083984,
+      "folds": [
+        {
+          "fold": 0,
+          "macro_f1": 0.4004827057897463,
+          "reference_macro_f1": 0.40882705328897045,
+          "delta_vs_reference": -0.008344347499224136,
+          "best_iteration": 216
+        },
+        {
+          "fold": 1,
+          "macro_f1": 0.4068611091584211,
+          "reference_macro_f1": 0.42399969030260365,
+          "delta_vs_reference": -0.01713858114418254,
+          "best_iteration": 251
+        },
+        {
+          "fold": 2,
+          "macro_f1": 0.4101851584199982,
+          "reference_macro_f1": 0.3999078003822144,
+          "delta_vs_reference": 0.01027735803778379,
+          "best_iteration": 312
+        },
+        {
+          "fold": 3,
+          "macro_f1": 0.39523048569305747,
+          "reference_macro_f1": 0.4129369619355406,
+          "delta_vs_reference": -0.017706476242483116,
+          "best_iteration": 246
+        },
+        {
+          "fold": 4,
+          "macro_f1": 0.41487550828994824,
+          "reference_macro_f1": 0.41820725761138033,
+          "delta_vs_reference": -0.003331749321432098,
+          "best_iteration": 230
+        }
+      ],
+      "permutation": [
+        {
+          "fold": 0,
+          "seed": 42,
+          "position_feature": "max_residue_position",
+          "strata_suffixes": [
+            "missense",
+            "synonymous",
+            "nonsense",
+            "frameshift",
+            "complex"
+          ],
+          "observed_values": 174579,
+          "values_in_shuffle_eligible_groups": 169518,
+          "changed_values": 153866,
+          "eligible_groups": 12775,
+          "singleton_groups": 5061,
+          "support_mismatches": 0
+        },
+        {
+          "fold": 1,
+          "seed": 10042,
+          "position_feature": "max_residue_position",
+          "strata_suffixes": [
+            "missense",
+            "synonymous",
+            "nonsense",
+            "frameshift",
+            "complex"
+          ],
+          "observed_values": 172947,
+          "values_in_shuffle_eligible_groups": 167969,
+          "changed_values": 152446,
+          "eligible_groups": 12759,
+          "singleton_groups": 4978,
+          "support_mismatches": 0
+        },
+        {
+          "fold": 2,
+          "seed": 20042,
+          "position_feature": "max_residue_position",
+          "strata_suffixes": [
+            "missense",
+            "synonymous",
+            "nonsense",
+            "frameshift",
+            "complex"
+          ],
+          "observed_values": 172687,
+          "values_in_shuffle_eligible_groups": 167764,
+          "changed_values": 152085,
+          "eligible_groups": 12680,
+          "singleton_groups": 4923,
+          "support_mismatches": 0
+        },
+        {
+          "fold": 3,
+          "seed": 30042,
+          "position_feature": "max_residue_position",
+          "strata_suffixes": [
+            "missense",
+            "synonymous",
+            "nonsense",
+            "frameshift",
+            "complex"
+          ],
+          "observed_values": 180066,
+          "values_in_shuffle_eligible_groups": 174943,
+          "changed_values": 158971,
+          "eligible_groups": 13150,
+          "singleton_groups": 5123,
+          "support_mismatches": 0
+        },
+        {
+          "fold": 4,
+          "seed": 40042,
+          "position_feature": "max_residue_position",
+          "strata_suffixes": [
+            "missense",
+            "synonymous",
+            "nonsense",
+            "frameshift",
+            "complex"
+          ],
+          "observed_values": 175293,
+          "values_in_shuffle_eligible_groups": 170228,
+          "changed_values": 154547,
+          "eligible_groups": 12842,
+          "singleton_groups": 5065,
+          "support_mismatches": 0
+        }
+      ],
+      "oof_path": "oof/explore_position_negative_control/seed_42.csv",
+      "oof_sha256": "fc9f026a425ac9d1eab85af63ff21c8d9e42dd71dc2054f008742082b2a12f93"
+    },
+    {
+      "permutation_seed": 314,
+      "oof_macro_f1": 0.40912701263732854,
+      "delta_vs_reference": -0.003973786658244438,
+      "fold_mean": 0.4076145874185942,
+      "fold_std": 0.007605282252943754,
+      "accuracy": 0.40686985970004835,
+      "log_loss": 1.859519600868225,
+      "folds": [
+        {
+          "fold": 0,
+          "macro_f1": 0.4158857437965325,
+          "reference_macro_f1": 0.40882705328897045,
+          "delta_vs_reference": 0.0070586905075620265,
+          "best_iteration": 247
+        },
+        {
+          "fold": 1,
+          "macro_f1": 0.415591936028204,
+          "reference_macro_f1": 0.42399969030260365,
+          "delta_vs_reference": -0.00840775427439966,
+          "best_iteration": 237
+        },
+        {
+          "fold": 2,
+          "macro_f1": 0.39623049534570254,
+          "reference_macro_f1": 0.3999078003822144,
+          "delta_vs_reference": -0.0036773050365118687,
+          "best_iteration": 277
+        },
+        {
+          "fold": 3,
+          "macro_f1": 0.40237857433090246,
+          "reference_macro_f1": 0.4129369619355406,
+          "delta_vs_reference": -0.01055838760463812,
+          "best_iteration": 226
+        },
+        {
+          "fold": 4,
+          "macro_f1": 0.4079861875916294,
+          "reference_macro_f1": 0.41820725761138033,
+          "delta_vs_reference": -0.010221070019750922,
+          "best_iteration": 228
+        }
+      ],
+      "permutation": [
+        {
+          "fold": 0,
+          "seed": 314,
+          "position_feature": "max_residue_position",
+          "strata_suffixes": [
+            "missense",
+            "synonymous",
+            "nonsense",
+            "frameshift",
+            "complex"
+          ],
+          "observed_values": 174579,
+          "values_in_shuffle_eligible_groups": 169518,
+          "changed_values": 153776,
+          "eligible_groups": 12775,
+          "singleton_groups": 5061,
+          "support_mismatches": 0
+        },
+        {
+          "fold": 1,
+          "seed": 10314,
+          "position_feature": "max_residue_position",
+          "strata_suffixes": [
+            "missense",
+            "synonymous",
+            "nonsense",
+            "frameshift",
+            "complex"
+          ],
+          "observed_values": 172947,
+          "values_in_shuffle_eligible_groups": 167969,
+          "changed_values": 152433,
+          "eligible_groups": 12759,
+          "singleton_groups": 4978,
+          "support_mismatches": 0
+        },
+        {
+          "fold": 2,
+          "seed": 20314,
+          "position_feature": "max_residue_position",
+          "strata_suffixes": [
+            "missense",
+            "synonymous",
+            "nonsense",
+            "frameshift",
+            "complex"
+          ],
+          "observed_values": 172687,
+          "values_in_shuffle_eligible_groups": 167764,
+          "changed_values": 152300,
+          "eligible_groups": 12680,
+          "singleton_groups": 4923,
+          "support_mismatches": 0
+        },
+        {
+          "fold": 3,
+          "seed": 30314,
+          "position_feature": "max_residue_position",
+          "strata_suffixes": [
+            "missense",
+            "synonymous",
+            "nonsense",
+            "frameshift",
+            "complex"
+          ],
+          "observed_values": 180066,
+          "values_in_shuffle_eligible_groups": 174943,
+          "changed_values": 158476,
+          "eligible_groups": 13150,
+          "singleton_groups": 5123,
+          "support_mismatches": 0
+        },
+        {
+          "fold": 4,
+          "seed": 40314,
+          "position_feature": "max_residue_position",
+          "strata_suffixes": [
+            "missense",
+            "synonymous",
+            "nonsense",
+            "frameshift",
+            "complex"
+          ],
+          "observed_values": 175293,
+          "values_in_shuffle_eligible_groups": 170228,
+          "changed_values": 154403,
+          "eligible_groups": 12842,
+          "singleton_groups": 5065,
+          "support_mismatches": 0
+        }
+      ],
+      "oof_path": "oof/explore_position_negative_control/seed_314.csv",
+      "oof_sha256": "1b2cc1fc95566ae0eaeff4efb399a911a41adb5e7920476a0f72404df54c9d2f"
+    },
+    {
+      "permutation_seed": 2718,
+      "oof_macro_f1": 0.40201165031093056,
+      "delta_vs_reference": -0.011089148984642416,
+      "fold_mean": 0.40108675911345315,
+      "fold_std": 0.008505295152609676,
+      "accuracy": 0.4034833091436865,
+      "log_loss": 1.8633792400360107,
+      "folds": [
+        {
+          "fold": 0,
+          "macro_f1": 0.39355601876146856,
+          "reference_macro_f1": 0.40882705328897045,
+          "delta_vs_reference": -0.015271034527501892,
+          "best_iteration": 216
+        },
+        {
+          "fold": 1,
+          "macro_f1": 0.41540779917816945,
+          "reference_macro_f1": 0.42399969030260365,
+          "delta_vs_reference": -0.008591891124434203,
+          "best_iteration": 269
+        },
+        {
+          "fold": 2,
+          "macro_f1": 0.39140043501277766,
+          "reference_macro_f1": 0.3999078003822144,
+          "delta_vs_reference": -0.008507365369436748,
+          "best_iteration": 247
+        },
+        {
+          "fold": 3,
+          "macro_f1": 0.4015658450538587,
+          "reference_macro_f1": 0.4129369619355406,
+          "delta_vs_reference": -0.011371116881681853,
+          "best_iteration": 259
+        },
+        {
+          "fold": 4,
+          "macro_f1": 0.40350369756099147,
+          "reference_macro_f1": 0.41820725761138033,
+          "delta_vs_reference": -0.014703560050388864,
+          "best_iteration": 274
+        }
+      ],
+      "permutation": [
+        {
+          "fold": 0,
+          "seed": 2718,
+          "position_feature": "max_residue_position",
+          "strata_suffixes": [
+            "missense",
+            "synonymous",
+            "nonsense",
+            "frameshift",
+            "complex"
+          ],
+          "observed_values": 174579,
+          "values_in_shuffle_eligible_groups": 169518,
+          "changed_values": 154015,
+          "eligible_groups": 12775,
+          "singleton_groups": 5061,
+          "support_mismatches": 0
+        },
+        {
+          "fold": 1,
+          "seed": 12718,
+          "position_feature": "max_residue_position",
+          "strata_suffixes": [
+            "missense",
+            "synonymous",
+            "nonsense",
+            "frameshift",
+            "complex"
+          ],
+          "observed_values": 172947,
+          "values_in_shuffle_eligible_groups": 167969,
+          "changed_values": 152305,
+          "eligible_groups": 12759,
+          "singleton_groups": 4978,
+          "support_mismatches": 0
+        },
+        {
+          "fold": 2,
+          "seed": 22718,
+          "position_feature": "max_residue_position",
+          "strata_suffixes": [
+            "missense",
+            "synonymous",
+            "nonsense",
+            "frameshift",
+            "complex"
+          ],
+          "observed_values": 172687,
+          "values_in_shuffle_eligible_groups": 167764,
+          "changed_values": 152185,
+          "eligible_groups": 12680,
+          "singleton_groups": 4923,
+          "support_mismatches": 0
+        },
+        {
+          "fold": 3,
+          "seed": 32718,
+          "position_feature": "max_residue_position",
+          "strata_suffixes": [
+            "missense",
+            "synonymous",
+            "nonsense",
+            "frameshift",
+            "complex"
+          ],
+          "observed_values": 180066,
+          "values_in_shuffle_eligible_groups": 174943,
+          "changed_values": 158849,
+          "eligible_groups": 13150,
+          "singleton_groups": 5123,
+          "support_mismatches": 0
+        },
+        {
+          "fold": 4,
+          "seed": 42718,
+          "position_feature": "max_residue_position",
+          "strata_suffixes": [
+            "missense",
+            "synonymous",
+            "nonsense",
+            "frameshift",
+            "complex"
+          ],
+          "observed_values": 175293,
+          "values_in_shuffle_eligible_groups": 170228,
+          "changed_values": 154548,
+          "eligible_groups": 12842,
+          "singleton_groups": 5065,
+          "support_mismatches": 0
+        }
+      ],
+      "oof_path": "oof/explore_position_negative_control/seed_2718.csv",
+      "oof_sha256": "e6ef7270c772305829278d30c91136562ea4df2b2c7fa7bc679ab8b48a7efa9e"
+    }
+  ],
+  "summary": {
+    "mean_oof_macro_f1": 0.4058699663531724,
+    "std_across_permutation_seeds": 0.002935783739818293,
+    "signal_delta": 0.007230832942400567,
+    "interpretation": "SUPPORTED_NUMERIC_POSITION_SIGNAL",
+    "next_action": "EXP-069의 `max+zero`를 Position Feature Spec v1에 포함하고 단계 F 조합 실험으로 진행합니다."
+  }
+}
