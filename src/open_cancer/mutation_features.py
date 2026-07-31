@@ -32,6 +32,25 @@ ROBUST_GLOBAL_FEATURES = (
     "sample__missing_gene_ratio",
 )
 LOG_BURDEN_FEATURES = ROBUST_GLOBAL_FEATURES[:3]
+SAMPLE_DISTRIBUTION_FEATURES = (
+    *(f"sample__{mutation_type}_count_log1p" for mutation_type in MUTATION_TYPES),
+    *(f"sample__{mutation_type}_gene_count" for mutation_type in MUTATION_TYPES),
+    *(f"sample__{mutation_type}_gene_count_log1p" for mutation_type in MUTATION_TYPES),
+    "sample__truncating_count",
+    "sample__truncating_count_log1p",
+    "sample__damaging_count",
+    "sample__damaging_count_log1p",
+    "sample__mutation_type_diversity",
+    "sample__mutation_type_entropy",
+    "sample__variants_per_mutated_gene_mean",
+    "sample__max_variants_per_gene",
+    "sample__single_variant_gene_count",
+    "sample__single_variant_gene_count_log1p",
+)
+EXPANDED_DISTRIBUTION_FEATURES = (
+    *LOG_BURDEN_FEATURES,
+    *SAMPLE_DISTRIBUTION_FEATURES,
+)
 
 _SUBSTITUTION = re.compile(r"^([ACDEFGHIKLMNPQRSTVWY])([1-9][0-9]*)([ACDEFGHIKLMNPQRSTVWY*])$")
 
@@ -128,6 +147,9 @@ def _read_sparse_features(
                 labels.append(row[1])
 
             global_counts = {name: 0 for name in GLOBAL_FEATURES}
+            type_gene_counts = {mutation_type: 0 for mutation_type in MUTATION_TYPES}
+            max_variants_per_gene = 0
+            single_variant_gene_count = 0
             for gene_index, cell in enumerate(row[feature_start:]):
                 base = gene_offset + gene_index * gene_stride
                 if cell == "":
@@ -143,6 +165,9 @@ def _read_sparse_features(
 
                 global_counts["sample__mutated_gene_count"] += 1
                 global_counts["sample__total_variant_count"] += len(tokens)
+                max_variants_per_gene = max(max_variants_per_gene, len(tokens))
+                if len(tokens) == 1:
+                    single_variant_gene_count += 1
                 if len(tokens) > 1:
                     global_counts["sample__multi_variant_gene_count"] += 1
                 rows.append(row_index)
@@ -155,6 +180,7 @@ def _read_sparse_features(
                     observed_types.add(mutation_type)
                     global_counts[f"sample__{mutation_type}_count"] += 1
                 for mutation_type in sorted(observed_types):
+                    type_gene_counts[mutation_type] += 1
                     rows.append(row_index)
                     columns.append(base + gene_feature_index[mutation_type])
                     values.append(1.0)
@@ -168,6 +194,9 @@ def _read_sparse_features(
                 robust_values = _robust_aggregate_values(
                     global_counts,
                     gene_count=len(genes),
+                    type_gene_counts=type_gene_counts,
+                    max_variants_per_gene=max_variants_per_gene,
+                    single_variant_gene_count=single_variant_gene_count,
                 )
                 for name in robust_features:
                     value = robust_values[name]
@@ -287,12 +316,31 @@ def _robust_aggregate_values(
     counts: dict[str, int],
     *,
     gene_count: int,
+    type_gene_counts: dict[str, int] | None = None,
+    max_variants_per_gene: int = 0,
+    single_variant_gene_count: int = 0,
 ) -> dict[str, float]:
     """Create finite log/count-ratio features without using the target."""
 
     mutated_gene_count = counts["sample__mutated_gene_count"]
     total_variant_count = counts["sample__total_variant_count"]
     multi_variant_gene_count = counts["sample__multi_variant_gene_count"]
+    type_gene_counts = type_gene_counts or {
+        mutation_type: 0 for mutation_type in MUTATION_TYPES
+    }
+    truncating_count = (
+        counts["sample__nonsense_count"] + counts["sample__frameshift_count"]
+    )
+    damaging_count = (
+        counts["sample__missense_count"]
+        + counts["sample__nonsense_count"]
+        + counts["sample__frameshift_count"]
+    )
+    type_probabilities = [
+        counts[f"sample__{mutation_type}_count"] / total_variant_count
+        for mutation_type in MUTATION_TYPES
+        if counts[f"sample__{mutation_type}_count"] and total_variant_count
+    ]
     values = {
         "sample__mutated_gene_count_log1p": float(np.log1p(mutated_gene_count)),
         "sample__total_variant_count_log1p": float(np.log1p(total_variant_count)),
@@ -309,11 +357,37 @@ def _robust_aggregate_values(
             if gene_count
             else 0.0
         ),
+        "sample__truncating_count": float(truncating_count),
+        "sample__truncating_count_log1p": float(np.log1p(truncating_count)),
+        "sample__damaging_count": float(damaging_count),
+        "sample__damaging_count_log1p": float(np.log1p(damaging_count)),
+        "sample__mutation_type_diversity": float(len(type_probabilities)),
+        "sample__mutation_type_entropy": float(
+            -sum(probability * np.log(probability) for probability in type_probabilities)
+        ),
+        "sample__variants_per_mutated_gene_mean": (
+            float(total_variant_count / mutated_gene_count)
+            if mutated_gene_count
+            else 0.0
+        ),
+        "sample__max_variants_per_gene": float(max_variants_per_gene),
+        "sample__single_variant_gene_count": float(single_variant_gene_count),
+        "sample__single_variant_gene_count_log1p": float(
+            np.log1p(single_variant_gene_count)
+        ),
     }
     for mutation_type in MUTATION_TYPES:
         count = counts[f"sample__{mutation_type}_count"]
         values[f"sample__{mutation_type}_ratio"] = (
             float(count / total_variant_count) if total_variant_count else 0.0
+        )
+        values[f"sample__{mutation_type}_count_log1p"] = float(np.log1p(count))
+        affected_gene_count = type_gene_counts[mutation_type]
+        values[f"sample__{mutation_type}_gene_count"] = float(
+            affected_gene_count
+        )
+        values[f"sample__{mutation_type}_gene_count_log1p"] = float(
+            np.log1p(affected_gene_count)
         )
     return values
 
@@ -325,7 +399,11 @@ def _resolve_robust_features(
 ) -> tuple[str, ...]:
     if selected_robust_aggregates is None:
         return ROBUST_GLOBAL_FEATURES if include_robust_aggregates else ()
-    invalid = sorted(set(selected_robust_aggregates) - set(ROBUST_GLOBAL_FEATURES))
+    supported_features = {
+        *ROBUST_GLOBAL_FEATURES,
+        *SAMPLE_DISTRIBUTION_FEATURES,
+    }
+    invalid = sorted(set(selected_robust_aggregates) - supported_features)
     if invalid:
         raise ValueError(f"지원하지 않는 robust aggregate 피처입니다: {invalid}")
     if len(set(selected_robust_aggregates)) != len(selected_robust_aggregates):
