@@ -817,13 +817,13 @@
     "hardware": "Windows-10-10.0.26200-SP0"
   },
   "artifacts": {
-    "config": "reproducibility\\exp021_cosmic_correlated_baseline\\config.resolved.yaml",
-    "oof_predictions": "oof\\exp021_cosmic_correlated_baseline\\oof_predictions.csv",
-    "oof_probabilities": "oof\\exp021_cosmic_correlated_baseline\\oof_probabilities.npy",
-    "test_probabilities": "preds\\exp021_cosmic_correlated_baseline\\test_probabilities.npy",
-    "submission": "submissions\\exp021_cosmic_correlated_baseline.csv",
-    "class_f1": "reports\\exp021_cosmic_correlated_baseline\\class_f1.csv",
-    "models": "models\\exp021_cosmic_correlated_baseline"
+    "config": "reproducibility/exp021_cosmic_correlated_baseline/config.resolved.yaml",
+    "oof_predictions": "oof/exp021_cosmic_correlated_baseline/oof_predictions.csv",
+    "oof_probabilities": "oof/exp021_cosmic_correlated_baseline/oof_probabilities.npy",
+    "test_probabilities": "preds/exp021_cosmic_correlated_baseline/test_probabilities.npy",
+    "submission": "submissions/exp021_cosmic_correlated_baseline.csv",
+    "class_f1": "reports/exp021_cosmic_correlated_baseline/class_f1.csv",
+    "models": "models/exp021_cosmic_correlated_baseline"
   },
   "notes": "COSMIC protect 유전자 + fold별 재계산한 protect-burden 상관 상위 200개 확장. fold 평균 피처 수=561.0 (protect 361개 고정 + fold별 correlated 200개). 화이트리스트/피처 목록은 라이선스 미확정으로 Git 미포함, config.resolved.yaml의 feature_manifest.gene_selection 참고."
 }

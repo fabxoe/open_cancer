@@ -13,6 +13,8 @@ from open_cancer.validation import (
     validate_experiment_record_identity,
     validate_history,
     validate_json_document,
+    validate_portable_artifact_paths,
+    validate_split_metadata,
     validate_submission,
 )
 
@@ -139,6 +141,38 @@ def test_experiment_record_rejects_mismatched_issue(tmp_path: Path) -> None:
     )
     with pytest.raises(ValidationError, match="Issue #12"):
         validate_experiment_record_identity(path)
+
+
+def test_portable_artifact_paths_reject_windows_separator(tmp_path: Path) -> None:
+    path = tmp_path / "metrics.json"
+    path.write_text(
+        json.dumps({"artifacts": {"submission": "submissions\\exp012_test.csv"}}),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValidationError, match="경로는 '/'"):
+        validate_portable_artifact_paths(path)
+
+
+def test_split_metadata_rejects_modified_split(tmp_path: Path) -> None:
+    split_path = tmp_path / "split.csv"
+    split_path.write_text("ID,fold\nA,0\n", encoding="utf-8")
+    metadata_path = tmp_path / "split.meta.json"
+    metadata_path.write_text(
+        json.dumps(
+            {
+                "path": "data/splits/split.csv",
+                "sha256": "0" * 64,
+                "rows": 1,
+                "n_splits": 2,
+                "seed": 42,
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValidationError, match="공용 split SHA-256"):
+        validate_split_metadata(split_path, metadata_path)
 
 
 def test_history_accepts_issue_derived_id_and_numeric_branch(tmp_path: Path) -> None:

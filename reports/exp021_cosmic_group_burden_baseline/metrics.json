@@ -817,13 +817,13 @@
     "hardware": "Windows-10-10.0.26200-SP0"
   },
   "artifacts": {
-    "config": "reproducibility\\exp021_cosmic_group_burden_baseline\\config.resolved.yaml",
-    "oof_predictions": "oof\\exp021_cosmic_group_burden_baseline\\oof_predictions.csv",
-    "oof_probabilities": "oof\\exp021_cosmic_group_burden_baseline\\oof_probabilities.npy",
-    "test_probabilities": "preds\\exp021_cosmic_group_burden_baseline\\test_probabilities.npy",
-    "submission": "submissions\\exp021_cosmic_group_burden_baseline.csv",
-    "class_f1": "reports\\exp021_cosmic_group_burden_baseline\\class_f1.csv",
-    "models": "models\\exp021_cosmic_group_burden_baseline"
+    "config": "reproducibility/exp021_cosmic_group_burden_baseline/config.resolved.yaml",
+    "oof_predictions": "oof/exp021_cosmic_group_burden_baseline/oof_predictions.csv",
+    "oof_probabilities": "oof/exp021_cosmic_group_burden_baseline/oof_probabilities.npy",
+    "test_probabilities": "preds/exp021_cosmic_group_burden_baseline/test_probabilities.npy",
+    "submission": "submissions/exp021_cosmic_group_burden_baseline.csv",
+    "class_f1": "reports/exp021_cosmic_group_burden_baseline/class_f1.csv",
+    "models": "models/exp021_cosmic_group_burden_baseline"
   },
   "notes": "전체 4,384개 mutation-presence 피처(EXP-003과 동일) + COSMIC 가중 burden 파생 컬럼 2개: protect_burden(protect 361개, 가중치 1.0)과 correlated_burden(fold별 상관 상위 200개, 가중치=|correlation|)을 분리 유지 (attempt 3은 이 둘을 하나로 합침). 가중치는 fold train에서만 재계산(leakage 방지). 화이트리스트/가중치 상세는 라이선스 미확정으로 Git 미포함, config.resolved.yaml의 feature_manifest.group_burden 참고."
 }

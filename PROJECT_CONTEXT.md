@@ -388,6 +388,17 @@ resolved config에는 실행에 실제 적용된 항목만 기록한다.
 - 사용한 경우에만 앙상블 구성, 가중치, threshold, TTA와 후처리
 - 학습·추론 명령과 입력·출력 경로
 
+### macOS·Windows 공통 기록 규칙
+
+- config, metrics와 manifest에 저장하는 저장소 내부 경로는 OS와 관계없이 `/`를
+  사용하는 상대경로로 기록한다. Windows의 `\` 경로를 그대로 저장하지 않는다.
+- Git으로 공유하는 text 파일은 `.gitattributes`의 LF 정책을 따른다.
+- 공용 split의 canonical SHA-256은
+  `1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf`이다.
+- 과거 Windows 실행처럼 CRLF 때문에 byte SHA-256이 달라졌다면 실제 실행 해시를
+  삭제하지 않고 `canonical_repository_sha256`, 줄바꿈 형식과 논리적 fold 일치
+  여부를 함께 기록한다.
+
 부모 실험, 가설, 사람이 설명한 변경점은 선택 정보다. 작성자가 판단하기에 비교나
 의사결정에 도움이 될 때만 Issue 또는 config의 `notes`에 기록한다. 변경된 실제
 파라미터는 `config.resolved.yaml`과 Git diff로 확인하며 사람이 중복 기록하지 않는다.

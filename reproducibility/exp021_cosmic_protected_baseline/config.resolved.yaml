@@ -82,17 +82,20 @@ data_manifest:
   feature_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
   files:
     train:
-      path: data\raw\train.csv
+      path: data/raw/train.csv
       sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
     test:
-      path: data\raw\test.csv
+      path: data/raw/test.csv
       sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
     sample_submission:
-      path: data\raw\sample_submission.csv
+      path: data/raw/sample_submission.csv
       sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
   split:
-    path: data\splits\stratified_5fold_seed42.csv
+    path: data/splits/stratified_5fold_seed42.csv
     sha256: 6bc79dcce250a2abd5bf08998f43f6813b0b1edd9a31feff866c80713ff9107f
+    canonical_repository_sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+    recorded_line_ending: CRLF
+    logical_fold_assignments_match_canonical: true
     n_splits: 5
     fold_counts:
       '0': 1241
@@ -137,7 +140,7 @@ feature_manifest:
   - THYM
   - UCEC
   gene_selection:
-    gene_whitelist_path: reports\exp012_feature_analysis\protected_genes_final.csv
+    gene_whitelist_path: reports/exp012_feature_analysis/protected_genes_final.csv
     gene_whitelist_sha256: 0d9da76323513a45ada57ba7f9f9629007b38aba0c98f83003e63b4fa6322876
     gene_count: 361
     gene_order_sha256: 7092d9b8890e433d41e95ca5babfbc3f4e71441632455ca6fa7f4f25e3fe5ce1
@@ -184,21 +187,21 @@ resolved_model_params:
   - 591
   - 508
 command:
-  train: PYTHONHASHSEED=42 uv run python scripts/run_xgb_baseline.py --config configs\exp021_cosmic_protected_baseline.yaml
+  train: PYTHONHASHSEED=42 uv run python scripts/run_xgb_baseline.py --config configs/exp021_cosmic_protected_baseline.yaml
 outputs:
-  config: reproducibility\exp021_cosmic_protected_baseline\config.resolved.yaml
-  oof_predictions: oof\exp021_cosmic_protected_baseline\oof_predictions.csv
-  oof_probabilities: oof\exp021_cosmic_protected_baseline\oof_probabilities.npy
-  test_probabilities: preds\exp021_cosmic_protected_baseline\test_probabilities.npy
-  submission: submissions\exp021_cosmic_protected_baseline.csv
-  class_f1: reports\exp021_cosmic_protected_baseline\class_f1.csv
-  models: models\exp021_cosmic_protected_baseline
-  test_probability_csv: preds\exp021_cosmic_protected_baseline\test_probabilities.csv
-  metrics: reports\exp021_cosmic_protected_baseline\metrics.json
+  config: reproducibility/exp021_cosmic_protected_baseline/config.resolved.yaml
+  oof_predictions: oof/exp021_cosmic_protected_baseline/oof_predictions.csv
+  oof_probabilities: oof/exp021_cosmic_protected_baseline/oof_probabilities.npy
+  test_probabilities: preds/exp021_cosmic_protected_baseline/test_probabilities.npy
+  submission: submissions/exp021_cosmic_protected_baseline.csv
+  class_f1: reports/exp021_cosmic_protected_baseline/class_f1.csv
+  models: models/exp021_cosmic_protected_baseline
+  test_probability_csv: preds/exp021_cosmic_protected_baseline/test_probabilities.csv
+  metrics: reports/exp021_cosmic_protected_baseline/metrics.json
   submission_sha256: 0cde1175cfd92f19df16c6d4db8d70dc505fb2d07c18bd912e8723dfab6bc69e
   checkpoints:
-  - models\exp021_cosmic_protected_baseline\fold_00.json
-  - models\exp021_cosmic_protected_baseline\fold_01.json
-  - models\exp021_cosmic_protected_baseline\fold_02.json
-  - models\exp021_cosmic_protected_baseline\fold_03.json
-  - models\exp021_cosmic_protected_baseline\fold_04.json
+  - models/exp021_cosmic_protected_baseline/fold_00.json
+  - models/exp021_cosmic_protected_baseline/fold_01.json
+  - models/exp021_cosmic_protected_baseline/fold_02.json
+  - models/exp021_cosmic_protected_baseline/fold_03.json
+  - models/exp021_cosmic_protected_baseline/fold_04.json

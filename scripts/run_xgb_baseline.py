@@ -27,6 +27,7 @@ from sklearn.utils.class_weight import compute_sample_weight
 from open_cancer.constants import CLASS_LABELS, PROBABILITY_COLUMNS
 from open_cancer.experiment import resolve_experiment_context
 from open_cancer.hashing import sha256_file, sha256_lines
+from open_cancer.paths import relative_posix
 from open_cancer.validation import (
     validate_competition_data,
     validate_json_document,
@@ -59,7 +60,7 @@ def _git_output(*args: str) -> str:
 
 
 def _relative(path: Path) -> str:
-    return str(path.resolve().relative_to(PROJECT_ROOT.resolve()))
+    return relative_posix(path, PROJECT_ROOT)
 
 
 def _write_json(path: Path, value: dict[str, Any]) -> None:

@@ -151,6 +151,40 @@ def create_stratified_folds(
     }
 
 
+def validate_split_metadata(
+    split_path: str | Path,
+    metadata_path: str | Path,
+) -> dict[str, Any]:
+    """Verify that the committed split bytes match its canonical metadata."""
+    split_path = Path(split_path)
+    metadata_path = Path(metadata_path)
+    _require(split_path.is_file(), f"공용 split 파일이 없습니다: {split_path}")
+    _require(metadata_path.is_file(), f"공용 split metadata가 없습니다: {metadata_path}")
+
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    expected_sha256 = metadata.get("sha256")
+    _require(
+        isinstance(expected_sha256, str) and len(expected_sha256) == 64,
+        f"{metadata_path}: 올바른 sha256 값이 필요합니다.",
+    )
+    actual_sha256 = sha256_file(split_path)
+    _require(
+        actual_sha256 == expected_sha256,
+        (
+            "공용 split SHA-256이 metadata와 다릅니다. "
+            "줄바꿈 변환 또는 파일 수정을 확인하세요: "
+            f"{actual_sha256} != {expected_sha256}"
+        ),
+    )
+    return {
+        "path": metadata.get("path"),
+        "sha256": actual_sha256,
+        "rows": metadata.get("rows"),
+        "n_splits": metadata.get("n_splits"),
+        "seed": metadata.get("seed"),
+    }
+
+
 def validate_json_document(document_path: Path, schema_path: Path) -> None:
     """Validate one JSON document and include every schema error in the exception."""
     document = json.loads(document_path.read_text(encoding="utf-8"))
@@ -255,3 +289,31 @@ def validate_experiment_record_identity(document_path: str | Path) -> dict[str, 
     except ValueError as error:
         raise ValidationError(f"{document_path}: {error}") from error
     return {"experiment_id": experiment_id, "issue_number": issue_number}
+
+
+def validate_portable_artifact_paths(document_path: str | Path) -> None:
+    """Reject OS-specific or absolute artifact paths in shared JSON records."""
+    document_path = Path(document_path)
+    document = json.loads(document_path.read_text(encoding="utf-8"))
+
+    candidates: list[str] = []
+    artifacts = document.get("artifacts")
+    if isinstance(artifacts, dict):
+        candidates.extend(
+            value
+            for key, value in artifacts.items()
+            if isinstance(value, str) and not key.endswith("sha256")
+        )
+    elif isinstance(artifacts, list):
+        candidates.extend(
+            item["path"]
+            for item in artifacts
+            if isinstance(item, dict) and isinstance(item.get("path"), str)
+        )
+
+    for value in candidates:
+        _require("\\" not in value, f"{document_path}: 경로는 '/'를 사용해야 합니다: {value}")
+        _require(
+            not value.startswith("/") and not re.match(r"^[A-Za-z]:/", value),
+            f"{document_path}: 절대경로를 저장할 수 없습니다: {value}",
+        )
