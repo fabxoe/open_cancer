@@ -1,0 +1,69 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+from open_cancer.hashing import sha256_file
+from open_cancer.reproducibility import prepare_reproducibility_bundle
+
+
+def test_prepare_reproducibility_bundle_is_deterministic(tmp_path: Path) -> None:
+    slug = "exp012_test"
+    artifact_paths = {
+        "checkpoint": "models/exp012_test/fold_00.json",
+        "oof_probability": "oof/exp012_test.csv",
+        "test_probability": "preds/exp012_test.csv",
+        "submission": "submissions/exp012_test.csv",
+        "resolved_config": "reproducibility/exp012_test/config.resolved.yaml",
+    }
+    artifacts = []
+    for kind, relative in artifact_paths.items():
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(f"{kind}\n", encoding="utf-8")
+        artifacts.append(
+            {
+                "kind": kind,
+                "path": relative,
+                "size_bytes": path.stat().st_size,
+                "sha256": sha256_file(path),
+                "storage_uri": None,
+            }
+        )
+    manifest_path = tmp_path / "reproducibility" / slug / "artifact_manifest.json"
+    manifest_path.write_text(
+        json.dumps(
+            {
+                "experiment_id": "EXP-012",
+                "source_commit": "a" * 40,
+                "source_tag": None,
+                "release_url": None,
+                "artifacts": artifacts,
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    first = prepare_reproducibility_bundle(
+        root=tmp_path,
+        slug=slug,
+        tag="exp-012-repro-v1",
+        repository="test/repo",
+        output_dir=tmp_path / "dist",
+    )
+    second = prepare_reproducibility_bundle(
+        root=tmp_path,
+        slug=slug,
+        tag="exp-012-repro-v1",
+        repository="test/repo",
+        output_dir=tmp_path / "dist",
+    )
+
+    assert first["sha256"] == second["sha256"]
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assert manifest["source_tag"] == "exp-012-repro-v1"
+    assert manifest["release_url"].endswith("/exp-012-repro-v1")
+    assert all(
+        artifact["storage_uri"].startswith("https://")
+        for artifact in manifest["artifacts"]
+    )

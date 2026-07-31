@@ -1,0 +1,24 @@
+required_artifact_kinds:
+  - checkpoint
+  - oof_probability
+  - test_probability
+  - submission
+  - resolved_config
+  - release_bundle
+
+accepted_kind_aliases:
+  submission:
+    - original_submission
+  test_probability:
+    - reproduced_test_probabilities
+
+legacy_exceptions:
+  EXP-003:
+    reason: 표준 번들 정책 도입 전 Release이며 OOF와 제출 파일 storage URI가 없다.
+    follow_up: 다음 최종 제출 후보 선정 전에 v2 번들로 교체한다.
+  EXP-021:
+    reason: 표준 번들 정책 도입 전 제출했고 checkpoint와 manifest가 공유되지 않았다.
+    follow_up: EXP-021 재현성 복구 작업에서 정리한다.
+  EXP-026:
+    reason: 표준 번들 정책 도입 전 제출했고 checkpoint와 manifest가 공유되지 않았다.
+    follow_up: EXP-026 재현성 복구 작업에서 정리한다.

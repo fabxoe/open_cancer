@@ -156,6 +156,36 @@ schemas/           지표·재현성 JSON Schema
 tests/             데이터가 없어도 실행 가능한 단위 테스트
 ```
 
+### Feature Factory 운영 계약
+
+모든 모델이 같은 파생변수를 재사용하도록 공통 Feature Factory를 사용한다. 구현,
+캐시, family Registry, 동결과 스태킹 전환 규칙의 단일 상세 문서는
+[`docs/FEATURE_FACTORY.md`](docs/FEATURE_FACTORY.md)다.
+
+- Factory는 원본 CSV를 행 단위로 streaming 파싱하고, 파싱한 토큰에서만 피처를
+  계산한다.
+- 각 family는 정의 버전, 출력 차원, fit 범위와 외부 지식 출처를 Registry에
+  기록한다.
+- 입력 데이터 해시, 유전자 순서와 Feature Spec 해시가 모두 같고 모든 캐시
+  산출물 해시가 일치할 때만 `data/processed/` 캐시를 재사용한다.
+- family는 config에서 독립적으로 활성화하고, 실행값은 resolved config에
+  자동 저장한다.
+- target이나 관측 빈도로 hotspot, vocabulary, co-mutation pair를 고르는 family는
+  fold-train에서만 fit한다.
+- 공식 family 채택은 새 Experiment Issue와 공용 전체 5-fold를 사용한다. 빠른
+  screening fold의 점수를 공식 결과로 기록하지 않는다.
+- 외부 pathway, PPI, COSMIC 원본은 모델 입력 행으로 사용하지 않는다. 허용된
+  외부 지식은 고정 그룹·관계·계산 규칙만 정의하며 환자별 입력값은 제공된
+  4,384개 변이 셀에서 계산한다.
+- 외부 지식에는 출처, 버전, 라이선스, 원본 SHA-256과 재배포 제한을 manifest에
+  기록한다.
+- 위치 숫자는 입력 토큰에 명시된 단백질 잔기 위치다. genomic coordinate,
+  codon nucleotide 위치나 transcript 정규화 좌표로 추정하지 않는다.
+- Feature Spec v1을 동결한 뒤 모델 OOF 생산과 스태킹으로 전환한다. 이후 새
+  family 아이디어는 v2 후보로 옮겨 현재 스태킹을 지연시키지 않는다.
+- Public LB 또는 test 분포를 보고 파서, 유전자 그룹, hotspot이나 feature 규칙을
+  수정하지 않는다.
+
 ### 파일 명명 규칙
 
 Experiment Issue #12에서 파생된 `EXP-012`의 파일 slug는
@@ -492,6 +522,63 @@ reproducibility/exp012_<slug>/
 - 기존 asset을 덮어쓰지 않고 변경 시 `v2`를 만든다.
 - asset 하나는 2 GiB 미만이어야 하며, 초과하면 fold별 또는 분할 압축한다.
 - 참고: <https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases>
+
+### 리더보드 제출 담당자의 재현 번들 절차
+
+리더보드에 제출한 사람은 같은 Issue 브랜치와 PR에서 재현 번들 보관까지
+완료한다. 팀장이나 다른 팀원이 나중에 로컬 산출물을 복구하는 방식으로 미루지
+않는다.
+
+1. 제출 전에 아래 공통 파일을 생성한다.
+
+   ```text
+   models/expNNN_<slug>/fold_*.json
+   oof/expNNN_<slug>.csv
+   preds/expNNN_<slug>_test_proba.csv
+   submissions/expNNN_<slug>.csv
+   reproducibility/expNNN_<slug>/config.resolved.yaml
+   reproducibility/expNNN_<slug>/artifact_manifest.json
+   ```
+
+2. manifest의 artifact kind는 `checkpoint`, `oof_probability`,
+   `test_probability`, `submission`, `resolved_config`를 사용한다. 각 항목에는
+   실제 상대경로, 크기와 SHA-256을 기록한다.
+3. 정확한 실행 source commit을 가리키는 tag를 만든다.
+
+   ```bash
+   git tag -a exp-012-repro-v1 <SOURCE_COMMIT> -m "EXP-012 reproducibility source"
+   git push origin exp-012-repro-v1
+   ```
+
+4. 공통 스크립트로 OS와 관계없이 같은 구조의 번들을 생성하고 manifest의
+   Release URL과 storage URI를 자동으로 채운다.
+
+   ```bash
+   uv run python scripts/prepare_reproducibility_bundle.py \
+     --slug exp012_<slug> \
+     --tag exp-012-repro-v1
+   ```
+
+5. 출력된 `dist/reproducibility/*.tar.gz`를 해당 GitHub Release에 업로드한다.
+   업로드가 끝난 뒤 출력된 SHA-256과 Release asset을 대조한다. 원본 CSV는
+   번들에 넣지 않는다.
+6. 리더보드 점수와 제출 시각을 History에 기록하고 다음 검증을 실행한다.
+
+   ```bash
+   uv run python scripts/validate_experiment.py --check-remote-storage
+   ```
+
+CI는 History의 리더보드 제출 이력을 기준으로 새 제출 모델에 다음 사항을
+강제한다.
+
+- `INFERENCE_VERIFIED` 이상의 manifest
+- checkpoint, OOF 확률, test 확률, 제출 CSV, resolved config와 release bundle
+- 각 필수 artifact의 HTTPS `storage_uri`
+- `release_url` 및 실제 Release asset 접근 가능 여부
+
+정책 도입 전에 제출된 예외는 `configs/reproducibility_policy.yaml`에 사유와
+후속 작업을 함께 기록한다. 새 실험을 편의상 예외 목록에 추가해서는 안 된다.
+현재 예외도 해당 실험의 재현성 복구가 끝나면 즉시 삭제한다.
 
 ---
 
