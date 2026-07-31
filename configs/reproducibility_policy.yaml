@@ -25,3 +25,6 @@ legacy_exceptions:
   EXP-031:
     reason: 재현 번들 정책이 main에 병합되기 전에 진행 중인 PR에서 제출했으며 원 Windows checkpoint와 test 확률이 보관되지 않았다.
     follow_up: 독립 재학습 불일치를 FAILED로 기록했다. 최종 후보로 사용하려면 새 Issue에서 clean 실행 후 제출 전에 번들을 보관한다.
+  EXP-030:
+    reason: 번들 정책 도입 후 제출됐지만 원 WSL checkpoint, OOF와 test 확률이 GitHub Release에 보관되지 않아 현재 clone에서 제출 번들을 구성할 수 없다.
+    follow_up: 원 실행자가 WSL 산출물을 exp-030-repro-v1 Release로 보관하고 manifest의 storage URI를 갱신한 뒤 이 임시 예외를 제거한다.
