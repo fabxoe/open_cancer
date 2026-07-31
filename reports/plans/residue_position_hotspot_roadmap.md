@@ -22,7 +22,7 @@
 
 | 단계 | 작업 | Issue | EXP | PR | 상태 | OOF Macro F1 | 재현 상태 | 판단 | 다음 행동 |
 |---|---|---:|---|---:|---|---:|---|---|---|
-| A | EXP-067+069 고정 blend | [#75](https://github.com/fabxoe/open_cancer/issues/75) | EXP-075 | - | IN_PROGRESS | 0.4157910775 | INFERENCE_VERIFIED | 두 부모 대비 개선으로 채택 | PR 생성·검토 |
+| A | EXP-067+069 고정 blend | [#75](https://github.com/fabxoe/open_cancer/issues/75) | EXP-075 | [#77](https://github.com/fabxoe/open_cancer/pull/77) | PR_OPEN | 0.4157910775 | INFERENCE_VERIFIED | 두 부모 대비 개선으로 채택 | PR 검토·병합 |
 | B | max+indicator | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | A 완료 대기 |
 | C | hotspot runner 정리 | 미발급 | 해당 없음 | - | PLANNED | N/A | 해당 없음 | - | B 완료 대기 |
 | D | hotspot clean 실험 | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | C 완료 대기 |
