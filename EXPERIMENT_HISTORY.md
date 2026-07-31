@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 21
+- 실제 실험 수: 22
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4157910775 (`EXP-075`)
@@ -40,6 +40,7 @@
 | EXP-069 | COMPLETED | fabxoe | #69 | EXP-047의 min residue 위치를 max로 교체 | 0.4131007993 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 감소로 채택 후보 | [보고서](reports/exp069_xgb_max_residue_position/README.md) |
 | EXP-075 | COMPLETED | fabxoe | #75 | EXP-067·069 확률의 사전 고정 0.5/0.5 평균 | 0.4157910775 | 미제출 | INFERENCE_VERIFIED | 두 부모 대비 OOF·Log Loss 개선과 fold 변동성 감소로 채택 | [보고서](reports/exp075_residue_probability_blend/README.md) |
 | EXP-078 | COMPLETED | fabxoe | #78 | EXP-069 max residue-position + 관측 indicator | 0.4110815504 | 미제출 | INFERENCE_VERIFIED | OOF 하락·fold 변동성 악화 및 Issue #80 중복 확인으로 기각, EXP-069 max+zero 동결 | [보고서](reports/exp078_xgb_max_residue_indicator/README.md) |
+| EXP-085 | COMPLETED | fabxoe | #85 | EXP-005 + reference-aware 고정 문헌 hotspot 34개 | 0.4125795545 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 +0.008200, clean hotspot family 복구 성공·채택 | [보고서](reports/exp085_hotspot_clean/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -73,10 +74,39 @@
 | 2026-07-31T14:04:09.991821+00:00 | EXP-078 | fabxoe | `e2a822e576095a25bdf01a46c1bb5e404684f316` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp078_xgb_max_residue_indicator/comparison.json) |
 | 2026-07-31T07:58:45.020690+00:00 | EXP-030 | Gomin-art | `64b72df89ee5cf0b66409f494475aca753238184` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 5.83e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp030_sparse_variant_xgb/comparison.json) |
 | 2026-07-31T10:18:14.298161+00:00 | EXP-058 | Kangho-Park | `45b353ce4073e4a9bad0c0866f4cb84ac5a53fe7` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp058_cooccurrence_pair_ablation/comparison.json) |
+| 2026-07-31T14:54:04.764691+00:00 | EXP-085 | fabxoe | `e329f13f7de85cc34c0e54c85f25f093e2ed0dd1` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp085_hotspot_clean/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-085] Clean fixed-hotspot reconstruction
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #85 / issue-85-exp-hotspot-clean
+- 소스 commit: `e329f13f7de85cc34c0e54c85f25f093e2ed0dd1`
+- 시작/종료: 2026-07-31T14:45:10.739046+00:00 / 2026-07-31T14:53:48.871458+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp085_hotspot_clean/config.resolved.yaml`
+- Metrics: `reports/exp085_hotspot_clean/metrics.json`
+- Report: `reports/exp085_hotspot_clean/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4070290, 0.4219064, 0.4059511, 0.4005702, 0.4232571
+- OOF Macro F1: 0.4125795545
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- EXP-005 대비 OOF `+0.0081999`, fold 표준편차 악화 `+0.0004454`,
+  log loss `-0.0316354`로 단계 D 복구 기준을 통과했습니다.
+- 저장 checkpoint 재추론의 test 라벨 100%·제출 SHA-256 일치를 확인했습니다.
+- 고정 hotspot family를 단계 F 조합 후보로 채택합니다.
 
 ### [EXP-003] XGBoost mutation-presence baseline
 

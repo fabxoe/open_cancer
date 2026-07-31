@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-085",
+  "issue_number": 85,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "e329f13f7de85cc34c0e54c85f25f093e2ed0dd1",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp085_hotspot_clean/data_manifest.json",
+  "environment": "reproducibility/exp085_hotspot_clean/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-07-31T14:54:04.764691+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp085_hotspot_clean/fold_00.json",
+      "size_bytes": 12934920,
+      "sha256": "ee507da82bf270ab69f7174007d03b7981a14c79dfa9cdb8575bf28b4b5c093e",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp085_hotspot_clean/fold_01.json",
+      "size_bytes": 14469834,
+      "sha256": "a58fdee881075440b5df32ad4d58d3ac467f47b4d28085430d87cb9b512882bc",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp085_hotspot_clean/fold_02.json",
+      "size_bytes": 14535676,
+      "sha256": "6d480fa9668115317199b1c0719ba87be98304135c2775f523f45aa6979e62d7",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp085_hotspot_clean/fold_03.json",
+      "size_bytes": 13327823,
+      "sha256": "ddf222795eca041c8a064c52b757ae7d94ec8f6bae5ccedcc2c40cecd95e5e33",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp085_hotspot_clean/fold_04.json",
+      "size_bytes": 13588614,
+      "sha256": "1fae83bcdcd6836bec601a0de548cd4d2b33f4a0037ead9dac92f36fcec4c0a4",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp085_hotspot_clean.csv",
+      "size_bytes": 38143,
+      "sha256": "d319c6967ea98b75c158265fe3b46a5ebb12db207a19cd87964476154eecfe5d",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp085_hotspot_clean.csv",
+      "size_bytes": 2135778,
+      "sha256": "d62dd73417c0bc48c0a2581dd4d1fa1db1a284e76a10797cdea476bf0a65a3cf",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp085_hotspot_clean_test_proba.csv",
+      "size_bytes": 836071,
+      "sha256": "72f5d1be0c4367a402ca823f76cc5c50f09f362d375ca07f44bc07580c2e7b35",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp085_hotspot_clean/metrics.json",
+      "size_bytes": 11244,
+      "sha256": "955f050de191a4b6e4ff3bf1b9cff27aaafdb7d5bd3633ab831d4f36b48609d5",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp085_hotspot_clean/config.resolved.yaml",
+      "size_bytes": 17294,
+      "sha256": "99eac1ca5fbd6966f0c2c7b7caf23adfab2ac017382971daefc89512fcbc407c",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
