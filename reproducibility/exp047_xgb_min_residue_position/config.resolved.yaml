@@ -1,0 +1,181 @@
+experiment:
+  issue_number: 47
+  experiment_id: EXP-047
+  branch: issue-47-exp-min-residue-position
+  owner: fabxoe
+  source_commit: 78c52694163c8b3f8e76557a93d271843b1627fa
+  dirty_worktree: false
+  started_at: '2026-07-31T07:32:46.567840+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features:
+  - sample__mutated_gene_count_log1p
+  - sample__total_variant_count_log1p
+  - sample__multi_variant_gene_count_log1p
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features:
+  - min_residue_position
+  position_semantics: protein residue indices explicitly written in source tokens;
+    no transcript, codon nucleotide, genomic coordinate, or protein-length inference
+  feature_factory_version: 1.0.0
+  feature_spec_sha256: 562b712a314aebee07cf9d17c18639ec2116a24dbd15a0fe2288c82c6cc7107a
+  requested_families:
+    mutation_type:
+      enabled: true
+    residue_position:
+      enabled: true
+      aggregates:
+      - min
+feature_registry:
+  mutation_type:
+    definition_version: 1.0.0
+    enabled: true
+    output_dimension: 30697
+    fit_scope: stateless; train and test parsed independently
+    external_knowledge: null
+  robust_aggregate:
+    definition_version: 1.0.0
+    enabled: true
+    features:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+    output_dimension: 3
+    fit_scope: stateless per-sample aggregation
+    external_knowledge: null
+  residue_position:
+    definition_version: 1.0.0
+    enabled: true
+    features:
+    - min_residue_position
+    output_dimension: 4384
+    fit_scope: stateless lexical parse; no target or test-distribution fit
+    external_knowledge: null
+feature_outputs:
+  train_features.npz:
+    path: data/processed/feature_factory/v1/exp047_min_residue_position/train_features.npz
+    sha256: 22389176297720b6812516fb98501ee74508f2142cf943f68b554a23819d18ce
+  test_features.npz:
+    path: data/processed/feature_factory/v1/exp047_min_residue_position/test_features.npz
+    sha256: 41d2a906d15960ce25070be73ad025a5c3422c6234f1658ea5bddeaa3c9f41d1
+  train_ids.csv:
+    path: data/processed/feature_factory/v1/exp047_min_residue_position/train_ids.csv
+    sha256: 76d4b6e523b4509d16c9b65e458f9616c94b7262a844ec107971649de20e95d1
+  test_ids.csv:
+    path: data/processed/feature_factory/v1/exp047_min_residue_position/test_ids.csv
+    sha256: 39321e5b32cdf9400476db97c38800a28fa58d20ddb25730da31fbcf91f3ebfe
+  train_labels.csv:
+    path: data/processed/feature_factory/v1/exp047_min_residue_position/train_labels.csv
+    sha256: ca66b734a3adefc9ce38348a71e29edc4c6061ffaab72e468c574a70fa6d2a06
+  feature_names.json:
+    path: data/processed/feature_factory/v1/exp047_min_residue_position/feature_names.json
+    sha256: 4d305fa0bdedf0ef5987201ad5951308de782ae0a54f4aab8a361fc83471e07c
+  feature_spec.json:
+    path: data/processed/feature_factory/v1/exp047_min_residue_position/feature_spec.json
+    sha256: 4a6e963909a1ef172f3c0bde8b2923f73283de44f9f5c5dcc1898d9517ae1a10
+  feature_registry.json:
+    path: data/processed/feature_factory/v1/exp047_min_residue_position/feature_registry.json
+    sha256: e269d2ffbd0d450f9989a7b74330ebf704d4db052afe6506c683f5915368aec7
+  parsing_qc.json:
+    path: data/processed/feature_factory/v1/exp047_min_residue_position/parsing_qc.json
+    sha256: a460deefb7c99d7148027a4b9ad948524d6715075fa2ee9593a5e133ca517417
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+  - mutation_presence
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  - log_mutated_gene_count
+  - log_total_variant_count
+  - log_multi_variant_gene_count
+  - min_residue_position
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  command: uv run python scripts/run_exp047_xgb_min_residue_position.py
+environment:
+  python: 3.11.10 (main, Oct 11 2024, 15:45:30) [Clang 15.0.0 (clang-1500.3.9.4)]
+  platform: macOS-26.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: cea0d1a7c46efd4675ebb3982a309c56b85c793f0712ba24d04d1a7c6bd110ae

@@ -34,7 +34,10 @@ from sklearn.utils.class_weight import compute_sample_weight
 from open_cancer.constants import CLASS_LABELS, PROBABILITY_COLUMNS
 from open_cancer.experiment import resolve_experiment_context
 from open_cancer.hashing import sha256_file
-from open_cancer.mutation_features import build_mutation_features
+from open_cancer.mutation_features import (
+    RESIDUE_POSITION_FEATURES,
+    build_mutation_features,
+)
 from open_cancer.paths import relative_posix
 from open_cancer.validation import validate_json_document, validate_submission
 
@@ -68,6 +71,36 @@ def file_record(path: Path) -> dict[str, Any]:
         "size_bytes": path.stat().st_size,
         "sha256": sha256_file(path),
     }
+
+
+def resolve_position_features(config: dict[str, Any]) -> tuple[str, ...]:
+    """Resolve the config-facing aggregate names to factory feature names."""
+
+    families = config.get("features", {})
+    mutation_type = families.get("mutation_type", {"enabled": True})
+    if not mutation_type.get("enabled", True):
+        raise ValueError(
+            "이 공통 runner에서는 mutation_type core family를 끌 수 없습니다."
+        )
+    residue_position = families.get("residue_position", {"enabled": False})
+    if not residue_position.get("enabled", False):
+        return ()
+
+    aggregate_mapping = {"min": "min_residue_position"}
+    aggregates = residue_position.get("aggregates", [])
+    invalid = sorted(set(aggregates) - set(aggregate_mapping))
+    if invalid:
+        raise ValueError(f"지원하지 않는 residue position aggregate입니다: {invalid}")
+    resolved = tuple(aggregate_mapping[name] for name in aggregates)
+    if not resolved:
+        raise ValueError(
+            "residue_position을 활성화하면 aggregates를 하나 이상 지정해야 합니다."
+        )
+    if len(set(resolved)) != len(resolved):
+        raise ValueError("residue position aggregate가 중복됐습니다.")
+    if set(resolved) - set(RESIDUE_POSITION_FEATURES):
+        raise ValueError("Feature Factory가 지원하지 않는 위치 피처입니다.")
+    return resolved
 
 
 def write_local_dashboard(
@@ -474,6 +507,7 @@ def run_experiment(
     started_at = datetime.now(timezone.utc)
     start_time = time.perf_counter()
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    selected_position_features = resolve_position_features(config)
     context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
     expected_experiment_id = f"EXP-{expected_issue_number:03d}"
     if (
@@ -520,6 +554,7 @@ def run_experiment(
         feature_dir,
         include_robust_aggregates=include_robust_aggregates,
         selected_robust_aggregates=selected_robust_aggregates,
+        selected_position_features=selected_position_features,
     )
 
     train_meta = pd.read_csv(TRAIN_PATH, usecols=["ID", "SUBCLASS"], dtype=str)
@@ -575,7 +610,17 @@ def run_experiment(
             "shuffle": True,
             "seed": config["seed"],
         },
-        "features": feature_report["feature_contract"],
+        "features": {
+            **feature_report["feature_contract"],
+            "requested_families": config.get(
+                "features",
+                {
+                    "mutation_type": {"enabled": True},
+                    "residue_position": {"enabled": False},
+                },
+            ),
+        },
+        "feature_registry": feature_report["feature_registry"],
         "feature_outputs": {
             name: {
                 **metadata,
