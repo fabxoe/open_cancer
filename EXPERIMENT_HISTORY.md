@@ -7,13 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 4
+- 실제 실험 수: 5
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4043796587000222 (`EXP-005`)
 - 최고 Public LB Macro F1: 0.2987843366 (`EXP-005`)
 - 최고 재현 검증 모델: `EXP-005` (`INFERENCE_VERIFIED`)
-- 최종 갱신일: 2026-07-30
+- 최종 갱신일: 2026-07-31
 
 ## 실험 요약
 
@@ -23,6 +23,7 @@
 | EXP-005 | COMPLETED | 2heej | #5 | XGBoost + 유전자×변이유형 희소 피처 | 0.4043796587000222 | 0.2987843366 | INFERENCE_VERIFIED | 제출 재생성 검증 완료·Release 보관 필요 | [보고서](reports/exp005_xgb_mutation_features/README.md) |
 | EXP-012 | COMPLETED | Kangho-Park | #12 | COSMIC 보호 유전자 기반 feature 보호 전략 분석 (모델 학습 없음) | N/A (분석 전용) | 미제출 | NOT_STARTED | 채택 | [상세](#exp-012-cosmic-보호-유전자-기반-feature-보호-전략-분석) |
 | EXP-026 | COMPLETED | fabxoe | #26 | XGBoost mutation-presence + mutated-gene count | 0.3817476632 | 0.2575936484 | NOT_STARTED | EXP-003 대비 개선, EXP-005보다 낮음 | [보고서](reports/exp026_mutation_burden/README.md) |
+| EXP-031 | COMPLETED | Kangho-Park | #31 | EXP-005 변이유형 피처 + COSMIC 보호유전자×변이유형 교차 피처 (attempt 2, LOF count만 사용이 최고) | 0.4017847879 | 미제출 | NOT_STARTED | 미채택(EXP-005 대비 두 attempt 모두 소폭 낮음) | [상세](#exp-031-exp-005-변이유형-피처--cosmic-보호유전자-교차-피처) |
 
 ## 리더보드 제출 이력
 
@@ -180,3 +181,76 @@
 - EXP-005보다 OOF와 Public LB가 모두 낮아 최종 제출 후보로 선택하지 않음.
 - 제출 파일 형식과 SHA-256은 확인했지만 저장 체크포인트로 제출 파일을
   독립 재생성하는 검증은 아직 수행하지 않았으므로 `NOT_STARTED`로 기록함.
+
+### [EXP-031] EXP-005 변이유형 피처 + COSMIC 보호유전자 교차 피처
+
+- 상태: COMPLETED
+- 실행자: Kangho Park
+- Issue/브랜치: #31 / issue-31-cosmic-mutation-type-cross
+- 소스 commit: `25c8434cfe19ecb8943aeec02e91c25f8ca38862`
+- 시작/종료: 2026-07-31 (아래 attempt 1·2 모두 이 실험 세션에서 순서대로 실행)
+
+#### 실행
+
+EXP-005(#5)의 유전자×변이유형 희소 피처(30,697개)를 그대로 재현하고, 여기에
+EXP-012(#12)의 COSMIC 보호 유전자 화이트리스트(361개)를 "보호 유전자 ×
+변이유형" 교차 파생변수로 추가하는 두 가지 구성을 비교했다. EXP-021(#21)의
+가중합 burden 스칼라 1개 방식과 달리, 변이 유형 구분을 유지한 채 COSMIC
+지식을 교차시켰다. 새 로직은 fold 분할과 무관하게 train/test 전체에서 계산되는
+결정적 피처이므로 leakage 위험이 없다(PROJECT_CONTEXT.md 5절).
+
+| 시도 | 피처 구성 | 피처 수 | Config | Metrics |
+|---|---|---:|---|---|
+| attempt 1 | EXP-005 전체 + 보호유전자 교차 8개(mutated/missense/synonymous/nonsense/frameshift/complex/missing count + LOF count) | 30,705 | `configs/exp031_cosmic_mutation_type_cross.yaml` | `reports/exp031_cosmic_mutation_type_cross/metrics.json` |
+| **attempt 2** | EXP-005 전체 + 보호유전자 LOF(nonsense+frameshift) count 1개만 | 30,698 | `configs/exp031_cosmic_lof_only_cross.yaml` | `reports/exp031_cosmic_lof_only_cross/metrics.json` |
+
+- Report: N/A
+- 재현성 manifest: `reproducibility/exp031_cosmic_mutation_type_cross/config.resolved.yaml`,
+  `reproducibility/exp031_cosmic_lof_only_cross/config.resolved.yaml`
+
+#### 결과
+
+| 시도 | OOF Macro F1 | Accuracy | Log Loss |
+|---|---:|---:|---:|
+| EXP-005(부모, 비교 기준) | 0.4043796587 | 0.396549 | 1.863207 |
+| attempt 1(교차 8개) | 0.3956074120 | 0.388486 | 1.875899 |
+| **attempt 2(LOF count만)** | **0.4017847879** | 0.393969 | 1.864124 |
+
+- Fold Macro F1(attempt 1): 0.386807, 0.398357, 0.385085, 0.388885, 0.411211
+- Fold Macro F1(attempt 2): 0.403056, 0.411966, 0.390054, 0.387770, 0.409737
+- Public LB: 미제출 (두 attempt 모두 EXP-005 대비 개선되지 않아 제출하지 않음)
+- 재현 상태: NOT_STARTED
+
+클래스별로는 attempt 2에서 ACC(+0.0205), LAML(+0.0182), SARC(+0.0168),
+KIPAN(+0.0124), SKCM(+0.0081) 등 일부(주로 중간 규모) 클래스가 EXP-005보다
+개선됐지만, PAAD(-0.0432), LUSC(-0.0378), LIHC(-0.0245), GBMLGG(-0.0145)의
+하락폭이 더 커서 전체 OOF는 소폭 낮았다. attempt 1은 거의 모든 클래스에서
+attempt 2보다 나빴다(전체 OOF 기준 -0.0062p 추가 하락).
+
+#### 산출물과 결론
+
+- Metrics/Reproduction: 위 표의 시도별 경로
+- 코드: `src/open_cancer/cosmic_mutation_features.py`
+  (`build_cosmic_mutation_features`, `build_cosmic_cross_matrix`),
+  `scripts/run_exp031_cosmic_mutation_type_cross.py`,
+  `scripts/run_exp031_cosmic_lof_only_cross.py`
+- 결론: **미채택**. "COSMIC 보호 유전자 × 변이유형 교차 파생변수가 EXP-005보다
+  나을 것"이라는 가설은 이번 두 attempt에서 확인되지 않았다. 교차 피처를
+  8개로 늘린 attempt 1이 가장 나빴고, LOF count 1개로 줄인 attempt 2가 그
+  손실의 상당 부분을 되돌렸지만 여전히 EXP-005를 넘지 못했다(-0.0026p).
+  이는 애초 가설과 달리 소수/특정 클래스 일부 개선이 다른 클래스의 하락으로
+  상쇄됐기 때문이며, 보호 유전자의 정보는 이미 EXP-005의 개별 유전자×유형
+  피처에 포함되어 있어 이를 재집계한 파생변수가 트리 분할에서 추가 신호보다
+  노이즈로 작용했을 가능성이 있다. 팀 최고 기록은 여전히 EXP-005(OOF
+  0.4044, LB 0.2988)이다.
+
+#### 선택 메모
+
+- COSMIC CGC v104 화이트리스트와 EXP-012 산출물(`protected_genes_final.csv`)은
+  라이선스 확인 전까지 Git 미포함 — `reproducibility/exp031_*/config.resolved.yaml`의
+  `features.protect_gene_whitelist_sha256`으로 사용 파일을 고정했다.
+- 다음 행동을 원한다면: (a) 교차 대상을 LOF뿐 아니라 "보호 유전자 중 missense"처럼
+  더 세분화하되 개수를 1~2개로 제한, (b) 보호 유전자가 아니라 EXP-021처럼
+  fold별 상관관계 상위 유전자와 교차, (c) 트리 파라미터(`colsample_bytree`,
+  `max_depth`)를 피처 수 증가에 맞춰 재튜닝하는 방향을 검토할 수 있다. 현재는
+  추가 시도 없이 결과를 기록하고 종료한다.
