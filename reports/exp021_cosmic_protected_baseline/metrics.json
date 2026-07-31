@@ -817,13 +817,13 @@
     "hardware": "Windows-10-10.0.26200-SP0"
   },
   "artifacts": {
-    "config": "reproducibility\\exp021_cosmic_protected_baseline\\config.resolved.yaml",
-    "oof_predictions": "oof\\exp021_cosmic_protected_baseline\\oof_predictions.csv",
-    "oof_probabilities": "oof\\exp021_cosmic_protected_baseline\\oof_probabilities.npy",
-    "test_probabilities": "preds\\exp021_cosmic_protected_baseline\\test_probabilities.npy",
-    "submission": "submissions\\exp021_cosmic_protected_baseline.csv",
-    "class_f1": "reports\\exp021_cosmic_protected_baseline\\class_f1.csv",
-    "models": "models\\exp021_cosmic_protected_baseline"
+    "config": "reproducibility/exp021_cosmic_protected_baseline/config.resolved.yaml",
+    "oof_predictions": "oof/exp021_cosmic_protected_baseline/oof_predictions.csv",
+    "oof_probabilities": "oof/exp021_cosmic_protected_baseline/oof_probabilities.npy",
+    "test_probabilities": "preds/exp021_cosmic_protected_baseline/test_probabilities.npy",
+    "submission": "submissions/exp021_cosmic_protected_baseline.csv",
+    "class_f1": "reports/exp021_cosmic_protected_baseline/class_f1.csv",
+    "models": "models/exp021_cosmic_protected_baseline"
   },
   "notes": "순수 mutation-presence, mutation burden와 class weight 미사용. 유전자 화이트리스트 적용: 361개 (원본 경로 라이선스 제한으로 미커밋, config.resolved.yaml의 feature_manifest.gene_selection 참고, gene_order_sha256=7092d9b8890e433d41e95ca5babfbc3f4e71441632455ca6fa7f4f25e3fe5ce1)"
 }

@@ -22,6 +22,7 @@ from scipy import sparse
 
 from open_cancer.constants import CLASS_LABELS, PROBABILITY_COLUMNS
 from open_cancer.hashing import sha256_file
+from open_cancer.paths import relative_posix
 from open_cancer.validation import validate_json_document, validate_submission
 
 
@@ -40,7 +41,7 @@ def write_json(path: Path, value: dict[str, Any]) -> None:
 
 def file_record(path: Path) -> dict[str, Any]:
     return {
-        "path": str(path.relative_to(ROOT)),
+        "path": relative_posix(path, ROOT),
         "size_bytes": path.stat().st_size,
         "sha256": sha256_file(path),
     }
@@ -236,10 +237,8 @@ def main() -> None:
         "source_commit": config["experiment"]["source_commit"],
         "source_tag": None,
         "dirty_worktree": config["experiment"]["dirty_worktree"],
-        "data_manifest": str(
-            (REPRO_DIR / "data_manifest.json").relative_to(ROOT)
-        ),
-        "environment": str((REPRO_DIR / "environment.json").relative_to(ROOT)),
+        "data_manifest": relative_posix(REPRO_DIR / "data_manifest.json", ROOT),
+        "environment": relative_posix(REPRO_DIR / "environment.json", ROOT),
         "release_url": None,
         "verifier": git_output("config", "user.name"),
         "verified_at": verified_at,
