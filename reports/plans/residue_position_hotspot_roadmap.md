@@ -10,13 +10,15 @@
 
 - 로드맵 관리 Task: [Issue #73](https://github.com/fabxoe/open_cancer/issues/73)
 - 로드맵 관리 PR: [PR #74](https://github.com/fabxoe/open_cancer/pull/74) (`MERGED`)
+- 위치 의미 감사: [Issue #80](https://github.com/fabxoe/open_cancer/issues/80) /
+  [PR #82](https://github.com/fabxoe/open_cancer/pull/82) (`PR_OPEN`)
 - 기준일: 2026-07-31
 - 실제 완료 실험 수: 21
 - 기준 실험:
   - [EXP-067 coarse-bin](../exp067_xgb_residue_coarse_bin/README.md)
   - [EXP-069 max residue-position](../exp069_xgb_max_residue_position/README.md)
   - [EXP-031 hotspot extended](../exp031_hotspot_extended/README.md)
-- 확정된 다음 작업: Issue #80 의미 감사 반영 후 단계 C hotspot runner Task Issue 생성
+- 확정된 다음 작업: PR #82 검토·병합 후 단계 C hotspot runner Task Issue 생성
 
 ## 진행 상태표
 
