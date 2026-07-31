@@ -1,0 +1,157 @@
+experiment:
+  issue_number: 45
+  experiment_id: EXP-045
+  branch: issue-45-exp-nested-feature-selection
+  owner: 2heej
+  source_commit: a854d8bd626c425363c58fa7658e236220b14c3d
+  dirty_worktree: false
+  started_at: '2026-07-31T06:39:19.308528+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features:
+  - sample__mutated_gene_count_log1p
+  - sample__total_variant_count_log1p
+  - sample__multi_variant_gene_count_log1p
+  - sample__missense_count_log1p
+  - sample__synonymous_count_log1p
+  - sample__nonsense_count_log1p
+  - sample__frameshift_count_log1p
+  - sample__complex_count_log1p
+  - sample__missense_gene_count
+  - sample__synonymous_gene_count
+  - sample__nonsense_gene_count
+  - sample__frameshift_gene_count
+  - sample__complex_gene_count
+  - sample__missense_gene_count_log1p
+  - sample__synonymous_gene_count_log1p
+  - sample__nonsense_gene_count_log1p
+  - sample__frameshift_gene_count_log1p
+  - sample__complex_gene_count_log1p
+  - sample__truncating_count
+  - sample__truncating_count_log1p
+  - sample__damaging_count
+  - sample__damaging_count_log1p
+  - sample__mutation_type_diversity
+  - sample__mutation_type_entropy
+  - sample__variants_per_mutated_gene_mean
+  - sample__max_variants_per_gene
+  - sample__single_variant_gene_count
+  - sample__single_variant_gene_count_log1p
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features: excluded because a reliable source transcript/protein length
+    is unavailable
+feature_outputs:
+  train_features.npz:
+    path: data/processed/exp045_nested_feature_selection/train_features.npz
+    sha256: 6d0d7c45d48afb618c2f959175765a891bb179f67f5f3e1c9ae3f035704a2ff9
+  test_features.npz:
+    path: data/processed/exp045_nested_feature_selection/test_features.npz
+    sha256: 66a81d834a7a8ff2a591b57b5323ecfa0a5dfd2d9d5143d7feb3aacc16d9a900
+  train_ids.csv:
+    path: data/processed/exp045_nested_feature_selection/train_ids.csv
+    sha256: 76d4b6e523b4509d16c9b65e458f9616c94b7262a844ec107971649de20e95d1
+  test_ids.csv:
+    path: data/processed/exp045_nested_feature_selection/test_ids.csv
+    sha256: 39321e5b32cdf9400476db97c38800a28fa58d20ddb25730da31fbcf91f3ebfe
+  train_labels.csv:
+    path: data/processed/exp045_nested_feature_selection/train_labels.csv
+    sha256: ca66b734a3adefc9ce38348a71e29edc4c6061ffaab72e468c574a70fa6d2a06
+  feature_names.json:
+    path: data/processed/exp045_nested_feature_selection/feature_names.json
+    sha256: fd2ea68bad524717920dd6495c3d33083a2317d7628e3a17c85b32ca853d15dc
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+  - exp005_base
+  - nested_selected_exp043_distribution
+  feature_selection:
+    method: nested_permutation
+    inner_splits: 3
+    minimum_positive_folds: 2
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  command: uv run python scripts/run_exp045_xgb_nested_feature_selection.py
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 08:56:36) [Clang 18.1.8 ]
+  platform: macOS-26.5.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: cea0d1a7c46efd4675ebb3982a309c56b85c793f0712ba24d04d1a7c6bd110ae
