@@ -1,0 +1,8 @@
+{
+  "experiment_id": "EXP-031",
+  "verification_type": "independent_retraining_recovery",
+  "oof_macro_f1": 0.4125795545221178,
+  "test_label_agreement": 0.9336213668499608,
+  "different_test_labels": 169,
+  "passed": false
+}

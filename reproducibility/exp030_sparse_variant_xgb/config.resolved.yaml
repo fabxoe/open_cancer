@@ -1,0 +1,145 @@
+experiment:
+  issue_number: 30
+  experiment_id: EXP-030
+  branch: issue-30-exp-sparse-variant-xgb
+  owner: Gomin-art
+  source_commit: 64b72df89ee5cf0b66409f494475aca753238184
+  dirty_worktree: false
+  started_at: '2026-07-31T07:36:46.248893+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: persisted StratifiedKFold assignment
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  test_used_for_feature_fit: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  effect_types:
+  - MISSENSE
+  - SYNONYMOUS
+  - STOP_GAIN
+  - FRAMESHIFT
+  - COMPLEX_REPLACEMENT
+  - DELETION
+  - NONSTANDARD
+  feature_count_before_fold_filter: 35081
+  minimum_fold_train_support: 1
+  fold_filter_fit_scope: fold_train_only
+  blank_cell_policy: treated as no recorded mutation
+feature_outputs:
+  train_features.npz:
+    path: data/processed/exp030_sparse_variant_xgb/train_features.npz
+    size_bytes: 1007412
+    sha256: 378b72609503b88caeccf78208bdb32add394324fa9d3bbd0676be302035a2e2
+  test_features.npz:
+    path: data/processed/exp030_sparse_variant_xgb/test_features.npz
+    size_bytes: 830715
+    sha256: a8e4c700ddfd43aadb69e275fc23b0141686380b5835361529338ce8fefb30c7
+  train_ids.csv:
+    path: data/processed/exp030_sparse_variant_xgb/train_ids.csv
+    size_bytes: 68214
+    sha256: 76d4b6e523b4509d16c9b65e458f9616c94b7262a844ec107971649de20e95d1
+  test_ids.csv:
+    path: data/processed/exp030_sparse_variant_xgb/test_ids.csv
+    size_bytes: 25463
+    sha256: 39321e5b32cdf9400476db97c38800a28fa58d20ddb25730da31fbcf91f3ebfe
+  train_labels.csv:
+    path: data/processed/exp030_sparse_variant_xgb/train_labels.csv
+    size_bytes: 99858
+    sha256: 18a401b4514901d92d5d9afbc4acf1f6647bc05c4d1b25b3958f47f69f239a64
+  feature_names.json:
+    path: data/processed/exp030_sparse_variant_xgb/feature_names.json
+    size_bytes: 1201065
+    sha256: d14b570f951d570f04cbcbb954441c29c115d1345b2990b499812edf765f0e93
+  metadata.json:
+    path: data/processed/exp030_sparse_variant_xgb/metadata.json
+    size_bytes: 2234
+    sha256: 7bd12fb3cadc5e43531bc96ac564100d0a9ab62a5bd641926339e2f27e975245
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 3000
+    learning_rate: 0.03
+    max_depth: 6
+    min_child_weight: 2.0
+    subsample: 0.8
+    colsample_bytree: 0.6
+    reg_alpha: 0.05
+    reg_lambda: 2.0
+    gamma: 0.0
+    max_bin: 256
+    eval_metric: mlogloss
+    early_stopping_rounds: 100
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  test_used_for_fit: false
+  postprocessing: none
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  best_iterations:
+  - 392
+  - 392
+  - 414
+  - 395
+  - 474
+  command: uv run python scripts/run_exp030_sparse_variant_xgb.py --config configs/exp030_sparse_variant_xgb.yaml
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 04:38:48) [Clang 18.1.8 ]
+  platform: Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  pythonhashseed: null
+  uv_lock_sha256: cea0d1a7c46efd4675ebb3982a309c56b85c793f0712ba24d04d1a7c6bd110ae

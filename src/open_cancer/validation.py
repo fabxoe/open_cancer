@@ -280,6 +280,109 @@ def validate_history(history_path: str | Path) -> dict[str, int]:
     }
 
 
+def _record_role(document: dict[str, Any]) -> str:
+    experiment = document.get("experiment")
+    nested_role = experiment.get("record_role") if isinstance(experiment, dict) else None
+    role = document.get("record_role", nested_role)
+    _require(
+        role in {None, "official", "exploratory_ablation"},
+        f"지원하지 않는 record_role입니다: {role}",
+    )
+    return role or "official"
+
+
+def validate_repository_contract(
+    root: str | Path,
+    history_path: str | Path,
+) -> dict[str, int]:
+    """Check report links and enforce one official config per EXP-ID."""
+
+    root = Path(root)
+    history_path = Path(history_path)
+    history = history_path.read_text(encoding="utf-8")
+
+    report_links = 0
+    for line in history.splitlines():
+        if not re.match(r"^\| EXP-\d+ \|", line):
+            continue
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        _require(len(cells) >= 10, f"History 실험 요약 행 형식이 올바르지 않습니다: {line}")
+        link_match = re.fullmatch(r"\[보고서\]\((reports/[^)]+/README\.md)\)", cells[9])
+        _require(
+            link_match is not None,
+            f"{cells[0]} 요약은 reports/.../README.md 보고서 링크가 필요합니다.",
+        )
+        report_path = root / link_match.group(1)
+        _require(report_path.is_file(), f"{cells[0]} 보고서가 없습니다: {report_path}")
+        report_links += 1
+
+    configs_by_experiment: dict[str, list[tuple[Path, str]]] = {}
+    config_roles_by_slug: dict[str, str] = {}
+    for config_path in sorted((root / "configs").glob("exp[0-9]*_*.yaml")):
+        match = re.match(r"exp([0-9]+)_(.+)\.yaml$", config_path.name)
+        if match is None:
+            continue
+        experiment_id = f"EXP-{int(match.group(1)):03d}"
+        slug = config_path.stem
+        document = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
+        role = _record_role(document)
+        configs_by_experiment.setdefault(experiment_id, []).append((config_path, role))
+        config_roles_by_slug[slug] = role
+
+    for experiment_id, records in configs_by_experiment.items():
+        official = [path for path, role in records if role == "official"]
+        _require(
+            len(official) == 1,
+            (
+                f"{experiment_id}에는 official config가 정확히 하나여야 합니다: "
+                f"{[str(path) for path in official]}"
+            ),
+        )
+
+    role_checked_metrics = 0
+    for metrics_path in sorted((root / "reports").glob("exp*/metrics.json")):
+        document = json.loads(metrics_path.read_text(encoding="utf-8"))
+        expected_role = config_roles_by_slug.get(metrics_path.parent.name)
+        if expected_role is None:
+            continue
+        actual_role = _record_role(document)
+        _require(
+            actual_role == expected_role,
+            (
+                f"{metrics_path}: config record_role({expected_role})과 "
+                f"metrics record_role({actual_role})이 다릅니다."
+            ),
+        )
+        role_checked_metrics += 1
+
+    dirty_failed_records = 0
+    for resolved_path in sorted((root / "reproducibility").glob("exp*/config.resolved.yaml")):
+        document = yaml.safe_load(resolved_path.read_text(encoding="utf-8")) or {}
+        experiment = document.get("experiment")
+        if not isinstance(experiment, dict) or experiment.get("dirty_worktree") is not True:
+            continue
+        if _record_role(document) != "official":
+            continue
+        manifest_path = resolved_path.parent / "artifact_manifest.json"
+        _require(
+            manifest_path.is_file(),
+            f"{resolved_path}: dirty official 실행에는 FAILED manifest가 필요합니다.",
+        )
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        _require(
+            manifest.get("reproducibility_status") == "FAILED",
+            f"{resolved_path}: dirty official 실행은 FAILED로만 보존할 수 있습니다.",
+        )
+        dirty_failed_records += 1
+
+    return {
+        "report_links": report_links,
+        "experiment_config_groups": len(configs_by_experiment),
+        "role_checked_metrics": role_checked_metrics,
+        "dirty_failed_records": dirty_failed_records,
+    }
+
+
 def validate_experiment_record_identity(document_path: str | Path) -> dict[str, int | str]:
     """Validate EXP-NNN against the Issue number stored in a JSON record."""
     document_path = Path(document_path)

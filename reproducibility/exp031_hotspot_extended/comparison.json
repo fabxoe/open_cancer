@@ -1,0 +1,15 @@
+{
+  "verified_at": "2026-07-31T08:55:33Z",
+  "verification_type": "independent_retraining_recovery",
+  "original_oof_macro_f1": 0.41358466950022776,
+  "reproduction_oof_macro_f1": 0.4125795545221178,
+  "oof_macro_f1_delta": 0.001005114978109954,
+  "original_submission_sha256": "54de49396b8910fd8134b5a854beed344e369a9a791c67c6c9caf0da38cec27d",
+  "test_label_agreement": 0.9336213668499608,
+  "different_test_labels": 169,
+  "test_row_count": 2546,
+  "original_checkpoints_available": false,
+  "original_test_probabilities_available": false,
+  "passed": false,
+  "conclusion": "원 실행 checkpoint가 없어 제출 파일의 checkpoint 추론 재생성을 검증할 수 없고, 독립 재학습 결과도 원 제출과 일치하지 않아 INFERENCE_VERIFIED로 승격하지 않는다."
+}
