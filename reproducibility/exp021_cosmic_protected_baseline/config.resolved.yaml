@@ -1,5 +1,6 @@
 experiment:
   slug: cosmic_protected_baseline
+  record_role: exploratory_ablation
 data:
   train_path: data/raw/train.csv
   test_path: data/raw/test.csv

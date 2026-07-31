@@ -21,8 +21,8 @@
 |---|---|---|---|---|---:|---:|---|---|---|
 | EXP-003 | COMPLETED | fabxoe | #3 | XGBoost mutation-presence baseline | 0.334930 | 0.228167518 | INFERENCE_VERIFIED | 비교 기준 | [보고서](reports/exp003_xgb_baseline/README.md) |
 | EXP-005 | COMPLETED | 2heej | #5 | XGBoost + 유전자×변이유형 희소 피처 | 0.4043796587000222 | 0.2987843366 | INFERENCE_VERIFIED | 제출·체크포인트 재생성 및 Release 보관 완료 | [보고서](reports/exp005_xgb_mutation_features/README.md) |
-| EXP-012 | COMPLETED | Kangho-Park | #12 | COSMIC 보호 유전자 기반 feature 보호 전략 분석 (모델 학습 없음) | N/A (분석 전용) | 미제출 | NOT_STARTED | 채택 | [상세](#exp-012-cosmic-보호-유전자-기반-feature-보호-전략-분석) |
-| EXP-021 | COMPLETED | Kangho-Park | #21 | XGBoost, 전체 4,384 피처 + COSMIC 가중 burden 파생 컬럼 1개 (attempt 3, 4개 시도 중 최고) | 0.349410 | 0.2544194867 | NOT_STARTED | 채택(EXP-003 대비 개선, EXP-005엔 못 미침) | [상세](#exp-021-cosmic-보호-유전자-기반-피처-선택-및-파생변수-xgboost-baseline) |
+| EXP-012 | COMPLETED | Kangho-Park | #12 | COSMIC 보호 유전자 기반 feature 보호 전략 분석 (모델 학습 없음) | N/A (분석 전용) | 미제출 | NOT_STARTED | 채택 | [보고서](reports/exp012_cosmic_protected_genes/README.md) |
+| EXP-021 | COMPLETED | Kangho-Park | #21 | XGBoost, 전체 4,384 피처 + COSMIC 가중 burden 파생 컬럼 1개 (attempt 3, 4개 시도 중 최고) | 0.349410 | 0.2544194867 | NOT_STARTED | 채택(EXP-003 대비 개선, EXP-005엔 못 미침) | [보고서](reports/exp021_cosmic_weighted_burden_baseline/README.md) |
 | EXP-026 | COMPLETED | fabxoe | #26 | XGBoost mutation-presence + mutated-gene count | 0.3817476632 | 0.2575936484 | NOT_STARTED | EXP-003 대비 개선, EXP-005보다 낮음 | [보고서](reports/exp026_mutation_burden/README.md) |
 | EXP-029 | COMPLETED | 2heej | #29 | EXP-005 + 변이유형 구성비·log burden 피처 | 0.3988980085 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 OOF 하락·fold 변동성 증가로 현 구성 미채택 | [보고서](reports/exp029_xgb_log_burden_ratios/README.md) |
 | EXP-030 | COMPLETED | Gomin-art | #30 | XGBoost + 유전자×변이유형 희소 피처·샘플별 변이 수 | 0.4105408554 | 미제출 | INFERENCE_VERIFIED | Local OOF 최고 갱신·Public LB 미확인 | [보고서](reports/exp030_sparse_variant_xgb/README.md) |
@@ -130,7 +130,7 @@
 #### 실행
 - Config: N/A (스크립트 상단에 경로·임계값을 직접 명시, 별도 YAML 없음)
 - Metrics: `reports/exp012_feature_analysis/*.csv` (로컬 전용, 아래 라이선스 메모 참고)
-- Report: N/A
+- Report: `reports/exp012_cosmic_protected_genes/README.md`
 
 #### 결과
 - Fold Macro F1: N/A (모델 학습을 수행하지 않는 feature 분석 실험)
@@ -189,7 +189,7 @@ EXP-012(#12)의 protect/drop 결정을 입력으로, EXP-003과 동일한 공용
 | **attempt 3(제출)** | 전체 4,384 + 가중 burden 통합 컬럼 1개 | 4,385 | `configs/exp021_cosmic_weighted_burden_baseline.yaml` | `reports/exp021_cosmic_weighted_burden_baseline/metrics.json` |
 | attempt 4 | 전체 4,384 + protect_burden/correlated_burden 분리 컬럼 2개 | 4,386 | `configs/exp021_cosmic_group_burden_baseline.yaml` | `reports/exp021_cosmic_group_burden_baseline/metrics.json` |
 
-- Report: N/A
+- Report: `reports/exp021_cosmic_weighted_burden_baseline/README.md`
 - 재현성 manifest: `reproducibility/exp021_cosmic_*_baseline/config.resolved.yaml` (시도별)
 
 #### 결과
@@ -344,7 +344,7 @@ EXP-012(#12)의 protect/drop 결정을 입력으로, EXP-003과 동일한 공용
   `+0.0022923015` 증가해 개선의 안정성을 추가 ablation으로 확인해야 한다.
 - 재현 메모: 저장 checkpoint 재추론에서 데이터 해시, 제출 SHA-256과 test
   라벨이 일치해 `INFERENCE_VERIFIED`를 통과했다.
-### [EXP-031] EXP-005 변이유형 피처 + COSMIC 보호유전자 교차 피처
+### [EXP-031] EXP-005 변이유형 피처 + cancer hotspot 34개
 
 - 상태: COMPLETED
 - 실행자: Kangho Park
