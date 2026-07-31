@@ -4,6 +4,10 @@ Feature Factory는 한 가지 파생변수가 아니라, 모든 모델이 같은
 재사용하게 만드는 공통 생산 기반이다. 파생변수 계산 규칙, 출력 순서, 누수 범위,
 외부 지식 출처와 해시를 함께 고정한다.
 
+Residue-position과 문헌 기반 고정 co-mutation pair의 차이, 위치 옵션의
+비교 방법은 [팀 공통 개념 안내](RESIDUE_POSITION_AND_CO_MUTATION_GUIDE.md)를
+먼저 확인한다.
+
 ## 현재 구현 범위
 
 Factory `1.1.0`의 핵심 기반은 다음을 제공한다.
@@ -113,7 +117,8 @@ Feature Spec에는 유전자 순서 해시, 전체 피처 이름 순서 해시�
 4. driver·기능 그룹: oncogene, tumor suppressor, DNA repair burden
 5. PPI 정적 요약: 연결 수, degree-normalized 이웃, component와 hub burden
 6. long-gene·artifact control: 고정 그룹 burden과 전체 burden 대비 비율
-7. 내부 co-mutation: fold-train에서만 선정한 pair와 frequency-tier 요약
+7. co-mutation: 문헌 기반 고정 pair 또는 fold-train에서만 선정한 pair와
+   frequency-tier 요약
 8. complex-token morphology: 범위, `>`, `*`, prefix/suffix 길이의 저차원 요약
 
 각 family는 별도 단위 테스트와 독립 screening 결과가 있어야 한다. target이나
