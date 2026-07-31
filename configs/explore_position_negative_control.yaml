@@ -1,0 +1,33 @@
+run_mode: explore
+issue_number: 91
+reference_experiment: EXP-069
+reference_metrics: reports/exp069_xgb_max_residue_position/metrics.json
+feature_dir: data/processed/feature_factory/v1/exp069_max_residue_position
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+position:
+  feature: max_residue_position
+  permutation_seeds: [42, 314, 2718]
+  strata_suffixes: [missense, synonymous, nonsense, frameshift, complex]
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+output:
+  metrics: reports/analysis/position_negative_control.json
+  report: reports/analysis/position_negative_control.md

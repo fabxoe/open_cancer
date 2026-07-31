@@ -11,14 +11,16 @@
 - 로드맵 관리 Task: [Issue #73](https://github.com/fabxoe/open_cancer/issues/73)
 - 로드맵 관리 PR: [PR #74](https://github.com/fabxoe/open_cancer/pull/74) (`MERGED`)
 - 위치 의미 감사: [Issue #80](https://github.com/fabxoe/open_cancer/issues/80) /
-  [PR #82](https://github.com/fabxoe/open_cancer/pull/82) (`PR_OPEN`)
-- 기준일: 2026-07-31
-- 실제 완료 실험 수: 21
+  [PR #82](https://github.com/fabxoe/open_cancer/pull/82) (`MERGED`)
+- 위치 negative control: [Issue #91](https://github.com/fabxoe/open_cancer/issues/91)
+- 기준일: 2026-08-01
+- 실제 완료 실험 수: 22
 - 기준 실험:
   - [EXP-067 coarse-bin](../exp067_xgb_residue_coarse_bin/README.md)
   - [EXP-069 max residue-position](../exp069_xgb_max_residue_position/README.md)
   - [EXP-031 hotspot extended](../exp031_hotspot_extended/README.md)
-- 확정된 다음 작업: PR #82 검토·병합 후 단계 C hotspot runner Task Issue 생성
+- 확정된 다음 작업: 단계 E 위치 negative control 구현·실행 및 결과에 따른
+  Feature Spec v1 위치 피처 포함 여부 결정
 
 ## 진행 상태표
 
@@ -27,8 +29,8 @@
 | A | EXP-067+069 고정 blend | [#75](https://github.com/fabxoe/open_cancer/issues/75) | EXP-075 | [#77](https://github.com/fabxoe/open_cancer/pull/77) | COMPLETED | 0.4157910775 | INFERENCE_VERIFIED | 두 부모 대비 개선으로 채택 | 단계 B 진행 |
 | B | max+indicator | [#78](https://github.com/fabxoe/open_cancer/issues/78) | EXP-078 | [#79](https://github.com/fabxoe/open_cancer/pull/79) | REJECTED | 0.4110815504 | INFERENCE_VERIFIED | 채택 기준 실패·indicator 완전 중복으로 기각, EXP-069 max+zero 동결 | Issue #80 의미 감사 |
 | C | hotspot runner 정리 | [#83](https://github.com/fabxoe/open_cancer/issues/83) | 해당 없음 | [#84](https://github.com/fabxoe/open_cancer/pull/84) | COMPLETED | N/A | 해당 없음 | config 기반 runner·fold-train 근거 검증·재현 산출물 자동화 완료 | 단계 D 진행 |
-| D | hotspot clean 실험 | [#85](https://github.com/fabxoe/open_cancer/issues/85) | EXP-085 | [#86](https://github.com/fabxoe/open_cancer/pull/86) | PR_OPEN | 0.4125795545 | INFERENCE_VERIFIED | EXP-005 대비 +0.008200으로 복구 성공·채택 | PR 병합 후 단계 E 진행 |
-| E | 위치 negative control | 미발급 | explore | - | PLANNED | N/A | 해당 없음 | - | D 완료 대기 |
+| D | hotspot clean 실험 | [#85](https://github.com/fabxoe/open_cancer/issues/85) | EXP-085 | [#86](https://github.com/fabxoe/open_cancer/pull/86) | COMPLETED | 0.4125795545 | INFERENCE_VERIFIED | EXP-005 대비 +0.008200으로 복구 성공·채택 | 단계 E 진행 |
+| E | 위치 negative control | [#91](https://github.com/fabxoe/open_cancer/issues/91) | explore | - | IN_PROGRESS | N/A | 해당 없음 | fold-train-only 반복 permutation 구현 중 | 실제 데이터 실행·해석 |
 | F | Feature Spec v1 조합 | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | 선행 결과 판단 |
 | G | 모델 다양화·stacking | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | Feature Spec v1 동결 대기 |
 
@@ -253,6 +255,7 @@ Stacking은 다음을 모두 만족할 때만 진행합니다.
 | 2026-07-31 | 장기 계획과 실제 결과 장부 분리 | 계획 변경이 History의 사실 기록과 섞이는 것을 방지 |
 | 2026-07-31 | indicator를 결측 해소가 아닌 중복 피처 weighting으로 재해석 | 실제 sparse train/test에서 mutation-presence와 observed indicator 불일치가 0개였음 |
 | 2026-07-31 | 위치 permutation을 fold-train·반복 seed 계약으로 강화 | 전체 OOF 단일 shuffle의 검증 분포 오염과 우연 변동을 방지 |
+| 2026-08-01 | 단계 C·D와 위치 의미 감사를 완료 처리하고 단계 E Issue #91 착수 | PR #82·#84·#86·#90 병합과 EXP-085 결과 반영 |
 
 ## 참고
 
