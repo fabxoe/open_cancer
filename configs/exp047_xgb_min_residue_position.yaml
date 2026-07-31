@@ -1,0 +1,43 @@
+run_mode: experiment
+slug: xgb_min_residue_position
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mutation_type:
+    enabled: true
+  residue_position:
+    enabled: true
+    aggregates:
+      - min
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - mutation_presence
+    - missense
+    - synonymous
+    - nonsense
+    - frameshift
+    - complex
+    - log_mutated_gene_count
+    - log_total_variant_count
+    - log_multi_variant_gene_count
+    - min_residue_position

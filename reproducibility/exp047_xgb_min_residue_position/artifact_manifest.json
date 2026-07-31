@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-047",
+  "issue_number": 47,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "78c52694163c8b3f8e76557a93d271843b1627fa",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp047_xgb_min_residue_position/data_manifest.json",
+  "environment": "reproducibility/exp047_xgb_min_residue_position/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-07-31T07:44:24.403725+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp047_xgb_min_residue_position/fold_00.json",
+      "size_bytes": 11794323,
+      "sha256": "b09c3c2db92ca24ec3b0fb95976789b1854ff31cbb36f2f7d477802d281df441",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp047_xgb_min_residue_position/fold_01.json",
+      "size_bytes": 11973830,
+      "sha256": "d5182db16986d0fcaa835a89453f4d3f19e1c40091faa1387f4ebbbd8644026b",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp047_xgb_min_residue_position/fold_02.json",
+      "size_bytes": 13807650,
+      "sha256": "c93913922ab627a41938dccde1d3f63a835917901d12bbdd2dd234479a21a01a",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp047_xgb_min_residue_position/fold_03.json",
+      "size_bytes": 12586740,
+      "sha256": "77783308c5e715b9523466673ab397ec605cfaf44776f0adf80af4d9d9472b4e",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp047_xgb_min_residue_position/fold_04.json",
+      "size_bytes": 12950819,
+      "sha256": "79946ab1f59db66134f9057d1b6ecccb370ce3f88a4bf02565ce9c4737476f39",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp047_xgb_min_residue_position.csv",
+      "size_bytes": 38160,
+      "sha256": "56c9ecaba23426b159a8bd176ef7860c40d07098a6a9c7f167d1b6c42d7b68fe",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp047_xgb_min_residue_position.csv",
+      "size_bytes": 2130326,
+      "sha256": "204fd612c0a3d045fb6962e38e25d2f4582f3871efe98523f37b1dd4ddc84ece",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp047_xgb_min_residue_position_test_proba.csv",
+      "size_bytes": 835031,
+      "sha256": "af4e6c9f91dbecc64c417d9972f4ec58728769e44e3491060d811a66aa909e3f",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp047_xgb_min_residue_position/metrics.json",
+      "size_bytes": 11250,
+      "sha256": "f84eb1e8e6be0e0f7d69144303cfe4765e174dd5cda298c970e0ccdd43330818",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp047_xgb_min_residue_position/config.resolved.yaml",
+      "size_bytes": 5568,
+      "sha256": "2f9f8b6a07774729e6b99d639d7cb0475b8220a8ddb39f2f5f3439875d3a1ff1",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

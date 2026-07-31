@@ -156,6 +156,36 @@ schemas/           지표·재현성 JSON Schema
 tests/             데이터가 없어도 실행 가능한 단위 테스트
 ```
 
+### Feature Factory 운영 계약
+
+모든 모델이 같은 파생변수를 재사용하도록 공통 Feature Factory를 사용한다. 구현,
+캐시, family Registry, 동결과 스태킹 전환 규칙의 단일 상세 문서는
+[`docs/FEATURE_FACTORY.md`](docs/FEATURE_FACTORY.md)다.
+
+- Factory는 원본 CSV를 행 단위로 streaming 파싱하고, 파싱한 토큰에서만 피처를
+  계산한다.
+- 각 family는 정의 버전, 출력 차원, fit 범위와 외부 지식 출처를 Registry에
+  기록한다.
+- 입력 데이터 해시, 유전자 순서와 Feature Spec 해시가 모두 같고 모든 캐시
+  산출물 해시가 일치할 때만 `data/processed/` 캐시를 재사용한다.
+- family는 config에서 독립적으로 활성화하고, 실행값은 resolved config에
+  자동 저장한다.
+- target이나 관측 빈도로 hotspot, vocabulary, co-mutation pair를 고르는 family는
+  fold-train에서만 fit한다.
+- 공식 family 채택은 새 Experiment Issue와 공용 전체 5-fold를 사용한다. 빠른
+  screening fold의 점수를 공식 결과로 기록하지 않는다.
+- 외부 pathway, PPI, COSMIC 원본은 모델 입력 행으로 사용하지 않는다. 허용된
+  외부 지식은 고정 그룹·관계·계산 규칙만 정의하며 환자별 입력값은 제공된
+  4,384개 변이 셀에서 계산한다.
+- 외부 지식에는 출처, 버전, 라이선스, 원본 SHA-256과 재배포 제한을 manifest에
+  기록한다.
+- 위치 숫자는 입력 토큰에 명시된 단백질 잔기 위치다. genomic coordinate,
+  codon nucleotide 위치나 transcript 정규화 좌표로 추정하지 않는다.
+- Feature Spec v1을 동결한 뒤 모델 OOF 생산과 스태킹으로 전환한다. 이후 새
+  family 아이디어는 v2 후보로 옮겨 현재 스태킹을 지연시키지 않는다.
+- Public LB 또는 test 분포를 보고 파서, 유전자 그룹, hotspot이나 feature 규칙을
+  수정하지 않는다.
+
 ### 파일 명명 규칙
 
 Experiment Issue #12에서 파생된 `EXP-012`의 파일 slug는
