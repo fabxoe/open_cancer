@@ -13,7 +13,7 @@
 - 최고 Local OOF Macro F1: 0.4157910775 (`EXP-075`)
 - 최고 Public LB Macro F1: 0.3170803849 (`EXP-031`)
 - 최고 재현 검증 모델: `EXP-075` (`INFERENCE_VERIFIED`)
-- 최종 갱신일: 2026-07-31
+- 최종 갱신일: 2026-08-01
 
 ## 실험 요약
 
@@ -33,14 +33,14 @@
 | EXP-047 | COMPLETED | fabxoe | #47 | EXP-033 + 유전자별 최소 단백질 잔기 위치 | 0.4088132438 | 미제출 | INFERENCE_VERIFIED | Local OOF 개선·fold 변동성 감소, 위치 family 후속 검증 채택 | [보고서](reports/exp047_xgb_min_residue_position/README.md) |
 | EXP-050 | COMPLETED | 2heej | #50 | EXP-005 + EXP-045 반복 선택 파생변수 2종 고정 | 0.4014204930 | 미제출 | INFERENCE_VERIFIED | EXP-043·045보다 높지만 EXP-005보다 낮아 미채택 | [보고서](reports/exp050_xgb_fixed_two_distribution_features/README.md) |
 | EXP-052 | COMPLETED | Kangho-Park | #52 | EXP-047 + Feature Factory family 7(co-mutation, 문헌 근거 유전자 쌍 3개) | 0.4095069739 | 미제출 | INFERENCE_VERIFIED | OOF 소폭 개선·fold 표준편차 감소로 채택, pair 확장 검토 | [보고서](reports/exp052_hotspot_cooccurrence/README.md) |
-| EXP-058 | COMPLETED | Kangho-Park | #58 | EXP-052에서 SHAP 근거로 APC/CTNNB1 제거(쌍 3개→2개) | 0.4101842357 | 미제출 | INFERENCE_VERIFIED | EXP-052 대비 소폭 개선한 탐색 후보, 독립 검증 필요 | [보고서](reports/exp058_cooccurrence_pair_ablation/README.md) |
+| EXP-058 | COMPLETED | Kangho-Park | #58 | EXP-052에서 SHAP 근거로 APC/CTNNB1 제거(쌍 3개→2개) | 0.4101842357 | 0.3044672015 | INFERENCE_VERIFIED | EXP-052 대비 Local 개선·Public은 EXP-031보다 낮음 | [보고서](reports/exp058_cooccurrence_pair_ablation/README.md) |
 | EXP-065 | COMPLETED | fabxoe | #65 | EXP-047 + complex-token residue 위치 제외 | 0.4108923084 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 소폭 감소로 채택 후보 | [보고서](reports/exp065_xgb_residue_exclude_complex/README.md) |
 | EXP-063 | COMPLETED | fabxoe | #63 | EXP-047 + residue-position 관측 indicator | 0.4130329102 | 미제출 | INFERENCE_VERIFIED | OOF 개선은 유효하나 Issue #80에서 mutation-presence 완전 중복으로 확인, 결측 신호 해석 기각 | [보고서](reports/exp063_xgb_residue_indicator/README.md) |
 | EXP-067 | COMPLETED | fabxoe | #67 | EXP-047 + residue 위치 폭 100 coarse-bin | 0.4124014867 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 감소로 채택 후보 | [보고서](reports/exp067_xgb_residue_coarse_bin/README.md) |
 | EXP-069 | COMPLETED | fabxoe | #69 | EXP-047의 min residue 위치를 max로 교체 | 0.4131007993 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 감소로 채택 후보 | [보고서](reports/exp069_xgb_max_residue_position/README.md) |
 | EXP-075 | COMPLETED | fabxoe | #75 | EXP-067·069 확률의 사전 고정 0.5/0.5 평균 | 0.4157910775 | 미제출 | INFERENCE_VERIFIED | 두 부모 대비 OOF·Log Loss 개선과 fold 변동성 감소로 채택 | [보고서](reports/exp075_residue_probability_blend/README.md) |
 | EXP-078 | COMPLETED | fabxoe | #78 | EXP-069 max residue-position + 관측 indicator | 0.4110815504 | 미제출 | INFERENCE_VERIFIED | OOF 하락·fold 변동성 악화 및 Issue #80 중복 확인으로 기각, EXP-069 max+zero 동결 | [보고서](reports/exp078_xgb_max_residue_indicator/README.md) |
-| EXP-085 | COMPLETED | fabxoe | #85 | EXP-005 + reference-aware 고정 문헌 hotspot 34개 | 0.4125795545 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 +0.008200, clean hotspot family 복구 성공·채택 | [보고서](reports/exp085_hotspot_clean/README.md) |
+| EXP-085 | COMPLETED | fabxoe | #85 | EXP-005 + reference-aware 고정 문헌 hotspot 34개 | 0.4125795545 | 0.3103760308 | INFERENCE_VERIFIED | clean hotspot 복구·Public은 EXP-031보다 낮음 | [보고서](reports/exp085_hotspot_clean/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -50,8 +50,10 @@
 | 2026-07-30T18:26:30+09:00 | EXP-005 | #5 | `submissions/exp005_xgb_mutation_features.csv` | `7bc3e64e1904d9b4007bc141dde771a39e7527172f3cd24c25c408000103183c` | 0.2987843366 | 제출 시점 1위 → 2026-07-30 23:13 KST 기준 2위 | INFERENCE_VERIFIED |
 | 2026-07-30T23:28:27+09:00 | EXP-021 | #21 | `submissions/exp021_cosmic_weighted_burden_baseline.csv` (제출 ID `1506440`) | `cb75da2609631bc86310a637e2d4f2e244bfe85dac71da4f154559ebf19a07b0` | 0.2544194867 | 미확인(Dacon 제출 화면에 순위 미표시) | NOT_STARTED |
 | 2026-07-30T23:56:29+09:00 | EXP-026 | #26 | `submissions/exp026_mutation_burden.csv` (제출 ID `1506469`) | `53d835335d6d23945c80acef4b70d0112f14abdaf1b5d504a63fd1ea7b16ef00` | 0.2575936484 | 미선택·개별 순위 미확인 | NOT_STARTED |
-| 2026-07-31T15:50:02+09:00 | EXP-031 | #31 | `submissions/exp031_hotspot_extended.csv` (제출 ID `1506950`, attempt 5) | `54de49396b8910fd8134b5a854beed344e369a9a791c67c6c9caf0da38cec27d` | 0.3170803849 | 확인 당시 전체 2위(1위 6조 0.37149) | FAILED |
+| 2026-07-31T15:50:02+09:00 | EXP-031 | #31 | `submissions/exp031_hotspot_extended.csv` (제출 ID `1506950`, attempt 5) | `54de49396b8910fd8134b5a854beed344e369a9a791c67c6c9caf0da38cec27d` | 0.3170803849 | 제출 당시 전체 2위 → 2026-08-01 확인 기준 참가 4팀 중 4위 | FAILED |
 | 2026-07-31T18:46:30+09:00 | EXP-030 | #30 | `submissions/exp030_sparse_variant_xgb.csv` (제출 ID `1507123`) | `bd523ea4e872301e7d11f44ea375cf16d8c282de549f5f408d67ba3146670cba` | 0.2993610323 | 개별 순위 미확인 | INFERENCE_VERIFIED |
+| 2026-07-31T22:44:57+09:00 | EXP-058 | #58 | `submissions/exp058_cooccurrence_pair_ablation.csv` (제출 ID `1507272`) | `0a53d0a7aea3b0c34baba586e56175c6bc8df2c738875a2bef30c5ebad905eb3` | 0.3044672015 | 개별 순위 미확인 | INFERENCE_VERIFIED |
+| 2026-07-31T23:55:33+09:00 | EXP-085 | #85 | `submissions/exp085_hotspot_clean.csv` (제출 ID `1507333`) | `d319c6967ea98b75c158265fe3b46a5ebb12db207a19cd87964476154eecfe5d` | 0.3103760308 | 개별 순위 미확인 | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -98,7 +100,7 @@
 
 - Fold Macro F1: 0.4070290, 0.4219064, 0.4059511, 0.4005702, 0.4232571
 - OOF Macro F1: 0.4125795545
-- Public LB: 미제출
+- Public LB: 0.3103760308 (제출 ID `1507333`, 2026-07-31 23:55:33 KST)
 - 재현 상태: INFERENCE_VERIFIED
 
 #### 산출물과 결론
@@ -106,6 +108,10 @@
 - EXP-005 대비 OOF `+0.0081999`, fold 표준편차 악화 `+0.0004454`,
   log loss `-0.0316354`로 단계 D 복구 기준을 통과했습니다.
 - 저장 checkpoint 재추론의 test 라벨 100%·제출 SHA-256 일치를 확인했습니다.
+- 제출 파일: `submissions/exp085_hotspot_clean.csv`
+  (SHA-256 `d319c6967ea98b75c158265fe3b46a5ebb12db207a19cd87964476154eecfe5d`)
+- Public LB는 EXP-031보다 `-0.0067043541` 낮아 현재 팀 선택 제출물은
+  EXP-031을 유지합니다.
 - 고정 hotspot family를 단계 F 조합 후보로 채택합니다.
 
 ### [EXP-003] XGBoost mutation-presence baseline
@@ -1086,7 +1092,7 @@ config 변경만으로 재실행했다(Feature Factory 코드 변경 없음).
 - Fold Macro F1: 0.4100673176, 0.4143098302, 0.4046742555,
   0.4023218460, 0.4160092186
 - OOF Macro F1: 0.4101842357
-- Public LB: 미제출
+- Public LB: 0.3044672015 (제출 ID `1507272`, 2026-07-31 22:44:57 KST)
 - 재현 상태: INFERENCE_VERIFIED
 
 #### 산출물과 결론
@@ -1095,6 +1101,8 @@ config 변경만으로 재실행했다(Feature Factory 코드 변경 없음).
   `reports/exp058_cooccurrence_pair_ablation/metrics.json` /
   `reports/exp058_cooccurrence_pair_ablation/README.md` /
   `reproducibility/exp058_cooccurrence_pair_ablation/`
+- 제출 파일: `submissions/exp058_cooccurrence_pair_ablation.csv`
+  (SHA-256 `0a53d0a7aea3b0c34baba586e56175c6bc8df2c738875a2bef30c5ebad905eb3`)
 - 결론: EXP-052 대비 OOF Macro F1이 `+0.0006772617`(EXP-047 대비 누적
   `+0.0013709918`) 개선됐다. 26개 클래스 중
   13개 개선(BLCA +0.0265, LUSC +0.0197, DLBC +0.0196 등), 13개 하락(PAAD
