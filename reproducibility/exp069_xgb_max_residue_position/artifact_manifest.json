@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-069",
+  "issue_number": 69,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "8b603bcf8b03658e54d158b5976df51c90cea5f8",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp069_xgb_max_residue_position/data_manifest.json",
+  "environment": "reproducibility/exp069_xgb_max_residue_position/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-07-31T11:33:26.265681+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp069_xgb_max_residue_position/fold_00.json",
+      "size_bytes": 12188632,
+      "sha256": "b874cf78e26a813d5a1174138b03d6671b67e63abe67e68c794347c301546936",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp069_xgb_max_residue_position/fold_01.json",
+      "size_bytes": 12300106,
+      "sha256": "79ab68a7da33a0cbe31d7876b235271f89f4836cd53964f8be6ebc26a2b9540a",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp069_xgb_max_residue_position/fold_02.json",
+      "size_bytes": 15304447,
+      "sha256": "e98b055dff96f3e4e134ababc231da926a26c2d934d57144b045b48acaf12d7e",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp069_xgb_max_residue_position/fold_03.json",
+      "size_bytes": 11997675,
+      "sha256": "d0e6083f123c5b08e40ce695d321d51d7b9294170106b5b62e16a467d3e49bd9",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp069_xgb_max_residue_position/fold_04.json",
+      "size_bytes": 12942365,
+      "sha256": "f06dfe88bf5ed1ff177fe9c02f71d5e765f3c2fe147bbcefcb7da1f91ad05ebe",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp069_xgb_max_residue_position.csv",
+      "size_bytes": 38187,
+      "sha256": "4e0046564d4b291c3f0c12370d3fe542b3faeb3fa2d105d36fe7386bfb7c3f08",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp069_xgb_max_residue_position.csv",
+      "size_bytes": 2131423,
+      "sha256": "d8a513b57da34664d13fa25879883ca4896e29410f6c8b1afc87a70ea79500f4",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp069_xgb_max_residue_position_test_proba.csv",
+      "size_bytes": 835356,
+      "sha256": "fc20ec189fd9378ece9e7144eb2b3b45664ccebd30ce80d04233132f217d94d5",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp069_xgb_max_residue_position/metrics.json",
+      "size_bytes": 11228,
+      "sha256": "627dd683048cf5d79dc621cb854913a11278ac425399015b439702951f83ab36",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp069_xgb_max_residue_position/config.resolved.yaml",
+      "size_bytes": 6641,
+      "sha256": "3457fa58632f59eebf704a37cf56ab611cf53885080321abe3539699dbfb256d",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
