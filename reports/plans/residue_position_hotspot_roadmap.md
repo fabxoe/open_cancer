@@ -16,14 +16,14 @@
   - [EXP-067 coarse-bin](../exp067_xgb_residue_coarse_bin/README.md)
   - [EXP-069 max residue-position](../exp069_xgb_max_residue_position/README.md)
   - [EXP-031 hotspot extended](../exp031_hotspot_extended/README.md)
-- 확정된 다음 작업: EXP-078 PR 검토·병합 후 단계 C hotspot runner Task Issue 생성
+- 확정된 다음 작업: PR #79 검토·병합 후 단계 C hotspot runner Task Issue 생성
 
 ## 진행 상태표
 
 | 단계 | 작업 | Issue | EXP | PR | 상태 | OOF Macro F1 | 재현 상태 | 판단 | 다음 행동 |
 |---|---|---:|---|---:|---|---:|---|---|---|
 | A | EXP-067+069 고정 blend | [#75](https://github.com/fabxoe/open_cancer/issues/75) | EXP-075 | [#77](https://github.com/fabxoe/open_cancer/pull/77) | COMPLETED | 0.4157910775 | INFERENCE_VERIFIED | 두 부모 대비 개선으로 채택 | 단계 B 진행 |
-| B | max+indicator | [#78](https://github.com/fabxoe/open_cancer/issues/78) | EXP-078 | - | IN_PROGRESS | 0.4110815504 | INFERENCE_VERIFIED | 채택 기준 실패로 기각, EXP-069 max+zero 동결 | 보고서·PR |
+| B | max+indicator | [#78](https://github.com/fabxoe/open_cancer/issues/78) | EXP-078 | [#79](https://github.com/fabxoe/open_cancer/pull/79) | PR_OPEN | 0.4110815504 | INFERENCE_VERIFIED | 채택 기준 실패로 기각, EXP-069 max+zero 동결 | PR 검토·병합 |
 | C | hotspot runner 정리 | 미발급 | 해당 없음 | - | PLANNED | N/A | 해당 없음 | - | B 완료 대기 |
 | D | hotspot clean 실험 | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | C 완료 대기 |
 | E | 위치 negative control | 미발급 | explore | - | PLANNED | N/A | 해당 없음 | - | D 완료 대기 |
