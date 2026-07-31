@@ -3,17 +3,21 @@
 Unlike gene-level presence/type features, these encode whether a mutation
 lands on a specific, well-established codon (e.g. BRAF V600, PIK3CA H1047)
 rather than anywhere in the gene -- information no per-gene column can
-express. The table below is restricted to (gene, position) pairs that were
-verified against this dataset's own internal numbering consistency
-(see scripts/explore_hotspot_numbering_consistency.py): every occurrence in
-train+test agrees on a single reference amino acid, and that amino acid
-matches the published canonical hotspot residue. A token only counts toward
-a hotspot if both the position AND the reference amino acid match, which
-filters out the rare (~1-2 per position) internal annotation noise found by
-that check.
+express. Both hotspot tables below are restricted to (gene, position) pairs
+verified against this dataset's own internal numbering consistency (see
+scripts/explore_hotspot_numbering_consistency.py and
+scripts/explore_hotspot_candidate_mining.py): every occurrence in train+test
+agrees on a single reference amino acid, that amino acid matches the
+published canonical hotspot residue, and (for EXTENDED_HOTSPOTS) the
+evidence is not an artifact of a repeated same-gene position-set (see
+reports/exp012_feature_analysis/hotspot_artifact_clusters.csv -- e.g. BRAF
+512/548/563/566/578/603/640 always co-occur with 600 in the exact same 39
+rows, which is not plausible tumor biology and was excluded). A token only
+counts toward a hotspot if both the position AND the reference amino acid
+match, which filters out rare internal annotation noise.
 
-KRAS and NRAS hotspots (G12/G13/Q61) are intentionally omitted: those genes
-are not columns in this panel at all (see EXP-012).
+KRAS and NRAS hotspots (G12/G13/Q61) are intentionally omitted throughout:
+those genes are not columns in this panel at all (see EXP-012).
 """
 
 from __future__ import annotations
@@ -30,7 +34,9 @@ from open_cancer.hashing import sha256_file, sha256_lines
 
 SUBSTITUTION = re.compile(r"^([ACDEFGHIKLMNPQRSTVWY])([1-9][0-9]*)([ACDEFGHIKLMNPQRSTVWY*])$")
 
-KNOWN_HOTSPOTS: tuple[tuple[str, int, str], ...] = (
+HotspotTable = tuple[tuple[str, int, str], ...]
+
+KNOWN_HOTSPOTS: HotspotTable = (
     ("BRAF", 600, "V"),
     ("CTNNB1", 37, "S"),
     ("CTNNB1", 45, "S"),
@@ -52,25 +58,63 @@ KNOWN_HOTSPOTS: tuple[tuple[str, int, str], ...] = (
     ("TP53", 282, "R"),
 )
 
-HOTSPOT_GENES: frozenset[str] = frozenset(gene for gene, _, _ in KNOWN_HOTSPOTS)
-HOTSPOT_FEATURE_NAMES: tuple[str, ...] = (
-    *(f"hotspot__{gene}_{position}" for gene, position, _ in KNOWN_HOTSPOTS),
-    "hotspot__known_hotspot_total_count",
+# EXP-031 attempt 5: high-confidence additions mined from the EXP-012 COSMIC
+# protect-gene whitelist (361 genes) via explore_hotspot_candidate_mining.py,
+# then restricted by hand to individually well-established literature
+# hotspots (see EXPERIMENT_HISTORY.md for the confidence rationale per gene).
+# Genes/positions that passed the automated filters but are not classical
+# point-mutation cancer drivers (HLA-A germline diversity, PABPC1, SIRPA,
+# ATP1A1) or that could not be individually verified with confidence (the
+# ~50-codon TP53 extension, KMT2D, PLEC, etc.) were deliberately left out.
+ADDITIONAL_HOTSPOTS: HotspotTable = (
+    ("PIK3CA", 542, "E"),
+    ("PIK3CA", 546, "Q"),
+    ("PIK3CA", 345, "N"),
+    ("PTEN", 130, "R"),
+    ("PTEN", 233, "R"),
+    ("FBXW7", 505, "R"),
+    ("AKT1", 17, "E"),
+    ("U2AF1", 34, "S"),
+    ("APC", 1450, "R"),
+    ("APC", 876, "R"),
+    ("POLE", 286, "P"),
+    ("POLE", 411, "V"),
+    ("KIT", 816, "D"),
+    ("FGFR3", 249, "S"),
+    ("RAC1", 29, "P"),
 )
 
+EXTENDED_HOTSPOTS: HotspotTable = KNOWN_HOTSPOTS + ADDITIONAL_HOTSPOTS
 
-def _hotspot_lookup() -> dict[tuple[str, int], tuple[int, str]]:
+
+def hotspot_feature_names(hotspots: HotspotTable) -> tuple[str, ...]:
+    return (
+        *(f"hotspot__{gene}_{position}" for gene, position, _ in hotspots),
+        "hotspot__known_hotspot_total_count",
+    )
+
+
+HOTSPOT_FEATURE_NAMES: tuple[str, ...] = hotspot_feature_names(KNOWN_HOTSPOTS)
+EXTENDED_HOTSPOT_FEATURE_NAMES: tuple[str, ...] = hotspot_feature_names(EXTENDED_HOTSPOTS)
+
+
+def _hotspot_lookup(hotspots: HotspotTable) -> dict[tuple[str, int], tuple[int, str]]:
     return {
         (gene, position): (index, reference)
-        for index, (gene, position, reference) in enumerate(KNOWN_HOTSPOTS)
+        for index, (gene, position, reference) in enumerate(hotspots)
     }
 
 
-def build_hotspot_matrix(path: Path, gene_start_column: int) -> sparse.csr_matrix:
-    """Build a (n_rows, len(KNOWN_HOTSPOTS) + 1) matrix: per-hotspot hit + total."""
+def build_hotspot_matrix(
+    path: Path,
+    gene_start_column: int,
+    hotspots: HotspotTable = KNOWN_HOTSPOTS,
+) -> sparse.csr_matrix:
+    """Build a (n_rows, len(hotspots) + 1) matrix: per-hotspot hit + total."""
 
-    lookup = _hotspot_lookup()
-    total_features = len(KNOWN_HOTSPOTS)
+    lookup = _hotspot_lookup(hotspots)
+    hotspot_genes = frozenset(gene for gene, _, _ in hotspots)
+    total_features = len(hotspots)
     rows: list[int] = []
     cols: list[int] = []
 
@@ -79,7 +123,7 @@ def build_hotspot_matrix(path: Path, gene_start_column: int) -> sparse.csr_matri
         header = next(reader)
         genes = header[gene_start_column:]
         relevant_columns = [
-            (offset, gene) for offset, gene in enumerate(genes) if gene in HOTSPOT_GENES
+            (offset, gene) for offset, gene in enumerate(genes) if gene in hotspot_genes
         ]
         row_index = 0
         for row in reader:
@@ -118,26 +162,28 @@ def build_hotspot_augmented_features(
     train_path: Path,
     test_path: Path,
     output_dir: Path,
+    hotspots: HotspotTable = KNOWN_HOTSPOTS,
 ) -> dict[str, object]:
     """Build EXP-005 gene x type features plus known-hotspot indicator features."""
 
     from open_cancer.mutation_features import build_mutation_features
 
+    feature_names = hotspot_feature_names(hotspots)
     base_dir = output_dir / "base_mutation_type_features"
     base_report = build_mutation_features(train_path, test_path, base_dir)
 
     train_base = sparse.load_npz(base_dir / "train_features.npz")
     test_base = sparse.load_npz(base_dir / "test_features.npz")
 
-    train_hotspot = build_hotspot_matrix(train_path, gene_start_column=2)
-    test_hotspot = build_hotspot_matrix(test_path, gene_start_column=1)
+    train_hotspot = build_hotspot_matrix(train_path, gene_start_column=2, hotspots=hotspots)
+    test_hotspot = build_hotspot_matrix(test_path, gene_start_column=1, hotspots=hotspots)
 
     train_matrix = sparse.hstack([train_base, train_hotspot], format="csr").astype(np.float32)
     test_matrix = sparse.hstack([test_base, test_hotspot], format="csr").astype(np.float32)
 
     names = [
         *json.loads((base_dir / "feature_names.json").read_text(encoding="utf-8")),
-        *HOTSPOT_FEATURE_NAMES,
+        *feature_names,
     ]
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -155,15 +201,18 @@ def build_hotspot_augmented_features(
         "base_dir": str(base_dir),
         "feature_contract": {
             **base_report["feature_contract"],
-            "hotspot_features": list(HOTSPOT_FEATURE_NAMES),
+            "hotspot_features": list(feature_names),
             "known_hotspots": [
                 {"gene": gene, "position": position, "reference_aa": reference}
-                for gene, position, reference in KNOWN_HOTSPOTS
+                for gene, position, reference in hotspots
             ],
             "hotspot_validation_note": (
-                "positions verified via scripts/explore_hotspot_numbering_consistency.py: "
-                "single consistent reference AA across train+test, matching published "
-                "canonical hotspot residues; a token counts only if both position and "
+                "positions verified via scripts/explore_hotspot_numbering_consistency.py "
+                "and (for entries beyond the original 19) "
+                "scripts/explore_hotspot_candidate_mining.py: single consistent "
+                "reference AA across train+test not attributable to a repeated "
+                "same-gene position-set artifact, matching published canonical "
+                "hotspot residues; a token counts only if both position and "
                 "reference AA match."
             ),
         },

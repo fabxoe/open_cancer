@@ -6,7 +6,10 @@ from pathlib import Path
 from scipy import sparse
 
 from open_cancer.hotspot_features import (
+    EXTENDED_HOTSPOT_FEATURE_NAMES,
+    EXTENDED_HOTSPOTS,
     HOTSPOT_FEATURE_NAMES,
+    KNOWN_HOTSPOTS,
     build_hotspot_augmented_features,
     build_hotspot_matrix,
 )
@@ -69,3 +72,25 @@ def test_build_hotspot_augmented_features_appends_to_base_names(tmp_path: Path) 
     assert names[-len(HOTSPOT_FEATURE_NAMES) :] == list(HOTSPOT_FEATURE_NAMES)
     assert train_matrix.shape[1] == len(names)
     assert report["feature_contract"]["hotspot_features"] == list(HOTSPOT_FEATURE_NAMES)
+
+
+def test_extended_hotspots_include_known_hotspots_and_new_genes() -> None:
+    assert EXTENDED_HOTSPOTS[: len(KNOWN_HOTSPOTS)] == KNOWN_HOTSPOTS
+    assert len(EXTENDED_HOTSPOTS) == len(KNOWN_HOTSPOTS) + 15
+    assert ("AKT1", 17, "E") in EXTENDED_HOTSPOTS
+    assert len(set(EXTENDED_HOTSPOTS)) == len(EXTENDED_HOTSPOTS)
+    assert len(EXTENDED_HOTSPOT_FEATURE_NAMES) == len(EXTENDED_HOTSPOTS) + 1
+
+
+def test_build_hotspot_matrix_with_extended_table(tmp_path: Path) -> None:
+    train = tmp_path / "train.csv"
+    train.write_text(
+        "ID,SUBCLASS,AKT1,BRAF\nT1,A,E17K,WT\nT2,B,WT,V600E\n",
+        encoding="utf-8",
+    )
+    matrix = build_hotspot_matrix(train, gene_start_column=2, hotspots=EXTENDED_HOTSPOTS)
+    names = list(EXTENDED_HOTSPOT_FEATURE_NAMES)
+    assert matrix.shape[1] == len(names)
+    assert matrix[0, names.index("hotspot__AKT1_17")] == 1
+    assert matrix[1, names.index("hotspot__BRAF_600")] == 1
+    assert matrix[0, names.index("hotspot__known_hotspot_total_count")] == 1
