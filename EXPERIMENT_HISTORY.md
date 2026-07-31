@@ -33,7 +33,7 @@
 | EXP-047 | COMPLETED | fabxoe | #47 | EXP-033 + 유전자별 최소 단백질 잔기 위치 | 0.4088132438 | 미제출 | INFERENCE_VERIFIED | Local OOF 개선·fold 변동성 감소, 위치 family 후속 검증 채택 | [보고서](reports/exp047_xgb_min_residue_position/README.md) |
 | EXP-050 | COMPLETED | 2heej | #50 | EXP-005 + EXP-045 반복 선택 파생변수 2종 고정 | 0.4014204930 | 미제출 | INFERENCE_VERIFIED | EXP-043·045보다 높지만 EXP-005보다 낮아 미채택 | [보고서](reports/exp050_xgb_fixed_two_distribution_features/README.md) |
 | EXP-052 | COMPLETED | Kangho-Park | #52 | EXP-047 + Feature Factory family 7(co-mutation, 문헌 근거 유전자 쌍 3개) | 0.4095069739 | 미제출 | INFERENCE_VERIFIED | OOF 소폭 개선·fold 표준편차 감소로 채택, pair 확장 검토 | [보고서](reports/exp052_hotspot_cooccurrence/README.md) |
-| EXP-058 | COMPLETED | Kangho-Park | #58 | EXP-052에서 SHAP 근거로 APC/CTNNB1 제거(쌍 3개→2개) | 0.4101842357 | 미제출 | INFERENCE_VERIFIED | 채택(팀 최고), COAD 개선으로 SHAP 가설 직접 검증 | [보고서](reports/exp058_cooccurrence_pair_ablation/README.md) |
+| EXP-058 | COMPLETED | Kangho-Park | #58 | EXP-052에서 SHAP 근거로 APC/CTNNB1 제거(쌍 3개→2개) | 0.4101842357 | 0.3044672015 | INFERENCE_VERIFIED | Local 개선(COAD SHAP 가설 검증)에도 Public LB는 EXP-031보다 낮아 팀 선택 제출물은 EXP-031 유지 | [보고서](reports/exp058_cooccurrence_pair_ablation/README.md) |
 | EXP-065 | COMPLETED | fabxoe | #65 | EXP-047 + complex-token residue 위치 제외 | 0.4108923084 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 소폭 감소로 채택 후보 | [보고서](reports/exp065_xgb_residue_exclude_complex/README.md) |
 | EXP-063 | COMPLETED | fabxoe | #63 | EXP-047 + residue-position 관측 indicator | 0.4130329102 | 미제출 | INFERENCE_VERIFIED | OOF 개선으로 채택 후보, fold 변동성과 Log Loss는 소폭 악화 | [보고서](reports/exp063_xgb_residue_indicator/README.md) |
 | EXP-067 | COMPLETED | fabxoe | #67 | EXP-047 + residue 위치 폭 100 coarse-bin | 0.4124014867 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 감소로 채택 후보 | [보고서](reports/exp067_xgb_residue_coarse_bin/README.md) |
@@ -50,6 +50,7 @@
 | 2026-07-30T23:56:29+09:00 | EXP-026 | #26 | `submissions/exp026_mutation_burden.csv` (제출 ID `1506469`) | `53d835335d6d23945c80acef4b70d0112f14abdaf1b5d504a63fd1ea7b16ef00` | 0.2575936484 | 미선택·개별 순위 미확인 | NOT_STARTED |
 | 2026-07-31T15:50:02+09:00 | EXP-031 | #31 | `submissions/exp031_hotspot_extended.csv` (제출 ID `1506950`, attempt 5) | `54de49396b8910fd8134b5a854beed344e369a9a791c67c6c9caf0da38cec27d` | 0.3170803849 | 확인 당시 전체 2위(1위 6조 0.37149) | FAILED |
 | 2026-07-31T18:46:30+09:00 | EXP-030 | #30 | `submissions/exp030_sparse_variant_xgb.csv` (제출 ID `1507123`) | `bd523ea4e872301e7d11f44ea375cf16d8c282de549f5f408d67ba3146670cba` | 0.2993610323 | 개별 순위 미확인 | INFERENCE_VERIFIED |
+| 2026-07-31T22:44:57+09:00 | EXP-058 | #58 | `submissions/exp058_cooccurrence_pair_ablation.csv` (제출 ID `1507272`) | `0a53d0a7aea3b0c34baba586e56175c6bc8df2c738875a2bef30c5ebad905eb3` | 0.3044672015 | 미선택(팀 선택 제출물은 EXP-031 유지), 확인 당시 전체 3위 | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -1053,7 +1054,9 @@ config 변경만으로 재실행했다(Feature Factory 코드 변경 없음).
 - Fold Macro F1: 0.4100673176, 0.4143098302, 0.4046742555,
   0.4023218460, 0.4160092186
 - OOF Macro F1: 0.4101842357
-- Public LB: 미제출
+- Public LB: **0.3044672015**(제출 ID `1507272`, 2026-07-31 22:44:57 KST,
+  확인 당시 전체 3위). EXP-031(0.3170803849)보다 낮아 팀 선택 제출물은
+  EXP-031을 그대로 유지했다.
 - 재현 상태: INFERENCE_VERIFIED
 
 #### 산출물과 결론
@@ -1063,11 +1066,15 @@ config 변경만으로 재실행했다(Feature Factory 코드 변경 없음).
   `reports/exp058_cooccurrence_pair_ablation/README.md` /
   `reproducibility/exp058_cooccurrence_pair_ablation/`
 - 결론: EXP-052 대비 OOF Macro F1이 `+0.0006772617`(EXP-047 대비 누적
-  `+0.0013709918`) 추가 개선돼 팀 최고 기록을 갱신했다. 26개 클래스 중
-  13개 개선(BLCA +0.0265, LUSC +0.0197, DLBC +0.0196 등), 13개 하락(PAAD
-  -0.0230, THYM -0.0204 등)이었다. 가장 중요한 확인은 **COAD가 SHAP
-  예측대로 실제 개선**됐다는 점(0.7126 → 0.7187, `+0.0061`) — APC/CTNNB1
-  제거가 COAD 예측에 도움이 될 것이라는 가설이 실행 결과로 직접 검증됐다.
-  저장 checkpoint 재추론으로 제출 SHA-256과 라벨 100% 일치를 확인해
-  `INFERENCE_VERIFIED`로 자동 승격됐다. 아직 리더보드에는 제출하지 않았다.
+  `+0.0013709918`) 추가 개선돼 이 계열(EXP-047 기반) 안에서는 팀 최고
+  기록을 갱신했다. 26개 클래스 중 13개 개선(BLCA +0.0265, LUSC +0.0197,
+  DLBC +0.0196 등), 13개 하락(PAAD -0.0230, THYM -0.0204 등)이었다. 가장
+  중요한 확인은 **COAD가 SHAP 예측대로 실제 개선**됐다는 점(0.7126 →
+  0.7187, `+0.0061`) — APC/CTNNB1 제거가 COAD 예측에 도움이 될 것이라는
+  가설이 실행 결과로 직접 검증됐다. 저장 checkpoint 재추론으로 제출
+  SHA-256과 라벨 100% 일치를 확인해 `INFERENCE_VERIFIED`로 자동
+  승격됐다. 다만 이 계열은 EXP-031(hotspot 계열, Local OOF 0.4136·Public
+  LB 0.3171)의 Local·LB 모두에 못 미쳐, Local과 LB 순위가 두 계열
+  사이에서 일관됐다(EXP-031 > EXP-058, 양쪽 다). 제출 후에도 팀 선택
+  제출물은 EXP-031을 유지한다.
 
