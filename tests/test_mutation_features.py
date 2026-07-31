@@ -8,6 +8,7 @@ from scipy import sparse
 from open_cancer.mutation_features import (
     GENE_FEATURES,
     GLOBAL_FEATURES,
+    LOG_BURDEN_FEATURES,
     ROBUST_GLOBAL_FEATURES,
     build_mutation_features,
     classify_mutation_token,
@@ -97,3 +98,38 @@ def test_robust_aggregate_features_are_finite_and_safe(tmp_path: Path) -> None:
     assert matrix[1, names.index("sample__synonymous_ratio")] == 0.5
     assert matrix[1, names.index("sample__multi_variant_gene_ratio")] == 1.0
     assert matrix[1, names.index("sample__missing_gene_ratio")] == 0.5
+
+
+def test_log_burden_ablation_excludes_ratio_features(tmp_path: Path) -> None:
+    train = tmp_path / "train.csv"
+    test = tmp_path / "test.csv"
+    output = tmp_path / "features"
+    train.write_text(
+        "ID,SUBCLASS,GENE1,GENE2\n"
+        'T1,A,"S27N R28R",WT\n'
+        "T2,B,WT,WT\n",
+        encoding="utf-8",
+    )
+    test.write_text(
+        "ID,GENE1,GENE2\n"
+        "E1,R1538*,L1854fs\n",
+        encoding="utf-8",
+    )
+
+    report = build_mutation_features(
+        train,
+        test,
+        output,
+        selected_robust_aggregates=LOG_BURDEN_FEATURES,
+    )
+    matrix = sparse.load_npz(output / "train_features.npz")
+    names = json.loads((output / "feature_names.json").read_text(encoding="utf-8"))
+
+    assert report["feature_contract"]["robust_aggregate_features"] == list(
+        LOG_BURDEN_FEATURES
+    )
+    assert all(name in names for name in LOG_BURDEN_FEATURES)
+    assert not any(name.endswith("_ratio") for name in names)
+    assert matrix[0, names.index("sample__mutated_gene_count_log1p")] > 0
+    assert matrix[0, names.index("sample__total_variant_count_log1p")] > 0
+    assert matrix[0, names.index("sample__multi_variant_gene_count_log1p")] > 0

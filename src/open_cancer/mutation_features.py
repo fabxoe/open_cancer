@@ -31,6 +31,7 @@ ROBUST_GLOBAL_FEATURES = (
     "sample__multi_variant_gene_ratio",
     "sample__missing_gene_ratio",
 )
+LOG_BURDEN_FEATURES = ROBUST_GLOBAL_FEATURES[:3]
 
 _SUBSTITUTION = re.compile(r"^([ACDEFGHIKLMNPQRSTVWY])([1-9][0-9]*)([ACDEFGHIKLMNPQRSTVWY*])$")
 
@@ -62,12 +63,17 @@ def feature_names(
     genes: list[str],
     *,
     include_robust_aggregates: bool = False,
+    selected_robust_aggregates: tuple[str, ...] | None = None,
 ) -> list[str]:
     """Return the stable feature order shared by train and test."""
 
+    robust_features = _resolve_robust_features(
+        include_robust_aggregates=include_robust_aggregates,
+        selected_robust_aggregates=selected_robust_aggregates,
+    )
     return [
         *GLOBAL_FEATURES,
-        *(ROBUST_GLOBAL_FEATURES if include_robust_aggregates else ()),
+        *robust_features,
         *(f"{gene}__{feature}" for gene in genes for feature in GENE_FEATURES),
     ]
 
@@ -78,14 +84,20 @@ def _read_sparse_features(
     genes: list[str],
     has_labels: bool,
     include_robust_aggregates: bool,
+    selected_robust_aggregates: tuple[str, ...] | None,
 ) -> FeatureMatrix:
+    robust_features = _resolve_robust_features(
+        include_robust_aggregates=include_robust_aggregates,
+        selected_robust_aggregates=selected_robust_aggregates,
+    )
     names = feature_names(
         genes,
         include_robust_aggregates=include_robust_aggregates,
+        selected_robust_aggregates=selected_robust_aggregates,
     )
     active_global_features = (
         *GLOBAL_FEATURES,
-        *(ROBUST_GLOBAL_FEATURES if include_robust_aggregates else ()),
+        *robust_features,
     )
     global_index = {name: index for index, name in enumerate(active_global_features)}
     gene_offset = len(active_global_features)
@@ -152,12 +164,13 @@ def _read_sparse_features(
                     rows.append(row_index)
                     columns.append(global_index[name])
                     values.append(float(count))
-            if include_robust_aggregates:
+            if robust_features:
                 robust_values = _robust_aggregate_values(
                     global_counts,
                     gene_count=len(genes),
                 )
-                for name, value in robust_values.items():
+                for name in robust_features:
+                    value = robust_values[name]
                     if value:
                         rows.append(row_index)
                         columns.append(global_index[name])
@@ -177,6 +190,7 @@ def build_mutation_features(
     output_dir: Path,
     *,
     include_robust_aggregates: bool = False,
+    selected_robust_aggregates: tuple[str, ...] | None = None,
 ) -> dict[str, object]:
     """Build train/test CSR matrices with identical, target-independent features."""
 
@@ -193,16 +207,23 @@ def build_mutation_features(
         genes=genes,
         has_labels=True,
         include_robust_aggregates=include_robust_aggregates,
+        selected_robust_aggregates=selected_robust_aggregates,
     )
     test = _read_sparse_features(
         test_path,
         genes=genes,
         has_labels=False,
         include_robust_aggregates=include_robust_aggregates,
+        selected_robust_aggregates=selected_robust_aggregates,
     )
     names = feature_names(
         genes,
         include_robust_aggregates=include_robust_aggregates,
+        selected_robust_aggregates=selected_robust_aggregates,
+    )
+    robust_features = _resolve_robust_features(
+        include_robust_aggregates=include_robust_aggregates,
+        selected_robust_aggregates=selected_robust_aggregates,
     )
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -231,9 +252,7 @@ def build_mutation_features(
             "gene_count": len(genes),
             "gene_order_sha256": sha256_lines(genes),
             "mutation_types": list(MUTATION_TYPES),
-            "robust_aggregate_features": (
-                list(ROBUST_GLOBAL_FEATURES) if include_robust_aggregates else []
-            ),
+            "robust_aggregate_features": list(robust_features),
             "missing_policy": "separate per-gene and per-sample missing indicators",
             "position_features": "excluded because a reliable source transcript/protein length is unavailable",
         },
@@ -297,6 +316,21 @@ def _robust_aggregate_values(
             float(count / total_variant_count) if total_variant_count else 0.0
         )
     return values
+
+
+def _resolve_robust_features(
+    *,
+    include_robust_aggregates: bool,
+    selected_robust_aggregates: tuple[str, ...] | None,
+) -> tuple[str, ...]:
+    if selected_robust_aggregates is None:
+        return ROBUST_GLOBAL_FEATURES if include_robust_aggregates else ()
+    invalid = sorted(set(selected_robust_aggregates) - set(ROBUST_GLOBAL_FEATURES))
+    if invalid:
+        raise ValueError(f"지원하지 않는 robust aggregate 피처입니다: {invalid}")
+    if len(set(selected_robust_aggregates)) != len(selected_robust_aggregates):
+        raise ValueError("robust aggregate 피처가 중복됐습니다.")
+    return selected_robust_aggregates
 
 
 def _write_single_column(path: Path, name: str, values: list[str]) -> None:

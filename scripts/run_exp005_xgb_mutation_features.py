@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from html import escape
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -67,6 +68,131 @@ def file_record(path: Path) -> dict[str, Any]:
         "size_bytes": path.stat().st_size,
         "sha256": sha256_file(path),
     }
+
+
+def write_local_dashboard(
+    *,
+    artifact_slug: str,
+    metrics: dict[str, Any],
+    feature_dir: Path,
+    highlighted_features: tuple[str, ...],
+    comparison_metrics_path: Path | None,
+) -> Path:
+    """Write a local-only HTML summary for people who do not use notebooks."""
+    output_path = ROOT / "reports" / "local" / artifact_slug / "dashboard.html"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    comparison = None
+    if comparison_metrics_path is not None and comparison_metrics_path.is_file():
+        comparison = json.loads(comparison_metrics_path.read_text(encoding="utf-8"))
+
+    names = json.loads(
+        (feature_dir / "feature_names.json").read_text(encoding="utf-8")
+    )
+    train_features = sparse.load_npz(feature_dir / "train_features.npz")
+    test_features = sparse.load_npz(feature_dir / "test_features.npz")
+    feature_rows: list[dict[str, Any]] = []
+    for name in highlighted_features:
+        index = names.index(name)
+        train_values = train_features[:, index].toarray().ravel()
+        test_values = test_features[:, index].toarray().ravel()
+        feature_rows.append(
+            {
+                "피처": name,
+                "train 평균": float(train_values.mean()),
+                "train 중앙값": float(np.median(train_values)),
+                "train 표준편차": float(train_values.std()),
+                "test 평균": float(test_values.mean()),
+                "test 중앙값": float(np.median(test_values)),
+                "test 표준편차": float(test_values.std()),
+            }
+        )
+
+    fold_rows = "".join(
+        (
+            "<tr>"
+            f"<td>{fold['fold']}</td>"
+            f"<td>{fold['macro_f1']:.6f}</td>"
+            "<td><div class='bar-wrap'>"
+            f"<div class='bar' style='width:{fold['macro_f1'] * 100:.2f}%'></div>"
+            "</div></td>"
+            f"<td>{fold['accuracy']:.6f}</td>"
+            f"<td>{fold['log_loss']:.6f}</td>"
+            "</tr>"
+        )
+        for fold in metrics["folds"]
+    )
+    comparison_html = "<p>비교 실험 metrics를 찾지 못했습니다.</p>"
+    if comparison is not None:
+        current = metrics["oof"]["macro_f1"]
+        parent = comparison["oof"]["macro_f1"]
+        comparison_html = (
+            "<table><thead><tr><th>실험</th><th>OOF Macro F1</th>"
+            "<th>fold 표준편차</th></tr></thead><tbody>"
+            f"<tr><td>{escape(comparison['experiment_id'])}</td>"
+            f"<td>{parent:.10f}</td>"
+            f"<td>{comparison['oof']['fold_std']:.10f}</td></tr>"
+            f"<tr><td>{escape(metrics['experiment_id'])}</td>"
+            f"<td>{current:.10f}</td>"
+            f"<td>{metrics['oof']['fold_std']:.10f}</td></tr>"
+            f"<tr><td>차이</td><td>{current - parent:+.10f}</td>"
+            f"<td>{metrics['oof']['fold_std'] - comparison['oof']['fold_std']:+.10f}</td></tr>"
+            "</tbody></table>"
+        )
+
+    feature_table = pd.DataFrame(feature_rows).to_html(
+        index=False, float_format=lambda value: f"{value:.6f}", border=0
+    )
+    class_table = (
+        pd.Series(metrics["oof"]["per_class_f1"], name="F1")
+        .sort_values(ascending=False)
+        .rename_axis("암종")
+        .reset_index()
+        .to_html(index=False, float_format=lambda value: f"{value:.6f}", border=0)
+    )
+    html = f"""<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{escape(metrics["experiment_id"])} 내부 검증</title>
+<style>
+body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  max-width: 1100px; margin: 36px auto; padding: 0 20px; color: #17212b; }}
+h1, h2 {{ color: #183b56; }} .cards {{ display: flex; gap: 14px; flex-wrap: wrap; }}
+.card {{ background: #f4f7fa; border-radius: 10px; padding: 16px 20px; min-width: 190px; }}
+.value {{ font-size: 1.5rem; font-weight: 700; margin-top: 6px; }}
+table {{ border-collapse: collapse; width: 100%; margin: 12px 0 28px; }}
+th, td {{ border-bottom: 1px solid #dde4ea; padding: 9px; text-align: right; }}
+th:first-child, td:first-child {{ text-align: left; }}
+.bar-wrap {{ width: 100%; min-width: 220px; background: #e7edf2; border-radius: 4px; }}
+.bar {{ height: 14px; background: #2a7de1; border-radius: 4px; }}
+.note {{ background: #fff7df; padding: 12px 16px; border-radius: 8px; }}
+</style>
+</head>
+<body>
+<h1>{escape(metrics["experiment_id"])} 내부 검증 대시보드</h1>
+<p class="note">이 파일은 로컬 확인용이며 Git에 커밋되지 않습니다.
+Public leaderboard 점수는 포함하지 않습니다.</p>
+<div class="cards">
+  <div class="card">OOF Macro F1<div class="value">{metrics["oof"]["macro_f1"]:.6f}</div></div>
+  <div class="card">fold 평균<div class="value">{metrics["oof"]["fold_mean"]:.6f}</div></div>
+  <div class="card">fold 표준편차<div class="value">{metrics["oof"]["fold_std"]:.6f}</div></div>
+  <div class="card">Accuracy<div class="value">{metrics["oof"]["accuracy"]:.6f}</div></div>
+</div>
+<h2>부모 실험 비교</h2>
+{comparison_html}
+<h2>fold별 성능</h2>
+<table><thead><tr><th>fold</th><th>Macro F1</th><th>시각화</th>
+<th>Accuracy</th><th>Log Loss</th></tr></thead><tbody>{fold_rows}</tbody></table>
+<h2>추가 피처 train/test 분포</h2>
+{feature_table}
+<h2>암종별 F1</h2>
+{class_table}
+</body></html>
+"""
+    output_path.write_text(html, encoding="utf-8")
+    return output_path
 
 
 def verify_saved_inference(
@@ -328,6 +454,8 @@ def run_experiment(
     include_robust_aggregates: bool,
     parent_experiment: str | None,
     notes: str,
+    selected_robust_aggregates: tuple[str, ...] | None = None,
+    comparison_metrics_path: Path | None = None,
 ) -> None:
     started_at = datetime.now(timezone.utc)
     start_time = time.perf_counter()
@@ -377,6 +505,7 @@ def run_experiment(
         TEST_PATH,
         feature_dir,
         include_robust_aggregates=include_robust_aggregates,
+        selected_robust_aggregates=selected_robust_aggregates,
     )
 
     train_meta = pd.read_csv(TRAIN_PATH, usecols=["ID", "SUBCLASS"], dtype=str)
@@ -614,6 +743,23 @@ def run_experiment(
             metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json"
         )
         raise
+    local_dashboard_path = write_local_dashboard(
+        artifact_slug=artifact_slug,
+        metrics=metrics,
+        feature_dir=feature_dir,
+        highlighted_features=selected_robust_aggregates or (),
+        comparison_metrics_path=comparison_metrics_path,
+    )
+    print(
+        json.dumps(
+            {
+                "local_dashboard": str(local_dashboard_path),
+                "open_command": f"open {local_dashboard_path}",
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
     print(json.dumps({"metrics": str(metrics_path), "oof": metrics["oof"]}, ensure_ascii=False, indent=2))
 
 
