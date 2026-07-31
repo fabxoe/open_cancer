@@ -30,7 +30,7 @@
 | B | max+indicator | [#78](https://github.com/fabxoe/open_cancer/issues/78) | EXP-078 | [#79](https://github.com/fabxoe/open_cancer/pull/79) | REJECTED | 0.4110815504 | INFERENCE_VERIFIED | 채택 기준 실패·indicator 완전 중복으로 기각, EXP-069 max+zero 동결 | Issue #80 의미 감사 |
 | C | hotspot runner 정리 | [#83](https://github.com/fabxoe/open_cancer/issues/83) | 해당 없음 | [#84](https://github.com/fabxoe/open_cancer/pull/84) | COMPLETED | N/A | 해당 없음 | config 기반 runner·fold-train 근거 검증·재현 산출물 자동화 완료 | 단계 D 진행 |
 | D | hotspot clean 실험 | [#85](https://github.com/fabxoe/open_cancer/issues/85) | EXP-085 | [#86](https://github.com/fabxoe/open_cancer/pull/86) | COMPLETED | 0.4125795545 | INFERENCE_VERIFIED | EXP-005 대비 +0.008200으로 복구 성공·채택 | 단계 E 진행 |
-| E | 위치 negative control | [#91](https://github.com/fabxoe/open_cancer/issues/91) | explore | - | IN_PROGRESS | 0.4058699664 (3-seed 평균) | 해당 없음 | EXP-069 원본 대비 -0.007231, 숫자 위치 신호 지지 | PR 생성·병합 |
+| E | 위치 negative control | [#91](https://github.com/fabxoe/open_cancer/issues/91) | explore | [#92](https://github.com/fabxoe/open_cancer/pull/92) | PR_OPEN | 0.4058699664 (3-seed 평균) | 해당 없음 | EXP-069 원본 대비 -0.007231, 숫자 위치 신호 지지 | PR #92 검토·병합 |
 | F | Feature Spec v1 조합 | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | EXP-005 + EXP-069 max+zero + EXP-085 hotspot | 단계 E 병합 후 Experiment Issue 생성 |
 | G | 모델 다양화·stacking | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | Feature Spec v1 동결 대기 |
 
