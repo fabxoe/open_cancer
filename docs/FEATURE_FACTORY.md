@@ -6,7 +6,7 @@ Feature Factory는 한 가지 파생변수가 아니라, 모든 모델이 같은
 
 ## 현재 구현 범위
 
-Factory `1.0.0`의 핵심 기반은 다음을 제공한다.
+Factory `1.1.0`의 핵심 기반은 다음을 제공한다.
 
 - 원본 CSV의 각 행을 streaming 방식으로 읽는 희소 피처 생성
 - 변이 토큰의 유형, 단백질 잔기 위치, reference/alternate 아미노산과 형태 파싱
@@ -16,7 +16,7 @@ Factory `1.0.0`의 핵심 기반은 다음을 제공한다.
 - 위치 family를 끄면 기존 EXP-005 피처 이름과 행렬을 그대로 재생성하는 호환성
 - 위치 파싱 성공률, complex token 비율과 형태별 개수를 train/test로 분리한 QC
 
-현재 공식 위치 실험은 유전자마다 다음 값 한 개만 추가한다.
+기존 공식 위치 실험 EXP-047은 유전자마다 다음 값 한 개만 추가했다.
 
 ```text
 min_residue_position = 그 환자의 해당 유전자 셀에 적힌 모든 변이 위치 중 최솟값
@@ -46,6 +46,30 @@ features:
     aggregates:
       - min
 ```
+
+Factory 1.1에서 다음 ablation과 확장을 선택할 수 있다.
+
+```yaml
+  residue_position:
+    enabled: true
+    aggregates: [min, max, span]
+    missing_policy: indicator       # zero | indicator
+    complex_tokens: exclude         # include | exclude
+    transform: coarse_bin           # raw | coarse_bin
+    bin_width: 100
+```
+
+- `max`는 해당 유전자 셀의 가장 큰 위치, `span`은 `max-min`이다.
+- `indicator`는 위치를 읽은 유전자에 `residue_position_observed=1`을 추가해
+  위치값 0의 의미를 모델이 구분하게 한다.
+- `exclude`는 complex 토큰에서 읽은 위치를 aggregate에서 제외한다.
+- `coarse_bin`은 고정 폭 구간 번호를 사용한다.
+- 유전자별 정규화는 validation fold를 제외한 fold-train에서 분모를 fit해야 한다.
+  정적 Factory에서 전체 train 분모를 만들면 validation 분포를 미리 보게 되므로
+  현재는 오류로 차단하고 후속 fold transformer로 분리한다.
+
+옵션을 생략한 EXP-047 설정은 Factory 1.1에서도 기존과 같은
+`min + zero + complex 포함 + raw`로 해석된다.
 
 실행 후 실제 적용된 family와 기본값은
 `reproducibility/expNNN_<slug>/config.resolved.yaml`에 저장된다. 사람이 Issue나
@@ -82,7 +106,8 @@ Feature Spec에는 유전자 순서 해시, 전체 피처 이름 순서 해시�
 
 핵심 파서와 위치 피처가 검증된 뒤 다음 family를 독립적으로 구현한다.
 
-1. residue position: min/max/span, 고정 bin, fold-train recurrent hotspot
+1. residue position: min/max/span, 위치 관측 indicator, 고정 bin, fold-train
+   정규화와 recurrent hotspot
 2. amino-acid change: 제한 vocabulary, 물성 그룹 치환, stop/frameshift 요약
 3. pathway·hallmark: pathway별 변이 수와 mutation-type count
 4. driver·기능 그룹: oncogene, tumor suppressor, DNA repair burden
