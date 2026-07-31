@@ -13,9 +13,9 @@ hotspot 34개와 샘플별 hotspot 총개수를 추가해 canonical 5-fold에서
 | Fold 표준편차 | 0.0086812077 | 0.0091265687 | +0.0004453610 |
 | Log Loss | 1.8632071018 | 1.8315716982 | -0.0316354036 |
 
-- Public LB: 미제출
+- Public LB: `0.3103760308` (제출 ID `1507333`, 2026-07-31 23:55:33 KST)
 - 재현 상태: `INFERENCE_VERIFIED`
-- 판단: **hotspot family 복구 성공·채택**
+- 판단: **hotspot family 복구 성공·채택**, 현재 팀 선택 제출물은 EXP-031 유지
 
 ## 피처와 누출 방지
 
@@ -37,6 +37,10 @@ EXP-005 대비 로드맵 채택 기준 `+0.005`를 넘었고 fold 표준편차 �
 `-0.0010051150` 낮지만, EXP-031과 달리 저장 checkpoint 추론을 검증할 수 있는
 clean 결과입니다.
 
+Public LB는 `0.3103760308`로 EXP-031의 `0.3170803849`보다
+`0.0067043541` 낮았습니다. 따라서 hotspot family의 재현 가능한 후속 기반으로는
+채택하되, 현재 팀 대표 제출은 EXP-031을 유지합니다.
+
 ## 재현과 파일
 
 - Config: `configs/exp085_hotspot_clean.yaml`
@@ -45,7 +49,7 @@ clean 결과입니다.
 - 비교 증빙: `reproducibility/exp085_hotspot_clean/comparison.json`
 - OOF: `oof/exp085_hotspot_clean.csv` (Git 제외)
 - Test 확률: `preds/exp085_hotspot_clean_test_proba.csv` (Git 제외)
-- 제출 후보: `submissions/exp085_hotspot_clean.csv`
+- 제출 파일: `submissions/exp085_hotspot_clean.csv` (제출 ID `1507333`)
 - 제출 SHA-256: `d319c6967ea98b75c158265fe3b46a5ebb12db207a19cd87964476154eecfe5d`
 
 저장 checkpoint 재추론 결과 제출 라벨은 100% 일치했고, test 확률 최대 절대

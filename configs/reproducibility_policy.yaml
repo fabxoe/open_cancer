@@ -28,3 +28,9 @@ legacy_exceptions:
   EXP-030:
     reason: 번들 정책 도입 후 제출됐지만 원 WSL checkpoint, OOF와 test 확률이 GitHub Release에 보관되지 않아 현재 clone에서 제출 번들을 구성할 수 없다.
     follow_up: 원 실행자가 WSL 산출물을 exp-030-repro-v1 Release로 보관하고 manifest의 storage URI를 갱신한 뒤 이 임시 예외를 제거한다.
+  EXP-058:
+    reason: 리더보드에 제출됐지만 checkpoint, OOF와 test 확률이 GitHub Release에 보관되지 않아 현재 clone에서 표준 제출 번들을 구성할 수 없다.
+    follow_up: 원 실행자가 exp-058-repro-v1 Release를 보관하고 manifest의 storage URI를 갱신한 뒤 이 임시 예외를 제거한다.
+  EXP-085:
+    reason: 리더보드에 제출됐지만 checkpoint, OOF와 test 확률이 GitHub Release에 보관되지 않아 현재 clone에서 표준 제출 번들을 구성할 수 없다.
+    follow_up: 원 실행자가 exp-085-repro-v1 Release를 보관하고 manifest의 storage URI를 갱신한 뒤 이 임시 예외를 제거한다.
