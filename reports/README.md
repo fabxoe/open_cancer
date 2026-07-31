@@ -55,6 +55,12 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 
 - [Residue-position·Hotspot 개발 로드맵](plans/residue_position_hotspot_roadmap.md)
 
+프로젝트 전체에 영향을 주는 target-independent QC와 의미 감사는
+`reports/analysis/`에 둡니다. 이는 새 실험 점수를 만드는 폴더가 아니며 실제
+입력·산출물 해시와 해석 한계를 함께 기록합니다.
+
+- [Residue-position indicator 의미 감사](analysis/residue_position_semantics_qc.md)
+
 ## 역할 구분
 
 | 파일 | 역할 |
@@ -64,6 +70,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 | `metrics.json` | 프로그램이 읽는 실제 평가값 |
 | `config.resolved.yaml` | 기본값까지 포함한 실제 실행 설정 |
 | `reports/plans/*.md` | 여러 Issue에 걸친 작업 순서, 중단 조건과 진행 상태 |
+| `reports/analysis/*` | 실험이 아닌 공통 QC, 의미 감사와 해석 한계 |
 
 `EXPERIMENT_HISTORY_1.md`, `EXPERIMENT_HISTORY_2.md`처럼 History를 번호로 나누지
 않습니다. 실험별 README를 연결하면 History를 짧게 유지하면서도 상세 정보를

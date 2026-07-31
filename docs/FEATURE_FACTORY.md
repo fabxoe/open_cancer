@@ -64,8 +64,11 @@ Factory 1.1에서 다음 ablation과 확장을 선택할 수 있다.
 ```
 
 - `max`는 해당 유전자 셀의 가장 큰 위치, `span`은 `max-min`이다.
-- `indicator`는 위치를 읽은 유전자에 `residue_position_observed=1`을 추가해
-  위치값 0의 의미를 모델이 구분하게 한다.
+- `indicator`는 위치를 읽은 유전자에 `residue_position_observed=1`을 추가한다.
+  일반적으로 위치 파싱 실패와 mutation-presence를 구분하기 위한 옵션이지만,
+  현재 데이터에서는 모든 non-WT 토큰의 위치가 파싱되어 기존
+  mutation-presence와 완전히 같다. 따라서 EXP-063·078에서는 결측 해소가 아닌
+  중복 피처 weighting으로 해석한다.
 - `exclude`는 complex 토큰에서 읽은 위치를 aggregate에서 제외한다.
 - `coarse_bin`은 고정 폭 구간 번호를 사용한다.
 - 유전자별 정규화는 validation fold를 제외한 fold-train에서 분모를 fit해야 한다.
@@ -110,7 +113,7 @@ Feature Spec에는 유전자 순서 해시, 전체 피처 이름 순서 해시�
 
 핵심 파서와 위치 피처가 검증된 뒤 다음 family를 독립적으로 구현한다.
 
-1. residue position: min/max/span, 위치 관측 indicator, 고정 bin, fold-train
+1. residue position: min/max/span, 고정 bin, fold-train
    정규화와 recurrent hotspot
 2. amino-acid change: 제한 vocabulary, 물성 그룹 치환, stop/frameshift 요약
 3. pathway·hallmark: pathway별 변이 수와 mutation-type count

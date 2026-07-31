@@ -6,6 +6,11 @@ EXP-078은 EXP-069의 `max residue-position` 표현을 유지하면서, 위치�
 파싱할 수 있었는지를 나타내는 `residue_position_observed` 피처를 추가한
 로드맵 단계 B의 단일 변수 실험입니다.
 
+Issue #80의 사후 의미 감사에서 현재 데이터의 `residue_position_observed`가
+기존 `mutation_presence`와 train/test 모두 완전히 동일함을 확인했습니다.
+따라서 아래 점수는 유효하지만, 실험 의미는 결측 구분이 아니라 중복 피처가
+XGBoost의 feature sampling에 미친 영향으로 제한해 해석합니다.
+
 | 항목 | EXP-069 `max+zero` | EXP-078 `max+indicator` | 차이 |
 |---|---:|---:|---:|
 | OOF Macro F1 | 0.4131007993 | 0.4110815504 | -0.0020192489 |
@@ -31,9 +36,13 @@ position:
 EXP-069과 비교해 바뀐 값은 `missing_policy: zero → indicator` 하나입니다.
 모델, canonical split, seed, 나머지 피처와 학습 파라미터는 유지했습니다.
 
-`indicator` 정책에서는 유전자별 최대 위치값과 함께 해당 위치가 실제로
-관측됐는지를 나타내는 이진 피처가 모델에 전달됩니다. 위치가 없는 경우의 0과
-실제 residue 위치 0을 구분할 수 있게 만드는 것이 목적입니다.
+`indicator` 정책의 일반적인 목적은 유전자별 최대 위치값과 위치 파싱 여부를
+분리하는 것이다. 하지만 현재 파서는 양의 residue 위치만 허용하고 모든 non-WT
+토큰에서 위치가 파싱됐다. 실제 sparse 행렬에서 indicator와 mutation-presence의
+불일치는 train/test 모두 0개였다.
+
+EXP-069의 35,084개 피처에 mutation-presence와 동일한 열 4,384개가 추가되어
+EXP-078은 39,468개 피처를 사용했다. 이는 새로운 결측 정보를 추가한 것이 아니다.
 
 ## 실제 결과
 
@@ -72,6 +81,15 @@ F1이 악화돼 채택 근거로 충분하지 않습니다.
 핵심 성능 조건 두 개를 모두 통과하지 못했으므로 `max+indicator`를 기각합니다.
 로드맵의 중단 조건에 따라 위치 옵션 추가 탐색을 종료하고 EXP-069의
 `max+zero`를 **Position Feature Spec v1**으로 동결합니다.
+
+이 기각 판단은 Issue #80 의미 감사 이후에도 유지한다. 다만 EXP-078의 하락을
+“indicator가 결측을 잘못 표현했다”는 증거로 해석하지 않는다. 중복된 presence
+열이 `colsample_bytree=0.8`의 후보 선택 확률과 tree 학습 경로를 바꾼 결과일 수
+있기 때문이다. 같은 이유로 indicator-only 후속 공식 실험은 진행하지 않는다.
+
+실제 의미 감사 결과는
+[`reports/analysis/residue_position_semantics_qc.json`](../analysis/residue_position_semantics_qc.json)과
+[해석 보고서](../analysis/residue_position_semantics_qc.md)를 따른다.
 
 ## 재현과 관련 파일
 
