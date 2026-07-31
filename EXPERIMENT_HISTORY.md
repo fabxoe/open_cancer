@@ -1069,10 +1069,32 @@ config 변경만으로 재실행했다(Feature Factory 코드 변경 없음).
   13개 개선(BLCA +0.0265, LUSC +0.0197, DLBC +0.0196 등), 13개 하락(PAAD
   -0.0230, THYM -0.0204 등)이었다. 가장 중요한 확인은 **COAD가 SHAP
   진단과 같은 방향으로 개선**됐다는 점(0.7126 → 0.7187, `+0.0061`)이다.
-  다만 동일 canonical OOF를 피처 제거 판단과 성능 평가에 사용했고 SHAP
-  계산 코드·원시 산출물이 보관되지 않았으므로 독립 검증으로 간주하지 않는다.
-  저장 checkpoint 재추론으로 제출 SHA-256과 라벨 100% 일치를 확인해
-  `INFERENCE_VERIFIED`로 자동 승격됐다. 아직 리더보드에는 제출하지 않았다.
+  다만 동일 canonical OOF를 피처 제거 판단과 성능 평가에 사용했으므로
+  독립 검증으로 간주하지 않는다. 저장 checkpoint 재추론으로 제출
+  SHA-256과 라벨 100% 일치를 확인해 `INFERENCE_VERIFIED`로 자동
+  승격됐다. 이후 Public LB `0.3044672015`를 제출 ID `1507272`로
+  확인했으며, 이는 EXP-031(hotspot 계열, Local OOF 0.4136·Public LB
+  0.3171)보다 Local·LB 모두 낮다 — Local과 LB 순위가 두 계열 사이에서
+  일관됐다(EXP-031 > EXP-058, 양쪽 다). 제출 후에도 팀 선택 제출물은
+  EXP-031을 유지한다.
+
+#### 선택 메모 (PR #76 리뷰 반영)
+
+- 초기 버전은 SHAP 계산 코드와 원시 결과가 저장소에 보관되지 않아 독립
+  재현이 불가능했다(fabxoe 리뷰 지적). `scripts/explore_exp052_cooccurrence_shap.py`
+  (RUN_MODE=explore)로 보완하고, 결과를
+  `reports/exp052_hotspot_cooccurrence/cooccurrence_shap_diagnostic.json` /
+  `.csv`에 저장했다. 재실행 시 본문 표와 동일한 수치가 나온다.
+- 리뷰의 핵심 질문("5개 checkpoint 중 어떤 모델로 SHAP을 계산했는가")에
+  대한 답: 각 샘플은 **자신이 속한 fold의 checkpoint 하나만**으로
+  계산됐다(5개 평균 아님, `fold_map == fold`인 행에만 그 fold의 모델
+  적용) — EXP-052의 OOF 예측 방식과 동일해 in-sample 정보가 섞이지
+  않았다. 이 사실은 스크립트 코드 자체로 확인 가능하다.
+- 여전히 남는 한계(해결되지 않음): 같은 canonical OOF를 "어떤 피처를
+  뺄지 결정"과 "뺀 뒤 성능이 좋아졌는지 평가"에 모두 사용했으므로,
+  `+0.0006772617` 개선은 완전히 독립적인 검증이 아니라 같은 데이터
+  안에서의 일관된 관찰로 취급한다. 다른 seed 또는 별도 확인 실험 전까지
+  탐색적 채택 후보로 유지한다.
 
 ### [EXP-078] Maximum residue-position + observed indicator
 

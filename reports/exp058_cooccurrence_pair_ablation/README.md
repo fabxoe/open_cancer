@@ -9,8 +9,8 @@
 | 유일한 모델 입력 변경 | co-mutation 쌍 3개(IDH1/IDH2, APC/CTNNB1, PIK3CA/PTEN) → 2개(IDH1/IDH2, PIK3CA/PTEN)로 축소 |
 | 모델 | XGBoost, EXP-052/047과 동일 설정 |
 | Local OOF Macro F1 | 0.4101842357 |
-| Public LB | 미제출 |
-| 판단 | 탐색적 채택 후보 — EXP-052 대비 소폭 개선, 독립 검증 필요 |
+| Public LB | 0.3044672015(제출 ID `1507272`) |
+| 판단 | 탐색적 채택 후보 — EXP-052 대비 소폭 개선, 독립 검증 필요. 팀 선택 제출물은 EXP-031(Public LB 0.3171) 유지 |
 
 ## 배경: 왜 APC/CTNNB1을 뺐나
 
@@ -26,6 +26,16 @@ EXP-052(#52)는 문헌 근거로 3개 유전자 쌍의 co-mutation 피처를 추
 (`xgboost.Booster.predict(pred_contribs=True)`)을 적용해 "트리가 이미
 암종별로 이 피처를 다르게 쓰고 있는지"를 직접 확인했다(각 피처가 활성화된
 샘플만 대상으로 26개 클래스별 평균 SHAP 기여도 계산).
+
+**OOF 안전성**: 각 샘플의 SHAP 기여도는 그 샘플이 속한 fold의 checkpoint
+**하나만**으로 계산했다(`models/exp052_hotspot_cooccurrence/fold_XX.json`을
+`fold_map == XX`인 행에만 적용) — 5개 checkpoint를 평균한 것이 아니라,
+EXP-052의 OOF 예측을 만들 때와 정확히 같은 방식이다. 즉 어떤 샘플도
+자신을 학습에 사용한 모델로 점수가 매겨지지 않았다(in-sample 정보 없음).
+계산 코드는 `scripts/explore_exp052_cooccurrence_shap.py`(RUN_MODE=explore)에
+그대로 남겨뒀고, 원본 결과는
+`reports/exp052_hotspot_cooccurrence/cooccurrence_shap_diagnostic.json` /
+`.csv`로 저장했다 — 재실행하면 아래 표와 동일한 값이 나온다.
 
 | 피처 | 활성 샘플 수 | 기대 클래스 순위(26개 중) | 판정 |
 |---|---:|---:|---|
@@ -57,13 +67,14 @@ KIPAN +0.0161, SKCM +0.0159, ACC +0.0150), 13개 하락(PAAD -0.0230, THYM
 
 ## 해석상 주의
 
-- SHAP 진단은 EXP-058의 변경 대상을 선택하는 탐색 단계였으며, SHAP 계산
-  코드와 원시 결과 파일은 이 실험 산출물에 보관되지 않았다. 따라서 위 SHAP
-  수치는 현재 저장소만으로 독립 재현할 수 없다.
-- 어떤 fold checkpoint를 어떤 샘플에 적용했는지도 원시 분석 산출물에 남지
-  않았다. 후속 SHAP 분석에서는 각 샘플에 자신의 validation fold checkpoint만
-  적용한 OOF SHAP을 저장해야 한다.
-- 동일 canonical OOF가 피처 제거 판단과 제거 후 성능 평가에 사용됐기 때문에
+- **(해결됨, PR #76 리뷰 반영)** SHAP 진단은 EXP-058의 변경 대상을 선택하는
+  탐색 단계였다. 처음에는 계산 코드와 원시 결과가 이 실험 산출물에
+  보관되지 않아 독립 재현이 불가능했는데, `scripts/explore_exp052_cooccurrence_shap.py`와
+  `reports/exp052_hotspot_cooccurrence/cooccurrence_shap_diagnostic.{json,csv}`로
+  보완했다. 이 스크립트는 각 샘플에 그 샘플의 validation fold checkpoint
+  **하나만** 적용한다(5개 평균 아님, 위 "OOF 안전성" 절 참고) — 어떤 fold
+  checkpoint를 어떤 샘플에 적용했는지도 코드 자체가 유일한 근거이자 문서다.
+- **(남아있는 한계)** 동일 canonical OOF가 피처 제거 판단과 제거 후 성능 평가에 사용됐기 때문에
   `+0.0006772617` 개선에는 선택 편향이 포함될 수 있다. 다른 seed 또는 별도
   확인 실험 전까지 탐색적 채택 후보로만 취급한다.
 - 현재 전체 실험 최고 Local OOF는 EXP-075의 `0.4157910775`이며, EXP-058은
@@ -79,7 +90,7 @@ KIPAN +0.0161, SKCM +0.0159, ACC +0.0150), 13개 하락(PAAD -0.0230, THYM
 - test 확률 최대 절대 차이: `2.9739379847626424e-08`
 - 결과: `INFERENCE_VERIFIED`
 
-Public leaderboard에는 제출하지 않았다.
+Public leaderboard 결과는 아래 "Public 리더보드" 절 참고.
 
 ## 다음 실험 후보
 
@@ -88,14 +99,25 @@ Public leaderboard에는 제출하지 않았다.
 2. co-mutation family를 더 넓히기보다, "문헌 지식이 이 데이터셋의 26개
    암종 전체에 고르게 성립하는지"를 새 쌍을 추가하기 전에 먼저 SHAP나
    유사 진단으로 사전 점검하는 절차를 다음 family 확장에도 적용.
-3. 로컬 개선폭이 노이즈 수준을 크게 벗어나지 않으므로, 리더보드 제출은
-   추가 검증(다른 seed 등) 후 판단.
+3. Public LB 제출 완료(아래 참고) — 이 계열(EXP-047 기반)은 EXP-031
+   hotspot 계열보다 Local·LB 모두 낮아 팀 선택 제출물은 EXP-031 유지.
+
+## Public 리더보드
+
+- 제출 파일: `submissions/exp058_cooccurrence_pair_ablation.csv`
+- 제출 ID: `1507272`
+- 제출 시각: 2026-07-31 22:44:57 KST
+- Public score: **0.3044672015**(확인 당시 전체 3위)
+- EXP-031(0.3170803849)보다 낮아 팀 선택 제출물로 지정되지 않음
 
 ## 관련 파일
 
 - Config: `configs/exp058_cooccurrence_pair_ablation.yaml`
 - Resolved config: `reproducibility/exp058_cooccurrence_pair_ablation/config.resolved.yaml`
 - Metrics: `reports/exp058_cooccurrence_pair_ablation/metrics.json`
-- Submission: `submissions/exp058_cooccurrence_pair_ablation.csv` (미제출)
+- Submission: `submissions/exp058_cooccurrence_pair_ablation.csv`
 - Reproduction: `reproducibility/exp058_cooccurrence_pair_ablation/`
+- SHAP 진단 코드: `scripts/explore_exp052_cooccurrence_shap.py`
+- SHAP 진단 원본 결과: `reports/exp052_hotspot_cooccurrence/cooccurrence_shap_diagnostic.json`,
+  `reports/exp052_hotspot_cooccurrence/cooccurrence_shap_diagnostic.csv`
 - 이전 단계: `reports/exp052_hotspot_cooccurrence/README.md`

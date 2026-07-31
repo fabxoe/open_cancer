@@ -1,0 +1,111 @@
+{
+  "artifact_slug": "exp052_hotspot_cooccurrence",
+  "method": "xgboost.Booster.predict(pred_contribs=True) (exact TreeSHAP)",
+  "oof_safety": "each sample scored only by the checkpoint of the fold that did not train on it, matching EXP-052's own OOF assembly",
+  "features": {
+    "sample__comut_IDH1_IDH2": {
+      "expected_classes": [
+        "LGG",
+        "GBMLGG"
+      ],
+      "active_sample_count": 3,
+      "expected_mean_contribution": 0.0,
+      "other_classes_mean_contribution": 0.0,
+      "other_classes_std_contribution": 0.0,
+      "expected_class_rank_1_is_highest": {
+        "LGG": 15,
+        "GBMLGG": 20
+      },
+      "top5_classes": [
+        {
+          "class": "UCEC",
+          "mean_contribution": 0.0
+        },
+        {
+          "class": "THYM",
+          "mean_contribution": 0.0
+        },
+        {
+          "class": "THCA",
+          "mean_contribution": 0.0
+        },
+        {
+          "class": "TGCT",
+          "mean_contribution": 0.0
+        },
+        {
+          "class": "STES",
+          "mean_contribution": 0.0
+        }
+      ]
+    },
+    "sample__comut_APC_CTNNB1": {
+      "expected_classes": [
+        "COAD"
+      ],
+      "active_sample_count": 33,
+      "expected_mean_contribution": -0.005062662996351719,
+      "other_classes_mean_contribution": 7.133311555662658e-06,
+      "other_classes_std_contribution": 2.9602513677673414e-05,
+      "expected_class_rank_1_is_highest": {
+        "COAD": 26
+      },
+      "top5_classes": [
+        {
+          "class": "ACC",
+          "mean_contribution": 0.00014949272735975683
+        },
+        {
+          "class": "BLCA",
+          "mean_contribution": 2.8840062441304326e-05
+        },
+        {
+          "class": "THCA",
+          "mean_contribution": 0.0
+        },
+        {
+          "class": "TGCT",
+          "mean_contribution": 0.0
+        },
+        {
+          "class": "STES",
+          "mean_contribution": 0.0
+        }
+      ]
+    },
+    "sample__comut_PIK3CA_PTEN": {
+      "expected_classes": [
+        "UCEC"
+      ],
+      "active_sample_count": 102,
+      "expected_mean_contribution": 0.04198818281292915,
+      "other_classes_mean_contribution": -0.0060275220312178135,
+      "other_classes_std_contribution": 0.023516790941357613,
+      "expected_class_rank_1_is_highest": {
+        "UCEC": 1
+      },
+      "top5_classes": [
+        {
+          "class": "UCEC",
+          "mean_contribution": 0.04198818281292915
+        },
+        {
+          "class": "SKCM",
+          "mean_contribution": 0.0001972041354747489
+        },
+        {
+          "class": "THYM",
+          "mean_contribution": 0.0
+        },
+        {
+          "class": "THCA",
+          "mean_contribution": 0.0
+        },
+        {
+          "class": "TGCT",
+          "mean_contribution": 0.0
+        }
+      ]
+    }
+  }
+}
