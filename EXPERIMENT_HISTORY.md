@@ -7,11 +7,11 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 10
+- 실제 실험 수: 11
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4088132438271497 (`EXP-047`)
-- 최고 Public LB Macro F1: 0.2987843366 (`EXP-005`)
+- 최고 Local OOF Macro F1: 0.4135846695 (`EXP-031`)
+- 최고 Public LB Macro F1: 0.3170803849 (`EXP-031`)
 - 최고 재현 검증 모델: `EXP-047` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-07-31
 
