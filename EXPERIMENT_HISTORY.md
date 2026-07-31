@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 15
+- 실제 실험 수: 17
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4135846695 (`EXP-031`)
@@ -35,6 +35,7 @@
 | EXP-052 | COMPLETED | Kangho-Park | #52 | EXP-047 + Feature Factory family 7(co-mutation, 문헌 근거 유전자 쌍 3개) | 0.4095069739 | 미제출 | INFERENCE_VERIFIED | OOF 소폭 개선·fold 표준편차 감소로 채택, pair 확장 검토 | [보고서](reports/exp052_hotspot_cooccurrence/README.md) |
 | EXP-065 | COMPLETED | fabxoe | #65 | EXP-047 + complex-token residue 위치 제외 | 0.4108923084 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 소폭 감소로 채택 후보 | [보고서](reports/exp065_xgb_residue_exclude_complex/README.md) |
 | EXP-063 | COMPLETED | fabxoe | #63 | EXP-047 + residue-position 관측 indicator | 0.4130329102 | 미제출 | INFERENCE_VERIFIED | OOF 개선으로 채택 후보, fold 변동성과 Log Loss는 소폭 악화 | [보고서](reports/exp063_xgb_residue_indicator/README.md) |
+| EXP-067 | COMPLETED | fabxoe | #67 | EXP-047 + residue 위치 폭 100 coarse-bin | 0.4124014867 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 감소로 채택 후보 | [보고서](reports/exp067_xgb_residue_coarse_bin/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -61,6 +62,7 @@
 | 2026-07-31T09:24:31.209567+00:00 | EXP-052 | Kangho-Park | `6865fd5accf4fbf7090dc39ecc4a27f9b611adf7` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp052_hotspot_cooccurrence/comparison.json) |
 | 2026-07-31T11:07:03.530920+00:00 | EXP-065 | fabxoe | `64f1a4c7d948c3951e88c9d80caf47fd2a5fd07b` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp065_xgb_residue_exclude_complex/comparison.json) |
 | 2026-07-31T10:50:47.543725+00:00 | EXP-063 | fabxoe | `7265bf6c6fc166cf7f30ef07f41ed2c641a3fb56` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp063_xgb_residue_indicator/comparison.json) |
+| 2026-07-31T11:19:02.749201+00:00 | EXP-067 | fabxoe | `5846db2f18f610836a38b23cc8c377f9809fe47c` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp067_xgb_residue_coarse_bin/comparison.json) |
 | 2026-07-31T07:58:45.020690+00:00 | EXP-030 | Gomin-art | `64b72df89ee5cf0b66409f494475aca753238184` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 5.83e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp030_sparse_variant_xgb/comparison.json) |
 
 ## 상세 실험 로그
@@ -874,6 +876,51 @@ Feature Factory에 family 7(co-mutation)을 구현해 EXP-047 피처에 문헌 �
 - 결론: EXP-047보다 OOF Macro F1이 `+0.0020790646` 개선되고 fold
   표준편차가 `-0.0000602563` 감소해 complex 위치 제외를 채택 후보로
   유지한다. Log Loss는 `+0.0009884834` 악화되어 확률 품질 개선으로
+  해석하지 않는다.
+- 재현 메모: 저장 checkpoint 재추론에서 데이터 해시와 제출 SHA-256이
+  일치하고 test 라벨 일치율 100%, 확률 최대 절대 차이 약 2.97e-08로
+  허용치 이내여서 `INFERENCE_VERIFIED`를 통과했다.
+
+### [EXP-067] Residue-position coarse-bin 단독 검증
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #67 / issue-67-exp-residue-coarse-bin
+- 소스 commit: `5846db2f18f610836a38b23cc8c377f9809fe47c`
+- 시작/종료: 2026-07-31T11:11:50.083380+00:00 /
+  2026-07-31T11:19:00.378514+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp067_xgb_residue_coarse_bin/config.resolved.yaml`
+- Metrics: `reports/exp067_xgb_residue_coarse_bin/metrics.json`
+- Report: `reports/exp067_xgb_residue_coarse_bin/README.md`
+- 비교 기준: EXP-047의 `min + zero + complex include + raw`
+- 유일한 변경: residue 위치를 폭 100의 고정 coarse-bin으로 변환
+
+#### 결과
+
+- Fold Macro F1: 0.4061401833, 0.4242984236, 0.4111564808,
+  0.4011949462, 0.4166403104
+- OOF Macro F1: 0.4124014867
+- Fold 표준편차: 0.0080562642
+- Accuracy: 0.4034833091
+- Log Loss: 1.8524806499
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp067_xgb_residue_coarse_bin/metrics.json` /
+  `reports/exp067_xgb_residue_coarse_bin/README.md` /
+  `reproducibility/exp067_xgb_residue_coarse_bin/`
+- 제출 후보 파일: `submissions/exp067_xgb_residue_coarse_bin.csv`
+  (SHA-256 `dbae8b3c15a35095bf17168862499972441c5143edf48c6dc7558e2eac633148`,
+  Dacon 미제출)
+- 결론: EXP-047보다 OOF Macro F1이 `+0.0035882429` 개선되고 fold
+  표준편차가 `-0.0004501014` 감소해 폭 100 coarse-bin을 채택 후보로
+  유지한다. Log Loss는 `+0.0004831553` 악화되어 확률 품질 개선으로
   해석하지 않는다.
 - 재현 메모: 저장 checkpoint 재추론에서 데이터 해시와 제출 SHA-256이
   일치하고 test 라벨 일치율 100%, 확률 최대 절대 차이 약 2.97e-08로
