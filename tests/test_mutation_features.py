@@ -8,6 +8,7 @@ from scipy import sparse
 from open_cancer.mutation_features import (
     GENE_FEATURES,
     GLOBAL_FEATURES,
+    EXPANDED_DISTRIBUTION_FEATURES,
     LOG_BURDEN_FEATURES,
     ROBUST_GLOBAL_FEATURES,
     build_mutation_features,
@@ -133,3 +134,43 @@ def test_log_burden_ablation_excludes_ratio_features(tmp_path: Path) -> None:
     assert matrix[0, names.index("sample__mutated_gene_count_log1p")] > 0
     assert matrix[0, names.index("sample__total_variant_count_log1p")] > 0
     assert matrix[0, names.index("sample__multi_variant_gene_count_log1p")] > 0
+
+
+def test_expanded_sample_distribution_features(tmp_path: Path) -> None:
+    train = tmp_path / "train.csv"
+    test = tmp_path / "test.csv"
+    output = tmp_path / "features"
+    train.write_text(
+        "ID,SUBCLASS,GENE1,GENE2,GENE3\n"
+        'T1,A,"S27N R28R",R1538*,WT\n'
+        "T2,B,WT,WT,WT\n",
+        encoding="utf-8",
+    )
+    test.write_text(
+        "ID,GENE1,GENE2,GENE3\n"
+        "E1,L1854fs,468_469LG>F*,WT\n",
+        encoding="utf-8",
+    )
+
+    report = build_mutation_features(
+        train,
+        test,
+        output,
+        selected_robust_aggregates=EXPANDED_DISTRIBUTION_FEATURES,
+    )
+    matrix = sparse.load_npz(output / "train_features.npz")
+    names = json.loads((output / "feature_names.json").read_text(encoding="utf-8"))
+
+    assert report["feature_contract"]["robust_aggregate_features"] == list(
+        EXPANDED_DISTRIBUTION_FEATURES
+    )
+    assert matrix[0, names.index("sample__missense_gene_count")] == 1
+    assert matrix[0, names.index("sample__synonymous_gene_count")] == 1
+    assert matrix[0, names.index("sample__nonsense_gene_count")] == 1
+    assert matrix[0, names.index("sample__truncating_count")] == 1
+    assert matrix[0, names.index("sample__damaging_count")] == 2
+    assert matrix[0, names.index("sample__mutation_type_diversity")] == 3
+    assert matrix[0, names.index("sample__variants_per_mutated_gene_mean")] == 1.5
+    assert matrix[0, names.index("sample__max_variants_per_gene")] == 2
+    assert matrix[0, names.index("sample__single_variant_gene_count")] == 1
+    assert matrix[1, names.index("sample__mutation_type_entropy")] == 0
