@@ -1,0 +1,44 @@
+run_mode: experiment
+record_role: official
+slug: hotspot_clean
+parent_experiment: EXP-005
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+hotspots:
+  table: extended_34
+  evidence_scope: additions_15
+  minimum_matching_train_rows: 5
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - mutation_presence
+    - missense
+    - synonymous
+    - nonsense
+    - frameshift
+    - complex
+    - fixed_literature_hotspot_34
+notes: >-
+  Clean canonical 5-fold reconstruction of EXP-005 mutation-type features plus
+  34 fixed literature hotspots. Hotspot hits require matching gene, residue
+  position, and reference amino acid. The later 15 hotspots must meet the
+  configured minimum count independently in every fold-train partition.
