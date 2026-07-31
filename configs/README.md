@@ -10,3 +10,35 @@ config가 실제 파라미터의 단일 원본이므로 Issue나 History에 같�
 않습니다.
 
 공통 기본값과 선택 항목은 `PROJECT_CONTEXT.md`의 “실험 설정 계약”을 따릅니다.
+
+## Residue-position family
+
+Feature Factory v1.1은 다음 설정을 지원합니다. 실제 공식 평가에서는 새
+Experiment Issue의 config에 필요한 조합 하나만 기록합니다.
+
+```yaml
+features:
+  mutation_type:
+    enabled: true
+  residue_position:
+    enabled: true
+    aggregates: [min, max, span]
+    missing_policy: indicator       # zero | indicator
+    complex_tokens: exclude         # include | exclude
+    transform: coarse_bin           # raw | coarse_bin
+    bin_width: 100                   # coarse_bin에서만 사용
+```
+
+- `zero`: 위치를 읽지 못한 유전자의 위치 피처는 희소행렬의 0으로 남긴다.
+- `indicator`: 위 0 처리에 `residue_position_observed` 피처를 자동 추가한다.
+- `exclude`: `_`, `>` 등 complex 토큰에서 읽은 위치는 위치 aggregate에서 제외한다.
+  frameshift는 별도 mutation type이므로 포함된다.
+- `coarse_bin`: `(position - 1) // bin_width + 1`의 고정 구간 번호를 사용한다.
+- 유전자별 정규화는 각 validation fold를 제외한 fold-train에서 분모를 다시
+  fit해야 하므로 정적 Factory 옵션으로 제공하지 않는다. 후속 fold transformer가
+  준비되기 전 `gene_train_max` 같은 설정은 오류로 차단한다.
+
+기존 EXP-047 config처럼 옵션을 생략하면 `min + zero + include + raw`가 적용돼
+기존 결과와 피처 순서를 유지한다. fold-train recurrent hotspot은 fold마다 fit이
+필요하므로 이 정적 family에 포함하지 않고 별도 Experiment의 fold selector로
+구현한다.

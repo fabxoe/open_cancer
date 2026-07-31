@@ -27,3 +27,19 @@ def test_report_template_contains_human_and_machine_links() -> None:
         "## 재현과 관련 파일",
     ):
         assert heading in template
+
+
+def test_long_term_roadmap_is_linked_without_changing_history_role() -> None:
+    project_context = Path("PROJECT_CONTEXT.md").read_text(encoding="utf-8")
+    reports_readme = Path("reports/README.md").read_text(encoding="utf-8")
+    roadmap_path = Path("reports/plans/residue_position_hotspot_roadmap.md")
+
+    assert roadmap_path.is_file()
+    assert roadmap_path.as_posix() in project_context
+    assert "plans/residue_position_hotspot_roadmap.md" in reports_readme
+
+    roadmap = roadmap_path.read_text(encoding="utf-8")
+    assert "실제 실행 결과와 점수의 단일 원본" in roadmap
+    assert "| A | EXP-067+069 고정 blend |" in roadmap
+    assert "EXP-075" in roadmap
+    assert "## 결정 변경 이력" in roadmap

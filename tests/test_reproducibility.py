@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import tarfile
 from pathlib import Path
 
 from open_cancer.hashing import sha256_file
@@ -30,6 +31,17 @@ def test_prepare_reproducibility_bundle_is_deterministic(tmp_path: Path) -> None
                 "storage_uri": None,
             }
         )
+    component_oof = tmp_path / "oof" / "exp010_component.csv"
+    component_oof.write_text("component oof\n", encoding="utf-8")
+    artifacts.append(
+        {
+            "kind": "component_oof_probability",
+            "path": "oof/exp010_component.csv",
+            "size_bytes": component_oof.stat().st_size,
+            "sha256": sha256_file(component_oof),
+            "storage_uri": None,
+        }
+    )
     manifest_path = tmp_path / "reproducibility" / slug / "artifact_manifest.json"
     manifest_path.write_text(
         json.dumps(
@@ -67,3 +79,5 @@ def test_prepare_reproducibility_bundle_is_deterministic(tmp_path: Path) -> None
         artifact["storage_uri"].startswith("https://")
         for artifact in manifest["artifacts"]
     )
+    with tarfile.open(first["archive"], mode="r:gz") as archive:
+        assert "oof/exp010_component.csv" in archive.getnames()

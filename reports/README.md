@@ -40,6 +40,21 @@ GitHub는 폴더의 `README.md`를 자동으로 화면에 표시합니다.
 seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 보고서를 강제하지 않습니다.
 그 경우 `EXPERIMENT_HISTORY.md`, resolved config와 metrics만으로 충분합니다.
 
+## 장기 실행 계획
+
+여러 Issue와 실험에 걸친 장기 계획은 `reports/plans/`에 둡니다. 로드맵에는
+확정된 작업 순서, 중단 조건, 단계별 Issue·EXP·PR과 다음 행동을 기록하고, 실제
+점수와 결론은 `EXPERIMENT_HISTORY.md`와 실험별 `metrics.json`을 원본으로
+사용합니다.
+
+로드맵을 사용하는 작업은 시작할 때 `PROJECT_CONTEXT.md`,
+`EXPERIMENT_HISTORY.md`와 해당 로드맵을 함께 읽습니다. 실행하지 않은 단계에는
+예상 점수나 가상 결과를 적지 않고 `N/A`, `미발급` 또는 `PLANNED`로 표시합니다.
+
+현재 장기 계획:
+
+- [Residue-position·Hotspot 개발 로드맵](plans/residue_position_hotspot_roadmap.md)
+
 ## 역할 구분
 
 | 파일 | 역할 |
@@ -48,6 +63,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 | 실험별 `README.md` | 사람이 읽는 개념 설명, 해석, 한계와 다음 단계 |
 | `metrics.json` | 프로그램이 읽는 실제 평가값 |
 | `config.resolved.yaml` | 기본값까지 포함한 실제 실행 설정 |
+| `reports/plans/*.md` | 여러 Issue에 걸친 작업 순서, 중단 조건과 진행 상태 |
 
 `EXPERIMENT_HISTORY_1.md`, `EXPERIMENT_HISTORY_2.md`처럼 History를 번호로 나누지
 않습니다. 실험별 README를 연결하면 History를 짧게 유지하면서도 상세 정보를
