@@ -207,6 +207,7 @@ def verify_saved_inference(
     metrics: dict[str, Any],
     metrics_path: Path,
     model_dir: Path,
+    oof_path: Path,
     reproducibility_dir: Path,
     test_features: sparse.csr_matrix,
     test_ids: pd.Series,
@@ -378,6 +379,11 @@ def verify_saved_inference(
     artifacts.extend(
         [
             {"kind": "submission", **file_record(submission_path), "storage_uri": None},
+            {
+                "kind": "oof_probability",
+                **file_record(oof_path),
+                "storage_uri": None,
+            },
             {
                 "kind": "test_probability",
                 **file_record(test_probability_path),
@@ -727,6 +733,7 @@ def run_experiment(
             metrics=metrics,
             metrics_path=metrics_path,
             model_dir=model_dir,
+            oof_path=oof_path,
             reproducibility_dir=reproducibility_dir,
             test_features=x_test,
             test_ids=test_meta["ID"],
