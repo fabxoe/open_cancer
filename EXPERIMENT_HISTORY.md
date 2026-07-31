@@ -212,11 +212,13 @@ amino acid가 이 패널 전체에서 문헌값과 정확히 일치·일관됨�
 | attempt 1 | EXP-005 전체 + 보호유전자 교차 8개(mutated/missense/synonymous/nonsense/frameshift/complex/missing count + LOF count) | 30,705 | `configs/exp031_cosmic_mutation_type_cross.yaml` | `reports/exp031_cosmic_mutation_type_cross/metrics.json` |
 | attempt 2 | EXP-005 전체 + 보호유전자 LOF(nonsense+frameshift) count 1개만 | 30,698 | `configs/exp031_cosmic_lof_only_cross.yaml` | `reports/exp031_cosmic_lof_only_cross/metrics.json` |
 | **attempt 3(채택)** | EXP-005 전체 + 검증된 hotspot 19개 individual indicator + 총 hotspot count 1개 | 30,717 | `configs/exp031_hotspot_cross.yaml` | `reports/exp031_hotspot_cross/metrics.json` |
+| attempt 4 | EXP-005 전체 + attempt 2의 LOF count 1개 + attempt 3의 hotspot 20개(결합) | 30,718 | `configs/exp031_lof_hotspot_combined.yaml` | `reports/exp031_lof_hotspot_combined/metrics.json` |
 
 - Report: N/A
 - 재현성 manifest: `reproducibility/exp031_cosmic_mutation_type_cross/config.resolved.yaml`,
   `reproducibility/exp031_cosmic_lof_only_cross/config.resolved.yaml`,
-  `reproducibility/exp031_hotspot_cross/config.resolved.yaml`
+  `reproducibility/exp031_hotspot_cross/config.resolved.yaml`,
+  `reproducibility/exp031_lof_hotspot_combined/config.resolved.yaml`
 
 #### 결과
 
@@ -226,10 +228,12 @@ amino acid가 이 패널 전체에서 문헌값과 정확히 일치·일관됨�
 | attempt 1(교차 8개) | 0.3956074120 | 0.388486 | 1.875899 |
 | attempt 2(LOF count만) | 0.4017847879 | 0.393969 | 1.864124 |
 | **attempt 3(hotspot, 팀 최고)** | **0.4120236288** | 0.403322 | 1.835079 |
+| attempt 4(LOF+hotspot 결합) | 0.4057616458 | 0.398645 | 1.835519 |
 
 - Fold Macro F1(attempt 1): 0.386807, 0.398357, 0.385085, 0.388885, 0.411211
 - Fold Macro F1(attempt 2): 0.403056, 0.411966, 0.390054, 0.387770, 0.409737
 - Fold Macro F1(attempt 3): 0.413077, 0.420928, 0.399671, 0.403889, 0.418962
+- Fold Macro F1(attempt 4): 0.406582, 0.415506, 0.387467, 0.398288, 0.414055
 - Public LB: 미제출 (attempt 3은 팀 최고 Local이지만 리더보드 제출은 보류,
   아래 선택 메모 참고)
 - 재현 상태: NOT_STARTED
@@ -249,6 +253,14 @@ DLBC(+0.0223), SARC(+0.0217), STES(+0.0209), ACC(+0.0178), COAD(+0.0164)도
 BLCA(-0.0110), PCPG(-0.0101), GBMLGG(-0.0083), THCA(-0.0033) 7개로,
 전체적으로 개선폭이 하락폭을 크게 앞섰다.
 
+attempt 4(LOF+hotspot 결합)는 EXP-005보다는 근소하게 높았지만(+0.0014p)
+attempt 3(hotspot 단독)보다는 뚜렷하게 낮았다(-0.0063p). attempt 3 대비
+클래스별 비교에서 18개 클래스가 하락하고 8개만 개선됐으며, LUAD(-0.0446),
+PAAD(-0.0433), DLBC(-0.0223)의 하락폭이 LAML(+0.0162), LGG(+0.0123) 같은
+개선폭보다 컸다. 즉 attempt 2의 LOF count는 attempt 3의 hotspot 신호와
+"더해지는" 관계가 아니라 오히려 그 효과를 갉아먹었다 — attempt 2가
+EXP-005 단독 대비로도 net negative였던 것과 일관된 결과다.
+
 #### 산출물과 결론
 
 - Metrics/Reproduction: 위 표의 시도별 경로
@@ -256,18 +268,21 @@ BLCA(-0.0110), PCPG(-0.0101), GBMLGG(-0.0083), THCA(-0.0033) 7개로,
   (`build_cosmic_mutation_features`, `build_cosmic_cross_matrix`),
   `src/open_cancer/hotspot_features.py`
   (`build_hotspot_augmented_features`, `build_hotspot_matrix`, `KNOWN_HOTSPOTS`),
+  `src/open_cancer/combined_mutation_features.py` (`build_lof_hotspot_features`),
   `scripts/run_exp031_cosmic_mutation_type_cross.py`,
   `scripts/run_exp031_cosmic_lof_only_cross.py`,
   `scripts/run_exp031_hotspot_cross.py`,
+  `scripts/run_exp031_lof_hotspot_combined.py`,
   `scripts/explore_hotspot_numbering_consistency.py`(RUN_MODE=explore, 검증용)
-- 결론: **attempt 3 채택 — 팀 최고 Local 기록 갱신**(EXP-005 대비
-  +0.0076p). attempt 1·2("COSMIC 보호 유전자 정보를 유전자 단위로
-  재집계")는 EXP-005를 넘지 못했지만, attempt 3("개별 유전자 컬럼에는
-  없는 코돈 단위 정보를 추가")는 넘었다. 이는 이전 결론("정보가 이미
-  유전자×변이유형 단위에 존재해 재집계는 net negative")과 일관된
-  결과이며, 재집계가 아니라 실제로 새로운 정보를 추가했을 때만 개선이
-  나온다는 가설을 뒷받침한다. 다만 팀 최고 기록 갱신에도 불구하고 아직
-  리더보드에는 제출하지 않았다(선택 메모 참고).
+- 결론: **attempt 3(hotspot 단독) 최종 채택 — 팀 최고 Local 기록 갱신**
+  (EXP-005 대비 +0.0076p). attempt 1·2("COSMIC 보호 유전자 정보를 유전자
+  단위로 재집계")는 EXP-005를 넘지 못했고, attempt 3("개별 유전자 컬럼에는
+  없는 코돈 단위 정보를 추가")는 넘었다. attempt 4는 attempt 2와 3을
+  결합하면 더 나아질지 확인했지만 오히려 attempt 3보다 낮아, **두 신호가
+  단순히 합산되지 않으며 LOF count 쪽이 순손실 요인**임을 재확인했다. 이는
+  "정보가 이미 유전자×변이유형 단위에 존재해 재집계는 net negative,
+  코돈 단위의 진짜 새 정보만 net positive"라는 가설과 일관된다. 팀 최고
+  기록 갱신에도 불구하고 아직 리더보드에는 제출하지 않았다(선택 메모 참고).
 
 #### 선택 메모
 
@@ -286,6 +301,7 @@ BLCA(-0.0110), PCPG(-0.0101), GBMLGG(-0.0083), THCA(-0.0033) 7개로,
 - KRAS/NRAS hotspot(G12/G13/Q61)은 두 유전자 모두 이 패널의 컬럼에 없어
   (EXP-012에서 이미 확인된 한계) 포함하지 못했다.
 - 다음 행동 후보: (a) attempt 3을 리더보드에 제출하기 전 `INFERENCE_VERIFIED`
-  체크포인트 검증(EXP-003/EXP-005 방식) 수행, (b) attempt 2(LOF count)와
-  attempt 3(hotspot)을 결합해 추가 개선 여지 확인, (c) 외부 정준 서열
-  확보 시 hotspot 목록을 다른 protect 유전자로 확장.
+  체크포인트 검증(EXP-003/EXP-005 방식) 수행, (b) 외부 정준 서열 확보 시
+  hotspot 목록을 다른 protect 유전자로 확장, (c) attempt 2(LOF count)는
+  단독·결합(attempt 4) 모두 net negative로 재확인됐으므로 이 방향은 더
+  탐색하지 않는다.
