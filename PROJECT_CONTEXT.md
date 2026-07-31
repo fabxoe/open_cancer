@@ -181,6 +181,10 @@ tests/             데이터가 없어도 실행 가능한 단위 테스트
   기록한다.
 - 위치 숫자는 입력 토큰에 명시된 단백질 잔기 위치다. genomic coordinate,
   codon nucleotide 위치나 transcript 정규화 좌표로 추정하지 않는다.
+- residue-position의 유전자별 정규화와 recurrent hotspot은 validation fold를
+  제외한 fold-train에서만 fit하는 transformer/selector로 분리한다. 정적 Feature
+  Factory가 전체 train의 위치 범위나 validation/test 빈도를 미리 보게 만들지
+  않는다.
 - Feature Spec v1을 동결한 뒤 모델 OOF 생산과 스태킹으로 전환한다. 이후 새
   family 아이디어는 v2 후보로 옮겨 현재 스태킹을 지연시키지 않는다.
 - Public LB 또는 test 분포를 보고 파서, 유전자 그룹, hotspot이나 feature 규칙을

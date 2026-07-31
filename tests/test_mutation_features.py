@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
 from scipy import sparse
 
 from open_cancer.mutation_features import (
@@ -11,7 +12,6 @@ from open_cancer.mutation_features import (
     GLOBAL_FEATURES,
     EXPANDED_DISTRIBUTION_FEATURES,
     LOG_BURDEN_FEATURES,
-    RESIDUE_POSITION_FEATURES,
     ROBUST_GLOBAL_FEATURES,
     build_mutation_features,
     classify_mutation_token,
@@ -79,7 +79,7 @@ def test_feature_names_are_stable() -> None:
     )
     position_names = feature_names(
         ["GENE1"],
-        selected_position_features=RESIDUE_POSITION_FEATURES,
+        selected_position_features=("min_residue_position",),
     )
     assert position_names[-1] == "GENE1__min_residue_position"
     assert position_names[:-1] == feature_names(["GENE1"])
@@ -216,7 +216,7 @@ def test_min_residue_position_feature_and_qc(tmp_path: Path) -> None:
     assert test_matrix[0, names.index("GENE2__min_residue_position")] == 468
     assert report["feature_count"] == (
         len(GLOBAL_FEATURES)
-        + 2 * (len(GENE_FEATURES) + len(RESIDUE_POSITION_FEATURES))
+        + 2 * (len(GENE_FEATURES) + 1)
     )
     assert report["feature_contract"]["feature_factory_version"] == FEATURE_FACTORY_VERSION
     assert report["feature_contract"]["position_features"] == [
@@ -229,6 +229,84 @@ def test_min_residue_position_feature_and_qc(tmp_path: Path) -> None:
     assert (output / "feature_spec.json").is_file()
     assert (output / "feature_registry.json").is_file()
     assert (output / "parsing_qc.json").is_file()
+
+
+def test_residue_position_max_span_indicator_and_complex_ablation(tmp_path: Path) -> None:
+    train = tmp_path / "train.csv"
+    test = tmp_path / "test.csv"
+    train.write_text(
+        "ID,SUBCLASS,GENE1,GENE2\n"
+        'T1,A,"R10H 40_50AA>Q",WT\n'
+        "T2,B,UNKNOWN,WT\n",
+        encoding="utf-8",
+    )
+    test.write_text("ID,GENE1,GENE2\nE1,R20H,WT\n", encoding="utf-8")
+
+    included = tmp_path / "included"
+    build_mutation_features(
+        train,
+        test,
+        included,
+        selected_position_features=(
+            "min_residue_position",
+            "max_residue_position",
+            "residue_position_span",
+        ),
+        position_missing_policy="indicator",
+        position_token_scope="include_complex",
+    )
+    included_names = json.loads((included / "feature_names.json").read_text())
+    included_matrix = sparse.load_npz(included / "train_features.npz")
+    assert included_matrix[0, included_names.index("GENE1__min_residue_position")] == 10
+    assert included_matrix[0, included_names.index("GENE1__max_residue_position")] == 50
+    assert included_matrix[0, included_names.index("GENE1__residue_position_span")] == 40
+    assert included_matrix[0, included_names.index("GENE1__residue_position_observed")] == 1
+    assert included_matrix[1, included_names.index("GENE1__residue_position_observed")] == 0
+
+    excluded = tmp_path / "excluded"
+    build_mutation_features(
+        train,
+        test,
+        excluded,
+        selected_position_features=("min_residue_position", "max_residue_position"),
+        position_token_scope="exclude_complex",
+    )
+    excluded_names = json.loads((excluded / "feature_names.json").read_text())
+    excluded_matrix = sparse.load_npz(excluded / "train_features.npz")
+    assert excluded_matrix[0, excluded_names.index("GENE1__min_residue_position")] == 10
+    assert excluded_matrix[0, excluded_names.index("GENE1__max_residue_position")] == 10
+
+
+def test_residue_position_coarse_bin_is_fixed_for_train_and_test(tmp_path: Path) -> None:
+    train = tmp_path / "train.csv"
+    test = tmp_path / "test.csv"
+    train.write_text(
+        "ID,SUBCLASS,GENE1\nT1,A,R50H\nT2,B,R100H\n",
+        encoding="utf-8",
+    )
+    test.write_text("ID,GENE1\nE1,R200H\n", encoding="utf-8")
+
+    binned = tmp_path / "binned"
+    build_mutation_features(
+        train,
+        test,
+        binned,
+        selected_position_features=("min_residue_position",),
+        position_transform="coarse_bin",
+        position_bin_width=50,
+    )
+    binned_names = json.loads((binned / "feature_names.json").read_text())
+    binned_test = sparse.load_npz(binned / "test_features.npz")
+    assert binned_test[0, binned_names.index("GENE1__min_residue_position")] == 4
+
+    with pytest.raises(ValueError, match="position transform"):
+        build_mutation_features(
+            train,
+            test,
+            tmp_path / "unsafe_normalization",
+            selected_position_features=("min_residue_position",),
+            position_transform="gene_train_max",
+        )
 
 
 def test_feature_cache_requires_matching_spec_and_output_hashes(
