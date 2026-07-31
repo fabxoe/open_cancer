@@ -1,0 +1,86 @@
+{
+  "experiment_id": "EXP-029",
+  "issue_number": 29,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "1f06b4ee1bc098bd23d4c673e290da87638fb25d",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp029_xgb_log_burden_ratios/data_manifest.json",
+  "environment": "reproducibility/exp029_xgb_log_burden_ratios/environment.json",
+  "release_url": null,
+  "verifier": "2heej",
+  "verified_at": "2026-07-31T02:30:08.486372+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp029_xgb_log_burden_ratios/fold_00.json",
+      "size_bytes": 12568949,
+      "sha256": "b04df1b4697d5c5429aeff5b6585b9b4ea03346f504f7fea87b911a185e968e9",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp029_xgb_log_burden_ratios/fold_01.json",
+      "size_bytes": 13171829,
+      "sha256": "d79f3c4a4472ce9ea7ed256b88ac6eef8a4937b3c7fa8028fa02ce530abd752b",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp029_xgb_log_burden_ratios/fold_02.json",
+      "size_bytes": 12321271,
+      "sha256": "78cda514222b3cf4e07bb00e817722765e7cbb235079390770c20b694faaf064",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp029_xgb_log_burden_ratios/fold_03.json",
+      "size_bytes": 11945016,
+      "sha256": "53a2992b9f6c4b5f0a2d0958b8ee3b257994a950430a7577b51a04db73c493aa",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp029_xgb_log_burden_ratios/fold_04.json",
+      "size_bytes": 13573693,
+      "sha256": "b9c433abbfaaba33dd8d1c3abec8c1a027e46fe9bb0aea1b00b87bde0b64725e",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp029_xgb_log_burden_ratios.csv",
+      "size_bytes": 38153,
+      "sha256": "0a0f4c6eea88c5674b7fa4916edcd4032838650dfe3d8f225f5a3dd804084099",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp029_xgb_log_burden_ratios_test_proba.csv",
+      "size_bytes": 831609,
+      "sha256": "c4f8e9b7a0c11d6066f3e04f182f53f53df90478157f793488c352b857a4aa33",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp029_xgb_log_burden_ratios/metrics.json",
+      "size_bytes": 11097,
+      "sha256": "49d59e1f612b2190f35fe0347886a3c624ebfeb3f1df2b22f1f2baf0e12b3809",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp029_xgb_log_burden_ratios/config.resolved.yaml",
+      "size_bytes": 3914,
+      "sha256": "86e78e6f2a8b145a5490af89176a739f0b4a9f8849630a88d960ffebec37528c",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
