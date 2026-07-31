@@ -35,5 +35,7 @@ uv run python scripts/validate_experiment.py
 - [ ] `data/raw/` 원본과 원본 기반 PDF가 tracked·staged되지 않았습니다.
 - [ ] 가공 데이터, 모델, OOF, 비밀 파일을 커밋하지 않았습니다.
 - [ ] 실제로 측정하지 않은 실험 결과를 기록하지 않았습니다.
+- [ ] 리더보드 제출 모델이면 재현 번들을 Release에 업로드하고 manifest의 URL·SHA-256을 기록했습니다.
+- [ ] 리더보드 제출 모델이면 `validate_experiment.py --check-remote-storage`를 통과했습니다.
 - [ ] 관련 팀원을 reviewer 또는 mention으로 알렸습니다.
 - [ ] 모든 리뷰 대화를 해결했습니다.

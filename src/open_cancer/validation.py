@@ -4,10 +4,14 @@ from __future__ import annotations
 
 import json
 import re
+import urllib.error
+import urllib.parse
+import urllib.request
 from pathlib import Path
 from typing import Any
 
 import pandas as pd
+import yaml
 from jsonschema import Draft202012Validator, FormatChecker
 from sklearn.model_selection import StratifiedKFold
 
@@ -317,3 +321,126 @@ def validate_portable_artifact_paths(document_path: str | Path) -> None:
             not value.startswith("/") and not re.match(r"^[A-Za-z]:/", value),
             f"{document_path}: 절대경로를 저장할 수 없습니다: {value}",
         )
+
+
+def validate_submission_storage_policy(
+    history_path: str | Path,
+    reproducibility_root: str | Path,
+    policy_path: str | Path,
+    *,
+    check_remote: bool = False,
+) -> dict[str, Any]:
+    """Require published reproducibility artifacts for leaderboard submissions."""
+    history_path = Path(history_path)
+    reproducibility_root = Path(reproducibility_root)
+    policy = yaml.safe_load(Path(policy_path).read_text(encoding="utf-8"))
+    required_kinds = tuple(policy["required_artifact_kinds"])
+    aliases: dict[str, list[str]] = policy.get("accepted_kind_aliases", {})
+    exceptions: dict[str, dict[str, str]] = policy.get("legacy_exceptions", {})
+
+    history = history_path.read_text(encoding="utf-8")
+    leaderboard_match = re.search(
+        r"^## 리더보드 제출 이력\s*$"
+        r"(?P<body>.*?)"
+        r"(?=^## |\Z)",
+        history,
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    _require(leaderboard_match is not None, "History의 리더보드 제출 이력을 찾을 수 없습니다.")
+    submitted_ids = sorted(
+        set(
+            re.findall(
+                r"^\|[^|\n]+\|\s*(EXP-\d+)\s*\|",
+                leaderboard_match.group("body"),
+                flags=re.MULTILINE,
+            )
+        )
+    )
+
+    manifests_by_id: dict[str, list[tuple[Path, dict[str, Any]]]] = {}
+    for manifest_path in reproducibility_root.glob("exp*/artifact_manifest.json"):
+        document = json.loads(manifest_path.read_text(encoding="utf-8"))
+        experiment_id = document.get("experiment_id")
+        if isinstance(experiment_id, str):
+            manifests_by_id.setdefault(experiment_id, []).append((manifest_path, document))
+
+    verified: list[str] = []
+    excepted: list[str] = []
+    checked_urls: set[str] = set()
+    for experiment_id in submitted_ids:
+        if experiment_id in exceptions:
+            reason = exceptions[experiment_id].get("reason", "").strip()
+            follow_up = exceptions[experiment_id].get("follow_up", "").strip()
+            _require(reason != "" and follow_up != "", f"{experiment_id} 예외 사유가 불완전합니다.")
+            excepted.append(experiment_id)
+            continue
+
+        matches = manifests_by_id.get(experiment_id, [])
+        _require(matches, f"{experiment_id}: 제출 모델 artifact manifest가 없습니다.")
+        passing_manifest = None
+        errors: list[str] = []
+        for manifest_path, manifest in matches:
+            try:
+                _require(
+                    manifest.get("reproducibility_status")
+                    in {"INFERENCE_VERIFIED", "TRAINING_VERIFIED"},
+                    "재현 상태가 INFERENCE_VERIFIED 이상이 아닙니다.",
+                )
+                release_url = manifest.get("release_url")
+                _require(
+                    isinstance(release_url, str) and release_url.startswith("https://"),
+                    "release_url이 없습니다.",
+                )
+                artifacts = manifest.get("artifacts")
+                _require(isinstance(artifacts, list), "artifacts가 목록이 아닙니다.")
+                for required_kind in required_kinds:
+                    accepted = {required_kind, *aliases.get(required_kind, [])}
+                    records = [
+                        artifact
+                        for artifact in artifacts
+                        if isinstance(artifact, dict) and artifact.get("kind") in accepted
+                    ]
+                    _require(records, f"필수 artifact가 없습니다: {required_kind}")
+                    for artifact in records:
+                        storage_uri = artifact.get("storage_uri")
+                        _require(
+                            isinstance(storage_uri, str)
+                            and storage_uri.startswith("https://"),
+                            f"{required_kind} storage_uri가 없습니다.",
+                        )
+                        if check_remote:
+                            checked_urls.add(
+                                urllib.parse.urldefrag(storage_uri).url
+                            )
+                passing_manifest = manifest_path
+                break
+            except ValidationError as error:
+                errors.append(f"{manifest_path}: {error}")
+        _require(
+            passing_manifest is not None,
+            f"{experiment_id}: 제출 산출물 보관 정책을 통과하지 못했습니다. {'; '.join(errors)}",
+        )
+        verified.append(experiment_id)
+
+    unknown_exceptions = sorted(set(exceptions) - set(submitted_ids))
+    _require(
+        not unknown_exceptions,
+        f"제출 이력에 없는 legacy 예외가 있습니다: {unknown_exceptions}",
+    )
+    for url in sorted(checked_urls):
+        try:
+            request = urllib.request.Request(
+                url,
+                method="HEAD",
+                headers={"User-Agent": "open-cancer-storage-validation"},
+            )
+            with urllib.request.urlopen(request, timeout=30) as response:
+                _require(response.status < 400, f"Release asset에 접근할 수 없습니다: {url}")
+        except (OSError, urllib.error.URLError) as error:
+            raise ValidationError(f"Release asset에 접근할 수 없습니다: {url}") from error
+    return {
+        "submitted": len(submitted_ids),
+        "storage_verified": verified,
+        "legacy_exceptions": excepted,
+        "remote_assets_checked": len(checked_urls),
+    }
