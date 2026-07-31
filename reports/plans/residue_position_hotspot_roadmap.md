@@ -9,7 +9,7 @@
 ## 현재 상태
 
 - 로드맵 관리 Task: [Issue #73](https://github.com/fabxoe/open_cancer/issues/73)
-- 로드맵 관리 PR: [PR #74](https://github.com/fabxoe/open_cancer/pull/74) (`PR_OPEN`)
+- 로드맵 관리 PR: [PR #74](https://github.com/fabxoe/open_cancer/pull/74) (`MERGED`)
 - 기준일: 2026-07-31
 - 실제 완료 실험 수: 18
 - 기준 실험:
@@ -22,7 +22,7 @@
 
 | 단계 | 작업 | Issue | EXP | PR | 상태 | OOF Macro F1 | 재현 상태 | 판단 | 다음 행동 |
 |---|---|---:|---|---:|---|---:|---|---|---|
-| A | EXP-067+069 고정 blend | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | Experiment Issue 생성 |
+| A | EXP-067+069 고정 blend | [#75](https://github.com/fabxoe/open_cancer/issues/75) | EXP-075 | - | IN_PROGRESS | N/A | NOT_STARTED | - | 구현·공식 실행 |
 | B | max+indicator | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | A 완료 대기 |
 | C | hotspot runner 정리 | 미발급 | 해당 없음 | - | PLANNED | N/A | 해당 없음 | - | B 완료 대기 |
 | D | hotspot clean 실험 | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | C 완료 대기 |

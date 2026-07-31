@@ -78,6 +78,14 @@ def prepare_reproducibility_bundle(
         _require(matches, f"재현 번들 필수 artifact가 없습니다: {kind}")
         selected.extend(matches)
 
+    optional_component_kinds = (
+        "component_oof_probability",
+        "component_test_probability",
+        "component_resolved_config",
+    )
+    for kind in optional_component_kinds:
+        selected.extend(_artifact_by_kind(artifacts, kind))
+
     local_paths: list[Path] = []
     for artifact in selected:
         relative_path = Path(artifact["path"])
