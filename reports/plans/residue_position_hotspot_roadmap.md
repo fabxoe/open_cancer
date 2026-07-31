@@ -26,7 +26,7 @@
 |---|---|---:|---|---:|---|---:|---|---|---|
 | A | EXP-067+069 고정 blend | [#75](https://github.com/fabxoe/open_cancer/issues/75) | EXP-075 | [#77](https://github.com/fabxoe/open_cancer/pull/77) | COMPLETED | 0.4157910775 | INFERENCE_VERIFIED | 두 부모 대비 개선으로 채택 | 단계 B 진행 |
 | B | max+indicator | [#78](https://github.com/fabxoe/open_cancer/issues/78) | EXP-078 | [#79](https://github.com/fabxoe/open_cancer/pull/79) | REJECTED | 0.4110815504 | INFERENCE_VERIFIED | 채택 기준 실패·indicator 완전 중복으로 기각, EXP-069 max+zero 동결 | Issue #80 의미 감사 |
-| C | hotspot runner 정리 | [#83](https://github.com/fabxoe/open_cancer/issues/83) | 해당 없음 | - | IN_PROGRESS | N/A | 해당 없음 | EXP-031 전용 실행기를 config 기반 공용 runner로 일반화 | 구현·테스트 후 PR 생성 |
+| C | hotspot runner 정리 | [#83](https://github.com/fabxoe/open_cancer/issues/83) | 해당 없음 | [#84](https://github.com/fabxoe/open_cancer/pull/84) | PR_OPEN | N/A | 해당 없음 | config 기반 runner·fold-train 근거 검증·재현 산출물 자동화 완료 | PR 병합 후 단계 D 시작 |
 | D | hotspot clean 실험 | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | C 완료 대기 |
 | E | 위치 negative control | 미발급 | explore | - | PLANNED | N/A | 해당 없음 | - | D 완료 대기 |
 | F | Feature Spec v1 조합 | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | 선행 결과 판단 |
