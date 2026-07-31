@@ -7,13 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 4
+- 실제 실험 수: 5
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4043796587000222 (`EXP-005`)
 - 최고 Public LB Macro F1: 0.2987843366 (`EXP-005`)
 - 최고 재현 검증 모델: `EXP-005` (`INFERENCE_VERIFIED`)
-- 최종 갱신일: 2026-07-30
+- 최종 갱신일: 2026-07-31
 
 ## 실험 요약
 
@@ -23,6 +23,7 @@
 | EXP-005 | COMPLETED | 2heej | #5 | XGBoost + 유전자×변이유형 희소 피처 | 0.4043796587000222 | 0.2987843366 | INFERENCE_VERIFIED | 제출 재생성 검증 완료·Release 보관 필요 | [보고서](reports/exp005_xgb_mutation_features/README.md) |
 | EXP-012 | COMPLETED | Kangho-Park | #12 | COSMIC 보호 유전자 기반 feature 보호 전략 분석 (모델 학습 없음) | N/A (분석 전용) | 미제출 | NOT_STARTED | 채택 | [상세](#exp-012-cosmic-보호-유전자-기반-feature-보호-전략-분석) |
 | EXP-026 | COMPLETED | fabxoe | #26 | XGBoost mutation-presence + mutated-gene count | 0.3817476632 | 0.2575936484 | NOT_STARTED | EXP-003 대비 개선, EXP-005보다 낮음 | [보고서](reports/exp026_mutation_burden/README.md) |
+| EXP-029 | COMPLETED | 2heej | #29 | EXP-005 + 변이유형 구성비·log burden 피처 | 0.3988980085 | 미제출 | NOT_STARTED | EXP-005 대비 OOF 하락·fold 변동성 증가로 현 구성 미채택 | [보고서](reports/exp029_xgb_log_burden_ratios/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -180,3 +181,38 @@
 - EXP-005보다 OOF와 Public LB가 모두 낮아 최종 제출 후보로 선택하지 않음.
 - 제출 파일 형식과 SHA-256은 확인했지만 저장 체크포인트로 제출 파일을
   독립 재생성하는 검증은 아직 수행하지 않았으므로 `NOT_STARTED`로 기록함.
+
+### [EXP-029] EXP-005 + 변이유형 구성비·log burden 피처
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #29 / issue-29-exp-log-burden-ratios
+- 소스 commit: `3560bff35b0f03d8235c07316c37816d92799f0e`
+- 시작/종료: 2026-07-31T02:10:04.961508+00:00 /
+  2026-07-31T02:14:44.501559+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp029_xgb_log_burden_ratios/config.resolved.yaml`
+- Metrics: `reports/exp029_xgb_log_burden_ratios/metrics.json`
+- Report: `reports/exp029_xgb_log_burden_ratios/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4050881006, 0.3992122410, 0.3830162610,
+  0.3837339691, 0.4139561300
+- OOF Macro F1: 0.3988980085
+- Public LB: 미제출
+- 재현 상태: NOT_STARTED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp029_xgb_log_burden_ratios/metrics.json` /
+  `reports/exp029_xgb_log_burden_ratios/README.md` /
+  `reproducibility/exp029_xgb_log_burden_ratios/config.resolved.yaml`
+- 결론: EXP-005 OOF 0.4043796587보다 0.0054816502 낮고 fold 표준편차도
+  0.0086812077에서 0.0120777005로 증가해 현 피처 묶음은 미채택. 구성비와
+  log burden 피처를 분리한 후속 ablation 후보로 보류함.
+- 재현 메모: 자동 checkpoint 추론 검증 도입 전 dirty worktree에서 실행돼
+  `INFERENCE_VERIFIED`로 승격하지 않음.

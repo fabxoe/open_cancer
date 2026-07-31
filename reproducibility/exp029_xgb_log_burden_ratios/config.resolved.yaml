@@ -1,0 +1,143 @@
+experiment:
+  issue_number: 29
+  experiment_id: EXP-029
+  branch: issue-29-exp-log-burden-ratios
+  owner: 2heej
+  source_commit: 3560bff35b0f03d8235c07316c37816d92799f0e
+  dirty_worktree: true
+  started_at: '2026-07-31T02:10:04.961508+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features:
+  - sample__mutated_gene_count_log1p
+  - sample__total_variant_count_log1p
+  - sample__multi_variant_gene_count_log1p
+  - sample__missense_ratio
+  - sample__synonymous_ratio
+  - sample__nonsense_ratio
+  - sample__frameshift_ratio
+  - sample__complex_ratio
+  - sample__multi_variant_gene_ratio
+  - sample__missing_gene_ratio
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features: excluded because a reliable source transcript/protein length
+    is unavailable
+feature_outputs:
+  train_features.npz:
+    path: data/processed/exp029_log_burden_ratios/train_features.npz
+    sha256: b18790bcdb4192d46b62ac5390485f339b893d5599ad222bb9f2d5f297f4e07c
+  test_features.npz:
+    path: data/processed/exp029_log_burden_ratios/test_features.npz
+    sha256: 4636793918c2dfa8d73cb04e2e945277a4503327bbd8474e2b82019c2873b70e
+  train_ids.csv:
+    path: data/processed/exp029_log_burden_ratios/train_ids.csv
+    sha256: 76d4b6e523b4509d16c9b65e458f9616c94b7262a844ec107971649de20e95d1
+  test_ids.csv:
+    path: data/processed/exp029_log_burden_ratios/test_ids.csv
+    sha256: 39321e5b32cdf9400476db97c38800a28fa58d20ddb25730da31fbcf91f3ebfe
+  train_labels.csv:
+    path: data/processed/exp029_log_burden_ratios/train_labels.csv
+    sha256: ca66b734a3adefc9ce38348a71e29edc4c6061ffaab72e468c574a70fa6d2a06
+  feature_names.json:
+    path: data/processed/exp029_log_burden_ratios/feature_names.json
+    sha256: ae4bc78e8cf845798aef31a9c642c77b21cb133210afcd31dbe7990d9f070caf
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+  - mutation_presence
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  - log_burden
+  - mutation_type_ratios
+  - multi_variant_gene_ratio
+  - missing_gene_ratio
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  command: uv run python scripts/run_exp029_xgb_log_burden_ratios.py
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 08:56:36) [Clang 18.1.8 ]
+  platform: macOS-26.5.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: cea0d1a7c46efd4675ebb3982a309c56b85c793f0712ba24d04d1a7c6bd110ae

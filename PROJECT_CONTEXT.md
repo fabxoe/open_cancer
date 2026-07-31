@@ -407,6 +407,13 @@ resolved config에는 실행에 실제 적용된 항목만 기록한다.
 리더보드 제출 전 최소 `INFERENCE_VERIFIED`가 필요하다. 현재 최고 모델과 최종 수상
 후보는 `TRAINING_VERIFIED`가 아니면 최종 모델로 지정할 수 없다.
 
+checkpoint와 제출 파일을 생성하는 공식 실험 runner는 실행 전에 clean worktree를
+확인하고, 학습 직후 저장 checkpoint를 다시 불러와 test 추론을 재생성한다. 원본
+확률·라벨·제출 SHA-256이 모두 일치하면 재현성 manifest와 증빙 파일을 자동
+생성하고 `INFERENCE_VERIFIED`로 기록한다. 검증에 실패하면 성공 상태를 만들지
+않고 실행을 실패 처리한다. 비작성자의 독립 재학습이 필요한
+`TRAINING_VERIFIED`는 자동 부여하지 않는다.
+
 재현성 파일을 모든 탐색 실험에서 사람이 완성할 필요는 없다.
 
 | 단계 | 기본 재현 상태 | 필요한 기록 |
@@ -625,6 +632,7 @@ push를 허용한다. 실제 프로젝트 파일은 프로젝트 초기화 Issue
 
 - [ ] 전체 OOF와 Macro F1을 생성했다.
 - [ ] resolved config와 metrics를 저장했다.
+- [ ] checkpoint 기반 실험은 자동 추론 재현 검증과 manifest 생성을 통과했다.
 - [ ] 실패·중단을 포함해 History를 실제 값으로 갱신했다.
 - [ ] 테스트와 schema 검증을 통과했다.
 

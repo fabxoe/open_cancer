@@ -8,6 +8,7 @@ import os
 import platform
 import subprocess
 import sys
+import tempfile
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -59,6 +60,264 @@ def write_json(path: Path, value: dict[str, Any]) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def file_record(path: Path) -> dict[str, Any]:
+    return {
+        "path": str(path.relative_to(ROOT)),
+        "size_bytes": path.stat().st_size,
+        "sha256": sha256_file(path),
+    }
+
+
+def verify_saved_inference(
+    *,
+    context: Any,
+    source_commit: str,
+    owner: str,
+    artifact_slug: str,
+    config: dict[str, Any],
+    resolved_config: dict[str, Any],
+    resolved_config_path: Path,
+    metrics: dict[str, Any],
+    metrics_path: Path,
+    model_dir: Path,
+    reproducibility_dir: Path,
+    test_features: sparse.csr_matrix,
+    test_ids: pd.Series,
+    test_probability_path: Path,
+    submission_path: Path,
+) -> None:
+    """Reload checkpoints and automatically create inference reproducibility evidence."""
+    fold_count = config["split"]["n_splits"]
+    reproduced_proba = np.zeros(
+        (len(test_ids), len(CLASS_LABELS)), dtype=np.float32
+    )
+    model_paths = [
+        model_dir / f"fold_{fold:02d}.json" for fold in range(fold_count)
+    ]
+    for model_path in model_paths:
+        if not model_path.is_file():
+            raise FileNotFoundError(f"체크포인트가 없습니다: {model_path}")
+        model = xgb.XGBClassifier()
+        model.load_model(model_path)
+        reproduced_proba += (
+            model.predict_proba(test_features).astype(np.float32) / fold_count
+        )
+
+    original_probability = pd.read_csv(test_probability_path)
+    original_proba = original_probability[list(PROBABILITY_COLUMNS)].to_numpy()
+    probability_match = bool(
+        np.allclose(reproduced_proba, original_proba, atol=1e-6, rtol=1e-6)
+    )
+    probability_max_abs_diff = float(
+        np.max(np.abs(reproduced_proba - original_proba))
+    )
+
+    sample_submission = pd.read_csv(
+        SAMPLE_SUBMISSION_PATH, dtype=str, keep_default_na=False
+    )
+    reproduced_submission = sample_submission.copy()
+    reproduced_submission["SUBCLASS"] = np.asarray(CLASS_LABELS)[
+        reproduced_proba.argmax(axis=1)
+    ]
+    with tempfile.TemporaryDirectory(
+        prefix=f"{artifact_slug}_inference_"
+    ) as temporary:
+        reproduced_path = Path(temporary) / submission_path.name
+        reproduced_submission.to_csv(
+            reproduced_path, index=False, lineterminator="\n"
+        )
+        validate_submission(reproduced_path, TEST_PATH)
+        reproduced_sha = sha256_file(reproduced_path)
+
+    original_submission = pd.read_csv(submission_path, dtype=str)
+    original_sha = sha256_file(submission_path)
+    submission_sha_match = bool(
+        reproduced_sha
+        == original_sha
+        == metrics["artifacts"]["submission_sha256"]
+    )
+    test_label_agreement = float(
+        (
+            reproduced_submission["SUBCLASS"]
+            == original_submission["SUBCLASS"]
+        ).mean()
+    )
+
+    hash_records = [
+        (
+            ROOT / resolved_config["data"]["train"]["path"],
+            resolved_config["data"]["train"]["sha256"],
+        ),
+        (
+            ROOT / resolved_config["data"]["test"]["path"],
+            resolved_config["data"]["test"]["sha256"],
+        ),
+        (
+            ROOT / resolved_config["data"]["sample_submission"]["path"],
+            resolved_config["data"]["sample_submission"]["sha256"],
+        ),
+        (
+            ROOT / resolved_config["split"]["path"],
+            resolved_config["split"]["sha256"],
+        ),
+        *[
+            (ROOT / metadata["path"], metadata["sha256"])
+            for metadata in resolved_config["feature_outputs"].values()
+        ],
+    ]
+    data_hashes_match = all(
+        path.is_file() and sha256_file(path) == expected
+        for path, expected in hash_records
+    )
+    passed = bool(
+        data_hashes_match
+        and probability_match
+        and submission_sha_match
+        and test_label_agreement == 1.0
+    )
+    if not passed:
+        raise ValueError(
+            "저장 체크포인트 추론이 원본 확률 또는 제출 파일과 일치하지 않습니다."
+        )
+
+    verified_at = datetime.now(timezone.utc).isoformat()
+    environment_path = reproducibility_dir / "environment.json"
+    data_manifest_path = reproducibility_dir / "data_manifest.json"
+    original_metrics_path = reproducibility_dir / "original_metrics.json"
+    reproduction_metrics_path = reproducibility_dir / "reproduction_metrics.json"
+    comparison_path = reproducibility_dir / "comparison.json"
+    manifest_path = reproducibility_dir / "artifact_manifest.json"
+    reproduce_path = reproducibility_dir / "REPRODUCE.md"
+
+    write_json(
+        environment_path,
+        {
+            "verified_at": verified_at,
+            **resolved_config["environment"],
+        },
+    )
+    write_json(
+        data_manifest_path,
+        {
+            "verified_at": verified_at,
+            "files": [
+                {**file_record(path), "expected_sha256": expected}
+                for path, expected in hash_records
+            ],
+        },
+    )
+    write_json(original_metrics_path, metrics)
+    comparison = {
+        "verified_at": verified_at,
+        "data_hashes_match": data_hashes_match,
+        "original_submission_sha256": original_sha,
+        "reproduced_submission_sha256": reproduced_sha,
+        "submission_sha256_match": submission_sha_match,
+        "test_label_agreement": test_label_agreement,
+        "test_probability_allclose": probability_match,
+        "test_probability_max_abs_diff": probability_max_abs_diff,
+        "probability_atol": 1e-6,
+        "probability_rtol": 1e-6,
+        "passed": passed,
+    }
+    write_json(comparison_path, comparison)
+    write_json(
+        reproduction_metrics_path,
+        {
+            "experiment_id": context.experiment_id,
+            "verification_type": "checkpoint_inference",
+            **comparison,
+        },
+    )
+    reproduce_path.write_text(
+        (
+            f"# {context.experiment_id} 재현 절차\n\n"
+            "원본 CSV를 `data/raw/`에 배치하고 다음 명령을 실행합니다.\n\n"
+            "```bash\n"
+            "uv sync --frozen\n"
+            f"uv run python scripts/run_{artifact_slug}.py\n"
+            "uv run python scripts/validate_experiment.py\n"
+            "```\n\n"
+            "실험 실행 마지막 단계에서 저장 checkpoint 추론과 제출 SHA-256 "
+            "일치 검증이 자동 수행됩니다.\n"
+        ),
+        encoding="utf-8",
+    )
+
+    artifacts = [
+        {"kind": "checkpoint", **file_record(path), "storage_uri": None}
+        for path in model_paths
+    ]
+    artifacts.extend(
+        [
+            {"kind": "submission", **file_record(submission_path), "storage_uri": None},
+            {
+                "kind": "test_probability",
+                **file_record(test_probability_path),
+                "storage_uri": None,
+            },
+            {"kind": "metrics", **file_record(metrics_path), "storage_uri": None},
+            {
+                "kind": "resolved_config",
+                **file_record(resolved_config_path),
+                "storage_uri": None,
+            },
+        ]
+    )
+    manifest = {
+        "experiment_id": context.experiment_id,
+        "issue_number": context.issue_number,
+        "reproducibility_status": "INFERENCE_VERIFIED",
+        "source_commit": source_commit,
+        "source_tag": None,
+        "dirty_worktree": False,
+        "data_manifest": str(data_manifest_path.relative_to(ROOT)),
+        "environment": str(environment_path.relative_to(ROOT)),
+        "release_url": None,
+        "verifier": owner,
+        "verified_at": verified_at,
+        "artifacts": artifacts,
+        "verification": {
+            "data_hashes_match": data_hashes_match,
+            "submission_sha256_match": submission_sha_match,
+            "test_label_agreement": test_label_agreement,
+            "probability_atol": 1e-6,
+            "probability_rtol": 1e-6,
+            "passed": passed,
+        },
+    }
+    write_json(manifest_path, manifest)
+    validate_json_document(
+        manifest_path, ROOT / "schemas" / "reproducibility_manifest.schema.json"
+    )
+
+    checksum_paths = [
+        resolved_config_path,
+        environment_path,
+        data_manifest_path,
+        original_metrics_path,
+        reproduction_metrics_path,
+        comparison_path,
+        reproduce_path,
+    ]
+    (reproducibility_dir / "checksums.sha256").write_text(
+        "".join(
+            f"{sha256_file(path)}  {path.name}\n" for path in checksum_paths
+        ),
+        encoding="utf-8",
+    )
+    print(
+        json.dumps(
+            {
+                "reproducibility_status": "INFERENCE_VERIFIED",
+                "comparison": comparison,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
+
+
 def run_experiment(
     *,
     config_path: Path,
@@ -103,7 +362,14 @@ def run_experiment(
         directory.mkdir(parents=True, exist_ok=True)
 
     source_commit = run_git("rev-parse", "HEAD")
-    dirty_worktree = bool(run_git("status", "--porcelain"))
+    dirty_status = run_git("status", "--porcelain")
+    dirty_worktree = bool(dirty_status)
+    if dirty_worktree:
+        raise RuntimeError(
+            "공식 실험은 clean worktree에서만 실행할 수 있습니다. "
+            "변경을 commit/stash한 뒤 다시 실행하세요.\n"
+            f"{dirty_status}"
+        )
     owner = run_git("config", "user.name") or os.environ.get("USER", "unknown")
     feature_report = build_mutation_features(
         TRAIN_PATH,
@@ -319,6 +585,34 @@ def run_experiment(
     }
     write_json(metrics_path, metrics)
     validate_json_document(metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json")
+    try:
+        verify_saved_inference(
+            context=context,
+            source_commit=source_commit,
+            owner=owner,
+            artifact_slug=artifact_slug,
+            config=config,
+            resolved_config=resolved_config,
+            resolved_config_path=resolved_config_path,
+            metrics=metrics,
+            metrics_path=metrics_path,
+            model_dir=model_dir,
+            reproducibility_dir=reproducibility_dir,
+            test_features=x_test,
+            test_ids=test_meta["ID"],
+            test_probability_path=test_probability_path,
+            submission_path=submission_path,
+        )
+    except Exception as error:
+        metrics["status"] = "FAILED"
+        metrics["notes"] = (
+            f"{notes} Automatic checkpoint inference verification failed: {error}"
+        )
+        write_json(metrics_path, metrics)
+        validate_json_document(
+            metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json"
+        )
+        raise
     print(json.dumps({"metrics": str(metrics_path), "oof": metrics["oof"]}, ensure_ascii=False, indent=2))
 
 
