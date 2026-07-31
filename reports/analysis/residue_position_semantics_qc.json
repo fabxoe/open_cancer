@@ -1,0 +1,122 @@
+{
+  "diagnostic_version": "1.0.0",
+  "feature_dir": "data/processed/feature_factory/v1/exp078_max_residue_indicator",
+  "position_feature": "max_residue_position",
+  "target_or_labels_used": false,
+  "inputs": {
+    "feature_names": {
+      "path": "data/processed/feature_factory/v1/exp078_max_residue_indicator/feature_names.json",
+      "sha256": "1d72145450b2b64b367c23863951d3d9f39c6212be2eb52e269a6368068943f1"
+    },
+    "train_matrix": {
+      "path": "data/processed/feature_factory/v1/exp078_max_residue_indicator/train_features.npz",
+      "sha256": "1c223fd19eadc3bdce98be74f1da731363bbdc7b9323c9b5043e70fde7a4f046"
+    },
+    "test_matrix": {
+      "path": "data/processed/feature_factory/v1/exp078_max_residue_indicator/test_features.npz",
+      "sha256": "31728ca06292a0effe62d56a61b8d121289bcdca157d8031fe6a52277d9b29cc"
+    },
+    "parsing_qc": {
+      "path": "data/processed/feature_factory/v1/exp078_max_residue_indicator/parsing_qc.json",
+      "sha256": "a460deefb7c99d7148027a4b9ad948524d6715075fa2ee9593a5e133ca517417"
+    }
+  },
+  "feature_contract": {
+    "feature_count": 39468,
+    "gene_count": 4384,
+    "indicator_exactly_duplicates_mutation_presence": true,
+    "indicator_interpretation": "duplicate_feature_weighting_not_missingness_resolution"
+  },
+  "splits": {
+    "train": {
+      "rows": 6201,
+      "gene_count": 4384,
+      "gene_cells": 27185184,
+      "mutated_gene_cells": 218893,
+      "position_observed_gene_cells": 218893,
+      "positive_position_gene_cells": 218893,
+      "negative_position_gene_cells": 0,
+      "indicator_presence_mismatches": 0,
+      "mutated_without_position_observed": 0,
+      "position_observed_without_mutation": 0,
+      "position_observed_but_zero": 0,
+      "positive_position_without_observed": 0,
+      "indicator_equals_mutation_presence": true,
+      "p_position_observed_given_mutated": 1.0,
+      "p_zero_given_position_observed": 0.0,
+      "p_positive_given_not_observed": 0.0,
+      "positive_position_distribution": {
+        "count": 218893,
+        "min": 2.0,
+        "max": 8784.0,
+        "mean": 560.9032723750873,
+        "quantiles": {
+          "q10": 69.0,
+          "q50": 339.0,
+          "q90": 1277.0,
+          "q99": 3629.0
+        }
+      }
+    },
+    "test": {
+      "rows": 2546,
+      "gene_count": 4384,
+      "gene_cells": 11161664,
+      "mutated_gene_cells": 198930,
+      "position_observed_gene_cells": 198930,
+      "positive_position_gene_cells": 198930,
+      "negative_position_gene_cells": 0,
+      "indicator_presence_mismatches": 0,
+      "mutated_without_position_observed": 0,
+      "position_observed_without_mutation": 0,
+      "position_observed_but_zero": 0,
+      "positive_position_without_observed": 0,
+      "indicator_equals_mutation_presence": true,
+      "p_position_observed_given_mutated": 1.0,
+      "p_zero_given_position_observed": 0.0,
+      "p_positive_given_not_observed": 0.0,
+      "positive_position_distribution": {
+        "count": 198930,
+        "min": 1.0,
+        "max": 8769.0,
+        "mean": 499.2449504850953,
+        "quantiles": {
+          "q10": 50.0,
+          "q50": 307.0,
+          "q90": 1138.0,
+          "q99": 3066.4199999999837
+        }
+      }
+    }
+  },
+  "parsing_qc": {
+    "train": {
+      "non_wt_gene_cells": 218893,
+      "mutation_tokens_total": 255164,
+      "tokens_with_residue_positions": 255164,
+      "tokens_without_residue_positions": 0,
+      "residue_position_parse_rate": 1.0,
+      "complex_tokens": 341,
+      "complex_token_ratio": 0.0013363954162812935,
+      "multi_position_tokens": 239,
+      "multi_position_token_ratio": 0.0009366525058393817
+    },
+    "test": {
+      "non_wt_gene_cells": 198930,
+      "mutation_tokens_total": 337512,
+      "tokens_with_residue_positions": 337512,
+      "tokens_without_residue_positions": 0,
+      "residue_position_parse_rate": 1.0,
+      "complex_tokens": 19070,
+      "complex_token_ratio": 0.05650169475455687,
+      "multi_position_tokens": 2456,
+      "multi_position_token_ratio": 0.007276778307141672
+    }
+  },
+  "train_test_shift": {
+    "complex_token_ratio_absolute_difference": 0.05516529933827558,
+    "multi_position_token_ratio_absolute_difference": 0.00634012580130229,
+    "positive_position_ks_statistic": 0.04285310016102145,
+    "interpretation_limit": "QC only; test distribution must not select features, thresholds, or leaderboard candidates"
+  }
+}

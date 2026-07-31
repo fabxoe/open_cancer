@@ -16,14 +16,14 @@
   - [EXP-067 coarse-bin](../exp067_xgb_residue_coarse_bin/README.md)
   - [EXP-069 max residue-position](../exp069_xgb_max_residue_position/README.md)
   - [EXP-031 hotspot extended](../exp031_hotspot_extended/README.md)
-- 확정된 다음 작업: PR #79 검토·병합 후 단계 C hotspot runner Task Issue 생성
+- 확정된 다음 작업: Issue #80 의미 감사 반영 후 단계 C hotspot runner Task Issue 생성
 
 ## 진행 상태표
 
 | 단계 | 작업 | Issue | EXP | PR | 상태 | OOF Macro F1 | 재현 상태 | 판단 | 다음 행동 |
 |---|---|---:|---|---:|---|---:|---|---|---|
 | A | EXP-067+069 고정 blend | [#75](https://github.com/fabxoe/open_cancer/issues/75) | EXP-075 | [#77](https://github.com/fabxoe/open_cancer/pull/77) | COMPLETED | 0.4157910775 | INFERENCE_VERIFIED | 두 부모 대비 개선으로 채택 | 단계 B 진행 |
-| B | max+indicator | [#78](https://github.com/fabxoe/open_cancer/issues/78) | EXP-078 | [#79](https://github.com/fabxoe/open_cancer/pull/79) | PR_OPEN | 0.4110815504 | INFERENCE_VERIFIED | 채택 기준 실패로 기각, EXP-069 max+zero 동결 | PR 검토·병합 |
+| B | max+indicator | [#78](https://github.com/fabxoe/open_cancer/issues/78) | EXP-078 | [#79](https://github.com/fabxoe/open_cancer/pull/79) | REJECTED | 0.4110815504 | INFERENCE_VERIFIED | 채택 기준 실패·indicator 완전 중복으로 기각, EXP-069 max+zero 동결 | Issue #80 의미 감사 |
 | C | hotspot runner 정리 | 미발급 | 해당 없음 | - | PLANNED | N/A | 해당 없음 | - | B 완료 대기 |
 | D | hotspot clean 실험 | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | C 완료 대기 |
 | E | 위치 negative control | 미발급 | explore | - | PLANNED | N/A | 해당 없음 | - | D 완료 대기 |
@@ -121,6 +121,12 @@ Spec v1로 동결합니다. 이 판단 뒤에는 추가 위치 옵션 조합을 
 
 ## 단계 C — Hotspot runner 일반화
 
+단계 B 병합 후 Issue #80에서 실제 sparse artifact의 피처 의미를 감사한다.
+현재 데이터에서는 `residue_position_observed`와 mutation-presence가 완전히 같아
+indicator 실험은 결측 해소가 아닌 중복 피처 weighting으로 재해석한다. 실제
+점수와 재현 상태는 바꾸지 않으며
+[QC 보고서](../analysis/residue_position_semantics_qc.md)를 팀 공통 근거로 사용한다.
+
 일반 Task Issue에서 다음 코드 정리를 수행하며 EXP-ID를 만들지 않습니다.
 
 - EXP-031, Issue 번호와 산출물 경로 하드코딩 제거
@@ -148,7 +154,9 @@ Spec v1로 동결합니다. 이 판단 뒤에는 추가 위치 옵션 조합을 
 공식 제출 후보가 아닌 `RUN_MODE="explore"` 분석으로 수행합니다.
 
 - 유전자별 mutation-presence는 유지합니다.
-- 변이가 있는 행 사이에서 residue 위치값만 seed 42로 섞습니다.
+- 각 outer fold의 train에서 변이가 있는 행 사이의 residue 위치값만 섞습니다.
+- validation은 원본 위치를 유지하고 여러 고정 seed로 반복합니다.
+- 가능하면 mutation type·token-count strata 안에서 섞어 위치 외 관계를 유지합니다.
 - 정답 라벨과 test 데이터는 피처 생성이나 선택에 사용하지 않습니다.
 - 원본 위치 모델과 같은 canonical folds로 OOF를 비교합니다.
 
@@ -224,6 +232,8 @@ Stacking은 다음을 모두 만족할 때만 진행합니다.
 | 2026-07-31 | `blend → max+indicator → hotspot clean` 순서 확정 | Vera 권고를 채택하되 단계 B 이후 위치 family를 동결해 탐색 확장을 제한 |
 | 2026-07-31 | 첫 blend를 제출 준비 완료 상태까지 구성 | 리더보드 후보의 산출물·해시·Release 보관을 제출 전에 완료하기 위함 |
 | 2026-07-31 | 장기 계획과 실제 결과 장부 분리 | 계획 변경이 History의 사실 기록과 섞이는 것을 방지 |
+| 2026-07-31 | indicator를 결측 해소가 아닌 중복 피처 weighting으로 재해석 | 실제 sparse train/test에서 mutation-presence와 observed indicator 불일치가 0개였음 |
+| 2026-07-31 | 위치 permutation을 fold-train·반복 seed 계약으로 강화 | 전체 OOF 단일 shuffle의 검증 분포 오염과 우연 변동을 방지 |
 
 ## 참고
 
