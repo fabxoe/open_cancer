@@ -7,12 +7,12 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 11
+- 실제 실험 수: 12
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4095069739 (`EXP-052`)
+- 최고 Local OOF Macro F1: 0.4101842357 (`EXP-058`)
 - 최고 Public LB Macro F1: 0.2987843366 (`EXP-005`)
-- 최고 재현 검증 모델: `EXP-052` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-058` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-07-31
 
 ## 실험 요약
@@ -30,6 +30,7 @@
 | EXP-045 | COMPLETED | 2heej | #45 | EXP-043 후보 28종 nested 그룹·개별 선택 | 0.3999980235 | 미제출 | INFERENCE_VERIFIED | EXP-043 대비 소폭 개선, EXP-005·033보다 낮아 고정 후보 2종을 후속 검증 | [보고서](reports/exp045_xgb_nested_feature_selection/README.md) |
 | EXP-047 | COMPLETED | fabxoe | #47 | EXP-033 + 유전자별 최소 단백질 잔기 위치 | 0.4088132438 | 미제출 | INFERENCE_VERIFIED | Local OOF 개선·fold 변동성 감소, 위치 family 후속 검증 채택 | [보고서](reports/exp047_xgb_min_residue_position/README.md) |
 | EXP-052 | COMPLETED | Kangho-Park | #52 | EXP-047 + Feature Factory family 7(co-mutation, 문헌 근거 유전자 쌍 3개) | 0.4095069739 | 미제출 | INFERENCE_VERIFIED | OOF 소폭 개선·fold 표준편차 대폭 감소로 채택, pair 확장 검토 | [보고서](reports/exp052_hotspot_cooccurrence/README.md) |
+| EXP-058 | COMPLETED | Kangho-Park | #58 | EXP-052에서 SHAP 근거로 APC/CTNNB1 제거(쌍 3개→2개) | 0.4101842357 | 미제출 | INFERENCE_VERIFIED | 채택(팀 최고), COAD 개선으로 SHAP 가설 직접 검증 | [보고서](reports/exp058_cooccurrence_pair_ablation/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -52,6 +53,7 @@
 | 2026-07-31T07:05:20.802427+00:00 | EXP-045 | 2heej | `a854d8bd626c425363c58fa7658e236220b14c3d` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100% | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp045_xgb_nested_feature_selection/comparison.json) |
 | 2026-07-31T07:44:24.403725+00:00 | EXP-047 | fabxoe | `78c52694163c8b3f8e76557a93d271843b1627fa` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp047_xgb_min_residue_position/comparison.json) |
 | 2026-07-31T09:24:31.209567+00:00 | EXP-052 | Kangho-Park | `6865fd5accf4fbf7090dc39ecc4a27f9b611adf7` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp052_hotspot_cooccurrence/comparison.json) |
+| 2026-07-31T10:18:14.298161+00:00 | EXP-058 | Kangho-Park | `45b353ce4073e4a9bad0c0866f4cb84ac5a53fe7` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp058_cooccurrence_pair_ablation/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -494,3 +496,50 @@ PIK3CA/PTEN 동시발생)의 co-mutation indicator 4개(쌍별 3개 + 총합 1�
   조건부 적용이 다음 개선 후보다. 저장 checkpoint 재추론으로 제출
   SHA-256과 라벨 100% 일치를 확인해 `INFERENCE_VERIFIED`로 자동 승격됐다.
   아직 리더보드에는 제출하지 않았다.
+
+### [EXP-058] Co-mutation Pair Ablation — SHAP 근거로 APC/CTNNB1 제거
+
+- 상태: COMPLETED
+- 실행자: Kangho Park
+- Issue/브랜치: #58 / issue-58-cooccurrence-pair-ablation
+- 소스 commit: `45b353ce4073e4a9bad0c0866f4cb84ac5a53fe7`
+- 시작/종료: 2026-07-31 (단일 실행)
+
+#### 실행
+
+EXP-052(#52)의 "암종별 조건부 적용" 후속 계획은 test에서 알 수 없는
+SUBCLASS를 게이팅 조건으로 써야 해서 target leakage로 구현 전에 폐기했다.
+대신 EXP-052의 저장 checkpoint에 TreeSHAP(`xgboost.Booster.predict(pred_contribs=True)`)을
+적용해, 각 co-mutation 피처가 활성화된 샘플에서 26개 클래스별 평균 기여도를
+계산했다. PIK3CA/PTEN은 UCEC가 1/26위(0.042, 나머지 평균 -0.006)로 트리가
+이미 정확히 학습한 반면, APC/CTNNB1은 COAD가 26/26위(꼴찌)에 기여도가
+음수(-0.005)로 가설과 반대였다. IDH1/IDH2는 활성 샘플 3건뿐이라 판단
+보류. 이 증거에 따라 APC/CTNNB1만 제거하고 나머지 2개 쌍은 유지하는
+config 변경만으로 재실행했다(Feature Factory 코드 변경 없음).
+
+- Config: `reproducibility/exp058_cooccurrence_pair_ablation/config.resolved.yaml`
+- Metrics: `reports/exp058_cooccurrence_pair_ablation/metrics.json`
+- Report: `reports/exp058_cooccurrence_pair_ablation/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4100673176, 0.4143098302, 0.4046742555,
+  0.4023218460, 0.4160092186
+- OOF Macro F1: 0.4101842357
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp058_cooccurrence_pair_ablation/metrics.json` /
+  `reports/exp058_cooccurrence_pair_ablation/README.md` /
+  `reproducibility/exp058_cooccurrence_pair_ablation/`
+- 결론: EXP-052 대비 OOF Macro F1이 `+0.0006772617`(EXP-047 대비 누적
+  `+0.0013709918`) 추가 개선돼 팀 최고 기록을 갱신했다. 26개 클래스 중
+  13개 개선(BLCA +0.0265, LUSC +0.0197, DLBC +0.0196 등), 13개 하락(PAAD
+  -0.0230, THYM -0.0204 등)이었다. 가장 중요한 확인은 **COAD가 SHAP
+  예측대로 실제 개선**됐다는 점(0.7126 → 0.7187, `+0.0061`) — APC/CTNNB1
+  제거가 COAD 예측에 도움이 될 것이라는 가설이 실행 결과로 직접 검증됐다.
+  저장 checkpoint 재추론으로 제출 SHA-256과 라벨 100% 일치를 확인해
+  `INFERENCE_VERIFIED`로 자동 승격됐다. 아직 리더보드에는 제출하지 않았다.
