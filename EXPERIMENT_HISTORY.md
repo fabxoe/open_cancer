@@ -26,7 +26,7 @@
 | EXP-026 | COMPLETED | fabxoe | #26 | XGBoost mutation-presence + mutated-gene count | 0.3817476632 | 0.2575936484 | NOT_STARTED | EXP-003 대비 개선, EXP-005보다 낮음 | [보고서](reports/exp026_mutation_burden/README.md) |
 | EXP-029 | COMPLETED | 2heej | #29 | EXP-005 + 변이유형 구성비·log burden 피처 | 0.3988980085 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 OOF 하락·fold 변동성 증가로 현 구성 미채택 | [보고서](reports/exp029_xgb_log_burden_ratios/README.md) |
 | EXP-033 | COMPLETED | 2heej | #33 | EXP-005 + log burden 3종 단독 ablation | 0.4057244634 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 소폭 개선·추가 분리 검증 필요 | [보고서](reports/exp033_xgb_log_burden_ablation/README.md) |
-| EXP-043 | COMPLETED | 2heej | #43 | EXP-005 + 샘플 변이분포 확장 피처 27종 | 0.3989124897 | 미제출 | INFERENCE_VERIFIED | fold 변동성은 감소했지만 EXP-005·033 대비 OOF 하락 | [보고서](reports/exp043_xgb_sample_distribution/README.md) |
+| EXP-043 | COMPLETED | 2heej | #43 | EXP-005 + 샘플 변이분포 확장 피처 28종 | 0.3989124897 | 미제출 | INFERENCE_VERIFIED | fold 변동성은 감소했지만 EXP-005·033 대비 OOF 하락 | [보고서](reports/exp043_xgb_sample_distribution/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -366,7 +366,7 @@ EXP-012(#12)의 protect/drop 결정을 입력으로, EXP-003과 동일한 공용
   `reproducibility/exp043_xgb_sample_distribution/`
 - 결론: EXP-033보다 OOF `-0.0068119737`, EXP-005보다
   `-0.0054671690` 하락했다. fold 표준편차는 `0.0040939951`로 낮아졌지만,
-  확장 피처 27개를 전부 사용하는 구성은 미채택하고 fold-train 내부의 안정성
+  확장 피처 28개를 전부 사용하는 구성은 미채택하고 fold-train 내부의 안정성
   기반 피처 선택 실험으로 넘긴다.
 - 재현 메모: 저장 checkpoint 재추론에서 데이터 해시, 제출 SHA-256과 test
   라벨이 일치했고 확률 최대 절대 차이는 약 2.98e-08로 허용치 이내여서
