@@ -710,6 +710,19 @@ def calculate_metrics(
         zero_division=0,
     )
     fold_scores = [row["macro_f1"] for row in fold_metrics]
+    schema_fold_metrics = [
+        {
+            key: row[key]
+            for key in (
+                "fold",
+                "macro_f1",
+                "accuracy",
+                "log_loss",
+                "best_iteration",
+            )
+        }
+        for row in fold_metrics
+    ]
     return {
         "experiment_id": context.experiment_id,
         "status": "COMPLETED",
@@ -721,7 +734,7 @@ def calculate_metrics(
         "finished_at": utc_now(),
         "primary_metric": "macro_f1",
         "split_id": config["split"]["path"],
-        "folds": fold_metrics,
+        "folds": schema_fold_metrics,
         "oof": {
             "macro_f1": float(f1_score(y, prediction, average="macro")),
             "fold_mean": float(np.mean(fold_scores)),
@@ -766,6 +779,7 @@ def write_report(
     paths: dict[str, Path],
     metrics: dict[str, Any],
     config: dict[str, Any],
+    fold_details: list[dict[str, Any]],
 ) -> None:
     paths["report_dir"].mkdir(parents=True, exist_ok=True)
     folds = "\n".join(
@@ -774,7 +788,7 @@ def write_report(
             f"{row['macro_f1']:.6f} | {row['accuracy']:.6f} | "
             f"{row['log_loss']:.6f} | {row['best_iteration']} |"
         )
-        for row in metrics["folds"]
+        for row in fold_details
     )
     paths["report"].write_text(
         (
@@ -1201,6 +1215,7 @@ def run_experiment(config_path: Path | None) -> None:
         paths=paths,
         metrics=metrics,
         config=config,
+        fold_details=fold_metrics,
     )
     verify_saved_inference(
         context=context,
