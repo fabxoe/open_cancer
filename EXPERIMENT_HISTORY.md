@@ -11,8 +11,9 @@
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4135846695002278 (`EXP-031` attempt 5, hotspot 확장)
-- 최고 Public LB Macro F1: 0.2987843366 (`EXP-005`, EXP-031은 미제출)
-- 최고 재현 검증 모델: `EXP-005` (`INFERENCE_VERIFIED`)
+- 최고 Public LB Macro F1: 0.3170803849 (`EXP-031` attempt 5)
+- 최고 재현 검증 모델: `EXP-005` (`INFERENCE_VERIFIED`); `EXP-031`은 Public LB 최고이지만
+  재현 상태는 아직 `NOT_STARTED`
 - 최종 갱신일: 2026-07-31
 
 ## 실험 요약
@@ -23,7 +24,7 @@
 | EXP-005 | COMPLETED | 2heej | #5 | XGBoost + 유전자×변이유형 희소 피처 | 0.4043796587000222 | 0.2987843366 | INFERENCE_VERIFIED | 제출 재생성 검증 완료·Release 보관 필요 | [보고서](reports/exp005_xgb_mutation_features/README.md) |
 | EXP-012 | COMPLETED | Kangho-Park | #12 | COSMIC 보호 유전자 기반 feature 보호 전략 분석 (모델 학습 없음) | N/A (분석 전용) | 미제출 | NOT_STARTED | 채택 | [상세](#exp-012-cosmic-보호-유전자-기반-feature-보호-전략-분석) |
 | EXP-026 | COMPLETED | fabxoe | #26 | XGBoost mutation-presence + mutated-gene count | 0.3817476632 | 0.2575936484 | NOT_STARTED | EXP-003 대비 개선, EXP-005보다 낮음 | [보고서](reports/exp026_mutation_burden/README.md) |
-| EXP-031 | COMPLETED | Kangho-Park | #31 | EXP-005 변이유형 피처 + 알려진 cancer hotspot 위치 피처 (attempt 5, hotspot 19→34개 확장이 팀 최고) | 0.4135846695 | 미제출 | NOT_STARTED | attempt 5 채택(팀 최고 Local), 리더보드 제출은 보류 | [상세](#exp-031-exp-005-변이유형-피처--cosmic-보호유전자-교차-피처) |
+| EXP-031 | COMPLETED | Kangho-Park | #31 | EXP-005 변이유형 피처 + 알려진 cancer hotspot 위치 피처 (attempt 5, hotspot 19→34개 확장이 팀 최고) | 0.4135846695 | 0.3170803849 | NOT_STARTED | attempt 5 채택(팀 최고 Local·Public LB), INFERENCE_VERIFIED 검증 필요 | [상세](#exp-031-exp-005-변이유형-피처--cosmic-보호유전자-교차-피처) |
 
 ## 리더보드 제출 이력
 
@@ -32,6 +33,7 @@
 | 2026-07-30T18:20:48+09:00 | EXP-003 | #3 | `submissions/exp003_xgb_baseline.csv` (제출 ID `1506230`) | `6e8b64726c86b5a6d52ee58f7f042b74b302852aa8a59c9bfe13332bfee424a5` | 0.228167518 | 3 (확인 당시) | INFERENCE_VERIFIED |
 | 2026-07-30T18:26:30+09:00 | EXP-005 | #5 | `submissions/exp005_xgb_mutation_features.csv` | `7bc3e64e1904d9b4007bc141dde771a39e7527172f3cd24c25c408000103183c` | 0.2987843366 | 제출 시점 1위 → 2026-07-30 23:13 KST 기준 2위 | INFERENCE_VERIFIED |
 | 2026-07-30T23:56:29+09:00 | EXP-026 | #26 | `submissions/exp026_mutation_burden.csv` (제출 ID `1506469`) | `53d835335d6d23945c80acef4b70d0112f14abdaf1b5d504a63fd1ea7b16ef00` | 0.2575936484 | 미선택·개별 순위 미확인 | NOT_STARTED |
+| 2026-07-31T15:50:02+09:00 | EXP-031 | #31 | `submissions/exp031_hotspot_extended.csv` (제출 ID `1506950`, attempt 5) | `54de49396b8910fd8134b5a854beed344e369a9a791c67c6c9caf0da38cec27d` | 0.3170803849 | 확인 당시 전체 2위(1위 6조 0.37149) | NOT_STARTED |
 
 ## 재현성 검증 이력
 
@@ -256,9 +258,13 @@ R1450/R876, POLE P286R/V411L, KIT D816, FGFR3 S249C, RAC1 P29S). HLA-A(생식계
 - Fold Macro F1(attempt 3): 0.413077, 0.420928, 0.399671, 0.403889, 0.418962
 - Fold Macro F1(attempt 4): 0.406582, 0.415506, 0.387467, 0.398288, 0.414055
 - Fold Macro F1(attempt 5): 0.415084, 0.415961, 0.400686, 0.406536, 0.424850
-- Public LB: 미제출 (attempt 5가 팀 최고 Local이지만 리더보드 제출은 보류,
-  아래 선택 메모 참고)
-- 재현 상태: NOT_STARTED
+- Public LB: **0.3170803849**(attempt 5, 제출 ID `1506950`, 2026-07-31
+  15:50:02 KST, 확인 당시 전체 2위). EXP-005(0.2987843366) 대비
+  +0.0182960483로 팀 최고 Public LB도 갱신했다. Local OOF 개선폭
+  (+0.0092, EXP-005 대비)보다 LB 개선폭이 더 커서, hotspot 방향이 로컬
+  검증뿐 아니라 실제 제출 성능에서도 유효함을 확인했다.
+- 재현 상태: NOT_STARTED (제출은 완료했으나 체크포인트 추론 검증은 아직
+  수행하지 않음, EXP-021/EXP-026과 동일한 순서)
 
 클래스별로는 attempt 2에서 ACC(+0.0205), LAML(+0.0182), SARC(+0.0168),
 KIPAN(+0.0124), SKCM(+0.0081) 등 일부(주로 중간 규모) 클래스가 EXP-005보다
@@ -307,17 +313,20 @@ PAAD(-0.0370), BLCA(-0.0247), DLBC(-0.0156), COAD(-0.0139), OV(-0.0100)가
   `scripts/explore_hotspot_numbering_consistency.py`(RUN_MODE=explore, 검증용),
   `scripts/explore_hotspot_candidate_mining.py`(RUN_MODE=explore, 후보 발굴·
   아티팩트 클러스터 탐지)
-- 결론: **attempt 5(hotspot 34개) 최종 채택 — 팀 최고 Local 기록 갱신**
-  (EXP-005 대비 +0.0092p, attempt 3 대비 +0.0016p). attempt 1·2("COSMIC
-  보호 유전자 정보를 유전자 단위로 재집계")는 EXP-005를 넘지 못했고, attempt
-  3·5("개별 유전자 컬럼에는 없는 코돈 단위 정보를 추가")는 넘었다. attempt
-  4는 attempt 2와 3을 결합하면 더 나아질지 확인했지만 오히려 attempt
-  3보다 낮아, 두 신호가 단순히 합산되지 않으며 LOF count 쪽이 순손실
-  요인임을 재확인했다. attempt 5는 "새 정보 추가"라는 같은 원칙을
-  화이트리스트 361개 전체로 확장해 재확인한 결과로, "정보가 이미
-  유전자×변이유형 단위에 존재해 재집계는 net negative, 코돈 단위의 진짜
-  새 정보만 net positive"라는 가설을 다시 한번 뒷받침한다. 팀 최고 기록
-  갱신에도 불구하고 아직 리더보드에는 제출하지 않았다(선택 메모 참고).
+- 결론: **attempt 5(hotspot 34개) 최종 채택 — 팀 최고 Local·Public LB 기록
+  갱신** (Local: EXP-005 대비 +0.0092p, attempt 3 대비 +0.0016p; Public LB:
+  EXP-005 대비 +0.0182960483). attempt 1·2("COSMIC 보호 유전자 정보를
+  유전자 단위로 재집계")는 EXP-005를 넘지 못했고, attempt 3·5("개별
+  유전자 컬럼에는 없는 코돈 단위 정보를 추가")는 넘었다. attempt 4는
+  attempt 2와 3을 결합하면 더 나아질지 확인했지만 오히려 attempt 3보다
+  낮아, 두 신호가 단순히 합산되지 않으며 LOF count 쪽이 순손실 요인임을
+  재확인했다. attempt 5는 "새 정보 추가"라는 같은 원칙을 화이트리스트
+  361개 전체로 확장해 재확인한 결과로, "정보가 이미 유전자×변이유형
+  단위에 존재해 재집계는 net negative, 코돈 단위의 진짜 새 정보만 net
+  positive"라는 가설을 다시 한번 뒷받침한다. Local과 Public LB 모두에서
+  일관되게 개선돼, hotspot 아티팩트 조사(선택 메모 참고)로 확인한 CV
+  신뢰성과도 부합하는 결과다. 리더보드 제출은 완료했으나 체크포인트
+  추론 검증(`INFERENCE_VERIFIED`)은 아직 수행하지 않았다.
 
 #### 선택 메모
 
@@ -377,10 +386,13 @@ PAAD(-0.0370), BLCA(-0.0247), DLBC(-0.0156), COAD(-0.0139), OV(-0.0100)가
   attempt 5에는 포함하지 않았다.
 - KRAS/NRAS hotspot(G12/G13/Q61)은 두 유전자 모두 이 패널의 컬럼에 없어
   (EXP-012에서 이미 확인된 한계) 포함하지 못했다.
-- 다음 행동 후보: (a) attempt 5를 리더보드에 제출하기 전 `INFERENCE_VERIFIED`
-  체크포인트 검증(EXP-003/EXP-005 방식) 수행, (b) 위 조사로 CV 유효성 우려는
-  해소됐다고 보고 리더보드 제출을 더 미루지 않는다, (c) 외부 정준 서열과
-  검증된 hotspot 좌표표를 확보해 TP53 확장 세트와 나머지 protect 유전자로
-  검증 범위를 넓히는 것 검토(낮은 우선순위, 개선폭 체감 곡선이 이미 뚜렷함),
-  (d) attempt 2(LOF count)는 단독·결합(attempt 4) 모두 net negative로
-  재확인됐으므로 이 방향은 더 탐색하지 않는다.
+- **리더보드 제출 완료**: 2026-07-31 15:50:02 KST, 제출 ID `1506950`,
+  Public LB `0.3170803849`(EXP-005 대비 +0.0182960483, 확인 당시 전체
+  2위). 위 CV 유효성 조사 결과를 신뢰해 제출을 진행했고, Local과 LB
+  모두 일관되게 개선돼 판단이 맞았음을 확인했다.
+- 다음 행동 후보: (a) attempt 5의 `INFERENCE_VERIFIED` 체크포인트 검증
+  (EXP-003/EXP-005 방식)을 진행해 재현성 계약을 사후 충족, (b) 외부 정준
+  서열과 검증된 hotspot 좌표표를 확보해 TP53 확장 세트와 나머지 protect
+  유전자로 검증 범위를 넓히는 것 검토(낮은 우선순위, 개선폭 체감 곡선이
+  이미 뚜렷함), (c) attempt 2(LOF count)는 단독·결합(attempt 4) 모두
+  net negative로 재확인됐으므로 이 방향은 더 탐색하지 않는다.
