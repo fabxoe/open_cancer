@@ -7,12 +7,12 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 10
+- 실제 실험 수: 11
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4088132438271497 (`EXP-047`)
+- 최고 Local OOF Macro F1: 0.4095069739 (`EXP-052`)
 - 최고 Public LB Macro F1: 0.2987843366 (`EXP-005`)
-- 최고 재현 검증 모델: `EXP-047` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-052` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-07-31
 
 ## 실험 요약
@@ -29,6 +29,7 @@
 | EXP-043 | COMPLETED | 2heej | #43 | EXP-005 + 샘플 변이분포 확장 피처 28종 | 0.3989124897 | 미제출 | INFERENCE_VERIFIED | fold 변동성은 감소했지만 EXP-005·033 대비 OOF 하락 | [보고서](reports/exp043_xgb_sample_distribution/README.md) |
 | EXP-045 | COMPLETED | 2heej | #45 | EXP-043 후보 28종 nested 그룹·개별 선택 | 0.3999980235 | 미제출 | INFERENCE_VERIFIED | EXP-043 대비 소폭 개선, EXP-005·033보다 낮아 고정 후보 2종을 후속 검증 | [보고서](reports/exp045_xgb_nested_feature_selection/README.md) |
 | EXP-047 | COMPLETED | fabxoe | #47 | EXP-033 + 유전자별 최소 단백질 잔기 위치 | 0.4088132438 | 미제출 | INFERENCE_VERIFIED | Local OOF 개선·fold 변동성 감소, 위치 family 후속 검증 채택 | [보고서](reports/exp047_xgb_min_residue_position/README.md) |
+| EXP-052 | COMPLETED | Kangho-Park | #52 | EXP-047 + Feature Factory family 7(co-mutation, 문헌 근거 유전자 쌍 3개) | 0.4095069739 | 미제출 | INFERENCE_VERIFIED | OOF 소폭 개선·fold 표준편차 대폭 감소로 채택, pair 확장 검토 | [보고서](reports/exp052_hotspot_cooccurrence/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -50,6 +51,7 @@
 | 2026-07-31T04:12:34.945706+00:00 | EXP-033 | 2heej | `80a1684e0167f221e225460eaae9f0a649ab7e37` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100% | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp033_xgb_log_burden_ablation/comparison.json) |
 | 2026-07-31T07:05:20.802427+00:00 | EXP-045 | 2heej | `a854d8bd626c425363c58fa7658e236220b14c3d` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100% | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp045_xgb_nested_feature_selection/comparison.json) |
 | 2026-07-31T07:44:24.403725+00:00 | EXP-047 | fabxoe | `78c52694163c8b3f8e76557a93d271843b1627fa` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp047_xgb_min_residue_position/comparison.json) |
+| 2026-07-31T09:24:31.209567+00:00 | EXP-052 | Kangho-Park | `6865fd5accf4fbf7090dc39ecc4a27f9b611adf7` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp052_hotspot_cooccurrence/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -446,3 +448,49 @@ EXP-012(#12)의 protect/drop 결정을 입력으로, EXP-003과 동일한 공용
 - 결론: EXP-033보다 OOF Macro F1이 `+0.0030887804` 개선되고 fold 표준편차가
   `-0.0024671436` 감소해 유전자별 최소 잔기 위치를 후속 위치 family 후보로
   채택한다. 저장 checkpoint 재추론은 제출 SHA-256과 라벨 100% 일치를 확인했다.
+
+### [EXP-052] Feature Factory + Hotspot 연관 유전자 Co-mutation
+
+- 상태: COMPLETED
+- 실행자: Kangho Park
+- Issue/브랜치: #52 / issue-52-hotspot-cooccurrence
+- 소스 commit: `6865fd5accf4fbf7090dc39ecc4a27f9b611adf7`
+- 시작/종료: 2026-07-31 (단일 실행)
+
+#### 실행
+
+Feature Factory에 family 7(co-mutation)을 새로 구현해 EXP-047 피처에
+문헌 근거 유전자 쌍 3개(IDH1/IDH2 상호배타성, APC/CTNNB1 상호배타성,
+PIK3CA/PTEN 동시발생)의 co-mutation indicator 4개(쌍별 3개 + 총합 1개)를
+추가했다. 쌍 목록은 EXP-031(#31)의 hotspot 관련 유전자 중 문헌으로 확인된
+것만 고정 사용했으며, 이 데이터의 빈도로 마이닝하거나 fold별로 다시
+선정하지 않았다(외부 지식 고정, target/fold fitting 없음).
+
+- Config: `reproducibility/exp052_hotspot_cooccurrence/config.resolved.yaml`
+- Metrics: `reports/exp052_hotspot_cooccurrence/metrics.json`
+- Report: `reports/exp052_hotspot_cooccurrence/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4106308554, 0.4136261798, 0.4002611603,
+  0.4051305971, 0.4138423476
+- OOF Macro F1: 0.4095069739
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp052_hotspot_cooccurrence/metrics.json` /
+  `reports/exp052_hotspot_cooccurrence/README.md` /
+  `reproducibility/exp052_hotspot_cooccurrence/`
+- 결론: EXP-047 대비 OOF Macro F1이 `+0.0006937301`로 소폭 개선됐지만
+  fold 표준편차는 `0.0085063656 → 0.0052610612`(약 38% 감소)로 뚜렷하게
+  좋아졌다. 26개 클래스 중 17개 개선(PAAD +0.0405, LUAD +0.0309 등), 9개
+  하락(BLCA -0.0425 등)으로 순개선. IDH1/IDH2 co-mutation이 문헌과 달리
+  train 3건·test 2건 관측됐으나 극소수라 상호배타성 전제를 무효화하지
+  않는다. APC/CTNNB1은 원래 대장암 한정 상호배타성 지식인데 26개 암종
+  전체에 동일 적용해 완전 배타적이지 않았다(train 33건·test 44건) — 암종별
+  조건부 적용이 다음 개선 후보다. 저장 checkpoint 재추론으로 제출
+  SHA-256과 라벨 100% 일치를 확인해 `INFERENCE_VERIFIED`로 자동 승격됐다.
+  아직 리더보드에는 제출하지 않았다.
