@@ -7,12 +7,12 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 14
+- 실제 실험 수: 15
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4135846695 (`EXP-031`)
 - 최고 Public LB Macro F1: 0.3170803849 (`EXP-031`)
-- 최고 재현 검증 모델: `EXP-030` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-063` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-07-31
 
 ## 실험 요약
@@ -33,6 +33,7 @@
 | EXP-047 | COMPLETED | fabxoe | #47 | EXP-033 + 유전자별 최소 단백질 잔기 위치 | 0.4088132438 | 미제출 | INFERENCE_VERIFIED | Local OOF 개선·fold 변동성 감소, 위치 family 후속 검증 채택 | [보고서](reports/exp047_xgb_min_residue_position/README.md) |
 | EXP-050 | COMPLETED | 2heej | #50 | EXP-005 + EXP-045 반복 선택 파생변수 2종 고정 | 0.4014204930 | 미제출 | INFERENCE_VERIFIED | EXP-043·045보다 높지만 EXP-005보다 낮아 미채택 | [보고서](reports/exp050_xgb_fixed_two_distribution_features/README.md) |
 | EXP-052 | COMPLETED | Kangho-Park | #52 | EXP-047 + Feature Factory family 7(co-mutation, 문헌 근거 유전자 쌍 3개) | 0.4095069739 | 미제출 | INFERENCE_VERIFIED | OOF 소폭 개선·fold 표준편차 감소로 채택, pair 확장 검토 | [보고서](reports/exp052_hotspot_cooccurrence/README.md) |
+| EXP-063 | COMPLETED | fabxoe | #63 | EXP-047 + residue-position 관측 indicator | 0.4130329102 | 미제출 | INFERENCE_VERIFIED | OOF 개선으로 채택 후보, fold 변동성과 Log Loss는 소폭 악화 | [보고서](reports/exp063_xgb_residue_indicator/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -57,6 +58,7 @@
 | 2026-07-31T07:44:24.403725+00:00 | EXP-047 | fabxoe | `78c52694163c8b3f8e76557a93d271843b1627fa` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp047_xgb_min_residue_position/comparison.json) |
 | 2026-07-31T08:29:17.955451+00:00 | EXP-050 | 2heej | `b7444843245eb1e2a360084e0dfb42653cf6116a` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp050_xgb_fixed_two_distribution_features/comparison.json) |
 | 2026-07-31T09:24:31.209567+00:00 | EXP-052 | Kangho-Park | `6865fd5accf4fbf7090dc39ecc4a27f9b611adf7` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp052_hotspot_cooccurrence/comparison.json) |
+| 2026-07-31T10:50:47.543725+00:00 | EXP-063 | fabxoe | `7265bf6c6fc166cf7f30ef07f41ed2c641a3fb56` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp063_xgb_residue_indicator/comparison.json) |
 | 2026-07-31T07:58:45.020690+00:00 | EXP-030 | Gomin-art | `64b72df89ee5cf0b66409f494475aca753238184` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 5.83e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp030_sparse_variant_xgb/comparison.json) |
 
 ## 상세 실험 로그
@@ -607,6 +609,41 @@ PAAD(-0.0370), BLCA(-0.0247), DLBC(-0.0156), COAD(-0.0139), OV(-0.0100)가
 - 재현 메모: 저장 checkpoint 재추론에서 데이터 해시, 제출 SHA-256과 test
   라벨이 일치했고 확률 최대 절대 차이는 약 2.98e-08로 허용치 이내여서
   `INFERENCE_VERIFIED`를 통과했다.
+
+### [EXP-063] Residue-position 관측 indicator 단독 검증
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #63 / issue-63-exp-residue-indicator
+- 소스 commit: `7265bf6c6fc166cf7f30ef07f41ed2c641a3fb56`
+- 시작/종료: 2026-07-31T10:38:54.284936+00:00 /
+  2026-07-31T10:50:45.227346+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp063_xgb_residue_indicator/config.resolved.yaml`
+- Metrics: `reports/exp063_xgb_residue_indicator/metrics.json`
+- Report: `reports/exp063_xgb_residue_indicator/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4176226929, 0.4112943222, 0.3950600489,
+  0.4141584489, 0.4242627965
+- OOF Macro F1: 0.4130329102
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp063_xgb_residue_indicator/metrics.json` /
+  `reports/exp063_xgb_residue_indicator/README.md` /
+  `reproducibility/exp063_xgb_residue_indicator/`
+- 결론: EXP-047 대비 OOF Macro F1이 `+0.0042196664` 개선돼 위치 관측
+  indicator를 채택 후보로 유지한다. 다만 fold 표준편차는 `+0.0012194691`,
+  Log Loss는 `+0.0003141165` 증가했으므로 다른 위치 옵션과의 조합은 단독
+  ablation이 끝난 뒤 별도 실험으로 검증한다. 저장 checkpoint 재추론에서
+  제출 SHA-256과 라벨 100% 일치를 확인했다.
 
 ### [EXP-052] Feature Factory + Hotspot 연관 유전자 Co-mutation
 
