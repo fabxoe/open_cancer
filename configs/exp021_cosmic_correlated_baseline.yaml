@@ -1,0 +1,22 @@
+experiment:
+  slug: cosmic_correlated_baseline
+
+# 아래에 적지 않은 값은 src/open_cancer/xgb_baseline.py의 기본값을 사용합니다.
+# 실제 적용값 전체는 실행 후 config.resolved.yaml에 자동 저장됩니다.
+#
+# EXP-021(#21)의 두 번째 시도: protect 유전자(361개, 고정)에 더해, 각 fold의
+# train 구간에서만 재계산한 "protect-burden과의 상관관계" 상위 유전자를
+# 편입합니다. fold마다 추가 유전자가 다를 수 있으므로 leakage 없이
+# fold-safe하게 fold train에서만 상관관계를 계산합니다
+# (scripts/run_exp021_cosmic_correlated_baseline.py 참고).
+#
+# protect_gene_whitelist_path 파일은 COSMIC 라이선스 미확정으로 Git에 없습니다.
+# docs/EXP-012_handoff.md 4절 절차대로 로컬에서 재현한 뒤 실행하세요.
+features:
+  encoding: mutation_presence
+  include_mutation_burden: false
+  protect_gene_whitelist_path: reports/exp012_feature_analysis/protected_genes_final.csv
+  correlated_gene_top_k: 200
+
+model:
+  use_balanced_sample_weight: false

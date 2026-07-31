@@ -1,5 +1,19 @@
 #!/usr/bin/env python
-"""Run the official Issue-derived XGBoost mutation-presence baseline."""
+"""EXP-021 attempt 4: full mutation-presence features + two separate
+COSMIC-weighted burden columns (protect_burden, correlated_burden), XGBoost.
+
+Same idea as attempt 3, but instead of collapsing the protect and correlated
+contributions into one combined column, keeps them as two separate derived
+columns so the model can weigh the two signals independently:
+- protect_burden: sum of protect-gene indicators (weight 1.0 each)
+- correlated_burden: sum of each fold's top correlated genes' indicators,
+  weighted by that fold's |correlation| with protect burden
+
+Both are recomputed independently inside every fold using only that fold's
+training rows, so no validation-fold information leaks into either derived
+feature (see PROJECT_CONTEXT.md 5절: feature selection은 fold train에서만
+fit). No original feature is dropped.
+"""
 
 from __future__ import annotations
 
@@ -8,7 +22,6 @@ import json
 import os
 import platform
 import subprocess
-import sys
 import time
 from datetime import UTC, datetime
 from pathlib import Path
@@ -34,10 +47,12 @@ from open_cancer.validation import (
 )
 from open_cancer.xgb_baseline import (
     align_fold_ids,
+    correlated_gene_weights,
     encode_fixed_labels,
     load_resolved_baseline_config,
     mutation_presence_matrix,
-    select_gene_columns,
+    read_gene_whitelist,
+    weighted_gene_burden,
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -75,7 +90,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--config",
         type=Path,
-        default=Path("configs/exp003_xgb_baseline.yaml"),
+        default=Path("configs/exp021_cosmic_group_burden_baseline.yaml"),
         help="기본값을 덮어쓸 최소 YAML config",
     )
     return parser
@@ -89,6 +104,15 @@ def main() -> None:
     context = resolve_experiment_context("experiment", cwd=PROJECT_ROOT)
     if context.experiment_id is None or context.issue_number is None:
         raise RuntimeError("공식 실험 ID를 만들 수 없습니다.")
+
+    protect_path_value = config["features"].get("protect_gene_whitelist_path")
+    top_k = config["features"].get("correlated_gene_top_k")
+    if not protect_path_value or not top_k:
+        raise RuntimeError(
+            "이 실행기는 features.protect_gene_whitelist_path와 "
+            "features.correlated_gene_top_k가 반드시 필요합니다."
+        )
+    top_k = int(top_k)
 
     git_commit = _git_output("rev-parse", "HEAD")
     dirty_worktree = bool(_git_output("status", "--porcelain"))
@@ -109,8 +133,7 @@ def main() -> None:
     np.random.seed(seed)
 
     data_paths = {
-        key: (PROJECT_ROOT / value).resolve()
-        for key, value in config["data"].items()
+        key: (PROJECT_ROOT / value).resolve() for key, value in config["data"].items()
     }
     data_summary = validate_competition_data(
         data_paths["train_path"],
@@ -132,33 +155,16 @@ def main() -> None:
         keep_default_na=False,
     )
     gene_columns = list(train.columns[2:])
-    gene_whitelist_path_value = config["features"].get("gene_whitelist_path")
-    gene_selection_manifest: dict[str, Any] = {
-        "gene_whitelist_path": None,
-        "gene_whitelist_sha256": None,
-        "gene_count": len(gene_columns),
-        "gene_order_sha256": sha256_lines(gene_columns),
-    }
-    if gene_whitelist_path_value:
-        gene_whitelist_path = (PROJECT_ROOT / gene_whitelist_path_value).resolve()
-        gene_columns = select_gene_columns(gene_columns, gene_whitelist_path)
-        gene_selection_manifest = {
-            "gene_whitelist_path": _relative(gene_whitelist_path),
-            "gene_whitelist_sha256": sha256_file(gene_whitelist_path),
-            "gene_count": len(gene_columns),
-            "gene_order_sha256": sha256_lines(gene_columns),
-        }
     y = encode_fixed_labels(train["SUBCLASS"])
     n_splits = int(config["run"]["n_splits"])
     fold_ids = align_fold_ids(train["ID"], fold_table, n_splits)
 
-    x_train = mutation_presence_matrix(train, gene_columns)
-    x_test = mutation_presence_matrix(test, gene_columns)
-    if bool(config["features"]["include_mutation_burden"]):
-        train_burden = np.asarray(x_train.sum(axis=1), dtype=np.float32)
-        test_burden = np.asarray(x_test.sum(axis=1), dtype=np.float32)
-        x_train = sparse.hstack([x_train, train_burden], format="csr", dtype=np.float32)
-        x_test = sparse.hstack([x_test, test_burden], format="csr", dtype=np.float32)
+    protect_path = (PROJECT_ROOT / protect_path_value).resolve()
+    protect_genes = read_gene_whitelist(protect_path)
+    protect_genes_in_columns = protect_genes & set(gene_columns)
+
+    x_train_full = mutation_presence_matrix(train, gene_columns)
+    x_test_full = mutation_presence_matrix(test, gene_columns)
 
     artifact_slug = f"{context.artifact_prefix}_{config['experiment']['slug']}"
     model_dir = PROJECT_ROOT / "models" / artifact_slug
@@ -173,16 +179,10 @@ def main() -> None:
     model_params = dict(config["model"]["params"])
     model_params["n_jobs"] = int(config["run"]["n_jobs"])
     use_balanced_weight = bool(config["model"]["use_balanced_sample_weight"])
-    oof_probabilities = np.full(
-        (len(train), len(CLASS_LABELS)),
-        np.nan,
-        dtype=np.float32,
-    )
-    test_probabilities = np.zeros(
-        (len(test), len(CLASS_LABELS)),
-        dtype=np.float32,
-    )
+    oof_probabilities = np.full((len(train), len(CLASS_LABELS)), np.nan, dtype=np.float32)
+    test_probabilities = np.zeros((len(test), len(CLASS_LABELS)), dtype=np.float32)
     fold_metrics: list[dict[str, int | float | None]] = []
+    fold_burden_manifest: list[dict[str, Any]] = []
     checkpoint_paths: list[Path] = []
 
     for fold in range(n_splits):
@@ -190,6 +190,49 @@ def main() -> None:
         train_indices = np.flatnonzero(~valid_mask)
         valid_indices = np.flatnonzero(valid_mask)
         fold_seed = seed + fold
+
+        fold_train_matrix = x_train_full[train_indices]
+        weights = correlated_gene_weights(
+            fold_train_matrix, gene_columns, protect_genes_in_columns, top_k
+        )
+        fold_burden_manifest.append(
+            {
+                "fold": fold,
+                "protect_gene_count": len(protect_genes_in_columns),
+                "correlated_gene_count": len(weights),
+                "correlated_weight_hash": sha256_lines(
+                    f"{gene}:{weights[gene]:.10f}" for gene in sorted(weights)
+                ),
+            }
+        )
+
+        protect_weights = {gene: 1.0 for gene in protect_genes_in_columns}
+
+        def _group_burdens(matrix: sparse.csr_matrix) -> np.ndarray:
+            protect_burden = weighted_gene_burden(matrix, gene_columns, protect_weights)
+            correlated_burden = weighted_gene_burden(matrix, gene_columns, weights)
+            return np.stack([protect_burden, correlated_burden], axis=1)
+
+        train_burdens = _group_burdens(x_train_full[train_indices])
+        valid_burdens = _group_burdens(x_train_full[valid_indices])
+        test_burdens = _group_burdens(x_test_full)
+
+        x_fold_train = sparse.hstack(
+            [x_train_full[train_indices], train_burdens],
+            format="csr",
+            dtype=np.float32,
+        )
+        x_fold_valid = sparse.hstack(
+            [x_train_full[valid_indices], valid_burdens],
+            format="csr",
+            dtype=np.float32,
+        )
+        x_fold_test = sparse.hstack(
+            [x_test_full, test_burdens],
+            format="csr",
+            dtype=np.float32,
+        )
+
         sample_weight = (
             compute_sample_weight(class_weight="balanced", y=y[train_indices])
             if use_balanced_weight
@@ -198,17 +241,17 @@ def main() -> None:
 
         model = xgb.XGBClassifier(**model_params, random_state=fold_seed)
         model.fit(
-            x_train[train_indices],
+            x_fold_train,
             y[train_indices],
             sample_weight=sample_weight,
-            eval_set=[(x_train[valid_indices], y[valid_indices])],
+            eval_set=[(x_fold_valid, y[valid_indices])],
             verbose=False,
         )
         if not np.array_equal(model.classes_, np.arange(len(CLASS_LABELS))):
             raise RuntimeError(f"fold {fold}의 확률 클래스 순서가 고정 순서와 다릅니다.")
 
-        valid_probabilities = model.predict_proba(x_train[valid_indices]).astype(np.float32)
-        fold_test_probabilities = model.predict_proba(x_test).astype(np.float32)
+        valid_probabilities = model.predict_proba(x_fold_valid).astype(np.float32)
+        fold_test_probabilities = model.predict_proba(x_fold_test).astype(np.float32)
         oof_probabilities[valid_indices] = valid_probabilities
         test_probabilities += fold_test_probabilities / n_splits
         valid_predictions = valid_probabilities.argmax(axis=1)
@@ -218,16 +261,10 @@ def main() -> None:
         checkpoint_paths.append(checkpoint_path)
         fold_result = {
             "fold": fold,
-            "macro_f1": float(
-                f1_score(y[valid_indices], valid_predictions, average="macro")
-            ),
+            "macro_f1": float(f1_score(y[valid_indices], valid_predictions, average="macro")),
             "accuracy": float(accuracy_score(y[valid_indices], valid_predictions)),
             "log_loss": float(
-                log_loss(
-                    y[valid_indices],
-                    valid_probabilities,
-                    labels=np.arange(len(CLASS_LABELS)),
-                )
+                log_loss(y[valid_indices], valid_probabilities, labels=np.arange(len(CLASS_LABELS)))
             ),
             "best_iteration": int(model.best_iteration),
             "train_rows": int(len(train_indices)),
@@ -236,8 +273,9 @@ def main() -> None:
         }
         fold_metrics.append(fold_result)
         print(
-            f"fold={fold} macro_f1={fold_result['macro_f1']:.6f} "
-            f"best_iteration={fold_result['best_iteration']}",
+            f"fold={fold} features={x_fold_train.shape[1]} "
+            f"(4384 + protect_burden + correlated_burden, correlated={len(weights)}) "
+            f"macro_f1={fold_result['macro_f1']:.6f} best_iteration={fold_result['best_iteration']}",
             flush=True,
         )
 
@@ -252,8 +290,7 @@ def main() -> None:
     test_predictions = test_probabilities.argmax(axis=1)
     per_class_values = f1_score(y, oof_predictions, average=None)
     per_class_f1 = {
-        label: float(score)
-        for label, score in zip(CLASS_LABELS, per_class_values, strict=True)
+        label: float(score) for label, score in zip(CLASS_LABELS, per_class_values, strict=True)
     }
     oof_macro_f1 = float(f1_score(y, oof_predictions, average="macro"))
     fold_scores = [float(item["macro_f1"]) for item in fold_metrics]
@@ -276,22 +313,12 @@ def main() -> None:
             "fold": fold_ids,
         }
     ).to_csv(oof_prediction_path, index=False, lineterminator="\n")
-    test_probability_frame = pd.DataFrame(
-        test_probabilities,
-        columns=PROBABILITY_COLUMNS,
-    )
+    test_probability_frame = pd.DataFrame(test_probabilities, columns=PROBABILITY_COLUMNS)
     test_probability_frame.insert(0, "ID", test["ID"])
-    test_probability_frame.to_csv(
-        test_probability_csv_path,
-        index=False,
-        lineterminator="\n",
+    test_probability_frame.to_csv(test_probability_csv_path, index=False, lineterminator="\n")
+    pd.DataFrame({"class": CLASS_LABELS, "f1": per_class_values}).sort_values("f1").to_csv(
+        class_f1_path, index=False, lineterminator="\n"
     )
-    pd.DataFrame(
-        {
-            "class": CLASS_LABELS,
-            "f1": per_class_values,
-        }
-    ).sort_values("f1").to_csv(class_f1_path, index=False, lineterminator="\n")
     pd.DataFrame(
         {
             "ID": test["ID"],
@@ -327,9 +354,7 @@ def main() -> None:
             "fold_mean": float(np.mean(fold_scores)),
             "fold_std": float(np.std(fold_scores)),
             "accuracy": float(accuracy_score(y, oof_predictions)),
-            "log_loss": float(
-                log_loss(y, oof_probabilities, labels=np.arange(len(CLASS_LABELS)))
-            ),
+            "log_loss": float(log_loss(y, oof_probabilities, labels=np.arange(len(CLASS_LABELS)))),
             "per_class_f1": per_class_f1,
             "confusion_matrix": confusion_matrix(y, oof_predictions).tolist(),
         },
@@ -348,15 +373,13 @@ def main() -> None:
             "models": _relative(model_dir),
         },
         "notes": (
-            "순수 mutation-presence, mutation burden와 class weight 미사용. "
-            + (
-                f"유전자 화이트리스트 적용: {gene_selection_manifest['gene_count']}개 "
-                f"(원본 경로 라이선스 제한으로 미커밋, config.resolved.yaml의 "
-                f"feature_manifest.gene_selection 참고, "
-                f"gene_order_sha256={gene_selection_manifest['gene_order_sha256']})"
-                if gene_whitelist_path_value
-                else f"전체 {gene_selection_manifest['gene_count']}개 유전자 컬럼 사용"
-            )
+            "전체 4,384개 mutation-presence 피처(EXP-003과 동일) + COSMIC 가중 "
+            f"burden 파생 컬럼 2개: protect_burden(protect {len(protect_genes_in_columns)}개, "
+            f"가중치 1.0)과 correlated_burden(fold별 상관 상위 {top_k}개, "
+            "가중치=|correlation|)을 분리 유지 (attempt 3은 이 둘을 하나로 합침). "
+            "가중치는 fold train에서만 재계산(leakage 방지). 화이트리스트/가중치 "
+            "상세는 라이선스 미확정으로 Git 미포함, config.resolved.yaml의 "
+            "feature_manifest.group_burden 참고."
         ),
     }
 
@@ -385,12 +408,22 @@ def main() -> None:
             },
         },
         "feature_manifest": {
-            "matrix_shape_train": list(x_train.shape),
-            "matrix_shape_test": list(x_test.shape),
-            "train_nonzero": int(x_train.nnz),
-            "test_nonzero": int(x_test.nnz),
+            "matrix_shape_train_full": list(x_train_full.shape),
+            "matrix_shape_test_full": list(x_test_full.shape),
+            "final_feature_count": int(x_train_full.shape[1] + 2),
             "class_order": list(CLASS_LABELS),
-            "gene_selection": gene_selection_manifest,
+            "group_burden": {
+                "method": (
+                    "protect_burden = protect_genes(weight=1.0) summed per row; "
+                    "correlated_burden = per_fold_top_correlated(weight=|correlation|) "
+                    "summed per row; kept as 2 separate new columns"
+                ),
+                "protect_gene_whitelist_path": _relative(protect_path),
+                "protect_gene_whitelist_sha256": sha256_file(protect_path),
+                "protect_gene_count": len(protect_genes_in_columns),
+                "correlated_gene_top_k": top_k,
+                "per_fold": fold_burden_manifest,
+            },
         },
         "environment": {
             "os": platform.platform(),
@@ -413,7 +446,8 @@ def main() -> None:
         "command": {
             "train": (
                 f"PYTHONHASHSEED={seed} uv run python "
-                f"scripts/run_xgb_baseline.py --config {_relative(config_path)}"
+                f"scripts/run_exp021_cosmic_group_burden_baseline.py "
+                f"--config {_relative(config_path)}"
             )
         },
         "outputs": {
@@ -429,10 +463,7 @@ def main() -> None:
         encoding="utf-8",
     )
     _write_json(metrics_path, metrics)
-    validate_json_document(
-        metrics_path,
-        PROJECT_ROOT / "schemas" / "experiment_metrics.schema.json",
-    )
+    validate_json_document(metrics_path, PROJECT_ROOT / "schemas" / "experiment_metrics.schema.json")
 
     print(
         json.dumps(
