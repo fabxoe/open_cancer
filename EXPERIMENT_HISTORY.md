@@ -26,7 +26,7 @@
 | EXP-026 | COMPLETED | fabxoe | #26 | XGBoost mutation-presence + mutated-gene count | 0.3817476632 | 0.2575936484 | NOT_STARTED | EXP-003 대비 개선, EXP-005보다 낮음 | [보고서](reports/exp026_mutation_burden/README.md) |
 | EXP-029 | COMPLETED | 2heej | #29 | EXP-005 + 변이유형 구성비·log burden 피처 | 0.3988980085 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 OOF 하락·fold 변동성 증가로 현 구성 미채택 | [보고서](reports/exp029_xgb_log_burden_ratios/README.md) |
 | EXP-033 | COMPLETED | 2heej | #33 | EXP-005 + log burden 3종 단독 ablation | 0.4057244634 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 소폭 개선·추가 분리 검증 필요 | [보고서](reports/exp033_xgb_log_burden_ablation/README.md) |
-| EXP-031 | COMPLETED | Kangho-Park | #31 | EXP-005 변이유형 피처 + 알려진 cancer hotspot 위치 피처 (attempt 5, hotspot 19→34개 확장이 팀 최고) | 0.4135846695 | 0.3170803849 | NOT_STARTED | attempt 5 채택(팀 최고 Local·Public LB), INFERENCE_VERIFIED 검증 필요 | [보고서](reports/exp031_hotspot_extended/README.md) |
+| EXP-031 | COMPLETED | Kangho-Park | #31 | EXP-005 변이유형 피처 + 알려진 cancer hotspot 위치 피처 (attempt 5, hotspot 19→34개 확장이 팀 최고) | 0.4135846695 | 0.3170803849 | FAILED | attempt 5 채택; 원 실행 checkpoint 미보관으로 독립 재학습이 원 제출과 불일치 | [보고서](reports/exp031_hotspot_extended/README.md) |
 | EXP-043 | COMPLETED | 2heej | #43 | EXP-005 + 샘플 변이분포 확장 피처 28종 | 0.3989124897 | 미제출 | INFERENCE_VERIFIED | fold 변동성은 감소했지만 EXP-005·033 대비 OOF 하락 | [보고서](reports/exp043_xgb_sample_distribution/README.md) |
 | EXP-045 | COMPLETED | 2heej | #45 | EXP-043 후보 28종 nested 그룹·개별 선택 | 0.3999980235 | 미제출 | INFERENCE_VERIFIED | EXP-043 대비 소폭 개선, EXP-005·033보다 낮아 고정 후보 2종을 후속 검증 | [보고서](reports/exp045_xgb_nested_feature_selection/README.md) |
 | EXP-047 | COMPLETED | fabxoe | #47 | EXP-033 + 유전자별 최소 단백질 잔기 위치 | 0.4088132438 | 미제출 | INFERENCE_VERIFIED | Local OOF 개선·fold 변동성 감소, 위치 family 후속 검증 채택 | [보고서](reports/exp047_xgb_min_residue_position/README.md) |
@@ -39,7 +39,7 @@
 | 2026-07-30T18:26:30+09:00 | EXP-005 | #5 | `submissions/exp005_xgb_mutation_features.csv` | `7bc3e64e1904d9b4007bc141dde771a39e7527172f3cd24c25c408000103183c` | 0.2987843366 | 제출 시점 1위 → 2026-07-30 23:13 KST 기준 2위 | INFERENCE_VERIFIED |
 | 2026-07-30T23:28:27+09:00 | EXP-021 | #21 | `submissions/exp021_cosmic_weighted_burden_baseline.csv` (제출 ID `1506440`) | `cb75da2609631bc86310a637e2d4f2e244bfe85dac71da4f154559ebf19a07b0` | 0.2544194867 | 미확인(Dacon 제출 화면에 순위 미표시) | NOT_STARTED |
 | 2026-07-30T23:56:29+09:00 | EXP-026 | #26 | `submissions/exp026_mutation_burden.csv` (제출 ID `1506469`) | `53d835335d6d23945c80acef4b70d0112f14abdaf1b5d504a63fd1ea7b16ef00` | 0.2575936484 | 미선택·개별 순위 미확인 | NOT_STARTED |
-| 2026-07-31T15:50:02+09:00 | EXP-031 | #31 | `submissions/exp031_hotspot_extended.csv` (제출 ID `1506950`, attempt 5) | `54de49396b8910fd8134b5a854beed344e369a9a791c67c6c9caf0da38cec27d` | 0.3170803849 | 확인 당시 전체 2위(1위 6조 0.37149) | NOT_STARTED |
+| 2026-07-31T15:50:02+09:00 | EXP-031 | #31 | `submissions/exp031_hotspot_extended.csv` (제출 ID `1506950`, attempt 5) | `54de49396b8910fd8134b5a854beed344e369a9a791c67c6c9caf0da38cec27d` | 0.3170803849 | 확인 당시 전체 2위(1위 6조 0.37149) | FAILED |
 
 ## 재현성 검증 이력
 
@@ -420,8 +420,12 @@ R1450/R876, POLE P286R/V411L, KIT D816, FGFR3 S249C, RAC1 P29S). HLA-A(생식계
   +0.0182960483로 팀 최고 Public LB도 갱신했다. Local OOF 개선폭
   (+0.0092, EXP-005 대비)보다 LB 개선폭이 더 커서, hotspot 방향이 로컬
   검증뿐 아니라 실제 제출 성능에서도 유효함을 확인했다.
-- 재현 상태: NOT_STARTED (제출은 완료했으나 체크포인트 추론 검증은 아직
-  수행하지 않음, EXP-021/EXP-026과 동일한 순서)
+- 재현 상태: FAILED. 원 Windows 실행의 checkpoint와 test 확률이 보관되지 않아
+  2026-07-31 macOS에서 같은 코드·설정으로 독립 재학습했다. 재학습 OOF Macro
+  F1은 `0.4125795545`로 원 기록 `0.4135846695`와 달랐고, 재학습 test 라벨은
+  원 제출과 `93.3621%`만 일치해 2,546개 중 169개가 달랐다. 원 제출을
+  `INFERENCE_VERIFIED`로 승격하지 않으며 상세 증빙은
+  `reproducibility/exp031_hotspot_extended/comparison.json`에 기록한다.
 
 클래스별로는 attempt 2에서 ACC(+0.0205), LAML(+0.0182), SARC(+0.0168),
 KIPAN(+0.0124), SKCM(+0.0081) 등 일부(주로 중간 규모) 클래스가 EXP-005보다

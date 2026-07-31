@@ -35,6 +35,9 @@ OOF_PATH = ROOT / "oof" / f"{SLUG}.csv"
 TEST_PROBABILITY_PATH = ROOT / "preds" / f"{SLUG}_test_proba.csv"
 MODEL_DIR = ROOT / "models" / SLUG
 FEATURE_DIR = ROOT / "data" / "processed" / "hotspot_extended_features"
+OFFICIAL_SUBMISSION_SHA256 = (
+    "54de49396b8910fd8134b5a854beed344e369a9a791c67c6c9caf0da38cec27d"
+)
 
 
 def write_json(path: Path, value: dict[str, Any]) -> None:
@@ -166,7 +169,7 @@ def main() -> None:
         reproduced_sha = sha256_file(reproduced_path)
 
     original_sha = sha256_file(SUBMISSION_PATH)
-    expected_sha = metrics["artifacts"]["submission_sha256"]
+    expected_sha = OFFICIAL_SUBMISSION_SHA256
     submission_sha_match = (
         reproduced_sha == original_sha == expected_sha
     )
