@@ -7,12 +7,12 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 10
+- 실제 실험 수: 11
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4088132438271497 (`EXP-047`)
+- 최고 Local OOF Macro F1: 0.410540855428045 (`EXP-030`)
 - 최고 Public LB Macro F1: 0.2987843366 (`EXP-005`)
-- 최고 재현 검증 모델: `EXP-047` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-030` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-07-31
 
 ## 실험 요약
@@ -25,6 +25,7 @@
 | EXP-021 | COMPLETED | Kangho-Park | #21 | XGBoost, 전체 4,384 피처 + COSMIC 가중 burden 파생 컬럼 1개 (attempt 3, 4개 시도 중 최고) | 0.349410 | 0.2544194867 | NOT_STARTED | 채택(EXP-003 대비 개선, EXP-005엔 못 미침) | [상세](#exp-021-cosmic-보호-유전자-기반-피처-선택-및-파생변수-xgboost-baseline) |
 | EXP-026 | COMPLETED | fabxoe | #26 | XGBoost mutation-presence + mutated-gene count | 0.3817476632 | 0.2575936484 | NOT_STARTED | EXP-003 대비 개선, EXP-005보다 낮음 | [보고서](reports/exp026_mutation_burden/README.md) |
 | EXP-029 | COMPLETED | 2heej | #29 | EXP-005 + 변이유형 구성비·log burden 피처 | 0.3988980085 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 OOF 하락·fold 변동성 증가로 현 구성 미채택 | [보고서](reports/exp029_xgb_log_burden_ratios/README.md) |
+| EXP-030 | COMPLETED | Gomin-art | #30 | XGBoost + 유전자×변이유형 희소 피처·샘플별 변이 수 | 0.4105408554 | 미제출 | INFERENCE_VERIFIED | Local OOF 최고 갱신·Public LB 미확인 | [보고서](reports/exp030_sparse_variant_xgb/README.md) |
 | EXP-033 | COMPLETED | 2heej | #33 | EXP-005 + log burden 3종 단독 ablation | 0.4057244634 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 소폭 개선·추가 분리 검증 필요 | [보고서](reports/exp033_xgb_log_burden_ablation/README.md) |
 | EXP-043 | COMPLETED | 2heej | #43 | EXP-005 + 샘플 변이분포 확장 피처 28종 | 0.3989124897 | 미제출 | INFERENCE_VERIFIED | fold 변동성은 감소했지만 EXP-005·033 대비 OOF 하락 | [보고서](reports/exp043_xgb_sample_distribution/README.md) |
 | EXP-045 | COMPLETED | 2heej | #45 | EXP-043 후보 28종 nested 그룹·개별 선택 | 0.3999980235 | 미제출 | INFERENCE_VERIFIED | EXP-043 대비 소폭 개선, EXP-005·033보다 낮아 고정 후보 2종을 후속 검증 | [보고서](reports/exp045_xgb_nested_feature_selection/README.md) |
@@ -50,6 +51,7 @@
 | 2026-07-31T04:12:34.945706+00:00 | EXP-033 | 2heej | `80a1684e0167f221e225460eaae9f0a649ab7e37` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100% | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp033_xgb_log_burden_ablation/comparison.json) |
 | 2026-07-31T07:05:20.802427+00:00 | EXP-045 | 2heej | `a854d8bd626c425363c58fa7658e236220b14c3d` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100% | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp045_xgb_nested_feature_selection/comparison.json) |
 | 2026-07-31T07:44:24.403725+00:00 | EXP-047 | fabxoe | `78c52694163c8b3f8e76557a93d271843b1627fa` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp047_xgb_min_residue_position/comparison.json) |
+| 2026-07-31T07:58:45.020690+00:00 | EXP-030 | Gomin-art | `64b72df89ee5cf0b66409f494475aca753238184` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 5.83e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp030_sparse_variant_xgb/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -446,3 +448,42 @@ EXP-012(#12)의 protect/drop 결정을 입력으로, EXP-003과 동일한 공용
 - 결론: EXP-033보다 OOF Macro F1이 `+0.0030887804` 개선되고 fold 표준편차가
   `-0.0024671436` 감소해 유전자별 최소 잔기 위치를 후속 위치 family 후보로
   채택한다. 저장 checkpoint 재추론은 제출 SHA-256과 라벨 100% 일치를 확인했다.
+
+### [EXP-030] XGBoost + notation 기반 희소 변이 피처
+
+- 상태: COMPLETED
+- 실행자: Gomin-art
+- Issue/브랜치: #30 / issue-30-exp-sparse-variant-xgb
+- 소스 commit: `64b72df89ee5cf0b66409f494475aca753238184`
+- 시작/종료: 2026-07-31T07:36:46.248893+00:00 /
+  2026-07-31T07:58:41.374756+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp030_sparse_variant_xgb/config.resolved.yaml`
+- Metrics: `reports/exp030_sparse_variant_xgb/metrics.json`
+- Report: `reports/exp030_sparse_variant_xgb/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4075818591, 0.4144161831, 0.3960694066,
+  0.3962701409, 0.4315160934
+- OOF Macro F1: 0.4105408554
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp030_sparse_variant_xgb/metrics.json` /
+  `reports/exp030_sparse_variant_xgb/README.md` /
+  `reproducibility/exp030_sparse_variant_xgb/`
+- 제출 후보 파일: `submissions/exp030_sparse_variant_xgb.csv`
+  (SHA-256 `bd523ea4e872301e7d11f44ea375cf16d8c282de549f5f408d67ba3146670cba`,
+  Dacon 미제출)
+- 결론: 기존 최고 EXP-047보다 OOF Macro F1이 `+0.0017276116` 높아 Local
+  최고 기록을 갱신했다. 다만 fold 표준편차는 EXP-047보다 `+0.0046650006`
+  높고 Public LB는 확인하지 않았으므로 Local 후보로 유지한다.
+- 재현 메모: 저장 checkpoint 재추론에서 데이터 해시와 제출 SHA-256이
+  일치하고 test 라벨 일치율 100%, 확률 최대 절대 차이 약 5.83e-08로
+  허용치 1e-6 이내여서 `INFERENCE_VERIFIED`를 통과했다.

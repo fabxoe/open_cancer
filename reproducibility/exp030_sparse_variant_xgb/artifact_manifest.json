@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-030",
+  "issue_number": 30,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "64b72df89ee5cf0b66409f494475aca753238184",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp030_sparse_variant_xgb/data_manifest.json",
+  "environment": "reproducibility/exp030_sparse_variant_xgb/environment.json",
+  "release_url": null,
+  "verifier": "Gomin-art",
+  "verified_at": "2026-07-31T07:58:45.020690+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp030_sparse_variant_xgb/fold_00.json",
+      "size_bytes": 23901584,
+      "sha256": "6b0d693daa657c2b0ce644b4fddc6e9308cdccfd4766cbd95fc9fcacd8a09f3b",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp030_sparse_variant_xgb/fold_01.json",
+      "size_bytes": 23941203,
+      "sha256": "81137fd9aa0d06f854e5d7cd2a98a19313b5dcd7580898528865e1beb437c4cd",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp030_sparse_variant_xgb/fold_02.json",
+      "size_bytes": 24747941,
+      "sha256": "2ef05ec8ed9b1c19bc0c39a8a2ee94767bd56dcb428358b701298f27828c9fc5",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp030_sparse_variant_xgb/fold_03.json",
+      "size_bytes": 23875885,
+      "sha256": "c2b77fe8b1a0a18ad75fd8beef6d1e765e01ddc1ca75b91f6b7560fc900fcbc1",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp030_sparse_variant_xgb/fold_04.json",
+      "size_bytes": 27217612,
+      "sha256": "3fb3012986e3c7d753e8468feee8e2a333c6f53081bc90a662eb56193d18362c",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp030_sparse_variant_xgb.csv",
+      "size_bytes": 2127392,
+      "sha256": "f5d41896652bd5e72d2cdff08c11ddf385ea452a9546731ed55ab8f49a6bcf6c",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp030_sparse_variant_xgb_test_proba.csv",
+      "size_bytes": 835004,
+      "sha256": "249abf2292f6d962c4807ec1c44277c26a0d44f1fa8a8f46d6925bb284016350",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp030_sparse_variant_xgb.csv",
+      "size_bytes": 38117,
+      "sha256": "bd523ea4e872301e7d11f44ea375cf16d8c282de549f5f408d67ba3146670cba",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp030_sparse_variant_xgb/config.resolved.yaml",
+      "size_bytes": 3958,
+      "sha256": "7778495e87a81a6645f255ecb147b46c409b7a85d0a03257f887b214f543add0",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp030_sparse_variant_xgb/metrics.json",
+      "size_bytes": 11113,
+      "sha256": "a7c4791889a7e6dab2c3402845e7273b0eb83a61510c416e2ed6933dcd317034",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
