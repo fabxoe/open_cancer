@@ -9,8 +9,10 @@ from open_cancer.mutation_features import (
     GENE_FEATURES,
     GLOBAL_FEATURES,
     EXPANDED_DISTRIBUTION_FEATURES,
+    EXP050_FIXED_DISTRIBUTION_FEATURES,
     LOG_BURDEN_FEATURES,
     ROBUST_GLOBAL_FEATURES,
+    SAMPLE_DISTRIBUTION_FEATURES,
     build_mutation_features,
     classify_mutation_token,
     feature_names,
@@ -188,3 +190,11 @@ def test_exp045_candidate_groups_cover_all_exp043_features_once() -> None:
     assert len(candidates) == len(EXPANDED_DISTRIBUTION_FEATURES) == 28
     assert len(set(candidates)) == len(candidates)
     assert set(candidates) == set(EXPANDED_DISTRIBUTION_FEATURES)
+
+
+def test_exp050_fixed_features_are_supported_and_pre_registered() -> None:
+    assert len(EXP050_FIXED_DISTRIBUTION_FEATURES) == 2
+    assert len(set(EXP050_FIXED_DISTRIBUTION_FEATURES)) == 2
+    assert set(EXP050_FIXED_DISTRIBUTION_FEATURES).issubset(
+        SAMPLE_DISTRIBUTION_FEATURES
+    )
