@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 20
+- 실제 실험 수: 21
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4157910775 (`EXP-075`)
@@ -39,6 +39,7 @@
 | EXP-067 | COMPLETED | fabxoe | #67 | EXP-047 + residue 위치 폭 100 coarse-bin | 0.4124014867 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 감소로 채택 후보 | [보고서](reports/exp067_xgb_residue_coarse_bin/README.md) |
 | EXP-069 | COMPLETED | fabxoe | #69 | EXP-047의 min residue 위치를 max로 교체 | 0.4131007993 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 감소로 채택 후보 | [보고서](reports/exp069_xgb_max_residue_position/README.md) |
 | EXP-075 | COMPLETED | fabxoe | #75 | EXP-067·069 확률의 사전 고정 0.5/0.5 평균 | 0.4157910775 | 미제출 | INFERENCE_VERIFIED | 두 부모 대비 OOF·Log Loss 개선과 fold 변동성 감소로 채택 | [보고서](reports/exp075_residue_probability_blend/README.md) |
+| EXP-078 | COMPLETED | fabxoe | #78 | EXP-069 max residue-position + 관측 indicator | 0.4110815504 | 미제출 | INFERENCE_VERIFIED | OOF 하락·fold 변동성 악화로 기각, EXP-069 max+zero 동결 | [보고서](reports/exp078_xgb_max_residue_indicator/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -69,6 +70,7 @@
 | 2026-07-31T11:19:02.749201+00:00 | EXP-067 | fabxoe | `5846db2f18f610836a38b23cc8c377f9809fe47c` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp067_xgb_residue_coarse_bin/comparison.json) |
 | 2026-07-31T11:33:26.265681+00:00 | EXP-069 | fabxoe | `8b603bcf8b03658e54d158b5976df51c90cea5f8` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp069_xgb_max_residue_position/comparison.json) |
 | 2026-07-31T12:59:12.117866+00:00 | EXP-075 | fabxoe | `01fb86e27b0ebfd177d4a6e60ac6535a02fcfb3c` / [`exp-075-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-075-repro-v1) | 부모 artifact SHA-256 일치 | byte-level SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp075_residue_probability_blend/comparison.json) |
+| 2026-07-31T14:04:09.991821+00:00 | EXP-078 | fabxoe | `e2a822e576095a25bdf01a46c1bb5e404684f316` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp078_xgb_max_residue_indicator/comparison.json) |
 | 2026-07-31T07:58:45.020690+00:00 | EXP-030 | Gomin-art | `64b72df89ee5cf0b66409f494475aca753238184` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 5.83e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp030_sparse_variant_xgb/comparison.json) |
 | 2026-07-31T10:18:14.298161+00:00 | EXP-058 | Kangho-Park | `45b353ce4073e4a9bad0c0866f4cb84ac5a53fe7` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp058_cooccurrence_pair_ablation/comparison.json) |
 
@@ -1071,3 +1073,49 @@ config 변경만으로 재실행했다(Feature Factory 코드 변경 없음).
   계산 코드·원시 산출물이 보관되지 않았으므로 독립 검증으로 간주하지 않는다.
   저장 checkpoint 재추론으로 제출 SHA-256과 라벨 100% 일치를 확인해
   `INFERENCE_VERIFIED`로 자동 승격됐다. 아직 리더보드에는 제출하지 않았다.
+
+### [EXP-078] Maximum residue-position + observed indicator
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #78 / issue-78-exp-max-indicator
+- 소스 commit: `e2a822e576095a25bdf01a46c1bb5e404684f316`
+- 시작/종료: 2026-07-31T13:50:42.711822+00:00 /
+  2026-07-31T14:04:07.457479+00:00
+
+#### 실행
+
+- 부모: EXP-069 (`max + zero`)
+- 유일한 변경: `missing_policy: indicator`
+- 유지: `aggregates: [max]`, complex 포함, raw transform, canonical 5-fold,
+  XGBoost 설정과 seed
+- Config: `reproducibility/exp078_xgb_max_residue_indicator/config.resolved.yaml`
+- Metrics: `reports/exp078_xgb_max_residue_indicator/metrics.json`
+- Report: `reports/exp078_xgb_max_residue_indicator/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4159950137, 0.4149887889, 0.3869454103,
+  0.4115730954, 0.4244276491
+- OOF Macro F1: 0.4110815504
+- Fold 표준편차: 0.0126482021
+- Accuracy: 0.4026769876
+- Log Loss: 1.8513578176
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp078_xgb_max_residue_indicator/metrics.json` /
+  `reports/exp078_xgb_max_residue_indicator/README.md` /
+  `reproducibility/exp078_xgb_max_residue_indicator/`
+- 제출 후보: `submissions/exp078_xgb_max_residue_indicator.csv`
+  (SHA-256 `deb510b6e23008f536a000f63750039b00ca6ca13cd06bc1a62c751a2b9da91c`,
+  DACON 미제출)
+- 결론: EXP-069 대비 OOF Macro F1이 `-0.0020192489` 하락했고 fold
+  표준편차가 `+0.0044423453` 악화돼 로드맵 채택 조건 두 개를 모두
+  통과하지 못했다. `max+indicator`를 기각하고 EXP-069의 `max+zero`를
+  Position Feature Spec v1으로 동결한다. 위치 옵션 추가 탐색은 종료한다.
+- 재현 메모: 저장 checkpoint 재추론에서 제출 SHA-256과 test 라벨 100%,
+  확률 최대 절대 차이 약 2.97e-08을 확인해 `INFERENCE_VERIFIED`를 통과했다.
