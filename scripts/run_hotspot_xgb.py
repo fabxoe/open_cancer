@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Run EXP-031 attempt 5: attempt 3's hotspot set extended with 15 more positions.
+"""Run a config-driven XGBoost experiment with fixed literature hotspots.
 
 The 15 additions come from scripts/explore_hotspot_candidate_mining.py, which
 scans the full EXP-012 COSMIC protect-gene whitelist (361 genes) for
@@ -18,6 +18,7 @@ non-driver-gene candidates (HLA-A polymorphism, PABPC1, SIRPA, ATP1A1, the
 from __future__ import annotations
 
 import json
+import argparse
 import os
 import platform
 import subprocess
@@ -48,9 +49,8 @@ from open_cancer.experiment import resolve_experiment_context
 from open_cancer.hashing import sha256_file
 from open_cancer.paths import relative_posix
 from open_cancer.hotspot_features import (
-    ADDITIONAL_HOTSPOTS,
-    EXTENDED_HOTSPOTS,
     build_hotspot_augmented_features,
+    resolve_hotspot_config,
     validate_hotspot_train_evidence,
 )
 from open_cancer.validation import validate_json_document, validate_submission
@@ -58,11 +58,15 @@ from run_exp005_xgb_mutation_features import verify_saved_inference
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CONFIG_PATH = ROOT / "configs" / "exp031_hotspot_extended.yaml"
 TRAIN_PATH = ROOT / "data" / "raw" / "train.csv"
 TEST_PATH = ROOT / "data" / "raw" / "test.csv"
 SAMPLE_SUBMISSION_PATH = ROOT / "data" / "raw" / "sample_submission.csv"
-FEATURE_DIR = ROOT / "data" / "processed" / "hotspot_extended_features"
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--config", type=Path, required=True)
+    return parser.parse_args()
 
 
 def run_git(*args: str) -> str:
@@ -81,14 +85,14 @@ def write_json(path: Path, value: dict[str, Any]) -> None:
 
 
 def main() -> None:
+    args = parse_args()
     started_at = datetime.now(timezone.utc)
     start_time = time.perf_counter()
-    config = yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8"))
+    config_path = args.config.resolve()
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
-    if context.experiment_id != "EXP-031" or context.issue_number != 31:
-        raise ValueError("이 script는 Issue #31 브랜치의 EXP-031 전용입니다.")
 
-    artifact_slug = "exp031_hotspot_extended"
+    artifact_slug = f"exp{context.issue_number:03d}_{config['slug']}"
     split_path = ROOT / config["split"]["path"]
     report_dir = ROOT / "reports" / artifact_slug
     model_dir = ROOT / "models" / artifact_slug
@@ -96,6 +100,7 @@ def main() -> None:
     test_probability_path = ROOT / "preds" / f"{artifact_slug}_test_proba.csv"
     submission_path = ROOT / "submissions" / f"{artifact_slug}.csv"
     reproducibility_dir = ROOT / "reproducibility" / artifact_slug
+    feature_dir = ROOT / "data" / "processed" / f"{artifact_slug}_features"
     resolved_config_path = reproducibility_dir / "config.resolved.yaml"
     metrics_path = report_dir / "metrics.json"
     for directory in (
@@ -116,14 +121,10 @@ def main() -> None:
             "코드와 config를 먼저 commit한 뒤 다시 실행하세요."
         )
     owner = run_git("config", "user.name") or os.environ.get("USER", "unknown")
-    additional_hotspot_train_evidence = validate_hotspot_train_evidence(
-        TRAIN_PATH,
-        gene_start_column=2,
-        hotspots=ADDITIONAL_HOTSPOTS,
-        minimum_matching_rows=5,
-    )
+    hotspot_config = config.get("hotspots", {})
+    hotspots, evidence_hotspots, minimum_matching_rows = resolve_hotspot_config(hotspot_config)
     feature_report = build_hotspot_augmented_features(
-        TRAIN_PATH, TEST_PATH, FEATURE_DIR, hotspots=EXTENDED_HOTSPOTS
+        TRAIN_PATH, TEST_PATH, feature_dir, hotspots=hotspots
     )
     base_dir = Path(feature_report["base_dir"])
 
@@ -134,9 +135,22 @@ def main() -> None:
     train = train_meta.merge(folds, on="ID", how="left", validate="one_to_one", sort=False)
     if not train["ID"].equals(train_meta["ID"]):
         raise ValueError("fold 병합 과정에서 train 순서가 변경됐습니다.")
+    if train["fold"].isna().any():
+        raise ValueError("공용 split에 없는 train ID가 있습니다.")
 
-    x_all = sparse.load_npz(FEATURE_DIR / "train_features.npz")
-    x_test = sparse.load_npz(FEATURE_DIR / "test_features.npz")
+    fold_hotspot_train_evidence: dict[str, list[dict[str, object]]] = {}
+    for fold in range(config["split"]["n_splits"]):
+        fold_train_indices = set(np.flatnonzero(~train["fold"].eq(fold).to_numpy()).tolist())
+        fold_hotspot_train_evidence[str(fold)] = validate_hotspot_train_evidence(
+            TRAIN_PATH,
+            gene_start_column=2,
+            hotspots=evidence_hotspots,
+            minimum_matching_rows=minimum_matching_rows,
+            include_row_indices=fold_train_indices,
+        )
+
+    x_all = sparse.load_npz(feature_dir / "train_features.npz")
+    x_test = sparse.load_npz(feature_dir / "test_features.npz")
     feature_train_ids = pd.read_csv(base_dir / "train_ids.csv", dtype=str)["ID"]
     feature_test_ids = pd.read_csv(base_dir / "test_ids.csv", dtype=str)["ID"]
     if not feature_train_ids.equals(train["ID"]) or not feature_test_ids.equals(test_meta["ID"]):
@@ -180,8 +194,12 @@ def main() -> None:
         },
         "features": {
             **feature_report["feature_contract"],
-            "additional_hotspot_train_evidence": additional_hotspot_train_evidence,
-            "minimum_matching_train_rows": 5,
+            "hotspot_table": hotspot_config.get("table", "extended_34"),
+            "hotspot_evidence_scope": hotspot_config.get(
+                "evidence_scope", "additions_15"
+            ),
+            "fold_train_hotspot_evidence": fold_hotspot_train_evidence,
+            "minimum_matching_train_rows": minimum_matching_rows,
             "selection_uses_test_data": False,
         },
         "feature_outputs": {
@@ -198,7 +216,10 @@ def main() -> None:
         "training": {
             **config["training"],
             "fold_seeds": [config["seed"] + fold for fold in range(config["split"]["n_splits"])],
-            "command": "uv run python scripts/run_exp031_hotspot_extended.py",
+            "command": (
+                "uv run python scripts/run_hotspot_xgb.py --config "
+                f"{relative_posix(config_path, ROOT)}"
+            ),
         },
         "environment": {
             "python": sys.version,
@@ -302,7 +323,7 @@ def main() -> None:
         "status": "COMPLETED",
         "owner": owner,
         "issue_number": context.issue_number,
-        "parent_experiment": "EXP-005",
+        "parent_experiment": config.get("parent_experiment", "EXP-005"),
         "git_commit": source_commit,
         "started_at": started_at.isoformat(),
         "finished_at": finished_at.isoformat(),
@@ -337,12 +358,10 @@ def main() -> None:
             "models": relative_posix(model_dir, ROOT),
             "submission_sha256": submission_validation["sha256"],
         },
-        "notes": (
-            "EXP-005 gene x mutation-type sparse features (30,697) + attempt 3's "
-            "19 known hotspot positions + 15 additional high-confidence hotspots "
-            "mined from the COSMIC protect-gene whitelist and manually vetted "
-            "against literature (PIK3CA/PTEN/FBXW7/AKT1/U2AF1/APC/POLE/KIT/"
-            "FGFR3/RAC1) + 1 total hotspot count = 30,732 features."
+        "notes": config.get(
+            "notes",
+            "EXP-005 mutation-type features plus fixed 34 literature hotspots "
+            "with reference-amino-acid matching and train-only evidence checks.",
         ),
     }
     write_json(metrics_path, metrics)

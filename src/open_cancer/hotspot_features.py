@@ -82,6 +82,36 @@ ADDITIONAL_HOTSPOTS: HotspotTable = (
 
 EXTENDED_HOTSPOTS: HotspotTable = KNOWN_HOTSPOTS + ADDITIONAL_HOTSPOTS
 
+HOTSPOT_TABLES: dict[str, HotspotTable] = {
+    "extended_34": EXTENDED_HOTSPOTS,
+}
+HOTSPOT_EVIDENCE_TABLES: dict[str, HotspotTable] = {
+    # The original 19 are literature-fixed. The later 15 were mined from the
+    # project train panel before manual literature review, so only those 15
+    # receive the configurable train-only minimum-count guard.
+    "additions_15": ADDITIONAL_HOTSPOTS,
+}
+
+
+def resolve_hotspot_config(
+    config: dict[str, object],
+) -> tuple[HotspotTable, HotspotTable, int]:
+    """Resolve a fixed hotspot table and its train-only evidence contract."""
+
+    table_name = str(config.get("table", "extended_34"))
+    evidence_scope = str(config.get("evidence_scope", "additions_15"))
+    try:
+        hotspots = HOTSPOT_TABLES[table_name]
+        evidence_hotspots = HOTSPOT_EVIDENCE_TABLES[evidence_scope]
+    except KeyError as error:
+        raise ValueError(f"지원하지 않는 hotspot config 값입니다: {error.args[0]}") from error
+    minimum_matching_rows = int(config.get("minimum_matching_train_rows", 5))
+    if minimum_matching_rows < 1:
+        raise ValueError("minimum_matching_train_rows는 1 이상이어야 합니다.")
+    if not set(evidence_hotspots).issubset(hotspots):
+        raise ValueError("evidence_scope의 hotspot이 선택한 table에 포함되지 않습니다.")
+    return hotspots, evidence_hotspots, minimum_matching_rows
+
 
 def hotspot_feature_names(hotspots: HotspotTable) -> tuple[str, ...]:
     return (
@@ -158,6 +188,7 @@ def summarize_hotspot_train_evidence(
     train_path: Path,
     gene_start_column: int,
     hotspots: HotspotTable,
+    include_row_indices: set[int] | None = None,
 ) -> list[dict[str, object]]:
     """Count reference-aware hotspot evidence using train rows only."""
 
@@ -173,7 +204,9 @@ def summarize_hotspot_train_evidence(
         relevant_columns = [
             (offset, gene) for offset, gene in enumerate(genes) if gene in hotspot_genes
         ]
-        for row in reader:
+        for row_index, row in enumerate(reader):
+            if include_row_indices is not None and row_index not in include_row_indices:
+                continue
             for offset, gene in relevant_columns:
                 for token in row[gene_start_column + offset].split():
                     match = SUBSTITUTION.fullmatch(token)
@@ -205,11 +238,15 @@ def validate_hotspot_train_evidence(
     gene_start_column: int,
     hotspots: HotspotTable,
     minimum_matching_rows: int,
+    include_row_indices: set[int] | None = None,
 ) -> list[dict[str, object]]:
     """Require fixed hotspots to have consistent, sufficient train-only evidence."""
 
     evidence = summarize_hotspot_train_evidence(
-        train_path, gene_start_column=gene_start_column, hotspots=hotspots
+        train_path,
+        gene_start_column=gene_start_column,
+        hotspots=hotspots,
+        include_row_indices=include_row_indices,
     )
     failures = [
         item
@@ -275,8 +312,8 @@ def build_hotspot_augmented_features(
             ],
             "hotspot_validation_note": (
                 "The hotspot table is fixed before test transformation. The original "
-                "19 and additional 15 positions are literature-defined; the official "
-                "EXP-031 runner validates the additions using train rows only. Test "
+                "19 and additional 15 positions are literature-defined; the config-driven "
+                "runner validates the additions using train rows only. Test "
                 "data is not used to select or filter the official list. A token "
                 "counts only when both position and reference AA match."
             ),

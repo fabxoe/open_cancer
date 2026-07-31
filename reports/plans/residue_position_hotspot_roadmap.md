@@ -26,7 +26,7 @@
 |---|---|---:|---|---:|---|---:|---|---|---|
 | A | EXP-067+069 고정 blend | [#75](https://github.com/fabxoe/open_cancer/issues/75) | EXP-075 | [#77](https://github.com/fabxoe/open_cancer/pull/77) | COMPLETED | 0.4157910775 | INFERENCE_VERIFIED | 두 부모 대비 개선으로 채택 | 단계 B 진행 |
 | B | max+indicator | [#78](https://github.com/fabxoe/open_cancer/issues/78) | EXP-078 | [#79](https://github.com/fabxoe/open_cancer/pull/79) | REJECTED | 0.4110815504 | INFERENCE_VERIFIED | 채택 기준 실패·indicator 완전 중복으로 기각, EXP-069 max+zero 동결 | Issue #80 의미 감사 |
-| C | hotspot runner 정리 | 미발급 | 해당 없음 | - | PLANNED | N/A | 해당 없음 | - | B 완료 대기 |
+| C | hotspot runner 정리 | [#83](https://github.com/fabxoe/open_cancer/issues/83) | 해당 없음 | - | IN_PROGRESS | N/A | 해당 없음 | EXP-031 전용 실행기를 config 기반 공용 runner로 일반화 | 구현·테스트 후 PR 생성 |
 | D | hotspot clean 실험 | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | C 완료 대기 |
 | E | 위치 negative control | 미발급 | explore | - | PLANNED | N/A | 해당 없음 | - | D 완료 대기 |
 | F | Feature Spec v1 조합 | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | 선행 결과 판단 |
@@ -137,6 +137,23 @@ indicator 실험은 결측 해소가 아닌 중복 피처 weighting으로 재해
 - 추가 hotspot의 최소 관측 조건을 각 fold의 train 부분에서만 확인
 - validation/test에서 목록이나 threshold를 선택하지 않음
 - checkpoint, OOF, test 확률, metrics와 manifest 자동 생성
+
+공식 실험 config에는 아래 계약을 명시하고, runner는 현재 Issue 브랜치에서
+`EXP-NNN`과 모든 산출물 경로를 자동 파생합니다.
+
+```yaml
+hotspots:
+  table: extended_34
+  evidence_scope: additions_15
+  minimum_matching_train_rows: 5
+```
+
+```bash
+uv run python scripts/run_hotspot_xgb.py --config configs/expNNN_<slug>.yaml
+```
+
+최소 관측 수는 전체 train이 아니라 각 fold의 fold-train에서 검사합니다. 고정
+목록에 없거나 최소 근거를 통과하지 못한 설정은 학습 전에 실패합니다.
 
 ## 단계 D — Hotspot clean 실험
 

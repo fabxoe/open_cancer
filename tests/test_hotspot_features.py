@@ -12,9 +12,28 @@ from open_cancer.hotspot_features import (
     KNOWN_HOTSPOTS,
     build_hotspot_augmented_features,
     build_hotspot_matrix,
+    resolve_hotspot_config,
     summarize_hotspot_train_evidence,
     validate_hotspot_train_evidence,
 )
+
+
+def test_resolve_hotspot_config_uses_fixed_34_and_train_only_additions() -> None:
+    hotspots, evidence_hotspots, minimum = resolve_hotspot_config({})
+
+    assert hotspots == EXTENDED_HOTSPOTS
+    assert evidence_hotspots == EXTENDED_HOTSPOTS[len(KNOWN_HOTSPOTS) :]
+    assert minimum == 5
+
+
+def test_resolve_hotspot_config_rejects_unknown_table_or_invalid_minimum() -> None:
+    for config in ({"table": "invented"}, {"minimum_matching_train_rows": 0}):
+        try:
+            resolve_hotspot_config(config)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("지원하지 않는 hotspot config는 실패해야 합니다.")
 
 
 def test_build_hotspot_matrix_counts_and_filters_mismatched_reference(tmp_path: Path) -> None:
@@ -121,6 +140,10 @@ def test_hotspot_evidence_is_counted_from_train_only(tmp_path: Path) -> None:
         }
     ]
     assert validate_hotspot_train_evidence(train, 2, hotspots, 3) == evidence
+    fold_train_evidence = summarize_hotspot_train_evidence(
+        train, 2, hotspots, include_row_indices={0, 2}
+    )
+    assert fold_train_evidence[0]["matching_train_rows"] == 2
 
 
 def test_hotspot_evidence_rejects_low_count_or_reference_noise(tmp_path: Path) -> None:
