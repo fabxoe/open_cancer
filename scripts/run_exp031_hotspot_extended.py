@@ -153,6 +153,7 @@ def main() -> None:
     }
     resolved_config = {
         "experiment": {
+            "record_role": config["record_role"],
             "issue_number": context.issue_number,
             "experiment_id": context.experiment_id,
             "branch": context.branch,
@@ -297,6 +298,7 @@ def main() -> None:
 
     metrics = {
         "experiment_id": context.experiment_id,
+        "record_role": config["record_role"],
         "status": "COMPLETED",
         "owner": owner,
         "issue_number": context.issue_number,

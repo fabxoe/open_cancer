@@ -350,6 +350,11 @@ Issue 번호는 저장소 전체에서 공유되므로 실험 번호가 연속�
 - 같은 실험을 함께 구현하거나 재현하면 같은 Issue와 `EXP-012`를 공유한다.
 - 같은 Issue 안에서는 합의한 하나의 config를 공식 결과로 남긴다. 다른 모델이나
   비교 변형을 공식 결과로 남기려면 새 Experiment Issue를 만든다.
+- 과거처럼 한 Issue 안에서 여러 구성을 이미 실행한 경우 결과를 삭제하거나
+  EXP-ID를 소급 변경하지 않는다. 채택 config에는 `record_role: official`,
+  미채택 비교에는 `record_role: exploratory_ablation`을 config, resolved
+  config와 metrics에 동일하게 기록한다. 한 EXP-ID에는 `official`이 정확히
+  하나만 존재해야 한다.
 - 단순 탐색과 임시 Notebook 실행은 `RUN_MODE="explore"`로 수행하며 EXP-ID나
   History 기록을 만들지 않는다.
 - EXP-ID는 사람이 입력하는 값이 아니다. 브랜치와 Issue 번호에서 코드가 자동
@@ -447,6 +452,12 @@ resolved config에는 실행에 실제 적용된 항목만 기록한다.
 
 리더보드 제출 전 최소 `INFERENCE_VERIFIED`가 필요하다. 현재 최고 모델과 최종 수상
 후보는 `TRAINING_VERIFIED`가 아니면 최종 모델로 지정할 수 없다.
+
+History의 “최고 Local/Public 점수”는 과거 관측 최고 기록이고 재현 실패 모델도
+사실대로 표시될 수 있다. “최종 제출 후보”와는 다른 개념이다. 최종 후보는 별도로
+지정하며 반드시 `TRAINING_VERIFIED`여야 한다. 현재 최고 점수가 `FAILED`라면 새
+Experiment Issue에서 clean 실행과 검증을 다시 수행하고, 과거 점수를 최종 후보로
+승격하지 않는다.
 
 checkpoint와 제출 파일을 생성하는 공식 실험 runner는 실행 전에 clean worktree를
 확인하고, 학습 직후 저장 checkpoint를 다시 불러와 test 추론을 재생성한다. 원본

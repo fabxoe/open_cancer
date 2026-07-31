@@ -20,6 +20,9 @@
       "type": "string",
       "pattern": "^EXP-[0-9]{3,}$"
     },
+    "record_role": {
+      "enum": ["official", "exploratory_ablation"]
+    },
     "status": {
       "enum": ["PLANNED", "RUNNING", "COMPLETED", "FAILED", "ABORTED"]
     },

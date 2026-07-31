@@ -1,4 +1,5 @@
 experiment:
+  record_role: exploratory_ablation
   issue_number: 31
   experiment_id: EXP-031
   branch: issue-31-cosmic-mutation-type-cross
