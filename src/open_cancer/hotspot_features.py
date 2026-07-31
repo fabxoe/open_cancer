@@ -4,17 +4,13 @@ Unlike gene-level presence/type features, these encode whether a mutation
 lands on a specific, well-established codon (e.g. BRAF V600, PIK3CA H1047)
 rather than anywhere in the gene -- information no per-gene column can
 express. Both hotspot tables below are restricted to (gene, position) pairs
-verified against this dataset's own internal numbering consistency (see
-scripts/explore_hotspot_numbering_consistency.py and
-scripts/explore_hotspot_candidate_mining.py): every occurrence in train+test
-agrees on a single reference amino acid, that amino acid matches the
-published canonical hotspot residue, and (for EXTENDED_HOTSPOTS) the
-evidence is not an artifact of a repeated same-gene position-set (see
-reports/exp012_feature_analysis/hotspot_artifact_clusters.csv -- e.g. BRAF
-512/548/563/566/578/603/640 always co-occur with 600 in the exact same 39
-rows, which is not plausible tumor biology and was excluded). A token only
-counts toward a hotspot if both the position AND the reference amino acid
-match, which filters out rare internal annotation noise.
+checked against the reference amino acid encoded in train.csv. The original
+19 positions are literature-defined. The 15 additions are also
+literature-defined and the official runner independently requires at least
+five matching train observations for each position. Test data is transformed
+with the fixed table but is not used to select or filter the official list.
+A token only counts toward a hotspot if both the position AND the reference
+amino acid match, which filters out rare internal annotation noise.
 
 KRAS and NRAS hotspots (G12/G13/Q61) are intentionally omitted throughout:
 those genes are not columns in this panel at all (see EXP-012).
@@ -158,6 +154,77 @@ def build_hotspot_matrix(
     return sparse.hstack([individual, total_column], format="csr")
 
 
+def summarize_hotspot_train_evidence(
+    train_path: Path,
+    gene_start_column: int,
+    hotspots: HotspotTable,
+) -> list[dict[str, object]]:
+    """Count reference-aware hotspot evidence using train rows only."""
+
+    lookup = _hotspot_lookup(hotspots)
+    counts = [0] * len(hotspots)
+    observed_references: list[set[str]] = [set() for _ in hotspots]
+    hotspot_genes = frozenset(gene for gene, _, _ in hotspots)
+
+    with Path(train_path).open("r", encoding="utf-8", newline="") as file:
+        reader = csv.reader(file)
+        header = next(reader)
+        genes = header[gene_start_column:]
+        relevant_columns = [
+            (offset, gene) for offset, gene in enumerate(genes) if gene in hotspot_genes
+        ]
+        for row in reader:
+            for offset, gene in relevant_columns:
+                for token in row[gene_start_column + offset].split():
+                    match = SUBSTITUTION.fullmatch(token)
+                    if match is None:
+                        continue
+                    reference, position_str, _alternate = match.groups()
+                    hit = lookup.get((gene, int(position_str)))
+                    if hit is None:
+                        continue
+                    output_index, expected_reference = hit
+                    observed_references[output_index].add(reference)
+                    if reference == expected_reference:
+                        counts[output_index] += 1
+
+    return [
+        {
+            "gene": gene,
+            "position": position,
+            "expected_reference_aa": expected_reference,
+            "matching_train_rows": counts[index],
+            "observed_reference_aas": sorted(observed_references[index]),
+        }
+        for index, (gene, position, expected_reference) in enumerate(hotspots)
+    ]
+
+
+def validate_hotspot_train_evidence(
+    train_path: Path,
+    gene_start_column: int,
+    hotspots: HotspotTable,
+    minimum_matching_rows: int,
+) -> list[dict[str, object]]:
+    """Require fixed hotspots to have consistent, sufficient train-only evidence."""
+
+    evidence = summarize_hotspot_train_evidence(
+        train_path, gene_start_column=gene_start_column, hotspots=hotspots
+    )
+    failures = [
+        item
+        for item in evidence
+        if item["matching_train_rows"] < minimum_matching_rows
+        or item["observed_reference_aas"] != [item["expected_reference_aa"]]
+    ]
+    if failures:
+        raise ValueError(
+            "train-only hotspot 근거 검증에 실패했습니다: "
+            + json.dumps(failures, ensure_ascii=False)
+        )
+    return evidence
+
+
 def build_hotspot_augmented_features(
     train_path: Path,
     test_path: Path,
@@ -207,13 +274,11 @@ def build_hotspot_augmented_features(
                 for gene, position, reference in hotspots
             ],
             "hotspot_validation_note": (
-                "positions verified via scripts/explore_hotspot_numbering_consistency.py "
-                "and (for entries beyond the original 19) "
-                "scripts/explore_hotspot_candidate_mining.py: single consistent "
-                "reference AA across train+test not attributable to a repeated "
-                "same-gene position-set artifact, matching published canonical "
-                "hotspot residues; a token counts only if both position and "
-                "reference AA match."
+                "The hotspot table is fixed before test transformation. The original "
+                "19 and additional 15 positions are literature-defined; the official "
+                "EXP-031 runner validates the additions using train rows only. Test "
+                "data is not used to select or filter the official list. A token "
+                "counts only when both position and reference AA match."
             ),
         },
         "train": {"shape": list(train_matrix.shape), "nonzero": int(train_matrix.nnz)},

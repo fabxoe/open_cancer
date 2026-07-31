@@ -47,8 +47,14 @@ from open_cancer.constants import CLASS_LABELS, PROBABILITY_COLUMNS
 from open_cancer.experiment import resolve_experiment_context
 from open_cancer.hashing import sha256_file
 from open_cancer.paths import relative_posix
-from open_cancer.hotspot_features import EXTENDED_HOTSPOTS, build_hotspot_augmented_features
+from open_cancer.hotspot_features import (
+    ADDITIONAL_HOTSPOTS,
+    EXTENDED_HOTSPOTS,
+    build_hotspot_augmented_features,
+    validate_hotspot_train_evidence,
+)
 from open_cancer.validation import validate_json_document, validate_submission
+from run_exp005_xgb_mutation_features import verify_saved_inference
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -104,7 +110,18 @@ def main() -> None:
 
     source_commit = run_git("rev-parse", "HEAD")
     dirty_worktree = bool(run_git("status", "--porcelain"))
+    if dirty_worktree:
+        raise RuntimeError(
+            "공식 실험은 clean worktree에서만 실행할 수 있습니다. "
+            "코드와 config를 먼저 commit한 뒤 다시 실행하세요."
+        )
     owner = run_git("config", "user.name") or os.environ.get("USER", "unknown")
+    additional_hotspot_train_evidence = validate_hotspot_train_evidence(
+        TRAIN_PATH,
+        gene_start_column=2,
+        hotspots=ADDITIONAL_HOTSPOTS,
+        minimum_matching_rows=5,
+    )
     feature_report = build_hotspot_augmented_features(
         TRAIN_PATH, TEST_PATH, FEATURE_DIR, hotspots=EXTENDED_HOTSPOTS
     )
@@ -160,7 +177,19 @@ def main() -> None:
             "shuffle": True,
             "seed": config["seed"],
         },
-        "features": feature_report["feature_contract"],
+        "features": {
+            **feature_report["feature_contract"],
+            "additional_hotspot_train_evidence": additional_hotspot_train_evidence,
+            "minimum_matching_train_rows": 5,
+            "selection_uses_test_data": False,
+        },
+        "feature_outputs": {
+            name: {
+                **metadata,
+                "path": relative_posix(Path(metadata["path"]), ROOT),
+            }
+            for name, metadata in feature_report["outputs"].items()
+        },
         "model": {
             "class": "xgboost.XGBClassifier",
             "parameters": model_params,
@@ -316,6 +345,24 @@ def main() -> None:
     }
     write_json(metrics_path, metrics)
     validate_json_document(metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json")
+    verify_saved_inference(
+        context=context,
+        source_commit=source_commit,
+        owner=owner,
+        artifact_slug=artifact_slug,
+        config=config,
+        resolved_config=resolved_config,
+        resolved_config_path=resolved_config_path,
+        metrics=metrics,
+        metrics_path=metrics_path,
+        model_dir=model_dir,
+        oof_path=oof_path,
+        reproducibility_dir=reproducibility_dir,
+        test_features=x_test,
+        test_ids=test_meta["ID"],
+        test_probability_path=test_probability_path,
+        submission_path=submission_path,
+    )
     print(json.dumps({"metrics": str(metrics_path), "oof": metrics["oof"]}, ensure_ascii=False, indent=2))
 
 

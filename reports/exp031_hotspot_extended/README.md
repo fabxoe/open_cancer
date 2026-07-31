@@ -10,7 +10,7 @@
 | 모델 | XGBoost `XGBClassifier` (EXP-005와 동일 하이퍼파라미터) |
 | Local OOF Macro F1 | **0.4135846695002278** (attempt 5, 팀 최고) |
 | Public LB | **0.3170803849** (제출 ID `1506950`, 팀 최고) |
-| 판단 | 채택 — 팀 최고 Local·Public LB 기록. `INFERENCE_VERIFIED` 체크포인트 검증은 아직 진행 전 |
+| 판단 | 채택 — 팀 최고 Local·Public LB 기록. 단, 원 제출 checkpoint 미보관으로 재현 상태는 `FAILED` |
 
 ## 원본 데이터와 입력
 
@@ -25,8 +25,9 @@ train 6,201명, test 2,546명이며 각 환자는 4,384개 유전자 열로 표�
 
 ## 핵심 개념과 피처: 5번의 시행착오
 
-이 실험은 하나의 아이디어가 아니라, 서로 다른 5가지 시도를 거쳐 지금의 결과에
-도달했다. 전체 시도와 실패까지 그대로 기록해 다음 실험에 참고할 수 있게 했다.
+이 Issue에서는 서로 다른 5가지 시도를 거쳐 지금의 결과에 도달했다. attempt
+1~4는 공식 EXP-ID를 별도로 부여하지 않은 탐색적 ablation이고, attempt 5만
+`EXP-031`의 공식 채택 config다. 실패한 탐색도 다음 실험에 참고하도록 남겼다.
 
 | 시도 | 아이디어 | 결과 |
 |---|---|---|
@@ -42,7 +43,8 @@ train 6,201명, test 2,546명이며 각 환자는 4,384개 유전자 열로 표�
 정확한 위치가 변이됐는가"라는, 개별 컬럼 방식으로는 원천적으로 표현 불가능한
 정보를 추가했다. 이 차이가 성패를 갈랐다.
 
-**attempt 5의 hotspot 34개는 어떻게 골랐나**: `scripts/explore_hotspot_candidate_mining.py`로
+**attempt 5의 hotspot 34개는 어떻게 골랐나**: 최초 후보 탐색에서는
+`scripts/explore_hotspot_candidate_mining.py`로
 COSMIC 보호 유전자 화이트리스트(361개, EXP-012) 전체에서 "관측 횟수가 충분하고
 reference amino acid가 내부적으로 일관된" 위치를 자동으로 찾았다. 이 과정에서
 일부 유전자(BRAF, TP53 등)에서 여러 코돈이 서로 다른 환자들에게 정확히 동일한
@@ -50,6 +52,10 @@ reference amino acid가 내부적으로 일관된" 위치를 자동으로 찾았
 남은 후보 482개 중 사람이 문헌 대조로 개별 검증한 15개 위치(PIK3CA E542K/Q546/
 N345, PTEN R130/R233, FBXW7 R505, AKT1 E17K, U2AF1 S34, APC R1450/R876, POLE
 P286R/V411L, KIT D816, FGFR3 S249C, RAC1 P29S)만 attempt 3의 19개에 추가했다.
+최초 후보 채굴은 train과 test의 변이 분포를 함께 확인한 transductive
+탐색이었다. 이 사실을 한계로 기록한다. 공식 runner는 최종 추가 15개 목록을
+고정한 뒤 train에서 각 위치의 관측이 5회 이상인지와 reference amino acid가
+일관되는지를 다시 검증한다. test는 고정 목록의 피처를 계산할 때만 사용한다.
 
 ## 모델이 학습하는 정보
 
@@ -104,9 +110,12 @@ EXP-005(0.2987843366) 대비 **+0.0182960483** 개선했다. Local OOF 개선폭
 
 ## 해석과 한계
 
-- **재현 상태 미검증**: 현재 `NOT_STARTED`다. 저장 checkpoint로 제출을
-  재생성하는 `INFERENCE_VERIFIED` 검증과, 리더보드 제출 모델에 필요한
-  reproducibility bundle(GitHub Release 보관)이 아직 완료되지 않았다.
+- **원 제출 재현 실패**: 원 Windows 실행의 checkpoint와 test 확률을 보관하지
+  않아 macOS에서 같은 코드·설정으로 재학습했다. OOF Macro F1은
+  `0.4125795545`로 원 기록 `0.4135846695`와 달랐고, test 라벨 일치율도
+  `93.3621%`에 그쳤다. 따라서 원 제출을 `INFERENCE_VERIFIED`로 승격하지 않고
+  `FAILED`로 유지한다. 상세 비교는
+  `reproducibility/exp031_hotspot_extended/comparison.json`에 있다.
 - **hotspot 좌표 검증의 한계**: 34개 위치는 외부 정준(canonical) transcript
   서열과 직접 대조한 것이 아니라, (1) 이 데이터셋 자체의 train+test에서
   reference amino acid가 내부적으로 일관되는지, (2) 그 값이 문헌에 알려진
@@ -129,8 +138,9 @@ EXP-005(0.2987843366) 대비 **+0.0182960483** 개선했다. Local OOF 개선폭
 
 ## 다음 실험 후보
 
-1. attempt 5의 `INFERENCE_VERIFIED` 체크포인트 검증과 리더보드 제출 모델
-   reproducibility bundle(GitHub Release) 준비.
+1. 다음 제출부터 공식 runner가 clean worktree를 강제하고 실행 직후 checkpoint,
+   OOF, test probability와 manifest를 함께 보관하도록 한다. 원 EXP-031 제출은
+   당시 checkpoint가 없어 사후에 동일성을 증명할 수 없다.
 2. 외부 정준 서열(UniProt/RefSeq)과 검증된 hotspot 좌표표(cancerhotspots.org
    등, 라이선스 확인 필요)를 확보해 TP53 확장 세트(~50개 코돈)와 나머지
    protect 유전자로 검증 범위 확대(낮은 우선순위, 개선폭 체감 곡선이 이미
@@ -146,7 +156,7 @@ EXP-005(0.2987843366) 대비 **+0.0182960483** 개선했다. Local OOF 개선폭
 - Metrics: `reports/exp031_hotspot_extended/metrics.json`
 - Submission: `submissions/exp031_hotspot_extended.csv`
 - Source commit: 이 PR의 최신 커밋(`git log`로 확인)
-- Reproduction status: `NOT_STARTED`
+- Reproduction status: `FAILED`
 - 관련 코드: `src/open_cancer/hotspot_features.py`(`KNOWN_HOTSPOTS`,
   `ADDITIONAL_HOTSPOTS`, `EXTENDED_HOTSPOTS`), `scripts/run_exp031_hotspot_extended.py`,
   `scripts/explore_hotspot_numbering_consistency.py`,

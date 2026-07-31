@@ -12,6 +12,8 @@ from open_cancer.hotspot_features import (
     KNOWN_HOTSPOTS,
     build_hotspot_augmented_features,
     build_hotspot_matrix,
+    summarize_hotspot_train_evidence,
+    validate_hotspot_train_evidence,
 )
 
 
@@ -94,3 +96,45 @@ def test_build_hotspot_matrix_with_extended_table(tmp_path: Path) -> None:
     assert matrix[0, names.index("hotspot__AKT1_17")] == 1
     assert matrix[1, names.index("hotspot__BRAF_600")] == 1
     assert matrix[0, names.index("hotspot__known_hotspot_total_count")] == 1
+
+
+def test_hotspot_evidence_is_counted_from_train_only(tmp_path: Path) -> None:
+    train = tmp_path / "train.csv"
+    train.write_text(
+        "ID,SUBCLASS,AKT1\n"
+        "T1,A,E17K\n"
+        "T2,B,E17K\n"
+        "T3,C,E17K\n",
+        encoding="utf-8",
+    )
+    hotspots = (("AKT1", 17, "E"),)
+
+    evidence = summarize_hotspot_train_evidence(train, 2, hotspots)
+
+    assert evidence == [
+        {
+            "gene": "AKT1",
+            "position": 17,
+            "expected_reference_aa": "E",
+            "matching_train_rows": 3,
+            "observed_reference_aas": ["E"],
+        }
+    ]
+    assert validate_hotspot_train_evidence(train, 2, hotspots, 3) == evidence
+
+
+def test_hotspot_evidence_rejects_low_count_or_reference_noise(tmp_path: Path) -> None:
+    train = tmp_path / "train.csv"
+    train.write_text(
+        "ID,SUBCLASS,AKT1\nT1,A,E17K\nT2,B,D17N\n",
+        encoding="utf-8",
+    )
+
+    try:
+        validate_hotspot_train_evidence(
+            train, 2, (("AKT1", 17, "E"),), minimum_matching_rows=2
+        )
+    except ValueError as error:
+        assert "train-only hotspot 근거 검증" in str(error)
+    else:
+        raise AssertionError("근거가 부족하거나 reference가 섞이면 실패해야 합니다.")

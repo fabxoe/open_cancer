@@ -350,8 +350,10 @@ EXP-012(#12)의 protect/drop 결정을 입력으로, EXP-003과 동일한 공용
 
 #### 실행
 
-EXP-005(#5)의 유전자×변이유형 희소 피처(30,697개)를 그대로 재현하고, 세
-가지 구성을 순서대로 비교했다. attempt 1·2는 EXP-012(#12)의 COSMIC 보호
+EXP-005(#5)의 유전자×변이유형 희소 피처(30,697개)를 그대로 재현하고, 여러
+구성을 순서대로 비교했다. attempt 1~4는 같은 Issue에서 수행한 탐색적
+ablation이며 별도 공식 EXP-ID로 세지 않는다. attempt 5만 EXP-031의 공식
+채택 config와 결과다. attempt 1·2는 EXP-012(#12)의 COSMIC 보호
 유전자 화이트리스트(361개)를 "보호 유전자 × 변이유형" 교차 파생변수로
 추가하는 방식으로, 이미 유전자 단위에 존재하는 정보를 재집계하는 접근이었다.
 두 attempt 모두 EXP-005보다 낮게 나오자, "유전자 단위 재집계는 구조적으로
@@ -362,8 +364,10 @@ transcript 데이터 없이 train/test 자체의 내부 일관성만 검사)로 
 IDH1 132, PIK3CA 545/1047 등 잘 알려진 driver hotspot 위치의 reference
 amino acid가 이 패널 전체에서 문헌값과 정확히 일치·일관됨을 먼저 확인한 뒤,
 검증된 9개 유전자·19개 위치만 hotspot 피처로 사용했다(KRAS/NRAS는 패널에
-없어 제외). 세 attempt 모두 fold 분할과 무관하게 train/test 전체에서
-계산되는 결정적 피처라 leakage 위험이 없다(PROJECT_CONTEXT.md 5절).
+없어 제외). 피처 값 자체는 각 샘플 행에서만 계산하므로 타깃 누출은 없다.
+다만 당시 후보 채굴은 train+test 분포를 함께 본 **transductive 탐색**이었다.
+이후 공식 runner에는 추가 15개 위치 각각을 train에서만 재검증하고, test는
+고정된 목록으로 변환만 하도록 강제했다.
 
 | 시도 | 피처 구성 | 피처 수 | Config | Metrics |
 |---|---|---:|---|---|
@@ -389,7 +393,10 @@ E542K/Q546/N345, PTEN R130/R233, FBXW7 R505, AKT1 E17K, U2AF1 S34, APC
 R1450/R876, POLE P286R/V411L, KIT D816, FGFR3 S249C, RAC1 P29S). HLA-A(생식계열
 다형성), PABPC1/SIRPA/ATP1A1(확립된 driver 유전자 아님), TP53 확장 세트(약
 50개, 생물학적 개연성은 높으나 개별 코돈 검증에 자신 없음), KMT2D/PLEC 등은
-의도적으로 제외했다.
+의도적으로 제외했다. 이 탐색 스크립트가 test도 참고한 사실은 한계로 남기되,
+최종 채택 15개는 공식 runner가 train-only 관측 횟수(각 5회 이상)와 reference
+amino acid 일관성을 다시 확인한다. 따라서 test 출현 여부로 최종 목록을
+추가하거나 제거하지 않는다.
 
 - Report: [`reports/exp031_hotspot_extended/README.md`](reports/exp031_hotspot_extended/README.md)
   (attempt 5 기준, 전체 5개 시도 요약 포함)
