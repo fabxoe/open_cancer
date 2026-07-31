@@ -7,12 +7,12 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 7
+- 실제 실험 수: 8
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4057244633876238 (`EXP-033`)
+- 최고 Local OOF Macro F1: 0.4088132438271497 (`EXP-047`)
 - 최고 Public LB Macro F1: 0.2987843366 (`EXP-005`)
-- 최고 재현 검증 모델: `EXP-033` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-047` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-07-31
 
 ## 실험 요약
@@ -26,6 +26,7 @@
 | EXP-026 | COMPLETED | fabxoe | #26 | XGBoost mutation-presence + mutated-gene count | 0.3817476632 | 0.2575936484 | NOT_STARTED | EXP-003 대비 개선, EXP-005보다 낮음 | [보고서](reports/exp026_mutation_burden/README.md) |
 | EXP-029 | COMPLETED | 2heej | #29 | EXP-005 + 변이유형 구성비·log burden 피처 | 0.3988980085 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 OOF 하락·fold 변동성 증가로 현 구성 미채택 | [보고서](reports/exp029_xgb_log_burden_ratios/README.md) |
 | EXP-033 | COMPLETED | 2heej | #33 | EXP-005 + log burden 3종 단독 ablation | 0.4057244634 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 소폭 개선·추가 분리 검증 필요 | [보고서](reports/exp033_xgb_log_burden_ablation/README.md) |
+| EXP-047 | COMPLETED | fabxoe | #47 | EXP-033 + 유전자별 최소 단백질 잔기 위치 | 0.4088132438 | 미제출 | INFERENCE_VERIFIED | Local OOF 개선·fold 변동성 감소, 위치 family 후속 검증 채택 | [보고서](reports/exp047_xgb_min_residue_position/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -44,6 +45,7 @@
 | 2026-07-31T04:44:40.761953+00:00 | EXP-005 | fabxoe | `4e5533a80ef093ef4a9b76a039f5f1ee6b1cf365` / [`exp-005-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-005-repro-v1) | SHA-256 일치 | SHA-256 일치, 라벨 100%, 확률 오차 2.98e-08 | 독립 재학습으로 OOF Macro F1 동일·제출 및 checkpoint 해시 일치, fresh clone 비작성자 검증 전 | INFERENCE_VERIFIED | [comparison](reproducibility/exp005_xgb_mutation_features/comparison.json) |
 | 2026-07-31T02:30:08.486372+00:00 | EXP-029 | 2heej | `1f06b4ee1bc098bd23d4c673e290da87638fb25d` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp029_xgb_log_burden_ratios/comparison.json) |
 | 2026-07-31T04:12:34.945706+00:00 | EXP-033 | 2heej | `80a1684e0167f221e225460eaae9f0a649ab7e37` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100% | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp033_xgb_log_burden_ablation/comparison.json) |
+| 2026-07-31T07:44:24.403725+00:00 | EXP-047 | fabxoe | `78c52694163c8b3f8e76557a93d271843b1627fa` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp047_xgb_min_residue_position/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -332,3 +334,36 @@ EXP-012(#12)의 protect/drop 결정을 입력으로, EXP-003과 동일한 공용
   `+0.0022923015` 증가해 개선의 안정성을 추가 ablation으로 확인해야 한다.
 - 재현 메모: 저장 checkpoint 재추론에서 데이터 해시, 제출 SHA-256과 test
   라벨이 일치해 `INFERENCE_VERIFIED`를 통과했다.
+
+### [EXP-047] Feature Factory + 유전자별 최소 단백질 잔기 위치
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #47 / issue-47-exp-min-residue-position
+- 소스 commit: `78c52694163c8b3f8e76557a93d271843b1627fa`
+- 시작/종료: 2026-07-31T07:32:46.567840+00:00 /
+  2026-07-31T07:44:21.394289+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp047_xgb_min_residue_position/config.resolved.yaml`
+- Metrics: `reports/exp047_xgb_min_residue_position/metrics.json`
+- Report: `reports/exp047_xgb_min_residue_position/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4113274860, 0.4106448428, 0.3941926672,
+  0.4057632107, 0.4202061182
+- OOF Macro F1: 0.4088132438
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp047_xgb_min_residue_position/metrics.json` /
+  `reports/exp047_xgb_min_residue_position/README.md` /
+  `reproducibility/exp047_xgb_min_residue_position/`
+- 결론: EXP-033보다 OOF Macro F1이 `+0.0030887804` 개선되고 fold 표준편차가
+  `-0.0024671436` 감소해 유전자별 최소 잔기 위치를 후속 위치 family 후보로
+  채택한다. 저장 checkpoint 재추론은 제출 SHA-256과 라벨 100% 일치를 확인했다.
