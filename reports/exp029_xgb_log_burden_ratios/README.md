@@ -44,6 +44,7 @@ EXP-029 fold Macro F1은 `0.4050881006`, `0.3992122410`, `0.3830162610`,
 
 ## 재현 상태
 
-resolved config와 metrics는 생성됐지만, 이 실행은 자동 checkpoint 추론 검증을
-도입하기 전 dirty worktree에서 수행됐다. 따라서 재현 상태는 `NOT_STARTED`이며
-`INFERENCE_VERIFIED`로 기록하지 않는다.
+clean commit `1f06b4ee1bc098bd23d4c673e290da87638fb25d`에서 동일 config로
+재실행했다. 저장된 fold checkpoint 5개를 다시 불러온 test 추론은 원본 제출과
+SHA-256 및 라벨이 100% 일치했고, 확률 최대 절대 차이는 약 `2.98e-08`로 허용치
+`1e-6` 이내였다. 재현 상태는 `INFERENCE_VERIFIED`다.

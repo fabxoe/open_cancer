@@ -23,7 +23,7 @@
 | EXP-005 | COMPLETED | 2heej | #5 | XGBoost + 유전자×변이유형 희소 피처 | 0.4043796587000222 | 0.2987843366 | INFERENCE_VERIFIED | 제출 재생성 검증 완료·Release 보관 필요 | [보고서](reports/exp005_xgb_mutation_features/README.md) |
 | EXP-012 | COMPLETED | Kangho-Park | #12 | COSMIC 보호 유전자 기반 feature 보호 전략 분석 (모델 학습 없음) | N/A (분석 전용) | 미제출 | NOT_STARTED | 채택 | [상세](#exp-012-cosmic-보호-유전자-기반-feature-보호-전략-분석) |
 | EXP-026 | COMPLETED | fabxoe | #26 | XGBoost mutation-presence + mutated-gene count | 0.3817476632 | 0.2575936484 | NOT_STARTED | EXP-003 대비 개선, EXP-005보다 낮음 | [보고서](reports/exp026_mutation_burden/README.md) |
-| EXP-029 | COMPLETED | 2heej | #29 | EXP-005 + 변이유형 구성비·log burden 피처 | 0.3988980085 | 미제출 | NOT_STARTED | EXP-005 대비 OOF 하락·fold 변동성 증가로 현 구성 미채택 | [보고서](reports/exp029_xgb_log_burden_ratios/README.md) |
+| EXP-029 | COMPLETED | 2heej | #29 | EXP-005 + 변이유형 구성비·log burden 피처 | 0.3988980085 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 OOF 하락·fold 변동성 증가로 현 구성 미채택 | [보고서](reports/exp029_xgb_log_burden_ratios/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -39,6 +39,7 @@
 |---|---|---|---|---|---|---|---|---|
 | 2026-07-30T09:14:20Z | EXP-003 | fabxoe | `7306182669c3676e7b17024d3cf1f821131d909b` / [`exp-003-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-003-repro-v1) | SHA-256 일치 | byte-level SHA-256 일치 | 미수행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp003_xgb_baseline/comparison.json) |
 | 2026-07-30T09:38:54.622845+00:00 | EXP-005 | 2heej | `816d0a5e070c29d2f549e4fb25b81ec5c0ad5f7b` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100% | 미실행 | INFERENCE_VERIFIED | `reproducibility/exp005_xgb_mutation_features/artifact_manifest.json` |
+| 2026-07-31T02:30:08.486372+00:00 | EXP-029 | 2heej | `1f06b4ee1bc098bd23d4c673e290da87638fb25d` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp029_xgb_log_burden_ratios/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -187,9 +188,9 @@
 - 상태: COMPLETED
 - 실행자: 2heej
 - Issue/브랜치: #29 / issue-29-exp-log-burden-ratios
-- 소스 commit: `3560bff35b0f03d8235c07316c37816d92799f0e`
-- 시작/종료: 2026-07-31T02:10:04.961508+00:00 /
-  2026-07-31T02:14:44.501559+00:00
+- 소스 commit: `1f06b4ee1bc098bd23d4c673e290da87638fb25d`
+- 시작/종료: 2026-07-31T02:25:47.987668+00:00 /
+  2026-07-31T02:30:06.305518+00:00
 
 #### 실행
 
@@ -203,7 +204,7 @@
   0.3837339691, 0.4139561300
 - OOF Macro F1: 0.3988980085
 - Public LB: 미제출
-- 재현 상태: NOT_STARTED
+- 재현 상태: INFERENCE_VERIFIED
 
 #### 산출물과 결론
 
@@ -214,5 +215,6 @@
 - 결론: EXP-005 OOF 0.4043796587보다 0.0054816502 낮고 fold 표준편차도
   0.0086812077에서 0.0120777005로 증가해 현 피처 묶음은 미채택. 구성비와
   log burden 피처를 분리한 후속 ablation 후보로 보류함.
-- 재현 메모: 자동 checkpoint 추론 검증 도입 전 dirty worktree에서 실행돼
-  `INFERENCE_VERIFIED`로 승격하지 않음.
+- 재현 메모: clean commit에서 동일 config로 재실행했으며, 저장 checkpoint
+  재추론 결과 제출 SHA-256과 test 라벨이 100% 일치했다. test 확률 최대 절대
+  차이는 약 2.98e-08로 허용치 1e-6 이내였다.

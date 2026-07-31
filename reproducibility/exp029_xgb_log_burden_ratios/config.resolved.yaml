@@ -3,9 +3,9 @@ experiment:
   experiment_id: EXP-029
   branch: issue-29-exp-log-burden-ratios
   owner: 2heej
-  source_commit: 3560bff35b0f03d8235c07316c37816d92799f0e
-  dirty_worktree: true
-  started_at: '2026-07-31T02:10:04.961508+00:00'
+  source_commit: 1f06b4ee1bc098bd23d4c673e290da87638fb25d
+  dirty_worktree: false
+  started_at: '2026-07-31T02:25:47.987668+00:00'
 data:
   train:
     path: data/raw/train.csv
