@@ -1,0 +1,213 @@
+experiment:
+  issue_number: 58
+  experiment_id: EXP-058
+  branch: issue-58-cooccurrence-pair-ablation
+  owner: Kangho Park
+  source_commit: 45b353ce4073e4a9bad0c0866f4cb84ac5a53fe7
+  dirty_worktree: false
+  started_at: '2026-07-31T09:58:20.855492+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features:
+  - sample__mutated_gene_count_log1p
+  - sample__total_variant_count_log1p
+  - sample__multi_variant_gene_count_log1p
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features:
+  - min_residue_position
+  position_semantics: protein residue indices explicitly written in source tokens;
+    no transcript, codon nucleotide, genomic coordinate, or protein-length inference
+  co_mutation_pairs:
+  - - IDH1
+    - IDH2
+  - - PIK3CA
+    - PTEN
+  co_mutation_semantics: fixed, literature-curated gene pairs (mutual exclusivity
+    or co-occurrence); gene-level 'any mutation' presence, not restricted to a specific
+    hotspot codon; not fit from this dataset's target or frequency
+  feature_factory_version: 1.0.0
+  feature_spec_sha256: 9a1b7217f5e9a0460de6f075531c60275e08913c2d4730c9bf34aa394a90388c
+  requested_families:
+    mutation_type:
+      enabled: true
+    residue_position:
+      enabled: true
+      aggregates:
+      - min
+    co_mutation:
+      enabled: true
+      pairs:
+      - - IDH1
+        - IDH2
+      - - PIK3CA
+        - PTEN
+feature_registry:
+  mutation_type:
+    definition_version: 1.0.0
+    enabled: true
+    output_dimension: 30697
+    fit_scope: stateless; train and test parsed independently
+    external_knowledge: null
+  robust_aggregate:
+    definition_version: 1.0.0
+    enabled: true
+    features:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+    output_dimension: 3
+    fit_scope: stateless per-sample aggregation
+    external_knowledge: null
+  residue_position:
+    definition_version: 1.0.0
+    enabled: true
+    features:
+    - min_residue_position
+    output_dimension: 4384
+    fit_scope: stateless lexical parse; no target or test-distribution fit
+    external_knowledge: null
+  co_mutation:
+    definition_version: 1.0.0
+    enabled: true
+    pairs:
+    - - IDH1
+      - IDH2
+    - - PIK3CA
+      - PTEN
+    output_dimension: 3
+    fit_scope: stateless; fixed literature-curated gene pairs, no target or fold fitting
+      (pairs are not mined from this dataset's co-occurrence frequency)
+    external_knowledge: literature-documented mutual exclusivity/co-occurrence (IDH1/IDH2,
+      APC/CTNNB1, PIK3CA/PTEN); gene symbols and relationships are public knowledge,
+      not redistributed from a licensed source
+feature_outputs:
+  train_features.npz:
+    path: data/processed/feature_factory/v1/exp058_cooccurrence_pair_ablation/train_features.npz
+    sha256: 9f30f341d476feaea9b14dca06dee3b4fac56f3d56fa9808442aeb1859a176de
+  test_features.npz:
+    path: data/processed/feature_factory/v1/exp058_cooccurrence_pair_ablation/test_features.npz
+    sha256: bc76161f7d21637a2644bd30712ad178ec665518b33fd4e054e3a173c864ca38
+  train_ids.csv:
+    path: data/processed/feature_factory/v1/exp058_cooccurrence_pair_ablation/train_ids.csv
+    sha256: 76d4b6e523b4509d16c9b65e458f9616c94b7262a844ec107971649de20e95d1
+  test_ids.csv:
+    path: data/processed/feature_factory/v1/exp058_cooccurrence_pair_ablation/test_ids.csv
+    sha256: 39321e5b32cdf9400476db97c38800a28fa58d20ddb25730da31fbcf91f3ebfe
+  train_labels.csv:
+    path: data/processed/feature_factory/v1/exp058_cooccurrence_pair_ablation/train_labels.csv
+    sha256: ca66b734a3adefc9ce38348a71e29edc4c6061ffaab72e468c574a70fa6d2a06
+  feature_names.json:
+    path: data/processed/feature_factory/v1/exp058_cooccurrence_pair_ablation/feature_names.json
+    sha256: 0b0b3a0ceb1cf74e5a20d2fa2fcaab9c128a9bc58652739cfbcf6617094a3940
+  feature_spec.json:
+    path: data/processed/feature_factory/v1/exp058_cooccurrence_pair_ablation/feature_spec.json
+    sha256: 0b699724f43eedcdb47726f92ec0eae2ad3c9562d71a9134beee588e51d8bf3a
+  feature_registry.json:
+    path: data/processed/feature_factory/v1/exp058_cooccurrence_pair_ablation/feature_registry.json
+    sha256: 531db675cbc7f1d8d358832a5a032f6a01a60b1039f82eac8fc8880c9a57d4fe
+  parsing_qc.json:
+    path: data/processed/feature_factory/v1/exp058_cooccurrence_pair_ablation/parsing_qc.json
+    sha256: c7795f512e6b7cfbe973ae422ee76e7225d97ca8d8449348131060f0d23f3b55
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+  - mutation_presence
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  - log_mutated_gene_count
+  - log_total_variant_count
+  - log_multi_variant_gene_count
+  - min_residue_position
+  - co_mutation_idh1_idh2
+  - co_mutation_pik3ca_pten
+  feature_selection: null
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  command: uv run python scripts/run_exp058_cooccurrence_pair_ablation.py
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]
+  platform: Windows-10-10.0.26200-SP0
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: ee554d204078eb867ff240648ea1bd9d1c9fef8d243611ab6d6a691cf673ef03

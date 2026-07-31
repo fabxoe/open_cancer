@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 19
+- 실제 실험 수: 20
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4157910775 (`EXP-075`)
@@ -33,6 +33,7 @@
 | EXP-047 | COMPLETED | fabxoe | #47 | EXP-033 + 유전자별 최소 단백질 잔기 위치 | 0.4088132438 | 미제출 | INFERENCE_VERIFIED | Local OOF 개선·fold 변동성 감소, 위치 family 후속 검증 채택 | [보고서](reports/exp047_xgb_min_residue_position/README.md) |
 | EXP-050 | COMPLETED | 2heej | #50 | EXP-005 + EXP-045 반복 선택 파생변수 2종 고정 | 0.4014204930 | 미제출 | INFERENCE_VERIFIED | EXP-043·045보다 높지만 EXP-005보다 낮아 미채택 | [보고서](reports/exp050_xgb_fixed_two_distribution_features/README.md) |
 | EXP-052 | COMPLETED | Kangho-Park | #52 | EXP-047 + Feature Factory family 7(co-mutation, 문헌 근거 유전자 쌍 3개) | 0.4095069739 | 미제출 | INFERENCE_VERIFIED | OOF 소폭 개선·fold 표준편차 감소로 채택, pair 확장 검토 | [보고서](reports/exp052_hotspot_cooccurrence/README.md) |
+| EXP-058 | COMPLETED | Kangho-Park | #58 | EXP-052에서 SHAP 근거로 APC/CTNNB1 제거(쌍 3개→2개) | 0.4101842357 | 미제출 | INFERENCE_VERIFIED | EXP-052 대비 소폭 개선한 탐색 후보, 독립 검증 필요 | [보고서](reports/exp058_cooccurrence_pair_ablation/README.md) |
 | EXP-065 | COMPLETED | fabxoe | #65 | EXP-047 + complex-token residue 위치 제외 | 0.4108923084 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 소폭 감소로 채택 후보 | [보고서](reports/exp065_xgb_residue_exclude_complex/README.md) |
 | EXP-063 | COMPLETED | fabxoe | #63 | EXP-047 + residue-position 관측 indicator | 0.4130329102 | 미제출 | INFERENCE_VERIFIED | OOF 개선으로 채택 후보, fold 변동성과 Log Loss는 소폭 악화 | [보고서](reports/exp063_xgb_residue_indicator/README.md) |
 | EXP-067 | COMPLETED | fabxoe | #67 | EXP-047 + residue 위치 폭 100 coarse-bin | 0.4124014867 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 감소로 채택 후보 | [보고서](reports/exp067_xgb_residue_coarse_bin/README.md) |
@@ -69,6 +70,7 @@
 | 2026-07-31T11:33:26.265681+00:00 | EXP-069 | fabxoe | `8b603bcf8b03658e54d158b5976df51c90cea5f8` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp069_xgb_max_residue_position/comparison.json) |
 | 2026-07-31T12:59:12.117866+00:00 | EXP-075 | fabxoe | `01fb86e27b0ebfd177d4a6e60ac6535a02fcfb3c` / [`exp-075-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-075-repro-v1) | 부모 artifact SHA-256 일치 | byte-level SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp075_residue_probability_blend/comparison.json) |
 | 2026-07-31T07:58:45.020690+00:00 | EXP-030 | Gomin-art | `64b72df89ee5cf0b66409f494475aca753238184` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 5.83e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp030_sparse_variant_xgb/comparison.json) |
+| 2026-07-31T10:18:14.298161+00:00 | EXP-058 | Kangho-Park | `45b353ce4073e4a9bad0c0866f4cb84ac5a53fe7` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp058_cooccurrence_pair_ablation/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -870,12 +872,6 @@ Feature Factory에 family 7(co-mutation)을 구현해 EXP-047 피처에 문헌 �
 - Fold 표준편차: 0.0084461093
 - Accuracy: 0.4036445735
 - Log Loss: 1.8529859781
-- Public LB: 미제출
-- 재현 상태: INFERENCE_VERIFIED
-
-#### 산출물과 결론
-
-- Metrics/Report/Reproduction:
   `reports/exp065_xgb_residue_exclude_complex/metrics.json` /
   `reports/exp065_xgb_residue_exclude_complex/README.md` /
   `reproducibility/exp065_xgb_residue_exclude_complex/`
@@ -1027,3 +1023,51 @@ Feature Factory에 family 7(co-mutation)을 구현해 EXP-047 피처에 문헌 �
   [`exp-075-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-075-repro-v1)
   번들에 함께 보관했다. 번들 SHA-256은
   `698c29841112ff78e6fe2dcdd1b6b07bd2e7a2db26ef8ec86e625963d8125b33`이다.
+
+### [EXP-058] Co-mutation Pair Ablation — SHAP 근거로 APC/CTNNB1 제거
+
+- 상태: COMPLETED
+- 실행자: Kangho Park
+- Issue/브랜치: #58 / issue-58-cooccurrence-pair-ablation
+- 소스 commit: `45b353ce4073e4a9bad0c0866f4cb84ac5a53fe7`
+- 시작/종료: 2026-07-31 (단일 실행)
+
+#### 실행
+
+EXP-052(#52)의 "암종별 조건부 적용" 후속 계획은 test에서 알 수 없는
+SUBCLASS를 게이팅 조건으로 써야 해서 target leakage로 구현 전에 폐기했다.
+대신 EXP-052의 저장 checkpoint에 TreeSHAP(`xgboost.Booster.predict(pred_contribs=True)`)을
+적용해, 각 co-mutation 피처가 활성화된 샘플에서 26개 클래스별 평균 기여도를
+계산했다. PIK3CA/PTEN은 UCEC가 1/26위(0.042, 나머지 평균 -0.006)로 트리가
+이미 정확히 학습한 반면, APC/CTNNB1은 COAD가 26/26위(꼴찌)에 기여도가
+음수(-0.005)로 가설과 반대였다. IDH1/IDH2는 활성 샘플 3건뿐이라 판단
+보류. 이 증거에 따라 APC/CTNNB1만 제거하고 나머지 2개 쌍은 유지하는
+config 변경만으로 재실행했다(Feature Factory 코드 변경 없음).
+
+- Config: `reproducibility/exp058_cooccurrence_pair_ablation/config.resolved.yaml`
+- Metrics: `reports/exp058_cooccurrence_pair_ablation/metrics.json`
+- Report: `reports/exp058_cooccurrence_pair_ablation/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4100673176, 0.4143098302, 0.4046742555,
+  0.4023218460, 0.4160092186
+- OOF Macro F1: 0.4101842357
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp058_cooccurrence_pair_ablation/metrics.json` /
+  `reports/exp058_cooccurrence_pair_ablation/README.md` /
+  `reproducibility/exp058_cooccurrence_pair_ablation/`
+- 결론: EXP-052 대비 OOF Macro F1이 `+0.0006772617`(EXP-047 대비 누적
+  `+0.0013709918`) 개선됐다. 26개 클래스 중
+  13개 개선(BLCA +0.0265, LUSC +0.0197, DLBC +0.0196 등), 13개 하락(PAAD
+  -0.0230, THYM -0.0204 등)이었다. 가장 중요한 확인은 **COAD가 SHAP
+  진단과 같은 방향으로 개선**됐다는 점(0.7126 → 0.7187, `+0.0061`)이다.
+  다만 동일 canonical OOF를 피처 제거 판단과 성능 평가에 사용했고 SHAP
+  계산 코드·원시 산출물이 보관되지 않았으므로 독립 검증으로 간주하지 않는다.
+  저장 checkpoint 재추론으로 제출 SHA-256과 라벨 100% 일치를 확인해
+  `INFERENCE_VERIFIED`로 자동 승격됐다. 아직 리더보드에는 제출하지 않았다.

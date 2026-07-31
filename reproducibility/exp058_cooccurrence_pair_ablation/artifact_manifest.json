@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-058",
+  "issue_number": 58,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "45b353ce4073e4a9bad0c0866f4cb84ac5a53fe7",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp058_cooccurrence_pair_ablation/data_manifest.json",
+  "environment": "reproducibility/exp058_cooccurrence_pair_ablation/environment.json",
+  "release_url": null,
+  "verifier": "Kangho Park",
+  "verified_at": "2026-07-31T10:18:14.298161+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp058_cooccurrence_pair_ablation/fold_00.json",
+      "size_bytes": 12473502,
+      "sha256": "053cf8a2db355b3c7a0506062baa1b32fb2904fda6a7b8a8850a066e32fbf8eb",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp058_cooccurrence_pair_ablation/fold_01.json",
+      "size_bytes": 12000368,
+      "sha256": "ebcebde0dd00bf998f4d18837a27266abdbb43d323f4a92deaa860d14f6eed68",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp058_cooccurrence_pair_ablation/fold_02.json",
+      "size_bytes": 12746525,
+      "sha256": "46ff53a0e92d0344077367a54e3970e97407955d704994f7ec5d40fff09421de",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp058_cooccurrence_pair_ablation/fold_03.json",
+      "size_bytes": 13301880,
+      "sha256": "61c31de24548dbdc6e6336865a500af610877f02c89db37b9e846161044160f7",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp058_cooccurrence_pair_ablation/fold_04.json",
+      "size_bytes": 12454223,
+      "sha256": "6afc3138d593083e478bea77c7b7b16f1c13ec9e3c33c6c44be71f55816790cb",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp058_cooccurrence_pair_ablation.csv",
+      "size_bytes": 38160,
+      "sha256": "0a53d0a7aea3b0c34baba586e56175c6bc8df2c738875a2bef30c5ebad905eb3",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp058_cooccurrence_pair_ablation.csv",
+      "size_bytes": 2129810,
+      "sha256": "c47046222492381ca4d360e643ef72913fdfe4e9ca0a58d856c7a6f60ebd2e91",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp058_cooccurrence_pair_ablation_test_proba.csv",
+      "size_bytes": 835165,
+      "sha256": "39ca4d7e2a8b416d949a6a354bbcfa04951e504f76d97c38284fbb1c0d672acb",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp058_cooccurrence_pair_ablation/metrics.json",
+      "size_bytes": 12270,
+      "sha256": "d87f79a67858c221e0846233041aed9b10a2823c9102284ae491dea417385f35",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp058_cooccurrence_pair_ablation/config.resolved.yaml",
+      "size_bytes": 6869,
+      "sha256": "be0da901cf15ea06b008808c2f1f716f07baedf2cc40020b674231b4caf6c729",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
