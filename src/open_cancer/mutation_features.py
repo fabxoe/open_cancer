@@ -27,6 +27,11 @@ RESIDUE_POSITION_FEATURES = (
 POSITION_MISSING_POLICIES = ("zero", "indicator")
 POSITION_TOKEN_SCOPES = ("include_complex", "exclude_complex")
 POSITION_TRANSFORMS = ("raw", "coarse_bin")
+CO_MUTATION_PAIRS: tuple[tuple[str, str], ...] = (
+    ("IDH1", "IDH2"),
+    ("APC", "CTNNB1"),
+    ("PIK3CA", "PTEN"),
+)
 GLOBAL_FEATURES = (
     "sample__mutated_gene_count",
     "sample__total_variant_count",
@@ -186,6 +191,17 @@ class FeatureMatrix:
     parsing_qc: dict[str, Any]
 
 
+def co_mutation_feature_names(pairs: tuple[tuple[str, str], ...]) -> tuple[str, ...]:
+    """Return the sample-level feature names for a set of curated gene pairs."""
+
+    if not pairs:
+        return ()
+    return (
+        *(f"sample__comut_{gene_a}_{gene_b}" for gene_a, gene_b in pairs),
+        "sample__comut_pair_total_count",
+    )
+
+
 def feature_names(
     genes: list[str],
     *,
@@ -193,6 +209,7 @@ def feature_names(
     selected_robust_aggregates: tuple[str, ...] | None = None,
     selected_position_features: tuple[str, ...] | None = None,
     position_missing_policy: str = "zero",
+    selected_co_mutation_pairs: tuple[tuple[str, str], ...] | None = None,
 ) -> list[str]:
     """Return the stable feature order shared by train and test."""
 
@@ -204,10 +221,12 @@ def feature_names(
         selected_position_features,
         missing_policy=position_missing_policy,
     )
+    co_mutation_pairs = _resolve_co_mutation_pairs(selected_co_mutation_pairs)
     per_gene_features = (*GENE_FEATURES, *position_features)
     return [
         *GLOBAL_FEATURES,
         *robust_features,
+        *co_mutation_feature_names(co_mutation_pairs),
         *(f"{gene}__{feature}" for gene in genes for feature in per_gene_features),
     ]
 
@@ -224,6 +243,7 @@ def _read_sparse_features(
     position_token_scope: str,
     position_transform: str,
     position_bin_width: int,
+    selected_co_mutation_pairs: tuple[tuple[str, str], ...] | None = None,
 ) -> FeatureMatrix:
     robust_features = _resolve_robust_features(
         include_robust_aggregates=include_robust_aggregates,
@@ -233,6 +253,8 @@ def _read_sparse_features(
         selected_position_features,
         missing_policy=position_missing_policy,
     )
+    co_mutation_pairs = _resolve_co_mutation_pairs(selected_co_mutation_pairs)
+    co_mutation_names = co_mutation_feature_names(co_mutation_pairs)
     per_gene_features = (*GENE_FEATURES, *position_features)
     names = feature_names(
         genes,
@@ -240,12 +262,22 @@ def _read_sparse_features(
         selected_robust_aggregates=selected_robust_aggregates,
         selected_position_features=position_features,
         position_missing_policy=position_missing_policy,
+        selected_co_mutation_pairs=co_mutation_pairs,
     )
     active_global_features = (
         *GLOBAL_FEATURES,
         *robust_features,
+        *co_mutation_names,
     )
     global_index = {name: index for index, name in enumerate(active_global_features)}
+    co_mutation_pair_genes = frozenset(
+        gene for pair in co_mutation_pairs for gene in pair
+    )
+    co_mutation_gene_index_map = {
+        gene_index: gene
+        for gene_index, gene in enumerate(genes)
+        if gene in co_mutation_pair_genes
+    }
     gene_offset = len(active_global_features)
     gene_stride = len(per_gene_features)
     gene_feature_index = {name: index for index, name in enumerate(per_gene_features)}
@@ -286,6 +318,7 @@ def _read_sparse_features(
             type_gene_counts = {mutation_type: 0 for mutation_type in MUTATION_TYPES}
             max_variants_per_gene = 0
             single_variant_gene_count = 0
+            co_mutated_genes: set[str] = set()
             for gene_index, cell in enumerate(row[feature_start:]):
                 base = gene_offset + gene_index * gene_stride
                 if cell == "":
@@ -314,6 +347,9 @@ def _read_sparse_features(
                 rows.append(row_index)
                 columns.append(base + gene_feature_index["mutated"])
                 values.append(1.0)
+                pair_gene = co_mutation_gene_index_map.get(gene_index)
+                if pair_gene is not None:
+                    co_mutated_genes.add(pair_gene)
 
                 for token in parsed_cell.tokens:
                     global_counts[f"sample__{token.mutation_type}_count"] += 1
@@ -377,6 +413,18 @@ def _read_sparse_features(
                         rows.append(row_index)
                         columns.append(global_index[name])
                         values.append(value)
+            if co_mutation_pairs:
+                pair_total = 0
+                for gene_a, gene_b in co_mutation_pairs:
+                    if gene_a in co_mutated_genes and gene_b in co_mutated_genes:
+                        rows.append(row_index)
+                        columns.append(global_index[f"sample__comut_{gene_a}_{gene_b}"])
+                        values.append(1.0)
+                        pair_total += 1
+                if pair_total:
+                    rows.append(row_index)
+                    columns.append(global_index["sample__comut_pair_total_count"])
+                    values.append(float(pair_total))
 
     matrix = sparse.csr_matrix(
         (np.asarray(values, dtype=np.float32), (rows, columns)),
@@ -414,6 +462,7 @@ def build_mutation_features(
     position_token_scope: str = "include_complex",
     position_transform: str = "raw",
     position_bin_width: int = 100,
+    selected_co_mutation_pairs: tuple[tuple[str, str], ...] | None = None,
 ) -> dict[str, object]:
     """Build train/test CSR matrices with identical, target-independent features."""
 
@@ -439,12 +488,14 @@ def build_mutation_features(
         selected_position_features,
         missing_policy=position_missing_policy,
     )
+    co_mutation_pairs = _resolve_co_mutation_pairs(selected_co_mutation_pairs)
     names = feature_names(
         genes,
         include_robust_aggregates=include_robust_aggregates,
         selected_robust_aggregates=selected_robust_aggregates,
         selected_position_features=position_features,
         position_missing_policy=position_missing_policy,
+        selected_co_mutation_pairs=co_mutation_pairs,
     )
     registry = _feature_registry(
         gene_count=len(genes),
@@ -454,6 +505,7 @@ def build_mutation_features(
         position_token_scope=position_token_scope,
         position_transform=position_transform,
         position_bin_width=position_bin_width,
+        co_mutation_pairs=co_mutation_pairs,
     )
     feature_spec = {
         "factory_version": FEATURE_FACTORY_VERSION,
@@ -498,6 +550,7 @@ def build_mutation_features(
         position_token_scope=position_token_scope,
         position_transform=position_transform,
         position_bin_width=position_bin_width,
+        selected_co_mutation_pairs=co_mutation_pairs,
     )
     test = _read_sparse_features(
         test_path,
@@ -510,6 +563,7 @@ def build_mutation_features(
         position_token_scope=position_token_scope,
         position_transform=position_transform,
         position_bin_width=position_bin_width,
+        selected_co_mutation_pairs=co_mutation_pairs,
     )
 
     train_matrix_path = output_dir / "train_features.npz"
@@ -571,6 +625,13 @@ def build_mutation_features(
                 "protein residue indices explicitly written in source tokens; "
                 "no transcript, codon nucleotide, genomic coordinate, or protein-length inference"
             ),
+            "co_mutation_pairs": [list(pair) for pair in co_mutation_pairs],
+            "co_mutation_semantics": (
+                "fixed, literature-curated gene pairs (mutual exclusivity or "
+                "co-occurrence); gene-level 'any mutation' presence, not "
+                "restricted to a specific hotspot codon; not fit from this "
+                "dataset's target or frequency"
+            ),
             "feature_factory_version": FEATURE_FACTORY_VERSION,
             "feature_spec_sha256": feature_spec_sha256,
         },
@@ -615,6 +676,7 @@ def _feature_registry(
     position_token_scope: str,
     position_transform: str,
     position_bin_width: int,
+    co_mutation_pairs: tuple[tuple[str, str], ...] = (),
 ) -> dict[str, dict[str, Any]]:
     """Describe enabled families and their leakage/knowledge contract."""
 
@@ -645,6 +707,23 @@ def _feature_registry(
             "bin_width": position_bin_width if position_transform == "coarse_bin" else None,
             "fit_scope": "stateless lexical parse; no target or test-distribution fit",
             "external_knowledge": None,
+        },
+        "co_mutation": {
+            "definition_version": "1.0.0",
+            "enabled": bool(co_mutation_pairs),
+            "pairs": [list(pair) for pair in co_mutation_pairs],
+            "output_dimension": len(co_mutation_feature_names(co_mutation_pairs)),
+            "fit_scope": (
+                "stateless; fixed literature-curated gene pairs, no target or "
+                "fold fitting (pairs are not mined from this dataset's "
+                "co-occurrence frequency)"
+            ),
+            "external_knowledge": (
+                "literature-documented mutual exclusivity/co-occurrence "
+                "(IDH1/IDH2, APC/CTNNB1, PIK3CA/PTEN); gene symbols and "
+                "relationships are public knowledge, not redistributed from "
+                "a licensed source"
+            ),
         },
     }
 
@@ -893,6 +972,20 @@ def _transform_residue_positions(
     if transform == "coarse_bin":
         return tuple(float((position - 1) // bin_width + 1) for position in positions)
     raise ValueError(f"지원하지 않는 position transform입니다: {transform}")
+
+
+def _resolve_co_mutation_pairs(
+    selected_co_mutation_pairs: tuple[tuple[str, str], ...] | None,
+) -> tuple[tuple[str, str], ...]:
+    if selected_co_mutation_pairs is None:
+        return ()
+    normalized = tuple(tuple(pair) for pair in selected_co_mutation_pairs)
+    invalid = sorted(set(normalized) - set(CO_MUTATION_PAIRS))
+    if invalid:
+        raise ValueError(f"지원하지 않는 co-mutation pair입니다: {invalid}")
+    if len(set(normalized)) != len(normalized):
+        raise ValueError("co-mutation pair가 중복됐습니다.")
+    return normalized
 
 
 def _write_single_column(path: Path, name: str, values: list[str]) -> None:

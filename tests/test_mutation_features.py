@@ -7,6 +7,7 @@ import pytest
 from scipy import sparse
 
 from open_cancer.mutation_features import (
+    CO_MUTATION_PAIRS,
     FEATURE_FACTORY_VERSION,
     GENE_FEATURES,
     GLOBAL_FEATURES,
@@ -17,6 +18,7 @@ from open_cancer.mutation_features import (
     SAMPLE_DISTRIBUTION_FEATURES,
     build_mutation_features,
     classify_mutation_token,
+    co_mutation_feature_names,
     feature_names,
     parse_mutation_cell,
     parse_mutation_token,
@@ -396,3 +398,73 @@ def test_exp050_fixed_features_are_supported_and_pre_registered() -> None:
     assert set(EXP050_FIXED_DISTRIBUTION_FEATURES).issubset(
         SAMPLE_DISTRIBUTION_FEATURES
     )
+
+
+def test_co_mutation_feature_names_cover_every_curated_pair() -> None:
+    names = co_mutation_feature_names(CO_MUTATION_PAIRS)
+    assert names[-1] == "sample__comut_pair_total_count"
+    assert names[:-1] == tuple(
+        f"sample__comut_{gene_a}_{gene_b}" for gene_a, gene_b in CO_MUTATION_PAIRS
+    )
+    assert co_mutation_feature_names(()) == ()
+
+
+def test_co_mutation_pair_features_require_both_genes_mutated(tmp_path: Path) -> None:
+    train = tmp_path / "train.csv"
+    test = tmp_path / "test.csv"
+    output = tmp_path / "features"
+    train.write_text(
+        "ID,SUBCLASS,IDH1,IDH2,APC,CTNNB1,PIK3CA,PTEN\n"
+        # T1: IDH1 + IDH2 both mutated -> co-mutation true; APC alone -> false.
+        "T1,A,R132H,R172K,R876*,WT,WT,WT\n"
+        # T2: nothing mutated -> no pair fires.
+        "T2,B,WT,WT,WT,WT,WT,WT\n",
+        encoding="utf-8",
+    )
+    test.write_text(
+        "ID,IDH1,IDH2,APC,CTNNB1,PIK3CA,PTEN\n"
+        # E1: PIK3CA + PTEN both mutated -> a second, independent pair fires.
+        "E1,WT,WT,WT,WT,E545K,R130G\n",
+        encoding="utf-8",
+    )
+
+    report = build_mutation_features(
+        train,
+        test,
+        output,
+        selected_co_mutation_pairs=CO_MUTATION_PAIRS,
+    )
+    matrix = sparse.load_npz(output / "train_features.npz")
+    test_matrix = sparse.load_npz(output / "test_features.npz")
+    names = json.loads((output / "feature_names.json").read_text(encoding="utf-8"))
+
+    assert matrix[0, names.index("sample__comut_IDH1_IDH2")] == 1
+    assert matrix[0, names.index("sample__comut_APC_CTNNB1")] == 0
+    assert matrix[0, names.index("sample__comut_pair_total_count")] == 1
+    assert matrix[1, names.index("sample__comut_pair_total_count")] == 0
+    assert test_matrix[0, names.index("sample__comut_PIK3CA_PTEN")] == 1
+    assert test_matrix[0, names.index("sample__comut_pair_total_count")] == 1
+    assert report["feature_contract"]["co_mutation_pairs"] == [
+        list(pair) for pair in CO_MUTATION_PAIRS
+    ]
+    assert report["feature_registry"]["co_mutation"]["enabled"] is True
+
+
+def test_co_mutation_rejects_unknown_pair(tmp_path: Path) -> None:
+    train = tmp_path / "train.csv"
+    test = tmp_path / "test.csv"
+    output = tmp_path / "features"
+    train.write_text("ID,SUBCLASS,GENE1\nT1,A,WT\n", encoding="utf-8")
+    test.write_text("ID,GENE1\nE1,WT\n", encoding="utf-8")
+
+    try:
+        build_mutation_features(
+            train,
+            test,
+            output,
+            selected_co_mutation_pairs=(("GENE1", "GENE2"),),
+        )
+    except ValueError as error:
+        assert "co-mutation pair" in str(error)
+    else:
+        raise AssertionError("expected ValueError for an uncurated pair")

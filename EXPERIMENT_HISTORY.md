@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 13
+- 실제 실험 수: 14
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4135846695 (`EXP-031`)
@@ -32,6 +32,7 @@
 | EXP-045 | COMPLETED | 2heej | #45 | EXP-043 후보 28종 nested 그룹·개별 선택 | 0.3999980235 | 미제출 | INFERENCE_VERIFIED | EXP-043 대비 소폭 개선, EXP-005·033보다 낮아 고정 후보 2종을 후속 검증 | [보고서](reports/exp045_xgb_nested_feature_selection/README.md) |
 | EXP-047 | COMPLETED | fabxoe | #47 | EXP-033 + 유전자별 최소 단백질 잔기 위치 | 0.4088132438 | 미제출 | INFERENCE_VERIFIED | Local OOF 개선·fold 변동성 감소, 위치 family 후속 검증 채택 | [보고서](reports/exp047_xgb_min_residue_position/README.md) |
 | EXP-050 | COMPLETED | 2heej | #50 | EXP-005 + EXP-045 반복 선택 파생변수 2종 고정 | 0.4014204930 | 미제출 | INFERENCE_VERIFIED | EXP-043·045보다 높지만 EXP-005보다 낮아 미채택 | [보고서](reports/exp050_xgb_fixed_two_distribution_features/README.md) |
+| EXP-052 | COMPLETED | Kangho-Park | #52 | EXP-047 + Feature Factory family 7(co-mutation, 문헌 근거 유전자 쌍 3개) | 0.4095069739 | 미제출 | INFERENCE_VERIFIED | OOF 소폭 개선·fold 표준편차 감소로 채택, pair 확장 검토 | [보고서](reports/exp052_hotspot_cooccurrence/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -55,6 +56,7 @@
 | 2026-07-31T07:05:20.802427+00:00 | EXP-045 | 2heej | `a854d8bd626c425363c58fa7658e236220b14c3d` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100% | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp045_xgb_nested_feature_selection/comparison.json) |
 | 2026-07-31T07:44:24.403725+00:00 | EXP-047 | fabxoe | `78c52694163c8b3f8e76557a93d271843b1627fa` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp047_xgb_min_residue_position/comparison.json) |
 | 2026-07-31T08:29:17.955451+00:00 | EXP-050 | 2heej | `b7444843245eb1e2a360084e0dfb42653cf6116a` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp050_xgb_fixed_two_distribution_features/comparison.json) |
+| 2026-07-31T09:24:31.209567+00:00 | EXP-052 | Kangho-Park | `6865fd5accf4fbf7090dc39ecc4a27f9b611adf7` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp052_hotspot_cooccurrence/comparison.json) |
 | 2026-07-31T07:58:45.020690+00:00 | EXP-030 | Gomin-art | `64b72df89ee5cf0b66409f494475aca753238184` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 5.83e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp030_sparse_variant_xgb/comparison.json) |
 
 ## 상세 실험 로그
@@ -605,6 +607,44 @@ PAAD(-0.0370), BLCA(-0.0247), DLBC(-0.0156), COAD(-0.0139), OV(-0.0100)가
 - 재현 메모: 저장 checkpoint 재추론에서 데이터 해시, 제출 SHA-256과 test
   라벨이 일치했고 확률 최대 절대 차이는 약 2.98e-08로 허용치 이내여서
   `INFERENCE_VERIFIED`를 통과했다.
+
+### [EXP-052] Feature Factory + Hotspot 연관 유전자 Co-mutation
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #52 / issue-52-hotspot-cooccurrence
+- 소스 commit: `6865fd5accf4fbf7090dc39ecc4a27f9b611adf7`
+- 시작/종료: 2026-07-31 (단일 실행)
+
+#### 실행
+
+Feature Factory에 family 7(co-mutation)을 구현해 EXP-047 피처에 문헌 근거
+유전자 쌍 3개(IDH1/IDH2, APC/CTNNB1, PIK3CA/PTEN)의 co-mutation indicator
+4개(쌍별 3개와 총합 1개)를 추가했다. 쌍은 데이터 빈도나 target으로 선정하지
+않은 고정 외부 지식이며 fold fitting을 하지 않는다.
+
+- Config: `reproducibility/exp052_hotspot_cooccurrence/config.resolved.yaml`
+- Metrics: `reports/exp052_hotspot_cooccurrence/metrics.json`
+- Report: `reports/exp052_hotspot_cooccurrence/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4106308554, 0.4136261798, 0.4002611603,
+  0.4051305971, 0.4138423476
+- OOF Macro F1: 0.4095069739
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp052_hotspot_cooccurrence/metrics.json` /
+  `reports/exp052_hotspot_cooccurrence/README.md` /
+  `reproducibility/exp052_hotspot_cooccurrence/`
+- 결론: EXP-047 대비 OOF Macro F1이 `+0.0006937301` 개선됐고 fold
+  표준편차는 `0.0085063656 → 0.0052610612`로 감소했다. 쌍별 조건부 적용과
+  pair 확장은 후속 검증 대상으로 남긴다. 저장 checkpoint 재추론에서 제출
+  SHA-256과 라벨 100% 일치를 확인해 `INFERENCE_VERIFIED`를 통과했다.
 
 ### [EXP-045] EXP-043 파생변수 단계별 선택
 

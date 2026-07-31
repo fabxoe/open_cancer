@@ -35,7 +35,9 @@ from open_cancer.constants import CLASS_LABELS, PROBABILITY_COLUMNS
 from open_cancer.experiment import resolve_experiment_context
 from open_cancer.hashing import sha256_file
 from open_cancer.mutation_features import (
+    CO_MUTATION_PAIRS,
     build_mutation_features,
+    co_mutation_feature_names,
     resolve_position_features_from_config,
     resolve_position_options_from_config,
 )
@@ -82,6 +84,25 @@ def resolve_position_features(config: dict[str, Any]) -> tuple[str, ...]:
 def resolve_position_options(config: dict[str, Any]) -> dict[str, Any]:
     """Return validated Feature Factory options while preserving EXP-047 defaults."""
     return resolve_position_options_from_config(config)
+
+
+def resolve_co_mutation_pairs(config: dict[str, Any]) -> tuple[tuple[str, str], ...]:
+    """Resolve the config-facing pair list to validated factory gene pairs."""
+
+    families = config.get("features", {})
+    co_mutation = families.get("co_mutation", {"enabled": False})
+    if not co_mutation.get("enabled", False):
+        return ()
+
+    pairs = tuple(tuple(pair) for pair in co_mutation.get("pairs", []))
+    if not pairs:
+        raise ValueError("co_mutation을 활성화하면 pairs를 하나 이상 지정해야 합니다.")
+    if len(set(pairs)) != len(pairs):
+        raise ValueError("co_mutation pair가 중복됐습니다.")
+    invalid = sorted(set(pairs) - set(CO_MUTATION_PAIRS))
+    if invalid:
+        raise ValueError(f"Feature Factory가 지원하지 않는 co-mutation pair입니다: {invalid}")
+    return pairs
 
 
 def write_local_dashboard(
@@ -490,6 +511,7 @@ def run_experiment(
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     selected_position_features = resolve_position_features(config)
     position_options = resolve_position_options(config)
+    selected_co_mutation_pairs = resolve_co_mutation_pairs(config)
     context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
     expected_experiment_id = f"EXP-{expected_issue_number:03d}"
     if (
@@ -537,6 +559,7 @@ def run_experiment(
         include_robust_aggregates=include_robust_aggregates,
         selected_robust_aggregates=selected_robust_aggregates,
         selected_position_features=selected_position_features,
+        selected_co_mutation_pairs=selected_co_mutation_pairs,
         **position_options,
     )
 
@@ -850,7 +873,10 @@ def run_experiment(
         artifact_slug=artifact_slug,
         metrics=metrics,
         feature_dir=feature_dir,
-        highlighted_features=selected_robust_aggregates or (),
+        highlighted_features=(
+            *(selected_robust_aggregates or ()),
+            *co_mutation_feature_names(selected_co_mutation_pairs),
+        ),
         comparison_metrics_path=comparison_metrics_path,
     )
     print(

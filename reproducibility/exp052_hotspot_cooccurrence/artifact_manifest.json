@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-052",
+  "issue_number": 52,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "6865fd5accf4fbf7090dc39ecc4a27f9b611adf7",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp052_hotspot_cooccurrence/data_manifest.json",
+  "environment": "reproducibility/exp052_hotspot_cooccurrence/environment.json",
+  "release_url": null,
+  "verifier": "Kangho Park",
+  "verified_at": "2026-07-31T09:24:31.209567+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp052_hotspot_cooccurrence/fold_00.json",
+      "size_bytes": 11646939,
+      "sha256": "227b500bb54774bf00755eb2306fc6cd610ffb9aff23070e6d81bc0145a25ed1",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp052_hotspot_cooccurrence/fold_01.json",
+      "size_bytes": 12931841,
+      "sha256": "770f6fb4f98d458a938a3ca9387b225ba09673d308d0bc8619e639d9d49e4d5e",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp052_hotspot_cooccurrence/fold_02.json",
+      "size_bytes": 14237586,
+      "sha256": "57d2900b40c4ccb830c6a697bda4714612f7a635fd2a5317b611fbe2243a9445",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp052_hotspot_cooccurrence/fold_03.json",
+      "size_bytes": 13095591,
+      "sha256": "a18df7a2f45359647958f768c56cb6984dc50161400921ee829c6ca9116b1208",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp052_hotspot_cooccurrence/fold_04.json",
+      "size_bytes": 12213580,
+      "sha256": "57da967d54a05975a0f65b43a5fd8c4d5c2e7fc9f54f4712cd7d09a056e0b1b7",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp052_hotspot_cooccurrence.csv",
+      "size_bytes": 38150,
+      "sha256": "37388d81943108529126010664a0b3e9dfc313d14c871bb065eb0c4d3c5456ae",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp052_hotspot_cooccurrence.csv",
+      "size_bytes": 2130649,
+      "sha256": "20ac8a5cf4913e9c988e51d242dc0dc999d443e33bb38ff2d674e8f0dc5cbcd9",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp052_hotspot_cooccurrence_test_proba.csv",
+      "size_bytes": 835260,
+      "sha256": "c7300266547aaf5d0cf5e096eecc6954242fc119751371effc4a4aba004865b8",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp052_hotspot_cooccurrence/metrics.json",
+      "size_bytes": 12182,
+      "sha256": "a0ad3261187280d09114c74a6d430bf3ee57ecf3cc0100a6ca8eb223f49b841f",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp052_hotspot_cooccurrence/config.resolved.yaml",
+      "size_bytes": 6918,
+      "sha256": "64b9f0146e164d9ff4a57e3eb4e01136268f382f9eabac3ead26e185b12ca394",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
