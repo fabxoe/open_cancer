@@ -161,6 +161,10 @@ tests/             데이터가 없어도 실행 가능한 단위 테스트
 모든 모델이 같은 파생변수를 재사용하도록 공통 Feature Factory를 사용한다. 구현,
 캐시, family Registry, 동결과 스태킹 전환 규칙의 단일 상세 문서는
 [`docs/FEATURE_FACTORY.md`](docs/FEATURE_FACTORY.md)다.
+Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 ablation의
+쉬운 설명은
+[`docs/RESIDUE_POSITION_AND_CO_MUTATION_GUIDE.md`](docs/RESIDUE_POSITION_AND_CO_MUTATION_GUIDE.md)를
+따른다.
 
 - Factory는 원본 CSV를 행 단위로 streaming 파싱하고, 파싱한 토큰에서만 피처를
   계산한다.
