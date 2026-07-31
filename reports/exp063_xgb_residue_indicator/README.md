@@ -11,13 +11,14 @@
 | 전체 피처 수 | 39,468 |
 | Local OOF Macro F1 | 0.4130329102 |
 | Public LB | 미제출 |
-| 판단 | OOF 개선으로 채택 후보, fold 변동성과 Log Loss는 소폭 악화 |
+| 당시 판단 | OOF 개선으로 채택 후보, fold 변동성과 Log Loss는 소폭 악화 |
+| Issue #80 의미 감사 | 기존 mutation-presence의 완전 중복으로 확인 |
 
 ## 무엇을 비교했나
 
 EXP-047은 각 유전자의 최소 단백질 잔기 위치를 사용하고, 위치를 읽을 수 없는
-유전자는 위치 피처를 `0`으로 남겼다. EXP-063은 모델·split·seed·다른 피처를
-그대로 유지하고 다음 indicator만 추가했다.
+유전자는 위치 피처를 `0`으로 남기는 구현이다. EXP-063은 모델·split·seed·다른
+피처를 그대로 유지하고 다음 indicator를 추가하려는 실험이었다.
 
 ```text
 residue_position_observed = 위치를 읽었으면 1, 아니면 0
@@ -26,10 +27,20 @@ residue_position_observed = 위치를 읽었으면 1, 아니면 0
 | 상황 | `min_residue_position` | `residue_position_observed` |
 |---|---:|---:|
 | 위치 132를 읽음 | 132 | 1 |
-| WT·빈값·위치 없는 토큰 | 0 | 0 |
+| WT·빈값 | 0 | 0 |
 
-따라서 모델은 위치값 `0`이 실제 단백질 위치가 아니라 “위치를 관측하지 못함”을
-나타낸다는 사실을 별도 피처로 알 수 있다.
+그러나 Issue #80에서 실제 sparse 산출물을 다시 검사한 결과, 현재 train/test의
+모든 non-WT 토큰에서 양의 residue 위치가 파싱됐다. 따라서 이 데이터에서
+`residue_position_observed`는 기존 `mutation_presence`와 완전히 동일하다.
+
+| 의미 감사 항목 | Train | Test |
+|---|---:|---:|
+| mutation-presence와 indicator 불일치 | 0 | 0 |
+| 위치 없는 변이 토큰 | 0 | 0 |
+| `P(position=0 \| observed=1)` | 0 | 0 |
+
+즉 EXP-063은 4,384개의 새로운 결측 정보를 추가한 실험이 아니라 기존
+mutation-presence 열 4,384개를 복제한 실험이다.
 
 ## 검증 계약
 
@@ -68,12 +79,18 @@ fold별 Macro F1은 다음과 같다.
 
 ## 해석과 판단
 
-공식 지표인 전체 OOF Macro F1이 약 `+0.00422` 개선돼 위치 관측 indicator는
-채택 후보로 남긴다. 특히 일부 소수 클래스의 F1이 크게 개선됐다.
+공식 지표인 전체 OOF Macro F1이 약 `+0.00422` 개선된 실제 결과는 변경하지
+않는다. 다만 이 개선을 위치 결측 ambiguity 해소나 생물학적 위치 신호의 근거로
+사용하지 않는다.
 
-다만 fold 표준편차와 Log Loss는 소폭 증가했다. 즉 indicator가 모든 fold와
-확률 품질을 일관되게 개선한 것은 아니다. 다음 위치 옵션을 단독으로 검증한 뒤
-indicator와의 조합은 별도 Experiment Issue에서 확인해야 한다.
+중복 열은 XGBoost의 `colsample_bytree=0.8` 환경에서 mutation-presence 계열이
+split 후보로 선택될 상대 확률을 바꿀 수 있다. 따라서 EXP-063은 사후적으로
+**중복 피처 weighting perturbation** 결과로 해석한다. fold 표준편차와 Log Loss도
+소폭 증가했으므로 indicator 자체를 Feature Spec에 채택하지 않는다.
+
+실제 QC 원본은
+[`reports/analysis/residue_position_semantics_qc.json`](../analysis/residue_position_semantics_qc.json)과
+[해석 보고서](../analysis/residue_position_semantics_qc.md)에 기록한다.
 
 ## 재현 상태
 

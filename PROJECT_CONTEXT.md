@@ -186,14 +186,26 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   기록한다.
 - 위치 숫자는 입력 토큰에 명시된 단백질 잔기 위치다. genomic coordinate,
   codon nucleotide 위치나 transcript 정규화 좌표로 추정하지 않는다.
+- 새 indicator나 missingness 피처를 공식 실험에 넣기 전에 기존 피처와 값이 같은지
+  target-independent semantic equivalence 검사를 수행한다. 완전히 같은 열이면
+  결측 해소 피처로 해석하지 않고 중복 피처 weighting perturbation으로 기록한다.
+- 진단 예시나 외부 AI가 제시한 출력값은 실제 캐시에서 재계산하기 전까지
+  History·보고서의 사실로 기록하지 않는다. 가능하면 기존 sparse 산출물을
+  재사용하고 진단 입력 파일의 전체 SHA-256을 남긴다.
 - residue-position의 유전자별 정규화와 recurrent hotspot은 validation fold를
   제외한 fold-train에서만 fit하는 transformer/selector로 분리한다. 정적 Feature
   Factory가 전체 train의 위치 범위나 validation/test 빈도를 미리 보게 만들지
   않는다.
+- residue-position permutation negative control은 각 outer fold의 train에서만
+  수행하고 validation은 원본으로 둔다. test는 사용하지 않으며 여러 고정 seed의
+  paired fold 결과를 기록한다. 가능하면 mutation type·token-count strata를
+  유지한다.
 - Feature Spec v1을 동결한 뒤 모델 OOF 생산과 스태킹으로 전환한다. 이후 새
   family 아이디어는 v2 후보로 옮겨 현재 스태킹을 지연시키지 않는다.
 - Public LB 또는 test 분포를 보고 파서, 유전자 그룹, hotspot이나 feature 규칙을
   수정하지 않는다.
+- train/test의 complex·위치 분포 차이는 OOD QC로만 기록하며 피처 선택,
+  threshold, blend 가중치나 제출 후보를 정하는 근거로 사용하지 않는다.
 
 ### 파일 명명 규칙
 

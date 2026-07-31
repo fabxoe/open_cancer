@@ -35,11 +35,11 @@
 | EXP-052 | COMPLETED | Kangho-Park | #52 | EXP-047 + Feature Factory family 7(co-mutation, 문헌 근거 유전자 쌍 3개) | 0.4095069739 | 미제출 | INFERENCE_VERIFIED | OOF 소폭 개선·fold 표준편차 감소로 채택, pair 확장 검토 | [보고서](reports/exp052_hotspot_cooccurrence/README.md) |
 | EXP-058 | COMPLETED | Kangho-Park | #58 | EXP-052에서 SHAP 근거로 APC/CTNNB1 제거(쌍 3개→2개) | 0.4101842357 | 미제출 | INFERENCE_VERIFIED | EXP-052 대비 소폭 개선한 탐색 후보, 독립 검증 필요 | [보고서](reports/exp058_cooccurrence_pair_ablation/README.md) |
 | EXP-065 | COMPLETED | fabxoe | #65 | EXP-047 + complex-token residue 위치 제외 | 0.4108923084 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 소폭 감소로 채택 후보 | [보고서](reports/exp065_xgb_residue_exclude_complex/README.md) |
-| EXP-063 | COMPLETED | fabxoe | #63 | EXP-047 + residue-position 관측 indicator | 0.4130329102 | 미제출 | INFERENCE_VERIFIED | OOF 개선으로 채택 후보, fold 변동성과 Log Loss는 소폭 악화 | [보고서](reports/exp063_xgb_residue_indicator/README.md) |
+| EXP-063 | COMPLETED | fabxoe | #63 | EXP-047 + residue-position 관측 indicator | 0.4130329102 | 미제출 | INFERENCE_VERIFIED | OOF 개선은 유효하나 Issue #80에서 mutation-presence 완전 중복으로 확인, 결측 신호 해석 기각 | [보고서](reports/exp063_xgb_residue_indicator/README.md) |
 | EXP-067 | COMPLETED | fabxoe | #67 | EXP-047 + residue 위치 폭 100 coarse-bin | 0.4124014867 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 감소로 채택 후보 | [보고서](reports/exp067_xgb_residue_coarse_bin/README.md) |
 | EXP-069 | COMPLETED | fabxoe | #69 | EXP-047의 min residue 위치를 max로 교체 | 0.4131007993 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 감소로 채택 후보 | [보고서](reports/exp069_xgb_max_residue_position/README.md) |
 | EXP-075 | COMPLETED | fabxoe | #75 | EXP-067·069 확률의 사전 고정 0.5/0.5 평균 | 0.4157910775 | 미제출 | INFERENCE_VERIFIED | 두 부모 대비 OOF·Log Loss 개선과 fold 변동성 감소로 채택 | [보고서](reports/exp075_residue_probability_blend/README.md) |
-| EXP-078 | COMPLETED | fabxoe | #78 | EXP-069 max residue-position + 관측 indicator | 0.4110815504 | 미제출 | INFERENCE_VERIFIED | OOF 하락·fold 변동성 악화로 기각, EXP-069 max+zero 동결 | [보고서](reports/exp078_xgb_max_residue_indicator/README.md) |
+| EXP-078 | COMPLETED | fabxoe | #78 | EXP-069 max residue-position + 관측 indicator | 0.4110815504 | 미제출 | INFERENCE_VERIFIED | OOF 하락·fold 변동성 악화 및 Issue #80 중복 확인으로 기각, EXP-069 max+zero 동결 | [보고서](reports/exp078_xgb_max_residue_indicator/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -652,11 +652,12 @@ PAAD(-0.0370), BLCA(-0.0247), DLBC(-0.0156), COAD(-0.0139), OV(-0.0100)가
   `reports/exp063_xgb_residue_indicator/metrics.json` /
   `reports/exp063_xgb_residue_indicator/README.md` /
   `reproducibility/exp063_xgb_residue_indicator/`
-- 결론: EXP-047 대비 OOF Macro F1이 `+0.0042196664` 개선돼 위치 관측
-  indicator를 채택 후보로 유지한다. 다만 fold 표준편차는 `+0.0012194691`,
-  Log Loss는 `+0.0003141165` 증가했으므로 다른 위치 옵션과의 조합은 단독
-  ablation이 끝난 뒤 별도 실험으로 검증한다. 저장 checkpoint 재추론에서
-  제출 SHA-256과 라벨 100% 일치를 확인했다.
+- 결론: EXP-047 대비 OOF Macro F1 `+0.0042196664`, fold 표준편차
+  `+0.0012194691`, Log Loss `+0.0003141165`의 실제 결과와 재현 검증은
+  유지한다. 이후 Issue #80 의미 감사에서 train/test 모두 indicator와 기존
+  mutation-presence의 불일치가 0개임을 확인했다. 따라서 개선을 결측 해소나
+  생물학적 위치 신호로 해석하지 않고 중복 피처 weighting perturbation으로
+  재분류하며 indicator는 채택하지 않는다.
 
 ### [EXP-052] Feature Factory + Hotspot 연관 유전자 Co-mutation
 
@@ -1138,6 +1139,8 @@ config 변경만으로 재실행했다(Feature Factory 코드 변경 없음).
 - 결론: EXP-069 대비 OOF Macro F1이 `-0.0020192489` 하락했고 fold
   표준편차가 `+0.0044423453` 악화돼 로드맵 채택 조건 두 개를 모두
   통과하지 못했다. `max+indicator`를 기각하고 EXP-069의 `max+zero`를
-  Position Feature Spec v1으로 동결한다. 위치 옵션 추가 탐색은 종료한다.
+  Position Feature Spec v1으로 동결한다. Issue #80에서 indicator가 기존
+  mutation-presence와 완전히 같은 중복 열임을 추가 확인했으며, 하락을 결측
+  표현의 효과로 해석하지 않는다. 위치 옵션 추가 탐색은 종료한다.
 - 재현 메모: 저장 checkpoint 재추론에서 제출 SHA-256과 test 라벨 100%,
   확률 최대 절대 차이 약 2.97e-08을 확인해 `INFERENCE_VERIFIED`를 통과했다.

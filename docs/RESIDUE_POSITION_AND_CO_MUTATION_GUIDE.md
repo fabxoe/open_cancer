@@ -91,12 +91,16 @@ fold-train에서만 pair를 선정하고 validation에는 변환만 적용해야
 | 상황 | 위치값 | `residue_position_observed` |
 |---|---:|---:|
 | 위치 132를 읽음 | 132 | 1 |
-| WT·빈값·위치 없는 토큰 | 0 | 0 |
+| WT·빈값 | 0 | 0 |
 
 비교 질문은 다음과 같다.
 
-> 모델에 “0은 실제 위치가 아니라 위치 정보를 읽지 못했다는 뜻”을 별도로
-> 알려주면 성능이 좋아지는가?
+일반적인 비교 질문은 “위치 파싱 실패를 명시하면 성능이 좋아지는가?”다. 하지만
+Issue #80의 실제 데이터 감사에서는 모든 non-WT 토큰의 위치가 파싱됐고
+`residue_position_observed`가 기존 mutation-presence와 완전히 같았다. 따라서
+EXP-063·078에서 이 화살표는 결측 의미 비교가 아니라 동일한 presence 열을 한 번
+더 추가했을 때의 feature weighting 변화를 뜻한다. 이 결과로 결측 ambiguity나
+생물학적 위치 신호를 주장하지 않는다.
 
 ### `complex include → exclude`
 

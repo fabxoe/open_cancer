@@ -31,6 +31,8 @@ features:
 
 - `zero`: 위치를 읽지 못한 유전자의 위치 피처는 희소행렬의 0으로 남긴다.
 - `indicator`: 위 0 처리에 `residue_position_observed` 피처를 자동 추가한다.
+  현재 데이터에서는 기존 mutation-presence와 완전히 같으므로 신규 실험에는
+  사용하지 않고, 데이터 계약이 바뀐 경우 semantic equivalence QC 후 사용한다.
 - `exclude`: `_`, `>` 등 complex 토큰에서 읽은 위치는 위치 aggregate에서 제외한다.
   frameshift는 별도 mutation type이므로 포함된다.
 - `coarse_bin`: `(position - 1) // bin_width + 1`의 고정 구간 번호를 사용한다.

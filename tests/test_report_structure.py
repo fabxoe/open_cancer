@@ -43,3 +43,18 @@ def test_long_term_roadmap_is_linked_without_changing_history_role() -> None:
     assert "| A | EXP-067+069 고정 blend |" in roadmap
     assert "EXP-075" in roadmap
     assert "## 결정 변경 이력" in roadmap
+
+
+def test_position_semantics_audit_is_linked_and_does_not_change_history() -> None:
+    project_context = Path("PROJECT_CONTEXT.md").read_text(encoding="utf-8")
+    reports_readme = Path("reports/README.md").read_text(encoding="utf-8")
+    audit = Path("reports/analysis/residue_position_semantics_qc.md")
+    audit_json = Path("reports/analysis/residue_position_semantics_qc.json")
+
+    assert audit.is_file()
+    assert audit_json.is_file()
+    assert "semantic equivalence" in project_context
+    assert "analysis/residue_position_semantics_qc.md" in reports_readme
+    assert "새로운 모델 실험이나 점수를 만들지 않습니다" in audit.read_text(
+        encoding="utf-8"
+    )
