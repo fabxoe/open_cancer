@@ -11,18 +11,18 @@
 - 로드맵 관리 Task: [Issue #73](https://github.com/fabxoe/open_cancer/issues/73)
 - 로드맵 관리 PR: [PR #74](https://github.com/fabxoe/open_cancer/pull/74) (`MERGED`)
 - 기준일: 2026-07-31
-- 실제 완료 실험 수: 18
+- 실제 완료 실험 수: 19
 - 기준 실험:
   - [EXP-067 coarse-bin](../exp067_xgb_residue_coarse_bin/README.md)
   - [EXP-069 max residue-position](../exp069_xgb_max_residue_position/README.md)
   - [EXP-031 hotspot extended](../exp031_hotspot_extended/README.md)
-- 확정된 다음 작업: 단계 A의 고정 `0.5/0.5` 확률 blend용 Experiment Issue 생성
+- 확정된 다음 작업: EXP-075 PR 검토와 단계 B Experiment Issue 생성
 
 ## 진행 상태표
 
 | 단계 | 작업 | Issue | EXP | PR | 상태 | OOF Macro F1 | 재현 상태 | 판단 | 다음 행동 |
 |---|---|---:|---|---:|---|---:|---|---|---|
-| A | EXP-067+069 고정 blend | [#75](https://github.com/fabxoe/open_cancer/issues/75) | EXP-075 | - | IN_PROGRESS | N/A | NOT_STARTED | - | 구현·공식 실행 |
+| A | EXP-067+069 고정 blend | [#75](https://github.com/fabxoe/open_cancer/issues/75) | EXP-075 | - | IN_PROGRESS | 0.4157910775 | INFERENCE_VERIFIED | 두 부모 대비 개선으로 채택 | PR 생성·검토 |
 | B | max+indicator | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | A 완료 대기 |
 | C | hotspot runner 정리 | 미발급 | 해당 없음 | - | PLANNED | N/A | 해당 없음 | - | B 완료 대기 |
 | D | hotspot clean 실험 | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | C 완료 대기 |

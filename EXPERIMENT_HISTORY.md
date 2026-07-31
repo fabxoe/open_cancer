@@ -7,12 +7,12 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 18
+- 실제 실험 수: 19
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4135846695 (`EXP-031`)
+- 최고 Local OOF Macro F1: 0.4157910775 (`EXP-075`)
 - 최고 Public LB Macro F1: 0.3170803849 (`EXP-031`)
-- 최고 재현 검증 모델: `EXP-069` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-075` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-07-31
 
 ## 실험 요약
@@ -37,6 +37,7 @@
 | EXP-063 | COMPLETED | fabxoe | #63 | EXP-047 + residue-position 관측 indicator | 0.4130329102 | 미제출 | INFERENCE_VERIFIED | OOF 개선으로 채택 후보, fold 변동성과 Log Loss는 소폭 악화 | [보고서](reports/exp063_xgb_residue_indicator/README.md) |
 | EXP-067 | COMPLETED | fabxoe | #67 | EXP-047 + residue 위치 폭 100 coarse-bin | 0.4124014867 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 감소로 채택 후보 | [보고서](reports/exp067_xgb_residue_coarse_bin/README.md) |
 | EXP-069 | COMPLETED | fabxoe | #69 | EXP-047의 min residue 위치를 max로 교체 | 0.4131007993 | 미제출 | INFERENCE_VERIFIED | OOF 개선·fold 변동성 감소로 채택 후보 | [보고서](reports/exp069_xgb_max_residue_position/README.md) |
+| EXP-075 | COMPLETED | fabxoe | #75 | EXP-067·069 확률의 사전 고정 0.5/0.5 평균 | 0.4157910775 | 미제출 | INFERENCE_VERIFIED | 두 부모 대비 OOF·Log Loss 개선과 fold 변동성 감소로 채택 | [보고서](reports/exp075_residue_probability_blend/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -66,6 +67,7 @@
 | 2026-07-31T10:50:47.543725+00:00 | EXP-063 | fabxoe | `7265bf6c6fc166cf7f30ef07f41ed2c641a3fb56` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp063_xgb_residue_indicator/comparison.json) |
 | 2026-07-31T11:19:02.749201+00:00 | EXP-067 | fabxoe | `5846db2f18f610836a38b23cc8c377f9809fe47c` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp067_xgb_residue_coarse_bin/comparison.json) |
 | 2026-07-31T11:33:26.265681+00:00 | EXP-069 | fabxoe | `8b603bcf8b03658e54d158b5976df51c90cea5f8` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp069_xgb_max_residue_position/comparison.json) |
+| 2026-07-31T12:59:12.117866+00:00 | EXP-075 | fabxoe | `01fb86e27b0ebfd177d4a6e60ac6535a02fcfb3c` / [`exp-075-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-075-repro-v1) | 부모 artifact SHA-256 일치 | byte-level SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp075_residue_probability_blend/comparison.json) |
 | 2026-07-31T07:58:45.020690+00:00 | EXP-030 | Gomin-art | `64b72df89ee5cf0b66409f494475aca753238184` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 5.83e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp030_sparse_variant_xgb/comparison.json) |
 
 ## 상세 실험 로그
@@ -976,3 +978,52 @@ Feature Factory에 family 7(co-mutation)을 구현해 EXP-047 피처에 문헌 �
 - 재현 메모: 저장 checkpoint 재추론에서 데이터 해시와 제출 SHA-256이
   일치하고 test 라벨 일치율 100%, 확률 최대 절대 차이 약 2.97e-08로
   허용치 이내여서 `INFERENCE_VERIFIED`를 통과했다.
+
+### [EXP-075] EXP-067·069 고정 0.5/0.5 확률 Blend
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #75 / issue-75-exp-residue-blend
+- 소스 commit: `01fb86e27b0ebfd177d4a6e60ac6535a02fcfb3c`
+- 시작/종료: 2026-07-31T12:59:08.935275+00:00 /
+  2026-07-31T12:59:09.213986+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp075_residue_probability_blend/config.resolved.yaml`
+- Metrics: `reports/exp075_residue_probability_blend/metrics.json`
+- Report: `reports/exp075_residue_probability_blend/README.md`
+- 부모: EXP-067(coarse-bin), EXP-069(max residue-position)
+- 고정 방식: 두 OOF·test 확률의 `0.5/0.5` 산술 평균 후 고정 클래스 순서
+  `argmax`
+
+#### 결과
+
+- Fold Macro F1: 0.4129241979, 0.4225703598, 0.4081482976,
+  0.4095628288, 0.4234699014
+- OOF Macro F1: 0.4157910775
+- Fold 표준편차: 0.0064700181
+- Accuracy: 0.4073536526
+- Log Loss: 1.8446407531
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp075_residue_probability_blend/metrics.json` /
+  `reports/exp075_residue_probability_blend/README.md` /
+  `reproducibility/exp075_residue_probability_blend/`
+- 제출 후보: `submissions/exp075_residue_probability_blend.csv`
+  (SHA-256 `25f00f1a97acbd5364df0dd7b391f75a930888fefc887edf696f681d482d7b3e`,
+  DACON 미제출)
+- 결론: EXP-067보다 OOF `+0.0033895908`, EXP-069보다 `+0.0026902782`
+  개선했고 fold 표준편차와 Log Loss도 두 부모보다 낮아 고정 blend를 채택한다.
+  EXP-067과 EXP-069의 OOF 라벨 일치율은 약 88.79%로, 서로 다른 오류가
+  단순 평균의 개선에 기여한 것으로 해석한다.
+- 재현 메모: 동일 부모 확률에서 재계산한 OOF·test 라벨 일치율 100%, 확률
+  최대 절대 차이 0, 제출 CSV byte-level SHA-256 일치를 확인했다. 새 모델을
+  학습하지 않는 inference-only 실험이며 부모 checkpoint 10개와 입력 확률을
+  [`exp-075-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-075-repro-v1)
+  번들에 함께 보관했다. 번들 SHA-256은
+  `698c29841112ff78e6fe2dcdd1b6b07bd2e7a2db26ef8ec86e625963d8125b33`이다.
