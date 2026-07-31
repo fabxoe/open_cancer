@@ -404,7 +404,7 @@ def verify_saved_inference(
             "원본 CSV를 `data/raw/`에 배치하고 다음 명령을 실행합니다.\n\n"
             "```bash\n"
             "uv sync --frozen\n"
-            f"uv run python scripts/run_{artifact_slug}.py\n"
+            f"{resolved_config['training']['command']}\n"
             "uv run python scripts/validate_experiment.py\n"
             "```\n\n"
             "실험 실행 마지막 단계에서 저장 checkpoint 추론과 제출 SHA-256 "
