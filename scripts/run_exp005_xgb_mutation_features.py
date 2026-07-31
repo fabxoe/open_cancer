@@ -36,9 +36,10 @@ from open_cancer.experiment import resolve_experiment_context
 from open_cancer.hashing import sha256_file
 from open_cancer.mutation_features import (
     CO_MUTATION_PAIRS,
-    RESIDUE_POSITION_FEATURES,
     build_mutation_features,
     co_mutation_feature_names,
+    resolve_position_features_from_config,
+    resolve_position_options_from_config,
 )
 from open_cancer.paths import relative_posix
 from open_cancer.validation import validate_json_document, validate_submission
@@ -77,32 +78,12 @@ def file_record(path: Path) -> dict[str, Any]:
 
 def resolve_position_features(config: dict[str, Any]) -> tuple[str, ...]:
     """Resolve the config-facing aggregate names to factory feature names."""
+    return resolve_position_features_from_config(config)
 
-    families = config.get("features", {})
-    mutation_type = families.get("mutation_type", {"enabled": True})
-    if not mutation_type.get("enabled", True):
-        raise ValueError(
-            "이 공통 runner에서는 mutation_type core family를 끌 수 없습니다."
-        )
-    residue_position = families.get("residue_position", {"enabled": False})
-    if not residue_position.get("enabled", False):
-        return ()
 
-    aggregate_mapping = {"min": "min_residue_position"}
-    aggregates = residue_position.get("aggregates", [])
-    invalid = sorted(set(aggregates) - set(aggregate_mapping))
-    if invalid:
-        raise ValueError(f"지원하지 않는 residue position aggregate입니다: {invalid}")
-    resolved = tuple(aggregate_mapping[name] for name in aggregates)
-    if not resolved:
-        raise ValueError(
-            "residue_position을 활성화하면 aggregates를 하나 이상 지정해야 합니다."
-        )
-    if len(set(resolved)) != len(resolved):
-        raise ValueError("residue position aggregate가 중복됐습니다.")
-    if set(resolved) - set(RESIDUE_POSITION_FEATURES):
-        raise ValueError("Feature Factory가 지원하지 않는 위치 피처입니다.")
-    return resolved
+def resolve_position_options(config: dict[str, Any]) -> dict[str, Any]:
+    """Return validated Feature Factory options while preserving EXP-047 defaults."""
+    return resolve_position_options_from_config(config)
 
 
 def resolve_co_mutation_pairs(config: dict[str, Any]) -> tuple[tuple[str, str], ...]:
@@ -529,6 +510,7 @@ def run_experiment(
     start_time = time.perf_counter()
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     selected_position_features = resolve_position_features(config)
+    position_options = resolve_position_options(config)
     selected_co_mutation_pairs = resolve_co_mutation_pairs(config)
     context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
     expected_experiment_id = f"EXP-{expected_issue_number:03d}"
@@ -578,6 +560,7 @@ def run_experiment(
         selected_robust_aggregates=selected_robust_aggregates,
         selected_position_features=selected_position_features,
         selected_co_mutation_pairs=selected_co_mutation_pairs,
+        **position_options,
     )
 
     train_meta = pd.read_csv(TRAIN_PATH, usecols=["ID", "SUBCLASS"], dtype=str)
