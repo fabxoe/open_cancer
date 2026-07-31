@@ -1,0 +1,227 @@
+experiment:
+  slug: cosmic_weighted_burden_baseline
+data:
+  train_path: data/raw/train.csv
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
+  split_path: data/splits/stratified_5fold_seed42.csv
+run:
+  seed: 42
+  n_splits: 5
+  n_jobs: 8
+features:
+  encoding: mutation_presence
+  include_mutation_burden: false
+  empty_value_policy: treat_as_wild_type
+  matrix_format: csr_float32
+  gene_whitelist_path: null
+  protect_gene_whitelist_path: reports/exp012_feature_analysis/protected_genes_final.csv
+  correlated_gene_top_k: 200
+model:
+  library: xgboost
+  class_name: XGBClassifier
+  use_balanced_sample_weight: false
+  params:
+    objective: multi:softprob
+    num_class: 26
+    n_estimators: 800
+    learning_rate: 0.05
+    max_depth: 4
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.2
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    gamma: 0.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 50
+    tree_method: hist
+    device: cpu
+    verbosity: 0
+identity:
+  experiment_id: EXP-021
+  issue_number: 21
+  branch: issue-21-cosmic-feature-xgb-baseline
+  owner: Kangho Park
+  git_commit: 0cde83c5fe59cf9fab34bf14eb6aacb3168078a7
+  dirty_worktree_at_start: false
+  started_at: '2026-07-30T14:45:23Z'
+  finished_at: '2026-07-30T14:47:04Z'
+data_manifest:
+  train_rows: 6201
+  test_rows: 2546
+  gene_columns: 4384
+  class_count: 26
+  classes:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+  feature_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  files:
+    train:
+      path: data\raw\train.csv
+      sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+    test:
+      path: data\raw\test.csv
+      sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+    sample_submission:
+      path: data\raw\sample_submission.csv
+      sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  split:
+    path: data\splits\stratified_5fold_seed42.csv
+    sha256: 6bc79dcce250a2abd5bf08998f43f6813b0b1edd9a31feff866c80713ff9107f
+    n_splits: 5
+    fold_counts:
+      '0': 1241
+      '1': 1240
+      '2': 1240
+      '3': 1240
+      '4': 1240
+feature_manifest:
+  matrix_shape_train_full:
+  - 6201
+  - 4384
+  matrix_shape_test_full:
+  - 2546
+  - 4384
+  final_feature_count: 4385
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+  weighted_burden:
+    method: protect_genes(weight=1.0) + per_fold_top_correlated(weight=|correlation|),
+      summed per row into 1 new column
+    protect_gene_whitelist_path: reports\exp012_feature_analysis\protected_genes_final.csv
+    protect_gene_whitelist_sha256: 0d9da76323513a45ada57ba7f9f9629007b38aba0c98f83003e63b4fa6322876
+    protect_gene_count: 361
+    correlated_gene_top_k: 200
+    per_fold:
+    - fold: 0
+      protect_gene_count: 361
+      correlated_gene_count: 200
+      correlated_weight_hash: aa372a240875bddb7394fee2d2712ee4c0c214f0d430d0c3ec12355b39fd0e8c
+    - fold: 1
+      protect_gene_count: 361
+      correlated_gene_count: 200
+      correlated_weight_hash: 66612983910d86318ba52a43e8d7ac0cf6319b93af871229033d19e1134e4b77
+    - fold: 2
+      protect_gene_count: 361
+      correlated_gene_count: 200
+      correlated_weight_hash: 7d1d187ba82c36ccbdebdd11b8a67a84bcefc776f7ec20cad797c8bb20d74720
+    - fold: 3
+      protect_gene_count: 361
+      correlated_gene_count: 200
+      correlated_weight_hash: 328d21efd79e406f79b4d22ecf9d9f111d8284e3794d10bfc5e5344288359ff1
+    - fold: 4
+      protect_gene_count: 361
+      correlated_gene_count: 200
+      correlated_weight_hash: 9c42897d6499b3460cda283a11ef160bae21110f4767690d6d999b9c9911abdc
+environment:
+  os: Windows-10-10.0.26200-SP0
+  machine: AMD64
+  python: 3.11.10
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scipy: 1.17.1
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  pythonhashseed: '42'
+  uv_lock_sha256: ee554d204078eb867ff240648ea1bd9d1c9fef8d243611ab6d6a691cf673ef03
+resolved_model_params:
+  objective: multi:softprob
+  num_class: 26
+  n_estimators: 800
+  learning_rate: 0.05
+  max_depth: 4
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.2
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  gamma: 0.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 50
+  tree_method: hist
+  device: cpu
+  verbosity: 0
+  n_jobs: 8
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  use_balanced_sample_weight: false
+  best_iterations:
+  - 497
+  - 488
+  - 488
+  - 456
+  - 570
+command:
+  train: PYTHONHASHSEED=42 uv run python scripts/run_exp021_cosmic_weighted_burden_baseline.py
+    --config configs\exp021_cosmic_weighted_burden_baseline.yaml
+outputs:
+  config: reproducibility\exp021_cosmic_weighted_burden_baseline\config.resolved.yaml
+  oof_predictions: oof\exp021_cosmic_weighted_burden_baseline\oof_predictions.csv
+  oof_probabilities: oof\exp021_cosmic_weighted_burden_baseline\oof_probabilities.npy
+  test_probabilities: preds\exp021_cosmic_weighted_burden_baseline\test_probabilities.npy
+  submission: submissions\exp021_cosmic_weighted_burden_baseline.csv
+  class_f1: reports\exp021_cosmic_weighted_burden_baseline\class_f1.csv
+  models: models\exp021_cosmic_weighted_burden_baseline
+  test_probability_csv: preds\exp021_cosmic_weighted_burden_baseline\test_probabilities.csv
+  metrics: reports\exp021_cosmic_weighted_burden_baseline\metrics.json
+  submission_sha256: cb75da2609631bc86310a637e2d4f2e244bfe85dac71da4f154559ebf19a07b0
+  checkpoints:
+  - models\exp021_cosmic_weighted_burden_baseline\fold_00.json
+  - models\exp021_cosmic_weighted_burden_baseline\fold_01.json
+  - models\exp021_cosmic_weighted_burden_baseline\fold_02.json
+  - models\exp021_cosmic_weighted_burden_baseline\fold_03.json
+  - models\exp021_cosmic_weighted_burden_baseline\fold_04.json

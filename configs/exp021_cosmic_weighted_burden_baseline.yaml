@@ -1,0 +1,23 @@
+experiment:
+  slug: cosmic_weighted_burden_baseline
+
+# 아래에 적지 않은 값은 src/open_cancer/xgb_baseline.py의 기본값을 사용합니다.
+# 실제 적용값 전체는 실행 후 config.resolved.yaml에 자동 저장됩니다.
+#
+# EXP-021(#21)의 세 번째 시도: EXP-003과 동일하게 전체 4,384개
+# mutation-presence 피처를 그대로 유지하고, COSMIC protect 유전자(가중치
+# 1.0)와 attempt 2에서 쓴 fold별 상관 상위 유전자(가중치=|correlation|)를
+# 하나의 가중합 파생 컬럼으로 압축해 추가합니다 (총 4,385개 피처).
+# 가중치는 fold train에서만 재계산합니다
+# (scripts/run_exp021_cosmic_weighted_burden_baseline.py 참고).
+#
+# protect_gene_whitelist_path 파일은 COSMIC 라이선스 미확정으로 Git에 없습니다.
+# docs/EXP-012_handoff.md 4절 절차대로 로컬에서 재현한 뒤 실행하세요.
+features:
+  encoding: mutation_presence
+  include_mutation_burden: false
+  protect_gene_whitelist_path: reports/exp012_feature_analysis/protected_genes_final.csv
+  correlated_gene_top_k: 200
+
+model:
+  use_balanced_sample_weight: false
