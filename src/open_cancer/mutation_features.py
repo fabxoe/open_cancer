@@ -7,6 +7,7 @@ import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 from scipy import sparse
@@ -14,8 +15,10 @@ from scipy import sparse
 from open_cancer.hashing import sha256_file, sha256_lines
 
 
+FEATURE_FACTORY_VERSION = "1.0.0"
 MUTATION_TYPES = ("missense", "synonymous", "nonsense", "frameshift", "complex")
 GENE_FEATURES = ("mutated", *MUTATION_TYPES, "missing")
+RESIDUE_POSITION_FEATURES = ("min_residue_position",)
 GLOBAL_FEATURES = (
     "sample__mutated_gene_count",
     "sample__total_variant_count",
@@ -57,6 +60,38 @@ EXP050_FIXED_DISTRIBUTION_FEATURES = (
 )
 
 _SUBSTITUTION = re.compile(r"^([ACDEFGHIKLMNPQRSTVWY])([1-9][0-9]*)([ACDEFGHIKLMNPQRSTVWY*])$")
+_RESIDUE_POSITION = re.compile(r"[1-9][0-9]*")
+_LEADING_AMINO_ACIDS = re.compile(r"^([ACDEFGHIKLMNPQRSTVWY*]+)")
+_TRAILING_AMINO_ACIDS = re.compile(r"([ACDEFGHIKLMNPQRSTVWY*]+)$")
+
+
+@dataclass(frozen=True)
+class ParsedMutationToken:
+    """A conservative lexical parse of one protein-mutation token.
+
+    Positions are protein residue indices written in the supplied token. They
+    are not genomic coordinates, codon nucleotide positions, or transcript-
+    normalized coordinates.
+    """
+
+    raw: str
+    mutation_type: str
+    residue_positions: tuple[int, ...]
+    reference_amino_acid: str | None
+    alternate_amino_acid: str | None
+    token_shape: str
+    is_complex: bool
+
+
+@dataclass(frozen=True)
+class ParsedMutationCell:
+    """Structured representation of one gene cell."""
+
+    tokens: tuple[ParsedMutationToken, ...]
+    token_count: int
+    residue_positions: tuple[int, ...]
+    mutation_types: frozenset[str]
+    has_complex_token: bool
 
 
 def classify_mutation_token(token: str) -> str:
@@ -75,11 +110,72 @@ def classify_mutation_token(token: str) -> str:
     return "complex"
 
 
+def parse_mutation_token(token: str) -> ParsedMutationToken:
+    """Parse only information explicitly present in a mutation token."""
+
+    raw = token.strip()
+    mutation_type = classify_mutation_token(raw)
+    positions = tuple(int(value) for value in _RESIDUE_POSITION.findall(raw))
+    reference: str | None = None
+    alternate: str | None = None
+
+    substitution = _SUBSTITUTION.fullmatch(raw)
+    if substitution is not None:
+        reference, _, alternate = substitution.groups()
+        token_shape = "substitution"
+    elif raw.endswith("fs"):
+        reference_match = _LEADING_AMINO_ACIDS.match(raw)
+        reference = reference_match.group(1) if reference_match else None
+        token_shape = "frameshift"
+    elif ">" in raw:
+        left, right = raw.split(">", maxsplit=1)
+        reference_match = _TRAILING_AMINO_ACIDS.search(left)
+        alternate_match = _LEADING_AMINO_ACIDS.match(right)
+        reference = reference_match.group(1) if reference_match else None
+        alternate = alternate_match.group(1) if alternate_match else None
+        token_shape = "range_change" if len(positions) > 1 or "_" in raw else "complex_change"
+    else:
+        token_shape = "complex"
+
+    return ParsedMutationToken(
+        raw=raw,
+        mutation_type=mutation_type,
+        residue_positions=positions,
+        reference_amino_acid=reference,
+        alternate_amino_acid=alternate,
+        token_shape=token_shape,
+        is_complex=mutation_type == "complex",
+    )
+
+
+def parse_mutation_cell(cell: str) -> ParsedMutationCell:
+    """Parse a WT/blank/multi-token gene cell without using the target."""
+
+    parsed = tuple(
+        parse_mutation_token(token)
+        for token in cell.split()
+        if token and token != "WT"
+    )
+    positions = tuple(
+        position
+        for token in parsed
+        for position in token.residue_positions
+    )
+    return ParsedMutationCell(
+        tokens=parsed,
+        token_count=len(parsed),
+        residue_positions=positions,
+        mutation_types=frozenset(token.mutation_type for token in parsed),
+        has_complex_token=any(token.is_complex for token in parsed),
+    )
+
+
 @dataclass(frozen=True)
 class FeatureMatrix:
     matrix: sparse.csr_matrix
     ids: list[str]
     labels: list[str] | None
+    parsing_qc: dict[str, Any]
 
 
 def feature_names(
@@ -87,6 +183,7 @@ def feature_names(
     *,
     include_robust_aggregates: bool = False,
     selected_robust_aggregates: tuple[str, ...] | None = None,
+    selected_position_features: tuple[str, ...] | None = None,
 ) -> list[str]:
     """Return the stable feature order shared by train and test."""
 
@@ -94,10 +191,12 @@ def feature_names(
         include_robust_aggregates=include_robust_aggregates,
         selected_robust_aggregates=selected_robust_aggregates,
     )
+    position_features = _resolve_position_features(selected_position_features)
+    per_gene_features = (*GENE_FEATURES, *position_features)
     return [
         *GLOBAL_FEATURES,
         *robust_features,
-        *(f"{gene}__{feature}" for gene in genes for feature in GENE_FEATURES),
+        *(f"{gene}__{feature}" for gene in genes for feature in per_gene_features),
     ]
 
 
@@ -108,15 +207,19 @@ def _read_sparse_features(
     has_labels: bool,
     include_robust_aggregates: bool,
     selected_robust_aggregates: tuple[str, ...] | None,
+    selected_position_features: tuple[str, ...] | None,
 ) -> FeatureMatrix:
     robust_features = _resolve_robust_features(
         include_robust_aggregates=include_robust_aggregates,
         selected_robust_aggregates=selected_robust_aggregates,
     )
+    position_features = _resolve_position_features(selected_position_features)
+    per_gene_features = (*GENE_FEATURES, *position_features)
     names = feature_names(
         genes,
         include_robust_aggregates=include_robust_aggregates,
         selected_robust_aggregates=selected_robust_aggregates,
+        selected_position_features=position_features,
     )
     active_global_features = (
         *GLOBAL_FEATURES,
@@ -124,13 +227,22 @@ def _read_sparse_features(
     )
     global_index = {name: index for index, name in enumerate(active_global_features)}
     gene_offset = len(active_global_features)
-    gene_stride = len(GENE_FEATURES)
-    gene_feature_index = {name: index for index, name in enumerate(GENE_FEATURES)}
+    gene_stride = len(per_gene_features)
+    gene_feature_index = {name: index for index, name in enumerate(per_gene_features)}
     rows: list[int] = []
     columns: list[int] = []
     values: list[float] = []
     ids: list[str] = []
     labels: list[str] | None = [] if has_labels else None
+    parsing_qc: dict[str, Any] = {
+        "non_wt_gene_cells": 0,
+        "mutation_tokens_total": 0,
+        "tokens_with_residue_positions": 0,
+        "tokens_without_residue_positions": 0,
+        "complex_tokens": 0,
+        "multi_position_tokens": 0,
+        "token_shape_counts": {},
+    }
 
     with path.open("r", encoding="utf-8", newline="") as file:
         reader = csv.reader(file)
@@ -163,31 +275,53 @@ def _read_sparse_features(
                     values.append(1.0)
                     continue
 
-                tokens = [token for token in cell.split() if token != "WT"]
-                if not tokens:
+                parsed_cell = parse_mutation_cell(cell)
+                if not parsed_cell.tokens:
                     continue
 
+                parsing_qc["non_wt_gene_cells"] += 1
+                parsing_qc["mutation_tokens_total"] += parsed_cell.token_count
                 global_counts["sample__mutated_gene_count"] += 1
-                global_counts["sample__total_variant_count"] += len(tokens)
-                max_variants_per_gene = max(max_variants_per_gene, len(tokens))
-                if len(tokens) == 1:
+                global_counts["sample__total_variant_count"] += parsed_cell.token_count
+                max_variants_per_gene = max(
+                    max_variants_per_gene,
+                    parsed_cell.token_count,
+                )
+                if parsed_cell.token_count == 1:
                     single_variant_gene_count += 1
-                if len(tokens) > 1:
+                if parsed_cell.token_count > 1:
                     global_counts["sample__multi_variant_gene_count"] += 1
                 rows.append(row_index)
                 columns.append(base + gene_feature_index["mutated"])
                 values.append(1.0)
 
-                observed_types = set()
-                for token in tokens:
-                    mutation_type = classify_mutation_token(token)
-                    observed_types.add(mutation_type)
-                    global_counts[f"sample__{mutation_type}_count"] += 1
-                for mutation_type in sorted(observed_types):
+                for token in parsed_cell.tokens:
+                    global_counts[f"sample__{token.mutation_type}_count"] += 1
+                    shape_counts = parsing_qc["token_shape_counts"]
+                    shape_counts[token.token_shape] = shape_counts.get(token.token_shape, 0) + 1
+                    if token.residue_positions:
+                        parsing_qc["tokens_with_residue_positions"] += 1
+                    else:
+                        parsing_qc["tokens_without_residue_positions"] += 1
+                    if token.is_complex:
+                        parsing_qc["complex_tokens"] += 1
+                    if len(token.residue_positions) > 1:
+                        parsing_qc["multi_position_tokens"] += 1
+
+                for mutation_type in sorted(parsed_cell.mutation_types):
                     type_gene_counts[mutation_type] += 1
                     rows.append(row_index)
                     columns.append(base + gene_feature_index[mutation_type])
                     values.append(1.0)
+                if (
+                    "min_residue_position" in position_features
+                    and parsed_cell.residue_positions
+                ):
+                    rows.append(row_index)
+                    columns.append(
+                        base + gene_feature_index["min_residue_position"]
+                    )
+                    values.append(float(min(parsed_cell.residue_positions)))
 
             for name, count in global_counts.items():
                 if count:
@@ -214,7 +348,23 @@ def _read_sparse_features(
         shape=(len(ids), len(names)),
         dtype=np.float32,
     )
-    return FeatureMatrix(matrix=matrix, ids=ids, labels=labels)
+    token_total = int(parsing_qc["mutation_tokens_total"])
+    tokens_with_positions = int(parsing_qc["tokens_with_residue_positions"])
+    parsing_qc["residue_position_parse_rate"] = (
+        float(tokens_with_positions / token_total) if token_total else 1.0
+    )
+    parsing_qc["complex_token_ratio"] = (
+        float(parsing_qc["complex_tokens"] / token_total) if token_total else 0.0
+    )
+    parsing_qc["token_shape_counts"] = dict(
+        sorted(parsing_qc["token_shape_counts"].items())
+    )
+    return FeatureMatrix(
+        matrix=matrix,
+        ids=ids,
+        labels=labels,
+        parsing_qc=parsing_qc,
+    )
 
 
 def build_mutation_features(
@@ -224,6 +374,7 @@ def build_mutation_features(
     *,
     include_robust_aggregates: bool = False,
     selected_robust_aggregates: tuple[str, ...] | None = None,
+    selected_position_features: tuple[str, ...] | None = None,
 ) -> dict[str, object]:
     """Build train/test CSR matrices with identical, target-independent features."""
 
@@ -235,12 +386,61 @@ def build_mutation_features(
     if genes != test_header[1:]:
         raise ValueError("train/test 유전자 열 이름 또는 순서가 다릅니다.")
 
+    robust_features = _resolve_robust_features(
+        include_robust_aggregates=include_robust_aggregates,
+        selected_robust_aggregates=selected_robust_aggregates,
+    )
+    position_features = _resolve_position_features(selected_position_features)
+    names = feature_names(
+        genes,
+        include_robust_aggregates=include_robust_aggregates,
+        selected_robust_aggregates=selected_robust_aggregates,
+        selected_position_features=position_features,
+    )
+    registry = _feature_registry(
+        gene_count=len(genes),
+        robust_features=robust_features,
+        position_features=position_features,
+    )
+    feature_spec = {
+        "factory_version": FEATURE_FACTORY_VERSION,
+        "gene_order_sha256": sha256_lines(genes),
+        "feature_names_sha256": sha256_lines(names),
+        "families": registry,
+    }
+    feature_spec_sha256 = sha256_lines(
+        [json.dumps(feature_spec, ensure_ascii=False, sort_keys=True)]
+    )
+    input_hashes = {
+        "train": sha256_file(train_path),
+        "test": sha256_file(test_path),
+    }
+    cache_key_sha256 = sha256_lines(
+        [
+            FEATURE_FACTORY_VERSION,
+            input_hashes["train"],
+            input_hashes["test"],
+            feature_spec_sha256,
+        ]
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    cached_report = _load_valid_cache(output_dir, cache_key_sha256)
+    if cached_report is not None:
+        return {
+            **cached_report,
+            "cache": {
+                **cached_report["cache"],
+                "reused": True,
+            },
+        }
+
     train = _read_sparse_features(
         train_path,
         genes=genes,
         has_labels=True,
         include_robust_aggregates=include_robust_aggregates,
         selected_robust_aggregates=selected_robust_aggregates,
+        selected_position_features=position_features,
     )
     test = _read_sparse_features(
         test_path,
@@ -248,17 +448,8 @@ def build_mutation_features(
         has_labels=False,
         include_robust_aggregates=include_robust_aggregates,
         selected_robust_aggregates=selected_robust_aggregates,
+        selected_position_features=position_features,
     )
-    names = feature_names(
-        genes,
-        include_robust_aggregates=include_robust_aggregates,
-        selected_robust_aggregates=selected_robust_aggregates,
-    )
-    robust_features = _resolve_robust_features(
-        include_robust_aggregates=include_robust_aggregates,
-        selected_robust_aggregates=selected_robust_aggregates,
-    )
-    output_dir.mkdir(parents=True, exist_ok=True)
 
     train_matrix_path = output_dir / "train_features.npz"
     test_matrix_path = output_dir / "test_features.npz"
@@ -266,6 +457,9 @@ def build_mutation_features(
     test_ids_path = output_dir / "test_ids.csv"
     labels_path = output_dir / "train_labels.csv"
     names_path = output_dir / "feature_names.json"
+    spec_path = output_dir / "feature_spec.json"
+    registry_path = output_dir / "feature_registry.json"
+    parsing_qc_path = output_dir / "parsing_qc.json"
     report_path = output_dir / "feature_report.json"
 
     sparse.save_npz(train_matrix_path, train.matrix, compressed=True)
@@ -274,11 +468,29 @@ def build_mutation_features(
     _write_single_column(test_ids_path, "ID", test.ids)
     _write_single_column(labels_path, "SUBCLASS", train.labels or [])
     names_path.write_text(json.dumps(names, ensure_ascii=False) + "\n", encoding="utf-8")
+    spec_path.write_text(
+        json.dumps(feature_spec, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    registry_path.write_text(
+        json.dumps(registry, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    parsing_qc = {"train": train.parsing_qc, "test": test.parsing_qc}
+    parsing_qc_path.write_text(
+        json.dumps(parsing_qc, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
 
     report: dict[str, object] = {
         "inputs": {
-            "train": {"path": str(train_path), "sha256": sha256_file(train_path)},
-            "test": {"path": str(test_path), "sha256": sha256_file(test_path)},
+            "train": {"path": str(train_path), "sha256": input_hashes["train"]},
+            "test": {"path": str(test_path), "sha256": input_hashes["test"]},
+        },
+        "cache": {
+            "factory_version": FEATURE_FACTORY_VERSION,
+            "key_sha256": cache_key_sha256,
+            "reused": False,
         },
         "feature_contract": {
             "target_used_for_features": False,
@@ -287,8 +499,16 @@ def build_mutation_features(
             "mutation_types": list(MUTATION_TYPES),
             "robust_aggregate_features": list(robust_features),
             "missing_policy": "separate per-gene and per-sample missing indicators",
-            "position_features": "excluded because a reliable source transcript/protein length is unavailable",
+            "position_features": list(position_features),
+            "position_semantics": (
+                "protein residue indices explicitly written in source tokens; "
+                "no transcript, codon nucleotide, genomic coordinate, or protein-length inference"
+            ),
+            "feature_factory_version": FEATURE_FACTORY_VERSION,
+            "feature_spec_sha256": feature_spec_sha256,
         },
+        "feature_registry": registry,
+        "parsing_qc": parsing_qc,
         "train": {
             "shape": list(train.matrix.shape),
             "nonzero": int(train.matrix.nnz),
@@ -308,11 +528,71 @@ def build_mutation_features(
         test_ids_path,
         labels_path,
         names_path,
+        spec_path,
+        registry_path,
+        parsing_qc_path,
     )
     report["outputs"] = {
         path.name: {"path": str(path), "sha256": sha256_file(path)} for path in output_paths
     }
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return report
+
+
+def _feature_registry(
+    *,
+    gene_count: int,
+    robust_features: tuple[str, ...],
+    position_features: tuple[str, ...],
+) -> dict[str, dict[str, Any]]:
+    """Describe enabled families and their leakage/knowledge contract."""
+
+    return {
+        "mutation_type": {
+            "definition_version": "1.0.0",
+            "enabled": True,
+            "output_dimension": len(GLOBAL_FEATURES) + gene_count * len(GENE_FEATURES),
+            "fit_scope": "stateless; train and test parsed independently",
+            "external_knowledge": None,
+        },
+        "robust_aggregate": {
+            "definition_version": "1.0.0",
+            "enabled": bool(robust_features),
+            "features": list(robust_features),
+            "output_dimension": len(robust_features),
+            "fit_scope": "stateless per-sample aggregation",
+            "external_knowledge": None,
+        },
+        "residue_position": {
+            "definition_version": "1.0.0",
+            "enabled": bool(position_features),
+            "features": list(position_features),
+            "output_dimension": gene_count * len(position_features),
+            "fit_scope": "stateless lexical parse; no target or test-distribution fit",
+            "external_knowledge": None,
+        },
+    }
+
+
+def _load_valid_cache(
+    output_dir: Path,
+    cache_key_sha256: str,
+) -> dict[str, Any] | None:
+    """Return a complete cache only when its key and every output hash match."""
+
+    report_path = output_dir / "feature_report.json"
+    if not report_path.is_file():
+        return None
+    try:
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+        if report["cache"]["key_sha256"] != cache_key_sha256:
+            return None
+        for metadata in report["outputs"].values():
+            path = Path(metadata["path"])
+            if not path.is_file() or sha256_file(path) != metadata["sha256"]:
+                return None
+    except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError):
+        return None
     return report
 
 
@@ -413,6 +693,21 @@ def _resolve_robust_features(
     if len(set(selected_robust_aggregates)) != len(selected_robust_aggregates):
         raise ValueError("robust aggregate 피처가 중복됐습니다.")
     return selected_robust_aggregates
+
+
+def _resolve_position_features(
+    selected_position_features: tuple[str, ...] | None,
+) -> tuple[str, ...]:
+    if selected_position_features is None:
+        return ()
+    invalid = sorted(
+        set(selected_position_features) - set(RESIDUE_POSITION_FEATURES)
+    )
+    if invalid:
+        raise ValueError(f"지원하지 않는 residue position 피처입니다: {invalid}")
+    if len(set(selected_position_features)) != len(selected_position_features):
+        raise ValueError("residue position 피처가 중복됐습니다.")
+    return selected_position_features
 
 
 def _write_single_column(path: Path, name: str, values: list[str]) -> None:
