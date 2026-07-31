@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-067",
+  "issue_number": 67,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "5846db2f18f610836a38b23cc8c377f9809fe47c",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp067_xgb_residue_coarse_bin/data_manifest.json",
+  "environment": "reproducibility/exp067_xgb_residue_coarse_bin/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-07-31T11:19:02.749201+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp067_xgb_residue_coarse_bin/fold_00.json",
+      "size_bytes": 12334996,
+      "sha256": "2fe242bdf6dd271122a1f996595dc3b3300822d4755fe64c53b2017502344b6c",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp067_xgb_residue_coarse_bin/fold_01.json",
+      "size_bytes": 12039888,
+      "sha256": "60fc8b6223ff99fcb0cd51e313f188dd3cf79904202b6a6fade9d6bdb8adf9a7",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp067_xgb_residue_coarse_bin/fold_02.json",
+      "size_bytes": 14648607,
+      "sha256": "24d98ac6c193bd7a7e930234b1aa19ebc4bb7ef6e7cc0662862979670ddd6db6",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp067_xgb_residue_coarse_bin/fold_03.json",
+      "size_bytes": 12585960,
+      "sha256": "c1526b08c636f26291a2b15902e82c3eba72d6d1529a2f90acf851d98c86c7bf",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp067_xgb_residue_coarse_bin/fold_04.json",
+      "size_bytes": 12847535,
+      "sha256": "e0e608b6e3b6b91a284bc82cb72165c8ef1d34e330cf5168c3e96b66c57104c3",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp067_xgb_residue_coarse_bin.csv",
+      "size_bytes": 38152,
+      "sha256": "dbae8b3c15a35095bf17168862499972441c5143edf48c6dc7558e2eac633148",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp067_xgb_residue_coarse_bin.csv",
+      "size_bytes": 2131063,
+      "sha256": "5ea4790d5432204a6e1bde1e61464c3c8bf0feb255e6d48fc19f41b2c9052cba",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp067_xgb_residue_coarse_bin_test_proba.csv",
+      "size_bytes": 834760,
+      "sha256": "5fa52b11461d214bb8087de1f627c3253d5497461fe9efe7526f3d2c0fcb2776",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp067_xgb_residue_coarse_bin/metrics.json",
+      "size_bytes": 11231,
+      "sha256": "a4ba2de5ef809ec55c3d10a06f1ced2d8d558ee9cc9806b12d7d17d2bad87fab",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp067_xgb_residue_coarse_bin/config.resolved.yaml",
+      "size_bytes": 6674,
+      "sha256": "388ee29dd8280c67b86f31cb03c6585867cc104b29516e67adb72dbd287b343b",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
