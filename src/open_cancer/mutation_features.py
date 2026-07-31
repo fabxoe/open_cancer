@@ -15,10 +15,18 @@ from scipy import sparse
 from open_cancer.hashing import sha256_file, sha256_lines
 
 
-FEATURE_FACTORY_VERSION = "1.0.0"
+FEATURE_FACTORY_VERSION = "1.1.0"
 MUTATION_TYPES = ("missense", "synonymous", "nonsense", "frameshift", "complex")
 GENE_FEATURES = ("mutated", *MUTATION_TYPES, "missing")
-RESIDUE_POSITION_FEATURES = ("min_residue_position",)
+RESIDUE_POSITION_FEATURES = (
+    "min_residue_position",
+    "max_residue_position",
+    "residue_position_span",
+    "residue_position_observed",
+)
+POSITION_MISSING_POLICIES = ("zero", "indicator")
+POSITION_TOKEN_SCOPES = ("include_complex", "exclude_complex")
+POSITION_TRANSFORMS = ("raw", "coarse_bin")
 GLOBAL_FEATURES = (
     "sample__mutated_gene_count",
     "sample__total_variant_count",
@@ -180,6 +188,7 @@ def feature_names(
     include_robust_aggregates: bool = False,
     selected_robust_aggregates: tuple[str, ...] | None = None,
     selected_position_features: tuple[str, ...] | None = None,
+    position_missing_policy: str = "zero",
 ) -> list[str]:
     """Return the stable feature order shared by train and test."""
 
@@ -187,7 +196,10 @@ def feature_names(
         include_robust_aggregates=include_robust_aggregates,
         selected_robust_aggregates=selected_robust_aggregates,
     )
-    position_features = _resolve_position_features(selected_position_features)
+    position_features = _resolve_position_features(
+        selected_position_features,
+        missing_policy=position_missing_policy,
+    )
     per_gene_features = (*GENE_FEATURES, *position_features)
     return [
         *GLOBAL_FEATURES,
@@ -204,18 +216,26 @@ def _read_sparse_features(
     include_robust_aggregates: bool,
     selected_robust_aggregates: tuple[str, ...] | None,
     selected_position_features: tuple[str, ...] | None,
+    position_missing_policy: str,
+    position_token_scope: str,
+    position_transform: str,
+    position_bin_width: int,
 ) -> FeatureMatrix:
     robust_features = _resolve_robust_features(
         include_robust_aggregates=include_robust_aggregates,
         selected_robust_aggregates=selected_robust_aggregates,
     )
-    position_features = _resolve_position_features(selected_position_features)
+    position_features = _resolve_position_features(
+        selected_position_features,
+        missing_policy=position_missing_policy,
+    )
     per_gene_features = (*GENE_FEATURES, *position_features)
     names = feature_names(
         genes,
         include_robust_aggregates=include_robust_aggregates,
         selected_robust_aggregates=selected_robust_aggregates,
         selected_position_features=position_features,
+        position_missing_policy=position_missing_policy,
     )
     active_global_features = (
         *GLOBAL_FEATURES,
@@ -309,15 +329,30 @@ def _read_sparse_features(
                     rows.append(row_index)
                     columns.append(base + gene_feature_index[mutation_type])
                     values.append(1.0)
-                if (
-                    "min_residue_position" in position_features
-                    and parsed_cell.residue_positions
-                ):
-                    rows.append(row_index)
-                    columns.append(
-                        base + gene_feature_index["min_residue_position"]
+                eligible_positions = _eligible_residue_positions(
+                    parsed_cell,
+                    token_scope=position_token_scope,
+                )
+                if eligible_positions:
+                    transformed_positions = _transform_residue_positions(
+                        eligible_positions,
+                        transform=position_transform,
+                        bin_width=position_bin_width,
                     )
-                    values.append(float(min(parsed_cell.residue_positions)))
+                    position_values = {
+                        "min_residue_position": min(transformed_positions),
+                        "max_residue_position": max(transformed_positions),
+                        "residue_position_span": (
+                            max(transformed_positions) - min(transformed_positions)
+                        ),
+                        "residue_position_observed": 1.0,
+                    }
+                    for feature in position_features:
+                        value = float(position_values[feature])
+                        if value:
+                            rows.append(row_index)
+                            columns.append(base + gene_feature_index[feature])
+                            values.append(value)
 
             for name, count in global_counts.items():
                 if count:
@@ -371,6 +406,10 @@ def build_mutation_features(
     include_robust_aggregates: bool = False,
     selected_robust_aggregates: tuple[str, ...] | None = None,
     selected_position_features: tuple[str, ...] | None = None,
+    position_missing_policy: str = "zero",
+    position_token_scope: str = "include_complex",
+    position_transform: str = "raw",
+    position_bin_width: int = 100,
 ) -> dict[str, object]:
     """Build train/test CSR matrices with identical, target-independent features."""
 
@@ -386,17 +425,31 @@ def build_mutation_features(
         include_robust_aggregates=include_robust_aggregates,
         selected_robust_aggregates=selected_robust_aggregates,
     )
-    position_features = _resolve_position_features(selected_position_features)
+    _validate_position_options(
+        missing_policy=position_missing_policy,
+        token_scope=position_token_scope,
+        transform=position_transform,
+        bin_width=position_bin_width,
+    )
+    position_features = _resolve_position_features(
+        selected_position_features,
+        missing_policy=position_missing_policy,
+    )
     names = feature_names(
         genes,
         include_robust_aggregates=include_robust_aggregates,
         selected_robust_aggregates=selected_robust_aggregates,
         selected_position_features=position_features,
+        position_missing_policy=position_missing_policy,
     )
     registry = _feature_registry(
         gene_count=len(genes),
         robust_features=robust_features,
         position_features=position_features,
+        position_missing_policy=position_missing_policy,
+        position_token_scope=position_token_scope,
+        position_transform=position_transform,
+        position_bin_width=position_bin_width,
     )
     feature_spec = {
         "factory_version": FEATURE_FACTORY_VERSION,
@@ -437,6 +490,10 @@ def build_mutation_features(
         include_robust_aggregates=include_robust_aggregates,
         selected_robust_aggregates=selected_robust_aggregates,
         selected_position_features=position_features,
+        position_missing_policy=position_missing_policy,
+        position_token_scope=position_token_scope,
+        position_transform=position_transform,
+        position_bin_width=position_bin_width,
     )
     test = _read_sparse_features(
         test_path,
@@ -445,6 +502,10 @@ def build_mutation_features(
         include_robust_aggregates=include_robust_aggregates,
         selected_robust_aggregates=selected_robust_aggregates,
         selected_position_features=position_features,
+        position_missing_policy=position_missing_policy,
+        position_token_scope=position_token_scope,
+        position_transform=position_transform,
+        position_bin_width=position_bin_width,
     )
 
     train_matrix_path = output_dir / "train_features.npz"
@@ -496,6 +557,12 @@ def build_mutation_features(
             "robust_aggregate_features": list(robust_features),
             "missing_policy": "separate per-gene and per-sample missing indicators",
             "position_features": list(position_features),
+            "position_missing_policy": position_missing_policy,
+            "position_token_scope": position_token_scope,
+            "position_transform": position_transform,
+            "position_bin_width": (
+                position_bin_width if position_transform == "coarse_bin" else None
+            ),
             "position_semantics": (
                 "protein residue indices explicitly written in source tokens; "
                 "no transcript, codon nucleotide, genomic coordinate, or protein-length inference"
@@ -540,6 +607,10 @@ def _feature_registry(
     gene_count: int,
     robust_features: tuple[str, ...],
     position_features: tuple[str, ...],
+    position_missing_policy: str,
+    position_token_scope: str,
+    position_transform: str,
+    position_bin_width: int,
 ) -> dict[str, dict[str, Any]]:
     """Describe enabled families and their leakage/knowledge contract."""
 
@@ -560,10 +631,14 @@ def _feature_registry(
             "external_knowledge": None,
         },
         "residue_position": {
-            "definition_version": "1.0.0",
+            "definition_version": "1.1.0",
             "enabled": bool(position_features),
             "features": list(position_features),
             "output_dimension": gene_count * len(position_features),
+            "missing_policy": position_missing_policy,
+            "token_scope": position_token_scope,
+            "transform": position_transform,
+            "bin_width": position_bin_width if position_transform == "coarse_bin" else None,
             "fit_scope": "stateless lexical parse; no target or test-distribution fit",
             "external_knowledge": None,
         },
@@ -693,6 +768,8 @@ def _resolve_robust_features(
 
 def _resolve_position_features(
     selected_position_features: tuple[str, ...] | None,
+    *,
+    missing_policy: str = "zero",
 ) -> tuple[str, ...]:
     if selected_position_features is None:
         return ()
@@ -703,7 +780,115 @@ def _resolve_position_features(
         raise ValueError(f"지원하지 않는 residue position 피처입니다: {invalid}")
     if len(set(selected_position_features)) != len(selected_position_features):
         raise ValueError("residue position 피처가 중복됐습니다.")
-    return selected_position_features
+    resolved = selected_position_features
+    if missing_policy == "indicator" and resolved and "residue_position_observed" not in resolved:
+        resolved = (*resolved, "residue_position_observed")
+    return resolved
+
+
+def resolve_position_features_from_config(config: dict[str, Any]) -> tuple[str, ...]:
+    """Resolve public aggregate names from an experiment config."""
+
+    families = config.get("features", {})
+    mutation_type = families.get("mutation_type", {"enabled": True})
+    if not mutation_type.get("enabled", True):
+        raise ValueError("이 Feature Factory에서는 mutation_type core를 끌 수 없습니다.")
+    residue_position = families.get("residue_position", {"enabled": False})
+    if not residue_position.get("enabled", False):
+        return ()
+    aggregate_mapping = {
+        "min": "min_residue_position",
+        "max": "max_residue_position",
+        "span": "residue_position_span",
+    }
+    aggregates = residue_position.get("aggregates", [])
+    invalid = sorted(set(aggregates) - set(aggregate_mapping))
+    if invalid:
+        raise ValueError(f"지원하지 않는 residue position aggregate입니다: {invalid}")
+    resolved = tuple(aggregate_mapping[name] for name in aggregates)
+    if not resolved:
+        raise ValueError("residue_position을 활성화하면 aggregates가 필요합니다.")
+    if len(set(resolved)) != len(resolved):
+        raise ValueError("residue position aggregate가 중복됐습니다.")
+    return resolved
+
+
+def resolve_position_options_from_config(config: dict[str, Any]) -> dict[str, Any]:
+    """Resolve position ablation options while preserving EXP-047 defaults."""
+
+    residue_position = config.get("features", {}).get(
+        "residue_position", {"enabled": False}
+    )
+    if not residue_position.get("enabled", False):
+        return {
+            "position_missing_policy": "zero",
+            "position_token_scope": "include_complex",
+            "position_transform": "raw",
+            "position_bin_width": 100,
+        }
+    complex_tokens = residue_position.get("complex_tokens", "include")
+    token_scope_mapping = {
+        "include": "include_complex",
+        "exclude": "exclude_complex",
+    }
+    if complex_tokens not in token_scope_mapping:
+        raise ValueError("complex_tokens는 include 또는 exclude여야 합니다.")
+    options = {
+        "position_missing_policy": residue_position.get("missing_policy", "zero"),
+        "position_token_scope": token_scope_mapping[complex_tokens],
+        "position_transform": residue_position.get("transform", "raw"),
+        "position_bin_width": residue_position.get("bin_width", 100),
+    }
+    _validate_position_options(
+        missing_policy=options["position_missing_policy"],
+        token_scope=options["position_token_scope"],
+        transform=options["position_transform"],
+        bin_width=options["position_bin_width"],
+    )
+    return options
+
+
+def _validate_position_options(
+    *,
+    missing_policy: str,
+    token_scope: str,
+    transform: str,
+    bin_width: int,
+) -> None:
+    if missing_policy not in POSITION_MISSING_POLICIES:
+        raise ValueError(f"지원하지 않는 position missing policy입니다: {missing_policy}")
+    if token_scope not in POSITION_TOKEN_SCOPES:
+        raise ValueError(f"지원하지 않는 position token scope입니다: {token_scope}")
+    if transform not in POSITION_TRANSFORMS:
+        raise ValueError(f"지원하지 않는 position transform입니다: {transform}")
+    if not isinstance(bin_width, int) or bin_width < 1:
+        raise ValueError("position bin width는 1 이상의 정수여야 합니다.")
+
+
+def _eligible_residue_positions(
+    parsed_cell: ParsedMutationCell,
+    *,
+    token_scope: str,
+) -> tuple[int, ...]:
+    return tuple(
+        position
+        for token in parsed_cell.tokens
+        if token_scope == "include_complex" or not token.is_complex
+        for position in token.residue_positions
+    )
+
+
+def _transform_residue_positions(
+    positions: tuple[int, ...],
+    *,
+    transform: str,
+    bin_width: int,
+) -> tuple[float, ...]:
+    if transform == "raw":
+        return tuple(float(position) for position in positions)
+    if transform == "coarse_bin":
+        return tuple(float((position - 1) // bin_width + 1) for position in positions)
+    raise ValueError(f"지원하지 않는 position transform입니다: {transform}")
 
 
 def _write_single_column(path: Path, name: str, values: list[str]) -> None:
