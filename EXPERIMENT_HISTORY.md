@@ -53,7 +53,7 @@
 | 2026-07-31T15:50:02+09:00 | EXP-031 | #31 | `submissions/exp031_hotspot_extended.csv` (제출 ID `1506950`, attempt 5) | `54de49396b8910fd8134b5a854beed344e369a9a791c67c6c9caf0da38cec27d` | 0.3170803849 | 제출 당시 전체 2위 → 2026-08-01 확인 기준 참가 4팀 중 4위 | FAILED |
 | 2026-07-31T18:46:30+09:00 | EXP-030 | #30 | `submissions/exp030_sparse_variant_xgb.csv` (제출 ID `1507123`) | `bd523ea4e872301e7d11f44ea375cf16d8c282de549f5f408d67ba3146670cba` | 0.2993610323 | 개별 순위 미확인 | INFERENCE_VERIFIED |
 | 2026-07-31T22:44:57+09:00 | EXP-058 | #58 | `submissions/exp058_cooccurrence_pair_ablation.csv` (제출 ID `1507272`) | `0a53d0a7aea3b0c34baba586e56175c6bc8df2c738875a2bef30c5ebad905eb3` | 0.3044672015 | 개별 순위 미확인 | INFERENCE_VERIFIED |
-| 2026-07-31T23:55:33+09:00 | EXP-085 | #85 | `submissions/exp085_hotspot_clean.csv` (제출 ID `1507333`) | `d319c6967ea98b75c158265fe3b46a5ebb12db207a19cd87964476154eecfe5d` | 0.3103760308 | 개별 순위 미확인 | INFERENCE_VERIFIED |
+| 2026-07-31T23:55:33+09:00 | EXP-085 | #85 | `submissions/exp085_hotspot_clean.csv` (제출 ID `1507333`) | `d319c6967ea98b75c158265fe3b46a5ebb12db207a19cd87964476154eecfe5d` | 0.3103760308 | 플랫폼 전체 개별 순위 미제공·확인 당시 팀 내부 8개 제출 중 2위 | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -102,6 +102,23 @@
 - OOF Macro F1: 0.4125795545
 - Public LB: 0.3103760308 (제출 ID `1507333`, 2026-07-31 23:55:33 KST)
 - 재현 상태: INFERENCE_VERIFIED
+
+#### 리더보드 제출 결과와 순위 해석
+
+- 제출 파일: `submissions/exp085_hotspot_clean.csv`
+- 제출 ID: `1507333`
+- 제출 시각: 2026-07-31 23:55:33 KST
+- 제출 SHA-256:
+  `d319c6967ea98b75c158265fe3b46a5ebb12db207a19cd87964476154eecfe5d`
+- Public Macro F1: `0.3103760308`
+- 팀 내부 제출 점수 순위: 확인 당시 8개 제출 중 2위
+  (`EXP-031 0.3170803849 > EXP-085 0.3103760308 > EXP-058 0.3044672015`)
+- EXP-031과의 차이: `-0.0067043541`
+- 플랫폼은 선택하지 않은 제출의 공식 전체 개별 순위를 별도로 표시하지
+  않으므로 EXP-085의 전체 개별 순위는 확인할 수 없습니다.
+- 2026-08-01 확인 당시 팀 대표 제출은 EXP-031이었고, 그 점수를 기준으로
+  8조의 공식 팀 순위는 참가 4팀 중 4위였습니다. 이 `4위`를 EXP-085의
+  개별 순위로 해석하지 않습니다.
 
 #### 산출물과 결론
 
