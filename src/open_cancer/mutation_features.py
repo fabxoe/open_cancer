@@ -62,6 +62,10 @@ EXPANDED_DISTRIBUTION_FEATURES = (
     *LOG_BURDEN_FEATURES,
     *SAMPLE_DISTRIBUTION_FEATURES,
 )
+EXP050_FIXED_DISTRIBUTION_FEATURES = (
+    "sample__synonymous_gene_count",
+    "sample__variants_per_mutated_gene_mean",
+)
 
 _SUBSTITUTION = re.compile(r"^([ACDEFGHIKLMNPQRSTVWY])([1-9][0-9]*)([ACDEFGHIKLMNPQRSTVWY*])$")
 _RESIDUE_POSITION = re.compile(r"[1-9][0-9]*")

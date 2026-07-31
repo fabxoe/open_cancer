@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-050",
+  "issue_number": 50,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "b7444843245eb1e2a360084e0dfb42653cf6116a",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp050_xgb_fixed_two_distribution_features/data_manifest.json",
+  "environment": "reproducibility/exp050_xgb_fixed_two_distribution_features/environment.json",
+  "release_url": null,
+  "verifier": "2heej",
+  "verified_at": "2026-07-31T08:29:17.955451+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp050_xgb_fixed_two_distribution_features/fold_00.json",
+      "size_bytes": 13219775,
+      "sha256": "7a0a11080aa07630abfa5957a9ac65b428361a920946a9349cad38e3df259b92",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp050_xgb_fixed_two_distribution_features/fold_01.json",
+      "size_bytes": 14764148,
+      "sha256": "bf0f427a68a01b4d3fe5856f5c4344b48e8615ff731aeb90c14ead44c70720d4",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp050_xgb_fixed_two_distribution_features/fold_02.json",
+      "size_bytes": 12982401,
+      "sha256": "e541c42ee7b1f2726a3228395b1dec532271c0bf0a0f99074dee3b7aaa4156fe",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp050_xgb_fixed_two_distribution_features/fold_03.json",
+      "size_bytes": 13546500,
+      "sha256": "fead56ed49f95ea8a2fdd6ce48a4cc75314e43f861b71d32c99d234566529bb0",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp050_xgb_fixed_two_distribution_features/fold_04.json",
+      "size_bytes": 15385985,
+      "sha256": "8e316b9c792ae208a0b01ce95f011c62ef483a5033590f0db3efba6b79ae247a",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp050_xgb_fixed_two_distribution_features.csv",
+      "size_bytes": 38142,
+      "sha256": "dd7201b62a47ae93abc3cd385811bccd967f9a58ae572a69f8d26738b7897cc2",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp050_xgb_fixed_two_distribution_features.csv",
+      "size_bytes": 2132363,
+      "sha256": "edbec1a60fc1504527487a6bfe55f921c13fee0f6f0d0e2c9b88ab99950772d5",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp050_xgb_fixed_two_distribution_features_test_proba.csv",
+      "size_bytes": 836217,
+      "sha256": "b218153afdefffbb88dfb7e7d2e9a46224335571dff205e7fb9787b659664816",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp050_xgb_fixed_two_distribution_features/metrics.json",
+      "size_bytes": 11341,
+      "sha256": "53e4edcdd602c46556ce80216eaacd4a2fdf2084183036631082471e8f0fac51",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp050_xgb_fixed_two_distribution_features/config.resolved.yaml",
+      "size_bytes": 3786,
+      "sha256": "011a8cc358e8901eb86290817a76afb3dbc7b561f291d8c43f2ed97d57f86ff7",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
