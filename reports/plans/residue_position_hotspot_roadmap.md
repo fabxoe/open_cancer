@@ -9,6 +9,7 @@
 ## 현재 상태
 
 - 로드맵 관리 Task: [Issue #73](https://github.com/fabxoe/open_cancer/issues/73)
+- 로드맵 관리 PR: [PR #74](https://github.com/fabxoe/open_cancer/pull/74) (`PR_OPEN`)
 - 기준일: 2026-07-31
 - 실제 완료 실험 수: 18
 - 기준 실험:
