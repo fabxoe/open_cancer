@@ -1,10 +1,11 @@
 {
-  "verified_at": "2026-07-30T09:38:54.622845+00:00",
+  "verified_at": "2026-07-31T04:44:40.761953+00:00",
   "data_hashes_match": true,
   "original_submission_sha256": "7bc3e64e1904d9b4007bc141dde771a39e7527172f3cd24c25c408000103183c",
   "reproduced_submission_sha256": "7bc3e64e1904d9b4007bc141dde771a39e7527172f3cd24c25c408000103183c",
   "submission_sha256_match": true,
   "test_label_agreement": 1.0,
+  "test_probability_allclose": true,
   "test_probability_max_abs_diff": 2.9788970956623473e-08,
   "probability_atol": 1e-06,
   "probability_rtol": 1e-06,

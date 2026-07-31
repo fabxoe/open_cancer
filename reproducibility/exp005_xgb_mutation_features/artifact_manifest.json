@@ -2,69 +2,90 @@
   "experiment_id": "EXP-005",
   "issue_number": 5,
   "reproducibility_status": "INFERENCE_VERIFIED",
-  "source_commit": "816d0a5e070c29d2f549e4fb25b81ec5c0ad5f7b",
-  "source_tag": null,
+  "source_commit": "4e5533a80ef093ef4a9b76a039f5f1ee6b1cf365",
+  "source_tag": "exp-005-repro-v1",
   "dirty_worktree": false,
   "data_manifest": "reproducibility/exp005_xgb_mutation_features/data_manifest.json",
   "environment": "reproducibility/exp005_xgb_mutation_features/environment.json",
-  "release_url": null,
-  "verifier": "2heej",
-  "verified_at": "2026-07-30T09:38:54.622845+00:00",
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-005-repro-v1",
+  "verifier": "fabxoe",
+  "verified_at": "2026-07-31T04:44:40.761953+00:00",
   "artifacts": [
     {
       "kind": "checkpoint",
       "path": "models/exp005_xgb_mutation_features/fold_00.json",
       "size_bytes": 12578098,
       "sha256": "6a54dc16e62224cbcc5605d57e7e1a30ceb5fa0046b84068083ad1805803fbce",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-005-repro-v1/exp005_xgb_mutation_features_repro_v1.tar.gz#models/exp005_xgb_mutation_features/fold_00.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp005_xgb_mutation_features/fold_01.json",
       "size_bytes": 14694794,
       "sha256": "43b26c0aded5c9cbe2062db4932b17ce8ed39d54644cde70b15e049bbba8c763",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-005-repro-v1/exp005_xgb_mutation_features_repro_v1.tar.gz#models/exp005_xgb_mutation_features/fold_01.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp005_xgb_mutation_features/fold_02.json",
       "size_bytes": 14702267,
       "sha256": "ef6f44e8f8120f0a2a5c45abfaafbed719f39f6b020a5c22b1d8e206aa8e8b5f",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-005-repro-v1/exp005_xgb_mutation_features_repro_v1.tar.gz#models/exp005_xgb_mutation_features/fold_02.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp005_xgb_mutation_features/fold_03.json",
       "size_bytes": 13180322,
       "sha256": "b568bf4a9f1f8f9c90191b7349f728e737122e8f277dd84d1079c9ddf03b9711",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-005-repro-v1/exp005_xgb_mutation_features_repro_v1.tar.gz#models/exp005_xgb_mutation_features/fold_03.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp005_xgb_mutation_features/fold_04.json",
       "size_bytes": 14342988,
       "sha256": "e7bec9ad1c24f21928f7ac0bee8cac3e73af218c20b6654805089e4688abb414",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-005-repro-v1/exp005_xgb_mutation_features_repro_v1.tar.gz#models/exp005_xgb_mutation_features/fold_04.json"
     },
     {
       "kind": "submission",
       "path": "submissions/exp005_xgb_mutation_features.csv",
       "size_bytes": 38136,
       "sha256": "7bc3e64e1904d9b4007bc141dde771a39e7527172f3cd24c25c408000103183c",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-005-repro-v1/exp005_xgb_mutation_features_repro_v1.tar.gz#submissions/exp005_xgb_mutation_features.csv"
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp005_xgb_mutation_features.csv",
+      "size_bytes": 2132186,
+      "sha256": "2cf98e79f9e0efbee7a7ad212c6265ba340750f69e67dbdb1f82002e5bb79452",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-005-repro-v1/exp005_xgb_mutation_features_repro_v1.tar.gz#oof/exp005_xgb_mutation_features.csv"
     },
     {
       "kind": "test_probability",
       "path": "preds/exp005_xgb_mutation_features_test_proba.csv",
       "size_bytes": 835323,
       "sha256": "7e0e5f1c877e23cb9644859eb273f06d4162ef4d16765ca150565f0efb117f18",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-005-repro-v1/exp005_xgb_mutation_features_repro_v1.tar.gz#preds/exp005_xgb_mutation_features_test_proba.csv"
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp005_xgb_mutation_features/metrics.json",
+      "size_bytes": 11377,
+      "sha256": "5dd63193d55a05388a4a604c802c2ea776a4471581ba2daadf81eaa38bb36db7",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-005-repro-v1/exp005_xgb_mutation_features_repro_v1.tar.gz#reproducibility/exp005_xgb_mutation_features/config.resolved.yaml"
+    },
+    {
+      "kind": "release_bundle",
+      "path": "release-assets/exp005_xgb_mutation_features_repro_v1.tar.gz",
+      "size_bytes": 19613526,
+      "sha256": "e74907f50b282c306148d2b725cbd7871b435d340f90a3d9c5142481948dc24a",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-005-repro-v1/exp005_xgb_mutation_features_repro_v1.tar.gz"
     },
     {
       "kind": "resolved_config",
       "path": "reproducibility/exp005_xgb_mutation_features/config.resolved.yaml",
-      "size_bytes": 3460,
-      "sha256": "c98eef3f4d81d1e8dd2df25ef516db981595c6dc896855842470c528961b6e2a",
+      "size_bytes": 3508,
+      "sha256": "c975dd12848c25752b150461da4bfdd744596aa433a6f0b1ec7167701c2fefc2",
       "storage_uri": null
     }
   ],
