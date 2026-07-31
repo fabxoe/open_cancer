@@ -1,0 +1,178 @@
+{
+  "experiment_id": "EXP-075",
+  "issue_number": 75,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "01fb86e27b0ebfd177d4a6e60ac6535a02fcfb3c",
+  "source_tag": "exp-075-repro-v1",
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp075_residue_probability_blend/data_manifest.json",
+  "environment": "reproducibility/exp075_residue_probability_blend/environment.json",
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-075-repro-v1",
+  "verifier": "fabxoe",
+  "verified_at": "2026-07-31T12:59:12.117866+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp067_xgb_residue_coarse_bin/fold_00.json",
+      "size_bytes": 12334996,
+      "sha256": "2fe242bdf6dd271122a1f996595dc3b3300822d4755fe64c53b2017502344b6c",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#models/exp067_xgb_residue_coarse_bin/fold_00.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp067_xgb_residue_coarse_bin/fold_01.json",
+      "size_bytes": 12039888,
+      "sha256": "60fc8b6223ff99fcb0cd51e313f188dd3cf79904202b6a6fade9d6bdb8adf9a7",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#models/exp067_xgb_residue_coarse_bin/fold_01.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp067_xgb_residue_coarse_bin/fold_02.json",
+      "size_bytes": 14648607,
+      "sha256": "24d98ac6c193bd7a7e930234b1aa19ebc4bb7ef6e7cc0662862979670ddd6db6",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#models/exp067_xgb_residue_coarse_bin/fold_02.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp067_xgb_residue_coarse_bin/fold_03.json",
+      "size_bytes": 12585960,
+      "sha256": "c1526b08c636f26291a2b15902e82c3eba72d6d1529a2f90acf851d98c86c7bf",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#models/exp067_xgb_residue_coarse_bin/fold_03.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp067_xgb_residue_coarse_bin/fold_04.json",
+      "size_bytes": 12847535,
+      "sha256": "e0e608b6e3b6b91a284bc82cb72165c8ef1d34e330cf5168c3e96b66c57104c3",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#models/exp067_xgb_residue_coarse_bin/fold_04.json"
+    },
+    {
+      "kind": "component_oof_probability",
+      "path": "oof/exp067_xgb_residue_coarse_bin.csv",
+      "size_bytes": 2131063,
+      "sha256": "5ea4790d5432204a6e1bde1e61464c3c8bf0feb255e6d48fc19f41b2c9052cba",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#oof/exp067_xgb_residue_coarse_bin.csv"
+    },
+    {
+      "kind": "component_test_probability",
+      "path": "preds/exp067_xgb_residue_coarse_bin_test_proba.csv",
+      "size_bytes": 834760,
+      "sha256": "5fa52b11461d214bb8087de1f627c3253d5497461fe9efe7526f3d2c0fcb2776",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#preds/exp067_xgb_residue_coarse_bin_test_proba.csv"
+    },
+    {
+      "kind": "component_resolved_config",
+      "path": "reproducibility/exp067_xgb_residue_coarse_bin/config.resolved.yaml",
+      "size_bytes": 6674,
+      "sha256": "388ee29dd8280c67b86f31cb03c6585867cc104b29516e67adb72dbd287b343b",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#reproducibility/exp067_xgb_residue_coarse_bin/config.resolved.yaml"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp069_xgb_max_residue_position/fold_00.json",
+      "size_bytes": 12188632,
+      "sha256": "b874cf78e26a813d5a1174138b03d6671b67e63abe67e68c794347c301546936",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#models/exp069_xgb_max_residue_position/fold_00.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp069_xgb_max_residue_position/fold_01.json",
+      "size_bytes": 12300106,
+      "sha256": "79ab68a7da33a0cbe31d7876b235271f89f4836cd53964f8be6ebc26a2b9540a",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#models/exp069_xgb_max_residue_position/fold_01.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp069_xgb_max_residue_position/fold_02.json",
+      "size_bytes": 15304447,
+      "sha256": "e98b055dff96f3e4e134ababc231da926a26c2d934d57144b045b48acaf12d7e",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#models/exp069_xgb_max_residue_position/fold_02.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp069_xgb_max_residue_position/fold_03.json",
+      "size_bytes": 11997675,
+      "sha256": "d0e6083f123c5b08e40ce695d321d51d7b9294170106b5b62e16a467d3e49bd9",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#models/exp069_xgb_max_residue_position/fold_03.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp069_xgb_max_residue_position/fold_04.json",
+      "size_bytes": 12942365,
+      "sha256": "f06dfe88bf5ed1ff177fe9c02f71d5e765f3c2fe147bbcefcb7da1f91ad05ebe",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#models/exp069_xgb_max_residue_position/fold_04.json"
+    },
+    {
+      "kind": "component_oof_probability",
+      "path": "oof/exp069_xgb_max_residue_position.csv",
+      "size_bytes": 2131423,
+      "sha256": "d8a513b57da34664d13fa25879883ca4896e29410f6c8b1afc87a70ea79500f4",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#oof/exp069_xgb_max_residue_position.csv"
+    },
+    {
+      "kind": "component_test_probability",
+      "path": "preds/exp069_xgb_max_residue_position_test_proba.csv",
+      "size_bytes": 835356,
+      "sha256": "fc20ec189fd9378ece9e7144eb2b3b45664ccebd30ce80d04233132f217d94d5",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#preds/exp069_xgb_max_residue_position_test_proba.csv"
+    },
+    {
+      "kind": "component_resolved_config",
+      "path": "reproducibility/exp069_xgb_max_residue_position/config.resolved.yaml",
+      "size_bytes": 6641,
+      "sha256": "3457fa58632f59eebf704a37cf56ab611cf53885080321abe3539699dbfb256d",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#reproducibility/exp069_xgb_max_residue_position/config.resolved.yaml"
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp075_residue_probability_blend.csv",
+      "size_bytes": 38158,
+      "sha256": "25f00f1a97acbd5364df0dd7b391f75a930888fefc887edf696f681d482d7b3e",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#submissions/exp075_residue_probability_blend.csv"
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp075_residue_probability_blend.csv",
+      "size_bytes": 2574642,
+      "sha256": "2a8666b8a8ce515ff8321dfe19d6c517904351ef1450c1df8d19e21225028fc4",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#oof/exp075_residue_probability_blend.csv"
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp075_residue_probability_blend_test_proba.csv",
+      "size_bytes": 1018582,
+      "sha256": "e78d0ebbdd52b1d7a0e4412bf1ae58a41208539d12a6601fc5db19eb8823b71b",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#preds/exp075_residue_probability_blend_test_proba.csv"
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp075_residue_probability_blend/metrics.json",
+      "size_bytes": 11179,
+      "sha256": "5d8c2ccca29dbdccbf6547ba27e813cccb0c03106c97dd99c880079e1eb4f572",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp075_residue_probability_blend/config.resolved.yaml",
+      "size_bytes": 5004,
+      "sha256": "2a512367d40c801150eaa3647e4ee3b1d580946d87a51a30db402d0a5829b3cb",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz#reproducibility/exp075_residue_probability_blend/config.resolved.yaml"
+    },
+    {
+      "kind": "release_bundle",
+      "path": "release-assets/exp075_residue_probability_blend_repro.tar.gz",
+      "size_bytes": 37928080,
+      "sha256": "698c29841112ff78e6fe2dcdd1b6b07bd2e7a2db26ef8ec86e625963d8125b33",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-075-repro-v1/exp075_residue_probability_blend_repro.tar.gz"
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

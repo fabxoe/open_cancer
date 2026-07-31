@@ -40,5 +40,6 @@ def test_long_term_roadmap_is_linked_without_changing_history_role() -> None:
 
     roadmap = roadmap_path.read_text(encoding="utf-8")
     assert "실제 실행 결과와 점수의 단일 원본" in roadmap
-    assert "| A | EXP-067+069 고정 blend | 미발급 |" in roadmap
+    assert "| A | EXP-067+069 고정 blend |" in roadmap
+    assert "EXP-075" in roadmap
     assert "## 결정 변경 이력" in roadmap

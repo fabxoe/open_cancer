@@ -1,0 +1,26 @@
+run_mode: experiment
+slug: residue_probability_blend
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+ensemble:
+  method: probability_mean
+  components:
+    - experiment_id: EXP-067
+      weight: 0.5
+      oof_probability_path: oof/exp067_xgb_residue_coarse_bin.csv
+      test_probability_path: preds/exp067_xgb_residue_coarse_bin_test_proba.csv
+      metrics_path: reports/exp067_xgb_residue_coarse_bin/metrics.json
+      resolved_config_path: reproducibility/exp067_xgb_residue_coarse_bin/config.resolved.yaml
+      checkpoint_dir: models/exp067_xgb_residue_coarse_bin
+    - experiment_id: EXP-069
+      weight: 0.5
+      oof_probability_path: oof/exp069_xgb_max_residue_position.csv
+      test_probability_path: preds/exp069_xgb_max_residue_position_test_proba.csv
+      metrics_path: reports/exp069_xgb_max_residue_position/metrics.json
+      resolved_config_path: reproducibility/exp069_xgb_max_residue_position/config.resolved.yaml
+      checkpoint_dir: models/exp069_xgb_max_residue_position
+submission:
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
