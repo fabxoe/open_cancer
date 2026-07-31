@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-065",
+  "issue_number": 65,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "64f1a4c7d948c3951e88c9d80caf47fd2a5fd07b",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp065_xgb_residue_exclude_complex/data_manifest.json",
+  "environment": "reproducibility/exp065_xgb_residue_exclude_complex/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-07-31T11:07:03.530920+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp065_xgb_residue_exclude_complex/fold_00.json",
+      "size_bytes": 11766445,
+      "sha256": "f4acd26b212acba1a2b983894c570197db833ca0b9df1ab1a699af1c780d60d6",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp065_xgb_residue_exclude_complex/fold_01.json",
+      "size_bytes": 12297406,
+      "sha256": "67b5371f32d0d0f6e4884ab238a218dfaf404961b445076234a80f664660566a",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp065_xgb_residue_exclude_complex/fold_02.json",
+      "size_bytes": 14304372,
+      "sha256": "18c24a04ad9b9d53c2bcd2fdc1c6c8afb4504e43f14d69eb34c1b877fde918ed",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp065_xgb_residue_exclude_complex/fold_03.json",
+      "size_bytes": 11563816,
+      "sha256": "2b60998ab41c1222f9c478349fdf20d5567a3761ce003fefcc155cf623fdcef8",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp065_xgb_residue_exclude_complex/fold_04.json",
+      "size_bytes": 12883110,
+      "sha256": "e2864d2603cd2ea51a4da0493fc5e99df6a2f4460ad7fc3b5f512884b0ecb34f",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp065_xgb_residue_exclude_complex.csv",
+      "size_bytes": 38162,
+      "sha256": "d39a589c88e7e8d4aabe93a980c5ff53729be4478f51f8767641ef3feb5ed9f6",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp065_xgb_residue_exclude_complex.csv",
+      "size_bytes": 2129225,
+      "sha256": "7aeaecfc3d03dc5c36f06755a7fa2f208e7072cd59153ebd34764f9065d03d3b",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp065_xgb_residue_exclude_complex_test_proba.csv",
+      "size_bytes": 833984,
+      "sha256": "059b282e5b7eef26c0d18f10a80e56ee53770398c92d9376b26dda0628f9e58c",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp065_xgb_residue_exclude_complex/metrics.json",
+      "size_bytes": 11192,
+      "sha256": "8f46f601d8f5b1eea235f20bdd5bab1fa174e18a5649f8f912ac1704e6f39036",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp065_xgb_residue_exclude_complex/config.resolved.yaml",
+      "size_bytes": 6674,
+      "sha256": "a0e106d62eb0f7029e85a8c216cd55559b70caa773879267cfa3d92ffc13bcdf",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

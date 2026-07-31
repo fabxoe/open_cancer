@@ -1,0 +1,207 @@
+experiment:
+  issue_number: 65
+  experiment_id: EXP-065
+  branch: issue-65-exp-residue-exclude-complex
+  owner: fabxoe
+  source_commit: 64f1a4c7d948c3951e88c9d80caf47fd2a5fd07b
+  dirty_worktree: false
+  started_at: '2026-07-31T10:56:44.751792+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features:
+  - sample__mutated_gene_count_log1p
+  - sample__total_variant_count_log1p
+  - sample__multi_variant_gene_count_log1p
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features:
+  - min_residue_position
+  position_missing_policy: zero
+  position_token_scope: exclude_complex
+  position_transform: raw
+  position_bin_width: null
+  position_semantics: protein residue indices explicitly written in source tokens;
+    no transcript, codon nucleotide, genomic coordinate, or protein-length inference
+  co_mutation_pairs: []
+  co_mutation_semantics: fixed, literature-curated gene pairs (mutual exclusivity
+    or co-occurrence); gene-level 'any mutation' presence, not restricted to a specific
+    hotspot codon; not fit from this dataset's target or frequency
+  feature_factory_version: 1.1.0
+  feature_spec_sha256: 8a3fd33b7185d1d9a6166c8c90b5fc58f8e204e7570ffc9fb8dabe916086ee1e
+  requested_families:
+    mutation_type:
+      enabled: true
+    residue_position:
+      enabled: true
+      aggregates:
+      - min
+      missing_policy: zero
+      complex_tokens: exclude
+      transform: raw
+feature_registry:
+  mutation_type:
+    definition_version: 1.0.0
+    enabled: true
+    output_dimension: 30697
+    fit_scope: stateless; train and test parsed independently
+    external_knowledge: null
+  robust_aggregate:
+    definition_version: 1.0.0
+    enabled: true
+    features:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+    output_dimension: 3
+    fit_scope: stateless per-sample aggregation
+    external_knowledge: null
+  residue_position:
+    definition_version: 1.1.0
+    enabled: true
+    features:
+    - min_residue_position
+    output_dimension: 4384
+    missing_policy: zero
+    token_scope: exclude_complex
+    transform: raw
+    bin_width: null
+    fit_scope: stateless lexical parse; no target or test-distribution fit
+    external_knowledge: null
+  co_mutation:
+    definition_version: 1.0.0
+    enabled: false
+    pairs: []
+    output_dimension: 0
+    fit_scope: stateless; fixed literature-curated gene pairs, no target or fold fitting
+      (pairs are not mined from this dataset's co-occurrence frequency)
+    external_knowledge: literature-documented mutual exclusivity/co-occurrence (IDH1/IDH2,
+      APC/CTNNB1, PIK3CA/PTEN); gene symbols and relationships are public knowledge,
+      not redistributed from a licensed source
+feature_outputs:
+  train_features.npz:
+    path: data/processed/feature_factory/v1/exp065_residue_exclude_complex/train_features.npz
+    sha256: 6a8575721dc4c532019d9344f42c69509bc05fea6264c4837496fd627d2b3c7c
+  test_features.npz:
+    path: data/processed/feature_factory/v1/exp065_residue_exclude_complex/test_features.npz
+    sha256: fa0d28d2034cc14844edd3358c33befd0f608938bb3930de62133087ad1b11bb
+  train_ids.csv:
+    path: data/processed/feature_factory/v1/exp065_residue_exclude_complex/train_ids.csv
+    sha256: 76d4b6e523b4509d16c9b65e458f9616c94b7262a844ec107971649de20e95d1
+  test_ids.csv:
+    path: data/processed/feature_factory/v1/exp065_residue_exclude_complex/test_ids.csv
+    sha256: 39321e5b32cdf9400476db97c38800a28fa58d20ddb25730da31fbcf91f3ebfe
+  train_labels.csv:
+    path: data/processed/feature_factory/v1/exp065_residue_exclude_complex/train_labels.csv
+    sha256: ca66b734a3adefc9ce38348a71e29edc4c6061ffaab72e468c574a70fa6d2a06
+  feature_names.json:
+    path: data/processed/feature_factory/v1/exp065_residue_exclude_complex/feature_names.json
+    sha256: 4d305fa0bdedf0ef5987201ad5951308de782ae0a54f4aab8a361fc83471e07c
+  feature_spec.json:
+    path: data/processed/feature_factory/v1/exp065_residue_exclude_complex/feature_spec.json
+    sha256: 2bfd7ce0f968e161798cc5ed70b64bbcbadf982717d25efa54586377fe2e9fe5
+  feature_registry.json:
+    path: data/processed/feature_factory/v1/exp065_residue_exclude_complex/feature_registry.json
+    sha256: f8ef0518f6a0ed32a741985d5358168f40316347b91214ffb9b6c3d7f9f2a4a3
+  parsing_qc.json:
+    path: data/processed/feature_factory/v1/exp065_residue_exclude_complex/parsing_qc.json
+    sha256: a460deefb7c99d7148027a4b9ad948524d6715075fa2ee9593a5e133ca517417
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+  - mutation_presence
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  - log_mutated_gene_count
+  - log_total_variant_count
+  - log_multi_variant_gene_count
+  - min_residue_position
+  feature_selection: null
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  command: uv run python scripts/run_exp065_xgb_residue_exclude_complex.py
+environment:
+  python: 3.11.10 (main, Oct 11 2024, 15:45:30) [Clang 15.0.0 (clang-1500.3.9.4)]
+  platform: macOS-26.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: cea0d1a7c46efd4675ebb3982a309c56b85c793f0712ba24d04d1a7c6bd110ae
