@@ -25,7 +25,7 @@
 | EXP-021 | COMPLETED | Kangho-Park | #21 | XGBoost, 전체 4,384 피처 + COSMIC 가중 burden 파생 컬럼 1개 (attempt 3, 4개 시도 중 최고) | 0.349410 | 0.2544194867 | NOT_STARTED | 채택(EXP-003 대비 개선, EXP-005엔 못 미침) | [보고서](reports/exp021_cosmic_weighted_burden_baseline/README.md) |
 | EXP-026 | COMPLETED | fabxoe | #26 | XGBoost mutation-presence + mutated-gene count | 0.3817476632 | 0.2575936484 | NOT_STARTED | EXP-003 대비 개선, EXP-005보다 낮음 | [보고서](reports/exp026_mutation_burden/README.md) |
 | EXP-029 | COMPLETED | 2heej | #29 | EXP-005 + 변이유형 구성비·log burden 피처 | 0.3988980085 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 OOF 하락·fold 변동성 증가로 현 구성 미채택 | [보고서](reports/exp029_xgb_log_burden_ratios/README.md) |
-| EXP-030 | COMPLETED | Gomin-art | #30 | XGBoost + 유전자×변이유형 희소 피처·샘플별 변이 수 | 0.4105408554 | 미제출 | INFERENCE_VERIFIED | Local OOF 최고 갱신·Public LB 미확인 | [보고서](reports/exp030_sparse_variant_xgb/README.md) |
+| EXP-030 | COMPLETED | Gomin-art | #30 | XGBoost + 유전자×변이유형 희소 피처·샘플별 변이 수 | 0.4105408554 | 0.2993610323 | INFERENCE_VERIFIED | EXP-005 Public 소폭 개선·EXP-031보다 낮음 | [보고서](reports/exp030_sparse_variant_xgb/README.md) |
 | EXP-033 | COMPLETED | 2heej | #33 | EXP-005 + log burden 3종 단독 ablation | 0.4057244634 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 소폭 개선·추가 분리 검증 필요 | [보고서](reports/exp033_xgb_log_burden_ablation/README.md) |
 | EXP-031 | COMPLETED | Kangho-Park | #31 | EXP-005 변이유형 피처 + 알려진 cancer hotspot 위치 피처 (attempt 5, hotspot 19→34개 확장이 팀 최고) | 0.4135846695 | 0.3170803849 | FAILED | attempt 5 채택; 원 실행 checkpoint 미보관으로 독립 재학습이 원 제출과 불일치 | [보고서](reports/exp031_hotspot_extended/README.md) |
 | EXP-043 | COMPLETED | 2heej | #43 | EXP-005 + 샘플 변이분포 확장 피처 28종 | 0.3989124897 | 미제출 | INFERENCE_VERIFIED | fold 변동성은 감소했지만 EXP-005·033 대비 OOF 하락 | [보고서](reports/exp043_xgb_sample_distribution/README.md) |
@@ -47,6 +47,7 @@
 | 2026-07-30T23:28:27+09:00 | EXP-021 | #21 | `submissions/exp021_cosmic_weighted_burden_baseline.csv` (제출 ID `1506440`) | `cb75da2609631bc86310a637e2d4f2e244bfe85dac71da4f154559ebf19a07b0` | 0.2544194867 | 미확인(Dacon 제출 화면에 순위 미표시) | NOT_STARTED |
 | 2026-07-30T23:56:29+09:00 | EXP-026 | #26 | `submissions/exp026_mutation_burden.csv` (제출 ID `1506469`) | `53d835335d6d23945c80acef4b70d0112f14abdaf1b5d504a63fd1ea7b16ef00` | 0.2575936484 | 미선택·개별 순위 미확인 | NOT_STARTED |
 | 2026-07-31T15:50:02+09:00 | EXP-031 | #31 | `submissions/exp031_hotspot_extended.csv` (제출 ID `1506950`, attempt 5) | `54de49396b8910fd8134b5a854beed344e369a9a791c67c6c9caf0da38cec27d` | 0.3170803849 | 확인 당시 전체 2위(1위 6조 0.37149) | FAILED |
+| 2026-07-31T18:46:30+09:00 | EXP-030 | #30 | `submissions/exp030_sparse_variant_xgb.csv` (제출 ID `1507123`) | `bd523ea4e872301e7d11f44ea375cf16d8c282de549f5f408d67ba3146670cba` | 0.2993610323 | 개별 순위 미확인 | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -780,7 +781,7 @@ Feature Factory에 family 7(co-mutation)을 구현해 EXP-047 피처에 문헌 �
 - Fold Macro F1: 0.4075818591, 0.4144161831, 0.3960694066,
   0.3962701409, 0.4315160934
 - OOF Macro F1: 0.4105408554
-- Public LB: 미제출
+- Public LB: 0.2993610323 (제출 ID `1507123`, 2026-07-31 18:46:30 KST)
 - 재현 상태: INFERENCE_VERIFIED
 
 #### 산출물과 결론
@@ -789,15 +790,19 @@ Feature Factory에 family 7(co-mutation)을 구현해 EXP-047 피처에 문헌 �
   `reports/exp030_sparse_variant_xgb/metrics.json` /
   `reports/exp030_sparse_variant_xgb/README.md` /
   `reproducibility/exp030_sparse_variant_xgb/`
-- 제출 후보 파일: `submissions/exp030_sparse_variant_xgb.csv`
+- 제출 파일: `submissions/exp030_sparse_variant_xgb.csv`
   (SHA-256 `bd523ea4e872301e7d11f44ea375cf16d8c282de549f5f408d67ba3146670cba`,
-  Dacon 미제출)
+  제출 ID `1507123`)
 - 결론: 기존 최고 EXP-047보다 OOF Macro F1이 `+0.0017276116` 높아 Local
   최고 기록을 갱신했다. 다만 fold 표준편차는 EXP-047보다 `+0.0046650006`
-  높고 Public LB는 확인하지 않았으므로 Local 후보로 유지한다.
+  높았다. Public LB는 EXP-005보다 `+0.0005766957` 높고 EXP-031보다
+  `-0.0177193526` 낮아 최종 선택 모델로 채택하지 않는다.
 - 재현 메모: 저장 checkpoint 재추론에서 데이터 해시와 제출 SHA-256이
   일치하고 test 라벨 일치율 100%, 확률 최대 절대 차이 약 5.83e-08로
   허용치 1e-6 이내여서 `INFERENCE_VERIFIED`를 통과했다.
+- 보관 메모: 원 WSL checkpoint·OOF·test 확률이 GitHub Release에 보관되지
+  않아 `configs/reproducibility_policy.yaml`에 임시 예외를 기록했다. 원
+  실행자가 `exp-030-repro-v1` 번들을 보관하면 예외를 제거한다.
 
 ### [EXP-050] EXP-005 + 반복 선택 파생변수 2종 고정 검증
 
