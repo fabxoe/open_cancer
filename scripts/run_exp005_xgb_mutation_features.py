@@ -59,15 +59,30 @@ def write_json(path: Path, value: dict[str, Any]) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def main() -> None:
+def run_experiment(
+    *,
+    config_path: Path,
+    expected_issue_number: int,
+    artifact_slug: str,
+    feature_dir: Path,
+    include_robust_aggregates: bool,
+    parent_experiment: str | None,
+    notes: str,
+) -> None:
     started_at = datetime.now(timezone.utc)
     start_time = time.perf_counter()
-    config = yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8"))
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
-    if context.experiment_id != "EXP-005" or context.issue_number != 5:
-        raise ValueError("이 script는 Issue #5 브랜치의 EXP-005 전용입니다.")
+    expected_experiment_id = f"EXP-{expected_issue_number:03d}"
+    if (
+        context.experiment_id != expected_experiment_id
+        or context.issue_number != expected_issue_number
+    ):
+        raise ValueError(
+            f"이 script는 Issue #{expected_issue_number} 브랜치의 "
+            f"{expected_experiment_id} 전용입니다."
+        )
 
-    artifact_slug = "exp005_xgb_mutation_features"
     split_path = ROOT / config["split"]["path"]
     report_dir = ROOT / "reports" / artifact_slug
     model_dir = ROOT / "models" / artifact_slug
@@ -90,7 +105,12 @@ def main() -> None:
     source_commit = run_git("rev-parse", "HEAD")
     dirty_worktree = bool(run_git("status", "--porcelain"))
     owner = run_git("config", "user.name") or os.environ.get("USER", "unknown")
-    feature_report = build_mutation_features(TRAIN_PATH, TEST_PATH, FEATURE_DIR)
+    feature_report = build_mutation_features(
+        TRAIN_PATH,
+        TEST_PATH,
+        feature_dir,
+        include_robust_aggregates=include_robust_aggregates,
+    )
 
     train_meta = pd.read_csv(TRAIN_PATH, usecols=["ID", "SUBCLASS"], dtype=str)
     test_meta = pd.read_csv(TEST_PATH, usecols=["ID"], dtype=str)
@@ -100,10 +120,10 @@ def main() -> None:
     if not train["ID"].equals(train_meta["ID"]):
         raise ValueError("fold 병합 과정에서 train 순서가 변경됐습니다.")
 
-    x_all = sparse.load_npz(FEATURE_DIR / "train_features.npz")
-    x_test = sparse.load_npz(FEATURE_DIR / "test_features.npz")
-    feature_train_ids = pd.read_csv(FEATURE_DIR / "train_ids.csv", dtype=str)["ID"]
-    feature_test_ids = pd.read_csv(FEATURE_DIR / "test_ids.csv", dtype=str)["ID"]
+    x_all = sparse.load_npz(feature_dir / "train_features.npz")
+    x_test = sparse.load_npz(feature_dir / "test_features.npz")
+    feature_train_ids = pd.read_csv(feature_dir / "train_ids.csv", dtype=str)["ID"]
+    feature_test_ids = pd.read_csv(feature_dir / "test_ids.csv", dtype=str)["ID"]
     if not feature_train_ids.equals(train["ID"]) or not feature_test_ids.equals(test_meta["ID"]):
         raise ValueError("피처 행렬 ID 순서가 원본과 다릅니다.")
 
@@ -157,7 +177,7 @@ def main() -> None:
         "training": {
             **config["training"],
             "fold_seeds": [config["seed"] + fold for fold in range(config["split"]["n_splits"])],
-            "command": "uv run python scripts/run_exp005_xgb_mutation_features.py",
+            "command": f"uv run python scripts/run_{artifact_slug}.py",
         },
         "environment": {
             "python": sys.version,
@@ -260,7 +280,7 @@ def main() -> None:
         "status": "COMPLETED",
         "owner": owner,
         "issue_number": context.issue_number,
-        "parent_experiment": None,
+        "parent_experiment": parent_experiment,
         "git_commit": source_commit,
         "started_at": started_at.isoformat(),
         "finished_at": finished_at.isoformat(),
@@ -295,11 +315,23 @@ def main() -> None:
             "models": str(model_dir.relative_to(ROOT)),
             "submission_sha256": submission_validation["sha256"],
         },
-        "notes": "Sparse gene-by-mutation-type features; no target-derived features.",
+        "notes": notes,
     }
     write_json(metrics_path, metrics)
     validate_json_document(metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json")
     print(json.dumps({"metrics": str(metrics_path), "oof": metrics["oof"]}, ensure_ascii=False, indent=2))
+
+
+def main() -> None:
+    run_experiment(
+        config_path=CONFIG_PATH,
+        expected_issue_number=5,
+        artifact_slug="exp005_xgb_mutation_features",
+        feature_dir=FEATURE_DIR,
+        include_robust_aggregates=False,
+        parent_experiment=None,
+        notes="Sparse gene-by-mutation-type features; no target-derived features.",
+    )
 
 
 if __name__ == "__main__":
