@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 8
+- 실제 실험 수: 9
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4057244633876238 (`EXP-033`)
@@ -27,6 +27,7 @@
 | EXP-029 | COMPLETED | 2heej | #29 | EXP-005 + 변이유형 구성비·log burden 피처 | 0.3988980085 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 OOF 하락·fold 변동성 증가로 현 구성 미채택 | [보고서](reports/exp029_xgb_log_burden_ratios/README.md) |
 | EXP-033 | COMPLETED | 2heej | #33 | EXP-005 + log burden 3종 단독 ablation | 0.4057244634 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 소폭 개선·추가 분리 검증 필요 | [보고서](reports/exp033_xgb_log_burden_ablation/README.md) |
 | EXP-043 | COMPLETED | 2heej | #43 | EXP-005 + 샘플 변이분포 확장 피처 28종 | 0.3989124897 | 미제출 | INFERENCE_VERIFIED | fold 변동성은 감소했지만 EXP-005·033 대비 OOF 하락 | [보고서](reports/exp043_xgb_sample_distribution/README.md) |
+| EXP-045 | COMPLETED | 2heej | #45 | EXP-043 후보 28종 nested 그룹·개별 선택 | 0.3999980235 | 미제출 | INFERENCE_VERIFIED | EXP-043 대비 소폭 개선, EXP-005·033보다 낮아 고정 후보 2종을 후속 검증 | [보고서](reports/exp045_xgb_nested_feature_selection/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -46,6 +47,7 @@
 | 2026-07-31T02:30:08.486372+00:00 | EXP-029 | 2heej | `1f06b4ee1bc098bd23d4c673e290da87638fb25d` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp029_xgb_log_burden_ratios/comparison.json) |
 | 2026-07-31T05:05:48.760675+00:00 | EXP-043 | 2heej | `c35cbce90415ae73a66718c47759a7c7a7e851a0` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100% | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp043_xgb_sample_distribution/comparison.json) |
 | 2026-07-31T04:12:34.945706+00:00 | EXP-033 | 2heej | `80a1684e0167f221e225460eaae9f0a649ab7e37` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100% | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp033_xgb_log_burden_ablation/comparison.json) |
+| 2026-07-31T07:05:20.802427+00:00 | EXP-045 | 2heej | `a854d8bd626c425363c58fa7658e236220b14c3d` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100% | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp045_xgb_nested_feature_selection/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -371,3 +373,41 @@ EXP-012(#12)의 protect/drop 결정을 입력으로, EXP-003과 동일한 공용
 - 재현 메모: 저장 checkpoint 재추론에서 데이터 해시, 제출 SHA-256과 test
   라벨이 일치했고 확률 최대 절대 차이는 약 2.98e-08로 허용치 이내여서
   `INFERENCE_VERIFIED`를 통과했다.
+
+### [EXP-045] EXP-043 파생변수 단계별 선택
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #45 / issue-45-exp-nested-feature-selection
+- 소스 commit: `a854d8bd626c425363c58fa7658e236220b14c3d`
+- 시작/종료: 2026-07-31T06:39:19.308528+00:00 /
+  2026-07-31T07:05:20.802427+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp045_xgb_nested_feature_selection/config.resolved.yaml`
+- Metrics: `reports/exp045_xgb_nested_feature_selection/metrics.json`
+- Report: `reports/exp045_xgb_nested_feature_selection/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.3988827522, 0.3974133932, 0.3915761757,
+  0.3915046058, 0.4142175906
+- OOF Macro F1: 0.3999980235
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp045_xgb_nested_feature_selection/metrics.json` /
+  `reports/exp045_xgb_nested_feature_selection/README.md` /
+  `reproducibility/exp045_xgb_nested_feature_selection/`
+- 결론: EXP-043보다 OOF `+0.0010855338` 개선했지만 EXP-005보다
+  `-0.0043816352`, EXP-033보다 `-0.0057264399` 낮았다. 모든 outer fold에서
+  반복 선택되고 permutation 평균 하락 폭도 비교적 컸던
+  `sample__synonymous_gene_count`와
+  `sample__variants_per_mutated_gene_mean`을 별도 고정 피처 후속 실험 후보로
+  남긴다.
+- 재현 메모: 저장 checkpoint 재추론에서 데이터 해시, 제출 SHA-256과 test
+  라벨이 일치해 `INFERENCE_VERIFIED`를 통과했다.
