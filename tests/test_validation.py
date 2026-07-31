@@ -13,7 +13,10 @@ from open_cancer.validation import (
     validate_experiment_record_identity,
     validate_history,
     validate_json_document,
+    validate_portable_artifact_paths,
+    validate_split_metadata,
     validate_submission,
+    validate_submission_storage_policy,
 )
 
 
@@ -139,6 +142,109 @@ def test_experiment_record_rejects_mismatched_issue(tmp_path: Path) -> None:
     )
     with pytest.raises(ValidationError, match="Issue #12"):
         validate_experiment_record_identity(path)
+
+
+def test_portable_artifact_paths_reject_windows_separator(tmp_path: Path) -> None:
+    path = tmp_path / "metrics.json"
+    path.write_text(
+        json.dumps({"artifacts": {"submission": "submissions\\exp012_test.csv"}}),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValidationError, match="경로는 '/'"):
+        validate_portable_artifact_paths(path)
+
+
+def test_split_metadata_rejects_modified_split(tmp_path: Path) -> None:
+    split_path = tmp_path / "split.csv"
+    split_path.write_text("ID,fold\nA,0\n", encoding="utf-8")
+    metadata_path = tmp_path / "split.meta.json"
+    metadata_path.write_text(
+        json.dumps(
+            {
+                "path": "data/splits/split.csv",
+                "sha256": "0" * 64,
+                "rows": 1,
+                "n_splits": 2,
+                "seed": 42,
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValidationError, match="공용 split SHA-256"):
+        validate_split_metadata(split_path, metadata_path)
+
+
+def _write_storage_policy_fixture(tmp_path: Path, *, storage_uri: str | None) -> tuple[Path, Path, Path]:
+    history_path = tmp_path / "EXPERIMENT_HISTORY.md"
+    history_path.write_text(
+        """# 실험 기록
+
+## 리더보드 제출 이력
+
+| 제출 시각 | 실험 ID | Issue |
+|---|---|---|
+| 2026-07-31T00:00:00Z | EXP-012 | #12 |
+
+## 재현성 검증 이력
+""",
+        encoding="utf-8",
+    )
+    reproducibility_root = tmp_path / "reproducibility"
+    manifest_dir = reproducibility_root / "exp012_test"
+    manifest_dir.mkdir(parents=True)
+    artifact_kinds = (
+        "checkpoint",
+        "oof_probability",
+        "test_probability",
+        "submission",
+        "resolved_config",
+        "release_bundle",
+    )
+    (manifest_dir / "artifact_manifest.json").write_text(
+        json.dumps(
+            {
+                "experiment_id": "EXP-012",
+                "reproducibility_status": "INFERENCE_VERIFIED",
+                "release_url": "https://github.com/test/repo/releases/tag/exp-012-repro-v1",
+                "artifacts": [
+                    {"kind": kind, "storage_uri": storage_uri} for kind in artifact_kinds
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    policy_path = tmp_path / "policy.yaml"
+    policy_path.write_text(
+        """required_artifact_kinds:
+  - checkpoint
+  - oof_probability
+  - test_probability
+  - submission
+  - resolved_config
+  - release_bundle
+accepted_kind_aliases: {}
+legacy_exceptions: {}
+""",
+        encoding="utf-8",
+    )
+    return history_path, reproducibility_root, policy_path
+
+
+def test_submission_storage_policy_accepts_published_bundle(tmp_path: Path) -> None:
+    paths = _write_storage_policy_fixture(
+        tmp_path,
+        storage_uri="https://github.com/test/repo/releases/download/v1/bundle.tar.gz",
+    )
+    summary = validate_submission_storage_policy(*paths)
+    assert summary["storage_verified"] == ["EXP-012"]
+
+
+def test_submission_storage_policy_rejects_missing_storage_uri(tmp_path: Path) -> None:
+    paths = _write_storage_policy_fixture(tmp_path, storage_uri=None)
+    with pytest.raises(ValidationError, match="storage_uri"):
+        validate_submission_storage_policy(*paths)
 
 
 def test_history_accepts_issue_derived_id_and_numeric_branch(tmp_path: Path) -> None:

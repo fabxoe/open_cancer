@@ -55,9 +55,11 @@ preds/*
 logs/
 tmp/
 temp/
+dist/
 *.log
 
 # Large report and archive formats
+reports/local/
 reports/**/*.pdf
 reports/**/*.png
 reports/**/*.jpg

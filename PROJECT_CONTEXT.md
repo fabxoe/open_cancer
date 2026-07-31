@@ -388,6 +388,17 @@ resolved config에는 실행에 실제 적용된 항목만 기록한다.
 - 사용한 경우에만 앙상블 구성, 가중치, threshold, TTA와 후처리
 - 학습·추론 명령과 입력·출력 경로
 
+### macOS·Windows 공통 기록 규칙
+
+- config, metrics와 manifest에 저장하는 저장소 내부 경로는 OS와 관계없이 `/`를
+  사용하는 상대경로로 기록한다. Windows의 `\` 경로를 그대로 저장하지 않는다.
+- Git으로 공유하는 text 파일은 `.gitattributes`의 LF 정책을 따른다.
+- 공용 split의 canonical SHA-256은
+  `1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf`이다.
+- 과거 Windows 실행처럼 CRLF 때문에 byte SHA-256이 달라졌다면 실제 실행 해시를
+  삭제하지 않고 `canonical_repository_sha256`, 줄바꿈 형식과 논리적 fold 일치
+  여부를 함께 기록한다.
+
 부모 실험, 가설, 사람이 설명한 변경점은 선택 정보다. 작성자가 판단하기에 비교나
 의사결정에 도움이 될 때만 Issue 또는 config의 `notes`에 기록한다. 변경된 실제
 파라미터는 `config.resolved.yaml`과 Git diff로 확인하며 사람이 중복 기록하지 않는다.
@@ -406,6 +417,13 @@ resolved config에는 실행에 실제 적용된 항목만 기록한다.
 
 리더보드 제출 전 최소 `INFERENCE_VERIFIED`가 필요하다. 현재 최고 모델과 최종 수상
 후보는 `TRAINING_VERIFIED`가 아니면 최종 모델로 지정할 수 없다.
+
+checkpoint와 제출 파일을 생성하는 공식 실험 runner는 실행 전에 clean worktree를
+확인하고, 학습 직후 저장 checkpoint를 다시 불러와 test 추론을 재생성한다. 원본
+확률·라벨·제출 SHA-256이 모두 일치하면 재현성 manifest와 증빙 파일을 자동
+생성하고 `INFERENCE_VERIFIED`로 기록한다. 검증에 실패하면 성공 상태를 만들지
+않고 실행을 실패 처리한다. 비작성자의 독립 재학습이 필요한
+`TRAINING_VERIFIED`는 자동 부여하지 않는다.
 
 재현성 파일을 모든 탐색 실험에서 사람이 완성할 필요는 없다.
 
@@ -463,11 +481,74 @@ reproducibility/exp012_<slug>/
 - raw data는 Git commit, 재현 번들과 Release asset에 포함하지 않는다. 재현 시
   주최측 공식 경로로 별도 확보하며, 실험 manifest에는 파일 SHA-256만 기록한다.
 - 리더보드 제출 모델의 checkpoint와 재현 번들은 GitHub Release asset으로 보관한다.
+- 재현 번들에는 최소한 fold checkpoint, OOF 확률, test 확률, 제출 CSV와
+  `config.resolved.yaml`을 포함한다. 원본 데이터와 가공 데이터 원본은 포함하지
+  않는다.
 - Release tag는 `exp-012-repro-v1` 형식으로 정확한 실험 commit을 가리킨다.
 - asset의 URL, 크기와 SHA-256을 manifest와 History에 기록한다.
+- `INFERENCE_VERIFIED`를 유지하려면 다른 팀원이 clone한 뒤 manifest만 읽어도
+  번들의 실제 다운로드 위치를 찾을 수 있어야 한다. 제출 후보의 `storage_uri`와
+  `release_url`을 `null`로 남기지 않는다.
 - 기존 asset을 덮어쓰지 않고 변경 시 `v2`를 만든다.
 - asset 하나는 2 GiB 미만이어야 하며, 초과하면 fold별 또는 분할 압축한다.
 - 참고: <https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases>
+
+### 리더보드 제출 담당자의 재현 번들 절차
+
+리더보드에 제출한 사람은 같은 Issue 브랜치와 PR에서 재현 번들 보관까지
+완료한다. 팀장이나 다른 팀원이 나중에 로컬 산출물을 복구하는 방식으로 미루지
+않는다.
+
+1. 제출 전에 아래 공통 파일을 생성한다.
+
+   ```text
+   models/expNNN_<slug>/fold_*.json
+   oof/expNNN_<slug>.csv
+   preds/expNNN_<slug>_test_proba.csv
+   submissions/expNNN_<slug>.csv
+   reproducibility/expNNN_<slug>/config.resolved.yaml
+   reproducibility/expNNN_<slug>/artifact_manifest.json
+   ```
+
+2. manifest의 artifact kind는 `checkpoint`, `oof_probability`,
+   `test_probability`, `submission`, `resolved_config`를 사용한다. 각 항목에는
+   실제 상대경로, 크기와 SHA-256을 기록한다.
+3. 정확한 실행 source commit을 가리키는 tag를 만든다.
+
+   ```bash
+   git tag -a exp-012-repro-v1 <SOURCE_COMMIT> -m "EXP-012 reproducibility source"
+   git push origin exp-012-repro-v1
+   ```
+
+4. 공통 스크립트로 OS와 관계없이 같은 구조의 번들을 생성하고 manifest의
+   Release URL과 storage URI를 자동으로 채운다.
+
+   ```bash
+   uv run python scripts/prepare_reproducibility_bundle.py \
+     --slug exp012_<slug> \
+     --tag exp-012-repro-v1
+   ```
+
+5. 출력된 `dist/reproducibility/*.tar.gz`를 해당 GitHub Release에 업로드한다.
+   업로드가 끝난 뒤 출력된 SHA-256과 Release asset을 대조한다. 원본 CSV는
+   번들에 넣지 않는다.
+6. 리더보드 점수와 제출 시각을 History에 기록하고 다음 검증을 실행한다.
+
+   ```bash
+   uv run python scripts/validate_experiment.py --check-remote-storage
+   ```
+
+CI는 History의 리더보드 제출 이력을 기준으로 새 제출 모델에 다음 사항을
+강제한다.
+
+- `INFERENCE_VERIFIED` 이상의 manifest
+- checkpoint, OOF 확률, test 확률, 제출 CSV, resolved config와 release bundle
+- 각 필수 artifact의 HTTPS `storage_uri`
+- `release_url` 및 실제 Release asset 접근 가능 여부
+
+정책 도입 전에 제출된 예외는 `configs/reproducibility_policy.yaml`에 사유와
+후속 작업을 함께 기록한다. 새 실험을 편의상 예외 목록에 추가해서는 안 된다.
+현재 예외도 해당 실험의 재현성 복구가 끝나면 즉시 삭제한다.
 
 ---
 
@@ -564,9 +645,10 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
    ```
 
 7. base가 `main`인 PR을 만들고 첫 부분에 `Closes #12`를 작성한다.
-8. 모든 현재 팀원을 reviewer 또는 mention으로 알린다.
-9. 모든 팀원이 Approve 또는 `확인` 댓글을 남기고, 비작성자 최소 한 명이 Approve한다.
-10. 새 커밋이 추가되면 다시 검토받는다.
+8. 관련 팀원을 reviewer 또는 mention으로 알린다.
+9. PR 작성자가 아닌 팀원 최소 한 명이 Approve한다.
+10. 새 커밋이 추가되면 기존 승인이 취소되므로 다시 검토받는다. 최근 push를
+    수행한 사람도 PR 작성자가 아니라면 승인할 수 있다.
 11. main이 변경되면 `origin/main`을 작업 브랜치에 merge하고 전체 테스트를 재실행한다.
 12. CI 통과와 모든 대화 해결 후 GitHub의 merge commit 방식으로 병합한다.
 13. main과 공유 브랜치에 force push하지 않는다.
@@ -584,8 +666,9 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
 ### main 보호 규칙
 
 - PR 없이 변경 금지
-- 비작성자 승인 최소 1개
-- 최신 push에 대한 승인
+- PR 작성자가 아닌 팀원 승인 최소 1개
+- 새 커밋 push 시 기존 승인 취소 및 재검토
+- 최근 push 수행자에 대한 별도 승인 제한은 적용하지 않음
 - 모든 대화 해결
 - `quality` status check 통과
 - merge 전 main 최신 상태
@@ -625,6 +708,7 @@ push를 허용한다. 실제 프로젝트 파일은 프로젝트 초기화 Issue
 
 - [ ] 전체 OOF와 Macro F1을 생성했다.
 - [ ] resolved config와 metrics를 저장했다.
+- [ ] checkpoint 기반 실험은 자동 추론 재현 검증과 manifest 생성을 통과했다.
 - [ ] 실패·중단을 포함해 History를 실제 값으로 갱신했다.
 - [ ] 테스트와 schema 검증을 통과했다.
 

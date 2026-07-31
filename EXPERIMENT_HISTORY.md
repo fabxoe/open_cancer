@@ -7,13 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 5
+- 실제 실험 수: 8
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4135846695002278 (`EXP-031` attempt 5, hotspot 확장)
 - 최고 Public LB Macro F1: 0.3170803849 (`EXP-031` attempt 5)
-- 최고 재현 검증 모델: `EXP-005` (`INFERENCE_VERIFIED`); `EXP-031`은 Public LB 최고이지만
-  재현 상태는 아직 `NOT_STARTED`
+- 최고 재현 검증 모델: `EXP-033` (`INFERENCE_VERIFIED`); `EXP-031`은 Local·Public LB
+  모두 최고이지만 재현 상태는 아직 `NOT_STARTED`
 - 최종 갱신일: 2026-07-31
 
 ## 실험 요약
@@ -21,10 +21,13 @@
 | ID | 상태 | 실행자 | Issue | 모델·메모(선택) | OOF Macro F1 | Public LB | 재현 상태 | 판단 | 상세 기록 |
 |---|---|---|---|---|---:|---:|---|---|---|
 | EXP-003 | COMPLETED | fabxoe | #3 | XGBoost mutation-presence baseline | 0.334930 | 0.228167518 | INFERENCE_VERIFIED | 비교 기준 | [보고서](reports/exp003_xgb_baseline/README.md) |
-| EXP-005 | COMPLETED | 2heej | #5 | XGBoost + 유전자×변이유형 희소 피처 | 0.4043796587000222 | 0.2987843366 | INFERENCE_VERIFIED | 제출 재생성 검증 완료·Release 보관 필요 | [보고서](reports/exp005_xgb_mutation_features/README.md) |
+| EXP-005 | COMPLETED | 2heej | #5 | XGBoost + 유전자×변이유형 희소 피처 | 0.4043796587000222 | 0.2987843366 | INFERENCE_VERIFIED | 제출·체크포인트 재생성 및 Release 보관 완료 | [보고서](reports/exp005_xgb_mutation_features/README.md) |
 | EXP-012 | COMPLETED | Kangho-Park | #12 | COSMIC 보호 유전자 기반 feature 보호 전략 분석 (모델 학습 없음) | N/A (분석 전용) | 미제출 | NOT_STARTED | 채택 | [상세](#exp-012-cosmic-보호-유전자-기반-feature-보호-전략-분석) |
+| EXP-021 | COMPLETED | Kangho-Park | #21 | XGBoost, 전체 4,384 피처 + COSMIC 가중 burden 파생 컬럼 1개 (attempt 3, 4개 시도 중 최고) | 0.349410 | 0.2544194867 | NOT_STARTED | 채택(EXP-003 대비 개선, EXP-005엔 못 미침) | [상세](#exp-021-cosmic-보호-유전자-기반-피처-선택-및-파생변수-xgboost-baseline) |
 | EXP-026 | COMPLETED | fabxoe | #26 | XGBoost mutation-presence + mutated-gene count | 0.3817476632 | 0.2575936484 | NOT_STARTED | EXP-003 대비 개선, EXP-005보다 낮음 | [보고서](reports/exp026_mutation_burden/README.md) |
-| EXP-031 | COMPLETED | Kangho-Park | #31 | EXP-005 변이유형 피처 + 알려진 cancer hotspot 위치 피처 (attempt 5, hotspot 19→34개 확장이 팀 최고) | 0.4135846695 | 0.3170803849 | NOT_STARTED | attempt 5 채택(팀 최고 Local·Public LB), INFERENCE_VERIFIED 검증 필요 | [상세](#exp-031-exp-005-변이유형-피처--cosmic-보호유전자-교차-피처) |
+| EXP-029 | COMPLETED | 2heej | #29 | EXP-005 + 변이유형 구성비·log burden 피처 | 0.3988980085 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 OOF 하락·fold 변동성 증가로 현 구성 미채택 | [보고서](reports/exp029_xgb_log_burden_ratios/README.md) |
+| EXP-033 | COMPLETED | 2heej | #33 | EXP-005 + log burden 3종 단독 ablation | 0.4057244634 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 소폭 개선·추가 분리 검증 필요 | [보고서](reports/exp033_xgb_log_burden_ablation/README.md) |
+| EXP-031 | COMPLETED | Kangho-Park | #31 | EXP-005 변이유형 피처 + 알려진 cancer hotspot 위치 피처 (attempt 5, hotspot 19→34개 확장이 팀 최고) | 0.4135846695 | 0.3170803849 | NOT_STARTED | attempt 5 채택(팀 최고 Local·Public LB), INFERENCE_VERIFIED 검증 필요 | [보고서](reports/exp031_hotspot_extended/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -32,6 +35,7 @@
 |---|---|---|---|---|---:|---:|---|
 | 2026-07-30T18:20:48+09:00 | EXP-003 | #3 | `submissions/exp003_xgb_baseline.csv` (제출 ID `1506230`) | `6e8b64726c86b5a6d52ee58f7f042b74b302852aa8a59c9bfe13332bfee424a5` | 0.228167518 | 3 (확인 당시) | INFERENCE_VERIFIED |
 | 2026-07-30T18:26:30+09:00 | EXP-005 | #5 | `submissions/exp005_xgb_mutation_features.csv` | `7bc3e64e1904d9b4007bc141dde771a39e7527172f3cd24c25c408000103183c` | 0.2987843366 | 제출 시점 1위 → 2026-07-30 23:13 KST 기준 2위 | INFERENCE_VERIFIED |
+| 2026-07-30T23:28:27+09:00 | EXP-021 | #21 | `submissions/exp021_cosmic_weighted_burden_baseline.csv` (제출 ID `1506440`) | `cb75da2609631bc86310a637e2d4f2e244bfe85dac71da4f154559ebf19a07b0` | 0.2544194867 | 미확인(Dacon 제출 화면에 순위 미표시) | NOT_STARTED |
 | 2026-07-30T23:56:29+09:00 | EXP-026 | #26 | `submissions/exp026_mutation_burden.csv` (제출 ID `1506469`) | `53d835335d6d23945c80acef4b70d0112f14abdaf1b5d504a63fd1ea7b16ef00` | 0.2575936484 | 미선택·개별 순위 미확인 | NOT_STARTED |
 | 2026-07-31T15:50:02+09:00 | EXP-031 | #31 | `submissions/exp031_hotspot_extended.csv` (제출 ID `1506950`, attempt 5) | `54de49396b8910fd8134b5a854beed344e369a9a791c67c6c9caf0da38cec27d` | 0.3170803849 | 확인 당시 전체 2위(1위 6조 0.37149) | NOT_STARTED |
 
@@ -40,7 +44,9 @@
 | 검증 시각 | 실험 ID | 검증자 | 소스 커밋·태그 | 데이터 일치 | 제출 재생성 | 재학습 검증 | 결과 | 증빙 |
 |---|---|---|---|---|---|---|---|---|
 | 2026-07-30T09:14:20Z | EXP-003 | fabxoe | `7306182669c3676e7b17024d3cf1f821131d909b` / [`exp-003-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-003-repro-v1) | SHA-256 일치 | byte-level SHA-256 일치 | 미수행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp003_xgb_baseline/comparison.json) |
-| 2026-07-30T09:38:54.622845+00:00 | EXP-005 | 2heej | `816d0a5e070c29d2f549e4fb25b81ec5c0ad5f7b` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100% | 미실행 | INFERENCE_VERIFIED | `reproducibility/exp005_xgb_mutation_features/artifact_manifest.json` |
+| 2026-07-31T04:44:40.761953+00:00 | EXP-005 | fabxoe | `4e5533a80ef093ef4a9b76a039f5f1ee6b1cf365` / [`exp-005-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-005-repro-v1) | SHA-256 일치 | SHA-256 일치, 라벨 100%, 확률 오차 2.98e-08 | 독립 재학습으로 OOF Macro F1 동일·제출 및 checkpoint 해시 일치, fresh clone 비작성자 검증 전 | INFERENCE_VERIFIED | [comparison](reproducibility/exp005_xgb_mutation_features/comparison.json) |
+| 2026-07-31T02:30:08.486372+00:00 | EXP-029 | 2heej | `1f06b4ee1bc098bd23d4c673e290da87638fb25d` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp029_xgb_log_burden_ratios/comparison.json) |
+| 2026-07-31T04:12:34.945706+00:00 | EXP-033 | 2heej | `80a1684e0167f221e225460eaae9f0a649ab7e37` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100% | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp033_xgb_log_burden_ablation/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -152,6 +158,81 @@
 - 다음 행동: 이 산출물을 입력으로 하는 "COSMIC 보호 유전자 기반 피처 선택
   XGBoost baseline" 작업을 새 GitHub Issue로 분리해 진행.
 
+### [EXP-021] COSMIC 보호 유전자 기반 피처 선택 및 파생변수 XGBoost baseline
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #21 / issue-21-cosmic-feature-xgb-baseline
+- 소스 commit: `0cde83c5fe59cf9fab34bf14eb6aacb3168078a7`
+- 시작/종료: 2026-07-30T14:45:23Z / 2026-07-30T14:47:04Z (아래 4개 시도 중
+  제출한 attempt 3 기준)
+
+#### 실행
+
+EXP-012(#12)의 protect/drop 결정을 입력으로, EXP-003과 동일한 공용 5-fold·
+하이퍼파라미터로 4가지 피처 구성을 비교했다. 4개 시도 모두 fold train
+구간에서만 상관관계를 재계산해 leakage를 방지했다 (PROJECT_CONTEXT.md 5절).
+
+| 시도 | 피처 구성 | 피처 수 | Config | Metrics |
+|---|---|---:|---|---|
+| attempt 1 | protect 유전자만 | 361 | `configs/exp021_cosmic_protected_baseline.yaml` | `reports/exp021_cosmic_protected_baseline/metrics.json` |
+| attempt 2 | protect + fold별 상관 상위 200 | 561(fold 평균) | `configs/exp021_cosmic_correlated_baseline.yaml` | `reports/exp021_cosmic_correlated_baseline/metrics.json` |
+| **attempt 3(제출)** | 전체 4,384 + 가중 burden 통합 컬럼 1개 | 4,385 | `configs/exp021_cosmic_weighted_burden_baseline.yaml` | `reports/exp021_cosmic_weighted_burden_baseline/metrics.json` |
+| attempt 4 | 전체 4,384 + protect_burden/correlated_burden 분리 컬럼 2개 | 4,386 | `configs/exp021_cosmic_group_burden_baseline.yaml` | `reports/exp021_cosmic_group_burden_baseline/metrics.json` |
+
+- Report: N/A
+- 재현성 manifest: `reproducibility/exp021_cosmic_*_baseline/config.resolved.yaml` (시도별)
+
+#### 결과
+
+| 시도 | OOF Macro F1 | Accuracy | Log Loss |
+|---|---:|---:|---:|
+| EXP-003(비교 기준, 전체 4,384) | 0.334930 | 0.355749 | 2.003723 |
+| attempt 1(protect 361) | 0.301865 | 0.343009 | 2.080349 |
+| attempt 2(protect+correlated 561) | 0.314403 | 0.349137 | 2.042861 |
+| **attempt 3(전체+통합 burden, 제출)** | **0.349410** | 0.362361 | **1.929987** |
+| attempt 4(전체+분리 burden 2개) | 0.344607 | 0.362845 | 1.930189 |
+
+- Fold Macro F1(attempt 3): 0.335138, 0.354049, 0.360881, 0.349334, 0.337361
+- Public LB: 0.2544194867 (attempt 3, 제출 ID `1506440`)
+- 재현 상태: NOT_STARTED — 리더보드 제출 전 최소 `INFERENCE_VERIFIED` 권장
+  기준(PROJECT_CONTEXT.md 8절)을 충족하지 못한 채 탐색적으로 제출함(의도적
+  생략, 아래 선택 메모 참고)
+
+#### 산출물과 결론
+
+- Metrics/Reproduction: 위 표의 시도별 경로
+- 제출 파일: `submissions/exp021_cosmic_weighted_burden_baseline.csv`
+  (SHA-256 `cb75da2609631bc86310a637e2d4f2e244bfe85dac71da4f154559ebf19a07b0`)
+- 결론: 채택(attempt 3). COSMIC 지식만으로 피처를 축소하는 attempt 1·2는
+  EXP-003(전체 피처)보다 낮았지만, 전체 피처를 유지한 채 COSMIC 가중
+  burden을 파생 컬럼으로 "추가"하는 attempt 3·4는 EXP-003을 능가함.
+  둘 중에서는 protect/correlated 기여를 하나로 합친 attempt 3이 공식 지표
+  (Macro F1)에서 attempt 4(분리 컬럼)보다 우수해 attempt 3을 제출함.
+  단, EXP-005(OOF 0.4044, LB 0.2988)에는 아직 못 미쳐 팀 최고 기록은
+  아님.
+
+#### 선택 메모
+
+- **Git history 재작성**: 이 실험은 원래 다른 로컬 clone에서 attempt 1~4를
+  순서대로 진행했으나, 작업 도중 Issue #22(주최측 지침에 따른 원본 데이터
+  Git history 제거, `git-filter-repo`로 전체 commit SHA 변경)가 발생했고
+  이 branch는 재작성 이전에 원격에 push된 적이 없었다. 이에
+  `docs/TEAM_RECLONE_AFTER_HISTORY_REWRITE.md` 절차대로 새로 clone한
+  저장소 위에서 코드를 옮기고 4개 시도를 모두 재실행해 원래와 완전히 동일한
+  제출 파일 SHA-256을 재확인한 뒤 커밋했다. 따라서 커밋 구성은 원본 진행
+  순서와 다소 다르게(코드 3개 커밋 + 시도별 결과 4개 커밋) 재구성되었다.
+- **재현성 계약 의도적 생략**: attempt 3을 Dacon에 제출하기 전 `INFERENCE_VERIFIED`
+  체크포인트 검증(EXP-003 방식의 별도 verifier)을 만들지 않고 진행했다.
+  탐색적 비교 목적의 1차 제출이라 판단했기 때문이며, 이 실험을 팀 최고
+  모델 후보로 승격하려면 검증을 먼저 완료해야 한다.
+- COSMIC CGC v104 화이트리스트와 EXP-012 산출물(`protected_genes_final.csv`
+  등)은 라이선스 확인 전까지 Git 미포함 — 재현 절차는
+  `docs/EXP-012_handoff.md` 4절 참고.
+- 다음 행동: (a) attempt 3을 채택할 경우 checkpoint 추론 검증으로
+  `INFERENCE_VERIFIED` 승격, (b) `correlated_gene_top_k`(현재 200) 조정이나
+  burden 계산 방식 변경으로 추가 개선 여지 탐색, (c) COSMIC 화이트리스트
+  재배포 가능 여부를 팀/COSMIC 약관으로 확정.
 ### [EXP-026] XGBoost mutation-presence + mutated-gene count
 
 - 상태: COMPLETED
@@ -184,6 +265,76 @@
 - 제출 파일 형식과 SHA-256은 확인했지만 저장 체크포인트로 제출 파일을
   독립 재생성하는 검증은 아직 수행하지 않았으므로 `NOT_STARTED`로 기록함.
 
+### [EXP-029] EXP-005 + 변이유형 구성비·log burden 피처
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #29 / issue-29-exp-log-burden-ratios
+- 소스 commit: `1f06b4ee1bc098bd23d4c673e290da87638fb25d`
+- 시작/종료: 2026-07-31T02:25:47.987668+00:00 /
+  2026-07-31T02:30:06.305518+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp029_xgb_log_burden_ratios/config.resolved.yaml`
+- Metrics: `reports/exp029_xgb_log_burden_ratios/metrics.json`
+- Report: `reports/exp029_xgb_log_burden_ratios/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4050881006, 0.3992122410, 0.3830162610,
+  0.3837339691, 0.4139561300
+- OOF Macro F1: 0.3988980085
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp029_xgb_log_burden_ratios/metrics.json` /
+  `reports/exp029_xgb_log_burden_ratios/README.md` /
+  `reproducibility/exp029_xgb_log_burden_ratios/config.resolved.yaml`
+- 결론: EXP-005 OOF 0.4043796587보다 0.0054816502 낮고 fold 표준편차도
+  0.0086812077에서 0.0120777005로 증가해 현 피처 묶음은 미채택. 구성비와
+  log burden 피처를 분리한 후속 ablation 후보로 보류함.
+- 재현 메모: clean commit에서 동일 config로 재실행했으며, 저장 checkpoint
+  재추론 결과 제출 SHA-256과 test 라벨이 100% 일치했다. test 확률 최대 절대
+  차이는 약 2.98e-08로 허용치 1e-6 이내였다.
+
+### [EXP-033] EXP-005 + log burden 3종 단독 ablation
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #33 / issue-33-exp-log-burden-ablation
+- 소스 commit: `80a1684e0167f221e225460eaae9f0a649ab7e37`
+- 시작/종료: 2026-07-31T04:07:46.390492+00:00 /
+  2026-07-31T04:12:32.390885+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp033_xgb_log_burden_ablation/config.resolved.yaml`
+- Metrics: `reports/exp033_xgb_log_burden_ablation/metrics.json`
+- Report: `reports/exp033_xgb_log_burden_ablation/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.3950183806, 0.4156681449, 0.4003213356,
+  0.3925146044, 0.4195470889
+- OOF Macro F1: 0.4057244634
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp033_xgb_log_burden_ablation/metrics.json` /
+  `reports/exp033_xgb_log_burden_ablation/README.md` /
+  `reproducibility/exp033_xgb_log_burden_ablation/`
+- 결론: EXP-005보다 OOF `+0.0013448047`, EXP-029보다
+  `+0.0068264548` 개선했다. 다만 EXP-005 대비 fold 표준편차가
+  `+0.0022923015` 증가해 개선의 안정성을 추가 ablation으로 확인해야 한다.
+- 재현 메모: 저장 checkpoint 재추론에서 데이터 해시, 제출 SHA-256과 test
+  라벨이 일치해 `INFERENCE_VERIFIED`를 통과했다.
 ### [EXP-031] EXP-005 변이유형 피처 + COSMIC 보호유전자 교차 피처
 
 - 상태: COMPLETED
@@ -235,7 +386,8 @@ R1450/R876, POLE P286R/V411L, KIT D816, FGFR3 S249C, RAC1 P29S). HLA-A(생식계
 50개, 생물학적 개연성은 높으나 개별 코돈 검증에 자신 없음), KMT2D/PLEC 등은
 의도적으로 제외했다.
 
-- Report: N/A
+- Report: [`reports/exp031_hotspot_extended/README.md`](reports/exp031_hotspot_extended/README.md)
+  (attempt 5 기준, 전체 5개 시도 요약 포함)
 - 재현성 manifest: `reproducibility/exp031_cosmic_mutation_type_cross/config.resolved.yaml`,
   `reproducibility/exp031_cosmic_lof_only_cross/config.resolved.yaml`,
   `reproducibility/exp031_hotspot_cross/config.resolved.yaml`,

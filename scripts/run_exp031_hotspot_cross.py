@@ -41,6 +41,7 @@ from sklearn.utils.class_weight import compute_sample_weight
 from open_cancer.constants import CLASS_LABELS, PROBABILITY_COLUMNS
 from open_cancer.experiment import resolve_experiment_context
 from open_cancer.hashing import sha256_file
+from open_cancer.paths import relative_posix
 from open_cancer.hotspot_features import build_hotspot_augmented_features
 from open_cancer.validation import validate_json_document, validate_submission
 
@@ -137,10 +138,10 @@ def main() -> None:
             "started_at": started_at.isoformat(),
         },
         "data": {
-            "train": {"path": str(TRAIN_PATH.relative_to(ROOT)), "sha256": sha256_file(TRAIN_PATH)},
-            "test": {"path": str(TEST_PATH.relative_to(ROOT)), "sha256": sha256_file(TEST_PATH)},
+            "train": {"path": relative_posix(TRAIN_PATH, ROOT), "sha256": sha256_file(TRAIN_PATH)},
+            "test": {"path": relative_posix(TEST_PATH, ROOT), "sha256": sha256_file(TEST_PATH)},
             "sample_submission": {
-                "path": str(SAMPLE_SUBMISSION_PATH.relative_to(ROOT)),
+                "path": relative_posix(SAMPLE_SUBMISSION_PATH, ROOT),
                 "sha256": sha256_file(SAMPLE_SUBMISSION_PATH),
             },
             "class_order": list(CLASS_LABELS),
@@ -268,7 +269,7 @@ def main() -> None:
         "started_at": started_at.isoformat(),
         "finished_at": finished_at.isoformat(),
         "primary_metric": "macro_f1",
-        "split_id": str(split_path.relative_to(ROOT)),
+        "split_id": relative_posix(split_path, ROOT),
         "folds": fold_metrics,
         "oof": {
             "macro_f1": float(f1_score(y, oof_pred, average="macro")),
@@ -291,11 +292,11 @@ def main() -> None:
             "hardware": platform.platform(),
         },
         "artifacts": {
-            "resolved_config": str(resolved_config_path.relative_to(ROOT)),
-            "oof": str(oof_path.relative_to(ROOT)),
-            "test_probability": str(test_probability_path.relative_to(ROOT)),
-            "submission": str(submission_path.relative_to(ROOT)),
-            "models": str(model_dir.relative_to(ROOT)),
+            "resolved_config": relative_posix(resolved_config_path, ROOT),
+            "oof": relative_posix(oof_path, ROOT),
+            "test_probability": relative_posix(test_probability_path, ROOT),
+            "submission": relative_posix(submission_path, ROOT),
+            "models": relative_posix(model_dir, ROOT),
             "submission_sha256": submission_validation["sha256"],
         },
         "notes": (

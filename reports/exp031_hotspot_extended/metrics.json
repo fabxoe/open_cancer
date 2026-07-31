@@ -4,11 +4,11 @@
   "owner": "Kangho Park",
   "issue_number": 31,
   "parent_experiment": "EXP-005",
-  "git_commit": "206de05df5ac84092d8ed1665390e7a8c6e1f909",
-  "started_at": "2026-07-31T05:35:22.062729+00:00",
-  "finished_at": "2026-07-31T05:44:38.208311+00:00",
+  "git_commit": "7067fba7f667cad832317ff93c84a0b54a045b79",
+  "started_at": "2026-07-31T07:54:17.120446+00:00",
+  "finished_at": "2026-07-31T08:04:02.421609+00:00",
   "primary_metric": "macro_f1",
-  "split_id": "data\\splits\\stratified_5fold_seed42.csv",
+  "split_id": "data/splits/stratified_5fold_seed42.csv",
   "folds": [
     {
       "fold": 0,
@@ -813,15 +813,15 @@
   },
   "leaderboard": null,
   "runtime": {
-    "seconds": 556.5308696000138,
+    "seconds": 585.6978266000515,
     "hardware": "Windows-10-10.0.26200-SP0"
   },
   "artifacts": {
-    "resolved_config": "reproducibility\\exp031_hotspot_extended\\config.resolved.yaml",
-    "oof": "oof\\exp031_hotspot_extended.csv",
-    "test_probability": "preds\\exp031_hotspot_extended_test_proba.csv",
-    "submission": "submissions\\exp031_hotspot_extended.csv",
-    "models": "models\\exp031_hotspot_extended",
+    "resolved_config": "reproducibility/exp031_hotspot_extended/config.resolved.yaml",
+    "oof": "oof/exp031_hotspot_extended.csv",
+    "test_probability": "preds/exp031_hotspot_extended_test_proba.csv",
+    "submission": "submissions/exp031_hotspot_extended.csv",
+    "models": "models/exp031_hotspot_extended",
     "submission_sha256": "54de49396b8910fd8134b5a854beed344e369a9a791c67c6c9caf0da38cec27d"
   },
   "notes": "EXP-005 gene x mutation-type sparse features (30,697) + attempt 3's 19 known hotspot positions + 15 additional high-confidence hotspots mined from the COSMIC protect-gene whitelist and manually vetted against literature (PIK3CA/PTEN/FBXW7/AKT1/U2AF1/APC/POLE/KIT/FGFR3/RAC1) + 1 total hotspot count = 30,732 features."

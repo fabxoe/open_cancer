@@ -3,18 +3,18 @@ experiment:
   experiment_id: EXP-031
   branch: issue-31-cosmic-mutation-type-cross
   owner: Kangho Park
-  source_commit: 25c8434cfe19ecb8943aeec02e91c25f8ca38862
+  source_commit: 7067fba7f667cad832317ff93c84a0b54a045b79
   dirty_worktree: true
-  started_at: '2026-07-31T02:29:38.956780+00:00'
+  started_at: '2026-07-31T07:08:49.243899+00:00'
 data:
   train:
-    path: data\raw\train.csv
+    path: data/raw/train.csv
     sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
   test:
-    path: data\raw\test.csv
+    path: data/raw/test.csv
     sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
   sample_submission:
-    path: data\raw\sample_submission.csv
+    path: data/raw/sample_submission.csv
     sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
   class_order:
   - ACC
@@ -46,7 +46,7 @@ data:
 split:
   path: data/splits/stratified_5fold_seed42.csv
   n_splits: 5
-  sha256: 6bc79dcce250a2abd5bf08998f43f6813b0b1edd9a31feff866c80713ff9107f
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
   method: StratifiedKFold
   shuffle: true
   seed: 42
@@ -60,6 +60,7 @@ features:
   - nonsense
   - frameshift
   - complex
+  robust_aggregate_features: []
   missing_policy: separate per-gene and per-sample missing indicators
   position_features: excluded because a reliable source transcript/protein length
     is unavailable

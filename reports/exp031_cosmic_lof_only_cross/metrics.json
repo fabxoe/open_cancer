@@ -4,11 +4,11 @@
   "owner": "Kangho Park",
   "issue_number": 31,
   "parent_experiment": "EXP-005",
-  "git_commit": "25c8434cfe19ecb8943aeec02e91c25f8ca38862",
-  "started_at": "2026-07-31T02:49:53.310563+00:00",
-  "finished_at": "2026-07-31T03:05:50.078738+00:00",
+  "git_commit": "7067fba7f667cad832317ff93c84a0b54a045b79",
+  "started_at": "2026-07-31T07:18:54.010852+00:00",
+  "finished_at": "2026-07-31T07:27:45.245158+00:00",
   "primary_metric": "macro_f1",
-  "split_id": "data\\splits\\stratified_5fold_seed42.csv",
+  "split_id": "data/splits/stratified_5fold_seed42.csv",
   "folds": [
     {
       "fold": 0,
@@ -813,15 +813,15 @@
   },
   "leaderboard": null,
   "runtime": {
-    "seconds": 957.2737218000693,
+    "seconds": 531.6000966000138,
     "hardware": "Windows-10-10.0.26200-SP0"
   },
   "artifacts": {
-    "resolved_config": "reproducibility\\exp031_cosmic_lof_only_cross\\config.resolved.yaml",
-    "oof": "oof\\exp031_cosmic_lof_only_cross.csv",
-    "test_probability": "preds\\exp031_cosmic_lof_only_cross_test_proba.csv",
-    "submission": "submissions\\exp031_cosmic_lof_only_cross.csv",
-    "models": "models\\exp031_cosmic_lof_only_cross",
+    "resolved_config": "reproducibility/exp031_cosmic_lof_only_cross/config.resolved.yaml",
+    "oof": "oof/exp031_cosmic_lof_only_cross.csv",
+    "test_probability": "preds/exp031_cosmic_lof_only_cross_test_proba.csv",
+    "submission": "submissions/exp031_cosmic_lof_only_cross.csv",
+    "models": "models/exp031_cosmic_lof_only_cross",
     "submission_sha256": "6497c49707a9c4b5942bd5e72f91e9c05d60c5b22d582579d71e487b96c8e860"
   },
   "notes": "EXP-005 gene x mutation-type sparse features (30,697) + 1 COSMIC protect-gene cross feature (cosmic__protect_lof_count: nonsense + frameshift count restricted to the EXP-012 protect gene whitelist). Attempt 2 after attempt 1's 8-feature cross underperformed EXP-005; isolates the single LOF-focused feature."

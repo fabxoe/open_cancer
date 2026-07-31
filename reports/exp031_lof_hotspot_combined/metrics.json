@@ -4,11 +4,11 @@
   "owner": "Kangho Park",
   "issue_number": 31,
   "parent_experiment": "EXP-005",
-  "git_commit": "0b4d413b22511bfe53ced626c34087daff9f5d6e",
-  "started_at": "2026-07-31T04:55:39.485302+00:00",
-  "finished_at": "2026-07-31T05:04:14.385887+00:00",
+  "git_commit": "7067fba7f667cad832317ff93c84a0b54a045b79",
+  "started_at": "2026-07-31T07:43:47.287450+00:00",
+  "finished_at": "2026-07-31T07:54:13.202329+00:00",
   "primary_metric": "macro_f1",
-  "split_id": "data\\splits\\stratified_5fold_seed42.csv",
+  "split_id": "data/splits/stratified_5fold_seed42.csv",
   "folds": [
     {
       "fold": 0,
@@ -813,15 +813,15 @@
   },
   "leaderboard": null,
   "runtime": {
-    "seconds": 515.2893808000954,
+    "seconds": 626.2974660000764,
     "hardware": "Windows-10-10.0.26200-SP0"
   },
   "artifacts": {
-    "resolved_config": "reproducibility\\exp031_lof_hotspot_combined\\config.resolved.yaml",
-    "oof": "oof\\exp031_lof_hotspot_combined.csv",
-    "test_probability": "preds\\exp031_lof_hotspot_combined_test_proba.csv",
-    "submission": "submissions\\exp031_lof_hotspot_combined.csv",
-    "models": "models\\exp031_lof_hotspot_combined",
+    "resolved_config": "reproducibility/exp031_lof_hotspot_combined/config.resolved.yaml",
+    "oof": "oof/exp031_lof_hotspot_combined.csv",
+    "test_probability": "preds/exp031_lof_hotspot_combined_test_proba.csv",
+    "submission": "submissions/exp031_lof_hotspot_combined.csv",
+    "models": "models/exp031_lof_hotspot_combined",
     "submission_sha256": "ca31279856639f82ac05af0980687b5d9dcd528ba47d1f5af994058fa91dd59e"
   },
   "notes": "EXP-005 gene x mutation-type sparse features (30,697) + COSMIC protect-gene LOF count (attempt 2 feature) + 19 known hotspot indicators + 1 total hotspot count (attempt 3 features). Checks whether the two independent signal families stack."

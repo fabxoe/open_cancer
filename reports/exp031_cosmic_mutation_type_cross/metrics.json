@@ -4,11 +4,11 @@
   "owner": "Kangho Park",
   "issue_number": 31,
   "parent_experiment": "EXP-005",
-  "git_commit": "25c8434cfe19ecb8943aeec02e91c25f8ca38862",
-  "started_at": "2026-07-31T02:29:38.956780+00:00",
-  "finished_at": "2026-07-31T02:39:23.953209+00:00",
+  "git_commit": "7067fba7f667cad832317ff93c84a0b54a045b79",
+  "started_at": "2026-07-31T07:08:49.243899+00:00",
+  "finished_at": "2026-07-31T07:18:50.512968+00:00",
   "primary_metric": "macro_f1",
-  "split_id": "data\\splits\\stratified_5fold_seed42.csv",
+  "split_id": "data/splits/stratified_5fold_seed42.csv",
   "folds": [
     {
       "fold": 0,
@@ -813,15 +813,15 @@
   },
   "leaderboard": null,
   "runtime": {
-    "seconds": 585.4040005001007,
+    "seconds": 601.6146242999239,
     "hardware": "Windows-10-10.0.26200-SP0"
   },
   "artifacts": {
-    "resolved_config": "reproducibility\\exp031_cosmic_mutation_type_cross\\config.resolved.yaml",
-    "oof": "oof\\exp031_cosmic_mutation_type_cross.csv",
-    "test_probability": "preds\\exp031_cosmic_mutation_type_cross_test_proba.csv",
-    "submission": "submissions\\exp031_cosmic_mutation_type_cross.csv",
-    "models": "models\\exp031_cosmic_mutation_type_cross",
+    "resolved_config": "reproducibility/exp031_cosmic_mutation_type_cross/config.resolved.yaml",
+    "oof": "oof/exp031_cosmic_mutation_type_cross.csv",
+    "test_probability": "preds/exp031_cosmic_mutation_type_cross_test_proba.csv",
+    "submission": "submissions/exp031_cosmic_mutation_type_cross.csv",
+    "models": "models/exp031_cosmic_mutation_type_cross",
     "submission_sha256": "fc84d66935bc1d765ee44912c6b4031cbeb9dbe46da581b0b22b978c15242594"
   },
   "notes": "EXP-005 gene x mutation-type sparse features (30,697) + 8 COSMIC protect-gene cross features (per-type and LOF counts restricted to the EXP-012 protect gene whitelist). Whitelist license status unresolved, so it is not committed; see feature contract for its SHA-256 in the resolved config."

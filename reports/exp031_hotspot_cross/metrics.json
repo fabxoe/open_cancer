@@ -4,11 +4,11 @@
   "owner": "Kangho Park",
   "issue_number": 31,
   "parent_experiment": "EXP-005",
-  "git_commit": "910d02b33897bbbdc37d1a0675a67b3269f3d9d2",
-  "started_at": "2026-07-31T04:37:48.058104+00:00",
-  "finished_at": "2026-07-31T04:47:14.091827+00:00",
+  "git_commit": "7067fba7f667cad832317ff93c84a0b54a045b79",
+  "started_at": "2026-07-31T07:27:48.799522+00:00",
+  "finished_at": "2026-07-31T07:43:43.572353+00:00",
   "primary_metric": "macro_f1",
-  "split_id": "data\\splits\\stratified_5fold_seed42.csv",
+  "split_id": "data/splits/stratified_5fold_seed42.csv",
   "folds": [
     {
       "fold": 0,
@@ -813,15 +813,15 @@
   },
   "leaderboard": null,
   "runtime": {
-    "seconds": 566.4269024999812,
+    "seconds": 955.136363199912,
     "hardware": "Windows-10-10.0.26200-SP0"
   },
   "artifacts": {
-    "resolved_config": "reproducibility\\exp031_hotspot_cross\\config.resolved.yaml",
-    "oof": "oof\\exp031_hotspot_cross.csv",
-    "test_probability": "preds\\exp031_hotspot_cross_test_proba.csv",
-    "submission": "submissions\\exp031_hotspot_cross.csv",
-    "models": "models\\exp031_hotspot_cross",
+    "resolved_config": "reproducibility/exp031_hotspot_cross/config.resolved.yaml",
+    "oof": "oof/exp031_hotspot_cross.csv",
+    "test_probability": "preds/exp031_hotspot_cross_test_proba.csv",
+    "submission": "submissions/exp031_hotspot_cross.csv",
+    "models": "models/exp031_hotspot_cross",
     "submission_sha256": "f1f71522692fd400de76a4bf4251891ca60aa314d50c05db3a40aed6eb804be9"
   },
   "notes": "EXP-005 gene x mutation-type sparse features (30,697) + 19 known cancer hotspot position indicators + 1 total hotspot count (BRAF/CTNNB1/EGFR/GNAS/HRAS/IDH1/IDH2/PIK3CA/TP53), verified internally consistent via scripts/explore_hotspot_numbering_consistency.py. KRAS/NRAS hotspots omitted: those genes are absent from this panel."
