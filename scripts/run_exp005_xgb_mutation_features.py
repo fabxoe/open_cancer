@@ -213,6 +213,7 @@ def verify_saved_inference(
     test_ids: pd.Series,
     test_probability_path: Path,
     submission_path: Path,
+    fold_feature_indices: list[list[int]] | None = None,
 ) -> None:
     """Reload checkpoints and automatically create inference reproducibility evidence."""
     fold_count = config["split"]["n_splits"]
@@ -222,14 +223,19 @@ def verify_saved_inference(
     model_paths = [
         model_dir / f"fold_{fold:02d}.json" for fold in range(fold_count)
     ]
-    for model_path in model_paths:
+    for fold, model_path in enumerate(model_paths):
         if not model_path.is_file():
             raise FileNotFoundError(f"체크포인트가 없습니다: {model_path}")
         model = xgb.XGBClassifier()
         model.load_model(model_path)
-        reproduced_proba += (
-            model.predict_proba(test_features).astype(np.float32) / fold_count
+        fold_test_features = (
+            test_features[:, fold_feature_indices[fold]]
+            if fold_feature_indices is not None
+            else test_features
         )
+        reproduced_proba += model.predict_proba(fold_test_features).astype(
+            np.float32
+        ) / fold_count
 
     original_probability = pd.read_csv(test_probability_path)
     original_proba = original_probability[list(PROBABILITY_COLUMNS)].to_numpy()
@@ -462,6 +468,8 @@ def run_experiment(
     notes: str,
     selected_robust_aggregates: tuple[str, ...] | None = None,
     comparison_metrics_path: Path | None = None,
+    fold_feature_selector: Any | None = None,
+    candidate_feature_groups: dict[str, tuple[str, ...]] | None = None,
 ) -> None:
     started_at = datetime.now(timezone.utc)
     start_time = time.perf_counter()
@@ -524,6 +532,9 @@ def run_experiment(
 
     x_all = sparse.load_npz(feature_dir / "train_features.npz")
     x_test = sparse.load_npz(feature_dir / "test_features.npz")
+    all_feature_names = json.loads(
+        (feature_dir / "feature_names.json").read_text(encoding="utf-8")
+    )
     feature_train_ids = pd.read_csv(feature_dir / "train_ids.csv", dtype=str)["ID"]
     feature_test_ids = pd.read_csv(feature_dir / "test_ids.csv", dtype=str)["ID"]
     if not feature_train_ids.equals(train["ID"]) or not feature_test_ids.equals(test_meta["ID"]):
@@ -578,6 +589,7 @@ def run_experiment(
         },
         "training": {
             **config["training"],
+            "feature_selection": config.get("selection"),
             "fold_seeds": [config["seed"] + fold for fold in range(config["split"]["n_splits"])],
             "command": f"uv run python scripts/run_{artifact_slug}.py",
         },
@@ -601,6 +613,8 @@ def run_experiment(
     oof_proba = np.full((len(train), len(CLASS_LABELS)), np.nan, dtype=np.float32)
     test_proba = np.zeros((len(test_meta), len(CLASS_LABELS)), dtype=np.float32)
     fold_metrics: list[dict[str, Any]] = []
+    fold_feature_indices: list[list[int]] = []
+    selection_results: list[dict[str, Any]] = []
 
     for fold in range(n_splits):
         valid_mask = train["fold"].eq(fold).to_numpy()
@@ -608,6 +622,38 @@ def run_experiment(
         valid_indices = np.flatnonzero(valid_mask)
         y_train = y[train_indices]
         y_valid = y[valid_indices]
+        if fold_feature_selector is not None:
+            if not candidate_feature_groups or "selection" not in config:
+                raise ValueError(
+                    "fold feature selector에는 candidate groups와 selection config가 필요합니다."
+                )
+            selected_indices, selection_result = fold_feature_selector(
+                matrix=x_all,
+                labels=y,
+                outer_train_indices=train_indices,
+                feature_names=all_feature_names,
+                candidate_groups=candidate_feature_groups,
+                model_params=model_params,
+                seed=config["seed"] + fold * 100,
+                inner_splits=config["selection"]["inner_splits"],
+                minimum_positive_folds=config["selection"][
+                    "minimum_positive_folds"
+                ],
+                balanced_sample_weight=config["training"][
+                    "balanced_sample_weight"
+                ],
+            )
+        else:
+            selected_indices = list(range(x_all.shape[1]))
+            selection_result = {
+                "selected_groups": [],
+                "selected_features": [],
+            }
+        fold_feature_indices.append(selected_indices)
+        selection_results.append({"outer_fold": fold, **selection_result})
+        x_train_fold = x_all[train_indices][:, selected_indices]
+        x_valid_fold = x_all[valid_indices][:, selected_indices]
+        x_test_fold = x_test[:, selected_indices]
         sample_weight = (
             compute_sample_weight(class_weight="balanced", y=y_train)
             if config["training"]["balanced_sample_weight"]
@@ -618,14 +664,14 @@ def run_experiment(
             random_state=config["seed"] + fold,
         )
         model.fit(
-            x_all[train_indices],
+            x_train_fold,
             y_train,
             sample_weight=sample_weight,
-            eval_set=[(x_all[valid_indices], y_valid)],
+            eval_set=[(x_valid_fold, y_valid)],
             verbose=False,
         )
-        valid_proba = model.predict_proba(x_all[valid_indices]).astype(np.float32)
-        fold_test_proba = model.predict_proba(x_test).astype(np.float32)
+        valid_proba = model.predict_proba(x_valid_fold).astype(np.float32)
+        fold_test_proba = model.predict_proba(x_test_fold).astype(np.float32)
         oof_proba[valid_indices] = valid_proba
         test_proba += fold_test_proba / n_splits
         valid_pred = valid_proba.argmax(axis=1)
@@ -643,6 +689,20 @@ def run_experiment(
 
     if np.isnan(oof_proba).any():
         raise ValueError("OOF 확률에 채워지지 않은 값이 있습니다.")
+
+    selection_path = report_dir / "feature_selection.json"
+    if fold_feature_selector is not None:
+        write_json(
+            selection_path,
+            {
+                "method": config["selection"]["method"],
+                "candidate_groups": {
+                    group: list(names)
+                    for group, names in (candidate_feature_groups or {}).items()
+                },
+                "outer_folds": selection_results,
+            },
+        )
 
     oof_pred = oof_proba.argmax(axis=1)
     test_pred = test_proba.argmax(axis=1)
@@ -716,6 +776,11 @@ def run_experiment(
             "submission": relative_posix(submission_path, ROOT),
             "models": relative_posix(model_dir, ROOT),
             "submission_sha256": submission_validation["sha256"],
+            "feature_selection": (
+                relative_posix(selection_path, ROOT)
+                if fold_feature_selector is not None
+                else None
+            ),
         },
         "notes": notes,
     }
@@ -739,6 +804,9 @@ def run_experiment(
             test_ids=test_meta["ID"],
             test_probability_path=test_probability_path,
             submission_path=submission_path,
+            fold_feature_indices=(
+                fold_feature_indices if fold_feature_selector is not None else None
+            ),
         )
     except Exception as error:
         metrics["status"] = "FAILED"

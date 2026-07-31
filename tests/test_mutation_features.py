@@ -174,3 +174,17 @@ def test_expanded_sample_distribution_features(tmp_path: Path) -> None:
     assert matrix[0, names.index("sample__max_variants_per_gene")] == 2
     assert matrix[0, names.index("sample__single_variant_gene_count")] == 1
     assert matrix[1, names.index("sample__mutation_type_entropy")] == 0
+
+
+def test_exp045_candidate_groups_cover_all_exp043_features_once() -> None:
+    from open_cancer.nested_feature_selection import EXP043_CANDIDATE_GROUPS
+
+    candidates = [
+        feature
+        for features in EXP043_CANDIDATE_GROUPS.values()
+        for feature in features
+    ]
+
+    assert len(candidates) == len(EXPANDED_DISTRIBUTION_FEATURES) == 28
+    assert len(set(candidates)) == len(candidates)
+    assert set(candidates) == set(EXPANDED_DISTRIBUTION_FEATURES)

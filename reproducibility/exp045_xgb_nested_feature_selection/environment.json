@@ -1,0 +1,10 @@
+{
+  "verified_at": "2026-07-31T07:05:22.861444+00:00",
+  "python": "3.11.10 (main, Oct 16 2024, 08:56:36) [Clang 18.1.8 ]",
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "numpy": "2.4.6",
+  "pandas": "3.0.5",
+  "scikit_learn": "1.9.0",
+  "xgboost": "3.2.0",
+  "uv_lock_sha256": "cea0d1a7c46efd4675ebb3982a309c56b85c793f0712ba24d04d1a7c6bd110ae"
+}
