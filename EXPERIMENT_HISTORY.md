@@ -10,8 +10,8 @@
 - 실제 실험 수: 5
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4043796587000222 (`EXP-005`)
-- 최고 Public LB Macro F1: 0.2987843366 (`EXP-005`)
+- 최고 Local OOF Macro F1: 0.4120236287773741 (`EXP-031` attempt 3, hotspot)
+- 최고 Public LB Macro F1: 0.2987843366 (`EXP-005`, EXP-031은 미제출)
 - 최고 재현 검증 모델: `EXP-005` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-07-31
 
@@ -23,7 +23,7 @@
 | EXP-005 | COMPLETED | 2heej | #5 | XGBoost + 유전자×변이유형 희소 피처 | 0.4043796587000222 | 0.2987843366 | INFERENCE_VERIFIED | 제출 재생성 검증 완료·Release 보관 필요 | [보고서](reports/exp005_xgb_mutation_features/README.md) |
 | EXP-012 | COMPLETED | Kangho-Park | #12 | COSMIC 보호 유전자 기반 feature 보호 전략 분석 (모델 학습 없음) | N/A (분석 전용) | 미제출 | NOT_STARTED | 채택 | [상세](#exp-012-cosmic-보호-유전자-기반-feature-보호-전략-분석) |
 | EXP-026 | COMPLETED | fabxoe | #26 | XGBoost mutation-presence + mutated-gene count | 0.3817476632 | 0.2575936484 | NOT_STARTED | EXP-003 대비 개선, EXP-005보다 낮음 | [보고서](reports/exp026_mutation_burden/README.md) |
-| EXP-031 | COMPLETED | Kangho-Park | #31 | EXP-005 변이유형 피처 + COSMIC 보호유전자×변이유형 교차 피처 (attempt 2, LOF count만 사용이 최고) | 0.4017847879 | 미제출 | NOT_STARTED | 미채택(EXP-005 대비 두 attempt 모두 소폭 낮음) | [상세](#exp-031-exp-005-변이유형-피처--cosmic-보호유전자-교차-피처) |
+| EXP-031 | COMPLETED | Kangho-Park | #31 | EXP-005 변이유형 피처 + 알려진 cancer hotspot 위치 피처 (attempt 3이 팀 최고, attempt 1·2는 COSMIC 보호유전자 교차로 미채택) | 0.4120236288 | 미제출 | NOT_STARTED | attempt 3 채택(팀 최고 Local), 리더보드 제출은 보류 | [상세](#exp-031-exp-005-변이유형-피처--cosmic-보호유전자-교차-피처) |
 
 ## 리더보드 제출 이력
 
@@ -192,21 +192,31 @@
 
 #### 실행
 
-EXP-005(#5)의 유전자×변이유형 희소 피처(30,697개)를 그대로 재현하고, 여기에
-EXP-012(#12)의 COSMIC 보호 유전자 화이트리스트(361개)를 "보호 유전자 ×
-변이유형" 교차 파생변수로 추가하는 두 가지 구성을 비교했다. EXP-021(#21)의
-가중합 burden 스칼라 1개 방식과 달리, 변이 유형 구분을 유지한 채 COSMIC
-지식을 교차시켰다. 새 로직은 fold 분할과 무관하게 train/test 전체에서 계산되는
-결정적 피처이므로 leakage 위험이 없다(PROJECT_CONTEXT.md 5절).
+EXP-005(#5)의 유전자×변이유형 희소 피처(30,697개)를 그대로 재현하고, 세
+가지 구성을 순서대로 비교했다. attempt 1·2는 EXP-012(#12)의 COSMIC 보호
+유전자 화이트리스트(361개)를 "보호 유전자 × 변이유형" 교차 파생변수로
+추가하는 방식으로, 이미 유전자 단위에 존재하는 정보를 재집계하는 접근이었다.
+두 attempt 모두 EXP-005보다 낮게 나오자, "유전자 단위 재집계는 구조적으로
+새 정보가 아니다"라는 판단 아래 attempt 3에서는 개별 유전자 컬럼에 존재하지
+않는 정보, 즉 **특정 코돈(hotspot) 단위 변이 여부**로 방향을 전환했다.
+`scripts/explore_hotspot_numbering_consistency.py`(RUN_MODE=explore, 외부
+transcript 데이터 없이 train/test 자체의 내부 일관성만 검사)로 BRAF 600,
+IDH1 132, PIK3CA 545/1047 등 잘 알려진 driver hotspot 위치의 reference
+amino acid가 이 패널 전체에서 문헌값과 정확히 일치·일관됨을 먼저 확인한 뒤,
+검증된 9개 유전자·19개 위치만 hotspot 피처로 사용했다(KRAS/NRAS는 패널에
+없어 제외). 세 attempt 모두 fold 분할과 무관하게 train/test 전체에서
+계산되는 결정적 피처라 leakage 위험이 없다(PROJECT_CONTEXT.md 5절).
 
 | 시도 | 피처 구성 | 피처 수 | Config | Metrics |
 |---|---|---:|---|---|
 | attempt 1 | EXP-005 전체 + 보호유전자 교차 8개(mutated/missense/synonymous/nonsense/frameshift/complex/missing count + LOF count) | 30,705 | `configs/exp031_cosmic_mutation_type_cross.yaml` | `reports/exp031_cosmic_mutation_type_cross/metrics.json` |
-| **attempt 2** | EXP-005 전체 + 보호유전자 LOF(nonsense+frameshift) count 1개만 | 30,698 | `configs/exp031_cosmic_lof_only_cross.yaml` | `reports/exp031_cosmic_lof_only_cross/metrics.json` |
+| attempt 2 | EXP-005 전체 + 보호유전자 LOF(nonsense+frameshift) count 1개만 | 30,698 | `configs/exp031_cosmic_lof_only_cross.yaml` | `reports/exp031_cosmic_lof_only_cross/metrics.json` |
+| **attempt 3(채택)** | EXP-005 전체 + 검증된 hotspot 19개 individual indicator + 총 hotspot count 1개 | 30,717 | `configs/exp031_hotspot_cross.yaml` | `reports/exp031_hotspot_cross/metrics.json` |
 
 - Report: N/A
 - 재현성 manifest: `reproducibility/exp031_cosmic_mutation_type_cross/config.resolved.yaml`,
-  `reproducibility/exp031_cosmic_lof_only_cross/config.resolved.yaml`
+  `reproducibility/exp031_cosmic_lof_only_cross/config.resolved.yaml`,
+  `reproducibility/exp031_hotspot_cross/config.resolved.yaml`
 
 #### 결과
 
@@ -214,11 +224,14 @@ EXP-012(#12)의 COSMIC 보호 유전자 화이트리스트(361개)를 "보호 �
 |---|---:|---:|---:|
 | EXP-005(부모, 비교 기준) | 0.4043796587 | 0.396549 | 1.863207 |
 | attempt 1(교차 8개) | 0.3956074120 | 0.388486 | 1.875899 |
-| **attempt 2(LOF count만)** | **0.4017847879** | 0.393969 | 1.864124 |
+| attempt 2(LOF count만) | 0.4017847879 | 0.393969 | 1.864124 |
+| **attempt 3(hotspot, 팀 최고)** | **0.4120236288** | 0.403322 | 1.835079 |
 
 - Fold Macro F1(attempt 1): 0.386807, 0.398357, 0.385085, 0.388885, 0.411211
 - Fold Macro F1(attempt 2): 0.403056, 0.411966, 0.390054, 0.387770, 0.409737
-- Public LB: 미제출 (두 attempt 모두 EXP-005 대비 개선되지 않아 제출하지 않음)
+- Fold Macro F1(attempt 3): 0.413077, 0.420928, 0.399671, 0.403889, 0.418962
+- Public LB: 미제출 (attempt 3은 팀 최고 Local이지만 리더보드 제출은 보류,
+  아래 선택 메모 참고)
 - 재현 상태: NOT_STARTED
 
 클래스별로는 attempt 2에서 ACC(+0.0205), LAML(+0.0182), SARC(+0.0168),
@@ -227,30 +240,52 @@ KIPAN(+0.0124), SKCM(+0.0081) 등 일부(주로 중간 규모) 클래스가 EXP-
 하락폭이 더 커서 전체 OOF는 소폭 낮았다. attempt 1은 거의 모든 클래스에서
 attempt 2보다 나빴다(전체 OOF 기준 -0.0062p 추가 하락).
 
+attempt 3(hotspot)은 26개 클래스 중 19개가 EXP-005보다 개선됐다. 특히
+**SKCM(흑색종) +0.0443**로 가장 크게 개선됐는데, SKCM은 BRAF V600E가 대표
+드라이버 변이인 암종이라 이 피처가 실제 생물학적 신호를 포착했다는 정황
+증거로 볼 수 있다. UCEC(+0.0342), PAAD(+0.0279), LUAD(+0.0249),
+DLBC(+0.0223), SARC(+0.0217), STES(+0.0209), ACC(+0.0178), COAD(+0.0164)도
+개선됐다. 하락한 쪽은 LIHC(-0.0329), LUSC(-0.0242), TGCT(-0.0153),
+BLCA(-0.0110), PCPG(-0.0101), GBMLGG(-0.0083), THCA(-0.0033) 7개로,
+전체적으로 개선폭이 하락폭을 크게 앞섰다.
+
 #### 산출물과 결론
 
 - Metrics/Reproduction: 위 표의 시도별 경로
 - 코드: `src/open_cancer/cosmic_mutation_features.py`
   (`build_cosmic_mutation_features`, `build_cosmic_cross_matrix`),
+  `src/open_cancer/hotspot_features.py`
+  (`build_hotspot_augmented_features`, `build_hotspot_matrix`, `KNOWN_HOTSPOTS`),
   `scripts/run_exp031_cosmic_mutation_type_cross.py`,
-  `scripts/run_exp031_cosmic_lof_only_cross.py`
-- 결론: **미채택**. "COSMIC 보호 유전자 × 변이유형 교차 파생변수가 EXP-005보다
-  나을 것"이라는 가설은 이번 두 attempt에서 확인되지 않았다. 교차 피처를
-  8개로 늘린 attempt 1이 가장 나빴고, LOF count 1개로 줄인 attempt 2가 그
-  손실의 상당 부분을 되돌렸지만 여전히 EXP-005를 넘지 못했다(-0.0026p).
-  이는 애초 가설과 달리 소수/특정 클래스 일부 개선이 다른 클래스의 하락으로
-  상쇄됐기 때문이며, 보호 유전자의 정보는 이미 EXP-005의 개별 유전자×유형
-  피처에 포함되어 있어 이를 재집계한 파생변수가 트리 분할에서 추가 신호보다
-  노이즈로 작용했을 가능성이 있다. 팀 최고 기록은 여전히 EXP-005(OOF
-  0.4044, LB 0.2988)이다.
+  `scripts/run_exp031_cosmic_lof_only_cross.py`,
+  `scripts/run_exp031_hotspot_cross.py`,
+  `scripts/explore_hotspot_numbering_consistency.py`(RUN_MODE=explore, 검증용)
+- 결론: **attempt 3 채택 — 팀 최고 Local 기록 갱신**(EXP-005 대비
+  +0.0076p). attempt 1·2("COSMIC 보호 유전자 정보를 유전자 단위로
+  재집계")는 EXP-005를 넘지 못했지만, attempt 3("개별 유전자 컬럼에는
+  없는 코돈 단위 정보를 추가")는 넘었다. 이는 이전 결론("정보가 이미
+  유전자×변이유형 단위에 존재해 재집계는 net negative")과 일관된
+  결과이며, 재집계가 아니라 실제로 새로운 정보를 추가했을 때만 개선이
+  나온다는 가설을 뒷받침한다. 다만 팀 최고 기록 갱신에도 불구하고 아직
+  리더보드에는 제출하지 않았다(선택 메모 참고).
 
 #### 선택 메모
 
 - COSMIC CGC v104 화이트리스트와 EXP-012 산출물(`protected_genes_final.csv`)은
-  라이선스 확인 전까지 Git 미포함 — `reproducibility/exp031_*/config.resolved.yaml`의
+  라이선스 확인 전까지 Git 미포함 — `reproducibility/exp031_cosmic_*/config.resolved.yaml`의
   `features.protect_gene_whitelist_sha256`으로 사용 파일을 고정했다.
-- 다음 행동을 원한다면: (a) 교차 대상을 LOF뿐 아니라 "보호 유전자 중 missense"처럼
-  더 세분화하되 개수를 1~2개로 제한, (b) 보호 유전자가 아니라 EXP-021처럼
-  fold별 상관관계 상위 유전자와 교차, (c) 트리 파라미터(`colsample_bytree`,
-  `max_depth`)를 피처 수 증가에 맞춰 재튜닝하는 방향을 검토할 수 있다. 현재는
-  추가 시도 없이 결과를 기록하고 종료한다.
+- **hotspot 좌표 검증의 한계**: `KNOWN_HOTSPOTS`(9개 유전자, 19개 위치)는
+  외부 정준(canonical) transcript 서열과 대조한 것이 아니라, (1) 이
+  데이터셋 자체의 train+test 전체에서 reference amino acid가 내부적으로
+  일관되는지, (2) 그 값이 문헌에 알려진 hotspot residue와 일치하는지만
+  확인한 것이다. 즉 "이 데이터가 자기모순이 없고 통용되는 임상 넘버링과
+  결과가 같다"는 정황 증거이지, 이 패널이 실제로 어떤 transcript를 썼는지
+  확인된 것은 아니다. UniProt/RefSeq 정준 서열(FASTA)과 검증된 hotspot
+  좌표표(cancerhotspots.org 등, 라이선스 확인 필요)가 확보되면 전체
+  유전자 패널로 검증 범위를 넓힐 수 있다.
+- KRAS/NRAS hotspot(G12/G13/Q61)은 두 유전자 모두 이 패널의 컬럼에 없어
+  (EXP-012에서 이미 확인된 한계) 포함하지 못했다.
+- 다음 행동 후보: (a) attempt 3을 리더보드에 제출하기 전 `INFERENCE_VERIFIED`
+  체크포인트 검증(EXP-003/EXP-005 방식) 수행, (b) attempt 2(LOF count)와
+  attempt 3(hotspot)을 결합해 추가 개선 여지 확인, (c) 외부 정준 서열
+  확보 시 hotspot 목록을 다른 protect 유전자로 확장.
