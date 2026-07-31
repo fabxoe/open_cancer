@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-078",
+  "issue_number": 78,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "e2a822e576095a25bdf01a46c1bb5e404684f316",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp078_xgb_max_residue_indicator/data_manifest.json",
+  "environment": "reproducibility/exp078_xgb_max_residue_indicator/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-07-31T14:04:09.991821+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp078_xgb_max_residue_indicator/fold_00.json",
+      "size_bytes": 12198255,
+      "sha256": "97d88fc5850d218cb1a36ae5128d1a461b8019cbb0fd8131cab0c4b24a44369a",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp078_xgb_max_residue_indicator/fold_01.json",
+      "size_bytes": 12081832,
+      "sha256": "aab49aa5d8847295d14886152cdd945cc8cef2552f7b806a805d8288763e980b",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp078_xgb_max_residue_indicator/fold_02.json",
+      "size_bytes": 14881924,
+      "sha256": "baa063159c5d2e17d2fa41c478cf464aa234b45e6b8566b92ea71e2c180fe491",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp078_xgb_max_residue_indicator/fold_03.json",
+      "size_bytes": 12374859,
+      "sha256": "8f6e1e187857bbe04a4a2484632519f8b29bc9a840546bbb646ed9ee24e7c646",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp078_xgb_max_residue_indicator/fold_04.json",
+      "size_bytes": 12438825,
+      "sha256": "1c7f75392b90bbeea0156eebfb7e0915b50bd89a6086eca0673f4ad6ecd520df",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp078_xgb_max_residue_indicator.csv",
+      "size_bytes": 38168,
+      "sha256": "deb510b6e23008f536a000f63750039b00ca6ca13cd06bc1a62c751a2b9da91c",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp078_xgb_max_residue_indicator.csv",
+      "size_bytes": 2130727,
+      "sha256": "209d7c04321ebefff7ab71f5e825578d17e47ab57652674491893eafa015fb49",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp078_xgb_max_residue_indicator_test_proba.csv",
+      "size_bytes": 835164,
+      "sha256": "fc12498fd908a01be7ac0add260fbc3f15d820d8b02f0f1192cec4d25b2c490d",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp078_xgb_max_residue_indicator/metrics.json",
+      "size_bytes": 11207,
+      "sha256": "a87d84a736df26ef0c011bfd121c059ef6899874276c923e2f46ac8a69dc37cc",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp078_xgb_max_residue_indicator/config.resolved.yaml",
+      "size_bytes": 6751,
+      "sha256": "06362287232acca02edebe2449013856e1ac695916e2fcba81d2f1725ac6c64a",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
