@@ -10,7 +10,7 @@
 - 실제 실험 수: 5
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4120236287773741 (`EXP-031` attempt 3, hotspot)
+- 최고 Local OOF Macro F1: 0.4135846695002278 (`EXP-031` attempt 5, hotspot 확장)
 - 최고 Public LB Macro F1: 0.2987843366 (`EXP-005`, EXP-031은 미제출)
 - 최고 재현 검증 모델: `EXP-005` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-07-31
@@ -23,7 +23,7 @@
 | EXP-005 | COMPLETED | 2heej | #5 | XGBoost + 유전자×변이유형 희소 피처 | 0.4043796587000222 | 0.2987843366 | INFERENCE_VERIFIED | 제출 재생성 검증 완료·Release 보관 필요 | [보고서](reports/exp005_xgb_mutation_features/README.md) |
 | EXP-012 | COMPLETED | Kangho-Park | #12 | COSMIC 보호 유전자 기반 feature 보호 전략 분석 (모델 학습 없음) | N/A (분석 전용) | 미제출 | NOT_STARTED | 채택 | [상세](#exp-012-cosmic-보호-유전자-기반-feature-보호-전략-분석) |
 | EXP-026 | COMPLETED | fabxoe | #26 | XGBoost mutation-presence + mutated-gene count | 0.3817476632 | 0.2575936484 | NOT_STARTED | EXP-003 대비 개선, EXP-005보다 낮음 | [보고서](reports/exp026_mutation_burden/README.md) |
-| EXP-031 | COMPLETED | Kangho-Park | #31 | EXP-005 변이유형 피처 + 알려진 cancer hotspot 위치 피처 (attempt 3이 팀 최고, attempt 1·2는 COSMIC 보호유전자 교차로 미채택) | 0.4120236288 | 미제출 | NOT_STARTED | attempt 3 채택(팀 최고 Local), 리더보드 제출은 보류 | [상세](#exp-031-exp-005-변이유형-피처--cosmic-보호유전자-교차-피처) |
+| EXP-031 | COMPLETED | Kangho-Park | #31 | EXP-005 변이유형 피처 + 알려진 cancer hotspot 위치 피처 (attempt 5, hotspot 19→34개 확장이 팀 최고) | 0.4135846695 | 미제출 | NOT_STARTED | attempt 5 채택(팀 최고 Local), 리더보드 제출은 보류 | [상세](#exp-031-exp-005-변이유형-피처--cosmic-보호유전자-교차-피처) |
 
 ## 리더보드 제출 이력
 
@@ -211,14 +211,34 @@ amino acid가 이 패널 전체에서 문헌값과 정확히 일치·일관됨�
 |---|---|---:|---|---|
 | attempt 1 | EXP-005 전체 + 보호유전자 교차 8개(mutated/missense/synonymous/nonsense/frameshift/complex/missing count + LOF count) | 30,705 | `configs/exp031_cosmic_mutation_type_cross.yaml` | `reports/exp031_cosmic_mutation_type_cross/metrics.json` |
 | attempt 2 | EXP-005 전체 + 보호유전자 LOF(nonsense+frameshift) count 1개만 | 30,698 | `configs/exp031_cosmic_lof_only_cross.yaml` | `reports/exp031_cosmic_lof_only_cross/metrics.json` |
-| **attempt 3(채택)** | EXP-005 전체 + 검증된 hotspot 19개 individual indicator + 총 hotspot count 1개 | 30,717 | `configs/exp031_hotspot_cross.yaml` | `reports/exp031_hotspot_cross/metrics.json` |
+| attempt 3 | EXP-005 전체 + 검증된 hotspot 19개 individual indicator + 총 hotspot count 1개 | 30,717 | `configs/exp031_hotspot_cross.yaml` | `reports/exp031_hotspot_cross/metrics.json` |
 | attempt 4 | EXP-005 전체 + attempt 2의 LOF count 1개 + attempt 3의 hotspot 20개(결합) | 30,718 | `configs/exp031_lof_hotspot_combined.yaml` | `reports/exp031_lof_hotspot_combined/metrics.json` |
+| **attempt 5(채택)** | EXP-005 전체 + hotspot 19개(attempt 3) + 신규 발굴 15개 individual indicator + 총 hotspot count 1개(34개 hotspot) | 30,732 | `configs/exp031_hotspot_extended.yaml` | `reports/exp031_hotspot_extended/metrics.json` |
+
+attempt 5는 `scripts/explore_hotspot_candidate_mining.py`(RUN_MODE=explore)로
+EXP-012 COSMIC 보호유전자 화이트리스트(361개) 전체를 대상으로 attempt 3의
+검증 로직을 확장해 만들었다. 이 과정에서 중요한 **데이터 아티팩트**를
+발견했다: 일부 유전자에서 특정 위치 조합이 서로 다른 환자 다수에서 정확히
+동일하게(예: BRAF 600+512+548+563+566+578+603+640이 정확히 같은 39개 행에서,
+TP53 16+43+136+175가 61개 행에서) 반복되는데, 이는 한 환자가 한 유전자
+안에서 여러 코돈에 동시에 독립적인 점돌연변이를 얻는 실제 종양 생물학으로
+설명할 수 없어 데이터 생성/전처리 과정의 인공물로 판단했다(상세는
+`reports/exp012_feature_analysis/hotspot_artifact_clusters.csv`). "동일 유전자
+내 위치 조합이 5회 이상 반복"을 아티팩트로 정의해 제외한 뒤(임계값은 결과를
+보기 전에 고정) 482개 후보가 남았고, 이 중 개별적으로 문헌에 확실히
+검증되는 10개 유전자·15개 위치만 사람이 선별해 채택했다(PIK3CA
+E542K/Q546/N345, PTEN R130/R233, FBXW7 R505, AKT1 E17K, U2AF1 S34, APC
+R1450/R876, POLE P286R/V411L, KIT D816, FGFR3 S249C, RAC1 P29S). HLA-A(생식계열
+다형성), PABPC1/SIRPA/ATP1A1(확립된 driver 유전자 아님), TP53 확장 세트(약
+50개, 생물학적 개연성은 높으나 개별 코돈 검증에 자신 없음), KMT2D/PLEC 등은
+의도적으로 제외했다.
 
 - Report: N/A
 - 재현성 manifest: `reproducibility/exp031_cosmic_mutation_type_cross/config.resolved.yaml`,
   `reproducibility/exp031_cosmic_lof_only_cross/config.resolved.yaml`,
   `reproducibility/exp031_hotspot_cross/config.resolved.yaml`,
-  `reproducibility/exp031_lof_hotspot_combined/config.resolved.yaml`
+  `reproducibility/exp031_lof_hotspot_combined/config.resolved.yaml`,
+  `reproducibility/exp031_hotspot_extended/config.resolved.yaml`
 
 #### 결과
 
@@ -227,14 +247,16 @@ amino acid가 이 패널 전체에서 문헌값과 정확히 일치·일관됨�
 | EXP-005(부모, 비교 기준) | 0.4043796587 | 0.396549 | 1.863207 |
 | attempt 1(교차 8개) | 0.3956074120 | 0.388486 | 1.875899 |
 | attempt 2(LOF count만) | 0.4017847879 | 0.393969 | 1.864124 |
-| **attempt 3(hotspot, 팀 최고)** | **0.4120236288** | 0.403322 | 1.835079 |
+| attempt 3(hotspot 19개) | 0.4120236288 | 0.403322 | 1.835079 |
 | attempt 4(LOF+hotspot 결합) | 0.4057616458 | 0.398645 | 1.835519 |
+| **attempt 5(hotspot 34개, 팀 최고)** | **0.4135846695** | 0.406225 | 1.831068 |
 
 - Fold Macro F1(attempt 1): 0.386807, 0.398357, 0.385085, 0.388885, 0.411211
 - Fold Macro F1(attempt 2): 0.403056, 0.411966, 0.390054, 0.387770, 0.409737
 - Fold Macro F1(attempt 3): 0.413077, 0.420928, 0.399671, 0.403889, 0.418962
 - Fold Macro F1(attempt 4): 0.406582, 0.415506, 0.387467, 0.398288, 0.414055
-- Public LB: 미제출 (attempt 3은 팀 최고 Local이지만 리더보드 제출은 보류,
+- Fold Macro F1(attempt 5): 0.415084, 0.415961, 0.400686, 0.406536, 0.424850
+- Public LB: 미제출 (attempt 5가 팀 최고 Local이지만 리더보드 제출은 보류,
   아래 선택 메모 참고)
 - 재현 상태: NOT_STARTED
 
@@ -261,47 +283,77 @@ PAAD(-0.0433), DLBC(-0.0223)의 하락폭이 LAML(+0.0162), LGG(+0.0123) 같은
 "더해지는" 관계가 아니라 오히려 그 효과를 갉아먹었다 — attempt 2가
 EXP-005 단독 대비로도 net negative였던 것과 일관된 결과다.
 
+attempt 5(hotspot 34개)는 attempt 3 대비 14개 클래스가 개선되고 12개가
+하락했다. PCPG(+0.0229), CESC(+0.0219), UCEC(+0.0209), THYM(+0.0201),
+LIHC(+0.0168), PRAD(+0.0154), KIPAN(+0.0153)이 크게 개선된 반면
+PAAD(-0.0370), BLCA(-0.0247), DLBC(-0.0156), COAD(-0.0139), OV(-0.0100)가
+하락했다. 개선폭 합이 하락폭 합보다 커서 전체 OOF가 attempt 3보다
++0.0016p 더 높아졌다.
+
 #### 산출물과 결론
 
 - Metrics/Reproduction: 위 표의 시도별 경로
 - 코드: `src/open_cancer/cosmic_mutation_features.py`
   (`build_cosmic_mutation_features`, `build_cosmic_cross_matrix`),
   `src/open_cancer/hotspot_features.py`
-  (`build_hotspot_augmented_features`, `build_hotspot_matrix`, `KNOWN_HOTSPOTS`),
+  (`build_hotspot_augmented_features`, `build_hotspot_matrix`, `KNOWN_HOTSPOTS`,
+  `ADDITIONAL_HOTSPOTS`, `EXTENDED_HOTSPOTS`),
   `src/open_cancer/combined_mutation_features.py` (`build_lof_hotspot_features`),
   `scripts/run_exp031_cosmic_mutation_type_cross.py`,
   `scripts/run_exp031_cosmic_lof_only_cross.py`,
   `scripts/run_exp031_hotspot_cross.py`,
   `scripts/run_exp031_lof_hotspot_combined.py`,
-  `scripts/explore_hotspot_numbering_consistency.py`(RUN_MODE=explore, 검증용)
-- 결론: **attempt 3(hotspot 단독) 최종 채택 — 팀 최고 Local 기록 갱신**
-  (EXP-005 대비 +0.0076p). attempt 1·2("COSMIC 보호 유전자 정보를 유전자
-  단위로 재집계")는 EXP-005를 넘지 못했고, attempt 3("개별 유전자 컬럼에는
-  없는 코돈 단위 정보를 추가")는 넘었다. attempt 4는 attempt 2와 3을
-  결합하면 더 나아질지 확인했지만 오히려 attempt 3보다 낮아, **두 신호가
-  단순히 합산되지 않으며 LOF count 쪽이 순손실 요인**임을 재확인했다. 이는
-  "정보가 이미 유전자×변이유형 단위에 존재해 재집계는 net negative,
-  코돈 단위의 진짜 새 정보만 net positive"라는 가설과 일관된다. 팀 최고
-  기록 갱신에도 불구하고 아직 리더보드에는 제출하지 않았다(선택 메모 참고).
+  `scripts/run_exp031_hotspot_extended.py`,
+  `scripts/explore_hotspot_numbering_consistency.py`(RUN_MODE=explore, 검증용),
+  `scripts/explore_hotspot_candidate_mining.py`(RUN_MODE=explore, 후보 발굴·
+  아티팩트 클러스터 탐지)
+- 결론: **attempt 5(hotspot 34개) 최종 채택 — 팀 최고 Local 기록 갱신**
+  (EXP-005 대비 +0.0092p, attempt 3 대비 +0.0016p). attempt 1·2("COSMIC
+  보호 유전자 정보를 유전자 단위로 재집계")는 EXP-005를 넘지 못했고, attempt
+  3·5("개별 유전자 컬럼에는 없는 코돈 단위 정보를 추가")는 넘었다. attempt
+  4는 attempt 2와 3을 결합하면 더 나아질지 확인했지만 오히려 attempt
+  3보다 낮아, 두 신호가 단순히 합산되지 않으며 LOF count 쪽이 순손실
+  요인임을 재확인했다. attempt 5는 "새 정보 추가"라는 같은 원칙을
+  화이트리스트 361개 전체로 확장해 재확인한 결과로, "정보가 이미
+  유전자×변이유형 단위에 존재해 재집계는 net negative, 코돈 단위의 진짜
+  새 정보만 net positive"라는 가설을 다시 한번 뒷받침한다. 팀 최고 기록
+  갱신에도 불구하고 아직 리더보드에는 제출하지 않았다(선택 메모 참고).
 
 #### 선택 메모
 
 - COSMIC CGC v104 화이트리스트와 EXP-012 산출물(`protected_genes_final.csv`)은
   라이선스 확인 전까지 Git 미포함 — `reproducibility/exp031_cosmic_*/config.resolved.yaml`의
   `features.protect_gene_whitelist_sha256`으로 사용 파일을 고정했다.
-- **hotspot 좌표 검증의 한계**: `KNOWN_HOTSPOTS`(9개 유전자, 19개 위치)는
-  외부 정준(canonical) transcript 서열과 대조한 것이 아니라, (1) 이
-  데이터셋 자체의 train+test 전체에서 reference amino acid가 내부적으로
-  일관되는지, (2) 그 값이 문헌에 알려진 hotspot residue와 일치하는지만
-  확인한 것이다. 즉 "이 데이터가 자기모순이 없고 통용되는 임상 넘버링과
-  결과가 같다"는 정황 증거이지, 이 패널이 실제로 어떤 transcript를 썼는지
-  확인된 것은 아니다. UniProt/RefSeq 정준 서열(FASTA)과 검증된 hotspot
-  좌표표(cancerhotspots.org 등, 라이선스 확인 필요)가 확보되면 전체
-  유전자 패널로 검증 범위를 넓힐 수 있다.
+- **hotspot 좌표 검증의 한계**: `KNOWN_HOTSPOTS`(9개 유전자, 19개 위치)와
+  `ADDITIONAL_HOTSPOTS`(10개 유전자, 15개 위치)는 외부 정준(canonical)
+  transcript 서열과 대조한 것이 아니라, (1) 이 데이터셋 자체의 train+test
+  전체에서 reference amino acid가 내부적으로 일관되는지, (2) 그 값이
+  문헌에 알려진 hotspot residue와 일치하는지만 확인한 것이다. 즉 "이
+  데이터가 자기모순이 없고 통용되는 임상 넘버링과 결과가 같다"는 정황
+  증거이지, 이 패널이 실제로 어떤 transcript를 썼는지 확인된 것은 아니다.
+  UniProt/RefSeq 정준 서열(FASTA)과 검증된 hotspot 좌표표(cancerhotspots.org
+  등, 라이선스 확인 필요)가 확보되면 검증 범위를 넓힐 수 있다.
+- **데이터 아티팩트 발견**(attempt 5 과정에서): BRAF/RXRA/CD209/MUC1/TP53/
+  FBXW7 등 일부 유전자에서 특정 위치 조합이 서로 다른 환자들에게서 정확히
+  동일하게 반복 등장한다(`reports/exp012_feature_analysis/hotspot_artifact_clusters.csv`,
+  131개 클러스터). 예: BRAF 600+512+548+563+566+578+603+640이 39개 행에서,
+  TP53 16+43+136+175가 61개 행에서 항상 함께 나타남. 실제 종양이 한
+  유전자 안에서 이렇게 많은 코돈에 동시에 독립적인 점돌연변이를 얻을
+  가능성은 매우 낮아, 이 원본 CSV 데이터 자체(또는 그 생성 과정)에 아직
+  원인이 특정되지 않은 인공적 패턴이 섞여 있을 가능성을 시사한다. 이번
+  실험에서는 이런 반복 클러스터에 속한 관측치를 hotspot 근거에서 제외하는
+  방식으로 대응했지만, 이 현상 자체가 다른 실험(예: mutation-presence
+  기반 피처 전반)에도 영향을 줄 수 있는지는 별도로 확인되지 않았다.
+- HLA-A(생식계열 다형성), PABPC1/SIRPA/ATP1A1(확립된 point-mutation driver
+  유전자 아님)은 필터를 통과했지만 의도적으로 제외했다. TP53 확장 세트
+  (약 50개 코돈)는 생물학적 개연성은 높지만 개별 검증에 자신이 없어 이번
+  attempt 5에는 포함하지 않았다.
 - KRAS/NRAS hotspot(G12/G13/Q61)은 두 유전자 모두 이 패널의 컬럼에 없어
   (EXP-012에서 이미 확인된 한계) 포함하지 못했다.
-- 다음 행동 후보: (a) attempt 3을 리더보드에 제출하기 전 `INFERENCE_VERIFIED`
-  체크포인트 검증(EXP-003/EXP-005 방식) 수행, (b) 외부 정준 서열 확보 시
-  hotspot 목록을 다른 protect 유전자로 확장, (c) attempt 2(LOF count)는
-  단독·결합(attempt 4) 모두 net negative로 재확인됐으므로 이 방향은 더
-  탐색하지 않는다.
+- 다음 행동 후보: (a) attempt 5를 리더보드에 제출하기 전 `INFERENCE_VERIFIED`
+  체크포인트 검증(EXP-003/EXP-005 방식) 수행, (b) 위에서 발견한 데이터
+  아티팩트의 원인을 조사(가능하면 대회 주최측 공지 확인), (c) 외부 정준
+  서열과 검증된 hotspot 좌표표를 확보해 TP53 확장 세트와 나머지 protect
+  유전자로 검증 범위를 넓히는 것 검토, (d) attempt 2(LOF count)는 단독·
+  결합(attempt 4) 모두 net negative로 재확인됐으므로 이 방향은 더 탐색하지
+  않는다.
