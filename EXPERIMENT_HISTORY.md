@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 27
+- 실제 실험 수: 28
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4168865739 (`EXP-094`)
@@ -46,6 +46,7 @@
 | EXP-106 | COMPLETED | fabxoe | #106 | EXP-094 + fold-train recurrent exact-token | 0.4147478922 | 미제출 | INFERENCE_VERIFIED | 성능 후보 미채택·OOF/test 확률은 다양성 비교용 보존 | [보고서](reports/exp106_recurrent_exact_token/README.md) |
 | EXP-107 | COMPLETED | fabxoe | #107 | EXP-094 + amino-acid 물성 변화 카운트 4개 | 0.4131379001 | 미제출 | INFERENCE_VERIFIED | 성능 후보 미채택·v2-diversity 관찰 후보로 확률 보존 | [보고서](reports/exp107_amino_acid_change/README.md) |
 | EXP-109 | COMPLETED | fabxoe | #109 | EXP-094 + complex morphology·spectrum 요약 8개 | 0.4135182559 | 미제출 | INFERENCE_VERIFIED | 성능 후보 미채택·fold 안정성 및 diversity 관찰 후보 | [보고서](reports/exp109_complex_morphology/README.md) |
+| EXP-110 | COMPLETED | fabxoe | #110 | EXP-094 + fold-train 유전자 빈도 tier spectrum 40개 | 0.3963504903 | 미제출 | INFERENCE_VERIFIED | 성능·초기 blend 미채택, 저우선순위 stacking 자산 | [보고서](reports/exp110_frequency_tier_spectrum/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -86,10 +87,38 @@
 | 2026-08-01T09:20:01.124960+00:00 | EXP-106 | fabxoe | `8e54d0f48b891bbc8aa99130e1954cf1cb8b6f08` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp106_recurrent_exact_token/comparison.json) |
 | 2026-08-01T09:48:14.214888+00:00 | EXP-107 | fabxoe | `efe36044e117df9e8d9e821e19e092e75844d966` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp107_amino_acid_change/comparison.json) |
 | 2026-08-01T10:02:39.082057+00:00 | EXP-109 | fabxoe | `2e5882eb9c050292c6167c584cf4977a12c1cdab` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp109_complex_morphology/comparison.json) |
+| 2026-08-01T10:19:49.995276+00:00 | EXP-110 | fabxoe | `1c0e835eecb5d5edbffc61c632c583395f698d1b` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp110_frequency_tier_spectrum/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-110] frequency-tier spectrum 단독 검증
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #110 / issue-110-exp-frequency-tier-spectrum
+- 소스 commit: `1c0e835eecb5d5edbffc61c632c583395f698d1b`
+- 시작/종료: 2026-08-01T10:07:30.754000+00:00 / 2026-08-01T10:19:47.723783+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp110_frequency_tier_spectrum/config.resolved.yaml`
+- Metrics: `reports/exp110_frequency_tier_spectrum/metrics.json`
+- Report: `reports/exp110_frequency_tier_spectrum/README.md`
+- 기준: 동결된 EXP-094 Feature Spec v1
+- 변경: fold-train 유전자 빈도 tier별 mutation-type count·fraction 40개
+
+#### 결과
+
+- Fold Macro F1: 0.3930559, 0.4006714, 0.3872658, 0.3883149, 0.4072213
+- OOF Macro F1: 0.3963504903
+- EXP-094 대비: -0.0205360836
+- OOF 예측 라벨 일치율(EXP-094 대비): 0.7505241090
+- 전체 OOF 확률 상관(EXP-094 대비): 0.9522398631
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+- 판단: 성능·초기 blend 미채택, 저우선순위 stacking 자산으로 확률 보존
 
 ### [EXP-109] complex morphology 단독 검증
 
