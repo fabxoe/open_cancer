@@ -2,14 +2,14 @@
   "experiment_id": "EXP-135",
   "issue_number": 135,
   "reproducibility_status": "INFERENCE_VERIFIED",
-  "source_commit": "50e6e3381e9fe93cddc41d59b9f6552139d20bf0",
+  "source_commit": "cebd289b4cc3bd7a1d108b6669c751fba649367f",
   "source_tag": null,
   "dirty_worktree": false,
   "data_manifest": "reproducibility/exp135_fixed_probability_blend/data_manifest.json",
   "environment": "reproducibility/exp135_fixed_probability_blend/environment.json",
   "release_url": null,
   "verifier": "fabxoe",
-  "verified_at": "2026-08-01T17:28:09.146359+00:00",
+  "verified_at": "2026-08-01T17:28:51.268306+00:00",
   "artifacts": [
     {
       "kind": "submission",
@@ -35,15 +35,15 @@
     {
       "kind": "metrics",
       "path": "reports/exp135_fixed_probability_blend/metrics.json",
-      "size_bytes": 11106,
-      "sha256": "87707ad8e1187cc4e4bbb3b88c4b41e6175be6c8adc0494e299d8fa9c1f09c13",
+      "size_bytes": 11107,
+      "sha256": "97eea33f7e507a586a89f48c40f9231f35ce466fa783def476b6c82cfd53ac84",
       "storage_uri": null
     },
     {
       "kind": "resolved_config",
       "path": "reproducibility/exp135_fixed_probability_blend/config.resolved.yaml",
       "size_bytes": 1818,
-      "sha256": "8d4258399b43dc3b2e12a4f90fd15d6d56c42b18d2ca88c383b636f9501fd350",
+      "sha256": "6bf01ad88b894b3868c01d3f2cc6f3f7b4a24053bc9f4a2a7d3b4209ba42e5e9",
       "storage_uri": null
     },
     {

@@ -3,9 +3,9 @@ experiment:
   experiment_id: EXP-135
   branch: issue-135-exp-fixed-blend
   owner: fabxoe
-  source_commit: 50e6e3381e9fe93cddc41d59b9f6552139d20bf0
+  source_commit: cebd289b4cc3bd7a1d108b6669c751fba649367f
   dirty_worktree: false
-  started_at: '2026-08-01T17:28:08.467301+00:00'
+  started_at: '2026-08-01T17:28:50.656798+00:00'
 split:
   path: data/splits/stratified_5fold_seed42.csv
   n_splits: 5

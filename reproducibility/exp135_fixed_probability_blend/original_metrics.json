@@ -5,9 +5,9 @@
   "owner": "fabxoe",
   "issue_number": 135,
   "parent_experiment": "EXP-094",
-  "git_commit": "50e6e3381e9fe93cddc41d59b9f6552139d20bf0",
-  "started_at": "2026-08-01T17:28:08.467301+00:00",
-  "finished_at": "2026-08-01T17:28:09.006158+00:00",
+  "git_commit": "cebd289b4cc3bd7a1d108b6669c751fba649367f",
+  "started_at": "2026-08-01T17:28:50.656798+00:00",
+  "finished_at": "2026-08-01T17:28:51.173316+00:00",
   "primary_metric": "macro_f1",
   "split_id": "data/splits/stratified_5fold_seed42.csv",
   "folds": [
@@ -15,35 +15,35 @@
       "fold": 0,
       "macro_f1": 0.4195736454953633,
       "accuracy": 0.4101531023368251,
-      "log_loss": 1.8402068619413259,
+      "log_loss": 1.8402068620193859,
       "best_iteration": null
     },
     {
       "fold": 1,
       "macro_f1": 0.43160044161313704,
       "accuracy": 0.4120967741935484,
-      "log_loss": 1.82874202474308,
+      "log_loss": 1.8287420246375743,
       "best_iteration": null
     },
     {
       "fold": 2,
       "macro_f1": 0.40975895341041874,
       "accuracy": 0.40080645161290324,
-      "log_loss": 1.7766655779956908,
+      "log_loss": 1.7766655780986924,
       "best_iteration": null
     },
     {
       "fold": 3,
       "macro_f1": 0.4013577659139226,
       "accuracy": 0.4104838709677419,
-      "log_loss": 1.8109667800992018,
+      "log_loss": 1.810966780378348,
       "best_iteration": null
     },
     {
       "fold": 4,
       "macro_f1": 0.4348436093955944,
       "accuracy": 0.4217741935483871,
-      "log_loss": 1.7851154658452046,
+      "log_loss": 1.7851154655994979,
       "best_iteration": null
     }
   ],
@@ -52,7 +52,7 @@
     "fold_mean": 0.41942688316568716,
     "fold_std": 0.0126953091818484,
     "accuracy": 0.4110627318174488,
-    "log_loss": 1.8083444812185652,
+    "log_loss": 1.8083444812403737,
     "per_class_f1": {
       "ACC": 0.8285714285714286,
       "BLCA": 0.4808743169398907,
@@ -814,7 +814,7 @@
   },
   "leaderboard": null,
   "runtime": {
-    "seconds": 0.5938422079198062,
+    "seconds": 0.5476559589151293,
     "hardware": "macOS-26.2-arm64-arm-64bit"
   },
   "artifacts": {
