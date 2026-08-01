@@ -61,6 +61,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 - [Feature Spec v2 명세](../configs/abc_stack_feature_spec_v2.yaml)
 - [ABC-Stack OOF 포트폴리오 감사](analysis/abc_oof_portfolio_audit.md)
 - [G4 모델 OOF 다양성·확률 품질 감사](analysis/g4_model_portfolio_audit.md)
+- [G7 최종 후보 재현·제출 준비 감사](analysis/g7_final_candidate_audit.md)
 - [동결 Feature Spec·공통 모델 runner 계약](analysis/frozen_feature_model_runner_contract.md)
 
 프로젝트 전체에 영향을 주는 target-independent QC와 의미 감사는
