@@ -267,14 +267,29 @@ def build_hotspot_augmented_features(
     test_path: Path,
     output_dir: Path,
     hotspots: HotspotTable = KNOWN_HOTSPOTS,
+    *,
+    selected_position_features: tuple[str, ...] | None = None,
+    position_missing_policy: str = "zero",
+    position_token_scope: str = "include_complex",
+    position_transform: str = "raw",
+    position_bin_width: int = 100,
 ) -> dict[str, object]:
-    """Build EXP-005 gene x type features plus known-hotspot indicator features."""
+    """Build mutation-type/position features plus fixed hotspot indicators."""
 
     from open_cancer.mutation_features import build_mutation_features
 
     feature_names = hotspot_feature_names(hotspots)
     base_dir = output_dir / "base_mutation_type_features"
-    base_report = build_mutation_features(train_path, test_path, base_dir)
+    base_report = build_mutation_features(
+        train_path,
+        test_path,
+        base_dir,
+        selected_position_features=selected_position_features,
+        position_missing_policy=position_missing_policy,
+        position_token_scope=position_token_scope,
+        position_transform=position_transform,
+        position_bin_width=position_bin_width,
+    )
 
     train_base = sparse.load_npz(base_dir / "train_features.npz")
     test_base = sparse.load_npz(base_dir / "test_features.npz")
