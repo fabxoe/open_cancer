@@ -58,6 +58,59 @@ meta 모델의 예측으로 stack OOF를 만듭니다.
   확인돼야 합니다. `+0.002` 이상이 아니면 문서화·규정 비용을 감수하지 않습니다.
 - 두 결과 모두 Feature Spec v1을 수정하지 않으며, 채택되면 v2로 별도 관리합니다.
 
+## 저장소 검증 기준 A/B/C 매핑
+
+Vera가 제공한 표는 당시 공유된 설명을 바탕으로 한 추론이므로, 아래 표는 실제
+History·config·보고서로 보정한 저장소 기준 해석입니다.
+
+- **A — driver/hotspot 패턴:** gene×mutation type·residue position·고정
+  hotspot·고정 co-mutation 관계처럼 유전자 사건을 직접 구분합니다.
+- **B — mutational process/spectrum:** 샘플별 burden, 변이유형 count·ratio와
+  분포를 요약합니다.
+- **C — tissue/function group:** 사전에 고정한 기능·driver·pathway·조직 관련
+  유전자군을 그룹 단위로 집계합니다. 외부 문헌을 사용했다는 사실만으로 C가
+  되지는 않습니다.
+
+`부분`은 해당 축을 직접 최적화하지 않았지만 부모 피처나 집계값에 일부 포함됐다는
+뜻입니다. Blend는 새로운 피처 축을 만들지 않으므로 부모 축을 상속합니다.
+
+| EXP | 핵심 변경 | A | B | C | 저장소 기준 해석 |
+|---|---|---|---|---|---|
+| EXP-003 | mutation presence | 중 | 낮음 | 없음 | 유전자 사건 유무만 사용 |
+| EXP-005 | gene×mutation-type 희소 피처 | 높음 | 부분 | 없음 | 현재 A축의 기본 코어 |
+| EXP-012 | COSMIC 보호 유전자 분석 | 낮음 | 낮음 | 높음(분석) | C 개념을 분석했지만 모델 학습은 없음 |
+| EXP-021 | COSMIC 가중 burden | 중 | 중 | 높음 | 고정 기능 유전자군 집계를 실제 모델로 시험한 초기 C 실험 |
+| EXP-026 | presence + mutated-gene count | 중 | 높음 | 없음 | 샘플 변이량 proxy를 직접 추가 |
+| EXP-029 | 변이유형 ratio·log burden | 높음 | 높음 | 없음 | B 확장, OOF 하락으로 현 구성 기각 |
+| EXP-030 | notation 희소 피처·샘플 변이 수 | 높음 | 중 | 없음 | 정확 사건 표현과 burden을 함께 사용 |
+| EXP-033 | EXP-005 + log burden 3종 | 높음 | 높음 | 없음 | B의 제한된 log 집계가 소폭 개선 |
+| EXP-031 | 고정 hotspot 34개 | 매우 높음 | 부분 | 없음 | 문헌 목록이지만 그룹 집계는 아니므로 A |
+| EXP-043 | 샘플 변이분포 28종 | 높음 | 높음 | 없음 | B 대규모 확장, OOF 하락 |
+| EXP-045 | 분포 피처 nested selection | 높음 | 높음 | 없음 | B 선택을 시도했지만 기준 모델 미달 |
+| EXP-047 | 최소 residue position | 매우 높음 | 부분 | 없음 | 위치 기반 A 강화 |
+| EXP-050 | 반복 선택 분포 피처 2종 | 높음 | 높음 | 없음 | 제한된 B 재검증, 미채택 |
+| EXP-052 | 고정 co-mutation pair 3개 | 높음 | 부분 | 낮음 | 문헌 관계를 사용하지만 tissue/function 그룹 집계는 아님 |
+| EXP-058 | co-mutation pair 2개 ablation | 높음 | 부분 | 낮음 | EXP-052 관계 축 축소 |
+| EXP-063 | residue observed indicator | 높음 | 부분 | 없음 | presence와 완전히 같은 중복 열로 확인; 결측 분리 아님 |
+| EXP-065 | complex 위치 제외 | 매우 높음 | 부분 | 없음 | A축 파싱 robustness 검증 |
+| EXP-067 | residue coarse bin | 매우 높음 | 부분 | 없음 | 위치 일반화 방식 검증 |
+| EXP-069 | maximum residue position | 매우 높음 | 부분 | 없음 | Feature Spec v1의 위치 피처 |
+| EXP-075 | EXP-067·069 확률 blend | 매우 높음(상속) | 부분(상속) | 없음 | 새 피처가 아닌 두 A계열 모델 앙상블 |
+| EXP-078 | max position + indicator | 매우 높음 | 부분 | 없음 | 중복 indicator로 하락하여 기각 |
+| EXP-085 | clean fixed hotspot 34개 | 매우 높음 | 부분 | 없음 | 재현 가능한 A hotspot 복구 |
+| EXP-093 | mutation type + position + hotspot | 매우 높음 | 부분 | 없음 | A family 조합, 동결 기준 일부 미달 |
+| EXP-094 | Feature Spec v1 조합 | 매우 높음 | 중 | 없음 | A 코어와 채택된 log burden을 동결한 현재 기준 |
+
+### 매핑에서 얻은 결론
+
+1. 성능 상승의 주축은 A이며 EXP-094에서 동결됐습니다.
+2. B는 여러 형태로 충분히 시도했지만, 현재 살아남은 것은 제한된 log burden입니다.
+3. C는 완전 미착수는 아닙니다. EXP-012가 분석했고 EXP-021이 COSMIC 고정 그룹
+   burden을 시험했지만 현재 기준보다 크게 낮았습니다.
+4. pathway·hallmark와 PPI 요약은 아직 실행하지 않았습니다.
+5. 문헌 기반 hotspot·pair는 외부 지식을 사용해도 사건·관계 피처이므로 주축을
+   A로 분류합니다.
+
 ## 확정 실행 순서
 
 1. 공통 runner와 feature/fold/class/probability assert 완성

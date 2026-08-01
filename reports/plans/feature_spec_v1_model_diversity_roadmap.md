@@ -150,19 +150,29 @@ blend만 유지합니다.
 
 ## Feature Spec v2 후보의 순서
 
-Vera의 기존 제안인 B-1 functional mutation spectrum과 C-1 고정 pathway
-burden은 Feature Spec v1에 다시 넣지 않습니다. 모델 다양화와 stacking 가능성을
+Vera의 기존 제안인 B-1 functional mutation spectrum과 C-1 고정 기능·pathway
+group burden은 Feature Spec v1에 다시 넣지 않습니다. 모델 다양화와 stacking 가능성을
 먼저 확인한 뒤 계산 예산이 남을 때만 각각 별도 v2 Experiment Issue에서 단 한 번
 단일 ablation으로 평가합니다.
 
 - B-1: 제공 CSV에서 계산한 저차원 mutation-type count·fraction만 사용합니다.
   EXP-094 대비 OOF Macro F1 `+0.001` 미만이거나 저빈도 클래스 평균 F1이
   악화되면 즉시 중단합니다.
-- C-1: 소수의 고정 pathway gene set과 출처·버전·라이선스·해시를 먼저
-  문서화하고, 대회 규정상 허용 여부가 분명할 때만 실행합니다. 문서화 비용과
-  규정 위험을 감안해 EXP-094 대비 `+0.002` 이상일 때만 유지합니다.
+- C-1은 비용과 위험이 낮은 순서로 진행합니다.
+  1. `C-1a`: 소수의 고정 driver·기능 유전자 그룹 burden
+  2. `C-1b`: 고정 pathway·hallmark gene-set burden
+  3. `C-1c`: PPI 정적 요약 — C-1a/b가 유효할 때만 검토
+  각 외부 그룹은 출처·버전·라이선스·해시를 먼저 문서화하고 대회 규정상 허용
+  여부가 분명할 때만 실행합니다. EXP-094 대비 `+0.002` 이상이 아니면 다음
+  C단계로 확장하지 않습니다.
 - B-1/C-1 결과를 보고 Feature Spec v1을 수정하지 않습니다. 채택 시에도 v2로
   별도 동결하고 v1 모델과의 OOF 다양성을 비교합니다.
+
+과거 A/B/C 적용 현황과 분류 근거는
+[Vera EXP-094 후속 검토의 저장소 검증 매핑](../analysis/vera_exp094_followup.md#저장소-검증-기준-abc-매핑)을
+따릅니다. 핵심은 A가 EXP-094에서 동결됐고, B는 광범위한 확장이 대체로 실패한
+뒤 일부 log burden만 남았으며, C는 EXP-012·021에서 초기 분석·실험은 했지만
+pathway·hallmark·PPI는 아직 미착수라는 점입니다.
 
 ## Vera 권고 반영 상태
 
