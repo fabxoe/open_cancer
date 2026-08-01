@@ -1,0 +1,8 @@
+{
+  "python": "3.11.10",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "numpy": "2.4.6",
+  "pandas": "3.0.5",
+  "scikit_learn": "1.9.0",
+  "uv_lock_sha256": "cea0d1a7c46efd4675ebb3982a309c56b85c793f0712ba24d04d1a7c6bd110ae"
+}

@@ -1,0 +1,107 @@
+{
+  "experiment_id": "EXP-123",
+  "issue_number": 123,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "63637a3e67733909bee21f6b9a072db7a42cdb68",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp123_sparse_logistic_v1/data_manifest.json",
+  "environment": "reproducibility/exp123_sparse_logistic_v1/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint_fold_0",
+      "path": "models/exp123_sparse_logistic_v1/fold_00.joblib",
+      "size_bytes": 3934605,
+      "sha256": "2a7f3632a39d942101de442af69beb32cc91f56f1c68cc7a4902660a68e470fb",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_1",
+      "path": "models/exp123_sparse_logistic_v1/fold_01.joblib",
+      "size_bytes": 3934605,
+      "sha256": "4999e8ddb164d1e45d5fbc99397d52fadcb96a20b36fffd23d5563a0af3166de",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_2",
+      "path": "models/exp123_sparse_logistic_v1/fold_02.joblib",
+      "size_bytes": 3934605,
+      "sha256": "5731f94ded1f1114b90bc81168386ccd45aa18ed087ba15e5a59c8513ebc66d8",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_3",
+      "path": "models/exp123_sparse_logistic_v1/fold_03.joblib",
+      "size_bytes": 3934605,
+      "sha256": "725b65d5cf0022c69cf2c37353485ea81aca66805d8cee158fa09cbcd933d0db",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_4",
+      "path": "models/exp123_sparse_logistic_v1/fold_04.joblib",
+      "size_bytes": 3934605,
+      "sha256": "cef9881892c61de78de26acea241325436bc707df3624421a9ec896692d10b0c",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_spec_manifest",
+      "path": "data/processed/exp123_sparse_logistic_v1_features/feature_spec_manifest.json",
+      "size_bytes": 1839,
+      "sha256": "53077c4134d02e4edfb48b645f0245e53e0ec8c44f651006d306c1d41846c192",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof",
+      "path": "oof/exp123_sparse_logistic_v1.csv",
+      "size_bytes": 3497831,
+      "sha256": "be2be2c22c91cfa76ce46f734c19d6a6da615885dac6baa35292599c60496339",
+      "storage_uri": null
+    },
+    {
+      "kind": "report_metrics",
+      "path": "reports/exp123_sparse_logistic_v1/metrics.json",
+      "size_bytes": 11132,
+      "sha256": "19916b95a259c7c7e59bc8582112e26faeda440e3549fe4148346722ed461bad",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp123_sparse_logistic_v1.csv",
+      "size_bytes": 38292,
+      "sha256": "7947df0753ed4237a5f3967bd1e3bc8f4da7a2d6626feef935489e5e6aae81e0",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp123_sparse_logistic_v1_test_proba.csv",
+      "size_bytes": 1405967,
+      "sha256": "7f877dc3e27c14849264a64c8ed720bb6f6d9ee41286002d222ba74a9ad7e016",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp123_sparse_logistic_v1/config.resolved.yaml",
+      "size_bytes": 3050,
+      "sha256": "63b699b016199f7023f50d3817a71e139e125b924bfee97c44ea2565494de0b9",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp123_sparse_logistic_v1/metrics.json",
+      "size_bytes": 11132,
+      "sha256": "19916b95a259c7c7e59bc8582112e26faeda440e3549fe4148346722ed461bad",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "oof_macro_f1_delta": 0.0,
+    "passed": true
+  }
+}

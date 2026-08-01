@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 29
+- 실제 실험 수: 30
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4181153080 (`EXP-096`)
@@ -48,6 +48,7 @@
 | EXP-109 | COMPLETED | fabxoe | #109 | EXP-094 + complex morphology·spectrum 요약 8개 | 0.4135182559 | 미제출 | INFERENCE_VERIFIED | 성능 후보 미채택·fold 안정성 및 diversity 관찰 후보 | [보고서](reports/exp109_complex_morphology/README.md) |
 | EXP-110 | COMPLETED | fabxoe | #110 | EXP-094 + fold-train 유전자 빈도 tier spectrum 40개 | 0.3963504903 | 미제출 | INFERENCE_VERIFIED | 성능·초기 blend 미채택, 저우선순위 stacking 자산 | [보고서](reports/exp110_frequency_tier_spectrum/README.md) |
 | EXP-096 | COMPLETED | fabxoe | #96 | EXP-094 + 고정 canonical pathway 변이·LoF 유전자 수 20개 | 0.4181153080 | 미제출 | INFERENCE_VERIFIED | 신규 Local 최고·v2-performance C family 채택 | [보고서](reports/exp096_fixed_pathway_burden/README.md) |
+| EXP-123 | COMPLETED | fabxoe | #123 | 동결 Feature Spec v1 + 희소 Logistic Regression | 0.3763324825 | 미제출 | INFERENCE_VERIFIED | 단독·wildcard 품질 gate 실패, 다양성만 통과해 stacking 후보 미채택 | [보고서](reports/exp123_sparse_logistic_v1/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -1429,3 +1430,48 @@ config 변경만으로 재실행했다(Feature Factory 코드 변경 없음).
   표현의 효과로 해석하지 않는다. 위치 옵션 추가 탐색은 종료한다.
 - 재현 메모: 저장 checkpoint 재추론에서 제출 SHA-256과 test 라벨 100%,
   확률 최대 절대 차이 약 2.97e-08을 확인해 `INFERENCE_VERIFIED`를 통과했다.
+
+### [EXP-123] 동결 Feature Spec v1 희소 Logistic Regression
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #123 / issue-123-exp-sparse-logistic-v1
+- 소스 commit: `63637a3e67733909bee21f6b9a072db7a42cdb68`
+- 시작/종료: 2026-08-01T12:06:30.551287+00:00 /
+  2026-08-01T12:10:07.890053+00:00
+
+#### 실행
+
+- 부모: EXP-094, 동결 Feature Spec v1과 canonical 5-fold 유지
+- 유일한 모델 변경: XGBoost에서 희소 다항 Logistic Regression으로 교체
+- 전처리: outer fold-train에서만 MaxAbsScaler fit
+- Config: `reproducibility/exp123_sparse_logistic_v1/config.resolved.yaml`
+- Metrics: `reports/exp123_sparse_logistic_v1/metrics.json`
+- Report: `reports/exp123_sparse_logistic_v1/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.3701706160, 0.3754824506, 0.3798275842,
+  0.3691361071, 0.3779347342
+- OOF Macro F1: 0.3763324825
+- Fold 표준편차: 0.0042109416
+- Accuracy: 0.3712304467
+- Log Loss: 2.1261745525
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp123_sparse_logistic_v1/metrics.json` /
+  `reports/exp123_sparse_logistic_v1/README.md` /
+  `reproducibility/exp123_sparse_logistic_v1/`
+- 제출 후보: `submissions/exp123_sparse_logistic_v1.csv`
+  (SHA-256 `7947df0753ed4237a5f3967bd1e3bc8f4da7a2d6626feef935489e5e6aae81e0`,
+  DACON 미제출)
+- 결론: EXP-094 대비 OOF `-0.0405540914`, Log Loss `+0.2862373711`로
+  품질·wildcard gate를 실패했다. 라벨 불일치율 46.17%, 정오답 상관
+  0.5963으로 다양성 gate는 통과했지만 현재 앙상블 후보에는 넣지 않고 참고
+  자산으로만 보존한다.
+- 재현 메모: 저장 checkpoint 재추론에서 OOF·test 라벨 100%, 확률 최대 절대
+  차이 0, 제출 CSV byte-level SHA-256 일치를 확인했다.
