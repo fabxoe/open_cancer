@@ -1,0 +1,23 @@
+status: FROZEN
+task_issue: 119
+baseline:
+  experiment_id: EXP-094
+  feature_spec_sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+v2_performance:
+  evidence_experiment: EXP-096
+  base: EXP-094
+  families:
+  - fixed_pathway_burden
+  source_config: configs/exp096_fixed_pathway_burden.yaml
+v2_diversity:
+  evidence_experiment: EXP-107
+  base: EXP-094
+  families:
+  - amino_acid_change
+  source_config: configs/exp107_amino_acid_change.yaml
+selection_evidence: reports/analysis/abc_oof_portfolio_audit.json
+constraints:
+  public_lb_used: false
+  test_distribution_used: false
+  new_training_performed: false
+  official_experiment_created: false
