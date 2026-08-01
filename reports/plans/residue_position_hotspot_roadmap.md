@@ -19,7 +19,7 @@
   - [EXP-067 coarse-bin](../exp067_xgb_residue_coarse_bin/README.md)
   - [EXP-069 max residue-position](../exp069_xgb_max_residue_position/README.md)
   - [EXP-031 hotspot extended](../exp031_hotspot_extended/README.md)
-- 확정된 다음 작업: 단계 F PR 병합 후 단계 G 모델 다양화 일반 Task Issue 생성
+- 확정된 다음 작업: 단계 G 모델 다양화 준비([Issue #98](https://github.com/fabxoe/open_cancer/issues/98))
 
 ## 진행 상태표
 
@@ -31,8 +31,8 @@
 | D | hotspot clean 실험 | [#85](https://github.com/fabxoe/open_cancer/issues/85) | EXP-085 | [#86](https://github.com/fabxoe/open_cancer/pull/86) | COMPLETED | 0.4125795545 | INFERENCE_VERIFIED | EXP-005 대비 +0.008200으로 복구 성공·채택 | 단계 E 진행 |
 | E | 위치 negative control | [#91](https://github.com/fabxoe/open_cancer/issues/91) | explore | [#92](https://github.com/fabxoe/open_cancer/pull/92) | COMPLETED | 0.4058699664 (3-seed 평균) | 해당 없음 | EXP-069 원본 대비 -0.007231, 숫자 위치 신호 지지 | 단계 F 진행 |
 | F-1 | Feature Spec 조합 선행 실행 | [#93](https://github.com/fabxoe/open_cancer/issues/93) | EXP-093 | [#95](https://github.com/fabxoe/open_cancer/pull/95) | MERGED | 0.4157606623 | INFERENCE_VERIFIED | 부모 OOF 개선·fold 변동성 기준 실패 | EXP-094 독립 확인 |
-| F-2 | Feature Spec v1 조합 | [#94](https://github.com/fabxoe/open_cancer/issues/94) | EXP-094 | [#97](https://github.com/fabxoe/open_cancer/pull/97) | PR_OPEN | 0.4168865739 | INFERENCE_VERIFIED | robust log burden 포함 구성 채택·Feature Spec v1 동결 | 리뷰·병합 |
-| G | 모델 다양화·stacking | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | 단계 F 병합 대기 |
+| F-2 | Feature Spec v1 조합 | [#94](https://github.com/fabxoe/open_cancer/issues/94) | EXP-094 | [#97](https://github.com/fabxoe/open_cancer/pull/97) | COMPLETED | 0.4168865739 | INFERENCE_VERIFIED | robust log burden 포함 구성 채택·Feature Spec v1 동결 | 단계 G 진행 |
+| G | 모델 다양화·stacking | [#98](https://github.com/fabxoe/open_cancer/issues/98) | 해당 없음 | 미발급 | IN_PROGRESS | N/A | 해당 없음 | 평가 계약과 실행 순서 설계 | [후속 로드맵](feature_spec_v1_model_diversity_roadmap.md) 확정 |
 
 로드맵 작업 상태는 다음 값만 사용합니다.
 
@@ -236,6 +236,10 @@ Stacking은 다음을 모두 만족할 때만 진행합니다.
 최종 후보 1~2개는 실험 작성자가 아닌 다른 팀원이 fresh clone에서 재학습해
 `TRAINING_VERIFIED`까지 검증합니다.
 
+세부 실행 순서, 확률 산출물 계약, 다양성 gate와 계산·제출 예산은
+[Feature Spec v1 모델 다양화·스태킹 로드맵](feature_spec_v1_model_diversity_roadmap.md)에서
+관리합니다. 이 문서는 residue-position·hotspot family의 완료 근거만 유지합니다.
+
 ## 단계별 갱신 규칙
 
 각 단계의 같은 PR에서 다음 시점마다 이 문서를 갱신합니다.
@@ -275,6 +279,7 @@ Stacking은 다음을 모두 만족할 때만 진행합니다.
 | 2026-08-01 | 단계 C·D와 위치 의미 감사를 완료 처리하고 단계 E Issue #91 착수 | PR #82·#84·#86·#90 병합과 EXP-085 결과 반영 |
 | 2026-08-01 | 단계 E에서 숫자 residue-position 신호를 지지하고 EXP-069 max+zero 채택 | 3-seed permutation 평균이 원본보다 0.007231 낮고 15개 fold 중 13개 하락 |
 | 2026-08-01 | EXP-094 조합을 Feature Spec v1으로 동결 | 최고 부모 대비 OOF +0.003786, fold 표준편차 개선, INFERENCE_VERIFIED 통과 |
+| 2026-08-01 | 단계 F를 완료하고 단계 G를 별도 로드맵으로 분리 | PR #97 병합 후 피처 탐색과 모델 다양화의 의사결정 장부를 분리 |
 
 ## 참고
 
