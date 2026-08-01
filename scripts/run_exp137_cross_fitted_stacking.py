@@ -69,7 +69,6 @@ def make_model(params: dict[str, Any]) -> LogisticRegression:
         max_iter=int(params["max_iter"]),
         class_weight=params["class_weight"],
         random_state=int(params["random_state"]),
-        multi_class=params["multi_class"],
     )
 
 
