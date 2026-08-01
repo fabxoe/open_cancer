@@ -87,6 +87,8 @@ def main() -> None:
     oof, test = blend(components)
     probabilities = oof.loc[:, list(PROBABILITY_COLUMNS)].to_numpy(dtype=float)
     test_probabilities = test.loc[:, list(PROBABILITY_COLUMNS)].to_numpy(dtype=float)
+    probabilities /= probabilities.sum(axis=1, keepdims=True)
+    test_probabilities /= test_probabilities.sum(axis=1, keepdims=True)
     oof_pred = np.asarray(CLASS_LABELS)[probabilities.argmax(axis=1)]
     test_pred = np.asarray(CLASS_LABELS)[test_probabilities.argmax(axis=1)]
     oof.insert(2, "SUBCLASS_PRED", oof_pred)
@@ -131,12 +133,16 @@ def main() -> None:
     validate_json_document(metrics_path, ROOT / "schemas/experiment_metrics.schema.json")
 
     repro_oof, repro_test = blend(components)
-    repro_test_labels = np.asarray(CLASS_LABELS)[repro_test.loc[:, list(PROBABILITY_COLUMNS)].to_numpy(dtype=float).argmax(axis=1)]
+    repro_oof_probabilities = repro_oof.loc[:, list(PROBABILITY_COLUMNS)].to_numpy(dtype=float)
+    repro_test_probabilities = repro_test.loc[:, list(PROBABILITY_COLUMNS)].to_numpy(dtype=float)
+    repro_oof_probabilities /= repro_oof_probabilities.sum(axis=1, keepdims=True)
+    repro_test_probabilities /= repro_test_probabilities.sum(axis=1, keepdims=True)
+    repro_test_labels = np.asarray(CLASS_LABELS)[repro_test_probabilities.argmax(axis=1)]
     with tempfile.TemporaryDirectory() as temp:
         repro_submission = Path(temp) / submission_path.name
         copy = sample.copy(); copy["SUBCLASS"] = repro_test_labels; copy.to_csv(repro_submission, index=False, lineterminator="\n")
         repro_sha = sha256_file(repro_submission)
-    comparison = {"experiment_id": EXP_ID, "data_hashes_match": True, "original_submission_sha256": sha256_file(submission_path), "reproduced_submission_sha256": repro_sha, "submission_sha256_match": sha256_file(submission_path) == repro_sha, "oof_label_agreement": 1.0, "test_label_agreement": 1.0, "probability_max_abs_difference": float(max(np.max(np.abs(probabilities - repro_oof.loc[:, list(PROBABILITY_COLUMNS)].to_numpy(dtype=float))), np.max(np.abs(test_probabilities - repro_test.loc[:, list(PROBABILITY_COLUMNS)].to_numpy(dtype=float))))), "probability_atol": 1e-6, "probability_rtol": 1e-6}
+    comparison = {"experiment_id": EXP_ID, "data_hashes_match": True, "original_submission_sha256": sha256_file(submission_path), "reproduced_submission_sha256": repro_sha, "submission_sha256_match": sha256_file(submission_path) == repro_sha, "oof_label_agreement": 1.0, "test_label_agreement": 1.0, "probability_max_abs_difference": float(max(np.max(np.abs(probabilities - repro_oof_probabilities)), np.max(np.abs(test_probabilities - repro_test_probabilities)))), "probability_atol": 1e-6, "probability_rtol": 1e-6}
     comparison["passed"] = comparison["submission_sha256_match"] and comparison["probability_max_abs_difference"] <= 1e-6
     if not comparison["passed"]:
         raise RuntimeError(comparison)
