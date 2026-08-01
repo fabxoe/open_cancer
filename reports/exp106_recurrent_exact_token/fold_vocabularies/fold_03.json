@@ -1,0 +1,1592 @@
+{
+  "fold": 3,
+  "min_support": 5,
+  "max_features": 512,
+  "semantic_duplicates_dropped": {
+    "exact_token__APC__R1450*": "hotspot__APC_1450",
+    "exact_token__APC__R876*": "hotspot__APC_876",
+    "exact_token__FGFR3__S249C": "hotspot__FGFR3_249",
+    "exact_token__IL32__DK218fs": "IL32__frameshift",
+    "exact_token__PAX6__P375fs": "PAX6__frameshift",
+    "exact_token__POLE__V411L": "hotspot__POLE_411",
+    "exact_token__GNG12__T68fs": "GNG12__frameshift",
+    "exact_token__MVK__P139fs": "MVK__frameshift",
+    "exact_token__AKT1__E17K": "hotspot__AKT1_17",
+    "exact_token__FOXN3__P96fs": "FOXN3__frameshift",
+    "exact_token__EGFR__L858R": "hotspot__EGFR_858",
+    "exact_token__EPHX1__P133fs": "EPHX1__frameshift",
+    "exact_token__NELFE__P6fs": "NELFE__frameshift"
+  },
+  "vocabulary": [
+    {
+      "gene": "IDH1",
+      "token": "R132H",
+      "support": 270
+    },
+    {
+      "gene": "BRAF",
+      "token": "V600E",
+      "support": 252
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "E545K",
+      "support": 126
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "H1047R",
+      "support": 112
+    },
+    {
+      "gene": "TP53",
+      "token": "R273C",
+      "support": 71
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "E542K",
+      "support": 58
+    },
+    {
+      "gene": "TP53",
+      "token": "R273H",
+      "support": 53
+    },
+    {
+      "gene": "TP53",
+      "token": "R175H",
+      "support": 50
+    },
+    {
+      "gene": "TP53",
+      "token": "R248Q",
+      "support": 43
+    },
+    {
+      "gene": "TP53",
+      "token": "R248W",
+      "support": 43
+    },
+    {
+      "gene": "TP53",
+      "token": "R213*",
+      "support": 37
+    },
+    {
+      "gene": "IDH1",
+      "token": "R132C",
+      "support": 36
+    },
+    {
+      "gene": "TP53",
+      "token": "Y220C",
+      "support": 33
+    },
+    {
+      "gene": "TP53",
+      "token": "R282W",
+      "support": 29
+    },
+    {
+      "gene": "TP53",
+      "token": "R196*",
+      "support": 26
+    },
+    {
+      "gene": "RPL22",
+      "token": "K16fs",
+      "support": 25
+    },
+    {
+      "gene": "PTEN",
+      "token": "R130Q",
+      "support": 24
+    },
+    {
+      "gene": "TP53",
+      "token": "G245S",
+      "support": 20
+    },
+    {
+      "gene": "APC",
+      "token": "R1450*",
+      "support": 19
+    },
+    {
+      "gene": "CDKN2A",
+      "token": "R80*",
+      "support": 19
+    },
+    {
+      "gene": "HRAS",
+      "token": "Q61R",
+      "support": 19
+    },
+    {
+      "gene": "LRIG1",
+      "token": "L24V",
+      "support": 19
+    },
+    {
+      "gene": "NCOA6",
+      "token": "Q269Q",
+      "support": 19
+    },
+    {
+      "gene": "TP53",
+      "token": "H179R",
+      "support": 19
+    },
+    {
+      "gene": "CHEK2",
+      "token": "K373E",
+      "support": 18
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "H1047L",
+      "support": 18
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "R88Q",
+      "support": 18
+    },
+    {
+      "gene": "SOWAHC",
+      "token": "L42L",
+      "support": 18
+    },
+    {
+      "gene": "TP53",
+      "token": "R306*",
+      "support": 18
+    },
+    {
+      "gene": "NPM1",
+      "token": "WQ288fs",
+      "support": 16
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "N345K",
+      "support": 16
+    },
+    {
+      "gene": "CMPK2",
+      "token": "C153C",
+      "support": 15
+    },
+    {
+      "gene": "PTEN",
+      "token": "R233*",
+      "support": 15
+    },
+    {
+      "gene": "TP53",
+      "token": "H193R",
+      "support": 15
+    },
+    {
+      "gene": "XYLT2",
+      "token": "Y526fs",
+      "support": 15
+    },
+    {
+      "gene": "IDH2",
+      "token": "R172K",
+      "support": 14
+    },
+    {
+      "gene": "LRIG1",
+      "token": "L26V",
+      "support": 14
+    },
+    {
+      "gene": "NOTCH2",
+      "token": "P6fs",
+      "support": 14
+    },
+    {
+      "gene": "PEX6",
+      "token": "V133V",
+      "support": 14
+    },
+    {
+      "gene": "PTEN",
+      "token": "R130G",
+      "support": 14
+    },
+    {
+      "gene": "TP53",
+      "token": "R342*",
+      "support": 14
+    },
+    {
+      "gene": "FBXW7",
+      "token": "R465H",
+      "support": 13
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "E726K",
+      "support": 13
+    },
+    {
+      "gene": "PLEC",
+      "token": "L1321L",
+      "support": 13
+    },
+    {
+      "gene": "PTGIR",
+      "token": "V53V",
+      "support": 13
+    },
+    {
+      "gene": "APC",
+      "token": "R876*",
+      "support": 12
+    },
+    {
+      "gene": "BRAF",
+      "token": "V600K",
+      "support": 12
+    },
+    {
+      "gene": "CDKN2A",
+      "token": "W110*",
+      "support": 12
+    },
+    {
+      "gene": "ERCC2",
+      "token": "D312N",
+      "support": 12
+    },
+    {
+      "gene": "KRT8",
+      "token": "S31A",
+      "support": 12
+    },
+    {
+      "gene": "PLEC",
+      "token": "A2106A",
+      "support": 12
+    },
+    {
+      "gene": "TP53",
+      "token": "C176F",
+      "support": 12
+    },
+    {
+      "gene": "CDKN2A",
+      "token": "R58*",
+      "support": 11
+    },
+    {
+      "gene": "FBXW7",
+      "token": "R465C",
+      "support": 11
+    },
+    {
+      "gene": "IDH2",
+      "token": "R140Q",
+      "support": 11
+    },
+    {
+      "gene": "NPM1",
+      "token": "-287fs",
+      "support": 11
+    },
+    {
+      "gene": "TP53",
+      "token": "S241F",
+      "support": 11
+    },
+    {
+      "gene": "TP53",
+      "token": "V272M",
+      "support": 11
+    },
+    {
+      "gene": "TP53",
+      "token": "Y234C",
+      "support": 11
+    },
+    {
+      "gene": "U2AF1",
+      "token": "S34F",
+      "support": 11
+    },
+    {
+      "gene": "ATP6V1B1",
+      "token": "Y383fs",
+      "support": 10
+    },
+    {
+      "gene": "B2M",
+      "token": "L13fs",
+      "support": 10
+    },
+    {
+      "gene": "CHEK2",
+      "token": "S372S",
+      "support": 10
+    },
+    {
+      "gene": "CKB",
+      "token": "R152R",
+      "support": 10
+    },
+    {
+      "gene": "EEF1B2",
+      "token": "P45P",
+      "support": 10
+    },
+    {
+      "gene": "EGFR",
+      "token": "G598V",
+      "support": 10
+    },
+    {
+      "gene": "ERBB3",
+      "token": "V104M",
+      "support": 10
+    },
+    {
+      "gene": "FGFR3",
+      "token": "S249C",
+      "support": 10
+    },
+    {
+      "gene": "HMGB3",
+      "token": "E192E",
+      "support": 10
+    },
+    {
+      "gene": "MEFV",
+      "token": "A165A",
+      "support": 10
+    },
+    {
+      "gene": "NAB2",
+      "token": "F208L",
+      "support": 10
+    },
+    {
+      "gene": "NCOR2",
+      "token": "Q499Q",
+      "support": 10
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "M1043V",
+      "support": 10
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "Q546R",
+      "support": 10
+    },
+    {
+      "gene": "PLEC",
+      "token": "A2113A",
+      "support": 10
+    },
+    {
+      "gene": "POLE",
+      "token": "P286R",
+      "support": 10
+    },
+    {
+      "gene": "PTEN",
+      "token": "R130*",
+      "support": 10
+    },
+    {
+      "gene": "TP53",
+      "token": "I195T",
+      "support": 10
+    },
+    {
+      "gene": "TP53",
+      "token": "M237I",
+      "support": 10
+    },
+    {
+      "gene": "TP53",
+      "token": "R249S",
+      "support": 10
+    },
+    {
+      "gene": "TP53",
+      "token": "R273L",
+      "support": 10
+    },
+    {
+      "gene": "CDC27",
+      "token": "L454fs",
+      "support": 9
+    },
+    {
+      "gene": "CTNNB1",
+      "token": "S37F",
+      "support": 9
+    },
+    {
+      "gene": "EEF1B2",
+      "token": "S43G",
+      "support": 9
+    },
+    {
+      "gene": "ERBB2",
+      "token": "S310F",
+      "support": 9
+    },
+    {
+      "gene": "FBXW7",
+      "token": "R505G",
+      "support": 9
+    },
+    {
+      "gene": "GNAS",
+      "token": "R201H",
+      "support": 9
+    },
+    {
+      "gene": "IL32",
+      "token": "DK218fs",
+      "support": 9
+    },
+    {
+      "gene": "IRS4",
+      "token": "G591fs",
+      "support": 9
+    },
+    {
+      "gene": "NEFH",
+      "token": "P655P",
+      "support": 9
+    },
+    {
+      "gene": "NFKB2",
+      "token": "P423P",
+      "support": 9
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "E453K",
+      "support": 9
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "Q546K",
+      "support": 9
+    },
+    {
+      "gene": "PLEC",
+      "token": "A1697A",
+      "support": 9
+    },
+    {
+      "gene": "PTEN",
+      "token": "VL317fs",
+      "support": 9
+    },
+    {
+      "gene": "SLC23A2",
+      "token": "P411fs",
+      "support": 9
+    },
+    {
+      "gene": "TM7SF2",
+      "token": "P52P",
+      "support": 9
+    },
+    {
+      "gene": "TP53",
+      "token": "C238Y",
+      "support": 9
+    },
+    {
+      "gene": "TP53",
+      "token": "E285K",
+      "support": 9
+    },
+    {
+      "gene": "TP53",
+      "token": "K132N",
+      "support": 9
+    },
+    {
+      "gene": "TP53",
+      "token": "R158L",
+      "support": 9
+    },
+    {
+      "gene": "TP53",
+      "token": "V157F",
+      "support": 9
+    },
+    {
+      "gene": "TP53",
+      "token": "Y205C",
+      "support": 9
+    },
+    {
+      "gene": "WNT16",
+      "token": "W165fs",
+      "support": 9
+    },
+    {
+      "gene": "ABCC5",
+      "token": "L1090fs",
+      "support": 8
+    },
+    {
+      "gene": "ATRX",
+      "token": "R1426*",
+      "support": 8
+    },
+    {
+      "gene": "CASP5",
+      "token": "R11fs",
+      "support": 8
+    },
+    {
+      "gene": "CASP5",
+      "token": "T68fs",
+      "support": 8
+    },
+    {
+      "gene": "EGFR",
+      "token": "A289V",
+      "support": 8
+    },
+    {
+      "gene": "FBXW7",
+      "token": "R505C",
+      "support": 8
+    },
+    {
+      "gene": "NF1",
+      "token": "R2450*",
+      "support": 8
+    },
+    {
+      "gene": "PAX6",
+      "token": "P375fs",
+      "support": 8
+    },
+    {
+      "gene": "PGLS",
+      "token": "L45L",
+      "support": 8
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "C420R",
+      "support": 8
+    },
+    {
+      "gene": "POLE",
+      "token": "V411L",
+      "support": 8
+    },
+    {
+      "gene": "PROCR",
+      "token": "R98L",
+      "support": 8
+    },
+    {
+      "gene": "SRD5A1",
+      "token": "R30R",
+      "support": 8
+    },
+    {
+      "gene": "THEM4",
+      "token": "L17R",
+      "support": 8
+    },
+    {
+      "gene": "TP53",
+      "token": "C238F",
+      "support": 8
+    },
+    {
+      "gene": "TP53",
+      "token": "E286K",
+      "support": 8
+    },
+    {
+      "gene": "TP53",
+      "token": "E298*",
+      "support": 8
+    },
+    {
+      "gene": "TP53",
+      "token": "L194R",
+      "support": 8
+    },
+    {
+      "gene": "TP53",
+      "token": "Q192*",
+      "support": 8
+    },
+    {
+      "gene": "TP53",
+      "token": "V216M",
+      "support": 8
+    },
+    {
+      "gene": "TP53",
+      "token": "Y236C",
+      "support": 8
+    },
+    {
+      "gene": "UQCRFS1",
+      "token": "I83V",
+      "support": 8
+    },
+    {
+      "gene": "VHL",
+      "token": "S65*",
+      "support": 8
+    },
+    {
+      "gene": "AMOT",
+      "token": "Q394Q",
+      "support": 7
+    },
+    {
+      "gene": "BRAF",
+      "token": "K601E",
+      "support": 7
+    },
+    {
+      "gene": "CADM1",
+      "token": "T343T",
+      "support": 7
+    },
+    {
+      "gene": "CDKN2A",
+      "token": "H83Y",
+      "support": 7
+    },
+    {
+      "gene": "CRMP1",
+      "token": "A37A",
+      "support": 7
+    },
+    {
+      "gene": "CTNNB1",
+      "token": "S37C",
+      "support": 7
+    },
+    {
+      "gene": "CTNNB1",
+      "token": "S45P",
+      "support": 7
+    },
+    {
+      "gene": "ERBB2",
+      "token": "V842I",
+      "support": 7
+    },
+    {
+      "gene": "GNG12",
+      "token": "T68fs",
+      "support": 7
+    },
+    {
+      "gene": "GP2",
+      "token": "S41L",
+      "support": 7
+    },
+    {
+      "gene": "IDH1",
+      "token": "R132G",
+      "support": 7
+    },
+    {
+      "gene": "IDH1",
+      "token": "R132S",
+      "support": 7
+    },
+    {
+      "gene": "MAPRE3",
+      "token": "A179fs",
+      "support": 7
+    },
+    {
+      "gene": "MARCKS",
+      "token": "K156fs",
+      "support": 7
+    },
+    {
+      "gene": "MTOR",
+      "token": "S2215Y",
+      "support": 7
+    },
+    {
+      "gene": "MVK",
+      "token": "P139fs",
+      "support": 7
+    },
+    {
+      "gene": "NOTCH2",
+      "token": "C19W",
+      "support": 7
+    },
+    {
+      "gene": "NOTCH2",
+      "token": "R5R",
+      "support": 7
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "E81K",
+      "support": 7
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "K111E",
+      "support": 7
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "M1043I",
+      "support": 7
+    },
+    {
+      "gene": "PLEC",
+      "token": "R1386Q",
+      "support": 7
+    },
+    {
+      "gene": "PLOD3",
+      "token": "R297fs",
+      "support": 7
+    },
+    {
+      "gene": "RREB1",
+      "token": "G783V",
+      "support": 7
+    },
+    {
+      "gene": "TGFBR2",
+      "token": "E125fs",
+      "support": 7
+    },
+    {
+      "gene": "TGIF1",
+      "token": "P85fs",
+      "support": 7
+    },
+    {
+      "gene": "TP53",
+      "token": "P153fs",
+      "support": 7
+    },
+    {
+      "gene": "TP53",
+      "token": "P250L",
+      "support": 7
+    },
+    {
+      "gene": "TP53",
+      "token": "Q317*",
+      "support": 7
+    },
+    {
+      "gene": "TP53",
+      "token": "R158H",
+      "support": 7
+    },
+    {
+      "gene": "UQCRFS1",
+      "token": "S6A",
+      "support": 7
+    },
+    {
+      "gene": "UQCRFS1",
+      "token": "S8S",
+      "support": 7
+    },
+    {
+      "gene": "VHL",
+      "token": "S68*",
+      "support": 7
+    },
+    {
+      "gene": "ACADS",
+      "token": "R330H",
+      "support": 6
+    },
+    {
+      "gene": "AKT1",
+      "token": "E17K",
+      "support": 6
+    },
+    {
+      "gene": "APC",
+      "token": "R1114*",
+      "support": 6
+    },
+    {
+      "gene": "APC",
+      "token": "R2204*",
+      "support": 6
+    },
+    {
+      "gene": "APC",
+      "token": "R302*",
+      "support": 6
+    },
+    {
+      "gene": "APC",
+      "token": "R564*",
+      "support": 6
+    },
+    {
+      "gene": "APOE",
+      "token": "C130R",
+      "support": 6
+    },
+    {
+      "gene": "AR",
+      "token": "Q58L",
+      "support": 6
+    },
+    {
+      "gene": "ATRX",
+      "token": "FI2113fs",
+      "support": 6
+    },
+    {
+      "gene": "BMP2K",
+      "token": "Q460H",
+      "support": 6
+    },
+    {
+      "gene": "CDC27",
+      "token": "D549E",
+      "support": 6
+    },
+    {
+      "gene": "CDC27",
+      "token": "I487V",
+      "support": 6
+    },
+    {
+      "gene": "CDC27",
+      "token": "I91fs",
+      "support": 6
+    },
+    {
+      "gene": "CLIP1",
+      "token": "S1018fs",
+      "support": 6
+    },
+    {
+      "gene": "CTCF",
+      "token": "R448*",
+      "support": 6
+    },
+    {
+      "gene": "CTNNB1",
+      "token": "D32N",
+      "support": 6
+    },
+    {
+      "gene": "FOXN3",
+      "token": "P96fs",
+      "support": 6
+    },
+    {
+      "gene": "GATA3",
+      "token": "G334fs",
+      "support": 6
+    },
+    {
+      "gene": "GNAS",
+      "token": "R201C",
+      "support": 6
+    },
+    {
+      "gene": "HLA-A",
+      "token": "Q78R",
+      "support": 6
+    },
+    {
+      "gene": "HRAS",
+      "token": "Q61K",
+      "support": 6
+    },
+    {
+      "gene": "IDUA",
+      "token": "T374P",
+      "support": 6
+    },
+    {
+      "gene": "LUM",
+      "token": "E240K",
+      "support": 6
+    },
+    {
+      "gene": "MAPK1",
+      "token": "E322K",
+      "support": 6
+    },
+    {
+      "gene": "MYH2",
+      "token": "R1388H",
+      "support": 6
+    },
+    {
+      "gene": "NEFH",
+      "token": "E645K",
+      "support": 6
+    },
+    {
+      "gene": "NFE2L2",
+      "token": "E79Q",
+      "support": 6
+    },
+    {
+      "gene": "NRXN2",
+      "token": "A270fs",
+      "support": 6
+    },
+    {
+      "gene": "ODF1",
+      "token": "P226P",
+      "support": 6
+    },
+    {
+      "gene": "OGDH",
+      "token": "I78fs",
+      "support": 6
+    },
+    {
+      "gene": "OGFR",
+      "token": "S557T",
+      "support": 6
+    },
+    {
+      "gene": "PTEN",
+      "token": "L265fs",
+      "support": 6
+    },
+    {
+      "gene": "RUNX1",
+      "token": "D96fs",
+      "support": 6
+    },
+    {
+      "gene": "RXRA",
+      "token": "S427F",
+      "support": 6
+    },
+    {
+      "gene": "SKI",
+      "token": "A62G",
+      "support": 6
+    },
+    {
+      "gene": "SMAD2",
+      "token": "S464*",
+      "support": 6
+    },
+    {
+      "gene": "SPRR3",
+      "token": "G73G",
+      "support": 6
+    },
+    {
+      "gene": "SRM",
+      "token": "S34S",
+      "support": 6
+    },
+    {
+      "gene": "TNIP2",
+      "token": "R73G",
+      "support": 6
+    },
+    {
+      "gene": "TP53",
+      "token": "C275Y",
+      "support": 6
+    },
+    {
+      "gene": "TP53",
+      "token": "E271K",
+      "support": 6
+    },
+    {
+      "gene": "TP53",
+      "token": "H214R",
+      "support": 6
+    },
+    {
+      "gene": "TP53",
+      "token": "Q331*",
+      "support": 6
+    },
+    {
+      "gene": "TP53",
+      "token": "R213Q",
+      "support": 6
+    },
+    {
+      "gene": "TP53",
+      "token": "R337L",
+      "support": 6
+    },
+    {
+      "gene": "TP53",
+      "token": "S241fs",
+      "support": 6
+    },
+    {
+      "gene": "TP53",
+      "token": "V173M",
+      "support": 6
+    },
+    {
+      "gene": "TP53",
+      "token": "Y163C",
+      "support": 6
+    },
+    {
+      "gene": "VAMP5",
+      "token": "R8W",
+      "support": 6
+    },
+    {
+      "gene": "VHL",
+      "token": "L116fs",
+      "support": 6
+    },
+    {
+      "gene": "VHL",
+      "token": "Q73*",
+      "support": 6
+    },
+    {
+      "gene": "XPOT",
+      "token": "F126fs",
+      "support": 6
+    },
+    {
+      "gene": "ADAM2",
+      "token": "R713R",
+      "support": 5
+    },
+    {
+      "gene": "AOC3",
+      "token": "G80fs",
+      "support": 5
+    },
+    {
+      "gene": "APC",
+      "token": "R232*",
+      "support": 5
+    },
+    {
+      "gene": "ARFGEF1",
+      "token": "P1552fs",
+      "support": 5
+    },
+    {
+      "gene": "ARHGAP5",
+      "token": "D890fs",
+      "support": 5
+    },
+    {
+      "gene": "ATP2C1",
+      "token": "E690K",
+      "support": 5
+    },
+    {
+      "gene": "ATXN2",
+      "token": "Q174Q",
+      "support": 5
+    },
+    {
+      "gene": "AVL9",
+      "token": "G8fs",
+      "support": 5
+    },
+    {
+      "gene": "C1R",
+      "token": "P215fs",
+      "support": 5
+    },
+    {
+      "gene": "CAMK4",
+      "token": "I85I",
+      "support": 5
+    },
+    {
+      "gene": "CBS",
+      "token": "F99F",
+      "support": 5
+    },
+    {
+      "gene": "CD8B",
+      "token": "L9L",
+      "support": 5
+    },
+    {
+      "gene": "CDKN2A",
+      "token": "P114L",
+      "support": 5
+    },
+    {
+      "gene": "CELSR1",
+      "token": "G615fs",
+      "support": 5
+    },
+    {
+      "gene": "COL17A1",
+      "token": "R145*",
+      "support": 5
+    },
+    {
+      "gene": "COL1A1",
+      "token": "G761G",
+      "support": 5
+    },
+    {
+      "gene": "CTNNB1",
+      "token": "G34R",
+      "support": 5
+    },
+    {
+      "gene": "CTNNB1",
+      "token": "S33F",
+      "support": 5
+    },
+    {
+      "gene": "CTNNB1",
+      "token": "S37A",
+      "support": 5
+    },
+    {
+      "gene": "CTNNB1",
+      "token": "T41A",
+      "support": 5
+    },
+    {
+      "gene": "CTNNB1",
+      "token": "T41I",
+      "support": 5
+    },
+    {
+      "gene": "DTX1",
+      "token": "D122E",
+      "support": 5
+    },
+    {
+      "gene": "EGFR",
+      "token": "L858R",
+      "support": 5
+    },
+    {
+      "gene": "EPHA2",
+      "token": "P461fs",
+      "support": 5
+    },
+    {
+      "gene": "EPHX1",
+      "token": "P133fs",
+      "support": 5
+    },
+    {
+      "gene": "FGF9",
+      "token": "F140F",
+      "support": 5
+    },
+    {
+      "gene": "GRM8",
+      "token": "R619R",
+      "support": 5
+    },
+    {
+      "gene": "HLA-A",
+      "token": "D54D",
+      "support": 5
+    },
+    {
+      "gene": "HLA-A",
+      "token": "V49V",
+      "support": 5
+    },
+    {
+      "gene": "HLA-B",
+      "token": "P209fs",
+      "support": 5
+    },
+    {
+      "gene": "HRAS",
+      "token": "G13V",
+      "support": 5
+    },
+    {
+      "gene": "IDUA",
+      "token": "H33Q",
+      "support": 5
+    },
+    {
+      "gene": "IGSF3",
+      "token": "R660Q",
+      "support": 5
+    },
+    {
+      "gene": "ILVBL",
+      "token": "E530K",
+      "support": 5
+    },
+    {
+      "gene": "INMT",
+      "token": "S212F",
+      "support": 5
+    },
+    {
+      "gene": "KAT2B",
+      "token": "W111fs",
+      "support": 5
+    },
+    {
+      "gene": "KRT15",
+      "token": "V205I",
+      "support": 5
+    },
+    {
+      "gene": "MAML2",
+      "token": "Q596Q",
+      "support": 5
+    },
+    {
+      "gene": "MBOAT2",
+      "token": "R43Q",
+      "support": 5
+    },
+    {
+      "gene": "MXRA5",
+      "token": "G792G",
+      "support": 5
+    },
+    {
+      "gene": "MYOM1",
+      "token": "R500*",
+      "support": 5
+    },
+    {
+      "gene": "NCOA6",
+      "token": "Q265Q",
+      "support": 5
+    },
+    {
+      "gene": "NELFE",
+      "token": "P6fs",
+      "support": 5
+    },
+    {
+      "gene": "NF1",
+      "token": "R440*",
+      "support": 5
+    },
+    {
+      "gene": "NFE2L2",
+      "token": "D29H",
+      "support": 5
+    },
+    {
+      "gene": "NFE2L2",
+      "token": "R34G",
+      "support": 5
+    },
+    {
+      "gene": "NID2",
+      "token": "R1035fs",
+      "support": 5
+    },
+    {
+      "gene": "NUDT19",
+      "token": "P162P",
+      "support": 5
+    },
+    {
+      "gene": "OGFR",
+      "token": "E556K",
+      "support": 5
+    },
+    {
+      "gene": "OPTN",
+      "token": "P25fs",
+      "support": 5
+    },
+    {
+      "gene": "PABPC1",
+      "token": "K333fs",
+      "support": 5
+    },
+    {
+      "gene": "PBX2",
+      "token": "Y262F",
+      "support": 5
+    },
+    {
+      "gene": "PCLO",
+      "token": "P2699S",
+      "support": 5
+    },
+    {
+      "gene": "PCSK2",
+      "token": "D344D",
+      "support": 5
+    },
+    {
+      "gene": "PEX1",
+      "token": "I370fs",
+      "support": 5
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "E545A",
+      "support": 5
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "N1044K",
+      "support": 5
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "Q546P",
+      "support": 5
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "R38H",
+      "support": 5
+    },
+    {
+      "gene": "PIK3CA",
+      "token": "Y1021C",
+      "support": 5
+    },
+    {
+      "gene": "PLEC",
+      "token": "A4624A",
+      "support": 5
+    },
+    {
+      "gene": "PMEPA1",
+      "token": "P208fs",
+      "support": 5
+    },
+    {
+      "gene": "RABGAP1",
+      "token": "K929fs",
+      "support": 5
+    },
+    {
+      "gene": "RAC1",
+      "token": "P29S",
+      "support": 5
+    },
+    {
+      "gene": "ROCK1",
+      "token": "F121fs",
+      "support": 5
+    },
+    {
+      "gene": "RPS6KA1",
+      "token": "P17P",
+      "support": 5
+    },
+    {
+      "gene": "SMC4",
+      "token": "R1252*",
+      "support": 5
+    },
+    {
+      "gene": "SOD3",
+      "token": "L71L",
+      "support": 5
+    },
+    {
+      "gene": "SPOCK1",
+      "token": "S131S",
+      "support": 5
+    },
+    {
+      "gene": "SPTA1",
+      "token": "A2011V",
+      "support": 5
+    },
+    {
+      "gene": "STIL",
+      "token": "S76L",
+      "support": 5
+    },
+    {
+      "gene": "SVIL",
+      "token": "G1862fs",
+      "support": 5
+    },
+    {
+      "gene": "TCF7L2",
+      "token": "R482fs",
+      "support": 5
+    },
+    {
+      "gene": "TMPRSS3",
+      "token": "R16Q",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "C141W",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "C176Y",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "C242F",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "E171*",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "E198*",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "E294*",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "F270S",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "G245V",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "G266R",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "H179Y",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "I195N",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "K132E",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "N239S",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "P151H",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "P278S",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "Q136E",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "Q144*",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "Q167*",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "R110L",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "R248L",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "R267P",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "R280T",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "R337C",
+      "support": 5
+    },
+    {
+      "gene": "TP53",
+      "token": "V173L",
+      "support": 5
+    },
+    {
+      "gene": "TP63",
+      "token": "R379C",
+      "support": 5
+    },
+    {
+      "gene": "VHL",
+      "token": "L89H",
+      "support": 5
+    },
+    {
+      "gene": "VHL",
+      "token": "S111N",
+      "support": 5
+    },
+    {
+      "gene": "WNK4",
+      "token": "G607fs",
+      "support": 5
+    }
+  ]
+}

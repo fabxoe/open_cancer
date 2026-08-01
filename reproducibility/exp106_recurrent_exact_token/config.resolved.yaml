@@ -1,0 +1,2357 @@
+experiment:
+  record_role: official
+  issue_number: 106
+  experiment_id: EXP-106
+  component_experiments:
+  - EXP-094
+  branch: issue-106-exp-recurrent-exact-token
+  owner: fabxoe
+  source_commit: 8e54d0f48b891bbc8aa99130e1954cf1cb8b6f08
+  dirty_worktree: false
+  started_at: '2026-08-01T09:07:40.300760+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features:
+  - sample__mutated_gene_count_log1p
+  - sample__total_variant_count_log1p
+  - sample__multi_variant_gene_count_log1p
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features:
+  - max_residue_position
+  position_missing_policy: zero
+  position_token_scope: include_complex
+  position_transform: raw
+  position_bin_width: null
+  position_semantics: protein residue indices explicitly written in source tokens;
+    no transcript, codon nucleotide, genomic coordinate, or protein-length inference
+  co_mutation_pairs: []
+  co_mutation_semantics: fixed, literature-curated gene pairs (mutual exclusivity
+    or co-occurrence); gene-level 'any mutation' presence, not restricted to a specific
+    hotspot codon; not fit from this dataset's target or frequency
+  feature_factory_version: 1.1.0
+  feature_spec_sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+  hotspot_features:
+  - hotspot__BRAF_600
+  - hotspot__CTNNB1_37
+  - hotspot__CTNNB1_45
+  - hotspot__EGFR_790
+  - hotspot__EGFR_858
+  - hotspot__GNAS_201
+  - hotspot__HRAS_12
+  - hotspot__HRAS_13
+  - hotspot__HRAS_61
+  - hotspot__IDH1_132
+  - hotspot__IDH2_140
+  - hotspot__IDH2_172
+  - hotspot__PIK3CA_545
+  - hotspot__PIK3CA_1047
+  - hotspot__TP53_175
+  - hotspot__TP53_245
+  - hotspot__TP53_248
+  - hotspot__TP53_273
+  - hotspot__TP53_282
+  - hotspot__PIK3CA_542
+  - hotspot__PIK3CA_546
+  - hotspot__PIK3CA_345
+  - hotspot__PTEN_130
+  - hotspot__PTEN_233
+  - hotspot__FBXW7_505
+  - hotspot__AKT1_17
+  - hotspot__U2AF1_34
+  - hotspot__APC_1450
+  - hotspot__APC_876
+  - hotspot__POLE_286
+  - hotspot__POLE_411
+  - hotspot__KIT_816
+  - hotspot__FGFR3_249
+  - hotspot__RAC1_29
+  - hotspot__known_hotspot_total_count
+  known_hotspots:
+  - gene: BRAF
+    position: 600
+    reference_aa: V
+  - gene: CTNNB1
+    position: 37
+    reference_aa: S
+  - gene: CTNNB1
+    position: 45
+    reference_aa: S
+  - gene: EGFR
+    position: 790
+    reference_aa: T
+  - gene: EGFR
+    position: 858
+    reference_aa: L
+  - gene: GNAS
+    position: 201
+    reference_aa: R
+  - gene: HRAS
+    position: 12
+    reference_aa: G
+  - gene: HRAS
+    position: 13
+    reference_aa: G
+  - gene: HRAS
+    position: 61
+    reference_aa: Q
+  - gene: IDH1
+    position: 132
+    reference_aa: R
+  - gene: IDH2
+    position: 140
+    reference_aa: R
+  - gene: IDH2
+    position: 172
+    reference_aa: R
+  - gene: PIK3CA
+    position: 545
+    reference_aa: E
+  - gene: PIK3CA
+    position: 1047
+    reference_aa: H
+  - gene: TP53
+    position: 175
+    reference_aa: R
+  - gene: TP53
+    position: 245
+    reference_aa: G
+  - gene: TP53
+    position: 248
+    reference_aa: R
+  - gene: TP53
+    position: 273
+    reference_aa: R
+  - gene: TP53
+    position: 282
+    reference_aa: R
+  - gene: PIK3CA
+    position: 542
+    reference_aa: E
+  - gene: PIK3CA
+    position: 546
+    reference_aa: Q
+  - gene: PIK3CA
+    position: 345
+    reference_aa: N
+  - gene: PTEN
+    position: 130
+    reference_aa: R
+  - gene: PTEN
+    position: 233
+    reference_aa: R
+  - gene: FBXW7
+    position: 505
+    reference_aa: R
+  - gene: AKT1
+    position: 17
+    reference_aa: E
+  - gene: U2AF1
+    position: 34
+    reference_aa: S
+  - gene: APC
+    position: 1450
+    reference_aa: R
+  - gene: APC
+    position: 876
+    reference_aa: R
+  - gene: POLE
+    position: 286
+    reference_aa: P
+  - gene: POLE
+    position: 411
+    reference_aa: V
+  - gene: KIT
+    position: 816
+    reference_aa: D
+  - gene: FGFR3
+    position: 249
+    reference_aa: S
+  - gene: RAC1
+    position: 29
+    reference_aa: P
+  hotspot_validation_note: The hotspot table is fixed before test transformation.
+    The original 19 and additional 15 positions are literature-defined; the config-driven
+    runner validates the additions using train rows only. Test data is not used to
+    select or filter the official list. A token counts only when both position and
+    reference AA match.
+  requested_families:
+    mutation_type:
+      enabled: true
+    robust_aggregates:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+    residue_position:
+      enabled: true
+      aggregates:
+      - max
+      missing_policy: zero
+      complex_tokens: include
+      transform: raw
+  hotspot_table: extended_34
+  hotspot_evidence_scope: additions_15
+  fold_train_hotspot_evidence:
+    '0':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 70
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 24
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 18
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 51
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 20
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 22
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 7
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 14
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 6
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 5
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 6
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 9
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 7
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 10
+      observed_reference_aas:
+      - P
+    '1':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 69
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 25
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 24
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 47
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 15
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 7
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 10
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 18
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 12
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 11
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 5
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 10
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 10
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 12
+      observed_reference_aas:
+      - P
+    '2':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 65
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 28
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 23
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 49
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 17
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 6
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 13
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 10
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 6
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 7
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 9
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 8
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 9
+      observed_reference_aas:
+      - P
+    '3':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 66
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 26
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 22
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 53
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 20
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 6
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 12
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 12
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 11
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 8
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 9
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 10
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 9
+      observed_reference_aas:
+      - P
+    '4':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 66
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 21
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 25
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 48
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 20
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 6
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 11
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 8
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 11
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 6
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 7
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 9
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 12
+      observed_reference_aas:
+      - P
+  minimum_matching_train_rows: 5
+  selection_uses_test_data: false
+feature_outputs:
+  train_features.npz:
+    path: data/processed/exp106_recurrent_exact_token_features/train_features.npz
+    sha256: dfb0b8fbade7d69c460411dfdbc5bb5fbd97eb9b5e1056dd82294135adac5c8a
+  test_features.npz:
+    path: data/processed/exp106_recurrent_exact_token_features/test_features.npz
+    sha256: 66f0471b230d25d688b1564d5adece0077d5deaaf52c8c987e3e719491127575
+  feature_names.json:
+    path: data/processed/exp106_recurrent_exact_token_features/feature_names.json
+    sha256: b7464c1fd0e985e722eabd2f8becb33051879d4b4cdfd25d99cd1e6b793b98c8
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+  - feature_spec_v1
+  - recurrent_exact_token_binary
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  command: uv run python scripts/run_hotspot_xgb.py --config configs/exp106_recurrent_exact_token.yaml
+environment:
+  python: 3.11.10 (main, Oct 11 2024, 15:45:30) [Clang 15.0.0 (clang-1500.3.9.4)]
+  platform: macOS-26.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: cea0d1a7c46efd4675ebb3982a309c56b85c793f0712ba24d04d1a7c6bd110ae
+fold_train_features:
+- fold: 0
+  feature_names:
+  - exact_token__IDH1__R132H
+  - exact_token__BRAF__V600E
+  - exact_token__PIK3CA__E545K
+  - exact_token__PIK3CA__H1047R
+  - exact_token__TP53__R273C
+  - exact_token__PIK3CA__E542K
+  - exact_token__TP53__R175H
+  - exact_token__TP53__R273H
+  - exact_token__TP53__R248Q
+  - exact_token__IDH1__R132C
+  - exact_token__TP53__R248W
+  - exact_token__TP53__R213*
+  - exact_token__TP53__Y220C
+  - exact_token__TP53__R282W
+  - exact_token__RPL22__K16fs
+  - exact_token__TP53__R196*
+  - exact_token__TP53__H179R
+  - exact_token__CDKN2A__R80*
+  - exact_token__LRIG1__L24V
+  - exact_token__TP53__G245S
+  - exact_token__CHEK2__K373E
+  - exact_token__PTEN__R130Q
+  - exact_token__SOWAHC__L42L
+  - exact_token__LRIG1__L26V
+  - exact_token__PIK3CA__H1047L
+  - exact_token__PTEN__R233*
+  - exact_token__HRAS__Q61R
+  - exact_token__NCOA6__Q269Q
+  - exact_token__NPM1__-287fs
+  - exact_token__NPM1__WQ288fs
+  - exact_token__PTEN__R130G
+  - exact_token__TP53__R342*
+  - exact_token__XYLT2__Y526fs
+  - exact_token__CDKN2A__W110*
+  - exact_token__CMPK2__C153C
+  - exact_token__EGFR__G598V
+  - exact_token__PIK3CA__N345K
+  - exact_token__TM7SF2__P52P
+  - exact_token__TP53__R306*
+  - exact_token__BRAF__V600K
+  - exact_token__ERCC2__D312N
+  - exact_token__FBXW7__R465C
+  - exact_token__NCOR2__Q499Q
+  - exact_token__NFKB2__P423P
+  - exact_token__NOTCH2__P6fs
+  - exact_token__TP53__C176F
+  - exact_token__CHEK2__S372S
+  - exact_token__ERBB3__V104M
+  - exact_token__FBXW7__R465H
+  - exact_token__IDH2__R140Q
+  - exact_token__IDH2__R172K
+  - exact_token__PEX6__V133V
+  - exact_token__PLEC__A2106A
+  - exact_token__THEM4__L17R
+  - exact_token__CDC27__L454fs
+  - exact_token__EGFR__A289V
+  - exact_token__PIK3CA__C420R
+  - exact_token__PIK3CA__R88Q
+  - exact_token__PLEC__L1321L
+  - exact_token__PTGIR__V53V
+  - exact_token__TP53__C238Y
+  - exact_token__TP53__H193R
+  - exact_token__TP53__M237I
+  - exact_token__CDKN2A__R58*
+  - exact_token__EEF1B2__P45P
+  - exact_token__ERBB2__S310F
+  - exact_token__FBXW7__R505C
+  - exact_token__FBXW7__R505G
+  - exact_token__IRS4__G591fs
+  - exact_token__KRT8__S31A
+  - exact_token__NAB2__F208L
+  - exact_token__NOTCH2__C19W
+  - exact_token__PGLS__L45L
+  - exact_token__PIK3CA__E726K
+  - exact_token__PIK3CA__Q546R
+  - exact_token__PTEN__R130*
+  - exact_token__PTEN__VL317fs
+  - exact_token__TP53__I195T
+  - exact_token__TP53__L194R
+  - exact_token__ATRX__R1426*
+  - exact_token__CDKN2A__H83Y
+  - exact_token__CKB__R152R
+  - exact_token__IDUA__T374P
+  - exact_token__NEFH__P655P
+  - exact_token__NOTCH2__R5R
+  - exact_token__PIK3CA__E453K
+  - exact_token__PIK3CA__M1043I
+  - exact_token__SMAD2__S464*
+  - exact_token__SRD5A1__R30R
+  - exact_token__TP53__E285K
+  - exact_token__TP53__R249S
+  - exact_token__TP53__V157F
+  - exact_token__TP53__V272M
+  - exact_token__UQCRFS1__S6A
+  - exact_token__ATP6V1B1__Y383fs
+  - exact_token__B2M__L13fs
+  - exact_token__CASP5__R11fs
+  - exact_token__CDC27__D549E
+  - exact_token__CTNNB1__S37C
+  - exact_token__EEF1B2__S43G
+  - exact_token__GNAS__R201H
+  - exact_token__HRAS__Q61K
+  - exact_token__IDH1__R132G
+  - exact_token__IL32__DK218fs
+  - exact_token__MEFV__A165A
+  - exact_token__NFE2L2__E79Q
+  - exact_token__PIK3CA__Q546K
+  - exact_token__PLEC__A1697A
+  - exact_token__PLEC__A2113A
+  - exact_token__PLEC__R1386Q
+  - exact_token__RUNX1__D96fs
+  - exact_token__TGFBR2__E125fs
+  - exact_token__TP53__P153fs
+  - exact_token__TP53__R158L
+  - exact_token__TP53__Y205C
+  - exact_token__TP53__Y234C
+  - exact_token__UQCRFS1__I83V
+  - exact_token__UQCRFS1__S8S
+  - exact_token__VHL__S65*
+  - exact_token__WNT16__W165fs
+  - exact_token__ABCA6__L306fs
+  - exact_token__APC__R1114*
+  - exact_token__ARHGAP5__V474A
+  - exact_token__BRAF__K601E
+  - exact_token__CADM1__T343T
+  - exact_token__CASP5__T68fs
+  - exact_token__CDKN2A__P114L
+  - exact_token__CRMP1__A37A
+  - exact_token__CTNNB1__G34R
+  - exact_token__CTNNB1__S37F
+  - exact_token__E2F5__A44A
+  - exact_token__ERBB2__V842I
+  - exact_token__GLI1__W272fs
+  - exact_token__GNAS__R201C
+  - exact_token__HLA-A__V49V
+  - exact_token__HMGB3__E192E
+  - exact_token__OGFR__E556K
+  - exact_token__OGFR__S557T
+  - exact_token__PIK3CA__K111E
+  - exact_token__PLOD3__R297fs
+  - exact_token__RAC1__P29S
+  - exact_token__RREB1__G783V
+  - exact_token__SPRR3__G73G
+  - exact_token__TP53__C176Y
+  - exact_token__TP53__C275Y
+  - exact_token__TP53__E286K
+  - exact_token__TP53__E298*
+  - exact_token__TP53__G245V
+  - exact_token__TP53__H214R
+  - exact_token__TP53__P250L
+  - exact_token__TP53__Q192*
+  - exact_token__TP53__R158H
+  - exact_token__TP53__S241F
+  - exact_token__TP53__S241fs
+  - exact_token__VHL__L116fs
+  - exact_token__ACVR2A__K437fs
+  - exact_token__AOC3__G80fs
+  - exact_token__APC__R564*
+  - exact_token__CD8B__L9L
+  - exact_token__CLIP1__S1018fs
+  - exact_token__CTNNB1__S33C
+  - exact_token__GATA3__G334fs
+  - exact_token__IDH1__R132S
+  - exact_token__KLF3__I104fs
+  - exact_token__MADCAM1__Q254P
+  - exact_token__MAP1S__S411C
+  - exact_token__MAPRE3__A179fs
+  - exact_token__MARCKS__K156fs
+  - exact_token__MTOR__S2215Y
+  - exact_token__NF1__R2450*
+  - exact_token__PBX2__Y262F
+  - exact_token__PIK3CA__E81K
+  - exact_token__PIK3CA__M1043V
+  - exact_token__PROCR__R98L
+  - exact_token__PTEN__R335*
+  - exact_token__RANBP9__P10Q
+  - exact_token__RPS6KA1__P17P
+  - exact_token__RRAD__A278E
+  - exact_token__SRM__S34S
+  - exact_token__SVIL__G1862fs
+  - exact_token__TP53__A159V
+  - exact_token__TP53__C135F
+  - exact_token__TP53__E271K
+  - exact_token__TP53__F212fs
+  - exact_token__TP53__R110L
+  - exact_token__TP53__R273L
+  - exact_token__TP53__R280K
+  - exact_token__TP53__V173M
+  - exact_token__TP53__V216M
+  - exact_token__TP53__Y236C
+  - exact_token__TP63__R594*
+  - exact_token__VHL__S68*
+  - exact_token__XPOT__F126fs
+  - exact_token__ADAM2__R713R
+  - exact_token__ALDH2__L286fs
+  - exact_token__ALDH3A1__P445fs
+  - exact_token__AMOT__Q394Q
+  - exact_token__APC__R213*
+  - exact_token__APC__R232*
+  - exact_token__ARHGAP5__D890fs
+  - exact_token__ATP2A1__P820fs
+  - exact_token__ATRX__ET886fs
+  - exact_token__ATRX__FI2113fs
+  - exact_token__AXIN2__G600fs
+  - exact_token__C1R__P215fs
+  - exact_token__CD4__Q164fs
+  - exact_token__CDC27__I487V
+  - exact_token__CDKN2A__E120*
+  - exact_token__COIL__N162fs
+  - exact_token__COL11A1__G545fs
+  - exact_token__COL1A1__G761G
+  - exact_token__CTCF__R448*
+  - exact_token__CTNNB1__D32G
+  - exact_token__CTNNB1__D32N
+  - exact_token__CTNNB1__D32V
+  - exact_token__DLC1__S741T
+  - exact_token__DOCK2__R1357W
+  - exact_token__EOMES__F316F
+  - exact_token__ERBB2__L755S
+  - exact_token__FBXW7__R479Q
+  - exact_token__GATA3__P408fs
+  - exact_token__GP2__S41L
+  - exact_token__HLA-A__D54D
+  - exact_token__HRAS__G13V
+  - exact_token__INMT__S212F
+  - exact_token__KIT__D816V
+  - exact_token__MAML2__Q596Q
+  - exact_token__MAPK1__E322K
+  - exact_token__ME1__F62F
+  - exact_token__MXRA5__G792G
+  - exact_token__MYH2__R1388H
+  - exact_token__MYOM1__R500*
+  - exact_token__NCOA3__Q1262Q
+  - exact_token__NCR1__E42K
+  - exact_token__NEFH__E645K
+  - exact_token__NEUROD1__H206fs
+  - exact_token__NF1__LF1246fs
+  - exact_token__NKD1__P286fs
+  - exact_token__NRXN2__A270fs
+  - exact_token__OGFR__P534P
+  - exact_token__OPTN__P25fs
+  - exact_token__PCLO__R4133C
+  - exact_token__PIK3CA__E545A
+  - exact_token__PIK3CA__G1049R
+  - exact_token__PMEPA1__P208fs
+  - exact_token__PRSS36__L680fs
+  - exact_token__PSPH__V116I
+  - exact_token__PTEN__L265fs
+  - exact_token__RB1__R552*
+  - exact_token__ROCK1__F121fs
+  - exact_token__RXRA__S427F
+  - exact_token__SLC23A2__P411fs
+  - exact_token__SLC27A5__T554I
+  - exact_token__SPRR3__G81G
+  - exact_token__SPTA1__K1732T
+  - exact_token__TCF7L2__R482fs
+  - exact_token__TNIP2__R73G
+  - exact_token__TP53__C238F
+  - exact_token__TP53__C242F
+  - exact_token__TP53__E286G
+  - exact_token__TP53__H179Y
+  - exact_token__TP53__Q136E
+  - exact_token__TP53__Q317*
+  - exact_token__TP53__R213Q
+  - exact_token__TP53__R267P
+  - exact_token__TP53__S127F
+  - exact_token__TP63__R379C
+  - exact_token__TUBA3C__H283H
+  - exact_token__VAMP5__R8W
+  - exact_token__VHL__E189*
+  - exact_token__VHL__L89H
+  - exact_token__WNK4__G607fs
+  registry:
+    recurrent_exact_token:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 284
+      feature_names_sha256: dea7fa44d818adb163dfd8011fe346a7a3aef38ae34a96253a58c36af68c9506
+      fit_scope: fold_train
+      external_knowledge: null
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 272
+      feature_names_sha256: 0bba04a60f1e6e4ddd8b2403b265ad47fe953ff451f2225c81443c12dfd1dcc4
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        exact_token__APC__R1450*: hotspot__APC_1450
+        exact_token__U2AF1__S34F: hotspot__U2AF1_34
+        exact_token__GNG12__T68fs: GNG12__frameshift
+        exact_token__AKT1__E17K: hotspot__AKT1_17
+        exact_token__FGFR3__S249C: hotspot__FGFR3_249
+        exact_token__FOXN3__P96fs: FOXN3__frameshift
+        exact_token__MVK__P139fs: MVK__frameshift
+        exact_token__PAX6__P375fs: PAX6__frameshift
+        exact_token__APC__R876*: hotspot__APC_876
+        exact_token__EGFR__L858R: hotspot__EGFR_858
+        exact_token__POLE__V411L: hotspot__POLE_411
+        exact_token__AGPAT4__R304fs: AGPAT4__frameshift
+- fold: 1
+  feature_names:
+  - exact_token__IDH1__R132H
+  - exact_token__BRAF__V600E
+  - exact_token__PIK3CA__H1047R
+  - exact_token__PIK3CA__E545K
+  - exact_token__TP53__R273C
+  - exact_token__PIK3CA__E542K
+  - exact_token__TP53__R175H
+  - exact_token__TP53__R273H
+  - exact_token__TP53__Y220C
+  - exact_token__TP53__R248Q
+  - exact_token__TP53__R213*
+  - exact_token__TP53__R248W
+  - exact_token__IDH1__R132C
+  - exact_token__TP53__R196*
+  - exact_token__TP53__R282W
+  - exact_token__TP53__H179R
+  - exact_token__TP53__R306*
+  - exact_token__HRAS__Q61R
+  - exact_token__LRIG1__L24V
+  - exact_token__PTEN__R130Q
+  - exact_token__RPL22__K16fs
+  - exact_token__PIK3CA__R88Q
+  - exact_token__SOWAHC__L42L
+  - exact_token__TP53__G245S
+  - exact_token__NCOA6__Q269Q
+  - exact_token__PIK3CA__N345K
+  - exact_token__CMPK2__C153C
+  - exact_token__NPM1__WQ288fs
+  - exact_token__XYLT2__Y526fs
+  - exact_token__LRIG1__L26V
+  - exact_token__PIK3CA__H1047L
+  - exact_token__TP53__H193R
+  - exact_token__CDKN2A__R80*
+  - exact_token__NOTCH2__P6fs
+  - exact_token__TM7SF2__P52P
+  - exact_token__NFKB2__P423P
+  - exact_token__CDKN2A__W110*
+  - exact_token__CHEK2__K373E
+  - exact_token__EGFR__G598V
+  - exact_token__FBXW7__R465C
+  - exact_token__FBXW7__R465H
+  - exact_token__IRS4__G591fs
+  - exact_token__NPM1__-287fs
+  - exact_token__PEX6__V133V
+  - exact_token__PIK3CA__C420R
+  - exact_token__PIK3CA__E726K
+  - exact_token__PIK3CA__Q546R
+  - exact_token__PLEC__L1321L
+  - exact_token__TP53__C176F
+  - exact_token__TP53__I195T
+  - exact_token__TP53__R342*
+  - exact_token__BRAF__V600K
+  - exact_token__EEF1B2__P45P
+  - exact_token__ERCC2__D312N
+  - exact_token__IDH2__R140Q
+  - exact_token__IL32__DK218fs
+  - exact_token__MEFV__A165A
+  - exact_token__PLEC__A2106A
+  - exact_token__PTEN__R130G
+  - exact_token__PTGIR__V53V
+  - exact_token__THEM4__L17R
+  - exact_token__CDKN2A__R58*
+  - exact_token__IDH1__R132G
+  - exact_token__KRT8__S31A
+  - exact_token__PGLS__L45L
+  - exact_token__POLE__P286R
+  - exact_token__PTEN__R130*
+  - exact_token__TP53__C238Y
+  - exact_token__TP53__E285K
+  - exact_token__TP53__E286K
+  - exact_token__TP53__R273L
+  - exact_token__TP53__S241F
+  - exact_token__TP53__V216M
+  - exact_token__ATP6V1B1__Y383fs
+  - exact_token__CADM1__T343T
+  - exact_token__CDKN2A__H83Y
+  - exact_token__EEF1B2__S43G
+  - exact_token__GNAS__R201H
+  - exact_token__IDH2__R172K
+  - exact_token__NAB2__F208L
+  - exact_token__NCOR2__Q499Q
+  - exact_token__PIK3CA__M1043I
+  - exact_token__PIK3CA__Q546K
+  - exact_token__SLC23A2__P411fs
+  - exact_token__TP53__C176Y
+  - exact_token__TP53__M237I
+  - exact_token__TP53__P250L
+  - exact_token__TP53__V157F
+  - exact_token__TP53__Y236C
+  - exact_token__U2AF1__S34F
+  - exact_token__VHL__L116fs
+  - exact_token__ATRX__R1426*
+  - exact_token__B2M__L13fs
+  - exact_token__BRAF__K601E
+  - exact_token__CDC27__L454fs
+  - exact_token__CKB__R152R
+  - exact_token__CTNNB1__G34R
+  - exact_token__EGFR__A289V
+  - exact_token__FBXW7__R505C
+  - exact_token__FBXW7__R505G
+  - exact_token__GNAS__R201C
+  - exact_token__HMGB3__E192E
+  - exact_token__IDUA__T374P
+  - exact_token__MAML2__Q596Q
+  - exact_token__NOTCH2__C19W
+  - exact_token__PLEC__A2113A
+  - exact_token__PLEC__R1386Q
+  - exact_token__RAC1__P29S
+  - exact_token__SMAD2__S464*
+  - exact_token__TP53__E271K
+  - exact_token__TP53__G245V
+  - exact_token__TP53__H179Y
+  - exact_token__TP53__H214R
+  - exact_token__TP53__K132N
+  - exact_token__TP53__Y205C
+  - exact_token__VHL__S65*
+  - exact_token__AMOT__Q394Q
+  - exact_token__CASP5__R11fs
+  - exact_token__CASP5__T68fs
+  - exact_token__CDKN2A__P114L
+  - exact_token__CHEK2__S372S
+  - exact_token__CRMP1__A37A
+  - exact_token__CTNNB1__D32N
+  - exact_token__CTNNB1__S37F
+  - exact_token__ERBB2__S310F
+  - exact_token__ERBB2__V842I
+  - exact_token__ERBB3__V104M
+  - exact_token__HLA-A__Q78R
+  - exact_token__KRT15__V205I
+  - exact_token__MAP1S__S411C
+  - exact_token__MAPK1__E322K
+  - exact_token__NF1__LF1246fs
+  - exact_token__NFE2L2__R34G
+  - exact_token__OGDH__I78fs
+  - exact_token__OGFR__S557T
+  - exact_token__PBX2__Y262F
+  - exact_token__PIK3CA__E453K
+  - exact_token__PIK3CA__M1043V
+  - exact_token__RXRA__S427F
+  - exact_token__TNIP2__R73G
+  - exact_token__TP53__C238F
+  - exact_token__TP53__R110L
+  - exact_token__TP53__R158L
+  - exact_token__TP53__R249S
+  - exact_token__TP53__V272M
+  - exact_token__TUBA3C__H283H
+  - exact_token__UQCRFS1__S6A
+  - exact_token__WNT16__W165fs
+  - exact_token__ABCA6__L306fs
+  - exact_token__ALDH3A1__P445fs
+  - exact_token__AOC3__G80fs
+  - exact_token__APC__R302*
+  - exact_token__APC__R805*
+  - exact_token__APOE__C130R
+  - exact_token__BMP2K__Q460H
+  - exact_token__CD8B__L9L
+  - exact_token__CDC27__D549E
+  - exact_token__CDC27__I91fs
+  - exact_token__CLIP1__S1018fs
+  - exact_token__DTX1__D122E
+  - exact_token__E2F5__A44A
+  - exact_token__GATA3__G334fs
+  - exact_token__GLI1__W272fs
+  - exact_token__GP2__S41L
+  - exact_token__HLA-A__D54D
+  - exact_token__HRAS__G13R
+  - exact_token__HRAS__Q61K
+  - exact_token__LUM__E240K
+  - exact_token__MARCKS__K156fs
+  - exact_token__MBOAT2__R43Q
+  - exact_token__MTOR__S2215Y
+  - exact_token__NEFH__P655P
+  - exact_token__NFE2L2__D29H
+  - exact_token__NOTCH2__R5R
+  - exact_token__OGFR__E556K
+  - exact_token__PIK3CA__E545A
+  - exact_token__PIK3CA__K111E
+  - exact_token__PTEN__VL317fs
+  - exact_token__RRAD__A278E
+  - exact_token__RREB1__G783V
+  - exact_token__SKI__A62G
+  - exact_token__SRD5A1__R30R
+  - exact_token__SVIL__G1862fs
+  - exact_token__TGFBR2__E125fs
+  - exact_token__TGIF1__P85fs
+  - exact_token__TP53__C141Y
+  - exact_token__TP53__P153fs
+  - exact_token__TP53__P278S
+  - exact_token__TP53__Q136E
+  - exact_token__TP53__Q192*
+  - exact_token__TP53__Q317*
+  - exact_token__TP53__R158H
+  - exact_token__TP53__R209fs
+  - exact_token__TP53__R280K
+  - exact_token__TP53__R337C
+  - exact_token__TP53__R337L
+  - exact_token__TP53__S127F
+  - exact_token__TP53__S241fs
+  - exact_token__TP53__W91*
+  - exact_token__TP53__Y234C
+  - exact_token__UQCRFS1__S8S
+  - exact_token__VHL__Q73*
+  - exact_token__VHL__S111N
+  - exact_token__VHL__S68*
+  - exact_token__ABCB1__R41C
+  - exact_token__ADAM2__R713R
+  - exact_token__ANK1__F1242F
+  - exact_token__APC__R1114*
+  - exact_token__APC__R213*
+  - exact_token__APC__R2204*
+  - exact_token__APC__R564*
+  - exact_token__ARFGEF1__P1552fs
+  - exact_token__ARHGAP5__D890fs
+  - exact_token__ATP2C1__E690K
+  - exact_token__ATXN2__Q174Q
+  - exact_token__AXIN2__G600fs
+  - exact_token__CD4__Q164fs
+  - exact_token__CDC27__I487V
+  - exact_token__CDH1__Q23*
+  - exact_token__CDKN2A__E120*
+  - exact_token__COL1A1__G761G
+  - exact_token__CR1__R2194*
+  - exact_token__CR2__V206fs
+  - exact_token__CREBBP__R1446C
+  - exact_token__CTNNB1__D32V
+  - exact_token__CTNNB1__S33F
+  - exact_token__CTNNB1__S37C
+  - exact_token__CTNNB1__S45F
+  - exact_token__CTNNB1__S45P
+  - exact_token__DOCK2__R1357W
+  - exact_token__FGGY__G138fs
+  - exact_token__GATA3__P408fs
+  - exact_token__GJA1__A311fs
+  - exact_token__IDUA__H33Q
+  - exact_token__IGFBP4__L35L
+  - exact_token__IGSF1__H1003Q
+  - exact_token__ILVBL__E530K
+  - exact_token__INMT__S212F
+  - exact_token__IRF2__A41V
+  - exact_token__KIT__D816V
+  - exact_token__KLF3__I104fs
+  - exact_token__MAPRE3__A179fs
+  - exact_token__MARCO__V520I
+  - exact_token__MARK3__E120K
+  - exact_token__ME1__F62F
+  - exact_token__MXRA5__G792G
+  - exact_token__MYH2__R1388H
+  - exact_token__MYOM1__R500*
+  - exact_token__NF1__R2450*
+  - exact_token__NFE2L2__E82D
+  - exact_token__NMU__A18E
+  - exact_token__NRXN2__A270fs
+  - exact_token__ODF1__P226P
+  - exact_token__OGFR__P534P
+  - exact_token__OPTN__P25fs
+  - exact_token__PABPC1__T319I
+  - exact_token__PCLO__R4133C
+  - exact_token__PEX1__I370fs
+  - exact_token__PIK3CA__G1049R
+  - exact_token__PIK3CA__R38H
+  - exact_token__PLEC__A1697A
+  - exact_token__PMEPA1__P208fs
+  - exact_token__PSPH__V116I
+  - exact_token__PTEN__L265fs
+  - exact_token__PTEN__R335*
+  - exact_token__PTPN11__T468M
+  - exact_token__RANBP9__P10Q
+  - exact_token__RUNX1__D96fs
+  - exact_token__SMC4__R1252*
+  - exact_token__SOD3__L71L
+  - exact_token__SPRR3__G73G
+  - exact_token__SRM__S34S
+  - exact_token__TP53__A159V
+  - exact_token__TP53__C135F
+  - exact_token__TP53__C275F
+  - exact_token__TP53__C275Y
+  - exact_token__TP53__E298*
+  - exact_token__TP53__F270S
+  - exact_token__TP53__G108fs
+  - exact_token__TP53__G266R
+  - exact_token__TP53__H193L
+  - exact_token__TP53__I195N
+  - exact_token__TP53__L194R
+  - exact_token__TP53__M246V
+  - exact_token__TP53__N239S
+  - exact_token__TP53__P278L
+  - exact_token__TP53__Q331*
+  - exact_token__TP53__R213Q
+  - exact_token__TP53__R248L
+  - exact_token__TP53__R267P
+  - exact_token__TP53__V173L
+  - exact_token__TP63__R379C
+  - exact_token__UQCRFS1__I83V
+  - exact_token__VHL__L89H
+  - exact_token__WNK4__G607fs
+  - exact_token__XPO1__E571K
+  - exact_token__XPO1__R749Q
+  registry:
+    recurrent_exact_token:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 310
+      feature_names_sha256: a08bd48f7d9233bdf3a057943f7e87d2caed4a234d6cdc683990f4388378bb89
+      fit_scope: fold_train
+      external_knowledge: null
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 297
+      feature_names_sha256: 27dd20d8dcdfa3f0f11de97d672151e733d50634a0713b322f5ed4eec156b7e2
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        exact_token__APC__R1450*: hotspot__APC_1450
+        exact_token__PTEN__R233*: hotspot__PTEN_233
+        exact_token__APC__R876*: hotspot__APC_876
+        exact_token__FGFR3__S249C: hotspot__FGFR3_249
+        exact_token__PAX6__P375fs: PAX6__frameshift
+        exact_token__ABCC5__L1090fs: ABCC5__frameshift
+        exact_token__AKT1__E17K: hotspot__AKT1_17
+        exact_token__GNG12__T68fs: GNG12__frameshift
+        exact_token__MVK__P139fs: MVK__frameshift
+        exact_token__EGFR__L858R: hotspot__EGFR_858
+        exact_token__KAT2B__W111fs: KAT2B__frameshift
+        exact_token__PLOD3__R297fs: PLOD3__frameshift
+        exact_token__POLE__V411L: hotspot__POLE_411
+- fold: 2
+  feature_names:
+  - exact_token__IDH1__R132H
+  - exact_token__BRAF__V600E
+  - exact_token__PIK3CA__H1047R
+  - exact_token__PIK3CA__E545K
+  - exact_token__TP53__R273C
+  - exact_token__PIK3CA__E542K
+  - exact_token__TP53__R175H
+  - exact_token__TP53__R248Q
+  - exact_token__TP53__R273H
+  - exact_token__IDH1__R132C
+  - exact_token__TP53__R213*
+  - exact_token__TP53__R248W
+  - exact_token__TP53__Y220C
+  - exact_token__TP53__R282W
+  - exact_token__TP53__R196*
+  - exact_token__RPL22__K16fs
+  - exact_token__TP53__H179R
+  - exact_token__CHEK2__K373E
+  - exact_token__PIK3CA__H1047L
+  - exact_token__PTEN__R130Q
+  - exact_token__NCOA6__Q269Q
+  - exact_token__NPM1__WQ288fs
+  - exact_token__SOWAHC__L42L
+  - exact_token__TP53__G245S
+  - exact_token__HRAS__Q61R
+  - exact_token__LRIG1__L24V
+  - exact_token__TP53__R306*
+  - exact_token__CDKN2A__R80*
+  - exact_token__CMPK2__C153C
+  - exact_token__PIK3CA__N345K
+  - exact_token__PIK3CA__R88Q
+  - exact_token__PTEN__R233*
+  - exact_token__CDKN2A__W110*
+  - exact_token__FBXW7__R465C
+  - exact_token__NCOR2__Q499Q
+  - exact_token__NPM1__-287fs
+  - exact_token__PEX6__V133V
+  - exact_token__TP53__R342*
+  - exact_token__ERCC2__D312N
+  - exact_token__KRT8__S31A
+  - exact_token__LRIG1__L26V
+  - exact_token__NFKB2__P423P
+  - exact_token__PTEN__R130G
+  - exact_token__TM7SF2__P52P
+  - exact_token__TP53__C176F
+  - exact_token__EGFR__G598V
+  - exact_token__NOTCH2__P6fs
+  - exact_token__PGLS__L45L
+  - exact_token__PIK3CA__E726K
+  - exact_token__TP53__H193R
+  - exact_token__U2AF1__S34F
+  - exact_token__XYLT2__Y526fs
+  - exact_token__BRAF__V600K
+  - exact_token__CDKN2A__R58*
+  - exact_token__CHEK2__S372S
+  - exact_token__ERBB3__V104M
+  - exact_token__FBXW7__R465H
+  - exact_token__IRS4__G591fs
+  - exact_token__PIK3CA__E453K
+  - exact_token__PIK3CA__Q546R
+  - exact_token__PLEC__A2106A
+  - exact_token__PTEN__R130*
+  - exact_token__PTGIR__V53V
+  - exact_token__THEM4__L17R
+  - exact_token__TP53__V157F
+  - exact_token__TP53__Y234C
+  - exact_token__HMGB3__E192E
+  - exact_token__IDH2__R140Q
+  - exact_token__IDH2__R172K
+  - exact_token__IL32__DK218fs
+  - exact_token__PIK3CA__Q546K
+  - exact_token__SMAD2__S464*
+  - exact_token__TP53__C238Y
+  - exact_token__TP53__E286K
+  - exact_token__TP53__I195T
+  - exact_token__TP53__L194R
+  - exact_token__TP53__Q192*
+  - exact_token__TP53__R249S
+  - exact_token__TP53__V216M
+  - exact_token__TP53__V272M
+  - exact_token__TP53__Y236C
+  - exact_token__CDKN2A__H83Y
+  - exact_token__CTNNB1__S37C
+  - exact_token__EGFR__A289V
+  - exact_token__FBXW7__R505C
+  - exact_token__MEFV__A165A
+  - exact_token__OGFR__S557T
+  - exact_token__PIK3CA__M1043V
+  - exact_token__PLEC__A2113A
+  - exact_token__SRD5A1__R30R
+  - exact_token__TP53__E285K
+  - exact_token__TP53__G245V
+  - exact_token__TP53__R273L
+  - exact_token__AMOT__Q394Q
+  - exact_token__APC__R1114*
+  - exact_token__ATRX__R1426*
+  - exact_token__CASP5__R11fs
+  - exact_token__EEF1B2__S43G
+  - exact_token__ERBB2__S310F
+  - exact_token__GNAS__R201H
+  - exact_token__IDH1__R132S
+  - exact_token__IDUA__T374P
+  - exact_token__MAP1S__S411C
+  - exact_token__NAB2__F208L
+  - exact_token__NFE2L2__E79Q
+  - exact_token__OGFR__E556K
+  - exact_token__PIK3CA__C420R
+  - exact_token__PLEC__L1321L
+  - exact_token__PLEC__R1386Q
+  - exact_token__PLOD3__R297fs
+  - exact_token__PTEN__VL317fs
+  - exact_token__RAC1__P29S
+  - exact_token__TP53__C176Y
+  - exact_token__TP53__M237I
+  - exact_token__TP53__P250L
+  - exact_token__TP53__R158L
+  - exact_token__TP53__S241F
+  - exact_token__TP53__Y205C
+  - exact_token__UQCRFS1__S6A
+  - exact_token__VHL__L116fs
+  - exact_token__APOE__C130R
+  - exact_token__ARHGAP5__V474A
+  - exact_token__CKB__R152R
+  - exact_token__CTNNB1__S37F
+  - exact_token__EEF1B2__P45P
+  - exact_token__FBXW7__R505G
+  - exact_token__GATA3__G334fs
+  - exact_token__GNAS__R201C
+  - exact_token__HLA-A__V49V
+  - exact_token__HRAS__Q61K
+  - exact_token__KRT15__V205I
+  - exact_token__MAML2__Q596Q
+  - exact_token__NFE2L2__D29H
+  - exact_token__NOTCH2__C19W
+  - exact_token__NOTCH2__R5R
+  - exact_token__OGDH__I78fs
+  - exact_token__PBX2__Y262F
+  - exact_token__PIK3CA__E545A
+  - exact_token__PIK3CA__E81K
+  - exact_token__PIK3CA__K111E
+  - exact_token__PIK3CA__M1043I
+  - exact_token__PROCR__R98L
+  - exact_token__TP53__E271K
+  - exact_token__TP53__H179Y
+  - exact_token__TP53__H214R
+  - exact_token__TP53__K132N
+  - exact_token__TP53__Q317*
+  - exact_token__TP53__R158H
+  - exact_token__TP53__R280K
+  - exact_token__TP53__R337C
+  - exact_token__TP53__V173M
+  - exact_token__UQCRFS1__S8S
+  - exact_token__VHL__S111N
+  - exact_token__VHL__S65*
+  - exact_token__VHL__S68*
+  - exact_token__ABCC5__L1090fs
+  - exact_token__APC__R805*
+  - exact_token__ARHGAP5__E489K
+  - exact_token__ATRX__FI2113fs
+  - exact_token__B2M__L13fs
+  - exact_token__BRAF__K601E
+  - exact_token__CADM1__T343T
+  - exact_token__CAMK4__I85I
+  - exact_token__CDC27__D549E
+  - exact_token__CDC27__I487V
+  - exact_token__CDKN2A__P114L
+  - exact_token__CLIP1__S1018fs
+  - exact_token__CTNNB1__D32G
+  - exact_token__CTNNB1__G34R
+  - exact_token__CTNNB1__S33F
+  - exact_token__CTNNB1__S45P
+  - exact_token__DTX1__D122E
+  - exact_token__E2F5__A44A
+  - exact_token__GLI1__W272fs
+  - exact_token__HRAS__G13R
+  - exact_token__IDH1__R132G
+  - exact_token__INMT__S212F
+  - exact_token__MTOR__S2215Y
+  - exact_token__NCR1__E42K
+  - exact_token__NEFH__P655P
+  - exact_token__NF1__LF1246fs
+  - exact_token__OGFR__P534P
+  - exact_token__PABPC1__K333fs
+  - exact_token__PABPC1__T319I
+  - exact_token__PLEC__A1697A
+  - exact_token__PSPH__V116I
+  - exact_token__RPS6KA1__P17P
+  - exact_token__RUNX1__D96fs
+  - exact_token__SLC23A2__P411fs
+  - exact_token__SOD3__L71L
+  - exact_token__TGFBR2__E125fs
+  - exact_token__TP53__C135F
+  - exact_token__TP53__C242F
+  - exact_token__TP53__F212fs
+  - exact_token__TP53__P153fs
+  - exact_token__TP53__P278S
+  - exact_token__TP53__R209fs
+  - exact_token__TP53__Y163C
+  - exact_token__TP63__R379C
+  - exact_token__TUBA3C__H283H
+  - exact_token__VHL__E189*
+  - exact_token__WNT16__W165fs
+  - exact_token__ABCB1__R41C
+  - exact_token__ACADS__R330H
+  - exact_token__ACVR2A__K437fs
+  - exact_token__ANK1__F1242F
+  - exact_token__APC__E1554fs
+  - exact_token__APC__R213*
+  - exact_token__APC__R2204*
+  - exact_token__APC__R232*
+  - exact_token__ARHGAP5__D890fs
+  - exact_token__ATP6V1B1__Y383fs
+  - exact_token__BAX__MG38fs
+  - exact_token__CACNA1A__H2219H
+  - exact_token__CASP5__T68fs
+  - exact_token__CD8B__L9L
+  - exact_token__CDC27__L454fs
+  - exact_token__CDKN2A__E120*
+  - exact_token__CHST4__I200I
+  - exact_token__CREBBP__R1446C
+  - exact_token__CTNNB1__D32N
+  - exact_token__ERBB2__V842I
+  - exact_token__FBXW7__R479Q
+  - exact_token__FGF9__F140F
+  - exact_token__FGGY__G138fs
+  - exact_token__GATA3__P408fs
+  - exact_token__GP2__S41L
+  - exact_token__GRM8__R619R
+  - exact_token__HLA-A__Q78R
+  - exact_token__HRAS__G13V
+  - exact_token__IDUA__H33Q
+  - exact_token__IFITM3__P70T
+  - exact_token__IGSF1__H1003Q
+  - exact_token__INPPL1__A974fs
+  - exact_token__KMT2D__Q3603Q
+  - exact_token__LUM__E240K
+  - exact_token__MARCKS__K156fs
+  - exact_token__MBOAT2__R43Q
+  - exact_token__MKI67__T1664fs
+  - exact_token__MUC1__T112P
+  - exact_token__NCOA3__Q1262Q
+  - exact_token__NEFH__E645K
+  - exact_token__NF1__R2450*
+  - exact_token__NFE2L2__E82D
+  - exact_token__NFE2L2__R34G
+  - exact_token__NMU__A19E
+  - exact_token__ODF1__P226P
+  - exact_token__OPTN__P25fs
+  - exact_token__PCLO__P2699S
+  - exact_token__PCLO__R4133C
+  - exact_token__PIK3CA__G1049R
+  - exact_token__PIK3CA__N1044K
+  - exact_token__PIK3CA__Q546P
+  - exact_token__PIK3CA__R38H
+  - exact_token__PLEC__A4624A
+  - exact_token__POLQ__R860Q
+  - exact_token__RAB40C__SP268fs
+  - exact_token__RRAD__A278E
+  - exact_token__RREB1__G783V
+  - exact_token__RXRA__S427F
+  - exact_token__SLC20A1__E329fs
+  - exact_token__SLC27A5__T554I
+  - exact_token__SPOCK1__S131S
+  - exact_token__SRM__S34S
+  - exact_token__SVIL__G1862fs
+  - exact_token__TCF7L2__R482fs
+  - exact_token__TGIF1__P85fs
+  - exact_token__TP53__A159V
+  - exact_token__TP53__C141Y
+  - exact_token__TP53__C238F
+  - exact_token__TP53__C275F
+  - exact_token__TP53__D281Y
+  - exact_token__TP53__E298*
+  - exact_token__TP53__G108fs
+  - exact_token__TP53__G244C
+  - exact_token__TP53__K132E
+  - exact_token__TP53__Q136E
+  - exact_token__TP53__Q167*
+  - exact_token__TP53__R175G
+  - exact_token__TP53__R337L
+  - exact_token__TP53__S241fs
+  - exact_token__TP53__V173L
+  - exact_token__TP53__W91*
+  - exact_token__TP63__R594*
+  - exact_token__VHL__L169P
+  registry:
+    recurrent_exact_token:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 296
+      feature_names_sha256: eb4400fa9bd2e584ab8ebd9d27bbb98d5d94c993f7fe6a71466acfbe553e41bf
+      fit_scope: fold_train
+      external_knowledge: null
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 285
+      feature_names_sha256: 37f43923b7b47d83a10d3a29b1e924b995eb395fe06dc7222d48eb21fe34c401
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        exact_token__APC__R1450*: hotspot__APC_1450
+        exact_token__APC__R876*: hotspot__APC_876
+        exact_token__FGFR3__S249C: hotspot__FGFR3_249
+        exact_token__EGFR__L858R: hotspot__EGFR_858
+        exact_token__POLE__V411L: hotspot__POLE_411
+        exact_token__AKT1__E17K: hotspot__AKT1_17
+        exact_token__ALDH3A1__P445fs: ALDH3A1__frameshift
+        exact_token__FOXN3__P96fs: FOXN3__frameshift
+        exact_token__POLE__P286R: hotspot__POLE_286
+        exact_token__GNG12__T68fs: GNG12__frameshift
+        exact_token__SLAMF1__S277fs: SLAMF1__frameshift
+- fold: 3
+  feature_names:
+  - exact_token__IDH1__R132H
+  - exact_token__BRAF__V600E
+  - exact_token__PIK3CA__E545K
+  - exact_token__PIK3CA__H1047R
+  - exact_token__TP53__R273C
+  - exact_token__PIK3CA__E542K
+  - exact_token__TP53__R273H
+  - exact_token__TP53__R175H
+  - exact_token__TP53__R248Q
+  - exact_token__TP53__R248W
+  - exact_token__TP53__R213*
+  - exact_token__IDH1__R132C
+  - exact_token__TP53__Y220C
+  - exact_token__TP53__R282W
+  - exact_token__TP53__R196*
+  - exact_token__RPL22__K16fs
+  - exact_token__PTEN__R130Q
+  - exact_token__TP53__G245S
+  - exact_token__CDKN2A__R80*
+  - exact_token__HRAS__Q61R
+  - exact_token__LRIG1__L24V
+  - exact_token__NCOA6__Q269Q
+  - exact_token__TP53__H179R
+  - exact_token__CHEK2__K373E
+  - exact_token__PIK3CA__H1047L
+  - exact_token__PIK3CA__R88Q
+  - exact_token__SOWAHC__L42L
+  - exact_token__TP53__R306*
+  - exact_token__NPM1__WQ288fs
+  - exact_token__PIK3CA__N345K
+  - exact_token__CMPK2__C153C
+  - exact_token__PTEN__R233*
+  - exact_token__TP53__H193R
+  - exact_token__XYLT2__Y526fs
+  - exact_token__IDH2__R172K
+  - exact_token__LRIG1__L26V
+  - exact_token__NOTCH2__P6fs
+  - exact_token__PEX6__V133V
+  - exact_token__PTEN__R130G
+  - exact_token__TP53__R342*
+  - exact_token__FBXW7__R465H
+  - exact_token__PIK3CA__E726K
+  - exact_token__PLEC__L1321L
+  - exact_token__PTGIR__V53V
+  - exact_token__BRAF__V600K
+  - exact_token__CDKN2A__W110*
+  - exact_token__ERCC2__D312N
+  - exact_token__KRT8__S31A
+  - exact_token__PLEC__A2106A
+  - exact_token__TP53__C176F
+  - exact_token__CDKN2A__R58*
+  - exact_token__FBXW7__R465C
+  - exact_token__IDH2__R140Q
+  - exact_token__NPM1__-287fs
+  - exact_token__TP53__S241F
+  - exact_token__TP53__V272M
+  - exact_token__TP53__Y234C
+  - exact_token__U2AF1__S34F
+  - exact_token__ATP6V1B1__Y383fs
+  - exact_token__B2M__L13fs
+  - exact_token__CHEK2__S372S
+  - exact_token__CKB__R152R
+  - exact_token__EEF1B2__P45P
+  - exact_token__EGFR__G598V
+  - exact_token__ERBB3__V104M
+  - exact_token__HMGB3__E192E
+  - exact_token__MEFV__A165A
+  - exact_token__NAB2__F208L
+  - exact_token__NCOR2__Q499Q
+  - exact_token__PIK3CA__M1043V
+  - exact_token__PIK3CA__Q546R
+  - exact_token__PLEC__A2113A
+  - exact_token__POLE__P286R
+  - exact_token__PTEN__R130*
+  - exact_token__TP53__I195T
+  - exact_token__TP53__M237I
+  - exact_token__TP53__R249S
+  - exact_token__TP53__R273L
+  - exact_token__CDC27__L454fs
+  - exact_token__CTNNB1__S37F
+  - exact_token__EEF1B2__S43G
+  - exact_token__ERBB2__S310F
+  - exact_token__FBXW7__R505G
+  - exact_token__GNAS__R201H
+  - exact_token__IRS4__G591fs
+  - exact_token__NEFH__P655P
+  - exact_token__NFKB2__P423P
+  - exact_token__PIK3CA__E453K
+  - exact_token__PIK3CA__Q546K
+  - exact_token__PLEC__A1697A
+  - exact_token__PTEN__VL317fs
+  - exact_token__SLC23A2__P411fs
+  - exact_token__TM7SF2__P52P
+  - exact_token__TP53__C238Y
+  - exact_token__TP53__E285K
+  - exact_token__TP53__K132N
+  - exact_token__TP53__R158L
+  - exact_token__TP53__V157F
+  - exact_token__TP53__Y205C
+  - exact_token__WNT16__W165fs
+  - exact_token__ABCC5__L1090fs
+  - exact_token__ATRX__R1426*
+  - exact_token__CASP5__R11fs
+  - exact_token__CASP5__T68fs
+  - exact_token__EGFR__A289V
+  - exact_token__FBXW7__R505C
+  - exact_token__NF1__R2450*
+  - exact_token__PGLS__L45L
+  - exact_token__PIK3CA__C420R
+  - exact_token__PROCR__R98L
+  - exact_token__SRD5A1__R30R
+  - exact_token__THEM4__L17R
+  - exact_token__TP53__C238F
+  - exact_token__TP53__E286K
+  - exact_token__TP53__E298*
+  - exact_token__TP53__L194R
+  - exact_token__TP53__Q192*
+  - exact_token__TP53__V216M
+  - exact_token__TP53__Y236C
+  - exact_token__UQCRFS1__I83V
+  - exact_token__VHL__S65*
+  - exact_token__AMOT__Q394Q
+  - exact_token__BRAF__K601E
+  - exact_token__CADM1__T343T
+  - exact_token__CDKN2A__H83Y
+  - exact_token__CRMP1__A37A
+  - exact_token__CTNNB1__S37C
+  - exact_token__CTNNB1__S45P
+  - exact_token__ERBB2__V842I
+  - exact_token__GP2__S41L
+  - exact_token__IDH1__R132G
+  - exact_token__IDH1__R132S
+  - exact_token__MAPRE3__A179fs
+  - exact_token__MARCKS__K156fs
+  - exact_token__MTOR__S2215Y
+  - exact_token__NOTCH2__C19W
+  - exact_token__NOTCH2__R5R
+  - exact_token__PIK3CA__E81K
+  - exact_token__PIK3CA__K111E
+  - exact_token__PIK3CA__M1043I
+  - exact_token__PLEC__R1386Q
+  - exact_token__PLOD3__R297fs
+  - exact_token__RREB1__G783V
+  - exact_token__TGFBR2__E125fs
+  - exact_token__TGIF1__P85fs
+  - exact_token__TP53__P153fs
+  - exact_token__TP53__P250L
+  - exact_token__TP53__Q317*
+  - exact_token__TP53__R158H
+  - exact_token__UQCRFS1__S6A
+  - exact_token__UQCRFS1__S8S
+  - exact_token__VHL__S68*
+  - exact_token__ACADS__R330H
+  - exact_token__APC__R1114*
+  - exact_token__APC__R2204*
+  - exact_token__APC__R302*
+  - exact_token__APC__R564*
+  - exact_token__APOE__C130R
+  - exact_token__AR__Q58L
+  - exact_token__ATRX__FI2113fs
+  - exact_token__BMP2K__Q460H
+  - exact_token__CDC27__D549E
+  - exact_token__CDC27__I487V
+  - exact_token__CDC27__I91fs
+  - exact_token__CLIP1__S1018fs
+  - exact_token__CTCF__R448*
+  - exact_token__CTNNB1__D32N
+  - exact_token__GATA3__G334fs
+  - exact_token__GNAS__R201C
+  - exact_token__HLA-A__Q78R
+  - exact_token__HRAS__Q61K
+  - exact_token__IDUA__T374P
+  - exact_token__LUM__E240K
+  - exact_token__MAPK1__E322K
+  - exact_token__MYH2__R1388H
+  - exact_token__NEFH__E645K
+  - exact_token__NFE2L2__E79Q
+  - exact_token__NRXN2__A270fs
+  - exact_token__ODF1__P226P
+  - exact_token__OGDH__I78fs
+  - exact_token__OGFR__S557T
+  - exact_token__PTEN__L265fs
+  - exact_token__RUNX1__D96fs
+  - exact_token__RXRA__S427F
+  - exact_token__SKI__A62G
+  - exact_token__SMAD2__S464*
+  - exact_token__SPRR3__G73G
+  - exact_token__SRM__S34S
+  - exact_token__TNIP2__R73G
+  - exact_token__TP53__C275Y
+  - exact_token__TP53__E271K
+  - exact_token__TP53__H214R
+  - exact_token__TP53__Q331*
+  - exact_token__TP53__R213Q
+  - exact_token__TP53__R337L
+  - exact_token__TP53__S241fs
+  - exact_token__TP53__V173M
+  - exact_token__TP53__Y163C
+  - exact_token__VAMP5__R8W
+  - exact_token__VHL__L116fs
+  - exact_token__VHL__Q73*
+  - exact_token__XPOT__F126fs
+  - exact_token__ADAM2__R713R
+  - exact_token__AOC3__G80fs
+  - exact_token__APC__R232*
+  - exact_token__ARFGEF1__P1552fs
+  - exact_token__ARHGAP5__D890fs
+  - exact_token__ATP2C1__E690K
+  - exact_token__ATXN2__Q174Q
+  - exact_token__AVL9__G8fs
+  - exact_token__C1R__P215fs
+  - exact_token__CAMK4__I85I
+  - exact_token__CBS__F99F
+  - exact_token__CD8B__L9L
+  - exact_token__CDKN2A__P114L
+  - exact_token__CELSR1__G615fs
+  - exact_token__COL17A1__R145*
+  - exact_token__COL1A1__G761G
+  - exact_token__CTNNB1__G34R
+  - exact_token__CTNNB1__S33F
+  - exact_token__CTNNB1__S37A
+  - exact_token__CTNNB1__T41A
+  - exact_token__CTNNB1__T41I
+  - exact_token__DTX1__D122E
+  - exact_token__EPHA2__P461fs
+  - exact_token__FGF9__F140F
+  - exact_token__GRM8__R619R
+  - exact_token__HLA-A__D54D
+  - exact_token__HLA-A__V49V
+  - exact_token__HLA-B__P209fs
+  - exact_token__HRAS__G13V
+  - exact_token__IDUA__H33Q
+  - exact_token__IGSF3__R660Q
+  - exact_token__ILVBL__E530K
+  - exact_token__INMT__S212F
+  - exact_token__KAT2B__W111fs
+  - exact_token__KRT15__V205I
+  - exact_token__MAML2__Q596Q
+  - exact_token__MBOAT2__R43Q
+  - exact_token__MXRA5__G792G
+  - exact_token__MYOM1__R500*
+  - exact_token__NCOA6__Q265Q
+  - exact_token__NF1__R440*
+  - exact_token__NFE2L2__D29H
+  - exact_token__NFE2L2__R34G
+  - exact_token__NID2__R1035fs
+  - exact_token__NUDT19__P162P
+  - exact_token__OGFR__E556K
+  - exact_token__OPTN__P25fs
+  - exact_token__PABPC1__K333fs
+  - exact_token__PBX2__Y262F
+  - exact_token__PCLO__P2699S
+  - exact_token__PCSK2__D344D
+  - exact_token__PEX1__I370fs
+  - exact_token__PIK3CA__E545A
+  - exact_token__PIK3CA__N1044K
+  - exact_token__PIK3CA__Q546P
+  - exact_token__PIK3CA__R38H
+  - exact_token__PIK3CA__Y1021C
+  - exact_token__PLEC__A4624A
+  - exact_token__PMEPA1__P208fs
+  - exact_token__RABGAP1__K929fs
+  - exact_token__RAC1__P29S
+  - exact_token__ROCK1__F121fs
+  - exact_token__RPS6KA1__P17P
+  - exact_token__SMC4__R1252*
+  - exact_token__SOD3__L71L
+  - exact_token__SPOCK1__S131S
+  - exact_token__SPTA1__A2011V
+  - exact_token__STIL__S76L
+  - exact_token__SVIL__G1862fs
+  - exact_token__TCF7L2__R482fs
+  - exact_token__TMPRSS3__R16Q
+  - exact_token__TP53__C141W
+  - exact_token__TP53__C176Y
+  - exact_token__TP53__C242F
+  - exact_token__TP53__E171*
+  - exact_token__TP53__E198*
+  - exact_token__TP53__E294*
+  - exact_token__TP53__F270S
+  - exact_token__TP53__G245V
+  - exact_token__TP53__G266R
+  - exact_token__TP53__H179Y
+  - exact_token__TP53__I195N
+  - exact_token__TP53__K132E
+  - exact_token__TP53__N239S
+  - exact_token__TP53__P151H
+  - exact_token__TP53__P278S
+  - exact_token__TP53__Q136E
+  - exact_token__TP53__Q144*
+  - exact_token__TP53__Q167*
+  - exact_token__TP53__R110L
+  - exact_token__TP53__R248L
+  - exact_token__TP53__R267P
+  - exact_token__TP53__R280T
+  - exact_token__TP53__R337C
+  - exact_token__TP53__V173L
+  - exact_token__TP63__R379C
+  - exact_token__VHL__L89H
+  - exact_token__VHL__S111N
+  - exact_token__WNK4__G607fs
+  registry:
+    recurrent_exact_token:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 314
+      feature_names_sha256: 5d3af2d233a4771a1bf4c57555e5ef3721bf236f5502b89c2d75affb78209fd1
+      fit_scope: fold_train
+      external_knowledge: null
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 301
+      feature_names_sha256: 6e2678e1180c01c29a418a26c01fee18379eecee2c2a4e5c1bdb032cdcc5d7c7
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        exact_token__APC__R1450*: hotspot__APC_1450
+        exact_token__APC__R876*: hotspot__APC_876
+        exact_token__FGFR3__S249C: hotspot__FGFR3_249
+        exact_token__IL32__DK218fs: IL32__frameshift
+        exact_token__PAX6__P375fs: PAX6__frameshift
+        exact_token__POLE__V411L: hotspot__POLE_411
+        exact_token__GNG12__T68fs: GNG12__frameshift
+        exact_token__MVK__P139fs: MVK__frameshift
+        exact_token__AKT1__E17K: hotspot__AKT1_17
+        exact_token__FOXN3__P96fs: FOXN3__frameshift
+        exact_token__EGFR__L858R: hotspot__EGFR_858
+        exact_token__EPHX1__P133fs: EPHX1__frameshift
+        exact_token__NELFE__P6fs: NELFE__frameshift
+- fold: 4
+  feature_names:
+  - exact_token__IDH1__R132H
+  - exact_token__BRAF__V600E
+  - exact_token__PIK3CA__E545K
+  - exact_token__PIK3CA__H1047R
+  - exact_token__TP53__R273C
+  - exact_token__PIK3CA__E542K
+  - exact_token__TP53__R175H
+  - exact_token__TP53__R273H
+  - exact_token__TP53__R248Q
+  - exact_token__TP53__R213*
+  - exact_token__IDH1__R132C
+  - exact_token__TP53__R248W
+  - exact_token__TP53__Y220C
+  - exact_token__TP53__R196*
+  - exact_token__TP53__R282W
+  - exact_token__CDKN2A__R80*
+  - exact_token__RPL22__K16fs
+  - exact_token__TP53__H179R
+  - exact_token__CHEK2__K373E
+  - exact_token__NCOA6__Q269Q
+  - exact_token__LRIG1__L24V
+  - exact_token__TP53__R306*
+  - exact_token__HRAS__Q61R
+  - exact_token__PIK3CA__N345K
+  - exact_token__SOWAHC__L42L
+  - exact_token__PTEN__R130Q
+  - exact_token__XYLT2__Y526fs
+  - exact_token__CMPK2__C153C
+  - exact_token__NFKB2__P423P
+  - exact_token__TP53__G245S
+  - exact_token__LRIG1__L26V
+  - exact_token__NPM1__-287fs
+  - exact_token__NPM1__WQ288fs
+  - exact_token__PIK3CA__H1047L
+  - exact_token__PIK3CA__R88Q
+  - exact_token__PTEN__R233*
+  - exact_token__TP53__H193R
+  - exact_token__NCOR2__Q499Q
+  - exact_token__PTEN__R130G
+  - exact_token__TM7SF2__P52P
+  - exact_token__TP53__C176F
+  - exact_token__TP53__I195T
+  - exact_token__BRAF__V600K
+  - exact_token__EGFR__G598V
+  - exact_token__ERBB3__V104M
+  - exact_token__FBXW7__R465H
+  - exact_token__PEX6__V133V
+  - exact_token__PLEC__L1321L
+  - exact_token__TP53__R342*
+  - exact_token__CDC27__L454fs
+  - exact_token__ERCC2__D312N
+  - exact_token__IDH2__R172K
+  - exact_token__KRT8__S31A
+  - exact_token__PTEN__R130*
+  - exact_token__PTEN__VL317fs
+  - exact_token__TP53__E285K
+  - exact_token__CDKN2A__H83Y
+  - exact_token__CDKN2A__R58*
+  - exact_token__CDKN2A__W110*
+  - exact_token__CKB__R152R
+  - exact_token__CTNNB1__S37F
+  - exact_token__EEF1B2__P45P
+  - exact_token__EEF1B2__S43G
+  - exact_token__ERBB2__S310F
+  - exact_token__FBXW7__R465C
+  - exact_token__FBXW7__R505G
+  - exact_token__IL32__DK218fs
+  - exact_token__IRS4__G591fs
+  - exact_token__MEFV__A165A
+  - exact_token__NEFH__P655P
+  - exact_token__PLEC__A2106A
+  - exact_token__POLE__P286R
+  - exact_token__PTGIR__V53V
+  - exact_token__THEM4__L17R
+  - exact_token__TP53__M237I
+  - exact_token__TP53__V157F
+  - exact_token__TP53__V216M
+  - exact_token__U2AF1__S34F
+  - exact_token__CASP5__R11fs
+  - exact_token__FBXW7__R505C
+  - exact_token__HMGB3__E192E
+  - exact_token__IDH1__R132G
+  - exact_token__PIK3CA__C420R
+  - exact_token__PIK3CA__E726K
+  - exact_token__PIK3CA__Q546R
+  - exact_token__PLEC__A2113A
+  - exact_token__PLEC__R1386Q
+  - exact_token__TP53__E286K
+  - exact_token__TP53__K132N
+  - exact_token__TP53__Q192*
+  - exact_token__TP53__R273L
+  - exact_token__UQCRFS1__S6A
+  - exact_token__ATP6V1B1__Y383fs
+  - exact_token__B2M__L13fs
+  - exact_token__BRAF__K601E
+  - exact_token__CHEK2__S372S
+  - exact_token__EGFR__A289V
+  - exact_token__GNAS__R201C
+  - exact_token__IDH2__R140Q
+  - exact_token__NF1__R2450*
+  - exact_token__NOTCH2__C19W
+  - exact_token__OGDH__I78fs
+  - exact_token__PGLS__L45L
+  - exact_token__PIK3CA__E453K
+  - exact_token__PIK3CA__M1043I
+  - exact_token__PIK3CA__M1043V
+  - exact_token__PIK3CA__Q546K
+  - exact_token__PLEC__A1697A
+  - exact_token__RAC1__P29S
+  - exact_token__SRD5A1__R30R
+  - exact_token__TP53__C238Y
+  - exact_token__TP53__H214R
+  - exact_token__TP53__R158L
+  - exact_token__TP53__R249S
+  - exact_token__TP53__S241F
+  - exact_token__TP53__S241fs
+  - exact_token__TP53__Y234C
+  - exact_token__UQCRFS1__I83V
+  - exact_token__UQCRFS1__S8S
+  - exact_token__ABCA6__L306fs
+  - exact_token__ABCC5__L1090fs
+  - exact_token__ATRX__FI2113fs
+  - exact_token__ATRX__R1426*
+  - exact_token__CADM1__T343T
+  - exact_token__CDKN2A__P114L
+  - exact_token__CRMP1__A37A
+  - exact_token__CTNNB1__S37C
+  - exact_token__GATA3__G334fs
+  - exact_token__IDH1__R132S
+  - exact_token__INMT__S212F
+  - exact_token__MAML2__Q596Q
+  - exact_token__MAP1S__S411C
+  - exact_token__MAPK1__E322K
+  - exact_token__MAPRE3__A179fs
+  - exact_token__MTOR__S2215Y
+  - exact_token__NAB2__F208L
+  - exact_token__NF1__LF1246fs
+  - exact_token__NFE2L2__R34G
+  - exact_token__NOTCH2__P6fs
+  - exact_token__NOTCH2__R5R
+  - exact_token__OGFR__S557T
+  - exact_token__PBX2__Y262F
+  - exact_token__PROCR__R98L
+  - exact_token__RRAD__A278E
+  - exact_token__RREB1__G783V
+  - exact_token__RUNX1__D96fs
+  - exact_token__SLC23A2__P411fs
+  - exact_token__SMAD2__S464*
+  - exact_token__TP53__C176Y
+  - exact_token__TP53__C238F
+  - exact_token__TP53__C275Y
+  - exact_token__TP53__E298*
+  - exact_token__TP53__G245V
+  - exact_token__TP53__H179Y
+  - exact_token__TP53__L194R
+  - exact_token__TP53__Q136E
+  - exact_token__TP53__Q317*
+  - exact_token__TP53__V272M
+  - exact_token__TP53__Y205C
+  - exact_token__TP53__Y236C
+  - exact_token__TUBA3C__H283H
+  - exact_token__ACADS__R330H
+  - exact_token__ACVR2A__K437fs
+  - exact_token__APC__R1114*
+  - exact_token__APC__R2204*
+  - exact_token__APC__R302*
+  - exact_token__AR__Q58L
+  - exact_token__ARHGAP5__E489K
+  - exact_token__ARHGAP5__V474A
+  - exact_token__CDC27__D549E
+  - exact_token__CDC27__I487V
+  - exact_token__CTCF__R448*
+  - exact_token__CTNNB1__G34R
+  - exact_token__CTNNB1__S33C
+  - exact_token__CTNNB1__S45P
+  - exact_token__E2F5__A44A
+  - exact_token__ERBB2__V842I
+  - exact_token__GNAS__R201H
+  - exact_token__HLA-A__Q78R
+  - exact_token__KLF3__I104fs
+  - exact_token__KRT15__V205I
+  - exact_token__MADCAM1__Q254P
+  - exact_token__NCR1__E42K
+  - exact_token__NFE2L2__D29H
+  - exact_token__NFE2L2__E79Q
+  - exact_token__OGFR__E556K
+  - exact_token__PABPC1__K333fs
+  - exact_token__PIK3CA__E81K
+  - exact_token__PTEN__R335*
+  - exact_token__RANBP9__P10Q
+  - exact_token__SPRR3__G73G
+  - exact_token__SRM__S34S
+  - exact_token__SVIL__G1862fs
+  - exact_token__TGIF1__P85fs
+  - exact_token__TNIP2__R73G
+  - exact_token__TP53__F212fs
+  - exact_token__TP53__G266R
+  - exact_token__TP53__Q331*
+  - exact_token__TP53__R110L
+  - exact_token__TP53__R267P
+  - exact_token__TP53__R337C
+  - exact_token__TP53__S127F
+  - exact_token__TP53__V173M
+  - exact_token__VAMP5__R8W
+  - exact_token__VHL__E189*
+  - exact_token__VHL__L116fs
+  - exact_token__VHL__S111N
+  - exact_token__VHL__S68*
+  - exact_token__WNT16__W165fs
+  - exact_token__ALDH2__L286fs
+  - exact_token__AMOT__Q394Q
+  - exact_token__APC__E1554fs
+  - exact_token__APC__R213*
+  - exact_token__APC__R564*
+  - exact_token__APOE__C130R
+  - exact_token__AVL9__G8fs
+  - exact_token__BMP2K__Q460H
+  - exact_token__CAMK4__I85I
+  - exact_token__CASP5__T68fs
+  - exact_token__CDC27__I91fs
+  - exact_token__CDKN2A__E120*
+  - exact_token__CELSR1__G615fs
+  - exact_token__COL17A1__R145*
+  - exact_token__CR1__R2194*
+  - exact_token__CTNNB1__D32G
+  - exact_token__CTNNB1__D32N
+  - exact_token__CTNNB1__S37A
+  - exact_token__CTNNB1__S45F
+  - exact_token__DLC1__S741T
+  - exact_token__DOCK2__R1357W
+  - exact_token__FGF9__F140F
+  - exact_token__GATA3__P408fs
+  - exact_token__GLI1__W272fs
+  - exact_token__GP2__S41L
+  - exact_token__GRM8__R619R
+  - exact_token__HLA-A__D54D
+  - exact_token__HLA-A__V49V
+  - exact_token__HRAS__G13R
+  - exact_token__HRAS__Q61K
+  - exact_token__IDUA__T374P
+  - exact_token__IGSF3__R660Q
+  - exact_token__IRF2__A41V
+  - exact_token__MARK3__E120K
+  - exact_token__MBOAT2__R43Q
+  - exact_token__MYH2__R1388H
+  - exact_token__MYOM1__R500*
+  - exact_token__NELFE__P6fs
+  - exact_token__NMU__A18E
+  - exact_token__NMU__A19E
+  - exact_token__NRXN2__A270fs
+  - exact_token__NUDT19__P162P
+  - exact_token__OGFR__P534P
+  - exact_token__PABPC1__T319I
+  - exact_token__PIK3CA__E545A
+  - exact_token__PIK3CA__K111E
+  - exact_token__PIK3CA__R38H
+  - exact_token__PLEC__A4624A
+  - exact_token__PLOD3__R297fs
+  - exact_token__PSPH__V116I
+  - exact_token__PTPN11__T468M
+  - exact_token__ROCK1__F121fs
+  - exact_token__RXRA__S427F
+  - exact_token__SKI__A62G
+  - exact_token__SOD3__L71L
+  - exact_token__SPRR3__G81G
+  - exact_token__SPTA1__A2011V
+  - exact_token__STAT2__P489fs
+  - exact_token__TEX15__E511K
+  - exact_token__TGFBR2__E125fs
+  - exact_token__TMPRSS3__R16Q
+  - exact_token__TP53__C135F
+  - exact_token__TP53__C141Y
+  - exact_token__TP53__D281Y
+  - exact_token__TP53__E271K
+  - exact_token__TP53__E286G
+  - exact_token__TP53__E294*
+  - exact_token__TP53__G244C
+  - exact_token__TP53__H193P
+  - exact_token__TP53__I195N
+  - exact_token__TP53__P153fs
+  - exact_token__TP53__P250L
+  - exact_token__TP53__Q144*
+  - exact_token__TP53__Q167*
+  - exact_token__TP53__R158H
+  - exact_token__TP53__R175G
+  - exact_token__TP53__R213Q
+  - exact_token__TP53__R280K
+  - exact_token__TP53__R337L
+  - exact_token__TP53__V173L
+  - exact_token__TP53__W91*
+  - exact_token__TP53__Y163C
+  - exact_token__TP63__R594*
+  - exact_token__VHL__Q73*
+  - exact_token__VHL__S65*
+  - exact_token__VHL__W88*
+  - exact_token__WNK4__G607fs
+  - exact_token__XPO1__E571K
+  - exact_token__XPO1__R749Q
+  - exact_token__XPOT__F126fs
+  registry:
+    recurrent_exact_token:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 310
+      feature_names_sha256: 825496bf3cad9578a7666e1d8cf5f00857517c3863f9f060b5f159b06442e588
+      fit_scope: fold_train
+      external_knowledge: null
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 299
+      feature_names_sha256: f1664be3142f709d6e1d04866f5d22eccee223541827f366835f6191e4b345fa
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        exact_token__APC__R1450*: hotspot__APC_1450
+        exact_token__FGFR3__S249C: hotspot__FGFR3_249
+        exact_token__APC__R876*: hotspot__APC_876
+        exact_token__AKT1__E17K: hotspot__AKT1_17
+        exact_token__FOXN3__P96fs: FOXN3__frameshift
+        exact_token__GNG12__T68fs: GNG12__frameshift
+        exact_token__MVK__P139fs: MVK__frameshift
+        exact_token__PAX6__P375fs: PAX6__frameshift
+        exact_token__POLE__V411L: hotspot__POLE_411
+        exact_token__EGFR__L858R: hotspot__EGFR_858
+        exact_token__NKD1__P286fs: NKD1__frameshift
