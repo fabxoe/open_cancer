@@ -26,6 +26,13 @@ C family 기본값은 [`abc_stack_c_families.yaml`](abc_stack_c_families.yaml)�
 주최측 허용 근거는 Issue #96의 고정 댓글과 공식 실험 config에 기록합니다. 기본
 family는 계속 꺼 두고, 공식 Experiment config에서 정확히 하나만 켭니다.
 
+동결된 조합의 단일 원본은
+[`abc_stack_feature_spec_v2.yaml`](abc_stack_feature_spec_v2.yaml)입니다. 후속
+모델 실험은 family를 다시 조합하지 않고 `v1`, `v2-performance`,
+`v2-diversity` 중 하나를 선택합니다. 선택 이름은
+`scripts/materialize_frozen_feature_spec.py`가 검증하며, 동결 base 해시가
+달라지면 실행을 차단합니다.
+
 ## Residue-position family
 
 Feature Factory v1.1은 다음 설정을 지원합니다. 실제 공식 평가에서는 새
