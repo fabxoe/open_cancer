@@ -1,0 +1,35 @@
+run_mode: experiment
+record_role: official
+slug: lightgbm_v1
+parent_experiment: EXP-094
+seed: 42
+feature_spec:
+  name: v1
+  frozen_manifest: configs/abc_stack_feature_spec_v2.yaml
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+model:
+  name: lightgbm
+  parameters:
+    n_estimators: 1200
+    learning_rate: 0.03
+    num_leaves: 31
+    max_depth: -1
+    min_child_samples: 20
+    subsample: 0.8
+    subsample_freq: 1
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    early_stopping_rounds: 60
+    n_jobs: 8
+    verbosity: -1
+    deterministic: true
+    force_col_wise: true
+training:
+  balanced_sample_weight: true
+notes: >-
+  ABC-Stack G2. Frozen Feature Spec v1 and canonical folds are held fixed while
+  the model family changes from XGBoost to LightGBM. Early stopping uses only the
+  corresponding outer-fold validation partition.

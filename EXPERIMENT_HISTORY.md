@@ -7,12 +7,12 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 30
+- 실제 실험 수: 31
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4181153080 (`EXP-096`)
+- 최고 Local OOF Macro F1: 0.4189078364 (`EXP-125`)
 - 최고 Public LB Macro F1: 0.3170803849 (`EXP-031`)
-- 최고 재현 검증 모델: `EXP-096` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-125` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-01
 
 ## 실험 요약
@@ -49,6 +49,7 @@
 | EXP-110 | COMPLETED | fabxoe | #110 | EXP-094 + fold-train 유전자 빈도 tier spectrum 40개 | 0.3963504903 | 미제출 | INFERENCE_VERIFIED | 성능·초기 blend 미채택, 저우선순위 stacking 자산 | [보고서](reports/exp110_frequency_tier_spectrum/README.md) |
 | EXP-096 | COMPLETED | fabxoe | #96 | EXP-094 + 고정 canonical pathway 변이·LoF 유전자 수 20개 | 0.4181153080 | 미제출 | INFERENCE_VERIFIED | 신규 Local 최고·v2-performance C family 채택 | [보고서](reports/exp096_fixed_pathway_burden/README.md) |
 | EXP-123 | COMPLETED | fabxoe | #123 | 동결 Feature Spec v1 + 희소 Logistic Regression | 0.3763324825 | 미제출 | INFERENCE_VERIFIED | 단독·wildcard 품질 gate 실패, 다양성만 통과해 stacking 후보 미채택 | [보고서](reports/exp123_sparse_logistic_v1/README.md) |
+| EXP-125 | COMPLETED | fabxoe | #125 | 동결 Feature Spec v1 + LightGBM | 0.4189078364 | 미제출 | INFERENCE_VERIFIED | 신규 Local 최고·품질·wildcard·다양성 gate 모두 통과 | [보고서](reports/exp125_lightgbm_v1/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -1473,5 +1474,51 @@ config 변경만으로 재실행했다(Feature Factory 코드 변경 없음).
   품질·wildcard gate를 실패했다. 라벨 불일치율 46.17%, 정오답 상관
   0.5963으로 다양성 gate는 통과했지만 현재 앙상블 후보에는 넣지 않고 참고
   자산으로만 보존한다.
+- 재현 메모: 저장 checkpoint 재추론에서 OOF·test 라벨 100%, 확률 최대 절대
+  차이 0, 제출 CSV byte-level SHA-256 일치를 확인했다.
+
+### [EXP-125] 동결 Feature Spec v1 LightGBM
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #125 / issue-125-exp-lightgbm-v1
+- 소스 commit: `8d4fe9c99e05306c691f1c4f23903066b92f7ddf`
+- 시작/종료: 2026-08-01T12:19:10.781316+00:00 /
+  2026-08-01T12:24:32.873783+00:00
+
+#### 실행
+
+- 부모: EXP-094, 동결 Feature Spec v1과 canonical 5-fold 유지
+- 유일한 모델 변경: XGBoost에서 LightGBM으로 교체
+- early stopping: outer-fold validation만 사용, patience 60
+- Config: `reproducibility/exp125_lightgbm_v1/config.resolved.yaml`
+- Metrics: `reports/exp125_lightgbm_v1/metrics.json`
+- Report: `reports/exp125_lightgbm_v1/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4102706033, 0.4263269667, 0.4099375381,
+  0.4143081706, 0.4289890827
+- OOF Macro F1: 0.4189078364
+- Fold 표준편차: 0.0081051732
+- Accuracy: 0.4142880181
+- Log Loss: 1.8227982418
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp125_lightgbm_v1/metrics.json` /
+  `reports/exp125_lightgbm_v1/README.md` /
+  `reproducibility/exp125_lightgbm_v1/`
+- 제출 후보: `submissions/exp125_lightgbm_v1.csv`
+  (SHA-256 `e76cce6d911616930570bcf0c5c1adc8adb045fbd18e3226d5378bda026d5940`,
+  DACON 미제출)
+- 결론: EXP-094 대비 OOF `+0.0020212625`, Log Loss `-0.0171389395`,
+  라벨 불일치율 23.11%로 품질·wildcard·다양성 gate를 모두 통과했다.
+  EXP-096보다도 OOF `+0.0007925284`, Log Loss `-0.0141359972`, fold
+  표준편차 `-0.0013869445`로 개선돼 신규 Local 최고이자 후속 앙상블 후보로
+  채택한다.
 - 재현 메모: 저장 checkpoint 재추론에서 OOF·test 라벨 100%, 확률 최대 절대
   차이 0, 제출 CSV byte-level SHA-256 일치를 확인했다.
