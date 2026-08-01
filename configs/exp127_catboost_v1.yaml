@@ -1,0 +1,64 @@
+run_mode: experiment
+record_role: official
+slug: catboost_v1
+parent_experiment: EXP-094
+seed: 42
+feature_spec:
+  name: v1
+  frozen_manifest: configs/abc_stack_feature_spec_v2.yaml
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+model:
+  name: catboost
+  parameters:
+    iterations: 1000
+    learning_rate: 0.05
+    depth: 8
+    l2_leaf_reg: 3.0
+    early_stopping_rounds: 50
+    task_type: GPU
+    devices: "0"
+    allow_writing_files: false
+    border_count: 32
+    bootstrap_type: Bernoulli
+    subsample: 0.8
+training:
+  balanced_sample_weight: true
+preflight:
+  attempts:
+    - source_commit: ca28d0293a045ce8cf2aacb4d17474e176f98d4f
+      parameters:
+        iterations: 1000
+        depth: 8
+      stopped_after_seconds: 1800
+      completed_folds: 0
+      reason: first fold did not complete within the fixed 30-minute compute budget
+    - source_commit: d16905d8a07f5cd714e6d32558cb9c1691f3d9c6
+      parameters:
+        iterations: 300
+        depth: 6
+      stopped_after_seconds: 1200
+      completed_folds: 0
+      reason: reducing tree count and depth alone did not remove the feature-scan bottleneck
+    - source_commit: bd5ca5aa8166cebb30925ab338a9eef463401185
+      parameters:
+        iterations: 300
+        depth: 6
+        rsm: 0.1
+        border_count: 32
+      approximate_seconds: 1200
+      completed_folds: 1
+      reason: local CPU run was paused after fold 0 to move the experiment to RunPod
+execution_target: runpod_rtx4090
+notes: >-
+  ABC-Stack G3. Frozen Feature Spec v1 and canonical folds are held fixed while
+  the model family changes from XGBoost to CatBoost. Early stopping uses only
+  the corresponding outer-fold validation partition. The planned 1,000-tree,
+  depth-8 preflight was stopped after 30 minutes without one completed fold;
+  reducing only trees and depth was also insufficient. A compute-bounded CPU run
+  completed fold 0 but was paused to move the official 5-fold execution to
+  RunPod. The official run uses a single RTX 4090 with CatBoost GPU training;
+  the CPU-only rsm bound is removed because CatBoost MultiClass GPU training
+  does not support it. GPU availability is verified by a short smoke test before
+  the clean-commit official run.

@@ -1,0 +1,161 @@
+experiment:
+  record_role: official
+  issue_number: 127
+  experiment_id: EXP-127
+  branch: issue-127-exp-catboost-v1
+  source_commit: 03af58890c1cac9d90e61430e550b7ae6cc7060d
+  dirty_worktree: false
+  started_at: '2026-08-01T14:19:39.262553+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+feature_spec:
+  name: v1
+  base_experiment: EXP-094
+  evidence_experiment: EXP-094
+  base_feature_spec_sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+  families: []
+  family_registry: {}
+  semantic_duplicates_dropped: {}
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+  source_config: configs/exp094_feature_spec_v1.yaml
+  source_config_sha256: 4282727de03bd0f31989fdcce61d65530ba69e339e6dce1fe7f72fa85ebd57c4
+  train_input_sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test_input_sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  train_shape:
+  - 6201
+  - 35119
+  test_shape:
+  - 2546
+  - 35119
+  feature_names_sha256: 8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf
+  outputs:
+    train_features:
+      path: /workspace/open_cancer/data/processed/exp127_catboost_v1_features/train_features.npz
+      sha256: dfb0b8fbade7d69c460411dfdbc5bb5fbd97eb9b5e1056dd82294135adac5c8a
+    test_features:
+      path: /workspace/open_cancer/data/processed/exp127_catboost_v1_features/test_features.npz
+      sha256: 66f0471b230d25d688b1564d5adece0077d5deaaf52c8c987e3e719491127575
+    feature_names:
+      path: /workspace/open_cancer/data/processed/exp127_catboost_v1_features/feature_names.json
+      sha256: b7464c1fd0e985e722eabd2f8becb33051879d4b4cdfd25d99cd1e6b793b98c8
+model:
+  name: catboost
+  parameters:
+    loss_function: MultiClass
+    verbose: false
+    iterations: 1000
+    learning_rate: 0.05
+    depth: 8
+    l2_leaf_reg: 3.0
+    early_stopping_rounds: 50
+    task_type: GPU
+    devices: '0'
+    allow_writing_files: false
+    border_count: 32
+    bootstrap_type: Bernoulli
+    subsample: 0.8
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+training:
+  balanced_sample_weight: true
+preflight:
+  attempts:
+  - source_commit: ca28d0293a045ce8cf2aacb4d17474e176f98d4f
+    parameters:
+      iterations: 1000
+      depth: 8
+    stopped_after_seconds: 1800
+    completed_folds: 0
+    reason: first fold did not complete within the fixed 30-minute compute budget
+  - source_commit: d16905d8a07f5cd714e6d32558cb9c1691f3d9c6
+    parameters:
+      iterations: 300
+      depth: 6
+    stopped_after_seconds: 1200
+    completed_folds: 0
+    reason: reducing tree count and depth alone did not remove the feature-scan bottleneck
+  - source_commit: bd5ca5aa8166cebb30925ab338a9eef463401185
+    parameters:
+      iterations: 300
+      depth: 6
+      rsm: 0.1
+      border_count: 32
+    approximate_seconds: 1200
+    completed_folds: 1
+    reason: local CPU run was paused after fold 0 to move the experiment to RunPod
+runtime:
+  command: uv run python scripts/run_exp127_catboost_v1.py
+  pythonhashseed: null
+  deterministic: true

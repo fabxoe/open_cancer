@@ -87,6 +87,17 @@ def replay_saved_model(
             model = lgb.Booster(model_file=str(path))
             valid_probability = np.asarray(model.predict(train_features[valid]), dtype=np.float64)
             test_probability = np.asarray(model.predict(test_features), dtype=np.float64)
+        elif model_name == "catboost":
+            from catboost import CatBoostClassifier
+
+            model = CatBoostClassifier()
+            model.load_model(str(path))
+            valid_probability = np.asarray(
+                model.predict_proba(train_features[valid]), dtype=np.float64
+            )
+            test_probability = np.asarray(
+                model.predict_proba(test_features), dtype=np.float64
+            )
         else:
             raise ValueError(f"checkpoint 재추론을 지원하지 않는 모델입니다: {model_name}")
         oof[valid] = valid_probability / valid_probability.sum(axis=1, keepdims=True)
@@ -155,6 +166,12 @@ def main(
         resolved_model_parameters = {
             "objective": "multiclass",
             "num_class": len(CLASS_LABELS),
+            **resolved_model_parameters,
+        }
+    elif model_name == "catboost":
+        resolved_model_parameters = {
+            "loss_function": "MultiClass",
+            "verbose": False,
             **resolved_model_parameters,
         }
     result = run_canonical_cv(
@@ -231,6 +248,7 @@ def main(
             "fold_seeds": [config["seed"] + fold for fold in range(5)],
         },
         "training": config["training"],
+        "preflight": config.get("preflight"),
         "runtime": {
             "command": runner_command,
             "pythonhashseed": None,

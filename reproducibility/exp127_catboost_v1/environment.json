@@ -1,0 +1,10 @@
+{
+  "python": "3.11.10",
+  "platform": "Linux-6.8.0-47-generic-x86_64-with-glibc2.35",
+  "numpy": "2.4.6",
+  "pandas": "3.0.5",
+  "scikit_learn": "1.9.0",
+  "model_library": "catboost",
+  "model_library_version": "1.2.10",
+  "uv_lock_sha256": "cea0d1a7c46efd4675ebb3982a309c56b85c793f0712ba24d04d1a7c6bd110ae"
+}
