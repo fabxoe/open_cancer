@@ -31,8 +31,10 @@ def _require(condition: bool, message: str) -> None:
 
 def _safe_pearson(left: np.ndarray, right: np.ndarray) -> float:
     """Return a defined Pearson value for identical constant vectors."""
+    if np.array_equal(left, right):
+        return 1.0
     if np.std(left) == 0 or np.std(right) == 0:
-        return 1.0 if np.array_equal(left, right) else 0.0
+        return 0.0
     return float(np.corrcoef(left, right)[0, 1])
 
 
