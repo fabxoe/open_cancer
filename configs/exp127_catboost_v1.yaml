@@ -41,11 +41,21 @@ preflight:
       stopped_after_seconds: 1200
       completed_folds: 0
       reason: reducing tree count and depth alone did not remove the feature-scan bottleneck
+    - source_commit: bd5ca5aa8166cebb30925ab338a9eef463401185
+      parameters:
+        iterations: 300
+        depth: 6
+        rsm: 0.1
+        border_count: 32
+      approximate_seconds: 1200
+      completed_folds: 1
+      reason: local CPU run was paused after fold 0 to move the experiment to RunPod
+execution_target: runpod_gpu_pending
 notes: >-
   ABC-Stack G3. Frozen Feature Spec v1 and canonical folds are held fixed while
   the model family changes from XGBoost to CatBoost. Early stopping uses only
   the corresponding outer-fold validation partition. The planned 1,000-tree,
   depth-8 preflight was stopped after 30 minutes without one completed fold;
-  reducing only trees and depth was also insufficient. The official run uses a
-  compute-bounded 300-tree, depth-6 setting with rsm 0.1, 32 borders, and
-  Bernoulli row subsampling.
+  reducing only trees and depth was also insufficient. A compute-bounded CPU run
+  completed fold 0 but was paused to move the official 5-fold execution to
+  RunPod. GPU compatibility and final parameters must be resolved before launch.
