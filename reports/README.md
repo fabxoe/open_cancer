@@ -54,12 +54,14 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 현재 장기 계획:
 
 - [Residue-position·Hotspot 개발 로드맵](plans/residue_position_hotspot_roadmap.md)
+- [ABC 신호 포트폴리오·스태킹 로드맵](plans/abc_signal_portfolio_stacking_roadmap.md)
 
 프로젝트 전체에 영향을 주는 target-independent QC와 의미 감사는
 `reports/analysis/`에 둡니다. 이는 새 실험 점수를 만드는 폴더가 아니며 실제
 입력·산출물 해시와 해석 한계를 함께 기록합니다.
 
 - [Residue-position indicator 의미 감사](analysis/residue_position_semantics_qc.md)
+- [Vera EXP-094 후속 검토](analysis/vera_exp094_followup.md)
 
 ## 역할 구분
 

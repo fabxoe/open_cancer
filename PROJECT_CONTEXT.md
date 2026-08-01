@@ -202,6 +202,14 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   유지한다.
 - Feature Spec v1을 동결한 뒤 모델 OOF 생산과 스태킹으로 전환한다. 이후 새
   family 아이디어는 v2 후보로 옮겨 현재 스태킹을 지연시키지 않는다.
+- 모델 다양화 단계에서는 동결한 Feature Spec의 해시, canonical fold, ID와
+  26개 클래스 순서를 모든 runner가 실행 전에 검증한다. 각 모델은 별도
+  Experiment Issue에서 동일한 `(6201, 26)` OOF와 `(2546, 26)` test 확률을
+  저장하고, 구현만 바꾸는 공통 runner 작업에는 EXP-ID를 만들지 않는다.
+- 스태킹은 EXP-094 대비 OOF Macro F1 하락이 `0.004` 이내인 모델 중 OOF 오류
+  상관이 `0.92` 이하이거나 예측 라벨 불일치율이 `10%` 이상인 조합이 있을 때만
+  진행한다. meta learner는 cross-fitted 예측만 사용하며, 단순 고정 blend보다
+  OOF Macro F1이 `0.002` 이상 개선되지 않으면 채택하지 않는다.
 - Public LB 또는 test 분포를 보고 파서, 유전자 그룹, hotspot이나 feature 규칙을
   수정하지 않는다.
 - train/test의 complex·위치 분포 차이는 OOD QC로만 기록하며 피처 선택,
@@ -252,9 +260,11 @@ GitHub는 폴더 안의 `README.md`를 자동으로 표시하므로 팀원이 re
 사용하는 작업은 시작할 때 이 문서, `EXPERIMENT_HISTORY.md`와 관련 로드맵을 함께
 읽는다. 로드맵은 작업 순서와 중단 조건을 관리하며, 실제 점수의 단일 원본은
 `EXPERIMENT_HISTORY.md`와 실험별 `metrics.json`이다. 로드맵에는 예상 점수나
-실행하지 않은 결과를 기록하지 않는다. 현재 residue-position·hotspot 후속 계획은
-[`reports/plans/residue_position_hotspot_roadmap.md`](reports/plans/residue_position_hotspot_roadmap.md)를
-따른다.
+실행하지 않은 결과를 기록하지 않는다. 현재 전체 실행 계획의 단일 진입점은
+[`ABC 신호 포트폴리오·스태킹 로드맵`](reports/plans/abc_signal_portfolio_stacking_roadmap.md)이다.
+완료된 residue-position·hotspot 선행 과정은
+[`reports/plans/residue_position_hotspot_roadmap.md`](reports/plans/residue_position_hotspot_roadmap.md)에
+보존한다.
 
 ### AI에 실험·제출 보고서 요청하기
 
