@@ -17,6 +17,10 @@ ABC-Stack v2 후보 family의 공통 기본값은 점수를 만들지 않는 Tas
 Experiment Issue의 `expNNN_*.yaml`에서 정확히 한 family를 켜고, resolved config에
 병합된 실제 값을 저장합니다.
 
+B family 기본값은 [`abc_stack_b_families.yaml`](abc_stack_b_families.yaml)에
+있습니다. complex morphology와 frequency-tier spectrum도 기본적으로 꺼져 있고,
+공식 실험에서는 두 family를 한꺼번에 켜지 않고 각각 단독 검증합니다.
+
 ## Residue-position family
 
 Feature Factory v1.1은 다음 설정을 지원합니다. 실제 공식 평가에서는 새

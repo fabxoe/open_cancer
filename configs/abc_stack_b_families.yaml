@@ -1,0 +1,30 @@
+# Defaults inherited by future B-family Experiment configs; not an experiment.
+base_feature_spec:
+  experiment_id: EXP-094
+  sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+
+families:
+  complex_morphology:
+    enabled: false
+    definition_version: 1.0.0
+    fit_scope: stateless
+    output_dimension: 8
+    denominator: total_mutation_tokens_or_one
+    complex_classes:
+      - multi_position_complex
+      - inframe_or_delins
+      - other_complex
+  frequency_tier_spectrum:
+    enabled: false
+    definition_version: 1.0.0
+    fit_scope: fold_train
+    tier_count: 4
+    tier_rule: mutation_presence_rank_then_gene_lexical
+    mutation_types: [missense, synonymous, nonsense, frameshift, complex]
+    values: [count, fraction_of_sample_total_tokens]
+    output_dimension: 40
+
+evaluation:
+  split: data/splits/stratified_5fold_seed42.csv
+  class_order: open_cancer.constants.CLASS_LABELS
+  required_outputs: [oof_probability, test_probability, resolved_config, metrics, artifact_manifest]
