@@ -187,6 +187,7 @@ def main() -> None:
             "record_role": config["record_role"],
             "issue_number": context.issue_number,
             "experiment_id": context.experiment_id,
+            "component_experiments": config.get("component_experiments", []),
             "branch": context.branch,
             "owner": owner,
             "source_commit": source_commit,
@@ -381,7 +382,6 @@ def main() -> None:
             "EXP-005 mutation-type features plus fixed 34 literature hotspots "
             "with reference-amino-acid matching and train-only evidence checks.",
         ),
-        "component_experiments": config.get("component_experiments", []),
     }
     write_json(metrics_path, metrics)
     validate_json_document(metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json")
