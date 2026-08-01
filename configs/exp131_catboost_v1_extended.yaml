@@ -1,0 +1,39 @@
+run_mode: experiment
+record_role: official
+slug: catboost_v1_extended
+parent_experiment: EXP-127
+seed: 42
+feature_spec:
+  name: v1
+  frozen_manifest: configs/abc_stack_feature_spec_v2.yaml
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+model:
+  name: catboost
+  parameters:
+    iterations: 2000
+    learning_rate: 0.03
+    depth: 8
+    l2_leaf_reg: 5.0
+    early_stopping_rounds: 100
+    task_type: GPU
+    devices: "0"
+    allow_writing_files: false
+    border_count: 32
+    bootstrap_type: Bernoulli
+    subsample: 0.8
+training:
+  balanced_sample_weight: true
+preflight:
+  reference_experiment: EXP-127
+  gpu: runpod_rtx4090_24gb
+  unchanged: [feature_spec, split, class_order, balanced_sample_weight, depth]
+  changed: [iterations, learning_rate, l2_leaf_reg, early_stopping_rounds]
+  disallowed: [class_weights, auto_class_weights, oversampling, depth_9_or_higher]
+notes: >-
+  EXP-127과 동일한 Feature Spec v1, canonical stratified 5-fold, 클래스 순서와
+  balanced sample weight를 유지한다. 1,000 iteration 상한에 도달한 fold가
+  대부분이었으므로 learning rate를 0.03으로 낮추고 iterations를 2,000으로
+  늘려 학습 시간 확장을 검증한다. L2 정규화는 5.0으로 고정한다. CatBoost
+  MultiClass GPU에서는 CPU preflight에 사용한 rsm을 사용하지 않는다.
