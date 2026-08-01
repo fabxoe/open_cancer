@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-110",
+  "issue_number": 110,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "1c0e835eecb5d5edbffc61c632c583395f698d1b",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp110_frequency_tier_spectrum/data_manifest.json",
+  "environment": "reproducibility/exp110_frequency_tier_spectrum/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-01T10:19:49.995276+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp110_frequency_tier_spectrum/fold_00.json",
+      "size_bytes": 12089990,
+      "sha256": "53a709971cc014324e49e765e7ea88d7670c242385a7df19119de060edbbb378",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp110_frequency_tier_spectrum/fold_01.json",
+      "size_bytes": 13757604,
+      "sha256": "68e75d998240caa658c20b5569e6f66139aba864342b4610d729f1c06be16c79",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp110_frequency_tier_spectrum/fold_02.json",
+      "size_bytes": 12661981,
+      "sha256": "6fa1f20f52ed951bb8d6b9d6869af681133cd2072b8b7cf93a3710ab5f01b672",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp110_frequency_tier_spectrum/fold_03.json",
+      "size_bytes": 11667206,
+      "sha256": "5cebe6a9925e85ab88b7f796f22dab233e58d120e93643e3874d91cc1a07b595",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp110_frequency_tier_spectrum/fold_04.json",
+      "size_bytes": 12441349,
+      "sha256": "4d6c39c516a9a2e4b0955c6f9719d17650197b8448053c3cff10283ea3881623",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp110_frequency_tier_spectrum.csv",
+      "size_bytes": 38182,
+      "sha256": "69943c81ba7bf0354e662c5a8177c2a3bbde7a370d623cfd32066d3c3558c0cc",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp110_frequency_tier_spectrum.csv",
+      "size_bytes": 2123880,
+      "sha256": "354de0e162b5760f57e6890704a17191c4869923fe67383921ce4dd3f2ec28c8",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp110_frequency_tier_spectrum_test_proba.csv",
+      "size_bytes": 832941,
+      "sha256": "f0bb549a7d93f5ccf980d5c1fd8b290506fb4c996fada0531395d808899d7b72",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp110_frequency_tier_spectrum/metrics.json",
+      "size_bytes": 11313,
+      "sha256": "f6adcf3ec3bef6e2e9aa579a8b72993958238b8617a811da4f155ee220c5b241",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp110_frequency_tier_spectrum/config.resolved.yaml",
+      "size_bytes": 28731,
+      "sha256": "e5ad0d94180521e332e9d6c7cec324688ddce45d7866c391b538d10017500a52",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
