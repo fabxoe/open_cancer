@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 34
+- 실제 실험 수: 35
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -53,6 +53,7 @@
 | EXP-127 | COMPLETED | fabxoe | #127 | 동결 Feature Spec v1 + CatBoost GPU | 0.4194572294 | 0.3014741179 | INFERENCE_VERIFIED | Local 최고지만 Public 하락, 단독 후보 제외·diversity 자산 | [보고서](reports/exp127_catboost_v1/README.md) |
 | EXP-131 | COMPLETED | fabxoe | #131 | EXP-127 CatBoost v1 extended training | 0.4222392962 | 미제출 | INFERENCE_VERIFIED | OOF는 개선했지만 fold·Log Loss 악화, 추가 CatBoost iteration 확장 중단 | [보고서](reports/exp131_catboost_v1_extended/README.md) |
 | EXP-135 | COMPLETED | fabxoe | #135 | EXP-094 + EXP-125 fixed 0.5/0.5 probability blend | 0.4201772665 | 미제출 | INFERENCE_VERIFIED | Log Loss는 개선했지만 EXP-131 단독 F1·fold gate를 넘지 못해 제출·추가 blend 보류 | [보고서](reports/exp135_fixed_probability_blend/README.md) |
+| EXP-137 | COMPLETED | fabxoe | #137 | EXP-094 + EXP-125 leakage-safe cross-fitted Logistic stacking | 0.4068626451 | 미제출 | INFERENCE_VERIFIED | 소수 클래스 F1 붕괴·최고 단일 대비 -0.0153766511로 stack 기각 | [보고서](reports/exp137_cross_fitted_stacking/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -1658,3 +1659,30 @@ Log Loss가 `-0.014454` 개선됐지만, EXP-131 최고 단일 모델보다 Macr
 `-0.0020620298` 낮고 fold 표준편차가 더 크다. G5 채택 기준을 충족하지 못해
 리더보드 제출과 추가 blend 탐색은 보류한다. OOF·test 확률과 제출 CSV의
 재생성 해시는 일치했다.
+
+### [EXP-137] EXP-094 + EXP-125 leakage-safe cross-fitted Logistic stacking
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #137 / issue-137-exp-cross-fitted-stacking
+- Config: `reproducibility/exp137_cross_fitted_stacking/config.resolved.yaml`
+- Metrics: `reports/exp137_cross_fitted_stacking/metrics.json`
+
+#### 실행과 결과
+
+- 두 부모의 26개 확률을 연결한 52차원 입력을 사용했다.
+- 각 outer fold의 meta learner는 해당 검증 fold를 제외한 네 fold로만 학습했다.
+- 설정: multinomial Logistic Regression, `C=0.2`, `max_iter=1000`, `class_weight=None`.
+- OOF Macro F1: `0.4068626451`
+- Fold 표준편차: `0.0059257501`
+- Accuracy: `0.4650862764`
+- Log Loss: `1.8272781305`
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 판단
+
+Accuracy와 fold 표준편차는 개선됐지만 Macro F1이 EXP-131보다 `-0.0153766511`
+하락했고 DLBC·PAAD·SARC 등 소수 클래스 F1이 붕괴했다. G6의 채택 기준인
+최고 단일 또는 고정 blend 대비 `+0.002`를 충족하지 못하므로 stack은 기각하며,
+추가 meta learner·C 탐색은 중단한다.

@@ -52,8 +52,8 @@ EXP-094는 Feature Spec v1으로 보존합니다. 이후 family는 v2 후보로�
 | G3 | CatBoost 공식 5-fold | #127 | EXP-127 | - | PAUSED_RUNPOD | 로컬 CPU fold당 약 19분·1/5 후 중단 | RunPod GPU 설정 검증 후 전체 재실행 |
 | G3-1 | CatBoost v1 extended training | #131 | EXP-131 | #132 | COMPLETED | OOF 0.4222392962로 개선했지만 fold·Log Loss 악화, 추가 iteration 확장 중단 | G4 감사 완료 |
 | G4 | OOF 다양성·확률 품질 감사 | #133 | explore | #134 | COMPLETED | EXP-125만 품질·다양성 gate 통과, EXP-127·131은 Log Loss gate 실패 | EXP-135 결과 반영 |
-| G5 | 고정 가중 확률 blend | #135 | EXP-135 | #136 | PR_OPEN | Log Loss는 개선했지만 EXP-131 대비 Macro F1·fold gate 실패 | PR 병합 후 G6 여부 재검토 |
-| G6 | cross-fitted stacking | 미발급 | 미발급 | - | PLANNED | blend보다 추가 개선 시에만 채택 | G5 결과 대기 |
+| G5 | 고정 가중 확률 blend | #135 | EXP-135 | #136 | COMPLETED | Log Loss는 개선했지만 EXP-131 대비 Macro F1·fold gate 실패 | G6 결과 반영 |
+| G6 | cross-fitted stacking | #137 | EXP-137 | 미발급 | PR_OPEN | 소수 클래스 F1 붕괴·최고 단일 대비 -0.0153766511로 기각 | 추가 meta learner 탐색 중단 |
 | G7 | 최종 후보 재현·제출 준비 | 미발급 | 해당 없음 | - | PLANNED | 독립 팀원 TRAINING_VERIFIED | 후보 동결 대기 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`를 사용하고,

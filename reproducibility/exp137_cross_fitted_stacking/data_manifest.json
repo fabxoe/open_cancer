@@ -1,0 +1,40 @@
+{
+  "verified_at": "2026-08-01T17:38:28.104917+00:00",
+  "files": [
+    {
+      "path": "data/splits/stratified_5fold_seed42.csv",
+      "size_bytes": 80621,
+      "sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf"
+    },
+    {
+      "path": "data/raw/test.csv",
+      "size_bytes": 35068585,
+      "sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+    },
+    {
+      "path": "data/raw/sample_submission.csv",
+      "size_bytes": 35656,
+      "sha256": "1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84"
+    },
+    {
+      "path": "oof/exp094_feature_spec_v1.csv",
+      "size_bytes": 2129760,
+      "sha256": "c2b9e0b8e6548a89a9f5d4aac71fae4c9b301983761d1a0b3458a0ee0b9d1aad"
+    },
+    {
+      "path": "preds/exp094_feature_spec_v1_test_proba.csv",
+      "size_bytes": 835115,
+      "sha256": "63f8927a17ff3b952167d2844aef79d6e6b632c552f5aab45503105110b53e5d"
+    },
+    {
+      "path": "oof/exp125_lightgbm_v1.csv",
+      "size_bytes": 3534317,
+      "sha256": "80344a39218cd892374beb3b60e4b061db5fc1cb06a2a9b036614a478e006761"
+    },
+    {
+      "path": "preds/exp125_lightgbm_v1_test_proba.csv",
+      "size_bytes": 1409809,
+      "sha256": "278aba6177aa5f214236f551fecaecc79c4a6ba36e07a0cc9b4f3d8f7fbe41aa"
+    }
+  ]
+}
