@@ -92,7 +92,11 @@ def write_json(path: Path, value: dict[str, Any]) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def main(config_override: Path | None = None) -> None:
+def main(
+    config_override: Path | None = None,
+    *,
+    fold_feature_builder: Any | None = None,
+) -> None:
     args = parse_args() if config_override is None else None
     started_at = datetime.now(timezone.utc)
     start_time = time.perf_counter()
@@ -172,6 +176,9 @@ def main(config_override: Path | None = None) -> None:
 
     x_all = sparse.load_npz(feature_dir / "train_features.npz")
     x_test = sparse.load_npz(feature_dir / "test_features.npz")
+    all_feature_names = tuple(
+        json.loads((feature_dir / "feature_names.json").read_text(encoding="utf-8"))
+    )
     feature_train_ids = pd.read_csv(base_dir / "train_ids.csv", dtype=str)["ID"]
     feature_test_ids = pd.read_csv(base_dir / "test_ids.csv", dtype=str)["ID"]
     if not feature_train_ids.equals(train["ID"]) or not feature_test_ids.equals(test_meta["ID"]):
@@ -264,6 +271,8 @@ def main(config_override: Path | None = None) -> None:
     oof_proba = np.full((len(train), len(CLASS_LABELS)), np.nan, dtype=np.float32)
     test_proba = np.zeros((len(test_meta), len(CLASS_LABELS)), dtype=np.float32)
     fold_metrics: list[dict[str, Any]] = []
+    fold_test_matrices: list[sparse.csr_matrix] = []
+    fold_feature_records: list[dict[str, Any]] = []
 
     for fold in range(n_splits):
         valid_mask = train["fold"].eq(fold).to_numpy()
@@ -271,6 +280,37 @@ def main(config_override: Path | None = None) -> None:
         valid_indices = np.flatnonzero(valid_mask)
         y_train = y[train_indices]
         y_valid = y[valid_indices]
+        x_train_fold = x_all[train_indices]
+        x_valid_fold = x_all[valid_indices]
+        x_test_fold = x_test
+        if fold_feature_builder is not None:
+            extra = fold_feature_builder(
+                fold=fold,
+                train_indices=train_indices,
+                valid_indices=valid_indices,
+                base_train=x_train_fold,
+                base_validation=x_valid_fold,
+                base_test=x_test_fold,
+                base_feature_names=all_feature_names,
+                target=y_train,
+            )
+            x_train_fold = sparse.hstack(
+                [x_train_fold, extra.train], format="csr", dtype=np.float32
+            )
+            x_valid_fold = sparse.hstack(
+                [x_valid_fold, extra.validation], format="csr", dtype=np.float32
+            )
+            x_test_fold = sparse.hstack(
+                [x_test_fold, extra.test], format="csr", dtype=np.float32
+            )
+            fold_test_matrices.append(x_test_fold)
+            fold_feature_records.append(
+                {
+                    "fold": fold,
+                    "feature_names": list(extra.feature_names),
+                    "registry": extra.registry,
+                }
+            )
         sample_weight = (
             compute_sample_weight(class_weight="balanced", y=y_train)
             if config["training"]["balanced_sample_weight"]
@@ -281,14 +321,14 @@ def main(config_override: Path | None = None) -> None:
             random_state=config["seed"] + fold,
         )
         model.fit(
-            x_all[train_indices],
+            x_train_fold,
             y_train,
             sample_weight=sample_weight,
-            eval_set=[(x_all[valid_indices], y_valid)],
+            eval_set=[(x_valid_fold, y_valid)],
             verbose=False,
         )
-        valid_proba = model.predict_proba(x_all[valid_indices]).astype(np.float32)
-        fold_test_proba = model.predict_proba(x_test).astype(np.float32)
+        valid_proba = model.predict_proba(x_valid_fold).astype(np.float32)
+        fold_test_proba = model.predict_proba(x_test_fold).astype(np.float32)
         oof_proba[valid_indices] = valid_proba
         test_proba += fold_test_proba / n_splits
         valid_pred = valid_proba.argmax(axis=1)
@@ -306,6 +346,12 @@ def main(config_override: Path | None = None) -> None:
 
     if np.isnan(oof_proba).any():
         raise ValueError("OOF 확률에 채워지지 않은 값이 있습니다.")
+    if fold_feature_builder is not None:
+        resolved_config["fold_train_features"] = fold_feature_records
+        resolved_config_path.write_text(
+            yaml.safe_dump(resolved_config, allow_unicode=True, sort_keys=False),
+            encoding="utf-8",
+        )
 
     oof_pred = oof_proba.argmax(axis=1)
     test_pred = test_proba.argmax(axis=1)
@@ -417,6 +463,9 @@ def main(config_override: Path | None = None) -> None:
         test_ids=test_meta["ID"],
         test_probability_path=test_probability_path,
         submission_path=submission_path,
+        fold_test_features=(
+            fold_test_matrices if fold_feature_builder is not None else None
+        ),
     )
     print(
         json.dumps(
