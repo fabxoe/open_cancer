@@ -1,8 +1,10 @@
-# Feature Spec v1 모델 다양화·스태킹 로드맵
+# ABC 신호 포트폴리오·스태킹 로드맵
 
-> 이 문서는 EXP-094로 동결한 Feature Spec v1의 모델 다양화, 앙상블과 최종
-> 재현 검증 순서를 관리합니다. 실제 점수는 `EXPERIMENT_HISTORY.md`와 각 실험의
-> `metrics.json`만을 원본으로 사용하며 예상 점수나 가상 결과를 기록하지 않습니다.
+> 영문명 **ABC Signal Portfolio & Stacking Roadmap**, 약칭 **ABC-Stack
+> Roadmap**. 이 문서는 Issue #98에서 중반 A/B/C 파생변수 탐색부터 후반 모델
+> 다양화, 앙상블과 최종 재현 검증까지 관리하는 단일 실행 계획입니다. 실제 점수는
+> `EXPERIMENT_HISTORY.md`와 각 실험의 `metrics.json`만을 원본으로 사용하며
+> 예상 점수나 가상 결과를 기록하지 않습니다.
 
 ## 현재 기준
 
@@ -14,16 +16,38 @@
 - 기준 재현 상태: `INFERENCE_VERIFIED`
 - Public LB: 미제출
 - 고정 평가: canonical 5-fold, 고정 26개 클래스 순서, Macro F1
-- 다음 행동: 모델 공통 runner·확률 산출물 계약을 일반 Task로 구현
+- 파생변수 탐색 동결: 2026-08-03 저녁
+- 모델·가중치 동결: 2026-08-06 저녁
+- 2026-08-07: 재현·Release·최종 제출 복구 버퍼
+- 다음 행동: 공통 Feature Factory·모델 산출물 계약을 새 일반 Task로 구현
+
+## 이름과 목표
+
+- **A:** 사건·위치·hotspot 신호
+- **B:** 변이 스펙트럼·과정 proxy
+- **C:** 기능·pathway 그룹 신호
+- **Signal Portfolio:** 단일 점수로 조기에 폐기하지 않고 모든 공식 OOF·test
+  확률을 후반 앙상블 자산으로 보존
+- **Stacking:** 서로 다른 신호와 모델의 장점을 누수 없는 cross-fitting으로 결합
+
+EXP-094는 Feature Spec v1으로 보존합니다. 이후 family는 v2 후보로만 추가하며,
+과거 EXP-033·069가 아니라 EXP-094에 정확히 한 family만 추가한 canonical
+5-fold ablation으로 비교합니다. 8월 3일 저녁 이후 신규 family 탐색을 멈추고
+모델 다양화로 전환합니다.
 
 ## 상태표
 
 | 단계 | 작업 | Issue | EXP | PR | 상태 | 판단 기준 | 다음 행동 |
 |---|---|---:|---|---:|---|---|---|
-| G0 | 공통 입력·산출물 QC와 runner 계약 | #98 | 해당 없음 | 미발급 | IN_PROGRESS | Feature Spec·fold·클래스 해시 강제 | 구현·테스트 |
-| G1 | 희소 선형 모델 공식 5-fold | 미발급 | 미발급 | - | PLANNED | 낮은 상관의 보완 후보 확인 | G0 병합 대기 |
+| P0 | ABC-Stack 계획 동결 | #98 | 해당 없음 | #99 | PR_OPEN | 공식 이름·경로·일정 확정 | 리뷰·병합 |
+| G0 | 공통 Feature Factory·모델 산출물 계약 | 미발급 | 해당 없음 | 미발급 | PLANNED | 기존 EXP-094 불변·공통 assert | P0 병합 후 Task 생성 |
+| A | exact-token·amino-acid family | 미발급 | 미발급 | - | PLANNED | 두 공식 OOF·test 확률 보존 | G0 병합 대기 |
+| B | morphology·frequency-tier spectrum | 미발급 | 미발급 | - | PLANNED | 두 공식 OOF·test 확률 보존 | G0 병합 대기 |
+| C | pathway·functional-role burden | 미발급 | 미발급 | - | PLANNED | 두 공식 OOF·test 확률 보존 | G0 병합 대기 |
+| F | v2-performance·v2-diversity 동결 | 미발급 | 미발급 | - | PLANNED | 8월 3일 저녁 사양 고정 | A/B/C 완료 대기 |
+| G1 | 희소 선형 모델 공식 5-fold | 미발급 | 미발급 | - | PLANNED | 낮은 상관의 보완 후보 확인 | F 동결 대기 |
 | G2 | LightGBM 공식 5-fold | 미발급 | 미발급 | - | PLANNED | 단일 모델 품질·다양성 측정 | G1과 독립 실행 |
-| G3 | CatBoost 공식 5-fold | 미발급 | 미발급 | - | PLANNED | CSR 호환성과 추가 다양성 확인 | G2 결과 후 필요 시 실행 |
+| G3 | CatBoost 공식 5-fold | 미발급 | 미발급 | - | PLANNED | CSR 호환성과 추가 다양성 확인 | G1·G2 감사 후 실행 |
 | G4 | OOF 다양성·확률 품질 감사 | 미발급 | explore | - | PLANNED | 오류·확률 상관과 클래스 보완성 | 후보 확정 |
 | G5 | 고정 가중 확률 blend | 미발급 | 미발급 | - | PLANNED | 사전 고정 가중치로 개선 | G4 통과 대기 |
 | G6 | cross-fitted stacking | 미발급 | 미발급 | - | PLANNED | blend보다 추가 개선 시에만 채택 | G5 결과 대기 |
@@ -31,6 +55,85 @@
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`를 사용하고,
 중단하면 `BLOCKED` 또는 `REJECTED`로 기록합니다.
+
+## A/B/C 구현·실험 포트폴리오
+
+공통 구현은 일반 Task Issue, 실제 canonical 5-fold는 별도 Experiment Issue로
+분리합니다. smoke는 실행과 메모리 확인에만 사용하고 성능 탈락 근거로 쓰지
+않습니다.
+
+### A — 사건·위치·hotspot
+
+`A-1 recurrent exact-token`은 `(gene, raw token)`을 fold-train에서만 집계하며
+최소 support 5, 최대 512개, 동률은 `(gene, token)` 사전순으로 고정합니다.
+validation/test의 미등록 token은 OOV로 처리합니다.
+
+`A-2 amino-acid change`는 단순 missense를 보존적/비보존적, charge·polarity
+변화와 stop gain으로 고정 분류합니다. 표준 아미노산 물성표의 출처·버전·해시를
+기록하고 기존 missense·nonsense와 같은 열은 추가하지 않습니다.
+
+### B — 변이 스펙트럼·과정 proxy
+
+Vera의 원 제안 중 전역 mutation-type count·fraction은 Factory와
+EXP-029·033·043·045·050에서 이미 검증했으므로 반복하지 않습니다. 상위 50개
+유전자×type도 EXP-005와 중복되고 fold별 의미가 달라져 제외합니다. 실제 COSMIC
+signature로 오해하지 않도록 `protein-level functional mutation spectrum proxy`로
+명명합니다.
+
+`B-1 complex morphology`는 기존 `complex`를 `multi_position_complex`,
+`inframe_or_delins`, `other_complex`로 고정 분리하고 신규 subtype count·fraction,
+truncating fraction과 안정화된 nonsynonymous/synonymous ratio만 추가합니다.
+semantic-equivalence 검사를 거쳐 약 8~12차원으로 제한합니다.
+
+`B-2 frequency-tier spectrum`은 outer fold-train 유전자 변이 빈도의 quartile
+4개 tier×5 mutation type count·fraction을 만듭니다. 출력 열은 고정하고 유전자
+tier 소속만 fold별 fit하며 최대 40차원입니다.
+
+### C — 기능·pathway 그룹
+
+`C-1 mutation-only fixed pathway burden`은 TCGA PanCancer Atlas의 Cell cycle,
+Hippo, MYC, Notch, NRF2, PI3K/AKT, RTK-RAS, TGFβ, TP53, WNT/β-catenin 10개
+고정 pathway에서 `mutated_gene_count`, `lof_gene_count`만 계산해 총 20차원으로
+제한합니다. boolean, token count와 weight는 제외합니다.
+
+`C-2 functional-role burden`은 oncogene, tumor suppressor, DNA repair 등 소수
+고정 그룹의 mutated-gene·LOF-gene count를 계산합니다. EXP-021과 동일성·상관을
+먼저 검사하며 PPI, embedding과 외부 연속 weight는 사용하지 않습니다.
+
+### 도메인 지식과 누수 체크리스트
+
+- 대회 데이터의 관측 빈도로 찾는 hotspot·vocabulary는 fold-train에서만 fit
+- 실행 전에 문헌으로 고정한 hotspot은 동일 목록을 사용하되 OOF·test·Public
+  LB를 보고 추가·삭제 금지
+- 외부 지식은 그룹·관계·계산 규칙만 정의하고 환자별 값은 제공 CSV에서 계산
+- 고정 목록도 출처, Supplementary Table, 버전, 다운로드 일자, 라이선스,
+  원본·정제 SHA-256과 4,384개 유전자 교집합 기록
+- 22만 개 전체 exact-token one-hot 금지; vocabulary 상한·support·bin은 실행
+  전에 config로 고정
+
+### 외부 지식 경계
+
+외부 TCGA/ICGC 환자 행, 외부 환자별 multi-omics·signature exposure·예측값,
+외부 분류기와 환자 embedding은 사용하지 않습니다. pretrained gene/PPI embedding,
+TCGA 학습 중요도, COSMIC 연속 weight와 외부 driver 확률은 주최측의 명시적 허용
+전까지 보류합니다. 문헌 기반 hotspot·driver·pathway membership과 일반 분류
+규칙도 자동 허용으로 간주하지 않고 provenance와 규정 근거를 남깁니다.
+
+문헌은 왜 피처를 시험하는지 설명할 뿐 이 대회에서의 효과, 최적 weight 또는 규정
+허용을 증명하지 않습니다. 채택은 canonical OOF로 결정합니다.
+
+## 8월 3일 탐색 동결과 보존 등급
+
+- `PERFORMANCE`: EXP-094 대비 OOF `+0.001` 이상, fold 표준편차 악화
+  `0.002` 미만, log loss·저빈도 클래스 다수 붕괴 없음
+- `DIVERSITY`: EXP-094 대비 OOF `-0.010` 이내이며 라벨 불일치 10% 이상,
+  낮은 오류 상관, 저빈도 클래스 F1 `+0.015` 이상 또는 반복 오류 다수 보완
+- `ARCHIVE`: 두 gate를 통과하지 못해도 실제 OOF·test 확률과 보고서·manifest 보존
+
+8월 3일 저녁 EXP-094 v1, PERFORMANCE family의 사전 정의 union인
+v2-performance, 가장 낮은 오류 상관 또는 가장 강한 저빈도 클래스 보완 family
+하나인 v2-diversity를 고정합니다. 동일 family의 세부 파라미터 반복 탐색은 하지
+않고 공식 조합은 두 v2 사양으로 제한합니다.
 
 ## G0 — 공통 계약
 
@@ -53,6 +156,19 @@ History에 하이퍼파라미터를 다시 옮겨 적지 않습니다. 피처 �
 LightGBM, CatBoost, 희소 선형 모델은 각각 별도 Experiment Issue와 EXP-ID로
 실행합니다. 한 모델의 결과를 보고 다른 모델의 피처나 fold를 바꾸지 않습니다.
 
+| 모델 | v1 | v2-performance | v2-diversity |
+|---|---|---|---|
+| XGBoost | 기존 EXP-094 | 실행 | 실행 |
+| 희소 Logistic Regression | 실행 | 실행 | 생략 |
+| LightGBM | 실행 | 실행 | 실행 |
+| CatBoost | 실행 | PERFORMANCE·DIVERSITY 중 유망한 하나 | 생략 |
+
+첫 설정은 Logistic Regression `saga`·L2·`C=1`·`max_iter=2000`, LightGBM
+multiclass·1,000 trees·learning rate 0.05·31 leaves·feature/bagging 0.8·early
+stopping 50, CatBoost MultiClass·1,000 iterations·depth 8·learning rate
+0.05·L2 3·early stopping 50으로 고정합니다. XGBoost는 EXP-094 설정을
+유지합니다. 모두 balanced class weight 정책을 우선합니다.
+
 각 모델 보고서에는 다음을 기록합니다.
 
 - 전체·fold별 Macro F1, fold 표준편차, accuracy, log loss
@@ -61,11 +177,11 @@ LightGBM, CatBoost, 희소 선형 모델은 각각 별도 Experiment Issue와 EX
 - EXP-094와 OOF 라벨 일치율, 오류 상관, 확률 상관
 - checkpoint 기반 `INFERENCE_VERIFIED`
 
-단일 모델은 EXP-094보다 낮다는 이유만으로 즉시 폐기하지 않습니다. 다만 OOF
-Macro F1이 `0.4128865739`보다 낮아 기준 대비 `-0.004`를 넘으면 앙상블 후보에서
-제외합니다. 예외는 G4에서 특정 클래스의 반복 오류를 명확히 보완하고 사전 고정
-blend가 개선되는 경우뿐입니다. 최선 단일 모델 대비 log loss가 `0.01` 이상
-악화된 모델도 확률 앙상블 후보에서 제외합니다.
+단일 모델은 EXP-094보다 낮다는 이유만으로 즉시 폐기하지 않습니다. 기본 앙상블
+품질 하한은 `-0.004`지만 최대 한 개 wildcard는 `-0.010`까지 허용합니다.
+wildcard는 라벨 불일치 12% 이상 또는 명확한 저빈도 클래스 개선을 증명해야
+합니다. 최선 단일 모델 대비 log loss가 `0.01` 이상 악화된 모델은 확률
+앙상블 후보에서 제외합니다.
 
 클래스 가중치는 모델별 기본 비교에서 EXP-094와 같은 정책을 우선 사용합니다.
 새 가중치, oversampling이나 threshold는 별도 Experiment Issue로 분리하고 outer
@@ -98,6 +214,8 @@ blend만 유지합니다.
 낮은 품질 통과 모델의 `0.5/0.5` 평균으로 고정합니다. OOF나 Public LB를 본 뒤
 가중치를 미세 조정하지 않습니다. 다른 가중치는 별도 Experiment Issue와 사전
 명시된 후보 집합이 필요합니다.
+
+세 모델 평균은 사전 고정 `1/3`씩 한 번만 비교합니다.
 
 채택 조건은 최고 단일 모델 대비 다음을 모두 만족하는 것입니다.
 
@@ -148,25 +266,12 @@ blend만 유지합니다.
 - 모델 다양성 gate 실패 시 stacking 중단
 - 최종 후보가 정해지면 Feature Spec v1과 모델 목록을 동결
 
-## Feature Spec v2 후보의 순서
+## Feature Spec v2 운영 원칙
 
-Vera의 기존 제안인 B-1 functional mutation spectrum과 C-1 고정 기능·pathway
-group burden은 Feature Spec v1에 다시 넣지 않습니다. 모델 다양화와 stacking 가능성을
-먼저 확인한 뒤 계산 예산이 남을 때만 각각 별도 v2 Experiment Issue에서 단 한 번
-단일 ablation으로 평가합니다.
-
-- B-1: 제공 CSV에서 계산한 저차원 mutation-type count·fraction만 사용합니다.
-  EXP-094 대비 OOF Macro F1 `+0.001` 미만이거나 저빈도 클래스 평균 F1이
-  악화되면 즉시 중단합니다.
-- C-1은 비용과 위험이 낮은 순서로 진행합니다.
-  1. `C-1a`: 소수의 고정 driver·기능 유전자 그룹 burden
-  2. `C-1b`: 고정 pathway·hallmark gene-set burden
-  3. `C-1c`: PPI 정적 요약 — C-1a/b가 유효할 때만 검토
-  각 외부 그룹은 출처·버전·라이선스·해시를 먼저 문서화하고 대회 규정상 허용
-  여부가 분명할 때만 실행합니다. EXP-094 대비 `+0.002` 이상이 아니면 다음
-  C단계로 확장하지 않습니다.
-- B-1/C-1 결과를 보고 Feature Spec v1을 수정하지 않습니다. 채택 시에도 v2로
-  별도 동결하고 v1 모델과의 OOF 다양성을 비교합니다.
+A/B/C family는 8월 3일까지 각각 독립 Experiment Issue에서 단 한 번씩 공식
+ablation합니다. 결과를 보고 Feature Spec v1을 수정하지 않으며 PERFORMANCE와
+DIVERSITY 후보를 v2로 별도 동결합니다. PPI·외부 embedding·고자유도 signature
+extraction은 이 중반 로드맵에서 제외합니다.
 
 과거 A/B/C 적용 현황과 분류 근거는
 [Vera EXP-094 후속 검토의 저장소 검증 매핑](../analysis/vera_exp094_followup.md#저장소-검증-기준-abc-매핑)을
@@ -185,7 +290,7 @@ pathway·hallmark·PPI는 아직 미착수라는 점입니다.
 - 오류 상관 `0.92` 이하 또는 라벨 불일치 `10%` 이상의 다양성 gate
 - 최선 단일 모델보다 log loss `+0.01` 이상 악화된 확률 모델 제외
 - calibration은 최종 후보에서만 검토
-- B-1/C-1은 모델 다양화 이후 예산이 남을 때 v2 단일 ablation으로 제한
+- B-1/C-1은 기존 중복을 제거한 저차원 v2 단일 ablation으로 제한
 
 Vera는 base OOF 전체로 meta learner를 학습하는 표준 test 생성 절차를 설명했지만,
 그 방식의 학습 점수는 meta-level in-sample입니다. 저장소는 더 엄격하게 meta
@@ -201,6 +306,9 @@ learner 자체도 canonical fold로 cross-fitting하여 stack OOF를 평가합�
 | 2026-08-01 | EXP-094를 Feature Spec v1과 XGBoost 기준으로 동결 | OOF 0.4168865739, 부모 대비 개선, INFERENCE_VERIFIED |
 | 2026-08-01 | 단일 모델 → 다양성 감사 → 고정 blend → stacking 순서 확정 | 복잡한 앙상블 전에 독립 확률 품질과 보완성을 검증하기 위함 |
 | 2026-08-01 | Vera EXP-094 후속 검토로 모델 품질·다양성 gate 강화 | 품질 하한 -0.004, 오류 상관 0.92 또는 라벨 불일치 10%, log loss 악화 0.01 적용 |
+| 2026-08-01 | ABC-Stack으로 확장하고 8월 3일까지 세 family 작업선을 병렬화 | 단일 점수로 조기 포기하지 않고 후반 앙상블 신호 포트폴리오 확보 |
+| 2026-08-01 | B-1 morphology·C-1 mutation-only pathway로 수정 | 기존 피처 중복, multi-omics·외부 weight와 과도한 자유도 방지 |
+| 2026-08-01 | PERFORMANCE·DIVERSITY·ARCHIVE 등급 도입 | 단독 점수가 낮아도 보완 OOF 자산을 보존 |
 
 ## 연결 문서
 

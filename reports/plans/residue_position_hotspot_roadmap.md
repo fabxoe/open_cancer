@@ -237,7 +237,7 @@ Stacking은 다음을 모두 만족할 때만 진행합니다.
 `TRAINING_VERIFIED`까지 검증합니다.
 
 세부 실행 순서, 확률 산출물 계약, 다양성 gate와 계산·제출 예산은
-[Feature Spec v1 모델 다양화·스태킹 로드맵](feature_spec_v1_model_diversity_roadmap.md)에서
+[ABC 신호 포트폴리오·스태킹 로드맵](abc_signal_portfolio_stacking_roadmap.md)에서
 관리합니다. 이 문서는 residue-position·hotspot family의 완료 근거만 유지합니다.
 
 ## 단계별 갱신 규칙

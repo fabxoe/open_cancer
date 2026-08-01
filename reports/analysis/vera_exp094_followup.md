@@ -122,3 +122,8 @@ History·config·보고서로 보정한 저장소 기준 해석입니다.
 7. gate 통과 시 meta-level cross-fitted stacking 1개
 8. 최종 후보 최대 2개를 다른 팀원이 `TRAINING_VERIFIED`
 9. 예산이 남을 때만 B-1, 이후 규정 확인된 C-1을 v2로 평가
+
+이후 팀 결정으로 중반 A/B/C 신호 탐색과 후반 모델 다양화를
+[ABC 신호 포트폴리오·스태킹 로드맵](../plans/abc_signal_portfolio_stacking_roadmap.md)으로
+통합했습니다. 확정 family, 외부 지식 경계, 탐색 동결일과 앙상블 gate는 해당
+문서를 단일 원본으로 사용합니다.

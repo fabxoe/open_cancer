@@ -54,7 +54,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 현재 장기 계획:
 
 - [Residue-position·Hotspot 개발 로드맵](plans/residue_position_hotspot_roadmap.md)
-- [Feature Spec v1 모델 다양화·스태킹 로드맵](plans/feature_spec_v1_model_diversity_roadmap.md)
+- [ABC 신호 포트폴리오·스태킹 로드맵](plans/abc_signal_portfolio_stacking_roadmap.md)
 
 프로젝트 전체에 영향을 주는 target-independent QC와 의미 감사는
 `reports/analysis/`에 둡니다. 이는 새 실험 점수를 만드는 폴더가 아니며 실제

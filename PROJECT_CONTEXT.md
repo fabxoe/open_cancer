@@ -260,9 +260,11 @@ GitHub는 폴더 안의 `README.md`를 자동으로 표시하므로 팀원이 re
 사용하는 작업은 시작할 때 이 문서, `EXPERIMENT_HISTORY.md`와 관련 로드맵을 함께
 읽는다. 로드맵은 작업 순서와 중단 조건을 관리하며, 실제 점수의 단일 원본은
 `EXPERIMENT_HISTORY.md`와 실험별 `metrics.json`이다. 로드맵에는 예상 점수나
-실행하지 않은 결과를 기록하지 않는다. 현재 residue-position·hotspot 후속 계획은
-[`reports/plans/residue_position_hotspot_roadmap.md`](reports/plans/residue_position_hotspot_roadmap.md)를
-따른다.
+실행하지 않은 결과를 기록하지 않는다. 현재 전체 실행 계획의 단일 진입점은
+[`ABC 신호 포트폴리오·스태킹 로드맵`](reports/plans/abc_signal_portfolio_stacking_roadmap.md)이다.
+완료된 residue-position·hotspot 선행 과정은
+[`reports/plans/residue_position_hotspot_roadmap.md`](reports/plans/residue_position_hotspot_roadmap.md)에
+보존한다.
 
 ### AI에 실험·제출 보고서 요청하기
 
