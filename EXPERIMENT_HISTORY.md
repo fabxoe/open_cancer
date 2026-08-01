@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 26
+- 실제 실험 수: 27
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4168865739 (`EXP-094`)
@@ -45,6 +45,7 @@
 | EXP-094 | COMPLETED | fabxoe | #94 | EXP-005 + EXP-069 max residue position + EXP-085 고정 hotspot | 0.4168865739 | 미제출 | INFERENCE_VERIFIED | 채택·Feature Spec v1 동결, 신규 Local 최고 | [보고서](reports/exp094_feature_spec_v1/README.md) |
 | EXP-106 | COMPLETED | fabxoe | #106 | EXP-094 + fold-train recurrent exact-token | 0.4147478922 | 미제출 | INFERENCE_VERIFIED | 성능 후보 미채택·OOF/test 확률은 다양성 비교용 보존 | [보고서](reports/exp106_recurrent_exact_token/README.md) |
 | EXP-107 | COMPLETED | fabxoe | #107 | EXP-094 + amino-acid 물성 변화 카운트 4개 | 0.4131379001 | 미제출 | INFERENCE_VERIFIED | 성능 후보 미채택·v2-diversity 관찰 후보로 확률 보존 | [보고서](reports/exp107_amino_acid_change/README.md) |
+| EXP-109 | COMPLETED | fabxoe | #109 | EXP-094 + complex morphology·spectrum 요약 8개 | 0.4135182559 | 미제출 | INFERENCE_VERIFIED | 성능 후보 미채택·fold 안정성 및 diversity 관찰 후보 | [보고서](reports/exp109_complex_morphology/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -84,10 +85,39 @@
 | 2026-08-01T06:21:49.113157+00:00 | EXP-094 | fabxoe | `19d5c067517af42f1b5e353b2106e352bae185df` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp094_feature_spec_v1/comparison.json) |
 | 2026-08-01T09:20:01.124960+00:00 | EXP-106 | fabxoe | `8e54d0f48b891bbc8aa99130e1954cf1cb8b6f08` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp106_recurrent_exact_token/comparison.json) |
 | 2026-08-01T09:48:14.214888+00:00 | EXP-107 | fabxoe | `efe36044e117df9e8d9e821e19e092e75844d966` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp107_amino_acid_change/comparison.json) |
+| 2026-08-01T10:02:39.082057+00:00 | EXP-109 | fabxoe | `2e5882eb9c050292c6167c584cf4977a12c1cdab` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp109_complex_morphology/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-109] complex morphology 단독 검증
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #109 / issue-109-exp-complex-morphology
+- 소스 commit: `2e5882eb9c050292c6167c584cf4977a12c1cdab`
+- 시작/종료: 2026-08-01T09:52:38.105809+00:00 / 2026-08-01T10:02:36.841068+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp109_complex_morphology/config.resolved.yaml`
+- Metrics: `reports/exp109_complex_morphology/metrics.json`
+- Report: `reports/exp109_complex_morphology/README.md`
+- 기준: 동결된 EXP-094 Feature Spec v1
+- 변경: complex morphology·스펙트럼 요약 8개만 추가
+
+#### 결과
+
+- Fold Macro F1: 0.4082243, 0.4153132, 0.4094375, 0.4100378, 0.4209211
+- OOF Macro F1: 0.4135182559
+- EXP-094 대비: -0.0033683180
+- fold 표준편차: 0.0047358437 (EXP-094 대비 -0.0031484084)
+- OOF 예측 라벨 일치율(EXP-094 대비): 0.8709885502
+- 전체 OOF 확률 상관(EXP-094 대비): 0.9852716978
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+- 판단: 성능 후보 미채택, fold 안정성 및 diversity 관찰 후보로 확률 보존
 
 ### [EXP-107] amino-acid change 단독 검증
 
