@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-109",
+  "issue_number": 109,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "2e5882eb9c050292c6167c584cf4977a12c1cdab",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp109_complex_morphology/data_manifest.json",
+  "environment": "reproducibility/exp109_complex_morphology/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-01T10:02:39.082057+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp109_complex_morphology/fold_00.json",
+      "size_bytes": 11905825,
+      "sha256": "e62bae08751156f588b9e460590b99e7eaad8cd9bc157012c5a406d592f2ec4b",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp109_complex_morphology/fold_01.json",
+      "size_bytes": 12340139,
+      "sha256": "9eb8af52dbc8760a3a66f2370eb731a620d31eea4f5775acbe42ba39d30b48e9",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp109_complex_morphology/fold_02.json",
+      "size_bytes": 13755650,
+      "sha256": "891b79fd0136206076dbb2719e75ff9523015c613c2bd7fe86321df1a59bd7f0",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp109_complex_morphology/fold_03.json",
+      "size_bytes": 12317262,
+      "sha256": "febd848eed7ca4a45169f262f60af3b9b3df312a3c7527ace1c5e28b04d5b70b",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp109_complex_morphology/fold_04.json",
+      "size_bytes": 12397298,
+      "sha256": "bd29c9e7b1d43a194032b267cd0dfaffb5107a336c85d1673fe64863b9b9c21a",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp109_complex_morphology.csv",
+      "size_bytes": 38173,
+      "sha256": "bb2370b62b6931b89727d5edaef9aab1195d4f585d2b96e86e70f66864ffa121",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp109_complex_morphology.csv",
+      "size_bytes": 2129634,
+      "sha256": "fc0c88057dc995ca12fac9199b8c81f51404185499e14fd37888173682d17672",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp109_complex_morphology_test_proba.csv",
+      "size_bytes": 835460,
+      "sha256": "1e8c9c13cd13a771e943ceb3440784c4abcdfccacba2e5c0ac353a2159813018",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp109_complex_morphology/metrics.json",
+      "size_bytes": 11183,
+      "sha256": "ec496c83f80c07030a400cb9bdea6092082d4801221d9099a7c5a57d091ba51c",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp109_complex_morphology/config.resolved.yaml",
+      "size_bytes": 20807,
+      "sha256": "c3ce4551c55248aa1c374dfc52401ba81ba7b9e8823765f6125522e2ca002ab1",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
