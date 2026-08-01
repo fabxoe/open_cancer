@@ -7,12 +7,12 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 22
+- 실제 실험 수: 23
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4157910775 (`EXP-075`)
+- 최고 Local OOF Macro F1: 0.4168865739 (`EXP-094`)
 - 최고 Public LB Macro F1: 0.3170803849 (`EXP-031`)
-- 최고 재현 검증 모델: `EXP-075` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-094` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-01
 
 ## 실험 요약
@@ -41,6 +41,7 @@
 | EXP-075 | COMPLETED | fabxoe | #75 | EXP-067·069 확률의 사전 고정 0.5/0.5 평균 | 0.4157910775 | 미제출 | INFERENCE_VERIFIED | 두 부모 대비 OOF·Log Loss 개선과 fold 변동성 감소로 채택 | [보고서](reports/exp075_residue_probability_blend/README.md) |
 | EXP-078 | COMPLETED | fabxoe | #78 | EXP-069 max residue-position + 관측 indicator | 0.4110815504 | 미제출 | INFERENCE_VERIFIED | OOF 하락·fold 변동성 악화 및 Issue #80 중복 확인으로 기각, EXP-069 max+zero 동결 | [보고서](reports/exp078_xgb_max_residue_indicator/README.md) |
 | EXP-085 | COMPLETED | fabxoe | #85 | EXP-005 + reference-aware 고정 문헌 hotspot 34개 | 0.4125795545 | 0.3103760308 | INFERENCE_VERIFIED | clean hotspot 복구·Public은 EXP-031보다 낮음 | [보고서](reports/exp085_hotspot_clean/README.md) |
+| EXP-094 | COMPLETED | fabxoe | #94 | EXP-005 + EXP-069 max residue position + EXP-085 고정 hotspot | 0.4168865739 | 미제출 | INFERENCE_VERIFIED | 채택·Feature Spec v1 동결, 신규 Local 최고 | [보고서](reports/exp094_feature_spec_v1/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -77,10 +78,44 @@
 | 2026-07-31T07:58:45.020690+00:00 | EXP-030 | Gomin-art | `64b72df89ee5cf0b66409f494475aca753238184` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 5.83e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp030_sparse_variant_xgb/comparison.json) |
 | 2026-07-31T10:18:14.298161+00:00 | EXP-058 | Kangho-Park | `45b353ce4073e4a9bad0c0866f4cb84ac5a53fe7` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp058_cooccurrence_pair_ablation/comparison.json) |
 | 2026-07-31T14:54:04.764691+00:00 | EXP-085 | fabxoe | `e329f13f7de85cc34c0e54c85f25f093e2ed0dd1` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp085_hotspot_clean/comparison.json) |
+| 2026-08-01T06:21:49.113157+00:00 | EXP-094 | fabxoe | `19d5c067517af42f1b5e353b2106e352bae185df` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp094_feature_spec_v1/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-094] Feature Spec v1 조합
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #94 / issue-94-exp-feature-spec-v1
+- 소스 commit: `19d5c067517af42f1b5e353b2106e352bae185df`
+- 시작/종료: 2026-08-01T06:12:29.883679+00:00 / 2026-08-01T06:21:46.651975+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp094_feature_spec_v1/config.resolved.yaml`
+- Metrics: `reports/exp094_feature_spec_v1/metrics.json`
+- Report: `reports/exp094_feature_spec_v1/README.md`
+- 구성: EXP-005 mutation-type + EXP-069 max residue position + EXP-085 fixed hotspot
+- Feature 수: 35,119
+
+#### 결과
+
+- Fold Macro F1: 0.4194967, 0.4180513, 0.4091129, 0.4061445, 0.4282487
+- OOF Macro F1: 0.4168865739
+- EXP-069 대비: +0.0037857746
+- EXP-085 대비: +0.0043070194
+- 기존 Local 최고 EXP-075 대비: +0.0010954964
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+- 판단: 채택, Feature Spec v1 동결
+
+#### 실행상 주의
+
+- 첫 실행은 학습 완료 후 metrics schema 위반으로 검증 단계에서 실패했습니다.
+- 메타데이터 위치만 수정한 clean commit에서 전체 5-fold를 재실행했으며,
+  fold 점수가 첫 실행과 정확히 같아 결정론적 재실행을 확인했습니다.
 
 ### [EXP-085] Clean fixed-hotspot reconstruction
 
