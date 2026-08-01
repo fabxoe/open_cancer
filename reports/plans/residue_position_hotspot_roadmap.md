@@ -14,7 +14,7 @@
   [PR #82](https://github.com/fabxoe/open_cancer/pull/82) (`MERGED`)
 - 위치 negative control: [Issue #91](https://github.com/fabxoe/open_cancer/issues/91)
 - 기준일: 2026-08-01
-- 실제 완료 실험 수: 22
+- 실제 완료 실험 수: 23
 - 기준 실험:
   - [EXP-067 coarse-bin](../exp067_xgb_residue_coarse_bin/README.md)
   - [EXP-069 max residue-position](../exp069_xgb_max_residue_position/README.md)
@@ -31,7 +31,7 @@
 | C | hotspot runner 정리 | [#83](https://github.com/fabxoe/open_cancer/issues/83) | 해당 없음 | [#84](https://github.com/fabxoe/open_cancer/pull/84) | COMPLETED | N/A | 해당 없음 | config 기반 runner·fold-train 근거 검증·재현 산출물 자동화 완료 | 단계 D 진행 |
 | D | hotspot clean 실험 | [#85](https://github.com/fabxoe/open_cancer/issues/85) | EXP-085 | [#86](https://github.com/fabxoe/open_cancer/pull/86) | COMPLETED | 0.4125795545 | INFERENCE_VERIFIED | EXP-005 대비 +0.008200으로 복구 성공·채택 | 단계 E 진행 |
 | E | 위치 negative control | [#91](https://github.com/fabxoe/open_cancer/issues/91) | explore | [#92](https://github.com/fabxoe/open_cancer/pull/92) | PR_OPEN | 0.4058699664 (3-seed 평균) | 해당 없음 | EXP-069 원본 대비 -0.007231, 숫자 위치 신호 지지 | PR #92 검토·병합 |
-| F | Feature Spec v1 조합 | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | EXP-005 + EXP-069 max+zero + EXP-085 hotspot | 단계 E 병합 후 Experiment Issue 생성 |
+| F | Feature Spec v1 조합 | [#93](https://github.com/fabxoe/open_cancer/issues/93) | EXP-093 | [#95](https://github.com/fabxoe/open_cancer/pull/95) | PR_OPEN | 0.4157606623 | INFERENCE_VERIFIED | 부모 OOF는 개선했지만 fold 변동성 기준 실패로 조합 동결 보류 | pathway family를 별도 Issue로 검증 |
 | G | 모델 다양화·stacking | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | Feature Spec v1 동결 대기 |
 
 로드맵 작업 상태는 다음 값만 사용합니다.

@@ -47,6 +47,10 @@ from sklearn.utils.class_weight import compute_sample_weight
 from open_cancer.constants import CLASS_LABELS, PROBABILITY_COLUMNS
 from open_cancer.experiment import resolve_experiment_context
 from open_cancer.hashing import sha256_file
+from open_cancer.mutation_features import (
+    resolve_position_features_from_config,
+    resolve_position_options_from_config,
+)
 from open_cancer.paths import relative_posix
 from open_cancer.hotspot_features import (
     build_hotspot_augmented_features,
@@ -54,7 +58,7 @@ from open_cancer.hotspot_features import (
     validate_hotspot_train_evidence,
 )
 from open_cancer.validation import validate_json_document, validate_submission
-from run_exp005_xgb_mutation_features import verify_saved_inference
+from run_exp005_xgb_mutation_features import verify_saved_inference, write_local_dashboard
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -84,11 +88,11 @@ def write_json(path: Path, value: dict[str, Any]) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def main() -> None:
-    args = parse_args()
+def main(config_override: Path | None = None) -> None:
+    args = parse_args() if config_override is None else None
     started_at = datetime.now(timezone.utc)
     start_time = time.perf_counter()
-    config_path = args.config.resolve()
+    config_path = (args.config if args is not None else config_override).resolve()
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
 
@@ -123,8 +127,15 @@ def main() -> None:
     owner = run_git("config", "user.name") or os.environ.get("USER", "unknown")
     hotspot_config = config.get("hotspots", {})
     hotspots, evidence_hotspots, minimum_matching_rows = resolve_hotspot_config(hotspot_config)
+    selected_position_features = resolve_position_features_from_config(config)
+    position_options = resolve_position_options_from_config(config)
     feature_report = build_hotspot_augmented_features(
-        TRAIN_PATH, TEST_PATH, feature_dir, hotspots=hotspots
+        TRAIN_PATH,
+        TEST_PATH,
+        feature_dir,
+        hotspots=hotspots,
+        selected_position_features=selected_position_features,
+        **position_options,
     )
     base_dir = Path(feature_report["base_dir"])
 
@@ -194,6 +205,7 @@ def main() -> None:
         },
         "features": {
             **feature_report["feature_contract"],
+            "requested_families": config.get("features", {}),
             "hotspot_table": hotspot_config.get("table", "extended_34"),
             "hotspot_evidence_scope": hotspot_config.get(
                 "evidence_scope", "additions_15"
@@ -366,6 +378,17 @@ def main() -> None:
     }
     write_json(metrics_path, metrics)
     validate_json_document(metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json")
+    local_dashboard_path = write_local_dashboard(
+        artifact_slug=artifact_slug,
+        metrics=metrics,
+        feature_dir=feature_dir,
+        highlighted_features=("hotspot__known_hotspot_total_count",),
+        comparison_metrics_path=(
+            ROOT / config["comparison_metrics_path"]
+            if config.get("comparison_metrics_path")
+            else None
+        ),
+    )
     verify_saved_inference(
         context=context,
         source_commit=source_commit,
@@ -384,7 +407,17 @@ def main() -> None:
         test_probability_path=test_probability_path,
         submission_path=submission_path,
     )
-    print(json.dumps({"metrics": str(metrics_path), "oof": metrics["oof"]}, ensure_ascii=False, indent=2))
+    print(
+        json.dumps(
+            {
+                "metrics": str(metrics_path),
+                "local_dashboard": str(local_dashboard_path),
+                "oof": metrics["oof"],
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":

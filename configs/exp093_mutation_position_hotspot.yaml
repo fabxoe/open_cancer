@@ -1,0 +1,59 @@
+run_mode: experiment
+record_role: official
+slug: mutation_position_hotspot
+parent_experiments:
+  - EXP-005
+  - EXP-069
+  - EXP-085
+comparison_metrics_path: reports/exp085_hotspot_clean/metrics.json
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mutation_type:
+    enabled: true
+  residue_position:
+    enabled: true
+    aggregates:
+      - max
+    missing_policy: zero
+    complex_tokens: include
+    transform: raw
+hotspots:
+  table: extended_34
+  evidence_scope: additions_15
+  minimum_matching_train_rows: 5
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - mutation_presence
+    - missense
+    - synonymous
+    - nonsense
+    - frameshift
+    - complex
+    - max_residue_position
+    - fixed_literature_hotspot_34
+notes: >-
+  Feature Spec v1 combination candidate. Keeps the EXP-005 mutation-type core,
+  adds EXP-069 max residue-position with zero missing values, and appends the
+  EXP-085 reference-aware fixed hotspot table. The canonical split and XGBoost
+  settings remain unchanged.

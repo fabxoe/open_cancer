@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-093",
+  "issue_number": 93,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "62254643cd811ec0249d15456a1ec9b7fe6c328f",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp093_mutation_position_hotspot/data_manifest.json",
+  "environment": "reproducibility/exp093_mutation_position_hotspot/environment.json",
+  "release_url": null,
+  "verifier": "2heej",
+  "verified_at": "2026-08-01T06:01:40.246818+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp093_mutation_position_hotspot/fold_00.json",
+      "size_bytes": 11752586,
+      "sha256": "208570e1121202dfc594a4a94abf4bfcb0d5502933890a035400b7c1ecf003d4",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp093_mutation_position_hotspot/fold_01.json",
+      "size_bytes": 12037943,
+      "sha256": "66564d8c36b4c0f2c2387278d4a6fed93d09b1de411af0e909dc20a3b04ee413",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp093_mutation_position_hotspot/fold_02.json",
+      "size_bytes": 15353068,
+      "sha256": "1a953f6bc44d39c19ed82993692df0c0bb491ee910c1d581f397a477a74aeca8",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp093_mutation_position_hotspot/fold_03.json",
+      "size_bytes": 12565173,
+      "sha256": "5093be80ddecd0fd66e5403208ba2583e8aed77fb3df9957164911404c20491f",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp093_mutation_position_hotspot/fold_04.json",
+      "size_bytes": 12655643,
+      "sha256": "68a606ab3ca23025517e30ef8dde6e52b45d58e20d97f89aa69f8a059454362c",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp093_mutation_position_hotspot.csv",
+      "size_bytes": 38173,
+      "sha256": "de3fceb0f8c9d1a0ab6e3d566c7803bd50e95209d662d4a5265f49b425ad9635",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp093_mutation_position_hotspot.csv",
+      "size_bytes": 2131872,
+      "sha256": "323bc07e72ebb1e527a68bedbf7242684d938c7c021d3adf317136f3f252706e",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp093_mutation_position_hotspot_test_proba.csv",
+      "size_bytes": 835750,
+      "sha256": "700c881309f6d465e6c287d54245a1369e11e99c8284b2e84e70a1ac2fcedfe2",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp093_mutation_position_hotspot/metrics.json",
+      "size_bytes": 11266,
+      "sha256": "f32dc28906865a10fbd358e204842f64eda65d8ba82275d847d28a8bf1c360fb",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp093_mutation_position_hotspot/config.resolved.yaml",
+      "size_bytes": 17595,
+      "sha256": "cf48026bed9d94a63375ace3270c8dda052cd62e0b098c9aebef3ed1b30c5b75",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
