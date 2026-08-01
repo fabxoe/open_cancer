@@ -141,6 +141,18 @@ class FeatureFamily(Protocol):
     ) -> FittedFeatureFamily: ...
 
 
+@dataclass(frozen=True)
+class FoldFeatureBundle:
+    """Aligned train/validation/test matrices from one fitted family set."""
+
+    train: sparse.csr_matrix
+    validation: sparse.csr_matrix
+    test: sparse.csr_matrix
+    fitted_families: tuple[FittedFeatureFamily, ...]
+    feature_names: tuple[str, ...]
+    registry: dict[str, dict[str, Any]]
+
+
 def transform_checked(
     family: FittedFeatureFamily,
     frame: pd.DataFrame,
@@ -168,6 +180,59 @@ def build_family_registry(
         family.descriptor.name: family.descriptor.to_registry_record()
         for family in sorted(families, key=lambda item: item.descriptor.name)
     }
+
+
+def fit_transform_family_set(
+    families: list[FeatureFamily] | tuple[FeatureFamily, ...],
+    *,
+    fold_train: pd.DataFrame,
+    validation: pd.DataFrame,
+    test: pd.DataFrame,
+    target: pd.Series | None = None,
+    reference_train: sparse.spmatrix | np.ndarray | None = None,
+    reference_names: tuple[str, ...] | list[str] | None = None,
+) -> FoldFeatureBundle:
+    """Fit on fold-train once, transform all partitions, and reject v1 duplicates."""
+    _require(bool(families), "활성화된 feature family가 하나 이상 필요합니다.")
+    fitted = tuple(family.fit(fold_train, target) for family in families)
+    feature_names = tuple(
+        name for family in fitted for name in family.descriptor.feature_names
+    )
+    _require(
+        len(feature_names) == len(set(feature_names)),
+        "활성 family 사이에 feature 이름이 중복됩니다.",
+    )
+    train_matrices = [transform_checked(family, fold_train) for family in fitted]
+    validation_matrices = [transform_checked(family, validation) for family in fitted]
+    test_matrices = [transform_checked(family, test) for family in fitted]
+    train_matrix = sparse.hstack(train_matrices, format="csr", dtype=np.float32)
+    validation_matrix = sparse.hstack(validation_matrices, format="csr", dtype=np.float32)
+    test_matrix = sparse.hstack(test_matrices, format="csr", dtype=np.float32)
+
+    if reference_train is not None or reference_names is not None:
+        _require(
+            reference_train is not None and reference_names is not None,
+            "의미 중복 검사에는 reference matrix와 이름이 모두 필요합니다.",
+        )
+        equivalents = find_semantically_equivalent_features(
+            train_matrix,
+            feature_names,
+            reference_train,
+            reference_names,
+        )
+        _require(
+            not equivalents,
+            f"기존 Feature Spec과 의미가 같은 열이 있습니다: {equivalents}",
+        )
+
+    return FoldFeatureBundle(
+        train=train_matrix,
+        validation=validation_matrix,
+        test=test_matrix,
+        fitted_families=fitted,
+        feature_names=feature_names,
+        registry=build_family_registry(fitted),
+    )
 
 
 def build_feature_spec(

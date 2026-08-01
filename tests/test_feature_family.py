@@ -16,6 +16,7 @@ from open_cancer.feature_family import (
     KnowledgeProvenance,
     assert_feature_spec_identity,
     build_feature_spec,
+    fit_transform_family_set,
     find_semantically_equivalent_features,
     transform_checked,
 )
@@ -124,3 +125,29 @@ def test_exp094_feature_spec_v1_remains_frozen() -> None:
     assert resolved["features"]["feature_spec_sha256"] == (
         "1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3"
     )
+
+
+def test_family_set_rejects_reference_duplicates() -> None:
+    class DummyFamily:
+        def fit(self, train_frame, target=None):
+            del target
+            return DummyFittedFamily(
+                FeatureFamilyDescriptor(
+                    name="candidate",
+                    version="1.0.0",
+                    fit_scope="fold_train",
+                    feature_names=("candidate_one",),
+                ),
+                train_frame[["value"]].to_numpy(),
+            )
+
+    frame = pd.DataFrame({"value": [1.0, 0.0]})
+    with pytest.raises(FeatureContractError, match="의미가 같은"):
+        fit_transform_family_set(
+            [DummyFamily()],
+            fold_train=frame,
+            validation=frame,
+            test=frame,
+            reference_train=sparse.csr_matrix([[1.0], [0.0]]),
+            reference_names=["base_one"],
+        )

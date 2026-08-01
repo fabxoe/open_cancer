@@ -1,0 +1,37 @@
+# Defaults inherited by future A-family Experiment configs.
+# This file is not an official experiment and therefore has no EXP-ID.
+base_feature_spec:
+  experiment_id: EXP-094
+  sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+
+families:
+  recurrent_exact_token:
+    enabled: false
+    definition_version: 1.0.0
+    fit_scope: fold_train
+    min_support: 5
+    max_features: 512
+    tie_break: gene_then_raw_token_lexical
+    value: binary_sample_hit
+    unknown_policy: ignore_as_oov
+  amino_acid_change:
+    enabled: false
+    definition_version: 1.0.0
+    fit_scope: stateless
+    property_file: knowledge/amino_acid_properties_v1.json
+    features:
+      - sample__aa_conservative_substitution_count
+      - sample__aa_nonconservative_substitution_count
+      - sample__aa_charge_change_count
+      - sample__aa_polarity_change_count
+    stop_gain_policy: classified_but_not_added_because_nonsense_count_already_exists
+
+evaluation:
+  split: data/splits/stratified_5fold_seed42.csv
+  class_order: open_cancer.constants.CLASS_LABELS
+  required_outputs:
+    - oof_probability
+    - test_probability
+    - resolved_config
+    - metrics
+    - artifact_manifest
