@@ -54,7 +54,7 @@ EXP-094는 Feature Spec v1으로 보존합니다. 이후 family는 v2 후보로�
 | G4 | OOF 다양성·확률 품질 감사 | #133 | explore | #134 | COMPLETED | EXP-125만 품질·다양성 gate 통과, EXP-127·131은 Log Loss gate 실패 | EXP-135 결과 반영 |
 | G5 | 고정 가중 확률 blend | #135 | EXP-135 | #136 | COMPLETED | Log Loss는 개선했지만 EXP-131 대비 Macro F1·fold gate 실패 | G6 결과 반영 |
 | G6 | cross-fitted stacking | #137 | EXP-137 | #138 | COMPLETED | 소수 클래스 F1 붕괴·최고 단일 대비 -0.0153766511로 기각 | G7 최종 후보 검증 |
-| G7 | 최종 후보 재현·제출 준비 | #139 | 해당 없음 | 미발급 | IN_PROGRESS | EXP-131·125를 후보로 유지, 아직 TRAINING_VERIFIED·Release asset 미완료 | 독립 팀원 재학습·asset 보관 |
+| G7 | 최종 후보 재현·제출 준비 | #141 | 해당 없음 | 미발급 | IN_PROGRESS | EXP-131·125 후보 Release asset 보관, 아직 TRAINING_VERIFIED·EXP-131 manifest 보완 필요 | 독립 팀원 재학습·asset 보완 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`를 사용하고,
 중단하면 `BLOCKED` 또는 `REJECTED`로 기록합니다.
