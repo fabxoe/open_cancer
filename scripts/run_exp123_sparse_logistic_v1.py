@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import importlib.metadata
 import platform
 import shutil
 import subprocess
@@ -57,7 +58,8 @@ def relative(path: Path) -> str:
     return path.resolve().relative_to(ROOT).as_posix()
 
 
-def replay_saved_logistic(
+def replay_saved_model(
+    model_name: str,
     model_paths: tuple[Path, ...],
     train_features: sparse.csr_matrix,
     test_features: sparse.csr_matrix,
@@ -66,18 +68,27 @@ def replay_saved_logistic(
     oof = np.full((train_features.shape[0], len(CLASS_LABELS)), np.nan, dtype=np.float64)
     test = np.zeros((test_features.shape[0], len(CLASS_LABELS)), dtype=np.float64)
     for fold, path in enumerate(model_paths):
-        payload = joblib.load(path)
-        model = payload["model"]
-        scaler = payload["scaler"]
         valid = folds == fold
-        valid_matrix = scaler.transform(train_features[valid]) if scaler else train_features[valid]
-        test_matrix = scaler.transform(test_features) if scaler else test_features
-        valid_raw = model.predict_proba(valid_matrix)
-        test_raw = model.predict_proba(test_matrix)
-        valid_probability = np.zeros((valid.sum(), len(CLASS_LABELS)), dtype=np.float64)
-        test_probability = np.zeros((test_features.shape[0], len(CLASS_LABELS)), dtype=np.float64)
-        valid_probability[:, model.classes_.astype(int)] = valid_raw
-        test_probability[:, model.classes_.astype(int)] = test_raw
+        if model_name == "logistic_regression":
+            payload = joblib.load(path)
+            model = payload["model"]
+            scaler = payload["scaler"]
+            valid_matrix = scaler.transform(train_features[valid]) if scaler else train_features[valid]
+            test_matrix = scaler.transform(test_features) if scaler else test_features
+            valid_raw = model.predict_proba(valid_matrix)
+            test_raw = model.predict_proba(test_matrix)
+            valid_probability = np.zeros((valid.sum(), len(CLASS_LABELS)), dtype=np.float64)
+            test_probability = np.zeros((test_features.shape[0], len(CLASS_LABELS)), dtype=np.float64)
+            valid_probability[:, model.classes_.astype(int)] = valid_raw
+            test_probability[:, model.classes_.astype(int)] = test_raw
+        elif model_name == "lightgbm":
+            import lightgbm as lgb
+
+            model = lgb.Booster(model_file=str(path))
+            valid_probability = np.asarray(model.predict(train_features[valid]), dtype=np.float64)
+            test_probability = np.asarray(model.predict(test_features), dtype=np.float64)
+        else:
+            raise ValueError(f"checkpoint 재추론을 지원하지 않는 모델입니다: {model_name}")
         oof[valid] = valid_probability / valid_probability.sum(axis=1, keepdims=True)
         test += (test_probability / test_probability.sum(axis=1, keepdims=True)) / 5
     if np.isnan(oof).any():
@@ -85,13 +96,20 @@ def replay_saved_logistic(
     return oof, test
 
 
-def main() -> None:
+def main(
+    config_path: Path = CONFIG_PATH,
+    *,
+    expected_experiment_id: str = "EXP-123",
+    runner_command: str = "uv run python scripts/run_exp123_sparse_logistic_v1.py",
+) -> None:
     started_at = datetime.now(timezone.utc)
     started_clock = time.perf_counter()
-    config = yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8"))
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
-    if context.experiment_id != "EXP-123":
-        raise ValueError(f"이 runner는 EXP-123 전용입니다: {context.experiment_id}")
+    if context.experiment_id != expected_experiment_id:
+        raise ValueError(
+            f"runner 기대 ID {expected_experiment_id}와 현재 {context.experiment_id}가 다릅니다."
+        )
     source_commit = run_git("rev-parse", "HEAD")
     if run_git("status", "--porcelain"):
         raise RuntimeError("공식 실험은 코드와 config를 commit한 clean worktree에서 실행하세요.")
@@ -132,6 +150,13 @@ def main() -> None:
 
     model_name = config["model"]["name"]
     model_parameters = dict(config["model"]["parameters"])
+    resolved_model_parameters = dict(model_parameters)
+    if model_name == "lightgbm":
+        resolved_model_parameters = {
+            "objective": "multiclass",
+            "num_class": len(CLASS_LABELS),
+            **resolved_model_parameters,
+        }
     result = run_canonical_cv(
         train_features=train_features,
         test_features=test_features,
@@ -202,12 +227,12 @@ def main() -> None:
         "feature_spec": feature_manifest,
         "model": {
             "name": model_name,
-            "parameters": model_parameters,
+            "parameters": resolved_model_parameters,
             "fold_seeds": [config["seed"] + fold for fold in range(5)],
         },
         "training": config["training"],
         "runtime": {
-            "command": "uv run python scripts/run_exp123_sparse_logistic_v1.py",
+            "command": runner_command,
             "pythonhashseed": None,
             "deterministic": True,
         },
@@ -292,11 +317,16 @@ def main() -> None:
             "numpy": np.__version__,
             "pandas": pd.__version__,
             "scikit_learn": sklearn.__version__,
+            "model_library": model_name,
+            "model_library_version": importlib.metadata.version(
+                "scikit-learn" if model_name == "logistic_regression" else model_name
+            ),
             "uv_lock_sha256": sha256_file(ROOT / "uv.lock"),
         },
     )
 
-    replay_oof, replay_test = replay_saved_logistic(
+    replay_oof, replay_test = replay_saved_model(
+        model_name,
         result.model_paths,
         train_features,
         test_features,
@@ -351,10 +381,15 @@ def main() -> None:
         record_paths["artifact_manifest"],
         ROOT / "schemas" / "reproducibility_manifest.schema.json",
     )
+    sync_command = (
+        "uv sync --frozen --group experiment"
+        if model_name in {"lightgbm", "catboost"}
+        else "uv sync --frozen"
+    )
     (reproduction_dir / "REPRODUCE.md").write_text(
-        "# EXP-123 재현\n\n"
-        f"```bash\ngit checkout {source_commit}\nuv sync --frozen\n"
-        "uv run python scripts/run_exp123_sparse_logistic_v1.py\n```\n",
+        f"# {context.experiment_id} 재현\n\n"
+        f"```bash\ngit checkout {source_commit}\n{sync_command}\n"
+        f"{runner_command}\n```\n",
         encoding="utf-8",
     )
     checksum_paths = [
