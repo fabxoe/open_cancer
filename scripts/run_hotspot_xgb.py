@@ -53,6 +53,10 @@ from open_cancer.hotspot_features import (
     resolve_hotspot_config,
     validate_hotspot_train_evidence,
 )
+from open_cancer.mutation_features import (
+    resolve_position_features_from_config,
+    resolve_position_options_from_config,
+)
 from open_cancer.validation import validate_json_document, validate_submission
 from run_exp005_xgb_mutation_features import verify_saved_inference
 
@@ -123,8 +127,21 @@ def main() -> None:
     owner = run_git("config", "user.name") or os.environ.get("USER", "unknown")
     hotspot_config = config.get("hotspots", {})
     hotspots, evidence_hotspots, minimum_matching_rows = resolve_hotspot_config(hotspot_config)
+    selected_position_features = resolve_position_features_from_config(config)
+    position_options = resolve_position_options_from_config(config)
+    selected_robust_aggregates = tuple(
+        config.get("features", {}).get("robust_aggregates", [])
+    )
     feature_report = build_hotspot_augmented_features(
-        TRAIN_PATH, TEST_PATH, feature_dir, hotspots=hotspots
+        TRAIN_PATH,
+        TEST_PATH,
+        feature_dir,
+        hotspots=hotspots,
+        base_feature_options={
+            "selected_robust_aggregates": selected_robust_aggregates,
+            "selected_position_features": selected_position_features,
+            **position_options,
+        },
     )
     base_dir = Path(feature_report["base_dir"])
 
@@ -194,6 +211,7 @@ def main() -> None:
         },
         "features": {
             **feature_report["feature_contract"],
+            "requested_families": config.get("features", {}),
             "hotspot_table": hotspot_config.get("table", "extended_34"),
             "hotspot_evidence_scope": hotspot_config.get(
                 "evidence_scope", "additions_15"
@@ -363,6 +381,7 @@ def main() -> None:
             "EXP-005 mutation-type features plus fixed 34 literature hotspots "
             "with reference-amino-acid matching and train-only evidence checks.",
         ),
+        "component_experiments": config.get("component_experiments", []),
     }
     write_json(metrics_path, metrics)
     validate_json_document(metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json")

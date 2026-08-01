@@ -22,6 +22,7 @@ import csv
 import json
 import re
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 from scipy import sparse
@@ -267,14 +268,21 @@ def build_hotspot_augmented_features(
     test_path: Path,
     output_dir: Path,
     hotspots: HotspotTable = KNOWN_HOTSPOTS,
+    *,
+    base_feature_options: dict[str, Any] | None = None,
 ) -> dict[str, object]:
-    """Build EXP-005 gene x type features plus known-hotspot indicator features."""
+    """Build configurable mutation features plus known-hotspot indicators."""
 
     from open_cancer.mutation_features import build_mutation_features
 
     feature_names = hotspot_feature_names(hotspots)
     base_dir = output_dir / "base_mutation_type_features"
-    base_report = build_mutation_features(train_path, test_path, base_dir)
+    base_report = build_mutation_features(
+        train_path,
+        test_path,
+        base_dir,
+        **(base_feature_options or {}),
+    )
 
     train_base = sparse.load_npz(base_dir / "train_features.npz")
     test_base = sparse.load_npz(base_dir / "test_features.npz")
