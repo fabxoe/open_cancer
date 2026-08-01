@@ -1,0 +1,25 @@
+run_mode: experiment
+slug: fixed_probability_blend
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+ensemble:
+  method: probability_mean
+  weights_fixed_before_evaluation: true
+  components:
+    - experiment_id: EXP-094
+      weight: 0.5
+      oof_probability_path: oof/exp094_feature_spec_v1.csv
+      test_probability_path: preds/exp094_feature_spec_v1_test_proba.csv
+      metrics_path: reports/exp094_feature_spec_v1/metrics.json
+      resolved_config_path: reproducibility/exp094_feature_spec_v1/config.resolved.yaml
+    - experiment_id: EXP-125
+      weight: 0.5
+      oof_probability_path: oof/exp125_lightgbm_v1.csv
+      test_probability_path: preds/exp125_lightgbm_v1_test_proba.csv
+      metrics_path: reports/exp125_lightgbm_v1/metrics.json
+      resolved_config_path: reproducibility/exp125_lightgbm_v1/config.resolved.yaml
+submission:
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
