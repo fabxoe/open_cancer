@@ -266,6 +266,12 @@ GitHub는 폴더 안의 `README.md`를 자동으로 표시하므로 팀원이 re
 [`reports/plans/residue_position_hotspot_roadmap.md`](reports/plans/residue_position_hotspot_roadmap.md)에
 보존한다.
 
+새 ABC family는 `src/open_cancer/feature_family.py`의 fold-train `fit`/`transform`,
+family Registry, 외부 지식 provenance와 의미 중복 검사 계약을 사용한다. 모델은
+`src/open_cancer/model_artifacts.py`의 고정 클래스 순서 OOF/test 확률 계약과 실행
+기록 생성기를 사용한다. 공통 계약을 기존 EXP-094 경로에 소급 적용해 Feature
+Spec을 바꾸지 않으며, v2 후보부터 적용한다.
+
 ### AI에 실험·제출 보고서 요청하기
 
 팀원은 Codex 또는 Claude의 새 채팅에서 Issue 번호만 바꿔 다음 최소 프롬프트를

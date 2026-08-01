@@ -9,7 +9,7 @@
 ## 현재 기준
 
 - 관리 Task: [Issue #98](https://github.com/fabxoe/open_cancer/issues/98)
-- 관리 PR: [PR #99](https://github.com/fabxoe/open_cancer/pull/99) (`PR_OPEN`)
+- 관리 PR: [PR #99](https://github.com/fabxoe/open_cancer/pull/99) (`MERGED`)
 - 기준 Feature Spec: EXP-094, SHA-256
   `1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3`
 - 기준 XGBoost OOF Macro F1: `0.4168865739`
@@ -19,7 +19,8 @@
 - 파생변수 탐색 동결: 2026-08-03 저녁
 - 모델·가중치 동결: 2026-08-06 저녁
 - 2026-08-07: 재현·Release·최종 제출 복구 버퍼
-- 다음 행동: 공통 Feature Factory·모델 산출물 계약을 새 일반 Task로 구현
+- 다음 행동: [Task #100](https://github.com/fabxoe/open_cancer/issues/100)에서 공통
+  Feature Factory·모델 산출물 계약 구현
 
 ## 이름과 목표
 
@@ -39,8 +40,8 @@ EXP-094는 Feature Spec v1으로 보존합니다. 이후 family는 v2 후보로�
 
 | 단계 | 작업 | Issue | EXP | PR | 상태 | 판단 기준 | 다음 행동 |
 |---|---|---:|---|---:|---|---|---|
-| P0 | ABC-Stack 계획 동결 | #98 | 해당 없음 | #99 | PR_OPEN | 공식 이름·경로·일정 확정 | 리뷰·병합 |
-| G0 | 공통 Feature Factory·모델 산출물 계약 | 미발급 | 해당 없음 | 미발급 | PLANNED | 기존 EXP-094 불변·공통 assert | P0 병합 후 Task 생성 |
+| P0 | ABC-Stack 계획 동결 | #98 | 해당 없음 | #99 | MERGED | 공식 이름·경로·일정 확정 | 완료 |
+| G0 | 공통 Feature Factory·모델 산출물 계약 | #100 | 해당 없음 | #101 | PR_OPEN | 기존 EXP-094 불변·공통 assert | CI·리뷰·병합 |
 | A | exact-token·amino-acid family | 미발급 | 미발급 | - | PLANNED | 두 공식 OOF·test 확률 보존 | G0 병합 대기 |
 | B | morphology·frequency-tier spectrum | 미발급 | 미발급 | - | PLANNED | 두 공식 OOF·test 확률 보존 | G0 병합 대기 |
 | C | pathway·functional-role burden | 미발급 | 미발급 | - | PLANNED | 두 공식 OOF·test 확률 보존 | G0 병합 대기 |
