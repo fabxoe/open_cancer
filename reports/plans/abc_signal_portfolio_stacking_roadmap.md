@@ -41,7 +41,7 @@ EXP-094는 Feature Spec v1으로 보존합니다. 이후 family는 v2 후보로�
 | 단계 | 작업 | Issue | EXP | PR | 상태 | 판단 기준 | 다음 행동 |
 |---|---|---:|---|---:|---|---|---|
 | P0 | ABC-Stack 계획 동결 | #98 | 해당 없음 | #99 | MERGED | 공식 이름·경로·일정 확정 | 완료 |
-| G0 | 공통 Feature Factory·모델 산출물 계약 | #100 | 해당 없음 | 미발급 | IN_PROGRESS | 기존 EXP-094 불변·공통 assert | 구현·검증·PR |
+| G0 | 공통 Feature Factory·모델 산출물 계약 | #100 | 해당 없음 | #101 | PR_OPEN | 기존 EXP-094 불변·공통 assert | CI·리뷰·병합 |
 | A | exact-token·amino-acid family | 미발급 | 미발급 | - | PLANNED | 두 공식 OOF·test 확률 보존 | G0 병합 대기 |
 | B | morphology·frequency-tier spectrum | 미발급 | 미발급 | - | PLANNED | 두 공식 OOF·test 확률 보존 | G0 병합 대기 |
 | C | pathway·functional-role burden | 미발급 | 미발급 | - | PLANNED | 두 공식 OOF·test 확률 보존 | G0 병합 대기 |
