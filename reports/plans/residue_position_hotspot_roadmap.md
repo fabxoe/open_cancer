@@ -14,12 +14,14 @@
   [PR #82](https://github.com/fabxoe/open_cancer/pull/82) (`MERGED`)
 - 위치 negative control: [Issue #91](https://github.com/fabxoe/open_cancer/issues/91)
 - 기준일: 2026-08-01
-- 실제 완료 실험 수: 24
+- 실제 완료 실험 수: 32
 - 기준 실험:
   - [EXP-067 coarse-bin](../exp067_xgb_residue_coarse_bin/README.md)
   - [EXP-069 max residue-position](../exp069_xgb_max_residue_position/README.md)
   - [EXP-031 hotspot extended](../exp031_hotspot_extended/README.md)
-- 확정된 다음 작업: 단계 G 모델 다양화 준비([Issue #98](https://github.com/fabxoe/open_cancer/issues/98))
+- 이 로드맵의 범위: EXP-094 Feature Spec v1 동결까지
+- 후속 관리 문서: [ABC 신호 포트폴리오·스태킹 로드맵](abc_signal_portfolio_stacking_roadmap.md)
+- 현재 후속 단계: G4 OOF 다양성·확률 품질 감사
 
 ## 진행 상태표
 
@@ -30,9 +32,9 @@
 | C | hotspot runner 정리 | [#83](https://github.com/fabxoe/open_cancer/issues/83) | 해당 없음 | [#84](https://github.com/fabxoe/open_cancer/pull/84) | COMPLETED | N/A | 해당 없음 | config 기반 runner·fold-train 근거 검증·재현 산출물 자동화 완료 | 단계 D 진행 |
 | D | hotspot clean 실험 | [#85](https://github.com/fabxoe/open_cancer/issues/85) | EXP-085 | [#86](https://github.com/fabxoe/open_cancer/pull/86) | COMPLETED | 0.4125795545 | INFERENCE_VERIFIED | EXP-005 대비 +0.008200으로 복구 성공·채택 | 단계 E 진행 |
 | E | 위치 negative control | [#91](https://github.com/fabxoe/open_cancer/issues/91) | explore | [#92](https://github.com/fabxoe/open_cancer/pull/92) | COMPLETED | 0.4058699664 (3-seed 평균) | 해당 없음 | EXP-069 원본 대비 -0.007231, 숫자 위치 신호 지지 | 단계 F 진행 |
-| F-1 | Feature Spec 조합 선행 실행 | [#93](https://github.com/fabxoe/open_cancer/issues/93) | EXP-093 | [#95](https://github.com/fabxoe/open_cancer/pull/95) | MERGED | 0.4157606623 | INFERENCE_VERIFIED | 부모 OOF 개선·fold 변동성 기준 실패 | EXP-094 독립 확인 |
+| F-1 | Feature Spec 조합 선행 실행 | [#93](https://github.com/fabxoe/open_cancer/issues/93) | EXP-093 | [#95](https://github.com/fabxoe/open_cancer/pull/95) | COMPLETED | 0.4157606623 | INFERENCE_VERIFIED | 부모 OOF 개선·fold 변동성 기준 실패 | EXP-094 독립 확인 |
 | F-2 | Feature Spec v1 조합 | [#94](https://github.com/fabxoe/open_cancer/issues/94) | EXP-094 | [#97](https://github.com/fabxoe/open_cancer/pull/97) | COMPLETED | 0.4168865739 | INFERENCE_VERIFIED | robust log burden 포함 구성 채택·Feature Spec v1 동결 | 단계 G 진행 |
-| G | 모델 다양화·stacking | [#98](https://github.com/fabxoe/open_cancer/issues/98) | 해당 없음 | [#99](https://github.com/fabxoe/open_cancer/pull/99) | PR_OPEN | N/A | 해당 없음 | 평가 계약과 실행 순서 설계 | 리뷰·병합 |
+| G | 모델 다양화·stacking | [#98](https://github.com/fabxoe/open_cancer/issues/98) | 해당 없음 | [#99](https://github.com/fabxoe/open_cancer/pull/99) | COMPLETED | N/A | 해당 없음 | 후속 ABC 로드맵으로 이관·모델별 결과 기록 완료 | ABC 로드맵 G4 |
 
 로드맵 작업 상태는 다음 값만 사용합니다.
 
@@ -45,6 +47,11 @@ PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED
 이 값은 모델 실험의 상태(`PLANNED`, `RUNNING`, `COMPLETED`, `FAILED`,
 `ABORTED`)나 재현 상태(`NOT_STARTED`, `INFERENCE_VERIFIED`,
 `TRAINING_VERIFIED` 등)와 서로 다른 **로드맵 진행 상태**입니다.
+
+이 문서는 EXP-094까지의 residue-position·hotspot 작업을 보존하는 종료 문서입니다.
+Issue #98 이후의 모델 다양화, OOF 감사, blend와 stacking 상태는 이 문서에
+중복 기록하지 않고 ABC 로드맵에서만 갱신합니다. 실제 실험 수와 점수는 항상
+`EXPERIMENT_HISTORY.md`와 각 실험의 `metrics.json`을 우선합니다.
 
 ## 권고 검토와 확정 결정
 

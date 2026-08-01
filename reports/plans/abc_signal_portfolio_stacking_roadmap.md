@@ -19,8 +19,10 @@
 - 파생변수 탐색 동결: 2026-08-03 저녁
 - 모델·가중치 동결: 2026-08-06 저녁
 - 2026-08-07: 재현·Release·최종 제출 복구 버퍼
-- 다음 행동: 외부 지식이 없는 A/B 공식 실험 EXP-106·107·109·110을 각각
-  실행하고, C는 주최측 허용 답변을 기다림
+- 현재까지 완료: A/B/C family 공식 실험, v2 사양 동결, 공통 model runner,
+  Logistic·LightGBM·CatBoost 실행 및 결과 기록
+- 다음 행동: 새 Explore/Task Issue에서 G4 OOF 다양성·확률 품질 감사를
+  수행하고, 결과가 gate를 통과할 때만 G5 고정 blend로 이동
 
 ## 이름과 목표
 
@@ -48,8 +50,8 @@ EXP-094는 Feature Spec v1으로 보존합니다. 이후 family는 v2 후보로�
 | F | v2-performance·v2-diversity 동결 | #119 | 해당 없음 | - | COMPLETED | canonical OOF·test 계약 감사 | 모델 다양화 Issue 발급 |
 | M0 | 동결 Feature Spec·공통 모델 runner | #121 | 해당 없음 | #122 | COMPLETED | 세 spec 실물 해시·공통 artifact 계약 | 완료 |
 | G1 | 희소 선형 모델 공식 5-fold | #123 | EXP-123 | #124 | COMPLETED | 다양성 통과·품질 gate 실패 | stacking 후보 미채택 |
-| G2 | LightGBM 공식 5-fold | #125 | EXP-125 | #126 | COMPLETED | 신규 Local 최고·모든 gate 통과 | G3와 독립 비교 후 G4 감사 |
-| G3 | CatBoost 공식 5-fold | #127 | EXP-127 | - | PAUSED_RUNPOD | 로컬 CPU fold당 약 19분·1/5 후 중단 | RunPod GPU 설정 검증 후 전체 재실행 |
+| G2 | LightGBM 공식 5-fold | #125 | EXP-125 | #126 | COMPLETED | 신규 Local 최고·모든 gate 통과 | G3 결과와 함께 G4 감사 |
+| G3 | CatBoost 공식 5-fold | #127 | EXP-127 | #128 | COMPLETED | Local 최고이나 Public은 EXP-031·096 미달; diversity 자산으로 보존 | G4 감사 |
 | G4 | OOF 다양성·확률 품질 감사 | 미발급 | explore | - | PLANNED | 오류·확률 상관과 클래스 보완성 | 후보 확정 |
 | G5 | 고정 가중 확률 blend | 미발급 | 미발급 | - | PLANNED | 사전 고정 가중치로 개선 | G4 통과 대기 |
 | G6 | cross-fitted stacking | 미발급 | 미발급 | - | PLANNED | blend보다 추가 개선 시에만 채택 | G5 결과 대기 |
