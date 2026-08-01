@@ -57,6 +57,10 @@ from open_cancer.hotspot_features import (
     resolve_hotspot_config,
     validate_hotspot_train_evidence,
 )
+from open_cancer.mutation_features import (
+    resolve_position_features_from_config,
+    resolve_position_options_from_config,
+)
 from open_cancer.validation import validate_json_document, validate_submission
 from run_exp005_xgb_mutation_features import verify_saved_inference, write_local_dashboard
 
@@ -129,13 +133,19 @@ def main(config_override: Path | None = None) -> None:
     hotspots, evidence_hotspots, minimum_matching_rows = resolve_hotspot_config(hotspot_config)
     selected_position_features = resolve_position_features_from_config(config)
     position_options = resolve_position_options_from_config(config)
+    selected_robust_aggregates = tuple(
+        config.get("features", {}).get("robust_aggregates", [])
+    )
     feature_report = build_hotspot_augmented_features(
         TRAIN_PATH,
         TEST_PATH,
         feature_dir,
         hotspots=hotspots,
-        selected_position_features=selected_position_features,
-        **position_options,
+        base_feature_options={
+            "selected_robust_aggregates": selected_robust_aggregates,
+            "selected_position_features": selected_position_features,
+            **position_options,
+        },
     )
     base_dir = Path(feature_report["base_dir"])
 
@@ -181,6 +191,7 @@ def main(config_override: Path | None = None) -> None:
             "record_role": config["record_role"],
             "issue_number": context.issue_number,
             "experiment_id": context.experiment_id,
+            "component_experiments": config.get("component_experiments", []),
             "branch": context.branch,
             "owner": owner,
             "source_commit": source_commit,

@@ -109,7 +109,10 @@ def test_build_hotspot_augmented_features_can_include_max_position(tmp_path: Pat
         train,
         test,
         output,
-        selected_position_features=("max_residue_position",),
+        base_feature_options={
+            "selected_position_features": ("max_residue_position",),
+            "position_missing_policy": "zero",
+        },
     )
     names = json.loads((output / "feature_names.json").read_text(encoding="utf-8"))
     matrix = sparse.load_npz(output / "train_features.npz")

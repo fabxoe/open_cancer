@@ -14,13 +14,12 @@
   [PR #82](https://github.com/fabxoe/open_cancer/pull/82) (`MERGED`)
 - 위치 negative control: [Issue #91](https://github.com/fabxoe/open_cancer/issues/91)
 - 기준일: 2026-08-01
-- 실제 완료 실험 수: 23
+- 실제 완료 실험 수: 24
 - 기준 실험:
   - [EXP-067 coarse-bin](../exp067_xgb_residue_coarse_bin/README.md)
   - [EXP-069 max residue-position](../exp069_xgb_max_residue_position/README.md)
   - [EXP-031 hotspot extended](../exp031_hotspot_extended/README.md)
-- 확정된 다음 작업: 단계 E 위치 negative control 구현·실행 및 결과에 따른
-  Feature Spec v1 위치 피처 포함 여부 결정
+- 확정된 다음 작업: 단계 F PR 병합 후 단계 G 모델 다양화 일반 Task Issue 생성
 
 ## 진행 상태표
 
@@ -30,9 +29,10 @@
 | B | max+indicator | [#78](https://github.com/fabxoe/open_cancer/issues/78) | EXP-078 | [#79](https://github.com/fabxoe/open_cancer/pull/79) | REJECTED | 0.4110815504 | INFERENCE_VERIFIED | 채택 기준 실패·indicator 완전 중복으로 기각, EXP-069 max+zero 동결 | Issue #80 의미 감사 |
 | C | hotspot runner 정리 | [#83](https://github.com/fabxoe/open_cancer/issues/83) | 해당 없음 | [#84](https://github.com/fabxoe/open_cancer/pull/84) | COMPLETED | N/A | 해당 없음 | config 기반 runner·fold-train 근거 검증·재현 산출물 자동화 완료 | 단계 D 진행 |
 | D | hotspot clean 실험 | [#85](https://github.com/fabxoe/open_cancer/issues/85) | EXP-085 | [#86](https://github.com/fabxoe/open_cancer/pull/86) | COMPLETED | 0.4125795545 | INFERENCE_VERIFIED | EXP-005 대비 +0.008200으로 복구 성공·채택 | 단계 E 진행 |
-| E | 위치 negative control | [#91](https://github.com/fabxoe/open_cancer/issues/91) | explore | [#92](https://github.com/fabxoe/open_cancer/pull/92) | PR_OPEN | 0.4058699664 (3-seed 평균) | 해당 없음 | EXP-069 원본 대비 -0.007231, 숫자 위치 신호 지지 | PR #92 검토·병합 |
-| F | Feature Spec v1 조합 | [#93](https://github.com/fabxoe/open_cancer/issues/93) | EXP-093 | [#95](https://github.com/fabxoe/open_cancer/pull/95) | PR_OPEN | 0.4157606623 | INFERENCE_VERIFIED | 부모 OOF는 개선했지만 fold 변동성 기준 실패로 조합 동결 보류 | pathway family를 별도 Issue로 검증 |
-| G | 모델 다양화·stacking | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | Feature Spec v1 동결 대기 |
+| E | 위치 negative control | [#91](https://github.com/fabxoe/open_cancer/issues/91) | explore | [#92](https://github.com/fabxoe/open_cancer/pull/92) | COMPLETED | 0.4058699664 (3-seed 평균) | 해당 없음 | EXP-069 원본 대비 -0.007231, 숫자 위치 신호 지지 | 단계 F 진행 |
+| F-1 | Feature Spec 조합 선행 실행 | [#93](https://github.com/fabxoe/open_cancer/issues/93) | EXP-093 | [#95](https://github.com/fabxoe/open_cancer/pull/95) | MERGED | 0.4157606623 | INFERENCE_VERIFIED | 부모 OOF 개선·fold 변동성 기준 실패 | EXP-094 독립 확인 |
+| F-2 | Feature Spec v1 조합 | [#94](https://github.com/fabxoe/open_cancer/issues/94) | EXP-094 | [#97](https://github.com/fabxoe/open_cancer/pull/97) | PR_OPEN | 0.4168865739 | INFERENCE_VERIFIED | robust log burden 포함 구성 채택·Feature Spec v1 동결 | 리뷰·병합 |
+| G | 모델 다양화·stacking | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | 단계 F 병합 대기 |
 
 로드맵 작업 상태는 다음 값만 사용합니다.
 
@@ -210,6 +210,16 @@ EXP-005 mutation-type features
 `0.002` 미만일 때 조합을 채택합니다. 그렇지 않으면 두 family를 분리하고
 확률 앙상블 후보로 유지합니다.
 
+### 실행 결과
+
+- EXP-094 OOF Macro F1: `0.4168865739`
+- EXP-069 대비: `+0.0037857746`
+- EXP-085 대비: `+0.0043070194`
+- fold 표준편차: `0.0078842521`로 두 부모보다 개선
+- 재현 상태: `INFERENCE_VERIFIED`
+- 판단: 채택 조건을 통과하여 Feature Spec v1으로 동결
+- 상세: [EXP-094 보고서](../exp094_feature_spec_v1/README.md)
+
 ## 단계 G — 모델 다양화와 Stacking
 
 Feature Spec v1 동결 후 동일 피처와 canonical folds로 XGBoost, LightGBM,
@@ -264,6 +274,7 @@ Stacking은 다음을 모두 만족할 때만 진행합니다.
 | 2026-07-31 | 위치 permutation을 fold-train·반복 seed 계약으로 강화 | 전체 OOF 단일 shuffle의 검증 분포 오염과 우연 변동을 방지 |
 | 2026-08-01 | 단계 C·D와 위치 의미 감사를 완료 처리하고 단계 E Issue #91 착수 | PR #82·#84·#86·#90 병합과 EXP-085 결과 반영 |
 | 2026-08-01 | 단계 E에서 숫자 residue-position 신호를 지지하고 EXP-069 max+zero 채택 | 3-seed permutation 평균이 원본보다 0.007231 낮고 15개 fold 중 13개 하락 |
+| 2026-08-01 | EXP-094 조합을 Feature Spec v1으로 동결 | 최고 부모 대비 OOF +0.003786, fold 표준편차 개선, INFERENCE_VERIFIED 통과 |
 
 ## 참고
 
