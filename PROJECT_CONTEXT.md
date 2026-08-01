@@ -270,6 +270,14 @@ GitHub는 폴더 안의 `README.md`를 자동으로 표시하므로 팀원이 re
 [`reports/plans/residue_position_hotspot_roadmap.md`](reports/plans/residue_position_hotspot_roadmap.md)에
 보존한다.
 
+Issue #119의 canonical OOF 감사로 Feature Spec v2를 동결했다. 공식 명세는
+[`configs/abc_stack_feature_spec_v2.yaml`](configs/abc_stack_feature_spec_v2.yaml),
+선택 근거와 모든 입력 확률 해시는
+[`ABC-Stack OOF 포트폴리오 감사`](reports/analysis/abc_oof_portfolio_audit.md)에
+있다. `v2-performance`는 EXP-094에 fixed pathway burden을, `v2-diversity`는
+EXP-094에 amino-acid change를 각각 하나만 추가한다. 후속 model runner는 이
+명세를 임의로 바꾸지 않고 별도 Experiment Issue에서 공식 5-fold를 수행한다.
+
 새 ABC family는 `src/open_cancer/feature_family.py`의 fold-train `fit`/`transform`,
 family Registry, 외부 지식 provenance와 의미 중복 검사 계약을 사용한다. 모델은
 `src/open_cancer/model_artifacts.py`의 고정 클래스 순서 OOF/test 확률 계약과 실행

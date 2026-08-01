@@ -45,7 +45,7 @@ EXP-094는 Feature Spec v1으로 보존합니다. 이후 family는 v2 후보로�
 | A | exact-token·amino-acid family | #102 | #106·#107 | #105 | COMPLETED | 두 공식 OOF·test 확률 보존 | 포트폴리오 감사에서 비교 |
 | B | morphology·frequency-tier spectrum | #103 | #109·#110 | #108 | COMPLETED | 두 공식 OOF·test 확률 보존 | 포트폴리오 감사에서 비교 |
 | C | pathway·functional-role burden | #104 | #96(C-1) | #111 | COMPLETED | EXP-096 PERFORMANCE·OOF/test 보존 | v2-performance 후보로 감사 |
-| F | v2-performance·v2-diversity 동결 | 미발급 | 미발급 | - | PLANNED | 8월 3일 저녁 사양 고정 | A/B/C 완료 대기 |
+| F | v2-performance·v2-diversity 동결 | #119 | 해당 없음 | - | COMPLETED | canonical OOF·test 계약 감사 | 모델 다양화 Issue 발급 |
 | G1 | 희소 선형 모델 공식 5-fold | 미발급 | 미발급 | - | PLANNED | 낮은 상관의 보완 후보 확인 | F 동결 대기 |
 | G2 | LightGBM 공식 5-fold | 미발급 | 미발급 | - | PLANNED | 단일 모델 품질·다양성 측정 | G1과 독립 실행 |
 | G3 | CatBoost 공식 5-fold | 미발급 | 미발급 | - | PLANNED | CSR 호환성과 추가 다양성 확인 | G1·G2 감사 후 실행 |
