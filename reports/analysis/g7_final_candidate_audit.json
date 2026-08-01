@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-01T18:30:57.889053+00:00",
+  "generated_at": "2026-08-01T18:35:43.393010+00:00",
   "task_issue": 139,
   "run_mode": "task_audit",
   "training_performed": false,
@@ -28,7 +28,7 @@
       "metrics_status": "COMPLETED",
       "reproducibility_status": "INFERENCE_VERIFIED",
       "submission_sha256": "e76cce6d911616930570bcf0c5c1adc8adb045fbd18e3226d5378bda026d5940",
-      "artifact_files_present": false,
+      "artifact_files_present": true,
       "artifact_count": 13,
       "training_verified": false,
       "ready_for_independent_training": true
@@ -38,13 +38,26 @@
     "EXP-131",
     "EXP-125"
   ],
+  "release": {
+    "url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-g7-candidates-v1",
+    "assets": {
+      "EXP-131": {
+        "name": "exp131_catboost_v1_extended_repro.tar.gz",
+        "sha256": "b82f78dd8f698c5d184cdf2273bde7d3bcf2f43185da3c19361ade26951948b7"
+      },
+      "EXP-125": {
+        "name": "exp125_lightgbm_v1_repro.tar.gz",
+        "sha256": "4cf0f228ea29006d70e0d0c2ebc07edf615c82ffffb49b2b4070aa0b69480d08"
+      }
+    }
+  },
   "selection_reason": "Macro F1 최고 후보와 품질·Public 검증 후보를 각각 보존",
   "all_training_verified": false,
   "submission_checklist": {
     "candidate_count_at_most_two": true,
     "checkpoint_and_manifest_reviewed": false,
     "independent_training_verified": false,
-    "release_asset_archived": false,
+    "release_asset_archived": true,
     "leaderboard_submission_ready": false
   }
 }

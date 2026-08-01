@@ -9,11 +9,11 @@
 | 실험 | OOF Macro F1 | Fold std | Log Loss | Public | 재현 상태 | 산출물 |
 |---|---:|---:|---:|---:|---|---|
 | EXP-131 | 0.4222392962 | 0.0140119367 | 1.8665114104 | 미제출 | INFERENCE_VERIFIED | 확인 필요 |
-| EXP-125 | 0.4189078364 | 0.0081051732 | 1.8227982418 | 미제출 | INFERENCE_VERIFIED | 확인 필요 |
+| EXP-125 | 0.4189078364 | 0.0081051732 | 1.8227982418 | 미제출 | INFERENCE_VERIFIED | 통과 |
 
 ## 현재 제한
 
-두 후보 모두 현재 `INFERENCE_VERIFIED`이며 `TRAINING_VERIFIED`가 아닙니다. 따라서 수상 후보로 확정하거나 최종 제출하지 않습니다. 다른 팀원이 fresh clone에서 `uv sync --frozen` 후 재학습·checkpoint 추론까지 검증해야 합니다.
+두 후보 모두 현재 `INFERENCE_VERIFIED`이며 `TRAINING_VERIFIED`가 아닙니다. Release 번들(`exp-g7-candidates-v1`)은 생성했지만 EXP-131의 feature-spec manifest 파일이 번들에 없어 보완이 필요합니다. 따라서 수상 후보로 확정하거나 최종 제출하지 않습니다. 다른 팀원이 fresh clone에서 `uv sync --frozen` 후 재학습·checkpoint 추론까지 검증해야 합니다.
 
 ## 다음 작업
 
