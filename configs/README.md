@@ -23,7 +23,8 @@ B family 기본값은 [`abc_stack_b_families.yaml`](abc_stack_b_families.yaml)�
 
 C family 기본값은 [`abc_stack_c_families.yaml`](abc_stack_c_families.yaml)에
 있습니다. 외부 고정 gene membership이므로 구현·smoke와 공식 사용을 구분하며,
-주최측 허용 근거가 config에 기록되기 전에는 공식 실험에서 켤 수 없습니다.
+주최측 허용 근거는 Issue #96의 고정 댓글과 공식 실험 config에 기록합니다. 기본
+family는 계속 꺼 두고, 공식 Experiment config에서 정확히 하나만 켭니다.
 
 ## Residue-position family
 

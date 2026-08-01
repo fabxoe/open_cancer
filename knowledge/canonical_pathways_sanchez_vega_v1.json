@@ -1,0 +1,26 @@
+{
+  "name": "sanchez_vega_canonical_pathways_gene_nodes",
+  "version": "pathway-mapper-7d29965",
+  "license": "AGPL-3.0",
+  "source": "PathwayMapper canonical pathway templates derived from Sanchez-Vega et al., Cell 2018",
+  "source_url": "https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json",
+  "source_commit": "7d29965de6ac8d0c6ec18c383f6dff8a48d562e7",
+  "source_path": "packages/pathway-mapper/src/data/pathways.json",
+  "source_sha256": "a625675d03fa314eb27f3ab731524de13621a35aecd8edb7c67878f2d89ae07a",
+  "article_doi": "10.1016/j.cell.2018.03.035",
+  "extraction_policy": "All unique NODE_TYPE=GENE node names from the ten canonical templates; competition panel intersection is applied at runtime",
+  "selection_policy": "Fixed before OOF and independent of competition labels, frequencies, validation, test, and leaderboard",
+  "organizer_approval_reference": "https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180",
+  "pathways": {
+    "cell_cycle": ["ATM", "CCND1", "CCNE1", "CDKN1A", "CDKN2A", "E2F3", "FBXW7", "MDM2", "TP53"],
+    "hippo": ["CRB1", "CRB2", "CSNK1D", "CSNK1E", "DCHS1", "DCHS2", "FAT1", "FAT2", "FAT3", "FAT4", "LATS1", "LATS2", "MOB1A", "MOB1B", "NF2", "PTPN14", "SAV1", "STK3", "STK4", "TAOK1", "TAOK2", "TAOK3", "TAZ", "TEAD2", "WWC1", "YAP1"],
+    "myc": ["MAX", "MGA", "MLX", "MLXIP", "MLXIPL", "MNT", "MXD1", "MXD3", "MXD4", "MXI1", "MYC", "MYCL", "MYCN"],
+    "notch": ["ARRDC1", "CNTN6", "CREBBP", "CUL1", "DNER", "EP300", "FBXW7", "HES-X", "HEY-X", "JAG2", "KAT2B", "KDM5A", "MALM3", "NCOR1", "NCOR2", "NOTCH1", "NOTCH2", "NOTCH3", "NOTCH4", "NOV", "NRARP", "PSEN2", "SPEN"],
+    "nrf2": ["CUL3", "KEAP1", "NFE2L2"],
+    "pi3k": ["AKT1", "AKT2", "AKT3", "INPP4B", "MTOR", "PIK3CA", "PIK3R1", "PIK3R2", "PIK3R3", "PPP2R1A", "PTEN", "RHEB", "RICTOR", "RPTOR", "STK11", "TSC1", "TSC2"],
+    "rtk_ras": ["ALK", "ARAF", "BRAF", "CBL", "EGFR", "ERBB2", "ERBB3", "ERBB4", "ERRFI1", "FGFR1", "FGFR2", "FGFR3", "FGFR4", "FLT3", "HRAS", "IGF1R", "KIT", "KRAS", "MAP2K1", "MAP2K2", "MAPK1", "MET", "NF1", "NRAS", "NTRK1", "NTRK2", "PDGFRA", "PTPN11", "RAC1", "RAF1", "RASA1", "RET", "RIT1", "ROS1", "SOS1"],
+    "tgf_beta": ["ACVR2A", "ACVR2B", "Activin ligands", "SMAD2", "SMAD3", "SMAD4", "TGFB ligands", "TGFBR1", "TGFBR2"],
+    "tp53": ["ATM", "CDKN2A", "CHEK2", "MDM2", "MDM4", "RPS6KA3", "TP53"],
+    "wnt": ["AMER1", "APC", "AXIN1", "AXIN2", "CTNNB1", "DKK1", "DKK2", "DKK3", "DKK4", "FZDs", "GSK3B", "LRP5", "LRP6", "RNF43", "SFRP1", "SFRP2", "SFRP3", "SFRP4", "SFRP5", "TCF7", "TCF7L1", "TCF7L2", "TLE1", "TLE2", "TLE3", "TLE4", "WIF1", "WNT ligands"]
+  }
+}

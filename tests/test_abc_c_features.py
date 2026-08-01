@@ -16,6 +16,13 @@ def knowledge_path() -> Path:
     return Path(__file__).resolve().parents[1] / "knowledge/abc_c_compact_groups_v1.json"
 
 
+def canonical_pathway_path() -> Path:
+    return (
+        Path(__file__).resolve().parents[1]
+        / "knowledge/canonical_pathways_sanchez_vega_v1.json"
+    )
+
+
 def fixture_frame() -> pd.DataFrame:
     pathways, _ = load_fixed_groups(knowledge_path(), kind="pathways")
     genes = sorted({gene for members in pathways.values() for gene in members})
@@ -38,6 +45,31 @@ def test_pathway_burden_counts_mutated_and_lof_genes() -> None:
     assert values[names.index("sample__pathway_rtk_ras__lof_gene_count")] == 0
     assert values[names.index("sample__pathway_pi3k__lof_gene_count")] == 1
     assert fitted.descriptor.output_dimension == 20
+
+
+def test_canonical_pathways_use_fixed_source_and_twenty_outputs() -> None:
+    pathways, document = load_fixed_groups(canonical_pathway_path(), kind="pathways")
+    assert tuple(pathways) == (
+        "cell_cycle",
+        "hippo",
+        "myc",
+        "notch",
+        "nrf2",
+        "pi3k",
+        "rtk_ras",
+        "tgf_beta",
+        "tp53",
+        "wnt",
+    )
+    assert document["source_sha256"] == (
+        "a625675d03fa314eb27f3ab731524de13621a35aecd8edb7c67878f2d89ae07a"
+    )
+    frame = fixture_frame()
+    fitted = fixed_pathway_burden_family(
+        tuple(frame.columns[1:]), canonical_pathway_path()
+    ).fit(frame)
+    assert fitted.descriptor.output_dimension == 20
+    assert fitted.descriptor.external_knowledge[0].license == "AGPL-3.0"
 
 
 def test_functional_roles_are_independently_switchable() -> None:
