@@ -248,6 +248,7 @@ def main(
             "fold_seeds": [config["seed"] + fold for fold in range(5)],
         },
         "training": config["training"],
+        "preflight": config.get("preflight"),
         "runtime": {
             "command": runner_command,
             "pythonhashseed": None,

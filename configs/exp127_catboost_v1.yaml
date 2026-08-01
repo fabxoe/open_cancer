@@ -12,16 +12,26 @@ split:
 model:
   name: catboost
   parameters:
-    iterations: 1000
+    iterations: 300
     learning_rate: 0.05
-    depth: 8
+    depth: 6
     l2_leaf_reg: 3.0
     early_stopping_rounds: 50
     thread_count: 8
     allow_writing_files: false
 training:
   balanced_sample_weight: true
+preflight:
+  attempted_source_commit: ca28d0293a045ce8cf2aacb4d17474e176f98d4f
+  attempted_parameters:
+    iterations: 1000
+    depth: 8
+  stopped_after_seconds: 1800
+  completed_folds: 0
+  reason: first fold did not complete within the fixed 30-minute compute budget
 notes: >-
   ABC-Stack G3. Frozen Feature Spec v1 and canonical folds are held fixed while
   the model family changes from XGBoost to CatBoost. Early stopping uses only
-  the corresponding outer-fold validation partition.
+  the corresponding outer-fold validation partition. The planned 1,000-tree,
+  depth-8 preflight was stopped after 30 minutes without one completed fold;
+  the official run uses a compute-feasible 300-tree, depth-6 CatBoost setting.
