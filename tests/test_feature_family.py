@@ -13,11 +13,13 @@ from scipy import sparse
 from open_cancer.feature_family import (
     FeatureContractError,
     FeatureFamilyDescriptor,
+    FoldFeatureBundle,
     KnowledgeProvenance,
     assert_feature_spec_identity,
     build_feature_spec,
     fit_transform_family_set,
     find_semantically_equivalent_features,
+    remove_semantically_equivalent_features,
     transform_checked,
 )
 from open_cancer.validation import validate_json_document
@@ -151,3 +153,23 @@ def test_family_set_rejects_reference_duplicates() -> None:
             reference_train=sparse.csr_matrix([[1.0], [0.0]]),
             reference_names=["base_one"],
         )
+
+
+def test_remove_semantically_equivalent_features_keeps_only_new_columns() -> None:
+    bundle = FoldFeatureBundle(
+        train=sparse.csr_matrix([[1, 0], [0, 1]], dtype=np.float32),
+        validation=sparse.csr_matrix([[1, 0]], dtype=np.float32),
+        test=sparse.csr_matrix([[0, 1]], dtype=np.float32),
+        fitted_families=(),
+        feature_names=("duplicate", "new"),
+        registry={},
+    )
+    filtered, dropped = remove_semantically_equivalent_features(
+        bundle,
+        sparse.csr_matrix([[1], [0]], dtype=np.float32),
+        ("base",),
+    )
+
+    assert dropped == {"duplicate": "base"}
+    assert filtered.feature_names == ("new",)
+    assert filtered.train.shape == (2, 1)

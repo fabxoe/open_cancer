@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 24
+- 실제 실험 수: 25
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4168865739 (`EXP-094`)
@@ -43,6 +43,7 @@
 | EXP-085 | COMPLETED | fabxoe | #85 | EXP-005 + reference-aware 고정 문헌 hotspot 34개 | 0.4125795545 | 0.3103760308 | INFERENCE_VERIFIED | clean hotspot 복구·Public은 EXP-031보다 낮음 | [보고서](reports/exp085_hotspot_clean/README.md) |
 | EXP-093 | COMPLETED | 2heej | #93 | EXP-005 + max residue-position + clean hotspot 34개 | 0.4157606623 | 미제출 | INFERENCE_VERIFIED | 부모 OOF는 개선했지만 fold 변동성 기준 실패로 조합 동결 보류 | [보고서](reports/exp093_mutation_position_hotspot/README.md) |
 | EXP-094 | COMPLETED | fabxoe | #94 | EXP-005 + EXP-069 max residue position + EXP-085 고정 hotspot | 0.4168865739 | 미제출 | INFERENCE_VERIFIED | 채택·Feature Spec v1 동결, 신규 Local 최고 | [보고서](reports/exp094_feature_spec_v1/README.md) |
+| EXP-106 | COMPLETED | fabxoe | #106 | EXP-094 + fold-train recurrent exact-token | 0.4147478922 | 미제출 | INFERENCE_VERIFIED | 성능 후보 미채택·OOF/test 확률은 다양성 비교용 보존 | [보고서](reports/exp106_recurrent_exact_token/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -80,10 +81,39 @@
 | 2026-07-31T10:18:14.298161+00:00 | EXP-058 | Kangho-Park | `45b353ce4073e4a9bad0c0866f4cb84ac5a53fe7` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp058_cooccurrence_pair_ablation/comparison.json) |
 | 2026-07-31T14:54:04.764691+00:00 | EXP-085 | fabxoe | `e329f13f7de85cc34c0e54c85f25f093e2ed0dd1` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp085_hotspot_clean/comparison.json) |
 | 2026-08-01T06:21:49.113157+00:00 | EXP-094 | fabxoe | `19d5c067517af42f1b5e353b2106e352bae185df` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp094_feature_spec_v1/comparison.json) |
+| 2026-08-01T09:20:01.124960+00:00 | EXP-106 | fabxoe | `8e54d0f48b891bbc8aa99130e1954cf1cb8b6f08` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp106_recurrent_exact_token/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-106] recurrent exact-token 단독 검증
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #106 / issue-106-exp-recurrent-exact-token
+- 소스 commit: `8e54d0f48b891bbc8aa99130e1954cf1cb8b6f08`
+- 시작/종료: 2026-08-01T09:07:40.300760+00:00 / 2026-08-01T09:19:58.384785+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp106_recurrent_exact_token/config.resolved.yaml`
+- Metrics: `reports/exp106_recurrent_exact_token/metrics.json`
+- Report: `reports/exp106_recurrent_exact_token/README.md`
+- 기준: 동결된 EXP-094 Feature Spec v1
+- 변경: fold-train recurrent `(gene, raw token)` 이진 피처만 추가
+- 최종 추가 차원: fold별 272, 297, 285, 301, 299
+
+#### 결과
+
+- Fold Macro F1: 0.4161140, 0.4196788, 0.4006706, 0.4106391, 0.4242178
+- OOF Macro F1: 0.4147478922
+- EXP-094 대비: -0.0021386817
+- OOF 예측 라벨 일치율(EXP-094 대비): 0.9159812933
+- 전체 OOF 확률 상관(EXP-094 대비): 0.9929096377
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+- 판단: 성능 후보 미채택, OOF/test 확률은 후속 다양성 비교용 보존
 
 ### [EXP-094] Feature Spec v1 조합
 

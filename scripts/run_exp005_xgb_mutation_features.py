@@ -249,6 +249,7 @@ def verify_saved_inference(
     test_probability_path: Path,
     submission_path: Path,
     fold_feature_indices: list[list[int]] | None = None,
+    fold_test_features: list[sparse.csr_matrix] | None = None,
 ) -> None:
     """Reload checkpoints and automatically create inference reproducibility evidence."""
     fold_count = config["split"]["n_splits"]
@@ -263,12 +264,14 @@ def verify_saved_inference(
             raise FileNotFoundError(f"체크포인트가 없습니다: {model_path}")
         model = xgb.XGBClassifier()
         model.load_model(model_path)
-        fold_test_features = (
-            test_features[:, fold_feature_indices[fold]]
+        model_test_features = (
+            fold_test_features[fold]
+            if fold_test_features is not None
+            else test_features[:, fold_feature_indices[fold]]
             if fold_feature_indices is not None
             else test_features
         )
-        reproduced_proba += model.predict_proba(fold_test_features).astype(
+        reproduced_proba += model.predict_proba(model_test_features).astype(
             np.float32
         ) / fold_count
 
@@ -505,6 +508,7 @@ def run_experiment(
     comparison_metrics_path: Path | None = None,
     fold_feature_selector: Any | None = None,
     candidate_feature_groups: dict[str, tuple[str, ...]] | None = None,
+    fold_feature_builder: Any | None = None,
 ) -> None:
     started_at = datetime.now(timezone.utc)
     start_time = time.perf_counter()
@@ -522,6 +526,8 @@ def run_experiment(
             f"이 script는 Issue #{expected_issue_number} 브랜치의 "
             f"{expected_experiment_id} 전용입니다."
         )
+    if fold_feature_builder is not None and fold_feature_selector is not None:
+        raise ValueError("fold feature builder와 selector는 동시에 사용할 수 없습니다.")
 
     split_path = ROOT / config["split"]["path"]
     report_dir = ROOT / "reports" / artifact_slug
@@ -666,6 +672,8 @@ def run_experiment(
     fold_metrics: list[dict[str, Any]] = []
     fold_feature_indices: list[list[int]] = []
     selection_results: list[dict[str, Any]] = []
+    fold_test_matrices: list[sparse.csr_matrix] = []
+    fold_feature_records: list[dict[str, Any]] = []
 
     for fold in range(n_splits):
         valid_mask = train["fold"].eq(fold).to_numpy()
@@ -705,6 +713,34 @@ def run_experiment(
         x_train_fold = x_all[train_indices][:, selected_indices]
         x_valid_fold = x_all[valid_indices][:, selected_indices]
         x_test_fold = x_test[:, selected_indices]
+        if fold_feature_builder is not None:
+            extra = fold_feature_builder(
+                fold=fold,
+                train_indices=train_indices,
+                valid_indices=valid_indices,
+                base_train=x_train_fold,
+                base_validation=x_valid_fold,
+                base_test=x_test_fold,
+                base_feature_names=tuple(all_feature_names[index] for index in selected_indices),
+                target=y_train,
+            )
+            x_train_fold = sparse.hstack(
+                [x_train_fold, extra.train], format="csr", dtype=np.float32
+            )
+            x_valid_fold = sparse.hstack(
+                [x_valid_fold, extra.validation], format="csr", dtype=np.float32
+            )
+            x_test_fold = sparse.hstack(
+                [x_test_fold, extra.test], format="csr", dtype=np.float32
+            )
+            fold_feature_records.append(
+                {
+                    "fold": fold,
+                    "feature_names": list(extra.feature_names),
+                    "registry": extra.registry,
+                }
+            )
+            fold_test_matrices.append(x_test_fold)
         sample_weight = (
             compute_sample_weight(class_weight="balanced", y=y_train)
             if config["training"]["balanced_sample_weight"]
@@ -740,6 +776,13 @@ def run_experiment(
 
     if np.isnan(oof_proba).any():
         raise ValueError("OOF 확률에 채워지지 않은 값이 있습니다.")
+
+    if fold_feature_builder is not None:
+        resolved_config["fold_train_features"] = fold_feature_records
+        resolved_config_path.write_text(
+            yaml.safe_dump(resolved_config, allow_unicode=True, sort_keys=False),
+            encoding="utf-8",
+        )
 
     selection_path = report_dir / "feature_selection.json"
     if fold_feature_selector is not None:
@@ -857,6 +900,9 @@ def run_experiment(
             submission_path=submission_path,
             fold_feature_indices=(
                 fold_feature_indices if fold_feature_selector is not None else None
+            ),
+            fold_test_features=(
+                fold_test_matrices if fold_feature_builder is not None else None
             ),
         )
     except Exception as error:

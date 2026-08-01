@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-106",
+  "issue_number": 106,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "8e54d0f48b891bbc8aa99130e1954cf1cb8b6f08",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp106_recurrent_exact_token/data_manifest.json",
+  "environment": "reproducibility/exp106_recurrent_exact_token/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-01T09:20:01.124960+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp106_recurrent_exact_token/fold_00.json",
+      "size_bytes": 11015217,
+      "sha256": "c0fd75f6aa22ac81e42d4d2b00402f03517a860e4dc95ee372c19823b344848c",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp106_recurrent_exact_token/fold_01.json",
+      "size_bytes": 12100193,
+      "sha256": "a05e0cced81f081fade4418893000fde7ff7e2741f5f63c02b5ba6aef759008c",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp106_recurrent_exact_token/fold_02.json",
+      "size_bytes": 13609661,
+      "sha256": "61dda3ade3f5512b2f6a777bf236470b822ec6477f6cb925c8b9c3aa09e312b2",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp106_recurrent_exact_token/fold_03.json",
+      "size_bytes": 12875916,
+      "sha256": "82429af13df56b6c002d7c5d9b379a2f2413a939af8d43fda800f842beefdd44",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp106_recurrent_exact_token/fold_04.json",
+      "size_bytes": 12934706,
+      "sha256": "e69d87e88c7a2a43c5b356074794831f1b6d0b0dbce47e4962376be57f03e04a",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp106_recurrent_exact_token.csv",
+      "size_bytes": 38184,
+      "sha256": "143cf88a8a285d487f6250d6e8d0158703f0310c29fec7e4ddc864199fe134f0",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp106_recurrent_exact_token.csv",
+      "size_bytes": 2130403,
+      "sha256": "91cf56486511e3536207056437b1273ecefca56753ab01795e6fc7c5f14926b9",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp106_recurrent_exact_token_test_proba.csv",
+      "size_bytes": 835204,
+      "sha256": "b70fd9097453412d09c41f741daa51d2961aae0eb57ed9b22d0c30420008e309",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp106_recurrent_exact_token/metrics.json",
+      "size_bytes": 11170,
+      "sha256": "52fb01c267ac9f6e47626cf116581908586e286517705a5d0dd52beb17d26af1",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp106_recurrent_exact_token/config.resolved.yaml",
+      "size_bytes": 66938,
+      "sha256": "f762f2e31aa66e57871bf0918784460fd69b9a2bf200a17b64a489ef7c3c6de3",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
