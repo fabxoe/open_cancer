@@ -7,12 +7,12 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 31
+- 실제 실험 수: 32
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4189078364 (`EXP-125`)
+- 최고 Local OOF Macro F1: 0.4194572294 (`EXP-127`)
 - 최고 Public LB Macro F1: 0.3170803849 (`EXP-031`)
-- 최고 재현 검증 모델: `EXP-125` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-127` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-01
 
 ## 실험 요약
@@ -50,6 +50,7 @@
 | EXP-096 | COMPLETED | fabxoe | #96 | EXP-094 + 고정 canonical pathway 변이·LoF 유전자 수 20개 | 0.4181153080 | 미제출 | INFERENCE_VERIFIED | 신규 Local 최고·v2-performance C family 채택 | [보고서](reports/exp096_fixed_pathway_burden/README.md) |
 | EXP-123 | COMPLETED | fabxoe | #123 | 동결 Feature Spec v1 + 희소 Logistic Regression | 0.3763324825 | 미제출 | INFERENCE_VERIFIED | 단독·wildcard 품질 gate 실패, 다양성만 통과해 stacking 후보 미채택 | [보고서](reports/exp123_sparse_logistic_v1/README.md) |
 | EXP-125 | COMPLETED | fabxoe | #125 | 동결 Feature Spec v1 + LightGBM | 0.4189078364 | 미제출 | INFERENCE_VERIFIED | 신규 Local 최고·품질·wildcard·다양성 gate 모두 통과 | [보고서](reports/exp125_lightgbm_v1/README.md) |
+| EXP-127 | COMPLETED | fabxoe | #127 | 동결 Feature Spec v1 + CatBoost GPU | 0.4194572294 | 미제출 | INFERENCE_VERIFIED | 신규 Local 최고·diversity gate 통과, Log Loss·fold 안정성 gate 실패로 blend 검증 필요 | [보고서](reports/exp127_catboost_v1/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -92,6 +93,7 @@
 | 2026-08-01T10:02:39.082057+00:00 | EXP-109 | fabxoe | `2e5882eb9c050292c6167c584cf4977a12c1cdab` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp109_complex_morphology/comparison.json) |
 | 2026-08-01T10:19:49.995276+00:00 | EXP-110 | fabxoe | `1c0e835eecb5d5edbffc61c632c583395f698d1b` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp110_frequency_tier_spectrum/comparison.json) |
 | 2026-08-01T10:45:05.297140+00:00 | EXP-096 | fabxoe | `296c39fe9259fd4ee93bd8158aeaecec0c891545` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp096_fixed_pathway_burden/comparison.json) |
+| 2026-08-01T14:26:44.634572+00:00 | EXP-127 | fabxoe | `03af58890c1cac9d90e61430e550b7ae6cc7060d` / 태그 없음 | 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp127_catboost_v1/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -1522,3 +1524,50 @@ config 변경만으로 재실행했다(Feature Factory 코드 변경 없음).
   채택한다.
 - 재현 메모: 저장 checkpoint 재추론에서 OOF·test 라벨 100%, 확률 최대 절대
   차이 0, 제출 CSV byte-level SHA-256 일치를 확인했다.
+
+### [EXP-127] 동결 Feature Spec v1 CatBoost GPU
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #127 / issue-127-exp-catboost-v1
+- 소스 commit: `03af58890c1cac9d90e61430e550b7ae6cc7060d`
+- 시작/종료: 2026-08-01T14:19:39.262553+00:00 /
+  2026-08-01T14:26:44.634572+00:00
+
+#### 실행
+
+- 부모: EXP-094, 동결 Feature Spec v1과 canonical 5-fold 유지
+- 유일한 모델 변경: XGBoost에서 CatBoost GPU로 교체
+- 실행 장비: RunPod NVIDIA RTX 4090 24GB
+- Config: `reproducibility/exp127_catboost_v1/config.resolved.yaml`
+- Metrics: `reports/exp127_catboost_v1/metrics.json`
+- Report: `reports/exp127_catboost_v1/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4008452894, 0.4405650635, 0.4173173958,
+  0.4115121069, 0.4276474855
+- OOF Macro F1: 0.4194572294
+- Fold 표준편차: 0.0136136464
+- Accuracy: 0.4160619255
+- Log Loss: 1.8624933825
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp127_catboost_v1/metrics.json` /
+  `reports/exp127_catboost_v1/README.md` /
+  `reproducibility/exp127_catboost_v1/`
+- 제출 후보: `submissions/exp127_catboost_v1.csv`
+  (SHA-256 `f4fdd043a1875a41d333fa88f34911fd0f6f20758a3bd41deea1288d473cb543`,
+  DACON 미제출)
+- 결론: EXP-125 대비 OOF `+0.0005493930`으로 신규 Local 최고다.
+  EXP-094 대비 라벨 불일치율 30.54%, 정오답 상관 0.6962로 diversity gate는
+  통과했지만 Log Loss `+0.0225562011`과 fold 변동성 `+0.0057293943`으로
+  quality·wildcard gate는 실패했다. 단독 최고 후보로 보존하고 가중치 선택은
+  후속 OOF blend 검증에서 결정한다.
+- 재현 메모: 저장 checkpoint 재추론에서 OOF·test 라벨 100%, 확률 최대 절대
+  차이 0, 제출 CSV byte-level SHA-256 일치를 확인했다. GPU 재학습은
+  비결정적일 수 있으므로 `TRAINING_VERIFIED`로 승격하지 않는다.
