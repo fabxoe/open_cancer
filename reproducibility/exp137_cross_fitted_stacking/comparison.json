@@ -1,0 +1,13 @@
+{
+  "experiment_id": "EXP-137",
+  "data_hashes_match": true,
+  "original_submission_sha256": "9800c8c64b8bfa72f1fb73916734a552f598551bdbb510cee0a7f90899a64645",
+  "reproduced_submission_sha256": "9800c8c64b8bfa72f1fb73916734a552f598551bdbb510cee0a7f90899a64645",
+  "submission_sha256_match": true,
+  "oof_label_agreement": 1.0,
+  "test_label_agreement": 1.0,
+  "probability_max_abs_difference": 0.0,
+  "probability_atol": 1e-06,
+  "probability_rtol": 1e-06,
+  "passed": true
+}

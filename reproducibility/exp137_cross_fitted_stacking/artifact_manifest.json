@@ -1,0 +1,108 @@
+{
+  "experiment_id": "EXP-137",
+  "issue_number": 137,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "d44122ad18f78029d65dd4332b1d2b2b707703aa",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp137_cross_fitted_stacking/data_manifest.json",
+  "environment": "reproducibility/exp137_cross_fitted_stacking/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-01T17:38:28.104917+00:00",
+  "artifacts": [
+    {
+      "kind": "submission",
+      "path": "submissions/exp137_cross_fitted_stacking.csv",
+      "size_bytes": 38584,
+      "sha256": "9800c8c64b8bfa72f1fb73916734a552f598551bdbb510cee0a7f90899a64645",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp137_cross_fitted_stacking.csv",
+      "size_bytes": 3479273,
+      "sha256": "f35ffc3d9cfc2e9188feeeef200350edffd6f5ec056c54ef1f35114ca4f72382",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp137_cross_fitted_stacking_test_proba.csv",
+      "size_bytes": 1390843,
+      "sha256": "910e101140093b4c8ec2ea5aa9ff39976ca2884323ec38386bb94ed39970af74",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp137_cross_fitted_stacking/metrics.json",
+      "size_bytes": 11141,
+      "sha256": "44c8c0708473eb2ee12944aa959aadfe61c527419e4928b98b75f1e79307281e",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp137_cross_fitted_stacking/config.resolved.yaml",
+      "size_bytes": 1585,
+      "sha256": "65101ff46f853abbe77ebe3d52611c71245dfd0e40307fc2a6b4c22c9c286437",
+      "storage_uri": null
+    },
+    {
+      "kind": "comparison",
+      "path": "reproducibility/exp137_cross_fitted_stacking/comparison.json",
+      "size_bytes": 477,
+      "sha256": "59ab3d3d67c29004599817669cfa99852ee189880798ede84a7bae13f77c079e",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp137_cross_fitted_stacking/fold_0.joblib",
+      "size_bytes": 12183,
+      "sha256": "b72d45cd1d44a71be477954036bf3494da86ddeb460b9e7e2a9d8feb2ab31ec3",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp137_cross_fitted_stacking/fold_1.joblib",
+      "size_bytes": 12183,
+      "sha256": "b37e59dff83cd9adc180cd1962f88954dd5bab71ba7add9ac7b9ce29403e44e3",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp137_cross_fitted_stacking/fold_2.joblib",
+      "size_bytes": 12183,
+      "sha256": "67af564c5ee2a2173b74cec75004e842e07c3a93b06b2d4cd4aa5b364c982e00",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp137_cross_fitted_stacking/fold_3.joblib",
+      "size_bytes": 12183,
+      "sha256": "9b3f70f1011aaf8990e6e8335a7ba2a9048029bacf30c2d69c94f42a5b5f19cd",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp137_cross_fitted_stacking/fold_4.joblib",
+      "size_bytes": 12183,
+      "sha256": "cb6353d6f425f88c80a219e9b1084dd7cdc0b9d18ec95a4545c2d0ee5d30352a",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp137_cross_fitted_stacking/final.joblib",
+      "size_bytes": 12183,
+      "sha256": "a115446ebed62543a30bc80e795dae51f3f7fe3aca0aaf6e2c5d87d7f5df4650",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
