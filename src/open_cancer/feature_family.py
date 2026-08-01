@@ -153,6 +153,52 @@ class FoldFeatureBundle:
     registry: dict[str, dict[str, Any]]
 
 
+def remove_semantically_equivalent_features(
+    bundle: FoldFeatureBundle,
+    reference_train: sparse.spmatrix | np.ndarray,
+    reference_names: tuple[str, ...] | list[str],
+) -> tuple[FoldFeatureBundle, dict[str, str]]:
+    """Drop candidate columns identical to the frozen base on fold-train rows."""
+    equivalents = find_semantically_equivalent_features(
+        bundle.train,
+        bundle.feature_names,
+        reference_train,
+        reference_names,
+    )
+    if not equivalents:
+        return bundle, {}
+    keep = [
+        index
+        for index, name in enumerate(bundle.feature_names)
+        if name not in equivalents
+    ]
+    _require(bool(keep), "기존 Feature Spec과 중복되지 않는 candidate 열이 없습니다.")
+    filtered_names = tuple(bundle.feature_names[index] for index in keep)
+    filtered_registry = {
+        **bundle.registry,
+        "semantic_equivalence_filter": {
+            "definition_version": "1.0.0",
+            "enabled": True,
+            "output_dimension": len(filtered_names),
+            "feature_names_sha256": sha256_lines(filtered_names),
+            "fit_scope": "fold_train",
+            "external_knowledge": None,
+            "dropped": equivalents,
+        },
+    }
+    return (
+        FoldFeatureBundle(
+            train=bundle.train[:, keep],
+            validation=bundle.validation[:, keep],
+            test=bundle.test[:, keep],
+            fitted_families=bundle.fitted_families,
+            feature_names=filtered_names,
+            registry=filtered_registry,
+        ),
+        equivalents,
+    )
+
+
 def transform_checked(
     family: FittedFeatureFamily,
     frame: pd.DataFrame,

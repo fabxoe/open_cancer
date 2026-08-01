@@ -8,7 +8,10 @@ import json
 import pandas as pd
 
 from open_cancer.abc_a_features import RecurrentExactTokenFamily
-from open_cancer.feature_family import fit_transform_family_set
+from open_cancer.feature_family import (
+    fit_transform_family_set,
+    remove_semantically_equivalent_features,
+)
 from run_hotspot_xgb import ROOT, TEST_PATH, TRAIN_PATH, main
 
 
@@ -47,8 +50,11 @@ class RecurrentExactTokenFoldBuilder:
             validation=self.train.iloc[valid_indices],
             test=self.test,
             target=pd.Series(target),
-            reference_train=base_train,
-            reference_names=base_feature_names,
+        )
+        bundle, equivalents = remove_semantically_equivalent_features(
+            bundle,
+            base_train,
+            base_feature_names,
         )
         fitted = bundle.fitted_families[0]
         vocabulary_path = (
@@ -65,6 +71,7 @@ class RecurrentExactTokenFoldBuilder:
                     "fold": fold,
                     "min_support": self.min_support,
                     "max_features": self.max_features,
+                    "semantic_duplicates_dropped": equivalents,
                     "vocabulary": [
                         {"gene": gene, "token": token, "support": support}
                         for (gene, token), support in zip(
