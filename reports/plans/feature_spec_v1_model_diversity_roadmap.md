@@ -7,6 +7,7 @@
 ## 현재 기준
 
 - 관리 Task: [Issue #98](https://github.com/fabxoe/open_cancer/issues/98)
+- 관리 PR: [PR #99](https://github.com/fabxoe/open_cancer/pull/99) (`PR_OPEN`)
 - 기준 Feature Spec: EXP-094, SHA-256
   `1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3`
 - 기준 XGBoost OOF Macro F1: `0.4168865739`

@@ -32,7 +32,7 @@
 | E | 위치 negative control | [#91](https://github.com/fabxoe/open_cancer/issues/91) | explore | [#92](https://github.com/fabxoe/open_cancer/pull/92) | COMPLETED | 0.4058699664 (3-seed 평균) | 해당 없음 | EXP-069 원본 대비 -0.007231, 숫자 위치 신호 지지 | 단계 F 진행 |
 | F-1 | Feature Spec 조합 선행 실행 | [#93](https://github.com/fabxoe/open_cancer/issues/93) | EXP-093 | [#95](https://github.com/fabxoe/open_cancer/pull/95) | MERGED | 0.4157606623 | INFERENCE_VERIFIED | 부모 OOF 개선·fold 변동성 기준 실패 | EXP-094 독립 확인 |
 | F-2 | Feature Spec v1 조합 | [#94](https://github.com/fabxoe/open_cancer/issues/94) | EXP-094 | [#97](https://github.com/fabxoe/open_cancer/pull/97) | COMPLETED | 0.4168865739 | INFERENCE_VERIFIED | robust log burden 포함 구성 채택·Feature Spec v1 동결 | 단계 G 진행 |
-| G | 모델 다양화·stacking | [#98](https://github.com/fabxoe/open_cancer/issues/98) | 해당 없음 | 미발급 | IN_PROGRESS | N/A | 해당 없음 | 평가 계약과 실행 순서 설계 | [후속 로드맵](feature_spec_v1_model_diversity_roadmap.md) 확정 |
+| G | 모델 다양화·stacking | [#98](https://github.com/fabxoe/open_cancer/issues/98) | 해당 없음 | [#99](https://github.com/fabxoe/open_cancer/pull/99) | PR_OPEN | N/A | 해당 없음 | 평가 계약과 실행 순서 설계 | 리뷰·병합 |
 
 로드맵 작업 상태는 다음 값만 사용합니다.
 
