@@ -11,6 +11,7 @@ import numpy as np
 from scipy import sparse
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score, log_loss
+from sklearn.preprocessing import MaxAbsScaler
 from sklearn.utils.class_weight import compute_sample_weight
 
 from open_cancer.constants import CLASS_LABELS
@@ -45,14 +46,21 @@ class LogisticRegressionAdapter:
     file_suffix = ".joblib"
 
     def __init__(self, parameters: dict[str, Any], seed: int) -> None:
+        scale = parameters.pop("scale", "none")
+        _require(scale in {"none", "max_abs"}, f"지원하지 않는 Logistic scaling: {scale}")
+        self.scaler = MaxAbsScaler() if scale == "max_abs" else None
         defaults = {"solver": "saga", "C": 1.0, "max_iter": 2000}
         self.model = LogisticRegression(random_state=seed, **{**defaults, **parameters})
 
     def fit(self, x_train, y_train, x_valid, y_valid, sample_weight) -> None:
         del x_valid, y_valid
+        if self.scaler is not None:
+            x_train = self.scaler.fit_transform(x_train)
         self.model.fit(x_train, y_train, sample_weight=sample_weight)
 
     def predict_proba(self, matrix) -> np.ndarray:
+        if self.scaler is not None:
+            matrix = self.scaler.transform(matrix)
         raw = self.model.predict_proba(matrix)
         output = np.zeros((matrix.shape[0], len(CLASS_LABELS)), dtype=np.float64)
         output[:, self.model.classes_.astype(int)] = raw
@@ -61,7 +69,7 @@ class LogisticRegressionAdapter:
     def save(self, path: Path) -> None:
         import joblib
 
-        joblib.dump(self.model, path)
+        joblib.dump({"model": self.model, "scaler": self.scaler}, path)
 
 
 class XGBoostAdapter:

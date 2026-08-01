@@ -1,0 +1,129 @@
+experiment:
+  record_role: official
+  issue_number: 123
+  experiment_id: EXP-123
+  branch: issue-123-exp-sparse-logistic-v1
+  source_commit: 63637a3e67733909bee21f6b9a072db7a42cdb68
+  dirty_worktree: false
+  started_at: '2026-08-01T12:06:30.551287+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+feature_spec:
+  name: v1
+  base_experiment: EXP-094
+  evidence_experiment: EXP-094
+  base_feature_spec_sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+  families: []
+  family_registry: {}
+  semantic_duplicates_dropped: {}
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+  source_config: configs/exp094_feature_spec_v1.yaml
+  source_config_sha256: 4282727de03bd0f31989fdcce61d65530ba69e339e6dce1fe7f72fa85ebd57c4
+  train_input_sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test_input_sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  train_shape:
+  - 6201
+  - 35119
+  test_shape:
+  - 2546
+  - 35119
+  feature_names_sha256: 8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf
+  outputs:
+    train_features:
+      path: /Users/fabxoe/workbench/cancer_open/data/processed/exp123_sparse_logistic_v1_features/train_features.npz
+      sha256: dfb0b8fbade7d69c460411dfdbc5bb5fbd97eb9b5e1056dd82294135adac5c8a
+    test_features:
+      path: /Users/fabxoe/workbench/cancer_open/data/processed/exp123_sparse_logistic_v1_features/test_features.npz
+      sha256: 66f0471b230d25d688b1564d5adece0077d5deaaf52c8c987e3e719491127575
+    feature_names:
+      path: /Users/fabxoe/workbench/cancer_open/data/processed/exp123_sparse_logistic_v1_features/feature_names.json
+      sha256: b7464c1fd0e985e722eabd2f8becb33051879d4b4cdfd25d99cd1e6b793b98c8
+model:
+  name: logistic_regression
+  parameters:
+    solver: saga
+    scale: max_abs
+    C: 1.0
+    max_iter: 2000
+    tol: 0.001
+    verbose: 0
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+training:
+  balanced_sample_weight: true
+runtime:
+  command: uv run python scripts/run_exp123_sparse_logistic_v1.py
+  pythonhashseed: null
+  deterministic: true

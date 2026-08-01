@@ -1,0 +1,27 @@
+run_mode: experiment
+record_role: official
+slug: sparse_logistic_v1
+parent_experiment: EXP-094
+seed: 42
+feature_spec:
+  name: v1
+  frozen_manifest: configs/abc_stack_feature_spec_v2.yaml
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+model:
+  name: logistic_regression
+  parameters:
+    solver: saga
+    scale: max_abs
+    C: 1.0
+    max_iter: 2000
+    tol: 0.001
+    verbose: 0
+training:
+  balanced_sample_weight: true
+notes: >-
+  ABC-Stack G1. Frozen Feature Spec v1 is held fixed while only the model family
+  changes from XGBoost to sparse multinomial Logistic Regression. MaxAbsScaler is
+  fitted separately on each fold-train partition to preserve sparsity and prevent
+  validation leakage.

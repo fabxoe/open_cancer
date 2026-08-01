@@ -1,0 +1,20 @@
+{
+  "baseline": "EXP-094",
+  "candidate": "EXP-123",
+  "macro_f1_delta": -0.04055409139603633,
+  "fold_std_delta": -0.003673310490629419,
+  "log_loss_delta": 0.28623737110528125,
+  "label_agreement": 0.5383002741493308,
+  "label_disagreement": 0.46169972585066926,
+  "error_state_agreement": 0.806966618287373,
+  "correctness_pearson": 0.5962549056832737,
+  "probability_pearson": 0.7767793880043297,
+  "probability_spearman": 0.6442813438228113,
+  "improved_class_count": 7,
+  "gates": {
+    "quality": false,
+    "wildcard": false,
+    "diversity": true,
+    "ensemble_quality_eligible": false
+  }
+}
