@@ -19,19 +19,33 @@ model:
     early_stopping_rounds: 50
     thread_count: 8
     allow_writing_files: false
+    rsm: 0.1
+    border_count: 32
+    bootstrap_type: Bernoulli
+    subsample: 0.8
 training:
   balanced_sample_weight: true
 preflight:
-  attempted_source_commit: ca28d0293a045ce8cf2aacb4d17474e176f98d4f
-  attempted_parameters:
-    iterations: 1000
-    depth: 8
-  stopped_after_seconds: 1800
-  completed_folds: 0
-  reason: first fold did not complete within the fixed 30-minute compute budget
+  attempts:
+    - source_commit: ca28d0293a045ce8cf2aacb4d17474e176f98d4f
+      parameters:
+        iterations: 1000
+        depth: 8
+      stopped_after_seconds: 1800
+      completed_folds: 0
+      reason: first fold did not complete within the fixed 30-minute compute budget
+    - source_commit: d16905d8a07f5cd714e6d32558cb9c1691f3d9c6
+      parameters:
+        iterations: 300
+        depth: 6
+      stopped_after_seconds: 1200
+      completed_folds: 0
+      reason: reducing tree count and depth alone did not remove the feature-scan bottleneck
 notes: >-
   ABC-Stack G3. Frozen Feature Spec v1 and canonical folds are held fixed while
   the model family changes from XGBoost to CatBoost. Early stopping uses only
   the corresponding outer-fold validation partition. The planned 1,000-tree,
   depth-8 preflight was stopped after 30 minutes without one completed fold;
-  the official run uses a compute-feasible 300-tree, depth-6 CatBoost setting.
+  reducing only trees and depth was also insufficient. The official run uses a
+  compute-bounded 300-tree, depth-6 setting with rsm 0.1, 32 borders, and
+  Bernoulli row subsampling.

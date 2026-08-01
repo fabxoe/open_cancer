@@ -49,7 +49,7 @@ EXP-094는 Feature Spec v1으로 보존합니다. 이후 family는 v2 후보로�
 | M0 | 동결 Feature Spec·공통 모델 runner | #121 | 해당 없음 | #122 | COMPLETED | 세 spec 실물 해시·공통 artifact 계약 | 완료 |
 | G1 | 희소 선형 모델 공식 5-fold | #123 | EXP-123 | #124 | COMPLETED | 다양성 통과·품질 gate 실패 | stacking 후보 미채택 |
 | G2 | LightGBM 공식 5-fold | #125 | EXP-125 | #126 | COMPLETED | 신규 Local 최고·모든 gate 통과 | G3와 독립 비교 후 G4 감사 |
-| G3 | CatBoost 공식 5-fold | #127 | EXP-127 | - | IN_PROGRESS | depth-8 preflight 계산 한계 확인·축소 설정 실행 | 300-tree depth-6 공식 5-fold |
+| G3 | CatBoost 공식 5-fold | #127 | EXP-127 | - | IN_PROGRESS | 전체-feature scan 계산 한계 확인 | rsm 0.1 계산 제한 5-fold |
 | G4 | OOF 다양성·확률 품질 감사 | 미발급 | explore | - | PLANNED | 오류·확률 상관과 클래스 보완성 | 후보 확정 |
 | G5 | 고정 가중 확률 blend | 미발급 | 미발급 | - | PLANNED | 사전 고정 가중치로 개선 | G4 통과 대기 |
 | G6 | cross-fitted stacking | 미발급 | 미발급 | - | PLANNED | blend보다 추가 개선 시에만 채택 | G5 결과 대기 |
