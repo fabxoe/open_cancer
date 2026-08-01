@@ -71,6 +71,10 @@ class LogisticRegressionAdapter:
 
         joblib.dump({"model": self.model, "scaler": self.scaler}, path)
 
+    @property
+    def best_iteration(self) -> None:
+        return None
+
 
 class XGBoostAdapter:
     file_suffix = ".json"
@@ -100,6 +104,13 @@ class XGBoostAdapter:
     def save(self, path: Path) -> None:
         self.model.save_model(path)
 
+    @property
+    def best_iteration(self) -> int | None:
+        try:
+            return int(self.model.best_iteration)
+        except (AttributeError, ValueError):
+            return None
+
 
 class LightGBMAdapter:
     file_suffix = ".txt"
@@ -125,7 +136,8 @@ class LightGBMAdapter:
             x_train,
             y_train,
             sample_weight=sample_weight,
-            eval_set=[(x_valid, y_valid)],
+            eval_X=x_valid,
+            eval_y=y_valid,
             callbacks=[self.lgb.early_stopping(self.early_stopping_rounds, verbose=False)],
         )
 
@@ -134,6 +146,11 @@ class LightGBMAdapter:
 
     def save(self, path: Path) -> None:
         self.model.booster_.save_model(str(path))
+
+    @property
+    def best_iteration(self) -> int | None:
+        value = getattr(self.model, "best_iteration_", None)
+        return None if value is None else int(value)
 
 
 class CatBoostAdapter:
@@ -165,6 +182,11 @@ class CatBoostAdapter:
 
     def save(self, path: Path) -> None:
         self.model.save_model(str(path))
+
+    @property
+    def best_iteration(self) -> int | None:
+        value = int(self.model.get_best_iteration())
+        return None if value < 0 else value
 
 
 def create_model_adapter(name: str, parameters: dict[str, Any], seed: int) -> ModelAdapter:
@@ -310,6 +332,7 @@ def run_canonical_cv(
                         labels=np.arange(len(CLASS_LABELS)),
                     )
                 ),
+                "best_iteration": getattr(adapter, "best_iteration", None),
             }
         )
         path = model_dir / f"fold_{fold:02d}{adapter.file_suffix}"

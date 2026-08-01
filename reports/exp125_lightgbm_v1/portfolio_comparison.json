@@ -1,0 +1,28 @@
+{
+  "candidate": "EXP-125",
+  "comparisons": {
+    "EXP-094": {
+      "macro_f1_delta": 0.0020212625359413705,
+      "fold_std_delta": 0.00022092113908663696,
+      "log_loss_delta": -0.0171389395220356,
+      "label_disagreement": 0.23109175939364618,
+      "correctness_pearson": 0.7968772820741525,
+      "probability_pearson": 0.9575965336775669,
+      "improved_class_count": 14
+    },
+    "EXP-096": {
+      "macro_f1_delta": 0.0007925284139881361,
+      "fold_std_delta": -0.0013869444509713343,
+      "log_loss_delta": -0.0141359971864774,
+      "label_disagreement": 0.24109014675052412,
+      "correctness_pearson": 0.7875825088002241,
+      "probability_pearson": 0.9531280310639421
+    }
+  },
+  "gates": {
+    "quality": true,
+    "wildcard": true,
+    "diversity": true,
+    "ensemble_quality_eligible": true
+  }
+}
