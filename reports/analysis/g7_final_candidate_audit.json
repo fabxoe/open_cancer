@@ -1,0 +1,50 @@
+{
+  "generated_at": "2026-08-01T18:30:57.889053+00:00",
+  "task_issue": 139,
+  "run_mode": "task_audit",
+  "training_performed": false,
+  "public_lb_used_for_selection": false,
+  "candidates": {
+    "EXP-131": {
+      "reason": "최고 Local OOF Macro F1",
+      "macro_f1": 0.4222392962173039,
+      "fold_std": 0.014011936709512859,
+      "log_loss": 1.8665114104141298,
+      "public_score": null,
+      "metrics_status": "COMPLETED",
+      "reproducibility_status": "INFERENCE_VERIFIED",
+      "submission_sha256": "e8d0863118f1170fd209d465197871eefcd1c0661bb8792c8bd2af60b7ce35d3",
+      "artifact_files_present": false,
+      "artifact_count": 12,
+      "training_verified": false,
+      "ready_for_independent_training": true
+    },
+    "EXP-125": {
+      "reason": "품질·다양성 gate 통과 및 Public 결과 보유",
+      "macro_f1": 0.41890783641446827,
+      "fold_std": 0.008105173199597198,
+      "log_loss": 1.822798241849107,
+      "public_score": null,
+      "metrics_status": "COMPLETED",
+      "reproducibility_status": "INFERENCE_VERIFIED",
+      "submission_sha256": "e76cce6d911616930570bcf0c5c1adc8adb045fbd18e3226d5378bda026d5940",
+      "artifact_files_present": false,
+      "artifact_count": 13,
+      "training_verified": false,
+      "ready_for_independent_training": true
+    }
+  },
+  "selected_for_final_verification": [
+    "EXP-131",
+    "EXP-125"
+  ],
+  "selection_reason": "Macro F1 최고 후보와 품질·Public 검증 후보를 각각 보존",
+  "all_training_verified": false,
+  "submission_checklist": {
+    "candidate_count_at_most_two": true,
+    "checkpoint_and_manifest_reviewed": false,
+    "independent_training_verified": false,
+    "release_asset_archived": false,
+    "leaderboard_submission_ready": false
+  }
+}
