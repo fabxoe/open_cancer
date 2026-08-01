@@ -3,11 +3,11 @@
   "issue_number": 96,
   "reproducibility_status": "INFERENCE_VERIFIED",
   "source_commit": "296c39fe9259fd4ee93bd8158aeaecec0c891545",
-  "source_tag": null,
+  "source_tag": "exp-096-repro-v1",
   "dirty_worktree": false,
   "data_manifest": "reproducibility/exp096_fixed_pathway_burden/data_manifest.json",
   "environment": "reproducibility/exp096_fixed_pathway_burden/environment.json",
-  "release_url": null,
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-096-repro-v1",
   "verifier": "fabxoe",
   "verified_at": "2026-08-01T10:45:05.297140+00:00",
   "artifacts": [
@@ -16,56 +16,56 @@
       "path": "models/exp096_fixed_pathway_burden/fold_00.json",
       "size_bytes": 11136111,
       "sha256": "1e762dd312a8f4ac9e4cd6342ebb0c13b83f85593b470adac5afba081965ef89",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-096-repro-v1/exp096_fixed_pathway_burden_repro.tar.gz#models/exp096_fixed_pathway_burden/fold_00.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp096_fixed_pathway_burden/fold_01.json",
       "size_bytes": 12126434,
       "sha256": "dab13ba5c598496e7d7d63b562eca7422dee08b478d9f4df5ff3c03db923e14a",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-096-repro-v1/exp096_fixed_pathway_burden_repro.tar.gz#models/exp096_fixed_pathway_burden/fold_01.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp096_fixed_pathway_burden/fold_02.json",
       "size_bytes": 15500983,
       "sha256": "d675b172ffa4b638197e085fe30f73458cf2ce5021445609d189e2d64dcaf98e",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-096-repro-v1/exp096_fixed_pathway_burden_repro.tar.gz#models/exp096_fixed_pathway_burden/fold_02.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp096_fixed_pathway_burden/fold_03.json",
       "size_bytes": 12693230,
       "sha256": "708dbf8c0391b400ec3c960eb2e1f36375cca9a277ce9fd2aeec9e2a83eae592",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-096-repro-v1/exp096_fixed_pathway_burden_repro.tar.gz#models/exp096_fixed_pathway_burden/fold_03.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp096_fixed_pathway_burden/fold_04.json",
       "size_bytes": 13005966,
       "sha256": "b4972b345b12dada88d6d8597624d52c13513924dd6709f2ac07e498c1fd45e7",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-096-repro-v1/exp096_fixed_pathway_burden_repro.tar.gz#models/exp096_fixed_pathway_burden/fold_04.json"
     },
     {
       "kind": "submission",
       "path": "submissions/exp096_fixed_pathway_burden.csv",
       "size_bytes": 38178,
       "sha256": "0d6bdaacec8c9853bc44c3d00fa6eec04f4e0b5b2fd583971e4057a2beefaf0d",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-096-repro-v1/exp096_fixed_pathway_burden_repro.tar.gz#submissions/exp096_fixed_pathway_burden.csv"
     },
     {
       "kind": "oof_probability",
       "path": "oof/exp096_fixed_pathway_burden.csv",
       "size_bytes": 2132857,
       "sha256": "3630fd9e5b7f420175120980135ff4b06271a8e515f63f44f0a4a7d626c4405c",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-096-repro-v1/exp096_fixed_pathway_burden_repro.tar.gz#oof/exp096_fixed_pathway_burden.csv"
     },
     {
       "kind": "test_probability",
       "path": "preds/exp096_fixed_pathway_burden_test_proba.csv",
       "size_bytes": 836481,
       "sha256": "d1d85fba60a2d9586512e691fe42db268723a6cd6d5f1fcad5966d1e814e3933",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-096-repro-v1/exp096_fixed_pathway_burden_repro.tar.gz#preds/exp096_fixed_pathway_burden_test_proba.csv"
     },
     {
       "kind": "metrics",
@@ -79,7 +79,7 @@
       "path": "reproducibility/exp096_fixed_pathway_burden/config.resolved.yaml",
       "size_bytes": 25747,
       "sha256": "54f3041abd0f46b2551bb36ad35073cdeca5630824d6da5129deff6d6eb5c222",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-096-repro-v1/exp096_fixed_pathway_burden_repro.tar.gz#reproducibility/exp096_fixed_pathway_burden/config.resolved.yaml"
     },
     {
       "kind": "report",
@@ -101,6 +101,13 @@
       "size_bytes": 2704,
       "sha256": "fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f",
       "storage_uri": null
+    },
+    {
+      "kind": "release_bundle",
+      "path": "release-assets/exp096_fixed_pathway_burden_repro.tar.gz",
+      "size_bytes": 18404117,
+      "sha256": "481ba7387be8abe95160ecf1ffcc8f51d884ce45372424ca59ae591eceded891",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-096-repro-v1/exp096_fixed_pathway_burden_repro.tar.gz"
     }
   ],
   "verification": {
