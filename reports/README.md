@@ -61,6 +61,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 입력·산출물 해시와 해석 한계를 함께 기록합니다.
 
 - [Residue-position indicator 의미 감사](analysis/residue_position_semantics_qc.md)
+- [Vera EXP-094 후속 검토](analysis/vera_exp094_followup.md)
 
 ## 역할 구분
 

@@ -21,9 +21,9 @@
 | 단계 | 작업 | Issue | EXP | PR | 상태 | 판단 기준 | 다음 행동 |
 |---|---|---:|---|---:|---|---|---|
 | G0 | 공통 입력·산출물 QC와 runner 계약 | #98 | 해당 없음 | 미발급 | IN_PROGRESS | Feature Spec·fold·클래스 해시 강제 | 구현·테스트 |
-| G1 | LightGBM 공식 5-fold | 미발급 | 미발급 | - | PLANNED | 단일 모델 품질·다양성 측정 | G0 병합 대기 |
-| G2 | CatBoost 공식 5-fold | 미발급 | 미발급 | - | PLANNED | 단일 모델 품질·다양성 측정 | G1과 독립 실행 |
-| G3 | 희소 선형 모델 공식 5-fold | 미발급 | 미발급 | - | PLANNED | 낮은 상관의 보완 후보 확인 | G0 병합 대기 |
+| G1 | 희소 선형 모델 공식 5-fold | 미발급 | 미발급 | - | PLANNED | 낮은 상관의 보완 후보 확인 | G0 병합 대기 |
+| G2 | LightGBM 공식 5-fold | 미발급 | 미발급 | - | PLANNED | 단일 모델 품질·다양성 측정 | G1과 독립 실행 |
+| G3 | CatBoost 공식 5-fold | 미발급 | 미발급 | - | PLANNED | CSR 호환성과 추가 다양성 확인 | G2 결과 후 필요 시 실행 |
 | G4 | OOF 다양성·확률 품질 감사 | 미발급 | explore | - | PLANNED | 오류·확률 상관과 클래스 보완성 | 후보 확정 |
 | G5 | 고정 가중 확률 blend | 미발급 | 미발급 | - | PLANNED | 사전 고정 가중치로 개선 | G4 통과 대기 |
 | G6 | cross-fitted stacking | 미발급 | 미발급 | - | PLANNED | blend보다 추가 개선 시에만 채택 | G5 결과 대기 |
@@ -62,9 +62,10 @@ LightGBM, CatBoost, 희소 선형 모델은 각각 별도 Experiment Issue와 EX
 - checkpoint 기반 `INFERENCE_VERIFIED`
 
 단일 모델은 EXP-094보다 낮다는 이유만으로 즉시 폐기하지 않습니다. 다만 OOF
-Macro F1이 `0.3968865739`보다 낮아 기준 대비 `-0.020`을 넘으면 앙상블 후보에서
-제외합니다. 예외는 G4에서 특정 클래스의 반복 오류를 명확히 보완하고 고정 blend가
-개선되는 경우뿐입니다.
+Macro F1이 `0.4128865739`보다 낮아 기준 대비 `-0.004`를 넘으면 앙상블 후보에서
+제외합니다. 예외는 G4에서 특정 클래스의 반복 오류를 명확히 보완하고 사전 고정
+blend가 개선되는 경우뿐입니다. 최선 단일 모델 대비 log loss가 `0.01` 이상
+악화된 모델도 확률 앙상블 후보에서 제외합니다.
 
 클래스 가중치는 모델별 기본 비교에서 EXP-094와 같은 정책을 우선 사용합니다.
 새 가중치, oversampling이나 threshold는 별도 Experiment Issue로 분리하고 outer
@@ -82,7 +83,8 @@ validation 성능을 보며 선택하지 않습니다.
 
 Stacking 후보가 되려면 다음을 모두 만족해야 합니다.
 
-1. EXP-094와 OOF 오류 상관이 `0.95` 미만인 모델이 하나 이상 존재
+1. EXP-094와 OOF 오류 상관이 `0.92` 이하이거나 예측 라벨 불일치율이 `10%`
+   이상인 모델이 하나 이상 존재
 2. 품질 하한을 통과한 모델이 둘 이상 존재
 3. 개선이 한 fold 또는 한 클래스에만 의존하지 않음
 4. train/test shift는 QC로만 보고 가중치·threshold 선택에 사용하지 않음
@@ -110,10 +112,14 @@ blend만 유지합니다.
 단순 blend가 충분하지 않고 G4의 다양성 gate를 통과했을 때만 수행합니다.
 
 - meta learner의 각 OOF 행은 해당 행을 보지 않은 base-model 예측만 사용
-- meta learner 학습·검증도 canonical outer fold 안에서 cross-fitting
+- meta learner 자체의 OOF 평가도 canonical fold로 다시 cross-fitting한다. 전체
+  base OOF를 한 번에 학습한 meta learner의 in-sample 점수는 채택 근거로 쓰지 않는다.
 - 클래스별 가중치는 shrinkage를 적용하고 자유 파라미터 수를 제한
 - Public LB와 test label surrogate를 선택 기준으로 사용하지 않음
-- blend 대비 OOF Macro F1 `+0.002` 이상일 때만 stacking 채택
+- 새 base 모델 하나를 추가했을 때 cross-fitted stack 개선이 `+0.001` 미만이고
+  저빈도 클래스 하위 quartile 평균 F1도 개선되지 않으면 해당 모델 추가를 중단
+- 최종 stack은 최고 단일 모델 또는 고정 blend 대비 OOF Macro F1 `+0.002`
+  이상일 때만 채택
 - fold 표준편차, log loss와 저빈도 클래스 F1이 동시에 붕괴하면 기각
 
 개선 기준을 통과하지 못하면 복잡한 meta learner를 더 탐색하지 않고 G5 blend
@@ -133,7 +139,8 @@ blend만 유지합니다.
 ## 계산 예산과 중단 조건
 
 - G0 경량 fixture·단위 테스트가 통과하기 전 전체 5-fold 실행 금지
-- 각 모델은 smoke 1-fold로 형상·메모리·산출물 경로를 먼저 확인
+- 각 모델은 5% subsample·1-fold smoke로 캐시 로드부터 checkpoint 재추론,
+  OOF·submission 저장까지 end-to-end로 먼저 확인
 - smoke 결과는 공식 점수로 History에 기록하지 않음
 - OOM 발생 시 데이터나 fold를 임의 축소하지 않고 sparse 형식, dtype, thread와
   cache 방식을 수정한 뒤 같은 config를 재실행
@@ -141,12 +148,41 @@ blend만 유지합니다.
 - 모델 다양성 gate 실패 시 stacking 중단
 - 최종 후보가 정해지면 Feature Spec v1과 모델 목록을 동결
 
+## Feature Spec v2 후보의 순서
+
+Vera의 기존 제안인 B-1 functional mutation spectrum과 C-1 고정 pathway
+burden은 Feature Spec v1에 다시 넣지 않습니다. 모델 다양화와 stacking 가능성을
+먼저 확인한 뒤 계산 예산이 남을 때만 각각 별도 v2 Experiment Issue에서 단 한 번
+단일 ablation으로 평가합니다.
+
+- B-1: 제공 CSV에서 계산한 저차원 mutation-type count·fraction만 사용합니다.
+  EXP-094 대비 OOF Macro F1 `+0.001` 미만이거나 저빈도 클래스 평균 F1이
+  악화되면 즉시 중단합니다.
+- C-1: 소수의 고정 pathway gene set과 출처·버전·라이선스·해시를 먼저
+  문서화하고, 대회 규정상 허용 여부가 분명할 때만 실행합니다. 문서화 비용과
+  규정 위험을 감안해 EXP-094 대비 `+0.002` 이상일 때만 유지합니다.
+- B-1/C-1 결과를 보고 Feature Spec v1을 수정하지 않습니다. 채택 시에도 v2로
+  별도 동결하고 v1 모델과의 OOF 다양성을 비교합니다.
+
 ## Vera 권고 반영 상태
 
 기존 Vera 검토와 Codex 판단이 공통으로 강조한 OOF 우선, 누수 방지, 고정 산출물
-계약, Public LB 역튜닝 금지와 종료 조건을 위 단계에 반영했습니다. EXP-094의 새
-결과를 Vera에 다시 전달해 받은 추가 권고는 출처와 함께 이 절에 추가하며, 실제로
-받지 못한 답변을 추정해 기록하지 않습니다.
+계약, Public LB 역튜닝 금지와 종료 조건을 위 단계에 반영했습니다. EXP-094 결과를
+전달한 2026-08-01 후속 검토에서 Vera는 다음을 추가 권고했습니다.
+
+- 희소 선형 모델 → LightGBM → 필요 시 CatBoost 순서
+- 기준 대비 `-0.004` 품질 하한
+- 오류 상관 `0.92` 이하 또는 라벨 불일치 `10%` 이상의 다양성 gate
+- 최선 단일 모델보다 log loss `+0.01` 이상 악화된 확률 모델 제외
+- calibration은 최종 후보에서만 검토
+- B-1/C-1은 모델 다양화 이후 예산이 남을 때 v2 단일 ablation으로 제한
+
+Vera는 base OOF 전체로 meta learner를 학습하는 표준 test 생성 절차를 설명했지만,
+그 방식의 학습 점수는 meta-level in-sample입니다. 저장소는 더 엄격하게 meta
+learner 자체도 canonical fold로 cross-fitting하여 stack OOF를 평가합니다.
+
+상세 비교는 [Vera EXP-094 후속 검토](../analysis/vera_exp094_followup.md)를
+따릅니다.
 
 ## 결정 변경 이력
 
@@ -154,6 +190,7 @@ blend만 유지합니다.
 |---|---|---|
 | 2026-08-01 | EXP-094를 Feature Spec v1과 XGBoost 기준으로 동결 | OOF 0.4168865739, 부모 대비 개선, INFERENCE_VERIFIED |
 | 2026-08-01 | 단일 모델 → 다양성 감사 → 고정 blend → stacking 순서 확정 | 복잡한 앙상블 전에 독립 확률 품질과 보완성을 검증하기 위함 |
+| 2026-08-01 | Vera EXP-094 후속 검토로 모델 품질·다양성 gate 강화 | 품질 하한 -0.004, 오류 상관 0.92 또는 라벨 불일치 10%, log loss 악화 0.01 적용 |
 
 ## 연결 문서
 
