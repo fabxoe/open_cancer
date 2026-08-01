@@ -1,0 +1,777 @@
+{
+  "generated_at": "2026-08-01T17:18:53.786313+00:00",
+  "task_issue": 133,
+  "run_mode": "explore",
+  "score_role": "diagnostic_existing_oof_only",
+  "baseline": "EXP-094",
+  "selection_policy": {
+    "quality_macro_f1_delta_min": -0.004,
+    "wildcard_macro_f1_delta_min": -0.01,
+    "wildcard_label_disagreement_min": 0.12,
+    "ensemble_log_loss_delta_max": 0.01,
+    "diversity_correctness_pearson_max": 0.92,
+    "diversity_label_disagreement_min": 0.1
+  },
+  "records": {
+    "EXP-094": {
+      "experiment_id": "EXP-094",
+      "oof_path": "/Users/fabxoe/workbench/cancer_open/oof/exp094_feature_spec_v1.csv",
+      "oof_sha256": "c2b9e0b8e6548a89a9f5d4aac71fae4c9b301983761d1a0b3458a0ee0b9d1aad",
+      "metrics": {
+        "macro_f1": 0.4168865738785269,
+        "fold_scores": [
+          0.4194967148897044,
+          0.41805127635535116,
+          0.4091128578068484,
+          0.40614446842996854,
+          0.42824868803055627
+        ],
+        "fold_mean": 0.41621080110248576,
+        "fold_std": 0.007884252060510561,
+        "accuracy": 0.4071923883244638,
+        "log_loss": 1.8399371813711427,
+        "mean_confidence": 0.46948279859065967,
+        "mean_entropy": 1.7807950852039263,
+        "ece_15": 0.06308384717724108,
+        "per_class_f1": {
+          "ACC": 0.835820895522388,
+          "BLCA": 0.5,
+          "BRCA": 0.5492487479131887,
+          "CESC": 0.25316455696202533,
+          "COAD": 0.7078384798099763,
+          "DLBC": 0.37735849056603776,
+          "GBMLGG": 0.31382978723404253,
+          "HNSC": 0.32211538461538464,
+          "KIPAN": 0.20512820512820512,
+          "KIRC": 0.14285714285714285,
+          "LAML": 0.5526315789473685,
+          "LGG": 0.38698010849909587,
+          "LIHC": 0.30716723549488056,
+          "LUAD": 0.3364485981308411,
+          "LUSC": 0.4472361809045226,
+          "OV": 0.3732193732193732,
+          "PAAD": 0.19469026548672566,
+          "PCPG": 0.31533477321814257,
+          "PRAD": 0.3157894736842105,
+          "SARC": 0.2529274004683841,
+          "SKCM": 0.7410071942446043,
+          "STES": 0.43828016643550627,
+          "TGCT": 0.35768261964735515,
+          "THCA": 0.7005444646098004,
+          "THYM": 0.2986111111111111,
+          "UCEC": 0.6131386861313869
+        }
+      },
+      "versus_exp094": {
+        "macro_f1_delta": 0.0,
+        "fold_std_delta": 0.0,
+        "log_loss_delta": 0.0,
+        "label_agreement": 1.0,
+        "label_disagreement": 0.0,
+        "error_state_agreement": 1.0,
+        "correctness_pearson": 1.0,
+        "probability_pearson": 1.0,
+        "probability_spearman": 1.0,
+        "improved_class_count": 0,
+        "per_class_f1_delta": {
+          "ACC": 0.0,
+          "BLCA": 0.0,
+          "BRCA": 0.0,
+          "CESC": 0.0,
+          "COAD": 0.0,
+          "DLBC": 0.0,
+          "GBMLGG": 0.0,
+          "HNSC": 0.0,
+          "KIPAN": 0.0,
+          "KIRC": 0.0,
+          "LAML": 0.0,
+          "LGG": 0.0,
+          "LIHC": 0.0,
+          "LUAD": 0.0,
+          "LUSC": 0.0,
+          "OV": 0.0,
+          "PAAD": 0.0,
+          "PCPG": 0.0,
+          "PRAD": 0.0,
+          "SARC": 0.0,
+          "SKCM": 0.0,
+          "STES": 0.0,
+          "TGCT": 0.0,
+          "THCA": 0.0,
+          "THYM": 0.0,
+          "UCEC": 0.0
+        }
+      },
+      "gates": {
+        "quality": true,
+        "wildcard": false,
+        "diversity": false,
+        "ensemble_quality_eligible": true
+      }
+    },
+    "EXP-123": {
+      "experiment_id": "EXP-123",
+      "oof_path": "/Users/fabxoe/workbench/cancer_open/oof/exp123_sparse_logistic_v1.csv",
+      "oof_sha256": "be2be2c22c91cfa76ce46f734c19d6a6da615885dac6baa35292599c60496339",
+      "metrics": {
+        "macro_f1": 0.37633248248249057,
+        "fold_scores": [
+          0.3701706159866202,
+          0.3754824506378777,
+          0.37982758422495194,
+          0.3691361071355629,
+          0.3779347342383783
+        ],
+        "fold_mean": 0.3745102984446782,
+        "fold_std": 0.0042109415698811424,
+        "accuracy": 0.37123044670214483,
+        "log_loss": 2.126174552476424,
+        "mean_confidence": 0.37507430636556627,
+        "mean_entropy": 2.193346334291191,
+        "ece_15": 0.08824306812628677,
+        "per_class_f1": {
+          "ACC": 0.8148148148148148,
+          "BLCA": 0.1889763779527559,
+          "BRCA": 0.5085501858736059,
+          "CESC": 0.1310344827586207,
+          "COAD": 0.7075471698113207,
+          "DLBC": 0.37037037037037035,
+          "GBMLGG": 0.3038309114927345,
+          "HNSC": 0.3103448275862069,
+          "KIPAN": 0.175284837861525,
+          "KIRC": 0.13691275167785236,
+          "LAML": 0.5617977528089888,
+          "LGG": 0.4007155635062612,
+          "LIHC": 0.24742268041237114,
+          "LUAD": 0.2554517133956386,
+          "LUSC": 0.29605263157894735,
+          "OV": 0.3787878787878788,
+          "PAAD": 0.2242152466367713,
+          "PCPG": 0.2712765957446808,
+          "PRAD": 0.28253968253968254,
+          "SARC": 0.18454935622317598,
+          "SKCM": 0.7442827442827443,
+          "STES": 0.38441558441558443,
+          "TGCT": 0.4067796610169492,
+          "THCA": 0.6619964973730298,
+          "THYM": 0.3056768558951965,
+          "UCEC": 0.5310173697270472
+        }
+      },
+      "versus_exp094": {
+        "macro_f1_delta": -0.04055409139603633,
+        "fold_std_delta": -0.003673310490629419,
+        "log_loss_delta": 0.28623737110528125,
+        "label_agreement": 0.5383002741493308,
+        "label_disagreement": 0.46169972585066926,
+        "error_state_agreement": 0.806966618287373,
+        "correctness_pearson": 0.5962549056832737,
+        "probability_pearson": 0.7767793880043297,
+        "probability_spearman": 0.6442813438228113,
+        "improved_class_count": 7,
+        "per_class_f1_delta": {
+          "ACC": -0.02100608070757326,
+          "BLCA": -0.3110236220472441,
+          "BRCA": -0.040698562039582775,
+          "CESC": -0.12213007420340463,
+          "COAD": -0.0002913099986555645,
+          "DLBC": -0.006988120195667413,
+          "GBMLGG": -0.009998875741308033,
+          "HNSC": -0.01177055702917773,
+          "KIPAN": -0.029843367266680132,
+          "KIRC": -0.005944391179290492,
+          "LAML": 0.00916617386162033,
+          "LGG": 0.013735455007165331,
+          "LIHC": -0.05974455508250942,
+          "LUAD": -0.0809968847352025,
+          "LUSC": -0.15118354932557526,
+          "OV": 0.005568505568505577,
+          "PAAD": 0.02952498115004565,
+          "PCPG": -0.044058177473461746,
+          "PRAD": -0.033249791144527974,
+          "SARC": -0.0683780442452081,
+          "SKCM": 0.0032755500381400626,
+          "STES": -0.053864582019921836,
+          "TGCT": 0.04909704136959403,
+          "THCA": -0.038547967236770564,
+          "THYM": 0.007065744784085393,
+          "UCEC": -0.08212131640433973
+        }
+      },
+      "gates": {
+        "quality": false,
+        "wildcard": false,
+        "diversity": true,
+        "ensemble_quality_eligible": false
+      }
+    },
+    "EXP-125": {
+      "experiment_id": "EXP-125",
+      "oof_path": "/Users/fabxoe/workbench/cancer_open/oof/exp125_lightgbm_v1.csv",
+      "oof_sha256": "80344a39218cd892374beb3b60e4b061db5fc1cb06a2a9b036614a478e006761",
+      "metrics": {
+        "macro_f1": 0.41890783641446827,
+        "fold_scores": [
+          0.41027060329636433,
+          0.42632696673872794,
+          0.40993753810160033,
+          0.41430817062947606,
+          0.4289890827222835
+        ],
+        "fold_mean": 0.4179664722976904,
+        "fold_std": 0.008105173199597198,
+        "accuracy": 0.414288018061603,
+        "log_loss": 1.822798241849107,
+        "mean_confidence": 0.4914353120170229,
+        "mean_entropy": 1.7144341042895297,
+        "ece_15": 0.08325303403813737,
+        "per_class_f1": {
+          "ACC": 0.7943262411347518,
+          "BLCA": 0.45901639344262296,
+          "BRCA": 0.5531574740207834,
+          "CESC": 0.23157894736842105,
+          "COAD": 0.722488038277512,
+          "DLBC": 0.4,
+          "GBMLGG": 0.3161953727506427,
+          "HNSC": 0.29292929292929293,
+          "KIPAN": 0.21226874391431352,
+          "KIRC": 0.23857868020304568,
+          "LAML": 0.5031446540880503,
+          "LGG": 0.4283185840707965,
+          "LIHC": 0.32142857142857145,
+          "LUAD": 0.31438127090301005,
+          "LUSC": 0.4603174603174603,
+          "OV": 0.37537537537537535,
+          "PAAD": 0.18536585365853658,
+          "PCPG": 0.3018867924528302,
+          "PRAD": 0.34310850439882695,
+          "SARC": 0.19746835443037974,
+          "SKCM": 0.7636363636363637,
+          "STES": 0.43285528031290743,
+          "TGCT": 0.41353383458646614,
+          "THCA": 0.697841726618705,
+          "THYM": 0.2825278810408922,
+          "UCEC": 0.6498740554156172
+        }
+      },
+      "versus_exp094": {
+        "macro_f1_delta": 0.0020212625359413705,
+        "fold_std_delta": 0.00022092113908663696,
+        "log_loss_delta": -0.0171389395220356,
+        "label_agreement": 0.7689082406063538,
+        "label_disagreement": 0.23109175939364618,
+        "error_state_agreement": 0.9016287695532978,
+        "correctness_pearson": 0.7968772820741525,
+        "probability_pearson": 0.9575965336775669,
+        "probability_spearman": 0.9239547392650549,
+        "improved_class_count": 14,
+        "per_class_f1_delta": {
+          "ACC": -0.04149465438763622,
+          "BLCA": -0.04098360655737704,
+          "BRCA": 0.00390872610759474,
+          "CESC": -0.021585609593604282,
+          "COAD": 0.014649558467535684,
+          "DLBC": 0.02264150943396226,
+          "GBMLGG": 0.002365585516600155,
+          "HNSC": -0.02918609168609171,
+          "KIPAN": 0.007140538786108402,
+          "KIRC": 0.09572153734590283,
+          "LAML": -0.04948692485931816,
+          "LGG": 0.04133847557170062,
+          "LIHC": 0.014261335933690888,
+          "LUAD": -0.022067327227831057,
+          "LUSC": 0.013081279412937685,
+          "OV": 0.002156002156002146,
+          "PAAD": -0.009324411828189078,
+          "PCPG": -0.013447980765312395,
+          "PRAD": 0.027319030714616444,
+          "SARC": -0.055459046038004334,
+          "SKCM": 0.022629169391759407,
+          "STES": -0.005424886122598838,
+          "TGCT": 0.055851214939110994,
+          "THCA": -0.0027027379910953275,
+          "THYM": -0.01608323007021889,
+          "UCEC": 0.03673536928423027
+        }
+      },
+      "gates": {
+        "quality": true,
+        "wildcard": true,
+        "diversity": true,
+        "ensemble_quality_eligible": true
+      }
+    },
+    "EXP-127": {
+      "experiment_id": "EXP-127",
+      "oof_path": "/Users/fabxoe/workbench/cancer_open/oof/exp127_catboost_v1.csv",
+      "oof_sha256": "9080e9aa62e25ddb903db8adfa942607500c48e9d2295875f312a992d5413b41",
+      "metrics": {
+        "macro_f1": 0.4194572293693006,
+        "fold_scores": [
+          0.4008452894150911,
+          0.44056506349004465,
+          0.4173173957508058,
+          0.4115121069471544,
+          0.427647485464018
+        ],
+        "fold_mean": 0.41957746821342284,
+        "fold_std": 0.013613646361974832,
+        "accuracy": 0.4160619254958878,
+        "log_loss": 1.862493382470282,
+        "mean_confidence": 0.3972916234543411,
+        "mean_entropy": 2.003457542815761,
+        "ece_15": 0.02934992981949115,
+        "per_class_f1": {
+          "ACC": 0.7189542483660131,
+          "BLCA": 0.4020618556701031,
+          "BRCA": 0.49777777777777776,
+          "CESC": 0.24096385542168675,
+          "COAD": 0.7276995305164319,
+          "DLBC": 0.35294117647058826,
+          "GBMLGG": 0.32601880877742945,
+          "HNSC": 0.3050847457627119,
+          "KIPAN": 0.228643216080402,
+          "KIRC": 0.39634146341463417,
+          "LAML": 0.5725190839694656,
+          "LGG": 0.5775577557755776,
+          "LIHC": 0.31137724550898205,
+          "LUAD": 0.35195530726256985,
+          "LUSC": 0.4372093023255814,
+          "OV": 0.39598278335724535,
+          "PAAD": 0.23140495867768596,
+          "PCPG": 0.296,
+          "PRAD": 0.29694323144104806,
+          "SARC": 0.20512820512820512,
+          "SKCM": 0.7542213883677298,
+          "STES": 0.3741721854304636,
+          "TGCT": 0.2935153583617747,
+          "THCA": 0.6934865900383141,
+          "THYM": 0.29201101928374656,
+          "UCEC": 0.6259168704156479
+        }
+      },
+      "versus_exp094": {
+        "macro_f1_delta": 0.0025706554907736767,
+        "fold_std_delta": 0.005729394301464271,
+        "log_loss_delta": 0.02255620109913936,
+        "label_agreement": 0.6945653926786002,
+        "label_disagreement": 0.30543460732139976,
+        "error_state_agreement": 0.8527656829543622,
+        "correctness_pearson": 0.6961772025525085,
+        "probability_pearson": 0.9136242922564662,
+        "probability_spearman": 0.8739219268054808,
+        "improved_class_count": 12,
+        "per_class_f1_delta": {
+          "ACC": -0.11686664715637496,
+          "BLCA": -0.09793814432989689,
+          "BRCA": -0.05147097013541091,
+          "CESC": -0.012200701540338588,
+          "COAD": 0.019861050706455607,
+          "DLBC": -0.024417314095449505,
+          "GBMLGG": 0.012189021543386913,
+          "HNSC": -0.017030638852672753,
+          "KIPAN": 0.02351501095219688,
+          "KIRC": 0.2534843205574913,
+          "LAML": 0.01988750502209713,
+          "LGG": 0.1905776472764817,
+          "LIHC": 0.004210010014101484,
+          "LUAD": 0.015506709131728746,
+          "LUSC": -0.01002687857894119,
+          "OV": 0.022763410137872142,
+          "PAAD": 0.036714693190960296,
+          "PCPG": -0.019334773218142587,
+          "PRAD": -0.018846242243162448,
+          "SARC": -0.04779919534017896,
+          "SKCM": 0.013214194123125522,
+          "STES": -0.06410798100504267,
+          "TGCT": -0.06416726128558042,
+          "THCA": -0.007057874571486211,
+          "THYM": -0.00660009182736454,
+          "UCEC": 0.01277818428426103
+        }
+      },
+      "gates": {
+        "quality": false,
+        "wildcard": false,
+        "diversity": true,
+        "ensemble_quality_eligible": false
+      }
+    },
+    "EXP-131": {
+      "experiment_id": "EXP-131",
+      "oof_path": "/Users/fabxoe/workbench/cancer_open/oof/exp131_catboost_v1_extended.csv",
+      "oof_sha256": "13534cc65841a690655203a0695cc7c52057bd9b191c7817ea625f09b2fdb4ae",
+      "metrics": {
+        "macro_f1": 0.4222392962173039,
+        "fold_scores": [
+          0.404180938855511,
+          0.44669744922394844,
+          0.41518270205376545,
+          0.42098197173794627,
+          0.4246988586700135
+        ],
+        "fold_mean": 0.422348384108237,
+        "fold_std": 0.014011936709512859,
+        "accuracy": 0.41831962586679566,
+        "log_loss": 1.8665114104141298,
+        "mean_confidence": 0.39599387780676726,
+        "mean_entropy": 2.010425687558671,
+        "ece_15": 0.03329589181045724,
+        "per_class_f1": {
+          "ACC": 0.7051282051282052,
+          "BLCA": 0.4221105527638191,
+          "BRCA": 0.4932975871313673,
+          "CESC": 0.2543352601156069,
+          "COAD": 0.7315914489311164,
+          "DLBC": 0.3582089552238806,
+          "GBMLGG": 0.30963665086887837,
+          "HNSC": 0.30617283950617286,
+          "KIPAN": 0.23779724655819776,
+          "KIRC": 0.403030303030303,
+          "LAML": 0.5703422053231939,
+          "LGG": 0.5756578947368421,
+          "LIHC": 0.31952662721893493,
+          "LUAD": 0.3522727272727273,
+          "LUSC": 0.4522144522144522,
+          "OV": 0.38928067700987307,
+          "PAAD": 0.23076923076923078,
+          "PCPG": 0.2973523421588595,
+          "PRAD": 0.3018335684062059,
+          "SARC": 0.2026431718061674,
+          "SKCM": 0.7588785046728972,
+          "STES": 0.3654485049833887,
+          "TGCT": 0.2986111111111111,
+          "THCA": 0.7036328871892925,
+          "THYM": 0.292817679558011,
+          "UCEC": 0.6456310679611651
+        }
+      },
+      "versus_exp094": {
+        "macro_f1_delta": 0.005352722338776983,
+        "fold_std_delta": 0.006127684649002298,
+        "log_loss_delta": 0.02657422904298712,
+        "label_agreement": 0.6942428640541848,
+        "label_disagreement": 0.3057571359458152,
+        "error_state_agreement": 0.8514755684567006,
+        "correctness_pearson": 0.6938450459441382,
+        "probability_pearson": 0.912540585599403,
+        "probability_spearman": 0.8716108014903499,
+        "improved_class_count": 14,
+        "per_class_f1_delta": {
+          "ACC": -0.13069269039418285,
+          "BLCA": -0.07788944723618091,
+          "BRCA": -0.055951160781821385,
+          "CESC": 0.001170703153581587,
+          "COAD": 0.02375296912114011,
+          "DLBC": -0.019149535342157187,
+          "GBMLGG": -0.004193136365164163,
+          "HNSC": -0.01594254510921178,
+          "KIPAN": 0.032669041429992635,
+          "KIRC": 0.26017316017316017,
+          "LAML": 0.017710626375825433,
+          "LGG": 0.18867778623774628,
+          "LIHC": 0.01235939172405437,
+          "LUAD": 0.01582412914188619,
+          "LUSC": 0.004978271309929616,
+          "OV": 0.01606130379049986,
+          "PAAD": 0.03607896528250512,
+          "PCPG": -0.0179824310592831,
+          "PRAD": -0.01395590527800461,
+          "SARC": -0.050284228662216685,
+          "SKCM": 0.01787131042829293,
+          "STES": -0.07283166145211756,
+          "TGCT": -0.059071508536244044,
+          "THCA": 0.003088422579492156,
+          "THYM": -0.005793431553100081,
+          "UCEC": 0.032492381829778205
+        }
+      },
+      "gates": {
+        "quality": false,
+        "wildcard": false,
+        "diversity": true,
+        "ensemble_quality_eligible": false
+      }
+    }
+  },
+  "test_probability_artifacts": {
+    "EXP-094": {
+      "path": "/Users/fabxoe/workbench/cancer_open/preds/exp094_feature_spec_v1_test_proba.csv",
+      "sha256": "63f8927a17ff3b952167d2844aef79d6e6b632c552f5aab45503105110b53e5d",
+      "shape": [
+        2546,
+        26
+      ],
+      "id_order_verified": true,
+      "probability_contract_verified": true
+    },
+    "EXP-123": {
+      "path": "/Users/fabxoe/workbench/cancer_open/preds/exp123_sparse_logistic_v1_test_proba.csv",
+      "sha256": "7f877dc3e27c14849264a64c8ed720bb6f6d9ee41286002d222ba74a9ad7e016",
+      "shape": [
+        2546,
+        26
+      ],
+      "id_order_verified": true,
+      "probability_contract_verified": true
+    },
+    "EXP-125": {
+      "path": "/Users/fabxoe/workbench/cancer_open/preds/exp125_lightgbm_v1_test_proba.csv",
+      "sha256": "278aba6177aa5f214236f551fecaecc79c4a6ba36e07a0cc9b4f3d8f7fbe41aa",
+      "shape": [
+        2546,
+        26
+      ],
+      "id_order_verified": true,
+      "probability_contract_verified": true
+    },
+    "EXP-127": {
+      "path": "/Users/fabxoe/workbench/cancer_open/preds/exp127_catboost_v1_test_proba.csv",
+      "sha256": "c9d5934e4c356699c08b562281c9b7efd9474a5f433c280945df7475a1723e9e",
+      "shape": [
+        2546,
+        26
+      ],
+      "id_order_verified": true,
+      "probability_contract_verified": true
+    },
+    "EXP-131": {
+      "path": "/Users/fabxoe/workbench/cancer_open/preds/exp131_catboost_v1_extended_test_proba.csv",
+      "sha256": "8c82a6b6da5413cd4a9df16d8053c16f4171dab376d92bc5bedf00450890cbde",
+      "shape": [
+        2546,
+        26
+      ],
+      "id_order_verified": true,
+      "probability_contract_verified": true
+    }
+  },
+  "pairwise": {
+    "EXP-094": {
+      "EXP-094": {
+        "label_agreement": 1.0,
+        "label_disagreement": 0.0,
+        "error_state_agreement": 1.0,
+        "correctness_pearson": 1.0,
+        "probability_pearson": 1.0,
+        "probability_spearman": 1.0
+      },
+      "EXP-123": {
+        "label_agreement": 0.5383002741493308,
+        "label_disagreement": 0.46169972585066926,
+        "error_state_agreement": 0.806966618287373,
+        "correctness_pearson": 0.5962549056832737,
+        "probability_pearson": 0.7767793880043297,
+        "probability_spearman": 0.6442813438228113
+      },
+      "EXP-125": {
+        "label_agreement": 0.7689082406063538,
+        "label_disagreement": 0.23109175939364618,
+        "error_state_agreement": 0.9016287695532978,
+        "correctness_pearson": 0.7968772820741525,
+        "probability_pearson": 0.9575965336775669,
+        "probability_spearman": 0.9239547392650549
+      },
+      "EXP-127": {
+        "label_agreement": 0.6945653926786002,
+        "label_disagreement": 0.30543460732139976,
+        "error_state_agreement": 0.8527656829543622,
+        "correctness_pearson": 0.6961772025525085,
+        "probability_pearson": 0.9136242922564662,
+        "probability_spearman": 0.8739219268054808
+      },
+      "EXP-131": {
+        "label_agreement": 0.6942428640541848,
+        "label_disagreement": 0.3057571359458152,
+        "error_state_agreement": 0.8514755684567006,
+        "correctness_pearson": 0.6938450459441382,
+        "probability_pearson": 0.912540585599403,
+        "probability_spearman": 0.8716108014903499
+      }
+    },
+    "EXP-123": {
+      "EXP-094": {
+        "label_agreement": 0.5383002741493308,
+        "label_disagreement": 0.46169972585066926,
+        "error_state_agreement": 0.806966618287373,
+        "correctness_pearson": 0.5962549056832738,
+        "probability_pearson": 0.7767793880043297,
+        "probability_spearman": 0.6442813438228112
+      },
+      "EXP-123": {
+        "label_agreement": 1.0,
+        "label_disagreement": 0.0,
+        "error_state_agreement": 1.0,
+        "correctness_pearson": 1.0,
+        "probability_pearson": 1.0,
+        "probability_spearman": 1.0
+      },
+      "EXP-125": {
+        "label_agreement": 0.5471698113207547,
+        "label_disagreement": 0.4528301886792453,
+        "error_state_agreement": 0.8066440896629576,
+        "correctness_pearson": 0.5978581895753234,
+        "probability_pearson": 0.7746021310581184,
+        "probability_spearman": 0.6459788127702172
+      },
+      "EXP-127": {
+        "label_agreement": 0.4783099500080632,
+        "label_disagreement": 0.5216900499919368,
+        "error_state_agreement": 0.7793904208998549,
+        "correctness_pearson": 0.5412247421279376,
+        "probability_pearson": 0.7567517738374452,
+        "probability_spearman": 0.6341686230462055
+      },
+      "EXP-131": {
+        "label_agreement": 0.4766973068859861,
+        "label_disagreement": 0.5233026931140139,
+        "error_state_agreement": 0.7758426060312853,
+        "correctness_pearson": 0.5345852877619447,
+        "probability_pearson": 0.7542005140552327,
+        "probability_spearman": 0.6323180871735801
+      }
+    },
+    "EXP-125": {
+      "EXP-094": {
+        "label_agreement": 0.7689082406063538,
+        "label_disagreement": 0.23109175939364618,
+        "error_state_agreement": 0.9016287695532978,
+        "correctness_pearson": 0.7968772820741526,
+        "probability_pearson": 0.9575965336775669,
+        "probability_spearman": 0.9239547392650548
+      },
+      "EXP-123": {
+        "label_agreement": 0.5471698113207547,
+        "label_disagreement": 0.4528301886792453,
+        "error_state_agreement": 0.8066440896629576,
+        "correctness_pearson": 0.5978581895753236,
+        "probability_pearson": 0.7746021310581184,
+        "probability_spearman": 0.6459788127702172
+      },
+      "EXP-125": {
+        "label_agreement": 1.0,
+        "label_disagreement": 0.0,
+        "error_state_agreement": 1.0,
+        "correctness_pearson": 1.0,
+        "probability_pearson": 1.0,
+        "probability_spearman": 1.0
+      },
+      "EXP-127": {
+        "label_agreement": 0.6569908079342042,
+        "label_disagreement": 0.34300919206579583,
+        "error_state_agreement": 0.8498629253346235,
+        "correctness_pearson": 0.6908331244987026,
+        "probability_pearson": 0.9041911208494551,
+        "probability_spearman": 0.8164420395167258
+      },
+      "EXP-131": {
+        "label_agreement": 0.6619900016126431,
+        "label_disagreement": 0.3380099983873569,
+        "error_state_agreement": 0.8501854539590389,
+        "correctness_pearson": 0.6917621678977278,
+        "probability_pearson": 0.9031501601667846,
+        "probability_spearman": 0.8136148745379987
+      }
+    },
+    "EXP-127": {
+      "EXP-094": {
+        "label_agreement": 0.6945653926786002,
+        "label_disagreement": 0.30543460732139976,
+        "error_state_agreement": 0.8527656829543622,
+        "correctness_pearson": 0.6961772025525085,
+        "probability_pearson": 0.9136242922564662,
+        "probability_spearman": 0.8739219268054806
+      },
+      "EXP-123": {
+        "label_agreement": 0.4783099500080632,
+        "label_disagreement": 0.5216900499919368,
+        "error_state_agreement": 0.7793904208998549,
+        "correctness_pearson": 0.5412247421279376,
+        "probability_pearson": 0.7567517738374452,
+        "probability_spearman": 0.6341686230462055
+      },
+      "EXP-125": {
+        "label_agreement": 0.6569908079342042,
+        "label_disagreement": 0.34300919206579583,
+        "error_state_agreement": 0.8498629253346235,
+        "correctness_pearson": 0.6908331244987026,
+        "probability_pearson": 0.904191120849455,
+        "probability_spearman": 0.8164420395167259
+      },
+      "EXP-127": {
+        "label_agreement": 1.0,
+        "label_disagreement": 0.0,
+        "error_state_agreement": 1.0,
+        "correctness_pearson": 1.0,
+        "probability_pearson": 1.0,
+        "probability_spearman": 0.9999999999999999
+      },
+      "EXP-131": {
+        "label_agreement": 0.9403322044831479,
+        "label_disagreement": 0.05966779551685212,
+        "error_state_agreement": 0.9758103531688437,
+        "correctness_pearson": 0.950266764148134,
+        "probability_pearson": 0.9967572267127477,
+        "probability_spearman": 0.9959771886724144
+      }
+    },
+    "EXP-131": {
+      "EXP-094": {
+        "label_agreement": 0.6942428640541848,
+        "label_disagreement": 0.3057571359458152,
+        "error_state_agreement": 0.8514755684567006,
+        "correctness_pearson": 0.6938450459441382,
+        "probability_pearson": 0.912540585599403,
+        "probability_spearman": 0.8716108014903499
+      },
+      "EXP-123": {
+        "label_agreement": 0.4766973068859861,
+        "label_disagreement": 0.5233026931140139,
+        "error_state_agreement": 0.7758426060312853,
+        "correctness_pearson": 0.5345852877619447,
+        "probability_pearson": 0.7542005140552326,
+        "probability_spearman": 0.6323180871735801
+      },
+      "EXP-125": {
+        "label_agreement": 0.6619900016126431,
+        "label_disagreement": 0.3380099983873569,
+        "error_state_agreement": 0.8501854539590389,
+        "correctness_pearson": 0.6917621678977278,
+        "probability_pearson": 0.9031501601667847,
+        "probability_spearman": 0.8136148745379987
+      },
+      "EXP-127": {
+        "label_agreement": 0.9403322044831479,
+        "label_disagreement": 0.05966779551685212,
+        "error_state_agreement": 0.9758103531688437,
+        "correctness_pearson": 0.950266764148134,
+        "probability_pearson": 0.9967572267127476,
+        "probability_spearman": 0.9959771886724146
+      },
+      "EXP-131": {
+        "label_agreement": 1.0,
+        "label_disagreement": 0.0,
+        "error_state_agreement": 1.0,
+        "correctness_pearson": 1.0,
+        "probability_pearson": 1.0,
+        "probability_spearman": 1.0
+      }
+    }
+  },
+  "selection": {
+    "ensemble_quality_eligible": [
+      "EXP-125"
+    ],
+    "diversity_candidates": [
+      "EXP-125"
+    ],
+    "archive_only": [
+      "EXP-123",
+      "EXP-127",
+      "EXP-131"
+    ],
+    "public_lb_used": false,
+    "test_distribution_used": false,
+    "new_training_performed": false
+  }
+}
