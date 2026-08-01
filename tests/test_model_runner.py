@@ -63,6 +63,11 @@ def test_zero_probability_row_is_rejected() -> None:
         _validate_probabilities(values, 1)
 
 
+def test_logistic_adapter_rejects_unknown_scaling() -> None:
+    with pytest.raises(ModelRunnerError, match="Logistic scaling"):
+        create_model_adapter("logistic_regression", {"scale": "standard"}, 42)
+
+
 def test_common_runner_writes_canonical_artifacts(tmp_path) -> None:
     targets = np.tile(np.arange(len(CLASS_LABELS)), 5)
     folds = np.repeat(np.arange(5), len(CLASS_LABELS))
