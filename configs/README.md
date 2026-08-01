@@ -11,6 +11,12 @@ config가 실제 파라미터의 단일 원본이므로 Issue나 History에 같�
 
 공통 기본값과 선택 항목은 `PROJECT_CONTEXT.md`의 “실험 설정 계약”을 따릅니다.
 
+ABC-Stack v2 후보 family의 공통 기본값은 점수를 만들지 않는 Task 설정으로
+분리합니다. A family는 [`abc_stack_a_families.yaml`](abc_stack_a_families.yaml)을
+사용하며 모든 family는 기본적으로 꺼져 있습니다. 공식 5-fold를 실행할 때만 새
+Experiment Issue의 `expNNN_*.yaml`에서 정확히 한 family를 켜고, resolved config에
+병합된 실제 값을 저장합니다.
+
 ## Residue-position family
 
 Feature Factory v1.1은 다음 설정을 지원합니다. 실제 공식 평가에서는 새

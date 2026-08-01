@@ -1,0 +1,29 @@
+{
+  "name": "open_cancer_fixed_amino_acid_properties",
+  "version": "1.0.0",
+  "license": "CC0-1.0",
+  "source": "Project-authored fixed biochemical grouping rule; no patient-level external values",
+  "notes": "Conservative is defined as staying in the same five-class residue group. Charge and polarity changes are independent binary transition rules.",
+  "amino_acids": {
+    "A": {"group": "nonpolar_aliphatic", "charge": "neutral", "polarity": "nonpolar"},
+    "C": {"group": "polar_uncharged", "charge": "neutral", "polarity": "polar"},
+    "D": {"group": "negative", "charge": "negative", "polarity": "polar"},
+    "E": {"group": "negative", "charge": "negative", "polarity": "polar"},
+    "F": {"group": "aromatic", "charge": "neutral", "polarity": "nonpolar"},
+    "G": {"group": "nonpolar_aliphatic", "charge": "neutral", "polarity": "nonpolar"},
+    "H": {"group": "positive", "charge": "positive", "polarity": "polar"},
+    "I": {"group": "nonpolar_aliphatic", "charge": "neutral", "polarity": "nonpolar"},
+    "K": {"group": "positive", "charge": "positive", "polarity": "polar"},
+    "L": {"group": "nonpolar_aliphatic", "charge": "neutral", "polarity": "nonpolar"},
+    "M": {"group": "nonpolar_aliphatic", "charge": "neutral", "polarity": "nonpolar"},
+    "N": {"group": "polar_uncharged", "charge": "neutral", "polarity": "polar"},
+    "P": {"group": "nonpolar_aliphatic", "charge": "neutral", "polarity": "nonpolar"},
+    "Q": {"group": "polar_uncharged", "charge": "neutral", "polarity": "polar"},
+    "R": {"group": "positive", "charge": "positive", "polarity": "polar"},
+    "S": {"group": "polar_uncharged", "charge": "neutral", "polarity": "polar"},
+    "T": {"group": "polar_uncharged", "charge": "neutral", "polarity": "polar"},
+    "V": {"group": "nonpolar_aliphatic", "charge": "neutral", "polarity": "nonpolar"},
+    "W": {"group": "aromatic", "charge": "neutral", "polarity": "nonpolar"},
+    "Y": {"group": "aromatic", "charge": "neutral", "polarity": "polar"}
+  }
+}
