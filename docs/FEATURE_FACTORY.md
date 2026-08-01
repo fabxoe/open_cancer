@@ -160,3 +160,16 @@ Feature Spec v1 동결 후 XGBoost, LightGBM, CatBoost, 선형 모델, NB와 필
 logistic meta learner를 평가한다. 전체 OOF에서 가중치를 고른 뒤 같은 OOF로
 평가한 값은 공식 성능으로 인정하지 않는다. 모델은 단독 점수만이 아니라
 cross-fitted stacking OOF 개선 여부로 채택한다.
+
+동결된 matrix는 다음처럼 이름으로 생성한다. 허용 이름은 `v1`,
+`v2-performance`, `v2-diversity`뿐이며 EXP-094 base Feature Spec SHA-256이 다르면
+즉시 중단한다.
+
+```bash
+uv run python scripts/materialize_frozen_feature_spec.py \
+  --spec v2-performance \
+  --output data/processed/<issue-or-exp>/v2-performance
+```
+
+출력 폴더의 `feature_spec_manifest.json`에는 입력·config·피처 순서·행렬 해시와
+family Registry가 기록된다. `data/processed/` 산출물은 Git에 커밋하지 않는다.

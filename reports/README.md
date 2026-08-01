@@ -60,6 +60,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 
 - [Feature Spec v2 명세](../configs/abc_stack_feature_spec_v2.yaml)
 - [ABC-Stack OOF 포트폴리오 감사](analysis/abc_oof_portfolio_audit.md)
+- [동결 Feature Spec·공통 모델 runner 계약](analysis/frozen_feature_model_runner_contract.md)
 
 프로젝트 전체에 영향을 주는 target-independent QC와 의미 감사는
 `reports/analysis/`에 둡니다. 이는 새 실험 점수를 만드는 폴더가 아니며 실제

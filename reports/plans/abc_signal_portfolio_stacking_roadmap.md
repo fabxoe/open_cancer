@@ -46,7 +46,8 @@ EXP-094는 Feature Spec v1으로 보존합니다. 이후 family는 v2 후보로�
 | B | morphology·frequency-tier spectrum | #103 | #109·#110 | #108 | COMPLETED | 두 공식 OOF·test 확률 보존 | 포트폴리오 감사에서 비교 |
 | C | pathway·functional-role burden | #104 | #96(C-1) | #111 | COMPLETED | EXP-096 PERFORMANCE·OOF/test 보존 | v2-performance 후보로 감사 |
 | F | v2-performance·v2-diversity 동결 | #119 | 해당 없음 | - | COMPLETED | canonical OOF·test 계약 감사 | 모델 다양화 Issue 발급 |
-| G1 | 희소 선형 모델 공식 5-fold | 미발급 | 미발급 | - | PLANNED | 낮은 상관의 보완 후보 확인 | F 동결 대기 |
+| M0 | 동결 Feature Spec·공통 모델 runner | #121 | 해당 없음 | - | IN_PROGRESS | 세 spec 실물 해시·공통 artifact 계약 | PR 검토·병합 |
+| G1 | 희소 선형 모델 공식 5-fold | 미발급 | 미발급 | - | PLANNED | 낮은 상관의 보완 후보 확인 | M0 병합 후 Issue 발급 |
 | G2 | LightGBM 공식 5-fold | 미발급 | 미발급 | - | PLANNED | 단일 모델 품질·다양성 측정 | G1과 독립 실행 |
 | G3 | CatBoost 공식 5-fold | 미발급 | 미발급 | - | PLANNED | CSR 호환성과 추가 다양성 확인 | G1·G2 감사 후 실행 |
 | G4 | OOF 다양성·확률 품질 감사 | 미발급 | explore | - | PLANNED | 오류·확률 상관과 클래스 보완성 | 후보 확정 |
@@ -56,6 +57,14 @@ EXP-094는 Feature Spec v1으로 보존합니다. 이후 family는 v2 후보로�
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`를 사용하고,
 중단하면 `BLOCKED` 또는 `REJECTED`로 기록합니다.
+
+### M0 — 동결 Feature Spec·공통 모델 runner
+
+모델 다양화 전에 `v1`, `v2-performance`, `v2-diversity`를 같은 코드로
+materialize하고, Logistic Regression·XGBoost·LightGBM·CatBoost가 같은 5-fold와
+확률 산출물 계약을 사용하도록 고정합니다. Issue #121은 일반 Task이므로 공식
+OOF 점수나 EXP-ID를 만들지 않습니다. 실제 모델 비교는 M0가 병합된 뒤 모델별
+Experiment Issue에서 수행합니다.
 
 ## A/B/C 구현·실험 포트폴리오
 

@@ -284,6 +284,24 @@ family Registry, 외부 지식 provenance와 의미 중복 검사 계약을 사�
 기록 생성기를 사용한다. 공통 계약을 기존 EXP-094 경로에 소급 적용해 Feature
 Spec을 바꾸지 않으며, v2 후보부터 적용한다.
 
+Issue #121의 공통 runner는 동결 이름 `v1`, `v2-performance`, `v2-diversity`만
+허용한다. 다음 명령은 모델을 학습하거나 점수를 만들지 않고 sparse matrix와
+identity manifest만 생성한다.
+
+```bash
+uv run python scripts/materialize_frozen_feature_spec.py \
+  --spec v1 \
+  --output data/processed/<issue-or-exp>/v1
+```
+
+공식 모델 실험은 별도 Experiment Issue에서 `src/open_cancer/model_runner.py`의
+공용 5-fold runner와 `write_cross_validation_artifacts`를 사용한다. 이 함수는
+`oof_predictions.csv`, `test_probabilities.csv`, `metrics.json`을 고정 26개 클래스
+순서로 저장한다. Logistic Regression과 XGBoost는 기본 환경에서 실행 가능하다.
+LightGBM·CatBoost를 선택한 실험만 `uv sync --frozen --group experiment`를 먼저
+실행한다. 일반 Task의 materialize·synthetic smoke 결과는 실험 History나 Local
+OOF 점수로 기록하지 않는다.
+
 ### AI에 실험·제출 보고서 요청하기
 
 팀원은 Codex 또는 Claude의 새 채팅에서 Issue 번호만 바꿔 다음 최소 프롬프트를
