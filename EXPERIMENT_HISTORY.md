@@ -7,13 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 32
+- 실제 실험 수: 33
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4194572294 (`EXP-127`)
+- 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
 - 최고 Public LB Macro F1: 0.3170803849 (`EXP-031`)
-- 최고 재현 검증 모델: `EXP-127` (`INFERENCE_VERIFIED`)
-- 최종 갱신일: 2026-08-01
+- 최고 재현 검증 모델: `EXP-131` (`INFERENCE_VERIFIED`)
+- 최종 갱신일: 2026-08-02
 
 ## 실험 요약
 
@@ -51,6 +51,7 @@
 | EXP-123 | COMPLETED | fabxoe | #123 | 동결 Feature Spec v1 + 희소 Logistic Regression | 0.3763324825 | 미제출 | INFERENCE_VERIFIED | 단독·wildcard 품질 gate 실패, 다양성만 통과해 stacking 후보 미채택 | [보고서](reports/exp123_sparse_logistic_v1/README.md) |
 | EXP-125 | COMPLETED | fabxoe | #125 | 동결 Feature Spec v1 + LightGBM | 0.4189078364 | 0.3075810937 | INFERENCE_VERIFIED | Local gate 통과, Public은 EXP-031·096 미달 | [보고서](reports/exp125_lightgbm_v1/README.md) |
 | EXP-127 | COMPLETED | fabxoe | #127 | 동결 Feature Spec v1 + CatBoost GPU | 0.4194572294 | 0.3014741179 | INFERENCE_VERIFIED | Local 최고지만 Public 하락, 단독 후보 제외·diversity 자산 | [보고서](reports/exp127_catboost_v1/README.md) |
+| EXP-131 | COMPLETED | fabxoe | #131 | EXP-127 CatBoost v1 extended training | 0.4222392962 | 미제출 | INFERENCE_VERIFIED | OOF는 개선했지만 fold·Log Loss 악화, 추가 CatBoost iteration 확장 중단 | [보고서](reports/exp131_catboost_v1_extended/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -1576,3 +1577,55 @@ config 변경만으로 재실행했다(Feature Factory 코드 변경 없음).
 - 재현 메모: 저장 checkpoint 재추론에서 OOF·test 라벨 100%, 확률 최대 절대
   차이 0, 제출 CSV byte-level SHA-256 일치를 확인했다. GPU 재학습은
   비결정적일 수 있으므로 `TRAINING_VERIFIED`로 승격하지 않는다.
+
+### [EXP-131] CatBoost v1 extended training
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #131 / issue-131-exp-catboost-v1-extended
+- 소스 commit: `b331ce88b854bf4b537b31b69da75b405acae7cf`
+- 시작/종료: 2026-08-01T16:34:50.074747+00:00 /
+  2026-08-01T16:49:11.467020+00:00
+
+#### 실행
+
+- 부모: EXP-127 (Feature Spec 기준 EXP-094)
+- 실행 장비: RunPod Secure Cloud NVIDIA RTX 4090 24GB
+- Config: `reproducibility/exp131_catboost_v1_extended/config.resolved.yaml`
+- Metrics: `reports/exp131_catboost_v1_extended/metrics.json`
+- Report: `reports/exp131_catboost_v1_extended/README.md`
+- 변경: iterations 2,000, learning rate 0.03, L2 5.0, early stopping 100
+- 고정: Feature Spec v1, canonical 5-fold, depth 8, balanced sample weight
+
+#### 결과
+
+- Fold Macro F1: 0.4041809389, 0.4466974492, 0.4151827021,
+  0.4209819717, 0.4246988587
+- Best iteration: 1998, 1995, 1999, 1999, 1999
+- OOF Macro F1: 0.4222392962
+- EXP-127 대비: `+0.0027820668`
+- EXP-094 대비: `+0.0053527223`
+- Fold 표준편차: 0.0140119367 (EXP-094 대비 +0.0061276846)
+- Accuracy: 0.4183196259
+- Log Loss: 1.8665114104 (EXP-094 대비 +0.0265740811)
+- EXP-127 대비 라벨 불일치율: 0.0596677955
+- EXP-127 대비 오류 상관: 0.9502667641
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- OOF: `oof/exp131_catboost_v1_extended.csv`
+- Test probability: `preds/exp131_catboost_v1_extended_test_proba.csv`
+- Checkpoint: `models/exp131_catboost_v1_extended/`
+- Submission: `submissions/exp131_catboost_v1_extended.csv`
+  (SHA-256 `e8d0863118f1170fd209d465197871eefcd1c0661bb8792c8bd2af60b7ce35d3`,
+  DACON 미제출)
+- 결론: 2,000 iteration 확장은 실제로 적용됐지만 EXP-094 대비 fold 변동성과
+  Log Loss가 악화됐다. EXP-127과도 높은 오류 상관과 낮은 라벨 불일치를 보여
+  새 diversity 자산으로 보존하지 않는다. 추가 CatBoost iteration 확장은
+  중단하고 기존 EXP-127은 보조 후보로 유지한다.
+- 재현 메모: checkpoint 재추론에서 OOF·test 라벨 100%, 확률 최대 절대 차이 0,
+  제출 CSV byte-level SHA-256 일치를 확인했다. 첫 실행은 Git `user.name` 누락으로
+  metadata 단계에서 실패했고, Git 신원 설정 후 동일 commit·config로 재실행한
+  성공 실행만 공식 기록에 반영했다.
