@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 33
+- 실제 실험 수: 34
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -52,6 +52,7 @@
 | EXP-125 | COMPLETED | fabxoe | #125 | 동결 Feature Spec v1 + LightGBM | 0.4189078364 | 0.3075810937 | INFERENCE_VERIFIED | Local gate 통과, Public은 EXP-031·096 미달 | [보고서](reports/exp125_lightgbm_v1/README.md) |
 | EXP-127 | COMPLETED | fabxoe | #127 | 동결 Feature Spec v1 + CatBoost GPU | 0.4194572294 | 0.3014741179 | INFERENCE_VERIFIED | Local 최고지만 Public 하락, 단독 후보 제외·diversity 자산 | [보고서](reports/exp127_catboost_v1/README.md) |
 | EXP-131 | COMPLETED | fabxoe | #131 | EXP-127 CatBoost v1 extended training | 0.4222392962 | 미제출 | INFERENCE_VERIFIED | OOF는 개선했지만 fold·Log Loss 악화, 추가 CatBoost iteration 확장 중단 | [보고서](reports/exp131_catboost_v1_extended/README.md) |
+| EXP-135 | COMPLETED | fabxoe | #135 | EXP-094 + EXP-125 fixed 0.5/0.5 probability blend | 0.4201772665 | 미제출 | INFERENCE_VERIFIED | Log Loss는 개선했지만 EXP-131 단독 F1·fold gate를 넘지 못해 제출·추가 blend 보류 | [보고서](reports/exp135_fixed_probability_blend/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -1629,3 +1630,31 @@ config 변경만으로 재실행했다(Feature Factory 코드 변경 없음).
   제출 CSV byte-level SHA-256 일치를 확인했다. 첫 실행은 Git `user.name` 누락으로
   metadata 단계에서 실패했고, Git 신원 설정 후 동일 commit·config로 재실행한
   성공 실행만 공식 기록에 반영했다.
+
+### [EXP-135] EXP-094 + EXP-125 fixed probability blend
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #135 / issue-135-exp-fixed-blend
+- Config: `reproducibility/exp135_fixed_probability_blend/config.resolved.yaml`
+- Metrics: `reports/exp135_fixed_probability_blend/metrics.json`
+
+#### 실행과 결과
+
+- 학습 없이 EXP-094와 EXP-125의 OOF·test 확률을 각각 0.5로 평균했다.
+- 가중치는 실행·평가 전에 고정했으며 OOF·Public 점수로 조정하지 않았다.
+- OOF Macro F1: `0.4201772665`
+- Fold Macro F1: `0.4195736455, 0.4316004416, 0.4097589534, 0.4013577659, 0.4348436094`
+- Fold 표준편차: `0.0126953092`
+- Accuracy: `0.4110627318`
+- Log Loss: `1.8083444812`
+- 제출 파일: `submissions/exp135_fixed_probability_blend.csv` (DACON 미제출)
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 판단
+
+EXP-094와 EXP-125의 평균은 EXP-125보다 Macro F1이 `+0.0012694301`,
+Log Loss가 `-0.014454` 개선됐지만, EXP-131 최고 단일 모델보다 Macro F1이
+`-0.0020620298` 낮고 fold 표준편차가 더 크다. G5 채택 기준을 충족하지 못해
+리더보드 제출과 추가 blend 탐색은 보류한다. OOF·test 확률과 제출 CSV의
+재생성 해시는 일치했다.

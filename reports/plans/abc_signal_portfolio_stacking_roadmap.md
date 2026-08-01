@@ -51,8 +51,8 @@ EXP-094는 Feature Spec v1으로 보존합니다. 이후 family는 v2 후보로�
 | G2 | LightGBM 공식 5-fold | #125 | EXP-125 | #126 | COMPLETED | 신규 Local 최고·모든 gate 통과 | G3와 독립 비교 후 G4 감사 |
 | G3 | CatBoost 공식 5-fold | #127 | EXP-127 | - | PAUSED_RUNPOD | 로컬 CPU fold당 약 19분·1/5 후 중단 | RunPod GPU 설정 검증 후 전체 재실행 |
 | G3-1 | CatBoost v1 extended training | #131 | EXP-131 | #132 | COMPLETED | OOF 0.4222392962로 개선했지만 fold·Log Loss 악화, 추가 iteration 확장 중단 | G4 감사 완료 |
-| G4 | OOF 다양성·확률 품질 감사 | #133 | explore | 미발급 | PR_OPEN | EXP-125만 품질·다양성 gate 통과, EXP-127·131은 Log Loss gate 실패 | PR 병합 후 G5 Issue 생성 |
-| G5 | 고정 가중 확률 blend | 미발급 | 미발급 | - | PLANNED | 사전 고정 가중치로 개선 | G4 통과 대기 |
+| G4 | OOF 다양성·확률 품질 감사 | #133 | explore | #134 | COMPLETED | EXP-125만 품질·다양성 gate 통과, EXP-127·131은 Log Loss gate 실패 | EXP-135 결과 반영 |
+| G5 | 고정 가중 확률 blend | #135 | EXP-135 | 미발급 | PR_OPEN | Log Loss는 개선했지만 EXP-131 대비 Macro F1·fold gate 실패 | blend 제출·추가 가중치 탐색 보류 |
 | G6 | cross-fitted stacking | 미발급 | 미발급 | - | PLANNED | blend보다 추가 개선 시에만 채택 | G5 결과 대기 |
 | G7 | 최종 후보 재현·제출 준비 | 미발급 | 해당 없음 | - | PLANNED | 독립 팀원 TRAINING_VERIFIED | 후보 동결 대기 |
 
