@@ -21,6 +21,10 @@ B family 기본값은 [`abc_stack_b_families.yaml`](abc_stack_b_families.yaml)�
 있습니다. complex morphology와 frequency-tier spectrum도 기본적으로 꺼져 있고,
 공식 실험에서는 두 family를 한꺼번에 켜지 않고 각각 단독 검증합니다.
 
+C family 기본값은 [`abc_stack_c_families.yaml`](abc_stack_c_families.yaml)에
+있습니다. 외부 고정 gene membership이므로 구현·smoke와 공식 사용을 구분하며,
+주최측 허용 근거가 config에 기록되기 전에는 공식 실험에서 켤 수 없습니다.
+
 ## Residue-position family
 
 Feature Factory v1.1은 다음 설정을 지원합니다. 실제 공식 평가에서는 새

@@ -1,0 +1,25 @@
+# C-family defaults. External knowledge use stays disabled until organizer approval.
+base_feature_spec:
+  experiment_id: EXP-094
+  sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+
+external_knowledge:
+  file: knowledge/abc_c_compact_groups_v1.json
+  organizer_approval_required: true
+  organizer_approval_reference: null
+
+families:
+  fixed_pathway_burden:
+    enabled: false
+    definition_version: 1.0.0
+    fit_scope: stateless
+    groups: 10
+    values: [mutated_gene_count, lof_gene_count]
+    output_dimension: 20
+  functional_role_burden:
+    enabled: false
+    definition_version: 1.0.0
+    fit_scope: stateless
+    groups: [oncogene, tumor_suppressor]
+    values: [mutated_gene_count, lof_gene_count]
+    output_dimension: 4
