@@ -5,6 +5,7 @@ parent_experiments:
   - EXP-005
   - EXP-069
   - EXP-085
+comparison_metrics_path: reports/exp085_hotspot_clean/metrics.json
 seed: 42
 split:
   path: data/splits/stratified_5fold_seed42.csv

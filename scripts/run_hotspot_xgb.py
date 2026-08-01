@@ -58,7 +58,7 @@ from open_cancer.hotspot_features import (
     validate_hotspot_train_evidence,
 )
 from open_cancer.validation import validate_json_document, validate_submission
-from run_exp005_xgb_mutation_features import verify_saved_inference
+from run_exp005_xgb_mutation_features import verify_saved_inference, write_local_dashboard
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -378,6 +378,17 @@ def main(config_override: Path | None = None) -> None:
     }
     write_json(metrics_path, metrics)
     validate_json_document(metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json")
+    local_dashboard_path = write_local_dashboard(
+        artifact_slug=artifact_slug,
+        metrics=metrics,
+        feature_dir=feature_dir,
+        highlighted_features=("hotspot__known_hotspot_total_count",),
+        comparison_metrics_path=(
+            ROOT / config["comparison_metrics_path"]
+            if config.get("comparison_metrics_path")
+            else None
+        ),
+    )
     verify_saved_inference(
         context=context,
         source_commit=source_commit,
@@ -396,7 +407,17 @@ def main(config_override: Path | None = None) -> None:
         test_probability_path=test_probability_path,
         submission_path=submission_path,
     )
-    print(json.dumps({"metrics": str(metrics_path), "oof": metrics["oof"]}, ensure_ascii=False, indent=2))
+    print(
+        json.dumps(
+            {
+                "metrics": str(metrics_path),
+                "local_dashboard": str(local_dashboard_path),
+                "oof": metrics["oof"],
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":
