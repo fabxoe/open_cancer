@@ -1,0 +1,28 @@
+{
+  "name": "abc_c_compact_fixed_groups",
+  "version": "1.0.0",
+  "license": "Project-authored compact factual extract; source article CC BY-NC-ND 4.0",
+  "source": "Sanchez-Vega et al., Cell 2018, DOI 10.1016/j.cell.2018.03.035, Tables S2-S3",
+  "source_url": "https://doi.org/10.1016/j.cell.2018.03.035",
+  "source_attachment_url": "https://ars.els-cdn.com/content/image/1-s2.0-S0092867418303593-mmc3.xlsx",
+  "source_attachment_sha256": "df722435b7c069b9225c9e4bbef7ab812385bd5e8ab7c415837cde5f2838c640",
+  "downloaded_at": "2026-08-01",
+  "selection_policy": "Compact representative subset fixed before OOF; not the full Table S3 template and not selected from competition labels or frequencies",
+  "competition_use_policy": "Disabled until organizers confirm that fixed literature gene membership is allowed",
+  "pathways": {
+    "cell_cycle": ["CCND1", "CCND2", "CCND3", "CCNE1", "CDK2", "CDK4", "CDK6", "CDKN2A", "CDKN2B", "RB1"],
+    "hippo": ["LATS1", "LATS2", "NF2", "SAV1", "WWTR1", "YAP1"],
+    "myc": ["MAX", "MGA", "MYC", "MYCL", "MYCN"],
+    "notch": ["CREBBP", "EP300", "FBXW7", "JAG1", "JAG2", "NOTCH1", "NOTCH2", "NOTCH3", "NOTCH4"],
+    "nrf2": ["CUL3", "KEAP1", "NFE2L2"],
+    "pi3k": ["AKT1", "MTOR", "PIK3CA", "PIK3R1", "PTEN", "STK11", "TSC1", "TSC2"],
+    "rtk_ras": ["BRAF", "EGFR", "ERBB2", "FGFR2", "FGFR3", "HRAS", "KIT", "KRAS", "MET", "NF1", "NRAS"],
+    "tgf_beta": ["ACVR1B", "ACVR2A", "SMAD2", "SMAD3", "SMAD4", "TGFBR1", "TGFBR2"],
+    "tp53": ["ATM", "CHEK2", "MDM2", "MDM4", "TP53"],
+    "wnt": ["APC", "AXIN1", "AXIN2", "CTNNB1", "RNF43", "TCF7L2", "ZNRF3"]
+  },
+  "functional_roles": {
+    "oncogene": ["AKT1", "BRAF", "CCND1", "CCND2", "CCND3", "CCNE1", "CDK2", "CDK4", "CDK6", "CTNNB1", "EGFR", "ERBB2", "FGFR2", "FGFR3", "HRAS", "KIT", "KRAS", "MAX", "MDM2", "MDM4", "MET", "MTOR", "MYC", "MYCL", "MYCN", "NFE2L2", "NRAS", "PIK3CA", "YAP1"],
+    "tumor_suppressor": ["ACVR1B", "ACVR2A", "APC", "ATM", "AXIN1", "AXIN2", "CDKN2A", "CDKN2B", "CHEK2", "CREBBP", "CUL3", "EP300", "FBXW7", "KEAP1", "LATS1", "LATS2", "MGA", "NF1", "NF2", "NOTCH1", "NOTCH2", "NOTCH3", "NOTCH4", "PIK3R1", "PTEN", "RB1", "RNF43", "SAV1", "SMAD2", "SMAD3", "SMAD4", "STK11", "TCF7L2", "TGFBR1", "TGFBR2", "TP53", "TSC1", "TSC2", "ZNRF3"]
+  }
+}
