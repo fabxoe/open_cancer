@@ -1,0 +1,23 @@
+run_mode: experiment
+slug: cross_fitted_stacking
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+base_experiments:
+  - experiment_id: EXP-094
+    oof_probability_path: oof/exp094_feature_spec_v1.csv
+    test_probability_path: preds/exp094_feature_spec_v1_test_proba.csv
+  - experiment_id: EXP-125
+    oof_probability_path: oof/exp125_lightgbm_v1.csv
+    test_probability_path: preds/exp125_lightgbm_v1_test_proba.csv
+meta_model:
+  class: sklearn.linear_model.LogisticRegression
+  multi_class: multinomial
+  C: 0.2
+  max_iter: 1000
+  class_weight: null
+  random_state: 42
+submission:
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
