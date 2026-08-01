@@ -1,0 +1,107 @@
+{
+  "experiment_id": "EXP-131",
+  "issue_number": 131,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "b331ce88b854bf4b537b31b69da75b405acae7cf",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp131_catboost_v1_extended/data_manifest.json",
+  "environment": "reproducibility/exp131_catboost_v1_extended/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint_fold_0",
+      "path": "models/exp131_catboost_v1_extended/fold_00.cbm",
+      "size_bytes": 111679872,
+      "sha256": "202f4193c04f028fdfd359ab8e08076c7f1956644bc80ee22a58e146b75eda00",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_1",
+      "path": "models/exp131_catboost_v1_extended/fold_01.cbm",
+      "size_bytes": 111514072,
+      "sha256": "085997cbf105bac0f48f1e1be2df5a1f3fde12cd9e7969e10039a0dbb120f0e9",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_2",
+      "path": "models/exp131_catboost_v1_extended/fold_02.cbm",
+      "size_bytes": 111735744,
+      "sha256": "5671f3450bbf7ddec8b96d540dc56ee629e833bdac14d5e5154f5e228ff55f21",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_3",
+      "path": "models/exp131_catboost_v1_extended/fold_03.cbm",
+      "size_bytes": 111735440,
+      "sha256": "17414cb70c4b9d1daa5af539d6725489589c0c60af886f0675948075d3ef1a9d",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_4",
+      "path": "models/exp131_catboost_v1_extended/fold_04.cbm",
+      "size_bytes": 111735176,
+      "sha256": "bdb60ef5fd83fa9bc6cf4dfce484859bf229b12c01613a67e5b08b50736017e1",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_spec_manifest",
+      "path": "data/processed/exp131_catboost_v1_extended_features/feature_spec_manifest.json",
+      "size_bytes": 1806,
+      "sha256": "64cb027088bd8d7f28c35a57c6b8cfe79b5d151e0d238a81c020f7018de3b5c6",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof",
+      "path": "oof/exp131_catboost_v1_extended.csv",
+      "size_bytes": 3519420,
+      "sha256": "13534cc65841a690655203a0695cc7c52057bd9b191c7817ea625f09b2fdb4ae",
+      "storage_uri": null
+    },
+    {
+      "kind": "report_metrics",
+      "path": "reports/exp131_catboost_v1_extended/metrics.json",
+      "size_bytes": 11476,
+      "sha256": "30dfca6f5e358999f231b03f54bcef9534aa945cd1ce4db76c1fc2d9196c8011",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp131_catboost_v1_extended.csv",
+      "size_bytes": 37965,
+      "sha256": "e8d0863118f1170fd209d465197871eefcd1c0661bb8792c8bd2af60b7ce35d3",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp131_catboost_v1_extended_test_proba.csv",
+      "size_bytes": 1411422,
+      "sha256": "8c82a6b6da5413cd4a9df16d8053c16f4171dab376d92bc5bedf00450890cbde",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp131_catboost_v1_extended/config.resolved.yaml",
+      "size_bytes": 3553,
+      "sha256": "84cb9c283422623d589e43b564ef8804babc374465f4c3b6c8fe8a81a479023b",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp131_catboost_v1_extended/metrics.json",
+      "size_bytes": 11476,
+      "sha256": "30dfca6f5e358999f231b03f54bcef9534aa945cd1ce4db76c1fc2d9196c8011",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "oof_macro_f1_delta": 0.0,
+    "passed": true
+  }
+}

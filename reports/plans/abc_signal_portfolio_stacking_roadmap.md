@@ -50,6 +50,7 @@ EXP-094는 Feature Spec v1으로 보존합니다. 이후 family는 v2 후보로�
 | G1 | 희소 선형 모델 공식 5-fold | #123 | EXP-123 | #124 | COMPLETED | 다양성 통과·품질 gate 실패 | stacking 후보 미채택 |
 | G2 | LightGBM 공식 5-fold | #125 | EXP-125 | #126 | COMPLETED | 신규 Local 최고·모든 gate 통과 | G3와 독립 비교 후 G4 감사 |
 | G3 | CatBoost 공식 5-fold | #127 | EXP-127 | - | PAUSED_RUNPOD | 로컬 CPU fold당 약 19분·1/5 후 중단 | RunPod GPU 설정 검증 후 전체 재실행 |
+| G3-1 | CatBoost v1 extended training | #131 | EXP-131 | #132 | PR_OPEN | OOF 0.4222392962로 개선했지만 fold·Log Loss 악화, 추가 iteration 확장 중단 | PR 병합 후 G4 감사 |
 | G4 | OOF 다양성·확률 품질 감사 | 미발급 | explore | - | PLANNED | 오류·확률 상관과 클래스 보완성 | 후보 확정 |
 | G5 | 고정 가중 확률 blend | 미발급 | 미발급 | - | PLANNED | 사전 고정 가중치로 개선 | G4 통과 대기 |
 | G6 | cross-fitted stacking | 미발급 | 미발급 | - | PLANNED | blend보다 추가 개선 시에만 채택 | G5 결과 대기 |
