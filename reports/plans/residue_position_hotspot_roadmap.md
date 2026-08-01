@@ -30,7 +30,7 @@
 | C | hotspot runner 정리 | [#83](https://github.com/fabxoe/open_cancer/issues/83) | 해당 없음 | [#84](https://github.com/fabxoe/open_cancer/pull/84) | COMPLETED | N/A | 해당 없음 | config 기반 runner·fold-train 근거 검증·재현 산출물 자동화 완료 | 단계 D 진행 |
 | D | hotspot clean 실험 | [#85](https://github.com/fabxoe/open_cancer/issues/85) | EXP-085 | [#86](https://github.com/fabxoe/open_cancer/pull/86) | COMPLETED | 0.4125795545 | INFERENCE_VERIFIED | EXP-005 대비 +0.008200으로 복구 성공·채택 | 단계 E 진행 |
 | E | 위치 negative control | [#91](https://github.com/fabxoe/open_cancer/issues/91) | explore | [#92](https://github.com/fabxoe/open_cancer/pull/92) | COMPLETED | 0.4058699664 (3-seed 평균) | 해당 없음 | EXP-069 원본 대비 -0.007231, 숫자 위치 신호 지지 | 단계 F 진행 |
-| F | Feature Spec v1 조합 | [#94](https://github.com/fabxoe/open_cancer/issues/94) | EXP-094 | - | COMPLETED | 0.4168865739 | INFERENCE_VERIFIED | 채택·Feature Spec v1 동결 | PR 생성 |
+| F | Feature Spec v1 조합 | [#94](https://github.com/fabxoe/open_cancer/issues/94) | EXP-094 | [#97](https://github.com/fabxoe/open_cancer/pull/97) | PR_OPEN | 0.4168865739 | INFERENCE_VERIFIED | 채택·Feature Spec v1 동결 | 리뷰·병합 |
 | G | 모델 다양화·stacking | 미발급 | 미발급 | - | PLANNED | N/A | NOT_STARTED | - | 단계 F 병합 대기 |
 
 로드맵 작업 상태는 다음 값만 사용합니다.
