@@ -184,6 +184,10 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   4,384개 변이 셀에서 계산한다.
 - 외부 지식에는 출처, 버전, 라이선스, 원본 SHA-256과 재배포 제한을 manifest에
   기록한다.
+- 공개 문헌의 고정 pathway gene membership을 사용하고 환자별 값은 대회 CSV에서만
+  계산하는 방식은 주최측 허용 답변을 받았다. 근거는 Issue #96의 고정 댓글
+  <https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180>이며,
+  이 허용을 외부 환자 데이터·임베딩·연속 weight 사용 허용으로 확대 해석하지 않는다.
 - 위치 숫자는 입력 토큰에 명시된 단백질 잔기 위치다. genomic coordinate,
   codon nucleotide 위치나 transcript 정규화 좌표로 추정하지 않는다.
 - 새 indicator나 missingness 피처를 공식 실험에 넣기 전에 기존 피처와 값이 같은지

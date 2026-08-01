@@ -42,9 +42,9 @@ EXP-094는 Feature Spec v1으로 보존합니다. 이후 family는 v2 후보로�
 |---|---|---:|---|---:|---|---|---|
 | P0 | ABC-Stack 계획 동결 | #98 | 해당 없음 | #99 | MERGED | 공식 이름·경로·일정 확정 | 완료 |
 | G0 | 공통 Feature Factory·모델 산출물 계약 | #100 | 해당 없음 | #101 | MERGED | 기존 EXP-094 불변·공통 assert | 완료 |
-| A | exact-token·amino-acid family | #102 | #106·#107 | #105 | MERGED | 두 공식 OOF·test 확률 보존 | 각 공식 5-fold 실행 대기 |
-| B | morphology·frequency-tier spectrum | #103 | #109·#110 | #108 | MERGED | 두 공식 OOF·test 확률 보존 | 각 공식 5-fold 실행 대기 |
-| C | pathway·functional-role burden | #104 | 허용 확인 후 발급 | #111 | MERGED_GUARDED | 두 공식 OOF·test 확률 보존 | 주최측 허용 확인 전 비활성 |
+| A | exact-token·amino-acid family | #102 | #106·#107 | #105 | COMPLETED | 두 공식 OOF·test 확률 보존 | 포트폴리오 감사에서 비교 |
+| B | morphology·frequency-tier spectrum | #103 | #109·#110 | #108 | COMPLETED | 두 공식 OOF·test 확률 보존 | 포트폴리오 감사에서 비교 |
+| C | pathway·functional-role burden | #104 | #96(C-1) | #111 | COMPLETED | EXP-096 PERFORMANCE·OOF/test 보존 | v2-performance 후보로 감사 |
 | F | v2-performance·v2-diversity 동결 | 미발급 | 미발급 | - | PLANNED | 8월 3일 저녁 사양 고정 | A/B/C 완료 대기 |
 | G1 | 희소 선형 모델 공식 5-fold | 미발급 | 미발급 | - | PLANNED | 낮은 상관의 보완 후보 확인 | F 동결 대기 |
 | G2 | LightGBM 공식 5-fold | 미발급 | 미발급 | - | PLANNED | 단일 모델 품질·다양성 측정 | G1과 독립 실행 |

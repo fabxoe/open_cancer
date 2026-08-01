@@ -1,12 +1,13 @@
-# C-family defaults. External knowledge use stays disabled until organizer approval.
+# C-family defaults. Families stay off unless an official Experiment config enables one.
 base_feature_spec:
   experiment_id: EXP-094
   sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
 
 external_knowledge:
-  file: knowledge/abc_c_compact_groups_v1.json
-  organizer_approval_required: true
-  organizer_approval_reference: null
+  fixed_pathway_file: knowledge/canonical_pathways_sanchez_vega_v1.json
+  functional_role_file: knowledge/abc_c_compact_groups_v1.json
+  organizer_approval_required: false
+  organizer_approval_reference: https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180
 
 families:
   fixed_pathway_burden:

@@ -9,7 +9,10 @@ from pathlib import Path
 
 import pandas as pd
 
-from open_cancer.abc_c_features import fixed_pathway_burden_family, functional_role_burden_family
+from open_cancer.abc_c_features import (
+    fixed_pathway_burden_family,
+    functional_role_burden_family,
+)
 from open_cancer.feature_family import fit_transform_family_set
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,11 +26,12 @@ def main() -> None:
     frame = pd.read_csv(args.train, dtype=str, keep_default_na=False, nrows=args.rows)
     genes = tuple(frame.columns[2:])
     split_at = int(len(frame) * 0.75)
-    knowledge = ROOT / "knowledge/abc_c_compact_groups_v1.json"
+    pathway_knowledge = ROOT / "knowledge/canonical_pathways_sanchez_vega_v1.json"
+    role_knowledge = ROOT / "knowledge/abc_c_compact_groups_v1.json"
     bundle = fit_transform_family_set(
         [
-            fixed_pathway_burden_family(genes, knowledge),
-            functional_role_burden_family(genes, knowledge),
+            fixed_pathway_burden_family(genes, pathway_knowledge),
+            functional_role_burden_family(genes, role_knowledge),
         ],
         fold_train=frame.iloc[:split_at],
         validation=frame.iloc[split_at:],
@@ -36,7 +40,10 @@ def main() -> None:
     print(json.dumps({
         "status": "SMOKE_PASSED",
         "score_computed": False,
-        "competition_use_enabled": False,
+        "competition_use_enabled": True,
+        "organizer_approval_reference": (
+            "https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180"
+        ),
         "registry": bundle.registry,
         "validation_shape": list(bundle.validation.shape),
         "intersections": {

@@ -1,0 +1,73 @@
+run_mode: experiment
+record_role: official
+slug: fixed_pathway_burden
+parent_experiment: EXP-094
+component_experiments:
+  - EXP-094
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mutation_type:
+    enabled: true
+  robust_aggregates:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+  residue_position:
+    enabled: true
+    aggregates:
+      - max
+    missing_policy: zero
+    complex_tokens: include
+    transform: raw
+hotspots:
+  table: extended_34
+  evidence_scope: additions_15
+  minimum_matching_train_rows: 5
+external_knowledge:
+  file: knowledge/canonical_pathways_sanchez_vega_v1.json
+  organizer_approval_reference: https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180
+  source_commit: 7d29965de6ac8d0c6ec18c383f6dff8a48d562e7
+  source_sha256: a625675d03fa314eb27f3ab731524de13621a35aecd8edb7c67878f2d89ae07a
+abc_families:
+  fixed_pathway_burden:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    groups: 10
+    values:
+      - mutated_gene_count
+      - lof_gene_count
+    output_dimension: 20
+  functional_role_burden:
+    enabled: false
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - feature_spec_v1
+    - fixed_pathway_mutated_and_lof_gene_counts
+notes: >-
+  Single-family C-axis ablation against frozen EXP-094. Twenty deterministic
+  features count mutated genes and genes with nonsense or frameshift mutations
+  in ten literature-fixed canonical pathways. Patient-level values are computed
+  only from the competition CSV; functional-role features remain disabled.
+comparison_metrics_path: reports/exp094_feature_spec_v1/metrics.json
