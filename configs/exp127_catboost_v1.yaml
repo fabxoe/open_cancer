@@ -12,14 +12,14 @@ split:
 model:
   name: catboost
   parameters:
-    iterations: 300
+    iterations: 1000
     learning_rate: 0.05
-    depth: 6
+    depth: 8
     l2_leaf_reg: 3.0
     early_stopping_rounds: 50
-    thread_count: 8
+    task_type: GPU
+    devices: "0"
     allow_writing_files: false
-    rsm: 0.1
     border_count: 32
     bootstrap_type: Bernoulli
     subsample: 0.8
@@ -50,7 +50,7 @@ preflight:
       approximate_seconds: 1200
       completed_folds: 1
       reason: local CPU run was paused after fold 0 to move the experiment to RunPod
-execution_target: runpod_gpu_pending
+execution_target: runpod_rtx4090
 notes: >-
   ABC-Stack G3. Frozen Feature Spec v1 and canonical folds are held fixed while
   the model family changes from XGBoost to CatBoost. Early stopping uses only
@@ -58,4 +58,7 @@ notes: >-
   depth-8 preflight was stopped after 30 minutes without one completed fold;
   reducing only trees and depth was also insufficient. A compute-bounded CPU run
   completed fold 0 but was paused to move the official 5-fold execution to
-  RunPod. GPU compatibility and final parameters must be resolved before launch.
+  RunPod. The official run uses a single RTX 4090 with CatBoost GPU training;
+  the CPU-only rsm bound is removed because CatBoost MultiClass GPU training
+  does not support it. GPU availability is verified by a short smoke test before
+  the clean-commit official run.
