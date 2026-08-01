@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 23
+- 실제 실험 수: 24
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4168865739 (`EXP-094`)
@@ -41,6 +41,7 @@
 | EXP-075 | COMPLETED | fabxoe | #75 | EXP-067·069 확률의 사전 고정 0.5/0.5 평균 | 0.4157910775 | 미제출 | INFERENCE_VERIFIED | 두 부모 대비 OOF·Log Loss 개선과 fold 변동성 감소로 채택 | [보고서](reports/exp075_residue_probability_blend/README.md) |
 | EXP-078 | COMPLETED | fabxoe | #78 | EXP-069 max residue-position + 관측 indicator | 0.4110815504 | 미제출 | INFERENCE_VERIFIED | OOF 하락·fold 변동성 악화 및 Issue #80 중복 확인으로 기각, EXP-069 max+zero 동결 | [보고서](reports/exp078_xgb_max_residue_indicator/README.md) |
 | EXP-085 | COMPLETED | fabxoe | #85 | EXP-005 + reference-aware 고정 문헌 hotspot 34개 | 0.4125795545 | 0.3103760308 | INFERENCE_VERIFIED | clean hotspot 복구·Public은 EXP-031보다 낮음 | [보고서](reports/exp085_hotspot_clean/README.md) |
+| EXP-093 | COMPLETED | 2heej | #93 | EXP-005 + max residue-position + clean hotspot 34개 | 0.4157606623 | 미제출 | INFERENCE_VERIFIED | 부모 OOF는 개선했지만 fold 변동성 기준 실패로 조합 동결 보류 | [보고서](reports/exp093_mutation_position_hotspot/README.md) |
 | EXP-094 | COMPLETED | fabxoe | #94 | EXP-005 + EXP-069 max residue position + EXP-085 고정 hotspot | 0.4168865739 | 미제출 | INFERENCE_VERIFIED | 채택·Feature Spec v1 동결, 신규 Local 최고 | [보고서](reports/exp094_feature_spec_v1/README.md) |
 
 ## 리더보드 제출 이력
@@ -116,6 +117,50 @@
 - 첫 실행은 학습 완료 후 metrics schema 위반으로 검증 단계에서 실패했습니다.
 - 메타데이터 위치만 수정한 clean commit에서 전체 5-fold를 재실행했으며,
   fold 점수가 첫 실행과 정확히 같아 결정론적 재실행을 확인했습니다.
+
+### [EXP-093] 변이 유형·위치·주요 hotspot 조합 검증
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #93 / issue-93-exp-mutation-position-hotspot
+- 소스 commit: `62254643cd811ec0249d15456a1ec9b7fe6c328f`
+- 시작/종료: 2026-08-01T05:52:43.735321+00:00 /
+  2026-08-01T06:01:38.290419+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp093_mutation_position_hotspot/config.resolved.yaml`
+- Metrics: `reports/exp093_mutation_position_hotspot/metrics.json`
+- Report: `reports/exp093_mutation_position_hotspot/README.md`
+- 조합: EXP-005 mutation-type + EXP-069 max residue-position + EXP-085
+  reference-aware fixed hotspot 34개
+
+#### 결과
+
+- Fold Macro F1: 0.4094564310, 0.4312411436, 0.3986561217,
+  0.4090170143, 0.4292709896
+- OOF Macro F1: 0.4157606623
+- Fold 표준편차: 0.0126466581
+- Accuracy: 0.4059022738
+- Log Loss: 1.8402239084
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp093_mutation_position_hotspot/metrics.json` /
+  `reports/exp093_mutation_position_hotspot/README.md` /
+  `reproducibility/exp093_mutation_position_hotspot/`
+- 제출 후보: `submissions/exp093_mutation_position_hotspot.csv`
+  (SHA-256 `de3fceb0f8c9d1a0ab6e3d566c7803bd50e95209d662d4a5265f49b425ad9635`,
+  DACON 미제출)
+- 결론: EXP-069 대비 `+0.0026598630`, EXP-085 대비 `+0.0031811077`
+  개선했지만 fold 표준편차가 각각 `+0.0044408013`, `+0.0035200894`
+  악화되어 사전 안정성 기준을 통과하지 못했다. 현재 최고 EXP-075보다
+  `-0.0000304152` 낮아 Feature Spec 조합 동결을 보류한다.
+- 재현 메모: 저장 checkpoint 재추론에서 데이터 해시, 제출 SHA-256과 test
+  라벨이 일치했고 확률 최대 절대 차이는 약 2.98e-08로 허용치 이내였다.
 
 ### [EXP-085] Clean fixed-hotspot reconstruction
 

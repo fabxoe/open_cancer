@@ -95,17 +95,15 @@ def test_build_hotspot_augmented_features_appends_to_base_names(tmp_path: Path) 
     assert report["feature_contract"]["hotspot_features"] == list(HOTSPOT_FEATURE_NAMES)
 
 
-def test_build_hotspot_augmented_features_accepts_residue_position_options(
-    tmp_path: Path,
-) -> None:
+def test_build_hotspot_augmented_features_can_include_max_position(tmp_path: Path) -> None:
     train = tmp_path / "train.csv"
     test = tmp_path / "test.csv"
     output = tmp_path / "features"
     train.write_text(
-        "ID,SUBCLASS,BRAF,GENE2\nT1,A,V600E,S27N\nT2,B,WT,WT\n",
+        "ID,SUBCLASS,BRAF,GENE2\nT1,A,V600E S700N,A10V\nT2,B,WT,WT\n",
         encoding="utf-8",
     )
-    test.write_text("ID,BRAF,GENE2\nE1,WT,S31N\n", encoding="utf-8")
+    test.write_text("ID,BRAF,GENE2\nE1,V600E,A20V\n", encoding="utf-8")
 
     report = build_hotspot_augmented_features(
         train,
@@ -117,11 +115,10 @@ def test_build_hotspot_augmented_features_accepts_residue_position_options(
         },
     )
     names = json.loads((output / "feature_names.json").read_text(encoding="utf-8"))
-    train_matrix = sparse.load_npz(output / "train_features.npz")
+    matrix = sparse.load_npz(output / "train_features.npz")
 
-    assert "BRAF__max_residue_position" in names
-    assert train_matrix[0, names.index("BRAF__max_residue_position")] == 600
-    assert names[-len(HOTSPOT_FEATURE_NAMES) :] == list(HOTSPOT_FEATURE_NAMES)
+    assert matrix[0, names.index("BRAF__max_residue_position")] == 700
+    assert matrix[0, names.index("hotspot__BRAF_600")] == 1
     assert report["feature_contract"]["position_features"] == [
         "max_residue_position"
     ]
