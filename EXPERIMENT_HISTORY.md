@@ -7,12 +7,12 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 28
+- 실제 실험 수: 29
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4168865739 (`EXP-094`)
+- 최고 Local OOF Macro F1: 0.4181153080 (`EXP-096`)
 - 최고 Public LB Macro F1: 0.3170803849 (`EXP-031`)
-- 최고 재현 검증 모델: `EXP-094` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-096` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-01
 
 ## 실험 요약
@@ -47,6 +47,7 @@
 | EXP-107 | COMPLETED | fabxoe | #107 | EXP-094 + amino-acid 물성 변화 카운트 4개 | 0.4131379001 | 미제출 | INFERENCE_VERIFIED | 성능 후보 미채택·v2-diversity 관찰 후보로 확률 보존 | [보고서](reports/exp107_amino_acid_change/README.md) |
 | EXP-109 | COMPLETED | fabxoe | #109 | EXP-094 + complex morphology·spectrum 요약 8개 | 0.4135182559 | 미제출 | INFERENCE_VERIFIED | 성능 후보 미채택·fold 안정성 및 diversity 관찰 후보 | [보고서](reports/exp109_complex_morphology/README.md) |
 | EXP-110 | COMPLETED | fabxoe | #110 | EXP-094 + fold-train 유전자 빈도 tier spectrum 40개 | 0.3963504903 | 미제출 | INFERENCE_VERIFIED | 성능·초기 blend 미채택, 저우선순위 stacking 자산 | [보고서](reports/exp110_frequency_tier_spectrum/README.md) |
+| EXP-096 | COMPLETED | fabxoe | #96 | EXP-094 + 고정 canonical pathway 변이·LoF 유전자 수 20개 | 0.4181153080 | 미제출 | INFERENCE_VERIFIED | 신규 Local 최고·v2-performance C family 채택 | [보고서](reports/exp096_fixed_pathway_burden/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -88,10 +89,39 @@
 | 2026-08-01T09:48:14.214888+00:00 | EXP-107 | fabxoe | `efe36044e117df9e8d9e821e19e092e75844d966` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp107_amino_acid_change/comparison.json) |
 | 2026-08-01T10:02:39.082057+00:00 | EXP-109 | fabxoe | `2e5882eb9c050292c6167c584cf4977a12c1cdab` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp109_complex_morphology/comparison.json) |
 | 2026-08-01T10:19:49.995276+00:00 | EXP-110 | fabxoe | `1c0e835eecb5d5edbffc61c632c583395f698d1b` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.97e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp110_frequency_tier_spectrum/comparison.json) |
+| 2026-08-01T10:45:05.297140+00:00 | EXP-096 | fabxoe | `296c39fe9259fd4ee93bd8158aeaecec0c891545` / 태그 없음 | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp096_fixed_pathway_burden/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-096] fixed pathway burden 단독 검증
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #96 / issue-96-exp-fixed-pathway-burden
+- 소스 commit: `296c39fe9259fd4ee93bd8158aeaecec0c891545`
+- 시작/종료: 2026-08-01T10:33:18.291151+00:00 / 2026-08-01T10:45:02.814952+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp096_fixed_pathway_burden/config.resolved.yaml`
+- Metrics: `reports/exp096_fixed_pathway_burden/metrics.json`
+- Report: `reports/exp096_fixed_pathway_burden/README.md`
+- 기준: 동결된 EXP-094 Feature Spec v1
+- 변경: 고정 canonical pathway별 mutated-gene·LoF-gene count 20개
+
+#### 결과
+
+- Fold Macro F1: 0.4086500, 0.4181644, 0.4140262, 0.4133268, 0.4360397
+- OOF Macro F1: 0.4181153080
+- EXP-094 대비: +0.0012287341
+- fold 표준편차: 0.0094921177 (EXP-094 대비 +0.0016078656)
+- Log Loss: 1.8369342089 (EXP-094 대비 -0.0030031204)
+- OOF 예측 라벨 일치율(EXP-094 대비): 0.8948556684
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+- 판단: 신규 Local 최고, fixed pathway burden을 v2-performance 후보로 채택
 
 ### [EXP-110] frequency-tier spectrum 단독 검증
 

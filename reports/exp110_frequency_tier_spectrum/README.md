@@ -83,4 +83,4 @@ gene→tier·support 매핑은 `fold_tier_mappings/`에 저장해 실행 규칙�
 - OOF·test 확률은 저우선순위 stacking 연구 자산으로만 보존합니다.
 - A/B 첫 단독 실험 묶음이 끝났으므로 EXP-094, EXP-106, EXP-107, EXP-109,
   EXP-110의 성능·다양성 포트폴리오를 종합해 다음 Issue를 결정합니다.
-- C-family는 대회 외부 지식 규정 확인 전까지 공식 실행하지 않습니다.
+- C-family는 주최측 허용 확인 후 EXP-096에서 별도 공식 검증했습니다.
