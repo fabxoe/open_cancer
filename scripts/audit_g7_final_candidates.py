@@ -14,6 +14,11 @@ ROOT = Path(__file__).resolve().parents[1]
 ISSUE = 139
 OUTPUT_JSON = ROOT / "reports/analysis/g7_final_candidate_audit.json"
 OUTPUT_MD = ROOT / "reports/analysis/g7_final_candidate_audit.md"
+RELEASE_URL = "https://github.com/fabxoe/open_cancer/releases/tag/exp-g7-candidates-v1"
+RELEASE_ASSETS = {
+    "EXP-131": {"name": "exp131_catboost_v1_extended_repro.tar.gz", "sha256": "b82f78dd8f698c5d184cdf2273bde7d3bcf2f43185da3c19361ade26951948b7"},
+    "EXP-125": {"name": "exp125_lightgbm_v1_repro.tar.gz", "sha256": "4cf0f228ea29006d70e0d0c2ebc07edf615c82ffffb49b2b4070aa0b69480d08"},
+}
 CANDIDATES = {
     "EXP-131": {
         "metrics": "reports/exp131_catboost_v1_extended/metrics.json",
@@ -61,13 +66,14 @@ def main() -> None:
         "public_lb_used_for_selection": False,
         "candidates": records,
         "selected_for_final_verification": ["EXP-131", "EXP-125"],
+        "release": {"url": RELEASE_URL, "assets": RELEASE_ASSETS},
         "selection_reason": "Macro F1 최고 후보와 품질·Public 검증 후보를 각각 보존",
         "all_training_verified": all(item["training_verified"] for item in records.values()),
         "submission_checklist": {
             "candidate_count_at_most_two": True,
             "checkpoint_and_manifest_reviewed": all(item["artifact_files_present"] for item in records.values()),
             "independent_training_verified": False,
-            "release_asset_archived": False,
+            "release_asset_archived": True,
             "leaderboard_submission_ready": False,
         },
     }
@@ -87,7 +93,8 @@ def main() -> None:
         + "\n".join(rows)
         + "\n\n## 현재 제한\n\n"
         "두 후보 모두 현재 `INFERENCE_VERIFIED`이며 `TRAINING_VERIFIED`가 아닙니다. "
-        "따라서 수상 후보로 확정하거나 최종 제출하지 않습니다. 다른 팀원이 fresh clone에서 "
+        "Release 번들(`exp-g7-candidates-v1`)은 생성했지만 EXP-131의 feature-spec manifest "
+        "파일이 번들에 없어 보완이 필요합니다. 따라서 수상 후보로 확정하거나 최종 제출하지 않습니다. 다른 팀원이 fresh clone에서 "
         "`uv sync --frozen` 후 재학습·checkpoint 추론까지 검증해야 합니다.\n\n"
         "## 다음 작업\n\n"
         "1. 두 후보의 Release asset과 SHA-256을 보관합니다.\n"
