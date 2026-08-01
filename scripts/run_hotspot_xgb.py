@@ -96,6 +96,7 @@ def main(
     config_override: Path | None = None,
     *,
     fold_feature_builder: Any | None = None,
+    runner_command: str | None = None,
 ) -> None:
     args = parse_args() if config_override is None else None
     started_at = datetime.now(timezone.utc)
@@ -247,8 +248,11 @@ def main(
             **config["training"],
             "fold_seeds": [config["seed"] + fold for fold in range(config["split"]["n_splits"])],
             "command": (
-                "uv run python scripts/run_hotspot_xgb.py --config "
-                f"{relative_posix(config_path, ROOT)}"
+                runner_command
+                or (
+                    "uv run python scripts/run_hotspot_xgb.py --config "
+                    f"{relative_posix(config_path, ROOT)}"
+                )
             ),
         },
         "environment": {

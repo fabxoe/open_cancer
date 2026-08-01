@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-107",
+  "issue_number": 107,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "efe36044e117df9e8d9e821e19e092e75844d966",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp107_amino_acid_change/data_manifest.json",
+  "environment": "reproducibility/exp107_amino_acid_change/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-01T09:48:14.214888+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp107_amino_acid_change/fold_00.json",
+      "size_bytes": 11379192,
+      "sha256": "170c2a6baf3f3d8d407b83736399cdd7e6f6d850a58541b7251479bf07bb1353",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp107_amino_acid_change/fold_01.json",
+      "size_bytes": 12632962,
+      "sha256": "65c174ace632c05cb7227c73a60db2c6101078e6585e19636e14a90d401079e2",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp107_amino_acid_change/fold_02.json",
+      "size_bytes": 13147605,
+      "sha256": "a8082d9d41ffbdea4957e85523dd4e08cf2243f770955d74f1738ab9f067b2fe",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp107_amino_acid_change/fold_03.json",
+      "size_bytes": 10876300,
+      "sha256": "1b252bd5c02f4358419f675c42c64562a714d0a35fc79f97a3120f078ce3b7ed",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp107_amino_acid_change/fold_04.json",
+      "size_bytes": 12738097,
+      "sha256": "f8c253b92ea76d3b94a72073b7274ee54b763355556b27c5999f5b83e248bff5",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp107_amino_acid_change.csv",
+      "size_bytes": 38181,
+      "sha256": "705ed0a838e223ea80cb2e657782d9569740d20bbc7a16abf787569d69ca4ff8",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp107_amino_acid_change.csv",
+      "size_bytes": 2126196,
+      "sha256": "fd6204d00aae3a02bcae3af0d86b08119e31669b944d21c9ada11b6ed6d73519",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp107_amino_acid_change_test_proba.csv",
+      "size_bytes": 833642,
+      "sha256": "6f5c1967b625771e03799f17b4ceb6b6e25fa9f40bbe9903afe0415c5a695474",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp107_amino_acid_change/metrics.json",
+      "size_bytes": 11288,
+      "sha256": "4f041d9b7097e02db690a04933672a97a4295b1239977ef21ec40cd22b3f2215",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp107_amino_acid_change/config.resolved.yaml",
+      "size_bytes": 21330,
+      "sha256": "e097decec6026b18ddebeb9ccde09513b91352984d93b8b832b777d40061dff6",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
