@@ -117,8 +117,8 @@
     {
       "kind": "metrics",
       "path": "reproducibility/exp189_c2_phi_jaccard_pruning/metrics.json",
-      "size_bytes": 742321,
-      "sha256": "1c5f39f62cd24c573a550663e056ce9b62be9164d2076d12adb8a07b9a0e6a6c",
+      "size_bytes": 152761,
+      "sha256": "8c34d562b2bf088dcd03288dd525ad427ae033460e1f68b3d75be04652dffbba",
       "storage_uri": null
     }
   ]

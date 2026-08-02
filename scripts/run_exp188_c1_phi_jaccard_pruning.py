@@ -107,6 +107,28 @@ def verdict(*, delta: dict[str, float], acceptance: dict[str, float]) -> str:
     return "SIMPLIFICATION_CANDIDATE" if simplification else "ARCHIVE"
 
 
+def compact_fold_metrics(
+    fold_metrics: tuple[dict[str, Any], ...] | list[dict[str, Any]],
+    *,
+    model_dir: Path,
+) -> list[dict[str, Any]]:
+    """Keep committed metrics concise while preserving full pairs in fold masks."""
+    compact: list[dict[str, Any]] = []
+    for fold_metric in fold_metrics:
+        record = dict(fold_metric)
+        selection = record.get("feature_selection")
+        if isinstance(selection, dict):
+            selection = dict(selection)
+            selection.pop("candidate_pairs", None)
+            fold = int(record["fold"])
+            selection["candidate_pairs_artifact"] = str(
+                (model_dir / f"fold_{fold:02d}_feature_selection.json").relative_to(ROOT)
+            )
+            record["feature_selection"] = selection
+        compact.append(record)
+    return compact
+
+
 def main(*, config_path: Path = DEFAULT_CONFIG) -> None:
     started_at = datetime.now(timezone.utc)
     timer = time.perf_counter()
@@ -195,7 +217,7 @@ def main(*, config_path: Path = DEFAULT_CONFIG) -> None:
         "finished_at": datetime.now(timezone.utc).isoformat(),
         "primary_metric": "macro_f1",
         "split_id": config["split"]["path"],
-        "folds": list(result.fold_metrics),
+        "folds": compact_fold_metrics(result.fold_metrics, model_dir=model_dir),
         "oof": {
             "macro_f1": macro_f1,
             "fold_mean": float(fold_scores.mean()),
@@ -328,12 +350,30 @@ def replay_checkpoints(*, config_path: Path = DEFAULT_CONFIG) -> None:
     print(json.dumps({"experiment_id": config["experiment_id"], "mode": "checkpoint_replay", "oof_macro_f1": replay_macro_f1, "submission": str(submission_path)}, ensure_ascii=False, indent=2))
 
 
+def compact_existing_metrics(*, config_path: Path = DEFAULT_CONFIG) -> None:
+    """Compact a pre-existing metrics record, then refresh its manifest by replay."""
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    slug = str(config["slug"])
+    metrics_path = ROOT / "reports" / slug / "metrics.json"
+    metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
+    metrics["folds"] = compact_fold_metrics(
+        list(metrics["folds"]), model_dir=ROOT / "models" / slug
+    )
+    metrics_path.write_text(json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    replay_checkpoints(config_path=config_path)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--replay-checkpoints", action="store_true")
+    parser.add_argument("--compact-record", action="store_true")
     args = parser.parse_args()
-    if args.replay_checkpoints:
+    if args.replay_checkpoints and args.compact_record:
+        parser.error("--replay-checkpoints와 --compact-record는 함께 사용할 수 없습니다.")
+    if args.compact_record:
+        compact_existing_metrics(config_path=args.config)
+    elif args.replay_checkpoints:
         replay_checkpoints(config_path=args.config)
     else:
         main(config_path=args.config)
