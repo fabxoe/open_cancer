@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Run EXP-151: EXP-094 frozen features plus one log burden feature."""
+"""Run EXP-154: EXP-094 frozen features plus total variant burden."""
 from __future__ import annotations
 
 import json
@@ -39,9 +39,9 @@ def main() -> None:
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
     context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
     dirty = [line for line in git("status", "--porcelain").splitlines() if not line.endswith("release-assets/")]
-    if context.experiment_id != "EXP-151" or dirty:
-        raise RuntimeError("EXP-151은 clean issue-151 브랜치에서만 실행해야 합니다.")
-    slug = "exp151_mutated_gene_burden"
+    if context.experiment_id != "EXP-154" or dirty:
+        raise RuntimeError("EXP-154는 clean issue-154 브랜치에서만 실행해야 합니다.")
+    slug = "exp154_total_variant_burden"
     feature_dir = ROOT / "data/processed" / f"{slug}_features"
     model_dir = ROOT / "models" / slug
     out_dir = ROOT / "reports" / slug
@@ -53,8 +53,8 @@ def main() -> None:
     )
     x_train = sparse.load_npz(feature_dir / "train_features.npz").tocsr()
     x_test = sparse.load_npz(feature_dir / "test_features.npz").tocsr()
-    train_burden = np.log1p(build_summary(TRAIN)["mutated_gene_count"].to_numpy(dtype=np.float32))
-    test_burden = np.log1p(build_summary(TEST, with_label=False)["mutated_gene_count"].to_numpy(dtype=np.float32))
+    train_burden = np.log1p(build_summary(TRAIN)["total_variant_count"].to_numpy(dtype=np.float32))
+    test_burden = np.log1p(build_summary(TEST, with_label=False)["total_variant_count"].to_numpy(dtype=np.float32))
     x_train = sparse.hstack([x_train, sparse.csr_matrix(train_burden[:, None])], format="csr")
     x_test = sparse.hstack([x_test, sparse.csr_matrix(test_burden[:, None])], format="csr")
     train = pd.read_csv(TRAIN, usecols=["ID", "SUBCLASS"], dtype=str)
@@ -73,8 +73,8 @@ def main() -> None:
     f1 = f1_score(targets, pred, average="macro")
     fold_scores = np.asarray([row["macro_f1"] for row in result.fold_metrics])
     metrics = {
-        "experiment_id": "EXP-151", "record_role": "official", "status": "COMPLETED",
-        "owner": git("config", "user.name") or "unknown", "issue_number": 151,
+        "experiment_id": "EXP-154", "record_role": "official", "status": "COMPLETED",
+        "owner": git("config", "user.name") or "unknown", "issue_number": 154,
         "parent_experiment": "EXP-094", "git_commit": git("rev-parse", "HEAD"),
         "started_at": started.isoformat(), "finished_at": datetime.now(timezone.utc).isoformat(),
         "primary_metric": "macro_f1", "split_id": str(config["split"]["path"]),
@@ -87,7 +87,7 @@ def main() -> None:
         "artifacts": {"feature_spec_manifest": str((feature_dir / "feature_spec_manifest.json").relative_to(ROOT)),
                       "models": str(model_dir.relative_to(ROOT))},
         "runtime": {"seconds": time.perf_counter() - clock},
-        "notes": "EXP-094 frozen Feature Spec + log1p(mutated_gene_count); test labels unused.",
+        "notes": "EXP-094 frozen Feature Spec + log1p(total_variant_count); test labels unused.",
     }
     metrics_path = out_dir / "metrics.json"
     metrics_path.write_text(json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
