@@ -1,0 +1,125 @@
+{
+  "experiment_id": "EXP-189",
+  "issue_number": 189,
+  "reproducibility_status": "MANIFEST_COMPLETE",
+  "source_commit": "b65a6a1a80de3aede79cfa5c5e65a0dba29a237f",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp189_c2_phi_jaccard_pruning/data_manifest.json",
+  "environment": "reproducibility/exp189_c2_phi_jaccard_pruning/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint_fold_0",
+      "path": "models/exp189_c2_phi_jaccard_pruning/fold_00.json",
+      "size_bytes": 11600693,
+      "sha256": "2917eb86144160e0b321d29e13bfcce6c8fb9cc324b16156d68ab4a546565c91",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_1",
+      "path": "models/exp189_c2_phi_jaccard_pruning/fold_01.json",
+      "size_bytes": 12328988,
+      "sha256": "ecac70d3ac2a0d5ba4df91ba055f96763fd786ef992b566688b5ceaaaae6efa8",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_2",
+      "path": "models/exp189_c2_phi_jaccard_pruning/fold_02.json",
+      "size_bytes": 15361298,
+      "sha256": "68b190519dde64b8400ed5b4eeec1151e8348c2202315763dca9ce2b522e9714",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_3",
+      "path": "models/exp189_c2_phi_jaccard_pruning/fold_03.json",
+      "size_bytes": 12895850,
+      "sha256": "7557570346c3e2507fdb7227782e7a243d80a611c1387a947065ab23b6def9af",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_4",
+      "path": "models/exp189_c2_phi_jaccard_pruning/fold_04.json",
+      "size_bytes": 12026798,
+      "sha256": "e495b69333201385d97c504d7e2f33ebb7bc0c4624fa0cfb5982824e00b17cd6",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_0",
+      "path": "models/exp189_c2_phi_jaccard_pruning/fold_00_feature_selection.json",
+      "size_bytes": 446400,
+      "sha256": "a94a568ee3e2ca6579e2e64f479599e14dc15241ccf313d0b7acca73b2a8424e",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_1",
+      "path": "models/exp189_c2_phi_jaccard_pruning/fold_01_feature_selection.json",
+      "size_bytes": 508950,
+      "sha256": "0b19e4723bfd132beb42518adc314d0e59434b036b2956a8d1763f35b730119c",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_2",
+      "path": "models/exp189_c2_phi_jaccard_pruning/fold_02_feature_selection.json",
+      "size_bytes": 475886,
+      "sha256": "6fc6d91f9c31be8eee21f42179ada84bd9bad5e33f7d7cad6367dddb7b5a12f3",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_3",
+      "path": "models/exp189_c2_phi_jaccard_pruning/fold_03_feature_selection.json",
+      "size_bytes": 585584,
+      "sha256": "d09b460b114587f199fb87fa0ff4e21e01465f81754c5ea55017944b2e9d2ad7",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_4",
+      "path": "models/exp189_c2_phi_jaccard_pruning/fold_04_feature_selection.json",
+      "size_bytes": 495202,
+      "sha256": "abfb83151cc16ccd299341d8f6a3371bee69d1e16039c72e8d375ba17d8c12b8",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_spec_manifest",
+      "path": "data/processed/exp189_c2_phi_jaccard_pruning_features/feature_spec_manifest.json",
+      "size_bytes": 1851,
+      "sha256": "58b9fc31d49cb748358a3cafe0d22a739949cb81bae21a4c8ba4a5e98537041b",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probabilities",
+      "path": "oof/exp189_c2_phi_jaccard_pruning.csv",
+      "size_bytes": 3539164,
+      "sha256": "51f691a983c1762b789b4d560ada24a72106d28f34c500a205a25992fb6ade97",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp189_c2_phi_jaccard_pruning.csv",
+      "size_bytes": 38196,
+      "sha256": "fef7888fb2c296e0e661de12b9c727b4ee6217063ea6d828fa803d304f5bfbcb",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probabilities",
+      "path": "preds/exp189_c2_phi_jaccard_pruning_test_proba.csv",
+      "size_bytes": 1413511,
+      "sha256": "86e04d5d5093e9f1bcba2fba89011b7389b5722fde4301e8357a62da7761f1c8",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp189_c2_phi_jaccard_pruning/config.resolved.yaml",
+      "size_bytes": 3561,
+      "sha256": "504327b7a2711f27e4ebcac1806522b4e47a1c287e72ce28d340ef210230b649",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp189_c2_phi_jaccard_pruning/metrics.json",
+      "size_bytes": 742321,
+      "sha256": "1c5f39f62cd24c573a550663e056ce9b62be9164d2076d12adb8a07b9a0e6a6c",
+      "storage_uri": null
+    }
+  ]
+}

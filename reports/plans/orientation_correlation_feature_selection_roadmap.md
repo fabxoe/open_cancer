@@ -21,7 +21,7 @@
 | T0 | fold-safe selector 공용 기반 | [#183](https://github.com/fabxoe/open_cancer/issues/183) | 해당 없음 | [#184](https://github.com/fabxoe/open_cancer/pull/184) | MERGED | N/A | C0 분석 기록 후 C1 Issue 발급 |
 | C0 | 극단 중복 진단 | [#187](https://github.com/fabxoe/open_cancer/issues/187) | explore | [#197](https://github.com/fabxoe/open_cancer/pull/197) | COMPLETED | N/A | 극단 후보 0개 확인, C1 완료 |
 | C1 | 보수적 Phi/Jaccard 삭제 | [#188](https://github.com/fabxoe/open_cancer/issues/188) | EXP-188 | [#198](https://github.com/fabxoe/open_cancer/pull/198) | COMPLETED | 0.4179737169 | ARCHIVE; 사전 등록 C2 실행 |
-| C2 | 중간 강도 Phi/Jaccard 삭제 | [#189](https://github.com/fabxoe/open_cancer/issues/189) | EXP-189 | - | IN_PROGRESS | N/A | 공식 5-fold 실행 |
+| C2 | 중간 강도 Phi/Jaccard 삭제 | [#189](https://github.com/fabxoe/open_cancer/issues/189) | EXP-189 | - | IN_PROGRESS | 0.4147096714 | ARCHIVE; 결과 PR 생성·CI 검증 |
 | C3 | 넓은 Phi/Jaccard 삭제 | 미발급 | 미발급 | - | PLANNED | N/A | T0 병합 후 실행 |
 | R1 | 상관 pair 범주형 요약 | 미발급 | 미발급 | - | PLANNED | N/A | C2 결과와 독립 실행 |
 | R2 | 희귀 mutation-presence filter | 미발급 | 미발급 | - | PLANNED | N/A | T0 병합 후 실행 |
