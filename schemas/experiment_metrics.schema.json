@@ -189,6 +189,15 @@
         }
       }
     },
+    "baseline_delta": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "decision": {
+      "type": "string"
+    },
     "artifacts": {
       "type": "object",
       "additionalProperties": {

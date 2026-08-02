@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import platform
 import subprocess
@@ -240,5 +241,92 @@ def main() -> None:
     print(json.dumps({"experiment_id": context.experiment_id, "oof_macro_f1": macro_f1, "delta": delta, "decision": decision, "metrics": str(metrics_path)}, ensure_ascii=False, indent=2))
 
 
+def replay_checkpoints() -> None:
+    """Finish EXP-188 artifacts from saved fold masks and checkpoints only."""
+    config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
+    if context.experiment_id != "EXP-188":
+        raise RuntimeError("EXP-188 Issue 브랜치에서만 checkpoint replay를 실행합니다.")
+    slug = str(config["slug"])
+    report_dir = ROOT / "reports" / slug
+    metrics_path = report_dir / "metrics.json"
+    metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
+    feature_dir = ROOT / "data" / "processed" / f"{slug}_features"
+    train_features = sparse.load_npz(feature_dir / "train_features.npz").tocsr()
+    test_features = sparse.load_npz(feature_dir / "test_features.npz").tocsr()
+    train = pd.read_csv(TRAIN, usecols=["ID", "SUBCLASS"], dtype=str)
+    test = pd.read_csv(TEST, usecols=["ID"], dtype=str)
+    split_path = ROOT / config["split"]["path"]
+    folds = train[["ID"]].merge(
+        pd.read_csv(split_path, dtype={"ID": str, "fold": int}),
+        on="ID", how="left", validate="one_to_one", sort=False,
+    )["fold"].to_numpy(dtype=np.int32)
+    targets = train["SUBCLASS"].map({label: index for index, label in enumerate(CLASS_LABELS)}).to_numpy(dtype=np.int32)
+    model_dir = ROOT / "models" / slug
+    oof = np.full((len(train), len(CLASS_LABELS)), np.nan, dtype=np.float64)
+    test_probabilities = np.zeros((len(test), len(CLASS_LABELS)), dtype=np.float64)
+    model_paths: list[Path] = []
+    selection_paths: list[Path] = []
+    for fold in range(5):
+        selection_path = model_dir / f"fold_{fold:02d}_feature_selection.json"
+        document = json.loads(selection_path.read_text(encoding="utf-8"))
+        indices = np.asarray(document["selected_indices"], dtype=np.int64)
+        model_path = model_dir / f"fold_{fold:02d}.json"
+        model = xgb.XGBClassifier()
+        model.load_model(model_path)
+        valid = folds == fold
+        oof[valid] = model.predict_proba(train_features[valid][:, indices])
+        test_probabilities += model.predict_proba(test_features[:, indices]) / 5
+        model_paths.append(model_path)
+        selection_paths.append(selection_path)
+    if np.isnan(oof).any():
+        raise RuntimeError("checkpoint replay OOF가 완성되지 않았습니다.")
+    replay_macro_f1 = float(f1_score(targets, oof.argmax(axis=1), average="macro"))
+    if not np.isclose(replay_macro_f1, float(metrics["oof"]["macro_f1"]), atol=1e-12, rtol=0):
+        raise RuntimeError("checkpoint replay OOF Macro F1이 원 기록과 다릅니다.")
+    oof_path = ROOT / "oof" / f"{slug}.csv"
+    test_path = ROOT / "preds" / f"{slug}_test_proba.csv"
+    submission_path = ROOT / "submissions" / f"{slug}.csv"
+    build_oof_probability_frame(ids=train["ID"].tolist(), true_labels=train["SUBCLASS"].tolist(), folds=folds, probabilities=oof).to_csv(oof_path, index=False)
+    build_test_probability_frame(ids=test["ID"].tolist(), probabilities=test_probabilities).to_csv(test_path, index=False)
+    submission = pd.read_csv(SAMPLE, dtype=str, keep_default_na=False)
+    submission["SUBCLASS"] = np.asarray(CLASS_LABELS)[test_probabilities.argmax(axis=1)]
+    submission.to_csv(submission_path, index=False, lineterminator="\n")
+    validate_submission(submission_path, TEST)
+    metrics["artifacts"].update({
+        "oof_probabilities": str(oof_path.relative_to(ROOT)),
+        "test_probabilities": str(test_path.relative_to(ROOT)),
+        "submission": str(submission_path.relative_to(ROOT)),
+    })
+    metrics["notes"] += " Checkpoint replay completed the post-training artifact write without retraining."
+    metrics_path.write_text(json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    spec_manifest = json.loads((feature_dir / "feature_spec_manifest.json").read_text(encoding="utf-8"))
+    source_commit = str(metrics["git_commit"])
+    resolved = resolved_config(
+        config=config, context=context, owner=str(metrics["owner"]), source_commit=source_commit,
+        started_at=datetime.fromisoformat(metrics["started_at"]), feature_spec=spec_manifest,
+    )
+    write_model_run_records(
+        root=ROOT, output_dir=ROOT / "reproducibility" / slug, experiment_id="EXP-188", issue_number=188,
+        source_commit=source_commit, resolved_config=resolved, metrics=metrics,
+        data_files={"train": TRAIN, "test": TEST, "sample_submission": SAMPLE, "split": split_path},
+        artifacts={
+            "feature_spec_manifest": feature_dir / "feature_spec_manifest.json",
+            "oof_probabilities": oof_path,
+            "test_probabilities": test_path,
+            "submission": submission_path,
+            **{f"checkpoint_fold_{fold}": path for fold, path in enumerate(model_paths)},
+            **{f"feature_selection_fold_{fold}": path for fold, path in enumerate(selection_paths)},
+        },
+        environment=resolved["environment"],
+    )
+    print(json.dumps({"experiment_id": "EXP-188", "mode": "checkpoint_replay", "oof_macro_f1": replay_macro_f1, "submission": str(submission_path)}, ensure_ascii=False, indent=2))
+
+
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--replay-checkpoints", action="store_true")
+    if parser.parse_args().replay_checkpoints:
+        replay_checkpoints()
+    else:
+        main()
