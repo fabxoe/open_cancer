@@ -45,6 +45,11 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.utils.class_weight import compute_sample_weight
 
 from open_cancer.constants import CLASS_LABELS, PROBABILITY_COLUMNS
+from open_cancer.checkpoint_selection import (
+    audit_xgboost_validation_iterations,
+    predict_xgboost_at_iteration,
+    save_xgboost_iteration_checkpoint,
+)
 from open_cancer.experiment import resolve_experiment_context
 from open_cancer.hashing import sha256_file
 from open_cancer.mutation_features import (
@@ -277,6 +282,17 @@ def main(
     fold_metrics: list[dict[str, Any]] = []
     fold_test_matrices: list[sparse.csr_matrix] = []
     fold_feature_records: list[dict[str, Any]] = []
+    checkpoint_selection = config["training"].get(
+        "checkpoint_selection", "training_metric"
+    )
+    if checkpoint_selection not in {"training_metric", "macro_f1_validation"}:
+        raise ValueError(f"지원하지 않는 checkpoint selection: {checkpoint_selection}")
+    training_metric_oof = (
+        np.full((len(train), len(CLASS_LABELS)), np.nan, dtype=np.float32)
+        if checkpoint_selection == "macro_f1_validation"
+        else None
+    )
+    checkpoint_audit_paths: list[Path] = []
 
     for fold in range(n_splits):
         valid_mask = train["fold"].eq(fold).to_numpy()
@@ -331,21 +347,57 @@ def main(
             eval_set=[(x_valid_fold, y_valid)],
             verbose=False,
         )
-        valid_proba = model.predict_proba(x_valid_fold).astype(np.float32)
-        fold_test_proba = model.predict_proba(x_test_fold).astype(np.float32)
+        checkpoint_audit: dict[str, Any] | None = None
+        if checkpoint_selection == "macro_f1_validation":
+            checkpoint_audit = audit_xgboost_validation_iterations(
+                model, x_valid_fold, y_valid
+            )
+            selected_iteration = int(checkpoint_audit["macro_f1_best"]["iteration"])
+            training_best_iteration = int(
+                checkpoint_audit["training_metric_best"]["iteration"]
+            )
+            valid_proba = predict_xgboost_at_iteration(
+                model, x_valid_fold, selected_iteration
+            ).astype(np.float32)
+            fold_test_proba = predict_xgboost_at_iteration(
+                model, x_test_fold, selected_iteration
+            ).astype(np.float32)
+            assert training_metric_oof is not None
+            training_metric_oof[valid_indices] = predict_xgboost_at_iteration(
+                model, x_valid_fold, training_best_iteration
+            ).astype(np.float32)
+            audit_path = model_dir / f"fold_{fold:02d}_checkpoint_audit.json"
+            write_json(audit_path, checkpoint_audit)
+            checkpoint_audit_paths.append(audit_path)
+            save_xgboost_iteration_checkpoint(
+                model, model_dir / f"fold_{fold:02d}.json", selected_iteration
+            )
+        else:
+            valid_proba = model.predict_proba(x_valid_fold).astype(np.float32)
+            fold_test_proba = model.predict_proba(x_test_fold).astype(np.float32)
+            selected_iteration = getattr(model, "best_iteration", None)
+            model.save_model(model_dir / f"fold_{fold:02d}.json")
         oof_proba[valid_indices] = valid_proba
         test_proba += fold_test_proba / n_splits
         valid_pred = valid_proba.argmax(axis=1)
-        best_iteration = getattr(model, "best_iteration", None)
         result = {
             "fold": fold,
             "macro_f1": float(f1_score(y_valid, valid_pred, average="macro")),
             "accuracy": float(accuracy_score(y_valid, valid_pred)),
             "log_loss": float(log_loss(y_valid, valid_proba, labels=np.arange(len(CLASS_LABELS)))),
-            "best_iteration": None if best_iteration is None else int(best_iteration),
+            "best_iteration": (
+                None if selected_iteration is None else int(selected_iteration)
+            ),
         }
+        if checkpoint_audit is not None:
+            result["checkpoint_selection"] = {
+                "policy": "macro_f1_validation",
+                "training_metric_best": checkpoint_audit["training_metric_best"],
+                "macro_f1_best": checkpoint_audit["macro_f1_best"],
+                "macro_f1_delta": checkpoint_audit["macro_f1_delta"],
+                "audit_path": relative_posix(checkpoint_audit_paths[-1], ROOT),
+            }
         fold_metrics.append(result)
-        model.save_model(model_dir / f"fold_{fold:02d}.json")
         print(json.dumps(result, ensure_ascii=False))
 
     if np.isnan(oof_proba).any():
@@ -437,6 +489,66 @@ def main(
             "with reference-amino-acid matching and train-only evidence checks.",
         ),
     }
+    if training_metric_oof is not None:
+        if np.isnan(training_metric_oof).any():
+            raise ValueError("training-metric 기준 OOF 확률이 완성되지 않았습니다.")
+        training_metric_pred = training_metric_oof.argmax(axis=1)
+        training_metric_report = classification_report(
+            y,
+            training_metric_pred,
+            labels=np.arange(len(CLASS_LABELS)),
+            target_names=CLASS_LABELS,
+            output_dict=True,
+            zero_division=0,
+        )
+        training_fold_scores = np.asarray(
+            [
+                float(item["checkpoint_selection"]["training_metric_best"]["macro_f1"])
+                for item in fold_metrics
+            ]
+        )
+        metrics["checkpoint_comparison"] = {
+            "selection_scope": "outer_fold_validation_only",
+            "training_metric": "mlogloss",
+            "primary_metric": "macro_f1",
+            "training_metric_best": {
+                "oof_macro_f1": float(
+                    f1_score(
+                        y,
+                        training_metric_pred,
+                        labels=np.arange(len(CLASS_LABELS)),
+                        average="macro",
+                        zero_division=0,
+                    )
+                ),
+                "fold_mean": float(training_fold_scores.mean()),
+                "fold_std": float(training_fold_scores.std()),
+                "accuracy": float(accuracy_score(y, training_metric_pred)),
+                "log_loss": float(
+                    log_loss(
+                        y,
+                        training_metric_oof,
+                        labels=np.arange(len(CLASS_LABELS)),
+                    )
+                ),
+                "per_class_f1": {
+                    label: float(training_metric_report[label]["f1-score"])
+                    for label in CLASS_LABELS
+                },
+            },
+            "macro_f1_best": metrics["oof"],
+            "oof_macro_f1_delta": float(metrics["oof"]["macro_f1"])
+            - float(
+                f1_score(
+                    y,
+                    training_metric_pred,
+                    labels=np.arange(len(CLASS_LABELS)),
+                    average="macro",
+                    zero_division=0,
+                )
+            ),
+            "test_or_public_used_for_selection": False,
+        }
     write_json(metrics_path, metrics)
     validate_json_document(metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json")
     local_dashboard_path = write_local_dashboard(
@@ -470,6 +582,10 @@ def main(
         fold_test_features=(
             fold_test_matrices if fold_feature_builder is not None else None
         ),
+        extra_artifact_paths=[
+            ("checkpoint_iteration_audit", path)
+            for path in checkpoint_audit_paths
+        ],
     )
     print(
         json.dumps(

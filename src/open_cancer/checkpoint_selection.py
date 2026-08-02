@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterable, Sequence
+from pathlib import Path
 from typing import Any, Protocol
 
 import numpy as np
@@ -51,6 +52,23 @@ def predict_xgboost_at_iteration(
     row_sums = probabilities.sum(axis=1, keepdims=True)
     _require((row_sums > 0).all(), "XGBoost 확률 행의 합이 0입니다.")
     return probabilities / row_sums
+
+
+def save_xgboost_iteration_checkpoint(
+    model: XGBoostIterationModel,
+    path: Path,
+    iteration: int,
+) -> None:
+    """Save a replayable booster truncated at one selected iteration."""
+    trained_rounds = int(model.get_booster().num_boosted_rounds())
+    _require(
+        0 <= iteration < trained_rounds,
+        "저장할 iteration이 학습된 boosting round 범위를 벗어났습니다.",
+    )
+    booster = model.get_booster()[: iteration + 1]
+    booster.set_attr(best_iteration=str(iteration))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    booster.save_model(path)
 
 
 def select_macro_f1_iteration(records: Sequence[dict[str, float | int]]) -> dict[str, float | int]:

@@ -250,6 +250,7 @@ def verify_saved_inference(
     submission_path: Path,
     fold_feature_indices: list[list[int]] | None = None,
     fold_test_features: list[sparse.csr_matrix] | None = None,
+    extra_artifact_paths: list[tuple[str, Path]] | None = None,
 ) -> None:
     """Reload checkpoints and automatically create inference reproducibility evidence."""
     fold_count = config["split"]["n_splits"]
@@ -440,6 +441,14 @@ def verify_saved_inference(
                 "storage_uri": None,
             },
         ]
+    )
+    artifacts.extend(
+        {
+            "kind": kind,
+            **file_record(path),
+            "storage_uri": None,
+        }
+        for kind, path in (extra_artifact_paths or [])
     )
     manifest = {
         "experiment_id": context.experiment_id,
