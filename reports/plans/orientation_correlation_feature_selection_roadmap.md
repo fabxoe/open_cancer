@@ -24,9 +24,9 @@
 | C2 | 중간 강도 Phi/Jaccard 삭제 | [#189](https://github.com/fabxoe/open_cancer/issues/189) | EXP-189 | [#199](https://github.com/fabxoe/open_cancer/pull/199) | COMPLETED | 0.4147096714 | ARCHIVE; 사전 등록 C3 실행 |
 | C3 | 넓은 Phi/Jaccard 삭제 | [#190](https://github.com/fabxoe/open_cancer/issues/190) | EXP-190 | [#200](https://github.com/fabxoe/open_cancer/pull/200) | COMPLETED | 0.4157643312 | ARCHIVE; Phi/Jaccard threshold 탐색 종료 |
 | R1 | 상관 pair 범주형 요약 | [#191](https://github.com/fabxoe/open_cancer/issues/191) | EXP-191 | [#201](https://github.com/fabxoe/open_cancer/pull/201) | COMPLETED | 0.4144744818 | ARCHIVE; R2 실행 |
-| R2 | 희귀 mutation-presence filter | [#192](https://github.com/fabxoe/open_cancer/issues/192) | EXP-192 | - | IN_PROGRESS | 0.4176058118 | ARCHIVE; 기록·PR 후 S1 시작 |
-| S1 | Elastic Net stability selection | 미발급 | 미발급 | - | PLANNED | N/A | R 단계 후 |
-| S2 | mRMR | 미발급 | 미발급 | - | PLANNED | N/A | S1 후 |
+| R2 | 희귀 mutation-presence filter | [#192](https://github.com/fabxoe/open_cancer/issues/192) | EXP-192 | [#202](https://github.com/fabxoe/open_cancer/pull/202) | COMPLETED | 0.4176058118 | ARCHIVE; R1~R2 threshold 재탐색 종료 |
+| S1 | Elastic Net stability selection | [#203](https://github.com/fabxoe/open_cancer/issues/203) | EXP-203 | PR 생성 예정 | COMPLETED | 0.2996289845 | ARCHIVE; dense selector가 512-gene cap을 유발, S1 규칙 재튜닝 없이 S2 진행 |
+| S2 | mRMR | 미발급 | 미발급 | - | PLANNED | N/A | S1 ARCHIVE 완료, 다음 Issue 발급 |
 | S3 | Boruta | 미발급 | 미발급 | - | PLANNED | N/A | S2 후 |
 | S4 | TruncatedSVD 비교 모델 | 미발급 | 미발급 | - | PLANNED | N/A | S3 후 |
 

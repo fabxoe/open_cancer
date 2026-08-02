@@ -9,12 +9,17 @@ from __future__ import annotations
 
 import json
 import math
+import warnings
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Protocol, Sequence
 
 import numpy as np
 from scipy import sparse
+from sklearn.exceptions import ConvergenceWarning
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import f1_score
+from sklearn.model_selection import StratifiedKFold, StratifiedShuffleSplit
 
 from open_cancer.hashing import sha256_lines
 
@@ -284,5 +289,231 @@ class RareMutationPresencePruner:
                 for local_index, count in enumerate(prevalence)
                 if int(count) < self.min_positive_count
             },
+        }
+        return FoldFeatureSelection(selected_indices, metadata)
+
+
+def _mutation_presence_indices_and_genes(
+    feature_names: Sequence[str],
+) -> tuple[list[int], tuple[str, ...]]:
+    indices = [
+        index for index, name in enumerate(feature_names) if str(name).endswith("__mutated")
+    ]
+    _require(indices, "gene__mutated feature를 찾지 못했습니다.")
+    genes = tuple(str(feature_names[index]).removesuffix("__mutated") for index in indices)
+    _require(len(genes) == len(set(genes)), "gene__mutated 유전자명이 중복되었습니다.")
+    return indices, genes
+
+
+def _fit_elastic_net_model(
+    features: sparse.csr_matrix,
+    targets: np.ndarray,
+    *,
+    c_value: float,
+    l1_ratio: float,
+    max_iter: int,
+    random_state: int,
+) -> LogisticRegression:
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", ConvergenceWarning)
+        model = LogisticRegression(
+            C=float(c_value),
+            class_weight="balanced",
+            l1_ratio=float(l1_ratio),
+            max_iter=int(max_iter),
+            random_state=int(random_state),
+            solver="saga",
+        )
+        model.fit(features, targets)
+    return model
+
+
+def _elastic_net_inner_score(
+    features: sparse.csr_matrix,
+    targets: np.ndarray,
+    fit_index: np.ndarray,
+    valid_index: np.ndarray,
+    *,
+    c_value: float,
+    l1_ratio: float,
+    max_iter: int,
+    random_state: int,
+) -> tuple[float, float]:
+    model = _fit_elastic_net_model(
+        features[fit_index], targets[fit_index], c_value=c_value, l1_ratio=l1_ratio,
+        max_iter=max_iter, random_state=random_state,
+    )
+    prediction = model.predict(features[valid_index])
+    return c_value, float(f1_score(targets[valid_index], prediction, average="macro", zero_division=0))
+
+
+def _elastic_net_subsample_support(
+    features: sparse.csr_matrix,
+    targets: np.ndarray,
+    fit_index: np.ndarray,
+    *,
+    c_value: float,
+    l1_ratio: float,
+    max_iter: int,
+    random_state: int,
+) -> np.ndarray:
+    model = _fit_elastic_net_model(
+        features[fit_index], targets[fit_index], c_value=c_value, l1_ratio=l1_ratio,
+        max_iter=max_iter, random_state=random_state,
+    )
+    return np.flatnonzero(np.any(np.abs(model.coef_) > 1e-12, axis=0))
+
+
+@dataclass(frozen=True)
+class ElasticNetStabilitySelector:
+    """Select stable gene blocks with outer-train-only Elastic Net fits.
+
+    The classifier sees only mutation-presence columns while choosing genes.
+    The returned mask preserves every v1 channel for selected genes plus all
+    non-gene features (sample aggregates and fixed hotspot features).
+    """
+
+    c_values: tuple[float, ...]
+    l1_ratio: float
+    inner_splits: int
+    subsample_fraction: float
+    repetitions: int
+    min_frequency: int
+    min_genes: int
+    max_genes: int
+    seed: int
+    max_iter: int = 500
+    n_jobs: int = 1
+
+    def select(
+        self,
+        features: sparse.csr_matrix,
+        targets: np.ndarray,
+        feature_names: Sequence[str],
+        fold: int,
+    ) -> FoldFeatureSelection:
+        _require(sparse.isspmatrix_csr(features), "feature selector 입력은 CSR sparse matrix여야 합니다.")
+        _require(features.shape[1] == len(feature_names), "feature matrix와 feature 이름 수가 다릅니다.")
+        _require(0 < self.l1_ratio <= 1, "l1_ratio는 (0, 1] 범위여야 합니다.")
+        _require(self.inner_splits >= 2, "inner_splits는 2 이상이어야 합니다.")
+        _require(0 < self.subsample_fraction < 1, "subsample_fraction은 (0, 1) 범위여야 합니다.")
+        _require(self.repetitions >= 1, "repetitions는 1 이상이어야 합니다.")
+        _require(self.min_frequency >= 1, "min_frequency는 1 이상이어야 합니다.")
+        _require(1 <= self.min_genes <= self.max_genes, "min_genes/max_genes 범위가 잘못되었습니다.")
+        _require(self.n_jobs >= 1, "n_jobs는 1 이상이어야 합니다.")
+        c_values = tuple(sorted({float(value) for value in self.c_values}))
+        _require(c_values and c_values[0] > 0, "C 후보는 양수여야 합니다.")
+
+        mutation_indices, genes = _mutation_presence_indices_and_genes(feature_names)
+        presence = features[:, mutation_indices].astype(np.float64, copy=False).tocsr()
+        class_counts = np.bincount(np.asarray(targets, dtype=np.int64))
+        _require(
+            class_counts.size >= 2 and int(class_counts.min()) >= self.inner_splits,
+            "inner StratifiedKFold에 필요한 클래스별 학습 행이 부족합니다.",
+        )
+        inner_cv = StratifiedKFold(
+            n_splits=self.inner_splits,
+            shuffle=True,
+            random_state=self.seed + int(fold),
+        )
+        inner_tasks: list[tuple[float, np.ndarray, np.ndarray, int]] = []
+        for c_index, c_value in enumerate(c_values):
+            for inner_fold, (fit_index, valid_index) in enumerate(inner_cv.split(presence, targets)):
+                inner_tasks.append(
+                    (
+                        c_value,
+                        fit_index,
+                        valid_index,
+                        self.seed + int(fold) * 10_000 + c_index * 100 + inner_fold,
+                    )
+                )
+        from joblib import Parallel, delayed
+
+        inner_results = Parallel(n_jobs=self.n_jobs, prefer="processes")(
+            delayed(_elastic_net_inner_score)(
+                presence, targets, fit_index, valid_index,
+                c_value=c_value, l1_ratio=self.l1_ratio, max_iter=self.max_iter,
+                random_state=random_state,
+            )
+            for c_value, fit_index, valid_index, random_state in inner_tasks
+        )
+        inner_scores: dict[float, list[float]] = {value: [] for value in c_values}
+        for c_value, score in inner_results:
+            inner_scores[c_value].append(score)
+        mean_scores = {value: float(np.mean(scores)) for value, scores in inner_scores.items()}
+        best_value = max(c_values, key=lambda value: (mean_scores[value], -value))
+        best_scores = np.asarray(inner_scores[best_value], dtype=np.float64)
+        one_se = float(best_scores.std(ddof=1) / math.sqrt(self.inner_splits))
+        eligible = [value for value in c_values if mean_scores[value] >= mean_scores[best_value] - one_se]
+        selected_c = min(eligible)
+
+        subsample_indices: list[tuple[np.ndarray, int]] = []
+        for repetition in range(self.repetitions):
+            split = StratifiedShuffleSplit(
+                n_splits=1,
+                train_size=self.subsample_fraction,
+                random_state=self.seed + int(fold) * 100 + repetition,
+            )
+            fit_index, _ = next(split.split(presence, targets))
+            subsample_indices.append(
+                (fit_index, self.seed + int(fold) * 100 + repetition)
+            )
+        supports = Parallel(n_jobs=self.n_jobs, prefer="processes")(
+            delayed(_elastic_net_subsample_support)(
+                presence, targets, fit_index,
+                c_value=selected_c, l1_ratio=self.l1_ratio, max_iter=self.max_iter,
+                random_state=random_state,
+            )
+            for fit_index, random_state in subsample_indices
+        )
+        frequencies = np.zeros(len(genes), dtype=np.int64)
+        for selected_local in supports:
+            frequencies[selected_local] += 1
+
+        ranked_local = sorted(range(len(genes)), key=lambda index: (-int(frequencies[index]), genes[index]))
+        stable_local = [index for index in ranked_local if int(frequencies[index]) >= self.min_frequency]
+        if len(stable_local) < self.min_genes:
+            stable_local = ranked_local[: self.min_genes]
+        else:
+            stable_local = stable_local[: self.max_genes]
+        selected_genes = tuple(genes[index] for index in stable_local)
+        selected_gene_set = set(selected_genes)
+        raw_gene_set = set(genes)
+        selected_indices = tuple(
+            index
+            for index, name in enumerate(feature_names)
+            if str(name).split("__", 1)[0] not in raw_gene_set
+            or str(name).split("__", 1)[0] in selected_gene_set
+        )
+        _require(selected_indices, "Elastic Net selector가 빈 feature mask를 만들었습니다.")
+        metadata = {
+            "selector": "elastic_net_stability_selection",
+            "fold": int(fold),
+            "fit_rows": int(features.shape[0]),
+            "parameters": {
+                "c_values": list(c_values),
+                "l1_ratio": self.l1_ratio,
+                "inner_splits": self.inner_splits,
+                "subsample_fraction": self.subsample_fraction,
+                "repetitions": self.repetitions,
+                "min_frequency": self.min_frequency,
+                "min_genes": self.min_genes,
+                "max_genes": self.max_genes,
+                "seed": self.seed,
+                "max_iter": self.max_iter,
+                "n_jobs": self.n_jobs,
+            },
+            "mutation_presence_feature_count": len(genes),
+            "inner_cv_macro_f1": {str(value): mean_scores[value] for value in c_values},
+            "best_mean_c": best_value,
+            "best_mean_one_se": one_se,
+            "selected_c": selected_c,
+            "selected_gene_count": len(selected_genes),
+            "selected_gene_names": list(selected_genes),
+            "selection_frequency": {genes[index]: int(frequencies[index]) for index in ranked_local},
+            "selected_feature_count": len(selected_indices),
+            "retained_non_gene_feature_count": sum(
+                1 for name in feature_names if str(name).split("__", 1)[0] not in raw_gene_set
+            ),
         }
         return FoldFeatureSelection(selected_indices, metadata)

@@ -23,7 +23,11 @@ from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, log_loss
 
 from open_cancer.constants import CLASS_LABELS
 from open_cancer.experiment import resolve_experiment_context
-from open_cancer.fold_feature_selection import PhiJaccardGreedyPruner, RareMutationPresencePruner
+from open_cancer.fold_feature_selection import (
+    ElasticNetStabilitySelector,
+    PhiJaccardGreedyPruner,
+    RareMutationPresencePruner,
+)
 from open_cancer.frozen_feature_specs import materialize_frozen_feature_spec
 from open_cancer.hashing import sha256_file
 from open_cancer.model_artifacts import (
@@ -124,12 +128,18 @@ def compact_fold_metrics(
             dropped_feature_names = selection.pop("dropped_feature_names", [])
             dropped_gene_names = selection.pop("dropped_gene_names", [])
             dropped_prevalence = selection.pop("dropped_prevalence", None)
+            selected_gene_names = selection.pop("selected_gene_names", [])
+            selection_frequency = selection.pop("selection_frequency", None)
             if dropped_feature_names:
                 selection["dropped_feature_count"] = len(dropped_feature_names)
             if dropped_gene_names:
                 selection["dropped_gene_count"] = len(dropped_gene_names)
             if dropped_prevalence is not None:
                 selection["dropped_prevalence_artifact"] = "fold feature selection artifact"
+            if selected_gene_names:
+                selection["selected_gene_count"] = len(selected_gene_names)
+            if selection_frequency is not None:
+                selection["selection_frequency_artifact"] = "fold feature selection artifact"
             fold = int(record["fold"])
             selection_artifact = str(selection.get("candidate_pairs_artifact") or (
                 model_dir / f"fold_{fold:02d}_feature_selection.json"
@@ -184,6 +194,20 @@ def main(*, config_path: Path = DEFAULT_CONFIG) -> None:
     elif selection_config["method"] == "rare_mutation_presence_pruner":
         selector = RareMutationPresencePruner(
             min_positive_count=int(selection_config["min_positive_count"]),
+        )
+    elif selection_config["method"] == "elastic_net_stability_selection":
+        selector = ElasticNetStabilitySelector(
+            c_values=tuple(float(value) for value in selection_config["c_values"]),
+            l1_ratio=float(selection_config["l1_ratio"]),
+            inner_splits=int(selection_config["inner_splits"]),
+            subsample_fraction=float(selection_config["subsample_fraction"]),
+            repetitions=int(selection_config["repetitions"]),
+            min_frequency=int(selection_config["min_frequency"]),
+            min_genes=int(selection_config["min_genes"]),
+            max_genes=int(selection_config["max_genes"]),
+            seed=int(config["seed"]),
+            max_iter=int(selection_config.get("max_iter", 500)),
+            n_jobs=int(selection_config.get("n_jobs", 1)),
         )
     else:
         raise RuntimeError(f"지원하지 않는 feature selection method: {selection_config['method']}")
