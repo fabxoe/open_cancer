@@ -234,7 +234,11 @@ def main(*, config_path: Path = DEFAULT_CONFIG) -> None:
             "test_probabilities": test_path,
             "submission": submission_path,
             **{f"checkpoint_fold_{fold}": path for fold, path in enumerate(result.model_paths)},
-            **{f"feature_selection_fold_{fold}": path for fold, path in enumerate(result.selection_paths) if path is not None},
+            **{
+                f"feature_selection_fold_{fold}": path
+                for fold, path in enumerate(result.feature_selection_paths)
+                if path is not None
+            },
         },
         environment=resolved["environment"],
     )
