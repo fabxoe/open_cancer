@@ -23,7 +23,7 @@ from open_cancer.validation import validate_json_document, validate_submission
 from run_eda_violin import build_summary
 
 ROOT = Path(__file__).resolve().parents[1]
-CONFIG = ROOT / "configs" / "exp151_burden_incremental.yaml"
+CONFIG = ROOT / "configs" / "exp154_total_variant_burden.yaml"
 TRAIN = ROOT / "data/raw/train.csv"
 TEST = ROOT / "data/raw/test.csv"
 SAMPLE = ROOT / "data/raw/sample_submission.csv"
