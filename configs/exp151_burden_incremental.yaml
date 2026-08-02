@@ -1,0 +1,46 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-151
+issue_number: 151
+parent_experiment: EXP-094
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+baseline:
+  feature_spec: v1
+  metrics_path: reports/exp094_feature_spec_v1/metrics.json
+variants:
+  - name: baseline
+    added_features: []
+  - name: log_mutated_gene_count
+    added_features: [sample__mutated_gene_count_log1p]
+  - name: log_total_variant_count
+    added_features: [sample__total_variant_count_log1p]
+  - name: log_missense_count
+    added_features: [sample__missense_count_log1p]
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+acceptance:
+  min_macro_f1_delta: 0.001
+  max_fold_std_delta: 0.002
+  require_no_log_loss_regression: true
+  require_no_lower_quartile_class_f1_regression: true
+notes: >-
+  EXP-094 frozen Feature Spec에 burden 하나만 추가한다. complex 계열과
+  test 분포를 이용한 조정은 이 실험에서 금지한다. 각 변환은 fold-train
+  통계만 사용하며 test label은 사용하지 않는다.
