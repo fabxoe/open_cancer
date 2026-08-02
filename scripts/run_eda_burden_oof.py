@@ -27,6 +27,41 @@ SPLIT = ROOT / "data" / "splits" / "stratified_5fold_seed42.csv"
 OUT = ROOT / "reports" / "analysis" / "eda_violin"
 
 
+def apply_transform(
+    train_values: np.ndarray, valid_values: np.ndarray, transform: str
+) -> tuple[np.ndarray, np.ndarray]:
+    """Fit transform parameters on the fold-train portion only.
+
+    In particular, clipping, robust scaling and percentile ranks must not inspect
+    the validation fold. This keeps the exploratory OOF screen leakage-safe.
+    """
+    train_values = train_values.astype(np.float64, copy=False)
+    valid_values = valid_values.astype(np.float64, copy=False)
+    if transform == "raw":
+        return train_values, valid_values
+    if transform == "log1p":
+        return np.log1p(train_values), np.log1p(valid_values)
+    if transform in {"clip99", "clip995"}:
+        quantile = 0.99 if transform == "clip99" else 0.995
+        cap = float(np.quantile(train_values, quantile))
+        return np.minimum(train_values, cap), np.minimum(valid_values, cap)
+    if transform == "log1p_robust":
+        train_log = np.log1p(train_values)
+        valid_log = np.log1p(valid_values)
+        center = float(np.median(train_log))
+        scale = float(np.percentile(train_log, 75) - np.percentile(train_log, 25))
+        if scale <= 0:
+            scale = 1.0
+        return (train_log - center) / scale, (valid_log - center) / scale
+    if transform == "percentile_rank":
+        sorted_train = np.sort(train_values)
+        denominator = max(len(sorted_train) - 1, 1)
+        train_rank = np.searchsorted(sorted_train, train_values, side="right") / denominator
+        valid_rank = np.searchsorted(sorted_train, valid_values, side="right") / denominator
+        return train_rank, valid_rank
+    raise ValueError(f"unknown transform: {transform}")
+
+
 def load_burden(path: Path, with_label: bool) -> pd.DataFrame:
     if with_label:
         from run_eda_violin import build_summary
@@ -38,6 +73,7 @@ def load_burden(path: Path, with_label: bool) -> pd.DataFrame:
                 "missense_count",
                 "truncating_count",
                 "complex_count",
+                "has_complex_any",
                 "SUBCLASS",
             ]
         ]
@@ -71,14 +107,17 @@ def main() -> None:
         "missense_count",
         "truncating_count",
         "complex_count",
+        "has_complex_any",
     ]
-    transforms = {"raw": lambda x: x}
+    transforms = {"raw": "raw"}
     if args.with_outlier_transforms:
         transforms.update(
             {
-                "log1p": lambda x: np.log1p(x),
-                "clip99": lambda x: np.minimum(x, np.quantile(x, 0.99)),
-                "clip995": lambda x: np.minimum(x, np.quantile(x, 0.995)),
+                "log1p": "log1p",
+                "clip99": "clip99",
+                "clip995": "clip995",
+                "log1p_robust": "log1p_robust",
+                "percentile_rank": "percentile_rank",
             }
         )
     rows: list[dict[str, float | int | str]] = []
@@ -99,17 +138,22 @@ def main() -> None:
         "random_state": 42,
     }
     for feature in feature_names:
-        for transform_name, transform in transforms.items():
-            x = transform(data[feature].to_numpy(dtype=np.float32))
+        for transform_name in transforms:
             oof = np.zeros((len(data), len(CLASS_LABELS)), dtype=np.float64)
             fold_scores: list[float] = []
             for fold in range(5):
                 train_idx = np.flatnonzero(folds != fold)
                 valid_idx = np.flatnonzero(folds == fold)
+                train_x, valid_x = apply_transform(
+                    data[feature].to_numpy(dtype=np.float64)[train_idx],
+                    data[feature].to_numpy(dtype=np.float64)[valid_idx],
+                    transform_name,
+                )
                 model = xgb.XGBClassifier(**base_params)
                 weights = compute_sample_weight("balanced", y[train_idx])
-                model.fit(x[train_idx, None], y[train_idx], sample_weight=weights)
-                proba = model.predict_proba(x[valid_idx, None])
+                model.fit(train_x[:, None], y[train_idx], sample_weight=weights)
+                proba = np.asarray(model.predict_proba(valid_x[:, None]), dtype=np.float64)
+                proba = np.maximum(proba, 0.0)
                 proba = proba / proba.sum(axis=1, keepdims=True)
                 oof[valid_idx] = proba
                 fold_scores.append(

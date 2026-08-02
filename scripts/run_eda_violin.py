@@ -54,6 +54,7 @@ def build_summary(path: Path = TRAIN, with_label: bool = True) -> pd.DataFrame:
         out[f"{name}_count"] = token_counts[:, index]
     out["total_variant_count"] = token_counts.sum(axis=1)
     out["truncating_count"] = out["nonsense_count"] + out["frameshift_count"]
+    out["has_complex_any"] = (out["complex_count"] > 0).astype(np.int8)
     return out
 
 
@@ -97,6 +98,7 @@ def main() -> None:
         "frameshift_count",
         "complex_count",
         "truncating_count",
+        "has_complex_any",
     ]
     plot_data = summary[["SUBCLASS", *metrics]].melt(
         id_vars="SUBCLASS", var_name="metric", value_name="value"
@@ -170,13 +172,24 @@ def main() -> None:
 
 - 입력: `data/raw/train.csv`
 - 그룹: `SUBCLASS` 26개
-- 수치: mutated gene 수, 전체 변이 token 수, 변이 유형별 token 수, truncating 수
+- 수치: mutated gene 수, 전체 변이 token 수, 변이 유형별 token 수, truncating 수, complex 존재 flag
 - 변이 분류: 프로젝트의 보수적 문자열 규칙을 단순화해 사용
 - 결과: `train_mutation_violin.png`, `train_mutation_violin_log1p.png`, `summary_by_subclass.csv`
 - train/test 비교: `train_test_burden_ood.csv` (test에는 암종 라벨을 사용하지 않음)
 - 단일 피처 OOF: `single_feature_oof.csv` (별도 `scripts/run_eda_burden_oof.py` 실행)
 
 분포 차이는 후속 실험의 가설을 세우는 데만 사용하며, OOF 평가 없이 피처 채택 근거로 사용하지 않습니다.
+특히 전역적인 test burden 상승은 생물학적 차이보다 기술적 batch effect를 먼저 의심할
+근거로 기록합니다. `complex_count`는 train/test 표기 차이가 커서 성능 피처보다
+`has_complex_any`와 함께 OOD/shortcut 진단 대상으로 제한합니다.
+
+## 권고 수용 범위
+
+1. 플랫폼·caller·필터·표기 차이(batch effect)를 1순위 가설로 둡니다.
+2. burden 변환은 fold-train 통계로만 fit합니다(log1p, clip, robust, percentile).
+3. 단일 피처 및 기준 모델 대비 incremental ablation을 OOF로 확인합니다.
+4. Public 점수나 test 라벨로 피처를 선택하지 않으며, 공식 Feature Spec은 별도
+   Experiment Issue에서만 변경합니다.
 """,
         encoding="utf-8",
     )
