@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11,<3.12"
 dependencies = [
     "ipykernel>=6.29",
+    "imbalanced-learn>=0.14",
     "jsonschema>=4.23",
     "jupyterlab>=4.2",
     "koreanize-matplotlib>=0.1.1",
