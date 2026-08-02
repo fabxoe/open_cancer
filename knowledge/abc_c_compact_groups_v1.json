@@ -8,7 +8,8 @@
   "source_attachment_sha256": "df722435b7c069b9225c9e4bbef7ab812385bd5e8ab7c415837cde5f2838c640",
   "downloaded_at": "2026-08-01",
   "selection_policy": "Compact representative subset fixed before OOF; not the full Table S3 template and not selected from competition labels or frequencies",
-  "competition_use_policy": "Disabled until organizers confirm that fixed literature gene membership is allowed",
+  "competition_use_policy": "Fixed literature membership is permitted only within the Issue #96 organizer approval boundary: values are computed solely from competition CSV mutations, and no external patient-level values or continuous weights are used.",
+  "competition_use_policy_reference": "https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180",
   "pathways": {
     "cell_cycle": ["CCND1", "CCND2", "CCND3", "CCNE1", "CDK2", "CDK4", "CDK6", "CDKN2A", "CDKN2B", "RB1"],
     "hippo": ["LATS1", "LATS2", "NF2", "SAV1", "WWTR1", "YAP1"],

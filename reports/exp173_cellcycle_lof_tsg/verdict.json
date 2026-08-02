@@ -1,0 +1,61 @@
+{
+  "macro_f1_delta": -0.0033757256664481705,
+  "macro_f1_gate_passed": false,
+  "fold_std_delta": 0.0017667858319818566,
+  "fold_std_gate_passed": true,
+  "log_loss_delta": -0.000624479643561715,
+  "log_loss_gate_passed": true,
+  "worst_per_class_f1_delta": -0.023565162548018992,
+  "per_class_f1_gate_passed": false,
+  "adopted": false,
+  "acceptance_criteria": {
+    "min_macro_f1_delta": 0.001,
+    "max_fold_std_delta": 0.002,
+    "require_no_log_loss_regression": true,
+    "require_no_per_class_f1_regression": true
+  },
+  "baseline_experiment_id": "EXP-094",
+  "baseline_oof_macro_f1": 0.4168865738785269,
+  "positive_rate_train": 0.04063860699534416,
+  "positive_rate_test": 0.022780831903219223,
+  "watch_classes": [
+    "DLBC",
+    "LAML"
+  ],
+  "watch_class_train_positive_rate": {
+    "DLBC": 0.0,
+    "LAML": 0.0
+  },
+  "watch_class_f1_delta": {
+    "DLBC": -0.013722126929674117,
+    "LAML": 0.023757309941520366
+  },
+  "per_class_f1_delta": {
+    "ACC": -0.008753226349455745,
+    "BLCA": -0.005617977528089901,
+    "BRCA": -0.0060593791424246035,
+    "CESC": 0.015948592885069446,
+    "COAD": 0.0067898175521340365,
+    "DLBC": -0.013722126929674117,
+    "GBMLGG": -0.0018297872340425347,
+    "HNSC": -0.020412221598352986,
+    "KIPAN": 0.011485885302920024,
+    "KIRC": -0.0010550749103186152,
+    "LAML": 0.023757309941520366,
+    "LGG": -0.004466447296910092,
+    "LIHC": -0.015352288875663478,
+    "LUAD": -0.023565162548018992,
+    "LUSC": 0.0038916386443495488,
+    "OV": -0.004120660773021256,
+    "PAAD": -0.007190265486725661,
+    "PCPG": -0.01089502691793115,
+    "PRAD": 0.0040952525405733575,
+    "SARC": -0.011066935352105012,
+    "SKCM": 0.012615994161192856,
+    "STES": -0.012689067687244815,
+    "TGCT": -0.008168056540559021,
+    "THCA": 0.0,
+    "THYM": -0.006094104308390025,
+    "UCEC": -0.005295548876484979
+  }
+}

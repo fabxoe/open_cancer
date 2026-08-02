@@ -2,19 +2,18 @@
 
 Two layers of the same gene list coexist deliberately:
 
-- `CELL_CYCLE_GENES` is a hard-coded literal (a snapshot of
-  `data/external/gene_pathway_mapping.csv`, Issue #167/#168), matching the
-  existing `EXTENDED_HOTSPOTS` convention in `hotspot_features.py`. The
-  `compute_*_flag` functions use it directly and are what EXP-170/#173's
-  recorded OOF/metrics were built from.
+- `CELL_CYCLE_GENES` / `CELL_CYCLE_TSG_GENES` are hard-coded literals (a
+  snapshot of `data/external/gene_pathway_mapping.csv`, Issue #167/#168),
+  matching the existing `EXTENDED_HOTSPOTS` convention in
+  `hotspot_features.py`. The `compute_*_flag` functions use them directly
+  and are what EXP-170/EXP-173's recorded OOF/metrics were built from.
 - `CellCyclePathwayFamily` (the Feature Factory-registered family used by
   official runners) instead loads gene/role membership at fit-time from the
   small committed `knowledge/tcga_pancanatlas_table_s3_cell_cycle_v1.json`
   file, which carries full `KnowledgeProvenance` (source citation, license,
-  original workbook SHA-256, DOI). `test_cell_cycle_gene_list_matches_
-  committed_knowledge_file` and `test_cell_cycle_family_matches_direct_
-  compute_function` in `tests/test_pathway_aggregation_features.py` lock the
-  two layers together so they cannot silently drift apart.
+  original workbook SHA-256, DOI). Tests in
+  `tests/test_pathway_aggregation_features.py` lock the two layers together
+  so they cannot silently drift apart.
 
 Both ultimately trace back to Sanchez-Vega et al. 2018 Cell Table S3
 (Supplementary Table S3, doi:10.1016/j.cell.2018.03.035). The source
@@ -61,11 +60,26 @@ CELL_CYCLE_GENES: tuple[str, ...] = (
     "E2F3",
 )
 
+# The TSG-labeled subset of CELL_CYCLE_GENES (og_tsg == "TSG" in the
+# catalog). Used by Issue #173 (P_lof_in_tsg_cellcycle).
+CELL_CYCLE_TSG_GENES: tuple[str, ...] = (
+    "CDKN1A",
+    "CDKN1B",
+    "CDKN2A",
+    "CDKN2B",
+    "CDKN2C",
+    "RB1",
+)
 
-def compute_any_nonsilent_flag(
-    frame: pd.DataFrame, genes: tuple[str, ...]
+_TRUNCATING_TYPES = frozenset({"nonsense", "frameshift"})
+
+
+def _compute_token_flag(
+    frame: pd.DataFrame,
+    genes: tuple[str, ...],
+    matches: "callable[[str], bool]",
 ) -> np.ndarray:
-    """1.0 if any of `genes` carries a nonsilent (non-WT, non-synonymous) token.
+    """1.0 if any token in any of `genes` satisfies `matches(mutation_type)`.
 
     `frame` must contain raw gene-cell strings (WT / blank / space-separated
     mutation tokens), keyed by gene symbol columns.
@@ -83,12 +97,30 @@ def compute_any_nonsilent_flag(
             for token in cell.split():
                 if token == "WT":
                     continue
-                if classify_mutation_token(token) != "synonymous":
+                if matches(classify_mutation_token(token)):
                     flags[row] = 1.0
                     break
             if flags[row]:
                 break
     return flags
+
+
+def compute_any_nonsilent_flag(
+    frame: pd.DataFrame, genes: tuple[str, ...]
+) -> np.ndarray:
+    """1.0 if any of `genes` carries a nonsilent (non-WT, non-synonymous) token."""
+
+    return _compute_token_flag(frame, genes, matches=lambda kind: kind != "synonymous")
+
+
+def compute_truncating_flag(frame: pd.DataFrame, genes: tuple[str, ...]) -> np.ndarray:
+    """1.0 if any of `genes` carries a truncating (nonsense or frameshift) token.
+
+    Missense is intentionally excluded (LoF-specific signal for TSGs), and
+    synonymous is excluded by definition of `_TRUNCATING_TYPES`.
+    """
+
+    return _compute_token_flag(frame, genes, matches=lambda kind: kind in _TRUNCATING_TYPES)
 
 
 def load_cell_cycle_knowledge(path: Path) -> dict[str, str]:
@@ -104,24 +136,30 @@ def load_cell_cycle_knowledge(path: Path) -> dict[str, str]:
     return genes
 
 
+_FAMILY_KINDS = ("any_nonsilent", "truncating_in_tsg")
+
+
 @dataclass(frozen=True)
 class FittedCellCyclePathwayFamily:
     """A fitted, single-column Cell Cycle pathway aggregation feature."""
 
     descriptor: FeatureFamilyDescriptor
     genes: tuple[str, ...]
-    kind: str  # "any_nonsilent"; Issue #173 adds "truncating_in_tsg"
+    kind: str  # "any_nonsilent" | "truncating_in_tsg"
 
     def transform(self, frame: pd.DataFrame) -> sparse.csr_matrix:
-        if self.kind != "any_nonsilent":
+        if self.kind == "any_nonsilent":
+            flags = compute_any_nonsilent_flag(frame, self.genes)
+        elif self.kind == "truncating_in_tsg":
+            flags = compute_truncating_flag(frame, self.genes)
+        else:
             raise PathwayAggregationError(f"지원하지 않는 kind입니다: {self.kind}")
-        flags = compute_any_nonsilent_flag(frame, self.genes)
         return sparse.csr_matrix(flags[:, None])
 
 
 @dataclass(frozen=True)
 class CellCyclePathwayFamily:
-    """Factory for the Cell Cycle pathway aggregation features (Issue #167/#170).
+    """Factory for the Cell Cycle pathway aggregation features (Issue #167/#170/#173).
 
     Gene membership and OG/TSG labels are loaded from a small committed
     knowledge file (a derived gene-symbol/role summary, not a redistribution
@@ -130,7 +168,7 @@ class CellCyclePathwayFamily:
     """
 
     knowledge_path: Path
-    kind: str  # "any_nonsilent"; Issue #173 adds "truncating_in_tsg"
+    kind: str  # "any_nonsilent" | "truncating_in_tsg"
     version: str = "1.0.0"
 
     def fit(
@@ -139,12 +177,16 @@ class CellCyclePathwayFamily:
         target: pd.Series | None = None,
     ) -> FittedCellCyclePathwayFamily:
         del target
-        if self.kind != "any_nonsilent":
+        if self.kind not in _FAMILY_KINDS:
             raise PathwayAggregationError(f"지원하지 않는 kind입니다: {self.kind}")
         document = json.loads(self.knowledge_path.read_text(encoding="utf-8"))
         genes_with_roles = load_cell_cycle_knowledge(self.knowledge_path)
-        genes = tuple(genes_with_roles.keys())
-        name = "cellcycle_any_nonsilent"
+        if self.kind == "any_nonsilent":
+            genes = tuple(genes_with_roles.keys())
+            name = "cellcycle_any_nonsilent"
+        else:
+            genes = tuple(gene for gene, role in genes_with_roles.items() if role == "TSG")
+            name = "cellcycle_lof_in_tsg"
         missing = [gene for gene in genes if gene not in train_frame.columns]
         if missing:
             raise PathwayAggregationError(f"패널에 없는 유전자입니다: {missing}")
@@ -170,3 +212,7 @@ class CellCyclePathwayFamily:
 
 def cell_cycle_any_nonsilent_family(knowledge_path: Path) -> CellCyclePathwayFamily:
     return CellCyclePathwayFamily(knowledge_path=knowledge_path, kind="any_nonsilent")
+
+
+def cell_cycle_lof_in_tsg_family(knowledge_path: Path) -> CellCyclePathwayFamily:
+    return CellCyclePathwayFamily(knowledge_path=knowledge_path, kind="truncating_in_tsg")

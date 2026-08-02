@@ -1,0 +1,106 @@
+experiment:
+  issue_number: 173
+  experiment_id: EXP-173
+  branch: issue-173-cellcycle-lof-tsg
+  owner: Kangho Park
+  source_commit: 0974f0cc4daf3ac3f61c21087c25859397a494de
+  started_at: '2026-08-02T06:43:12.981082+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  n_splits: 5
+  seed: 42
+base_feature_spec:
+  name: v1
+  base_experiment: EXP-094
+  base_feature_spec_sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+  source_config: configs/exp094_feature_spec_v1.yaml
+  source_config_sha256: 4282727de03bd0f31989fdcce61d65530ba69e339e6dce1fe7f72fa85ebd57c4
+  train_shape:
+  - 6201
+  - 35119
+  test_shape:
+  - 2546
+  - 35119
+  feature_names_sha256: 8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf
+pathway_family:
+  cellcycle_lof_in_tsg:
+    definition_version: 1.0.0
+    enabled: true
+    output_dimension: 1
+    feature_names_sha256: 7633014b3c792cf4b4dd92c4358b0f21cfc70d17e583fe0c862425e9d2240167
+    fit_scope: stateless
+    external_knowledge:
+    - source: Sanchez-Vega F, et al. Oncogenic Signaling Pathways in The Cancer Genome
+        Atlas. Cell. 2018;173(2):321-337.
+      version: table_s3-v1
+      license: CC BY-NC-ND 4.0 (non-commercial, no derivatives redistribution). This
+        file is a minimal derived gene-symbol / OG-TSG-label summary extracted from
+        one worksheet, not a redistribution of the original workbook or any of its
+        numeric/hotspot columns.
+      sha256: 17cefb12187c9fc59c3f8c68d6e52987492220dcb7565c7d7cc089db07fac0f6
+      uri: https://doi.org/10.1016/j.cell.2018.03.035
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]
+  platform: Windows-10-10.0.26200-SP0
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: cd6e657dd3e11014c23c7ac19baf0718c705e04172093a4567605c83cfd78599
