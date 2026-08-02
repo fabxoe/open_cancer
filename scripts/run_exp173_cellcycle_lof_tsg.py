@@ -14,25 +14,29 @@ deltas below.
 from __future__ import annotations
 
 import json
+import platform
 import subprocess
+import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pandas as pd
+import sklearn
+import xgboost as xgb
 import yaml
 from scipy import sparse
 from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, log_loss
 
 from open_cancer.constants import CLASS_LABELS
 from open_cancer.experiment import resolve_experiment_context
+from open_cancer.feature_family import build_family_registry, transform_checked
 from open_cancer.frozen_feature_specs import materialize_frozen_feature_spec
+from open_cancer.hashing import sha256_file
 from open_cancer.model_runner import create_model_adapter, run_canonical_cv
-from open_cancer.pathway_aggregation_features import (
-    CELL_CYCLE_TSG_GENES,
-    compute_truncating_flag,
-)
+from open_cancer.pathway_aggregation_features import cell_cycle_lof_in_tsg_family
 from open_cancer.paths import relative_posix
 from open_cancer.validation import validate_json_document, validate_submission
 
@@ -41,6 +45,8 @@ CONFIG = ROOT / "configs" / "exp173_cellcycle_lof_tsg.yaml"
 TRAIN = ROOT / "data" / "raw" / "train.csv"
 TEST = ROOT / "data" / "raw" / "test.csv"
 SAMPLE = ROOT / "data" / "raw" / "sample_submission.csv"
+SPLIT = ROOT / "data" / "splits" / "stratified_5fold_seed42.csv"
+KNOWLEDGE = ROOT / "knowledge" / "tcga_pancanatlas_table_s3_cell_cycle_v1.json"
 SLUG = "exp173_cellcycle_lof_tsg"
 
 
@@ -48,6 +54,71 @@ def git(*args: str) -> str:
     return subprocess.run(
         ["git", *args], cwd=ROOT, check=True, capture_output=True, text=True
     ).stdout.strip()
+
+
+def build_resolved_config(
+    *,
+    context: Any,
+    owner: str,
+    source_commit: str,
+    started_at: datetime,
+    feature_spec_manifest: dict[str, Any],
+    family_registry: dict[str, Any],
+    model_params: dict[str, Any],
+) -> dict[str, Any]:
+    """Single source of truth for this experiment's identity and parameters.
+
+    Same shape as EXP-170's resolved config (PR #172 review follow-up):
+    frozen v1 base Feature Spec identity plus this experiment's own
+    Feature-Factory-registered pathway family entry.
+    """
+
+    return {
+        "experiment": {
+            "issue_number": context.issue_number,
+            "experiment_id": context.experiment_id,
+            "branch": context.branch,
+            "owner": owner,
+            "source_commit": source_commit,
+            "started_at": started_at.isoformat(),
+        },
+        "data": {
+            "train": {"path": "data/raw/train.csv", "sha256": sha256_file(TRAIN)},
+            "test": {"path": "data/raw/test.csv", "sha256": sha256_file(TEST)},
+            "class_order": list(CLASS_LABELS),
+        },
+        "split": {
+            "path": relative_posix(SPLIT, ROOT),
+            "sha256": sha256_file(SPLIT),
+            "method": "StratifiedKFold",
+            "n_splits": 5,
+            "seed": 42,
+        },
+        "base_feature_spec": {
+            "name": feature_spec_manifest["name"],
+            "base_experiment": feature_spec_manifest["base_experiment"],
+            "base_feature_spec_sha256": feature_spec_manifest["base_feature_spec_sha256"],
+            "source_config": relative_posix(
+                ROOT / "configs" / "exp094_feature_spec_v1.yaml", ROOT
+            ),
+            "source_config_sha256": feature_spec_manifest["source_config_sha256"],
+            "train_shape": feature_spec_manifest["train_shape"],
+            "test_shape": feature_spec_manifest["test_shape"],
+            "feature_names_sha256": feature_spec_manifest["feature_names_sha256"],
+        },
+        "pathway_family": family_registry,
+        "model": {"class": "xgboost.XGBClassifier", "parameters": model_params},
+        "training": {"balanced_sample_weight": True},
+        "environment": {
+            "python": sys.version,
+            "platform": platform.platform(),
+            "numpy": np.__version__,
+            "pandas": pd.__version__,
+            "scikit_learn": sklearn.__version__,
+            "xgboost": xgb.__version__,
+            "uv_lock_sha256": sha256_file(ROOT / "uv.lock"),
+        },
+    }
 
 
 def main() -> None:
@@ -64,10 +135,11 @@ def main() -> None:
     feature_dir = ROOT / "data" / "processed" / f"{SLUG}_features"
     model_dir = ROOT / "models" / SLUG
     out_dir = ROOT / "reports" / SLUG
-    for path in (model_dir, out_dir):
+    reproducibility_dir = ROOT / "reproducibility" / SLUG
+    for path in (model_dir, out_dir, reproducibility_dir):
         path.mkdir(parents=True, exist_ok=True)
 
-    materialize_frozen_feature_spec(
+    feature_spec_manifest = materialize_frozen_feature_spec(
         root=ROOT, name="v1", output_dir=feature_dir, train_path=TRAIN, test_path=TEST
     )
     x_train = sparse.load_npz(feature_dir / "train_features.npz").tocsr()
@@ -75,10 +147,13 @@ def main() -> None:
 
     train_raw = pd.read_csv(TRAIN, dtype=str, keep_default_na=False)
     test_raw = pd.read_csv(TEST, dtype=str, keep_default_na=False)
-    train_flag = compute_truncating_flag(train_raw, CELL_CYCLE_TSG_GENES).astype(np.float32)
-    test_flag = compute_truncating_flag(test_raw, CELL_CYCLE_TSG_GENES).astype(np.float32)
+    fitted_family = cell_cycle_lof_in_tsg_family(KNOWLEDGE).fit(train_raw)
+    train_flag_matrix = transform_checked(fitted_family, train_raw)
+    test_flag_matrix = transform_checked(fitted_family, test_raw)
+    train_flag = train_flag_matrix.toarray().ravel()
     positive_rate_train = float(train_flag.mean())
-    positive_rate_test = float(test_flag.mean())
+    positive_rate_test = float(test_flag_matrix.toarray().mean())
+    family_registry = build_family_registry([fitted_family])
 
     watch_classes = config.get("watch_classes", [])
     watch_positive_rate_by_class = {
@@ -86,8 +161,8 @@ def main() -> None:
         for cls in watch_classes
     }
 
-    x_train = sparse.hstack([x_train, sparse.csr_matrix(train_flag[:, None])], format="csr")
-    x_test = sparse.hstack([x_test, sparse.csr_matrix(test_flag[:, None])], format="csr")
+    x_train = sparse.hstack([x_train, train_flag_matrix], format="csr")
+    x_test = sparse.hstack([x_test, test_flag_matrix], format="csr")
 
     train = train_raw[["ID", "SUBCLASS"]]
     test = test_raw[["ID"]]
@@ -106,6 +181,22 @@ def main() -> None:
         .to_numpy(dtype=np.int32)
     )
     params = dict(config["model"])
+    owner = git("config", "user.name") or "unknown"
+    source_commit = git("rev-parse", "HEAD")
+    resolved_config = build_resolved_config(
+        context=context,
+        owner=owner,
+        source_commit=source_commit,
+        started_at=started,
+        feature_spec_manifest=feature_spec_manifest,
+        family_registry=family_registry,
+        model_params={**params, "num_class": len(CLASS_LABELS)},
+    )
+    resolved_config_path = reproducibility_dir / "config.resolved.yaml"
+    resolved_config_path.write_text(
+        yaml.safe_dump(resolved_config, allow_unicode=True, sort_keys=False),
+        encoding="utf-8",
+    )
     result = run_canonical_cv(
         train_features=x_train,
         test_features=x_test,
@@ -164,10 +255,10 @@ def main() -> None:
         "experiment_id": "EXP-173",
         "record_role": "official",
         "status": "COMPLETED",
-        "owner": git("config", "user.name") or "unknown",
+        "owner": owner,
         "issue_number": 173,
         "parent_experiment": "EXP-094",
-        "git_commit": git("rev-parse", "HEAD"),
+        "git_commit": source_commit,
         "started_at": started.isoformat(),
         "finished_at": datetime.now(timezone.utc).isoformat(),
         "primary_metric": "macro_f1",
@@ -185,6 +276,7 @@ def main() -> None:
             ).tolist(),
         },
         "artifacts": {
+            "resolved_config": relative_posix(resolved_config_path, ROOT),
             "feature_spec_manifest": relative_posix(
                 feature_dir / "feature_spec_manifest.json", ROOT
             ),
@@ -192,10 +284,12 @@ def main() -> None:
         },
         "runtime": {"seconds": time.perf_counter() - clock},
         "notes": (
-            "EXP-094 frozen Feature Spec v1 + P_lof_in_tsg_cellcycle "
-            "(6 TSG-labeled Cell Cycle genes, truncating=nonsense+frameshift "
-            "only, Issue #167 catalog). Baseline is EXP-094 (not EXP-170, "
-            "which was rejected). "
+            "EXP-094 frozen Feature Spec v1 + pathway__cellcycle_lof_in_tsg, "
+            "registered as a Feature Factory family (see resolved_config for "
+            "the KnowledgeProvenance-backed registry entry; 6 TSG-labeled "
+            "Cell Cycle genes, truncating=nonsense+frameshift only, Issue "
+            "#167 catalog). Baseline is EXP-094 (not EXP-170, which was "
+            "rejected). "
             f"Train positive rate {positive_rate_train:.6f}, test positive "
             f"rate {positive_rate_test:.6f}. Watch-class train positive "
             f"rates: {watch_positive_rate_by_class}. "
