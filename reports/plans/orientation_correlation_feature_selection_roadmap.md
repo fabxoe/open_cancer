@@ -28,9 +28,9 @@
 | S1 | Elastic Net stability selection | [#203](https://github.com/fabxoe/open_cancer/issues/203) | EXP-203 | [#204](https://github.com/fabxoe/open_cancer/pull/204) | COMPLETED | 0.2996289845 | ARCHIVE; dense selector가 512-gene cap을 유발, S1 규칙 재튜닝 없이 S2 진행 |
 | S2 | mRMR | [#205](https://github.com/fabxoe/open_cancer/issues/205) | EXP-205 | [#206](https://github.com/fabxoe/open_cancer/pull/206) | COMPLETED | 0.3976963538 | ARCHIVE; top-128 압축이 EXP-094보다 크게 하락, S2 규칙 재튜닝 없이 S3 진행 |
 | S3 | Boruta | [#207](https://github.com/fabxoe/open_cancer/issues/207) | EXP-207 | [#208](https://github.com/fabxoe/open_cancer/pull/208) | COMPLETED | 0.3484416378 | ARCHIVE; 15~18 confirmed genes로 과도하게 압축되어 Macro F1·DLBC F1 붕괴, 재튜닝 중단 |
-| M0 | Macro-F1 checkpoint 감사 기반 | [#217](https://github.com/fabxoe/open_cancer/issues/217) | 해당 없음 | PR 생성 예정 | IN_PROGRESS | N/A | validation-only iteration audit·결정적 tie-break·테스트 구현 |
-| M1 | Macro-F1 checkpoint 선택 통제 실험 | 미발급 | 미발급 | - | PLANNED | N/A | EXP-094 동일 조건에서 mlogloss-best와 Macro-F1-best iteration 비교 |
-| S4 | TruncatedSVD 비교 모델 | [#196](https://github.com/fabxoe/open_cancer/issues/196) | EXP-196 | - | PLANNED | N/A | M1 판정 후 |
+| M0 | Macro-F1 checkpoint 감사 기반 | [#217](https://github.com/fabxoe/open_cancer/issues/217) | 해당 없음 | [#218](https://github.com/fabxoe/open_cancer/pull/218) | COMPLETED | N/A | validation-only audit·결정적 tie-break·checkpoint 저장 계약 완료 |
+| M1 | Macro-F1 checkpoint 선택 통제 실험 | [#219](https://github.com/fabxoe/open_cancer/issues/219) | EXP-219 | PR 생성 예정 | COMPLETED | 0.4222321460 | EXP-094 대비 +0.0053455721, fold std 개선·INFERENCE_VERIFIED; 정책 채택 |
+| S4 | TruncatedSVD 비교 모델 | [#196](https://github.com/fabxoe/open_cancer/issues/196) | EXP-196 | - | PLANNED | N/A | 최신 main에서 구현·canonical 5-fold 실행 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`만 사용하며, 필요하면 `BLOCKED` 또는 `REJECTED`로 종료한다. 이는 실험 재현 상태와 별개다.
 

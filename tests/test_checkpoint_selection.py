@@ -7,6 +7,7 @@ from open_cancer.checkpoint_selection import (
     CheckpointSelectionError,
     audit_xgboost_validation_iterations,
     predict_xgboost_at_iteration,
+    save_xgboost_iteration_checkpoint,
     select_macro_f1_iteration,
 )
 from open_cancer.constants import CLASS_LABELS
@@ -117,7 +118,7 @@ def test_audit_rejects_out_of_range_candidate() -> None:
         )
 
 
-def test_real_xgboost_iteration_audit_contract() -> None:
+def test_real_xgboost_iteration_audit_contract(tmp_path) -> None:
     import xgboost as xgb
 
     rng = np.random.default_rng(42)
@@ -140,8 +141,14 @@ def test_real_xgboost_iteration_audit_contract() -> None:
     audit = audit_xgboost_validation_iterations(model, features, targets)
     selected = int(audit["macro_f1_best"]["iteration"])
     probabilities = predict_xgboost_at_iteration(model, features, selected)
+    checkpoint = tmp_path / "selected.json"
+    save_xgboost_iteration_checkpoint(model, checkpoint, selected)
+    restored = xgb.XGBClassifier()
+    restored.load_model(checkpoint)
+    restored_probabilities = restored.predict_proba(features)
 
     assert audit["trained_rounds"] == model.get_booster().num_boosted_rounds()
     assert len(audit["curve"]) == audit["trained_rounds"]
     assert probabilities.shape == (len(targets), len(CLASS_LABELS))
     assert np.allclose(probabilities.sum(axis=1), 1.0)
+    assert np.allclose(restored_probabilities, probabilities, atol=1e-7, rtol=1e-7)

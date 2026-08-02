@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 50
+- 실제 실험 수: 51
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -69,6 +69,7 @@
 | EXP-203 | COMPLETED | fabxoe | #203 | EXP-094 + outer-train Elastic Net stability selection (최대 512 genes) | 0.2996289845 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.1172576·Log Loss +0.3633948; dense selector가 512개 cap을 유발해 ARCHIVE | [보고서](reports/exp203_s1_elastic_net_stability_selection/README.md) |
 | EXP-205 | COMPLETED | fabxoe | #205 | EXP-094 + outer-train mRMR-MID top-128 mutation-presence genes | 0.3976963538 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0191902·Log Loss +0.0426300으로 gate 실패, ARCHIVE | [보고서](reports/exp205_s2_mrmr_feature_selection/README.md) |
 | EXP-207 | COMPLETED | fabxoe | #207 | EXP-094 + outer-train Boruta confirmed mutation-presence genes | 0.3484416378 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0684449·DLBC F1 0으로 붕괴, 재튜닝 없이 ARCHIVE | [보고서](reports/exp207_s3_boruta_feature_selection/README.md) |
+| EXP-219 | COMPLETED | fabxoe | #219 | EXP-094 동일 조건 + validation Macro-F1-best checkpoint 선택 | 0.4222321460 | 미제출 | INFERENCE_VERIFIED | 기존 mlogloss-best 대비 +0.0053456·fold std 개선, 향후 XGBoost 정책 채택 | [보고서](reports/exp219_macro_f1_checkpoint_selection/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -124,10 +125,47 @@
 | 2026-08-02T09:15:19.096281+00:00 | EXP-179 | fabxoe | `704731a20520339e21f4c84eae93708d2e1dfd3e` / 태그 없음 | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp179_xgb_feature_spec_v1_smote/comparison.json) |
 | 2026-08-02T15:08:02+00:00 | EXP-151 | fabxoe | `17d433f81cf41fce54045739b0531915cc89b565` / [`exp-151-repro-v2`](https://github.com/fabxoe/open_cancer/releases/tag/exp-151-repro-v2) | SHA-256 일치 | 제출 SHA-256·test 라벨 100% 일치; GPU→CPU 확률 차이와 OOF 라벨 99.9839% 일치 기록 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp151_mutated_gene_burden/comparison.json) |
 | 2026-08-02T15:08:02+00:00 | EXP-188 | fabxoe | `1ff0663af2f682229d715136119e8e1db6bace62` / [`exp-188-repro-v2`](https://github.com/fabxoe/open_cancer/releases/tag/exp-188-repro-v2) | SHA-256 일치 | 제출 SHA-256·OOF/test 라벨·확률 100% 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp188_c1_phi_jaccard_pruning/comparison.json) |
+| 2026-08-02T15:58:51.992672+00:00 | EXP-219 | fabxoe | `41d07096e1c87eb55e7d7a73645629ea3d0952e3` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.45e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp219_macro_f1_checkpoint_selection/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-219] Macro F1 checkpoint 선택 통제 비교
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #219 / `issue-219-exp094-macro-f1-checkpoint`
+- 소스 commit: `41d07096e1c87eb55e7d7a73645629ea3d0952e3`
+- 시작/종료: 2026-08-02T15:44:59.717503+00:00 /
+  2026-08-02T15:55:32.748276+00:00
+
+#### 실행과 결과
+
+- Config: `configs/exp219_macro_f1_checkpoint_selection.yaml`
+- Runner: `scripts/run_exp219_macro_f1_checkpoint_selection.py`
+- Metrics: `reports/exp219_macro_f1_checkpoint_selection/metrics.json`
+- EXP-094와 feature·canonical fold·seed·XGBoost 설정은 동일하며, 각 fold
+  validation에서 checkpoint를 고르는 기준만 mlogloss 최소에서 Macro F1 최대로
+  변경했다. test와 Public LB는 선택에 사용하지 않았다.
+- 기존 mlogloss-best OOF Macro F1: 0.4168865739
+- Macro-F1-best OOF Macro F1: 0.4222321460 (`+0.0053455721`)
+- Fold Macro F1: 0.4211513302 / 0.4235533012 / 0.4113978176 /
+  0.4214009350 / 0.4324842903
+- Fold 표준편차: 0.0067203936 (기존 대비 `-0.0011638585`)
+- Log Loss: 1.8476127386 (보조 지표, 기존 대비 `+0.0076756477`)
+- 클래스별 최악 변화: HNSC `-0.0103647851`; DLBC는 `+0.0512129380`
+- Public LB: 미제출
+- 저장 checkpoint 재추론으로 제출 SHA-256 일치, test 라벨 100%, 확률 최대
+  차이 1.45e-07을 확인해 `INFERENCE_VERIFIED`다.
+
+#### 결론
+
+공식 지표 정렬 효과가 명확하고 fold 안정성도 개선되어 향후 XGBoost 실험의
+기본 checkpoint 선택 후보로 채택한다. 과거 결과를 일괄 재학습하지 않으며,
+validation iteration 선택의 낙관 편향 가능성은 후속 독립 실험에서 계속 감시한다.
+상세 내용은 [보고서](reports/exp219_macro_f1_checkpoint_selection/README.md)를
+참고한다.
 
 ### [EXP-207] S3 Boruta feature selection
 
