@@ -14,6 +14,7 @@ from open_cancer.model_runner import (
     run_canonical_cv,
     write_cross_validation_artifacts,
 )
+from open_cancer.fold_feature_selection import FoldFeatureSelection
 from open_cancer.resampling import FoldLocalSmote
 
 
@@ -48,6 +49,19 @@ class RecordingAdapter(DummyAdapter):
     def predict_proba(self, matrix) -> np.ndarray:
         self.prediction_matrices.append(matrix.copy())
         return super().predict_proba(matrix)
+
+
+class FirstTwoFeatureSelector:
+    def __init__(self) -> None:
+        self.fit_shapes: list[tuple[int, int]] = []
+
+    def select(self, features, targets, feature_names, fold) -> FoldFeatureSelection:
+        del targets
+        self.fit_shapes.append(features.shape)
+        return FoldFeatureSelection(
+            selected_indices=(0, 1),
+            metadata={"selector": "test_selector", "fold": fold, "feature_names": list(feature_names)},
+        )
 
 
 def test_common_runner_produces_canonical_shapes(tmp_path) -> None:
@@ -166,3 +180,37 @@ def test_resampling_and_balanced_weight_are_mutually_exclusive(tmp_path) -> None
             model_dir=tmp_path,
             fold_train_resampler=FoldLocalSmote(),
         )
+
+
+def test_feature_selector_is_fit_on_outer_train_and_mask_is_saved(tmp_path) -> None:
+    targets = np.tile(np.arange(len(CLASS_LABELS)), 5)
+    folds = np.repeat(np.arange(5), len(CLASS_LABELS))
+    train = sparse.csr_matrix(np.ones((len(targets), 4), dtype=np.float32))
+    test = sparse.csr_matrix(np.ones((7, 4), dtype=np.float32))
+    adapters: list[RecordingAdapter] = []
+    selector = FirstTwoFeatureSelector()
+
+    def adapter_factory(fold: int) -> RecordingAdapter:
+        del fold
+        adapter = RecordingAdapter()
+        adapters.append(adapter)
+        return adapter
+
+    result = run_canonical_cv(
+        train_features=train,
+        test_features=test,
+        targets=targets,
+        folds=folds,
+        adapter_factory=adapter_factory,
+        model_dir=tmp_path,
+        balanced_sample_weight=False,
+        feature_names=["A__mutated", "B__mutated", "A__missense", "sample__count"],
+        fold_feature_selector=selector,
+    )
+
+    assert selector.fit_shapes == [(104, 4)] * 5
+    assert [path is not None and path.is_file() for path in result.feature_selection_paths] == [True] * 5
+    assert all(adapter.fit_rows[0][0] == 104 for adapter in adapters)
+    assert all(adapter.valid_matrices[0].shape[1] == 2 for adapter in adapters)
+    assert all(adapter.prediction_matrices[1].shape == (7, 2) for adapter in adapters)
+    assert all(metric["feature_selection"]["selector"] == "test_selector" for metric in result.fold_metrics)
