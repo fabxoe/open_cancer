@@ -1,0 +1,33 @@
+{
+  "name": "tcga_pancanatlas_table_s3_cell_cycle_genes",
+  "version": "table_s3-v1",
+  "license": "CC BY-NC-ND 4.0 (non-commercial, no derivatives redistribution). This file is a minimal derived gene-symbol / OG-TSG-label summary extracted from one worksheet, not a redistribution of the original workbook or any of its numeric/hotspot columns.",
+  "source": "Sanchez-Vega F, et al. Oncogenic Signaling Pathways in The Cancer Genome Atlas. Cell. 2018;173(2):321-337.",
+  "article_doi": "10.1016/j.cell.2018.03.035",
+  "source_table": "Supplementary Table S3, 'Cell Cycle' sheet",
+  "source_file_name": "tcga_pancanatlas_table_s3.xlsx",
+  "source_file_previous_name": "mmc3.xlsx",
+  "source_file_sha256": "df722435b7c069b9225c9e4bbef7ab812385bd5e8ab7c415837cde5f2838c640",
+  "source_manifest": "data/external/tcga_pancanatlas_table_s3.meta.json",
+  "extraction_policy": "Gene and OG/TSG columns from the Cell Cycle sheet only, via scripts/build_gene_pathway_catalog.py (Issue #167/#168). Hotspot columns and the other 9 pathway sheets are not included here.",
+  "selection_policy": "Fixed pathway/gene-role membership from literature; independent of competition labels, frequencies, validation, test, and leaderboard.",
+  "note": "This pathway's gene membership differs from knowledge/canonical_pathways_sanchez_vega_v1.json's 'cell_cycle' group (9 genes, sourced from the PathwayMapper tool's diagram export, which also includes TP53/MDM2/ATM). This file instead reflects the paper's own Table S3, where Cell Cycle and TP53 are disjoint sheets. Do not conflate the two; each family cites its own source.",
+  "pathway": "cell_cycle",
+  "genes": {
+    "CDKN1A": "TSG",
+    "CDKN1B": "TSG",
+    "CDKN2A": "TSG",
+    "CDKN2B": "TSG",
+    "CDKN2C": "TSG",
+    "RB1": "TSG",
+    "CCND1": "OG",
+    "CCND2": "OG",
+    "CCND3": "OG",
+    "CCNE1": "OG",
+    "CDK2": "OG",
+    "CDK4": "OG",
+    "CDK6": "OG",
+    "E2F1": "OG",
+    "E2F3": "OG"
+  }
+}

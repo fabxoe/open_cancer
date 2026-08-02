@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 39
+- 실제 실험 수: 40
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -58,6 +58,7 @@
 | EXP-154 | COMPLETED | fabxoe | #154 | EXP-094 + log1p(total_variant_count), Secure RTX 4090 실행 | 0.4183986443 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0056484로 기준 실패·미채택 | [보고서](reports/exp154_total_variant_burden/README.md) |
 | EXP-158 | COMPLETED | fabxoe | #158 | EXP-094 + log1p(missense_count), Secure RTX 4090 실행 | 0.4183327348 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0032953으로 기준 실패·미채택 | [보고서](reports/exp158_missense_burden/README.md) |
 | EXP-160 | COMPLETED | Kangho-Park | #160 | EXP-069 max_residue_position fold-safe permutation negative control (Issue #80 후속) | 0.3987413040(permuted 평균, 원본 0.4131007993) | 미제출(진단 실험) | NOT_STARTED | 25개 (seed, fold) 중 24개에서 하락(delta -0.0143594953)으로 신호 확인, Feature Spec v1 유지·Issue #80 계약 종료 | [보고서](reports/exp160_residue_position_negative_control/README.md) |
+| EXP-170 | COMPLETED | Kangho-Park | #170 | EXP-094 + P_any_nonsilent_cellcycle (Cell Cycle pathway, #167 카탈로그 활용 파일럿 A) | 0.4137462167 | 미제출 | NOT_STARTED | Macro F1 -0.0031404, DLBC F1 -0.0500858 급락으로 기준 실패·미채택 | [보고서](reports/exp170_cellcycle_any_nonsilent/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -1846,3 +1847,60 @@ Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0
   "신호가 실재한다"만 증명하며, 그 신호가 생물학적 hotspot·기능부위 효과인지
   다른 상관 요인(코호트, transcript 넘버링 관례 등)인지는 별도 분석이 필요하고
   이 실험만으로 단정하지 않는다.
+
+### [EXP-170] Cell Cycle pathway aggregation — A: any-nonsilent
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #170 / issue-170-cellcycle-any-nonsilent
+- 소스 commit: `ab45c0df34eea7ae1b5c3fe686b7245fc22aec6b`
+- 시작/종료: 2026-08-02T06:07:07.539226+00:00 /
+  2026-08-02T06:24:10.011609+00:00
+
+#### 실행
+
+- Config: `configs/exp170_cellcycle_any_nonsilent.yaml`
+- Resolved config: `reproducibility/exp170_cellcycle_any_nonsilent/config.resolved.yaml`
+  (PR #172 리뷰 반영, 재학습 없음: `pathway__cellcycle_any_nonsilent`을 Feature
+  Factory family로 등록하고 KnowledgeProvenance를 연결, 값은 기존과 동일함을
+  전체 train/test로 검증)
+- Metrics: `reports/exp170_cellcycle_any_nonsilent/metrics.json`
+- Verdict 상세: `reports/exp170_cellcycle_any_nonsilent/verdict.json`
+- Report: `reports/exp170_cellcycle_any_nonsilent/README.md`
+- 부모 실험: EXP-094 (Feature Spec v1)
+- 배경: Issue #167/#168 gene→pathway 카탈로그를 이용한 첫 pathway-level
+  aggregation feature 파일럿(3단계 계획 중 A). Cell Cycle 15개 유전자
+  전부 패널에 존재(커버율 100%), TP53 pathway 시트와 유전자 중복 없음.
+  사전 체크: 이 15개 유전자 중 기존 34-position hotspot 리스트
+  (`EXTENDED_HOTSPOTS`)에 포함된 유전자는 0개.
+- 유일한 변경: EXP-094 Feature Spec v1에 `P_any_nonsilent_cellcycle`
+  (Cell Cycle 15개 유전자 중 하나라도 nonsilent 변이 존재 시 1) 1개 컬럼
+  추가. `src/open_cancer/pathway_aggregation_features.py`에 하드코딩된
+  유전자 목록 사용(원본 카탈로그 CSV는 라이선스상 gitignore).
+
+#### 결과
+
+- Fold Macro F1: 0.4050374712, 0.4114668555, 0.4027850421,
+  0.4203272259, 0.4273778799
+- OOF Macro F1: 0.4137462167 (EXP-094 대비 `-0.0031403572`)
+- Fold 표준편차: 0.0092705323 (EXP-094 대비 `+0.0013862802`)
+- Log Loss: 1.8389285166 (EXP-094 대비 `-0.0010088127`)
+- Train/Test positive rate: 8.51% / 10.76%
+- 클래스별 최악 하락: DLBC `-0.0500857633`(최소 클래스, 38 샘플), LIHC
+  `-0.0386`
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+
+#### 산출물과 결론
+
+- Metrics/Report: `reports/exp170_cellcycle_any_nonsilent/`
+- 승격 기준 대조: Macro F1 +0.001 이상 실패, fold-std 악화 0.002 미만 통과,
+  Log Loss 악화 없음 통과, 전 클래스 F1 악화 없음 실패(DLBC)
+- 결론: Macro F1 gate와 클래스별 F1 gate를 모두 통과하지 못해 기각한다.
+  fold-std·log loss가 소폭 개선된 것은 DLBC 등 소수 클래스의 큰 손실을
+  상쇄하지 못하며, `colsample_bytree=0.8` 아래에서 새 컬럼이 기존 컬럼들의
+  split 후보 선택 확률을 바꾸는 weighting perturbation 효과로 해석하고
+  생물학적 신호로 단정하지 않는다(EXP-063/078 semantics QC와 같은 메커니즘).
+  Issue #170 계획상 B는 "A 결과가 반영된 baseline"에서 진행하기로 했으나
+  A가 기각됐으므로, 후속 B(`P_lof_in_tsg_cellcycle`)는 EXP-094(원본 v1)를
+  그대로 baseline으로 사용하는 새 Experiment Issue에서 진행한다.
