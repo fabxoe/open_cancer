@@ -600,5 +600,73 @@ def main(
     )
 
 
+def finalize_saved_run(
+    config_path: Path,
+    *,
+    runner_command: str,
+) -> None:
+    """Validate and verify a completed run after post-processing interruption."""
+    config_path = config_path.resolve()
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
+    artifact_slug = f"exp{context.issue_number:03d}_{config['slug']}"
+    report_dir = ROOT / "reports" / artifact_slug
+    model_dir = ROOT / "models" / artifact_slug
+    reproducibility_dir = ROOT / "reproducibility" / artifact_slug
+    feature_dir = ROOT / "data" / "processed" / f"{artifact_slug}_features"
+    metrics_path = report_dir / "metrics.json"
+    resolved_config_path = reproducibility_dir / "config.resolved.yaml"
+    oof_path = ROOT / "oof" / f"{artifact_slug}.csv"
+    test_probability_path = ROOT / "preds" / f"{artifact_slug}_test_proba.csv"
+    submission_path = ROOT / "submissions" / f"{artifact_slug}.csv"
+
+    required = (
+        metrics_path,
+        resolved_config_path,
+        oof_path,
+        test_probability_path,
+        submission_path,
+        feature_dir / "test_features.npz",
+    )
+    missing = [str(path) for path in required if not path.is_file()]
+    if missing:
+        raise FileNotFoundError(f"finalize에 필요한 기존 산출물이 없습니다: {missing}")
+    metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
+    validate_json_document(metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json")
+    resolved_config = yaml.safe_load(resolved_config_path.read_text(encoding="utf-8"))
+    resolved_config["training"]["command"] = runner_command
+    resolved_config_path.write_text(
+        yaml.safe_dump(resolved_config, allow_unicode=True, sort_keys=False),
+        encoding="utf-8",
+    )
+    test_features = sparse.load_npz(feature_dir / "test_features.npz")
+    test_ids = pd.read_csv(TEST_PATH, usecols=["ID"], dtype=str)["ID"]
+    audit_paths = [
+        model_dir / f"fold_{fold:02d}_checkpoint_audit.json"
+        for fold in range(config["split"]["n_splits"])
+    ]
+    verify_saved_inference(
+        context=context,
+        source_commit=str(metrics["git_commit"]),
+        owner=str(metrics["owner"]),
+        artifact_slug=artifact_slug,
+        config=config,
+        resolved_config=resolved_config,
+        resolved_config_path=resolved_config_path,
+        metrics=metrics,
+        metrics_path=metrics_path,
+        model_dir=model_dir,
+        oof_path=oof_path,
+        reproducibility_dir=reproducibility_dir,
+        test_features=test_features,
+        test_ids=test_ids,
+        test_probability_path=test_probability_path,
+        submission_path=submission_path,
+        extra_artifact_paths=[
+            ("checkpoint_iteration_audit", path) for path in audit_paths
+        ],
+    )
+
+
 if __name__ == "__main__":
     main()
