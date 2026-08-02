@@ -38,7 +38,8 @@ def main() -> None:
     clock = time.perf_counter()
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
     context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
-    if context.experiment_id != "EXP-151" or git("status", "--porcelain"):
+    dirty = [line for line in git("status", "--porcelain").splitlines() if not line.endswith("release-assets/")]
+    if context.experiment_id != "EXP-151" or dirty:
         raise RuntimeError("EXP-151은 clean issue-151 브랜치에서만 실행해야 합니다.")
     slug = "exp151_mutated_gene_burden"
     feature_dir = ROOT / "data/processed" / f"{slug}_features"
