@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 45
+- 실제 실험 수: 46
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -64,6 +64,7 @@
 | EXP-188 | COMPLETED | fabxoe | #188 | EXP-094 + fold-local C1 Phi≥0.30/Jaccard≥0.15 pruning | 0.4179737169 | 미제출 | MANIFEST_COMPLETE | Macro F1 +0.0010871이나 fold std +0.0032589·Log Loss +0.0003735로 gate 실패, ARCHIVE | [보고서](reports/exp188_c1_phi_jaccard_pruning/README.md) |
 | EXP-189 | COMPLETED | fabxoe | #189 | EXP-094 + fold-local C2 Phi≥0.25/Jaccard≥0.15 pruning | 0.4147096714 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0021769·fold std +0.0027542·최저 클래스 F1 -0.0568182로 gate 실패, ARCHIVE | [보고서](reports/exp189_c2_phi_jaccard_pruning/README.md) |
 | EXP-190 | COMPLETED | fabxoe | #190 | EXP-094 + fold-local C3 Phi≥0.20/Jaccard≥0.10 pruning | 0.4157643312 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0011222·fold std +0.0045573로 gate 실패, ARCHIVE; Phi/Jaccard ladder 종료 | [보고서](reports/exp190_c3_phi_jaccard_pruning/README.md) |
+| EXP-191 | COMPLETED | fabxoe | #191 | EXP-094 + fold-local C2-policy pair `only_left/right/both` 요약 | 0.4144744818 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0024121·fold std +0.0047535로 gate 실패, ARCHIVE | [보고서](reports/exp191_r1_correlation_pair_summary/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -117,6 +118,50 @@
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-191] R1 상관 pair 범주형 요약 피처
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #191 / `issue-191-r1-correlation-pair-summary`
+- 소스 commit: `3e93bb3e6816cc927a7366d23fef1c02dbdbc9de`
+- 시작/종료: 2026-08-02T10:29:38.717122+00:00 /
+  2026-08-02T10:38:38.015798+00:00
+
+#### 실행
+
+- Config: `configs/exp191_r1_correlation_pair_summary.yaml`
+- Runner: `scripts/run_exp191_r1_correlation_pair_summary.py`
+- Metrics: `reports/exp191_r1_correlation_pair_summary/metrics.json`
+- Report: `reports/exp191_r1_correlation_pair_summary/README.md`
+- 부모 실험: EXP-094 (Feature Spec v1)
+- 유일한 변경: 각 canonical outer fold의 **학습 행에서만** C2 기준
+  (Phi≥0.25, Jaccard≥0.15, 공동 변이 수≥20) pair를 정하고, pair당
+  `only_left`, `only_right`, `both_mutated` 이진 피처를 추가했다. 기존 v1 열은
+  하나도 삭제하지 않았고 validation·test에는 해당 fold의 고정 pair만 적용했다.
+- balanced sample weight는 유지했고 SMOTE는 적용하지 않았다.
+
+#### 결과
+
+- Fold Macro F1: 0.4144638419, 0.4175894181, 0.3968996439, 0.4067781874,
+  0.4349998003
+- OOF Macro F1: 0.4144744818 (EXP-094 대비 `-0.0024120921`)
+- Fold 표준편차: 0.0126377260 (EXP-094 대비 `+0.0047534740`)
+- Accuracy: 0.4052572166
+- Log Loss: 1.8394420338 (EXP-094 대비 `-0.0004952955`)
+- fold별 pair / 추가 열: 58/174, 75/225, 61/183, 109/327, 70/210
+- Public LB: 미제출
+- 재현 상태: `MANIFEST_COMPLETE` — 원 학습 checkpoint·fold pair 명세·OOF/test
+  확률·submission manifest는 저장했으나 독립 checkpoint inference 비교는 아직
+  수행하지 않았다.
+
+#### 결론
+
+- Macro F1과 fold-std가 성능 채택 gate를 통과하지 못해 `ARCHIVE`다. 기존 열을
+  제거하지 않는 피처 추가 정책이므로 간소화 후보에도 해당하지 않는다.
+- C1~C3 상관 삭제와 R1 관계 요약은 모두 EXP-094보다 낮았다. 이 pairwise
+  Phi/Jaccard family는 재튜닝하지 않고, 다음 사전 등록 정책인 R2 희귀
+  mutation-presence filter를 독립적으로 검증한다.
 
 ### [EXP-190] C3 넓은 Phi/Jaccard 상관 삭제
 

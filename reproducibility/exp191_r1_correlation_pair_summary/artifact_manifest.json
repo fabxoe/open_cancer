@@ -1,0 +1,125 @@
+{
+  "experiment_id": "EXP-191",
+  "issue_number": 191,
+  "reproducibility_status": "MANIFEST_COMPLETE",
+  "source_commit": "3e93bb3e6816cc927a7366d23fef1c02dbdbc9de",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp191_r1_correlation_pair_summary/data_manifest.json",
+  "environment": "reproducibility/exp191_r1_correlation_pair_summary/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint_fold_0",
+      "path": "models/exp191_r1_correlation_pair_summary/fold_00.json",
+      "size_bytes": 11569564,
+      "sha256": "376c7a0e97e1ab6d9196d913b5194163d00c8b06af62accc4b29441afc1aaf46",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_1",
+      "path": "models/exp191_r1_correlation_pair_summary/fold_01.json",
+      "size_bytes": 11955009,
+      "sha256": "cb221525ebd648e1799d6608b5e5e25af4214a9bdd544bde0541d2ed7d4b3f16",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_2",
+      "path": "models/exp191_r1_correlation_pair_summary/fold_02.json",
+      "size_bytes": 13728536,
+      "sha256": "ee14e939cea5745563c8b5654219dd47e7b8765bbe65b40190240f737fbaa81f",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_3",
+      "path": "models/exp191_r1_correlation_pair_summary/fold_03.json",
+      "size_bytes": 12274253,
+      "sha256": "80bc3f30d50f043a78a453e7d816a554543bddaa3865ac9e5cefa226432f7b30",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_4",
+      "path": "models/exp191_r1_correlation_pair_summary/fold_04.json",
+      "size_bytes": 12783561,
+      "sha256": "9789b33efa1953656fdc7c8b75804b3c270f1f448d6ca5793244e56872998d69",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_spec_manifest",
+      "path": "data/processed/exp191_r1_correlation_pair_summary_features/feature_spec_manifest.json",
+      "size_bytes": 1866,
+      "sha256": "de11b49808d80d4eaaaafb96acd0901b269996fe2fa9cf99d67f15d9e93c0c9c",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probabilities",
+      "path": "oof/exp191_r1_correlation_pair_summary.csv",
+      "size_bytes": 3537339,
+      "sha256": "6111335d1ced101863c7c47df488456289bb810c386c390e32b7e204524d0d79",
+      "storage_uri": null
+    },
+    {
+      "kind": "pair_features_fold_0",
+      "path": "models/exp191_r1_correlation_pair_summary/fold_00_pair_features.json",
+      "size_bytes": 458073,
+      "sha256": "4f83792fe785ea404b782bb71d53588b9dd2b834362d2515603d76eb94506448",
+      "storage_uri": null
+    },
+    {
+      "kind": "pair_features_fold_1",
+      "path": "models/exp191_r1_correlation_pair_summary/fold_01_pair_features.json",
+      "size_bytes": 524033,
+      "sha256": "82439dd61febdb006f4c3cf01bf19660af9df723adc8ce7c8e32b346f442e872",
+      "storage_uri": null
+    },
+    {
+      "kind": "pair_features_fold_2",
+      "path": "models/exp191_r1_correlation_pair_summary/fold_02_pair_features.json",
+      "size_bytes": 488235,
+      "sha256": "28a259a644f47aaf1cc61455673ae5342c2fc44b68e70099cdf65850d5e51500",
+      "storage_uri": null
+    },
+    {
+      "kind": "pair_features_fold_3",
+      "path": "models/exp191_r1_correlation_pair_summary/fold_03_pair_features.json",
+      "size_bytes": 607556,
+      "sha256": "6258fa52965f24c2c564a9ee52b04a840402ac4449c2e57a2400371dce22a269",
+      "storage_uri": null
+    },
+    {
+      "kind": "pair_features_fold_4",
+      "path": "models/exp191_r1_correlation_pair_summary/fold_04_pair_features.json",
+      "size_bytes": 509372,
+      "sha256": "92598b2b108b8de5fa48b3da0331cbe3c071974b0059a856ca425b8796e1020f",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp191_r1_correlation_pair_summary.csv",
+      "size_bytes": 38175,
+      "sha256": "75f00262f7745f769b900388d9cee002202d43de63b30b6e8d569b988ba07675",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probabilities",
+      "path": "preds/exp191_r1_correlation_pair_summary_test_proba.csv",
+      "size_bytes": 1412949,
+      "sha256": "221f16e67481f3c1a4b7a8f42cf7bac30b0788768b5158d31d982182a9001f87",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp191_r1_correlation_pair_summary/config.resolved.yaml",
+      "size_bytes": 3568,
+      "sha256": "9e9d08fef4d1b2b79bc5221933d8ab44ff7494ec26be8cc06cafb7ac72ae3e07",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp191_r1_correlation_pair_summary/metrics.json",
+      "size_bytes": 95783,
+      "sha256": "176964c749863ed173acc6ddf79c53b8e5c87ec8392c032a3d385c08fd83a1f8",
+      "storage_uri": null
+    }
+  ]
+}
