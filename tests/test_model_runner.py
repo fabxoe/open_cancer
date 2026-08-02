@@ -14,6 +14,7 @@ from open_cancer.model_runner import (
     run_canonical_cv,
     write_cross_validation_artifacts,
 )
+from open_cancer.resampling import FoldLocalSmote
 
 
 class DummyAdapter:
@@ -31,6 +32,22 @@ class DummyAdapter:
 
     def save(self, path: Path) -> None:
         path.write_text("dummy\n", encoding="utf-8")
+
+
+class RecordingAdapter(DummyAdapter):
+    def __init__(self) -> None:
+        self.fit_rows: list[tuple[int, int, int]] = []
+        self.valid_matrices: list[sparse.csr_matrix] = []
+        self.prediction_matrices: list[sparse.csr_matrix] = []
+
+    def fit(self, x_train, y_train, x_valid, y_valid, sample_weight) -> None:
+        self.fit_rows.append((x_train.shape[0], x_valid.shape[0], len(y_valid)))
+        self.valid_matrices.append(x_valid.copy())
+        assert sample_weight is None
+
+    def predict_proba(self, matrix) -> np.ndarray:
+        self.prediction_matrices.append(matrix.copy())
+        return super().predict_proba(matrix)
 
 
 def test_common_runner_produces_canonical_shapes(tmp_path) -> None:
@@ -92,3 +109,60 @@ def test_common_runner_writes_canonical_artifacts(tmp_path) -> None:
     assert paths.oof_probabilities.is_file()
     assert paths.test_probabilities.is_file()
     assert paths.metrics.is_file()
+
+
+def test_fold_local_smote_only_changes_training_rows(tmp_path) -> None:
+    per_fold = np.array([30, 10, 8, 7, 6] + [6] * 21, dtype=int)
+    targets = np.concatenate(
+        [np.full(count, class_index, dtype=np.int32) for class_index, count in enumerate(per_fold)]
+    )
+    folds = np.arange(len(targets), dtype=np.int32) % 5
+    features = sparse.csr_matrix(np.eye(len(targets), 16, dtype=np.float32))
+    test = sparse.csr_matrix(np.ones((9, 16), dtype=np.float32))
+    adapters: list[RecordingAdapter] = []
+
+    def adapter_factory(fold: int) -> RecordingAdapter:
+        del fold
+        adapter = RecordingAdapter()
+        adapters.append(adapter)
+        return adapter
+
+    result = run_canonical_cv(
+        train_features=features,
+        test_features=test,
+        targets=targets,
+        folds=folds,
+        adapter_factory=adapter_factory,
+        model_dir=tmp_path,
+        balanced_sample_weight=False,
+        fold_train_resampler=FoldLocalSmote(k_neighbors=2, base_seed=42),
+    )
+
+    assert result.oof_probabilities.shape == (len(targets), len(CLASS_LABELS))
+    assert result.test_probabilities.shape == (9, len(CLASS_LABELS))
+    for fold, adapter in enumerate(adapters):
+        fit_rows, valid_rows, y_valid_rows = adapter.fit_rows[0]
+        assert valid_rows == int((folds == fold).sum()) == y_valid_rows
+        assert fit_rows > len(targets) - valid_rows
+        assert (adapter.valid_matrices[0] != features[folds == fold]).nnz == 0
+        assert (adapter.prediction_matrices[1] != test).nnz == 0
+        audit = result.fold_metrics[fold]["resampling"]
+        assert audit["input_rows"] == len(targets) - valid_rows
+        assert audit["output_rows"] == fit_rows
+        assert audit["random_state"] == 42 + fold
+
+
+def test_resampling_and_balanced_weight_are_mutually_exclusive(tmp_path) -> None:
+    targets = np.tile(np.arange(len(CLASS_LABELS)), 5)
+    folds = np.repeat(np.arange(5), len(CLASS_LABELS))
+    train = sparse.csr_matrix(np.ones((len(targets), 3), dtype=np.float32))
+    with pytest.raises(ModelRunnerError, match="동시에"):
+        run_canonical_cv(
+            train_features=train,
+            test_features=train[:3],
+            targets=targets,
+            folds=folds,
+            adapter_factory=lambda fold: DummyAdapter(),
+            model_dir=tmp_path,
+            fold_train_resampler=FoldLocalSmote(),
+        )

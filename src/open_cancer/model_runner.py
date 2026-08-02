@@ -42,6 +42,17 @@ class ModelAdapter(Protocol):
     def save(self, path: Path) -> None: ...
 
 
+class FoldTrainResampler(Protocol):
+    """Resample only the training rows for one outer CV fold."""
+
+    def __call__(
+        self,
+        features: sparse.csr_matrix,
+        targets: np.ndarray,
+        fold: int,
+    ) -> tuple[sparse.csr_matrix, np.ndarray, dict[str, Any]]: ...
+
+
 class LogisticRegressionAdapter:
     file_suffix = ".joblib"
 
@@ -285,12 +296,22 @@ def run_canonical_cv(
     adapter_factory: Callable[[int], ModelAdapter],
     model_dir: Path,
     balanced_sample_weight: bool = True,
+    fold_train_resampler: FoldTrainResampler | None = None,
 ) -> CrossValidationOutput:
-    """Train five aligned folds and return canonical OOF/test probabilities."""
+    """Train five aligned folds and return canonical OOF/test probabilities.
+
+    `fold_train_resampler` receives only the selected training rows.  It must
+    not inspect validation or test data.  Resampling and class-balanced sample
+    weights are mutually exclusive so minority examples are not double-counted.
+    """
     _require(train_features.shape[0] == len(targets) == len(folds), "train 행 계약 불일치")
     _require(train_features.shape[1] == test_features.shape[1], "train/test feature 차원 불일치")
     _require(set(np.unique(folds)) == set(range(5)), "canonical fold는 0..4여야 합니다.")
     _require(set(np.unique(targets)) == set(range(len(CLASS_LABELS))), "고정 26개 class index가 필요합니다.")
+    _require(
+        not (balanced_sample_weight and fold_train_resampler is not None),
+        "resampling과 balanced_sample_weight를 동시에 적용할 수 없습니다.",
+    )
     model_dir.mkdir(parents=True, exist_ok=True)
     oof = np.full((len(targets), len(CLASS_LABELS)), np.nan, dtype=np.float64)
     test = np.zeros((test_features.shape[0], len(CLASS_LABELS)), dtype=np.float64)
@@ -300,14 +321,32 @@ def run_canonical_cv(
         valid = folds == fold
         train = ~valid
         adapter = adapter_factory(fold)
+        fit_features = train_features[train]
+        fit_targets = targets[train]
+        resampling: dict[str, Any] | None = None
+        if fold_train_resampler is not None:
+            fit_features, fit_targets, resampling = fold_train_resampler(
+                fit_features,
+                fit_targets,
+                fold,
+            )
+            _require(
+                sparse.isspmatrix_csr(fit_features),
+                "resampling 결과 feature는 CSR sparse matrix여야 합니다.",
+            )
+            _require(
+                fit_features.shape[1] == train_features.shape[1]
+                and fit_features.shape[0] == len(fit_targets),
+                "resampling 결과 feature/target 계약 불일치",
+            )
         weights = (
-            compute_sample_weight(class_weight="balanced", y=targets[train])
+            compute_sample_weight(class_weight="balanced", y=fit_targets)
             if balanced_sample_weight
             else None
         )
         adapter.fit(
-            train_features[train],
-            targets[train],
+            fit_features,
+            fit_targets,
             train_features[valid],
             targets[valid],
             weights,
@@ -320,21 +359,22 @@ def run_canonical_cv(
         oof[valid] = valid_probability
         test += test_probability / 5
         prediction = valid_probability.argmax(axis=1)
-        fold_metrics.append(
-            {
-                "fold": fold,
-                "macro_f1": float(f1_score(targets[valid], prediction, average="macro")),
-                "accuracy": float(accuracy_score(targets[valid], prediction)),
-                "log_loss": float(
-                    log_loss(
-                        targets[valid],
-                        valid_probability,
-                        labels=np.arange(len(CLASS_LABELS)),
-                    )
-                ),
-                "best_iteration": getattr(adapter, "best_iteration", None),
-            }
-        )
+        fold_metric = {
+            "fold": fold,
+            "macro_f1": float(f1_score(targets[valid], prediction, average="macro")),
+            "accuracy": float(accuracy_score(targets[valid], prediction)),
+            "log_loss": float(
+                log_loss(
+                    targets[valid],
+                    valid_probability,
+                    labels=np.arange(len(CLASS_LABELS)),
+                )
+            ),
+            "best_iteration": getattr(adapter, "best_iteration", None),
+        }
+        if resampling is not None:
+            fold_metric["resampling"] = resampling
+        fold_metrics.append(fold_metric)
         path = model_dir / f"fold_{fold:02d}{adapter.file_suffix}"
         adapter.save(path)
         paths.append(path)

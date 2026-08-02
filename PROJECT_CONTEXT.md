@@ -219,6 +219,22 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
 - train/test의 complex·위치 분포 차이는 OOD QC로만 기록하며 피처 선택,
   threshold, blend 가중치나 제출 후보를 정하는 근거로 사용하지 않는다.
 
+### 클래스 불균형과 resampling
+
+`StratifiedKFold`는 각 검증 fold의 클래스 비율을 가깝게 유지할 뿐, 학습 행을
+복제하거나 합성하지 않는다. 기본값은 resampling 없이 학습 fold의
+`balanced_sample_weight`만 사용하는 것이다.
+
+- SMOTE 같은 resampling은 별도 Experiment Issue에서 사전에 method,
+  `k_neighbors`, `sampling_strategy`, base seed를 config에 고정한 경우에만 쓴다.
+- outer fold의 **학습 행만** resample한다. validation·test의 ID, 행 수, 값, 확률
+  산출 순서는 원본 그대로여야 하며 resampler에 전달하지 않는다.
+- resampling과 `balanced_sample_weight`를 동시에 쓰지 않는다. 공통 runner가 이를
+  오류로 막으며, 실험 config에는 `balanced_sample_weight: false`를 명시한다.
+- resolved config와 fold metrics에는 각 fold의 seed, resampling 전후 행 수와
+  설정을 남긴다. 표준 SMOTE가 희소 이진 mutation feature 사이에 fractional 값을
+  만들 수 있으므로, 점수 개선이 확인되기 전까지 기본 전략으로 채택하지 않는다.
+
 ### 파일 명명 규칙
 
 Experiment Issue #12에서 파생된 `EXP-012`의 파일 slug는
