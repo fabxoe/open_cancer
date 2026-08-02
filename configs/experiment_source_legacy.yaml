@@ -1,0 +1,55 @@
+# Historical source exceptions. New official experiments must not be added here.
+config_without_experiment_id:
+  reason: "Pre-source-identity contract configs use the filename-derived EXP-ID."
+  config_stems:
+    - exp003_xgb_baseline
+    - exp005_xgb_mutation_features
+    - exp021_cosmic_weighted_burden_baseline
+    - exp026_mutation_burden
+    - exp029_xgb_log_burden_ratios
+    - exp030_sparse_variant_xgb
+    - exp031_hotspot_extended
+    - exp033_xgb_log_burden_ablation
+    - exp043_xgb_sample_distribution
+    - exp045_xgb_nested_feature_selection
+    - exp047_xgb_min_residue_position
+    - exp050_xgb_fixed_two_distribution_features
+    - exp052_hotspot_cooccurrence
+    - exp058_cooccurrence_pair_ablation
+    - exp063_xgb_residue_indicator
+    - exp065_xgb_residue_exclude_complex
+    - exp067_xgb_residue_coarse_bin
+    - exp069_xgb_max_residue_position
+    - exp075_residue_probability_blend
+    - exp078_xgb_max_residue_indicator
+    - exp085_hotspot_clean
+    - exp093_mutation_position_hotspot
+    - exp094_feature_spec_v1
+    - exp096_fixed_pathway_burden
+    - exp106_recurrent_exact_token
+    - exp107_amino_acid_change
+    - exp109_complex_morphology
+    - exp110_frequency_tier_spectrum
+    - exp123_sparse_logistic_v1
+    - exp125_lightgbm_v1
+    - exp127_catboost_v1
+    - exp131_catboost_v1_extended
+    - exp135_fixed_probability_blend
+    - exp137_cross_fitted_stacking
+    - exp160_residue_position_negative_control
+
+missing_history_config:
+  - experiment_id: EXP-012
+    reason: "분석 전용 Issue이며 모델 실행 config가 없습니다."
+
+missing_runner:
+  - config_stem: exp003_xgb_baseline
+    reason: "초기 baseline은 공용 scripts/run_xgb_baseline.py를 사용했습니다."
+  - config_stem: exp026_mutation_burden
+    reason: "역사적 실행 runner가 현재 저장소에 보존되지 않았습니다."
+  - config_stem: exp031_hotspot_extended
+    reason: "attempt 5 runner는 해당 실행 commit에만 보존되어 있습니다."
+  - config_stem: exp085_hotspot_clean
+    reason: "clean reconstruction의 역사적 runner가 현재 경로에 없습니다."
+  - config_stem: exp094_feature_spec_v1
+    reason: "여러 component runner를 조합한 Feature Spec 실행입니다."

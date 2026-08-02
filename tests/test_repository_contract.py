@@ -5,7 +5,11 @@ from pathlib import Path
 
 import pytest
 
-from open_cancer.validation import ValidationError, validate_repository_contract
+from open_cancer.validation import (
+    ValidationError,
+    validate_experiment_source_identity,
+    validate_repository_contract,
+)
 
 
 def write_history(path: Path, report_path: str = "reports/exp012_model/README.md") -> None:
@@ -82,3 +86,50 @@ def test_dirty_official_record_requires_failed_manifest(tmp_path: Path) -> None:
     summary = validate_repository_contract(tmp_path, history)
     assert summary["dirty_failed_records"] == 1
 
+
+def write_source_identity_repository(tmp_path: Path, runner_source: str) -> Path:
+    history = tmp_path / "EXPERIMENT_HISTORY.md"
+    write_history(history, "reports/exp158_model/README.md")
+    history.write_text(
+        history.read_text(encoding="utf-8").replace("EXP-012", "EXP-158").replace("#12", "#158"),
+        encoding="utf-8",
+    )
+    (tmp_path / "configs").mkdir()
+    (tmp_path / "configs" / "exp158_model.yaml").write_text(
+        "run_mode: experiment\nrecord_role: official\n"
+        "experiment_id: EXP-158\nissue_number: 158\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "configs" / "experiment_source_legacy.yaml").write_text(
+        "config_without_experiment_id:\n  config_stems: []\n"
+        "missing_history_config: []\nmissing_runner: []\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "scripts").mkdir()
+    (tmp_path / "scripts" / "run_exp158_model.py").write_text(
+        runner_source,
+        encoding="utf-8",
+    )
+    report_dir = tmp_path / "reports" / "exp158_model"
+    report_dir.mkdir(parents=True)
+    (report_dir / "README.md").write_text("# report\n", encoding="utf-8")
+    (report_dir / "metrics.json").write_text(
+        json.dumps({"experiment_id": "EXP-158", "record_role": "official"}),
+        encoding="utf-8",
+    )
+    return history
+
+
+def test_source_identity_accepts_matching_runner(tmp_path: Path) -> None:
+    history = write_source_identity_repository(
+        tmp_path,
+        '"""Run EXP-158."""\nfrom open_cancer.experiment import resolve_experiment_context\n',
+    )
+    summary = validate_experiment_source_identity(tmp_path, history)
+    assert summary["source_identity_checked"] == 1
+
+
+def test_source_identity_rejects_wrong_runner_id(tmp_path: Path) -> None:
+    history = write_source_identity_repository(tmp_path, '"""Run EXP-151."""\n')
+    with pytest.raises(ValidationError, match="내부 EXP-ID"):
+        validate_experiment_source_identity(tmp_path, history)
