@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 40
+- 실제 실험 수: 41
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -59,6 +59,7 @@
 | EXP-158 | COMPLETED | fabxoe | #158 | EXP-094 + log1p(missense_count), Secure RTX 4090 실행 | 0.4183327348 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0032953으로 기준 실패·미채택 | [보고서](reports/exp158_missense_burden/README.md) |
 | EXP-160 | COMPLETED | Kangho-Park | #160 | EXP-069 max_residue_position fold-safe permutation negative control (Issue #80 후속) | 0.3987413040(permuted 평균, 원본 0.4131007993) | 미제출(진단 실험) | NOT_STARTED | 25개 (seed, fold) 중 24개에서 하락(delta -0.0143594953)으로 신호 확인, Feature Spec v1 유지·Issue #80 계약 종료 | [보고서](reports/exp160_residue_position_negative_control/README.md) |
 | EXP-170 | COMPLETED | Kangho-Park | #170 | EXP-094 + P_any_nonsilent_cellcycle (Cell Cycle pathway, #167 카탈로그 활용 파일럿 A) | 0.4137462167 | 미제출 | NOT_STARTED | Macro F1 -0.0031404, DLBC F1 -0.0500858 급락으로 기준 실패·미채택 | [보고서](reports/exp170_cellcycle_any_nonsilent/README.md) |
+| EXP-173 | COMPLETED | Kangho-Park | #173 | EXP-094 + P_lof_in_tsg_cellcycle (Cell Cycle TSG LoF, #170 후속 파일럿 B, baseline=EXP-094) | 0.4135108482 | 미제출 | NOT_STARTED | Macro F1 -0.0033757, LUAD F1 -0.0235652 최대 하락으로 기준 실패·미채택. DLBC/LAML은 양성률 0%인데도 반대 방향으로 움직여 perturbation 해석 뒷받침 | [보고서](reports/exp173_cellcycle_lof_tsg/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -1904,3 +1905,57 @@ Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0
   Issue #170 계획상 B는 "A 결과가 반영된 baseline"에서 진행하기로 했으나
   A가 기각됐으므로, 후속 B(`P_lof_in_tsg_cellcycle`)는 EXP-094(원본 v1)를
   그대로 baseline으로 사용하는 새 Experiment Issue에서 진행한다.
+
+### [EXP-173] Cell Cycle pathway aggregation — B: LoF-in-TSG
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #173 / issue-173-cellcycle-lof-tsg
+- 소스 commit: `0974f0cc4daf3ac3f61c21087c25859397a494de`
+- 시작/종료: 2026-08-02T06:43:12.981082+00:00 /
+  2026-08-02T07:01:29.671269+00:00
+
+#### 실행
+
+- Config: `configs/exp173_cellcycle_lof_tsg.yaml`
+- Resolved config: `reproducibility/exp173_cellcycle_lof_tsg/config.resolved.yaml`
+  (PR #172 리뷰 패턴을 선제 적용, 재학습 없음)
+- Metrics: `reports/exp173_cellcycle_lof_tsg/metrics.json`
+- Verdict 상세: `reports/exp173_cellcycle_lof_tsg/verdict.json`
+- Report: `reports/exp173_cellcycle_lof_tsg/README.md`
+- 부모 실험: EXP-094 (Feature Spec v1) — EXP-170이 아님(기각됨)
+- 사전 체크: TSG 6개 유전자(CDKN1A, CDKN1B, CDKN2A, CDKN2B, CDKN2C, RB1)의
+  truncating 변이가 train.csv 전체에서 DLBC(38개, 0%), LAML(158개, 0%),
+  TGCT(124개, 0%)에 대해 단 한 번도 양성인 적이 없음을 실제 데이터로
+  확인했다.
+- 유일한 변경: EXP-094 Feature Spec v1에 `P_lof_in_tsg_cellcycle`(TSG 6개
+  유전자 중 하나라도 truncating(nonsense/frameshift) 변이 존재 시 1) 1개
+  컬럼 추가.
+
+#### 결과
+
+- Fold Macro F1: 실제 fold별 값은 `reports/exp173_cellcycle_lof_tsg/metrics.json` 참고
+- OOF Macro F1: 0.4135108482 (EXP-094 대비 `-0.0033757257`)
+- Fold 표준편차: 0.0096510379 (EXP-094 대비 `+0.0017667858`)
+- Log Loss: 1.8393128496 (EXP-094 대비 `-0.0006244796`)
+- Train/Test positive rate: 4.06% / 2.28%
+- Watch class(DLBC, LAML) — 둘 다 train 양성률 0%인데 반대 방향으로 하락/개선:
+  DLBC F1 `-0.0137221269`, LAML F1 `+0.0237573099`(전체 클래스 중 최고 개선)
+- 클래스별 최악 하락: LUAD `-0.0235651625` (EXP-170의 DLBC와 다른 클래스)
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+
+#### 산출물과 결론
+
+- Metrics/Report: `reports/exp173_cellcycle_lof_tsg/`
+- 승격 기준 대조: Macro F1 +0.001 이상 실패, fold-std 악화 0.002 미만 통과,
+  Log Loss 악화 없음 통과, 전 클래스 F1 악화 없음 실패(LUAD)
+- 결론: Macro F1 gate와 클래스별 F1 gate를 모두 통과하지 못해 기각한다.
+  DLBC/LAML은 feature 값이 항상 0인데도 반대 방향(하락/개선)으로 움직여,
+  "혈액암 계열에 체계적으로 불리하다"는 가설이 아니라 EXP-170과 같은
+  weighting perturbation 해석을 뒷받침한다. 가장 크게 하락한 클래스가
+  EXP-170(DLBC)과 EXP-173(LUAD)에서 서로 다르다는 점도 매번 다른 무작위적
+  perturbation이라는 해석과 일관된다. TSG 6개로 범위를 좁혔음에도(A의 15개
+  대비) 기각된 것은 Cell Cycle pathway aggregation 방향 자체가 이 Feature
+  Spec v1 위에서 추가 신호를 주기 어렵다는 신호로 본다. C(`P_hotspot_in_
+  oncogene_cellcycle`)는 B도 기각된 점을 고려해 진행 여부를 재검토한다.

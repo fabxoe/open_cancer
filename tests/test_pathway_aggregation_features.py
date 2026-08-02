@@ -5,9 +5,12 @@ import pandas as pd
 from open_cancer.feature_family import transform_checked
 from open_cancer.pathway_aggregation_features import (
     CELL_CYCLE_GENES,
+    CELL_CYCLE_TSG_GENES,
     CellCyclePathwayFamily,
     cell_cycle_any_nonsilent_family,
+    cell_cycle_lof_in_tsg_family,
     compute_any_nonsilent_flag,
+    compute_truncating_flag,
     load_cell_cycle_knowledge,
 )
 
@@ -25,10 +28,22 @@ def test_cell_cycle_gene_list_has_fifteen_genes():
     assert "TP53" not in CELL_CYCLE_GENES
 
 
+def test_cell_cycle_tsg_gene_list_is_subset_of_all_genes():
+    assert len(CELL_CYCLE_TSG_GENES) == 6
+    assert set(CELL_CYCLE_TSG_GENES).issubset(set(CELL_CYCLE_GENES))
+    assert "CCND1" not in CELL_CYCLE_TSG_GENES  # OG, not TSG
+
+
 def test_cell_cycle_gene_list_matches_committed_knowledge_file():
     genes_with_roles = load_cell_cycle_knowledge(knowledge_path())
     assert tuple(genes_with_roles.keys()) == CELL_CYCLE_GENES
     assert set(genes_with_roles.values()) == {"OG", "TSG"}
+
+
+def test_cell_cycle_tsg_gene_list_matches_knowledge_file_tsg_labels():
+    genes_with_roles = load_cell_cycle_knowledge(knowledge_path())
+    tsg_genes = tuple(gene for gene, role in genes_with_roles.items() if role == "TSG")
+    assert tsg_genes == CELL_CYCLE_TSG_GENES
 
 
 def test_compute_any_nonsilent_flag_detects_nonsilent_tokens():
@@ -59,13 +74,32 @@ def test_compute_any_nonsilent_flag_rejects_unknown_gene():
         raise AssertionError("expected ValueError for missing gene")
 
 
+def test_compute_truncating_flag_only_matches_nonsense_and_frameshift():
+    frame = pd.DataFrame(
+        {
+            "RB1": ["WT", "R251*", "P34fs", "R251H", "WT"],
+            "CDKN2A": ["WT", "WT", "WT", "WT", "A12A"],
+        }
+    )
+    flags = compute_truncating_flag(frame, genes=("RB1", "CDKN2A"))
+    # row0: WT/WT -> 0; row1: nonsense -> 1; row2: frameshift -> 1;
+    # row3: missense only -> 0; row4: synonymous only -> 0
+    assert flags.tolist() == [0.0, 1.0, 1.0, 0.0, 0.0]
+
+
+def test_compute_truncating_flag_excludes_missense():
+    frame = pd.DataFrame({"RB1": ["R251H"], "CDKN2A": ["WT"]})
+    flags = compute_truncating_flag(frame, genes=("RB1", "CDKN2A"))
+    assert flags.tolist() == [0.0]
+
+
 def _fixture_frame() -> pd.DataFrame:
     row = {gene: "WT" for gene in CELL_CYCLE_GENES}
     row["RB1"] = "R251*"
     return pd.DataFrame([row, {gene: "WT" for gene in CELL_CYCLE_GENES}])
 
 
-def test_cell_cycle_family_matches_direct_compute_function():
+def test_cell_cycle_any_nonsilent_family_matches_direct_compute_function():
     """The registered family must be bit-identical to the raw compute function
     already used by EXP-170's recorded OOF/metrics -- this is what lets the
     Feature Factory registration be added without retraining."""
@@ -76,7 +110,16 @@ def test_cell_cycle_family_matches_direct_compute_function():
     assert via_family.tolist() == direct.tolist()
 
 
-def test_cell_cycle_family_descriptor_and_provenance():
+def test_cell_cycle_lof_in_tsg_family_matches_direct_compute_function():
+    """Same equivalence guarantee for EXP-173's P_lof_in_tsg_cellcycle."""
+    frame = _fixture_frame()
+    direct = compute_truncating_flag(frame, CELL_CYCLE_TSG_GENES)
+    fitted = cell_cycle_lof_in_tsg_family(knowledge_path()).fit(frame)
+    via_family = transform_checked(fitted, frame).toarray().ravel()
+    assert via_family.tolist() == direct.tolist()
+
+
+def test_cell_cycle_any_nonsilent_family_descriptor_and_provenance():
     fitted = cell_cycle_any_nonsilent_family(knowledge_path()).fit(_fixture_frame())
     descriptor = fitted.descriptor
     assert descriptor.name == "cellcycle_any_nonsilent"
@@ -87,6 +130,14 @@ def test_cell_cycle_family_descriptor_and_provenance():
     assert provenance.license.startswith("CC BY-NC-ND")
     assert provenance.uri == "https://doi.org/10.1016/j.cell.2018.03.035"
     assert len(provenance.sha256) == 64
+
+
+def test_cell_cycle_lof_in_tsg_family_descriptor_uses_tsg_subset_only():
+    fitted = cell_cycle_lof_in_tsg_family(knowledge_path()).fit(_fixture_frame())
+    assert fitted.descriptor.name == "cellcycle_lof_in_tsg"
+    assert fitted.descriptor.feature_names == ("pathway__cellcycle_lof_in_tsg",)
+    assert set(fitted.genes) == set(CELL_CYCLE_TSG_GENES)
+    assert "CCND1" not in fitted.genes
 
 
 def test_cell_cycle_family_rejects_unsupported_kind():
