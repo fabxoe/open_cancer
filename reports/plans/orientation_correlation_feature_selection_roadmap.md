@@ -28,8 +28,9 @@
 | S1 | Elastic Net stability selection | [#203](https://github.com/fabxoe/open_cancer/issues/203) | EXP-203 | [#204](https://github.com/fabxoe/open_cancer/pull/204) | COMPLETED | 0.2996289845 | ARCHIVE; dense selector가 512-gene cap을 유발, S1 규칙 재튜닝 없이 S2 진행 |
 | S2 | mRMR | [#205](https://github.com/fabxoe/open_cancer/issues/205) | EXP-205 | [#206](https://github.com/fabxoe/open_cancer/pull/206) | COMPLETED | 0.3976963538 | ARCHIVE; top-128 압축이 EXP-094보다 크게 하락, S2 규칙 재튜닝 없이 S3 진행 |
 | S3 | Boruta | [#207](https://github.com/fabxoe/open_cancer/issues/207) | EXP-207 | [#208](https://github.com/fabxoe/open_cancer/pull/208) | COMPLETED | 0.3484416378 | ARCHIVE; 15~18 confirmed genes로 과도하게 압축되어 Macro F1·DLBC F1 붕괴, 재튜닝 중단 |
-| M1 | Macro-F1 checkpoint 선택 감사·통제 실험 | 미발급 | 미발급 | - | PLANNED | N/A | EXP-094 동일 조건에서 mlogloss-best와 Macro-F1-best iteration 비교 |
-| S4 | TruncatedSVD 비교 모델 | 미발급 | 미발급 | - | PLANNED | N/A | M1 판정 후 |
+| M0 | Macro-F1 checkpoint 감사 기반 | [#217](https://github.com/fabxoe/open_cancer/issues/217) | 해당 없음 | PR 생성 예정 | IN_PROGRESS | N/A | validation-only iteration audit·결정적 tie-break·테스트 구현 |
+| M1 | Macro-F1 checkpoint 선택 통제 실험 | 미발급 | 미발급 | - | PLANNED | N/A | EXP-094 동일 조건에서 mlogloss-best와 Macro-F1-best iteration 비교 |
+| S4 | TruncatedSVD 비교 모델 | [#196](https://github.com/fabxoe/open_cancer/issues/196) | EXP-196 | - | PLANNED | N/A | M1 판정 후 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`만 사용하며, 필요하면 `BLOCKED` 또는 `REJECTED`로 종료한다. 이는 실험 재현 상태와 별개다.
 
@@ -108,10 +109,11 @@ S1~S3은 선택된 유전자의 v1 유전자 블록과 global/hotspot을 유지�
    Macro-F1 checkpoint 선택 감사·통제 실험을 먼저 수행한 뒤 S4 TruncatedSVD
    comparator Issue로 진행한다.
 
-## M1 — Macro F1 checkpoint 선택 감사
+## M0–M1 — Macro F1 checkpoint 선택 감사
 
-S3 종료 후 S4에 앞서 공식 평가 지표와 XGBoost checkpoint 선택 기준의 정렬을
-통제 실험으로 확인한다. EXP-094의 feature, canonical fold, seed, 모델
+S3 종료 후 S4에 앞서 일반 Task M0에서 validation-only iteration audit 기반을
+구현한다. 이어지는 M1 통제 실험에서 공식 평가 지표와 XGBoost checkpoint 선택
+기준의 정렬을 확인한다. EXP-094의 feature, canonical fold, seed, 모델
 하이퍼파라미터를 유지하고 fold validation의 iteration별 Macro F1을 기록한다.
 현재 `mlogloss` best iteration과 validation Macro F1 best iteration으로 만든
 OOF를 비교하며 test와 Public LB는 iteration 선택에 사용하지 않는다.
