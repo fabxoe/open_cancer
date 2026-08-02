@@ -29,6 +29,7 @@ from open_cancer.fold_feature_selection import (
     MrmrMutationPresenceSelector,
     PhiJaccardGreedyPruner,
     RareMutationPresencePruner,
+    write_fold_feature_selection,
 )
 from open_cancer.frozen_feature_specs import materialize_frozen_feature_spec
 from open_cancer.hashing import sha256_file
@@ -37,7 +38,11 @@ from open_cancer.model_artifacts import (
     build_test_probability_frame,
     write_model_run_records,
 )
-from open_cancer.model_runner import create_model_adapter, run_canonical_cv
+from open_cancer.model_runner import (
+    create_model_adapter,
+    fit_fold_feature_selections,
+    run_canonical_cv,
+)
 from open_cancer.validation import validate_json_document, validate_submission
 
 
@@ -236,6 +241,112 @@ def main(*, config_path: Path = DEFAULT_CONFIG) -> None:
         )
     else:
         raise RuntimeError(f"지원하지 않는 feature selection method: {selection_config['method']}")
+
+    prepared_selections = fit_fold_feature_selections(
+        train_features=train_features,
+        targets=targets,
+        folds=folds,
+        feature_names=feature_names,
+        fold_feature_selector=selector,
+    )
+    minimum_confirmed = selection_config.get("minimum_confirmed_gene_count")
+    shortfalls: list[tuple[int, int]] = []
+    if minimum_confirmed is not None:
+        minimum_confirmed = int(minimum_confirmed)
+        shortfalls = [
+            (fold, int(selection.metadata.get("confirmed_gene_count", 0)))
+            for fold, selection in enumerate(prepared_selections)
+            if int(selection.metadata.get("confirmed_gene_count", 0)) < minimum_confirmed
+        ]
+    if shortfalls:
+        selection_paths = tuple(
+            write_fold_feature_selection(
+                selection=selection,
+                feature_names=feature_names,
+                path=model_dir / f"fold_{fold:02d}_feature_selection.json",
+            )
+            for fold, selection in enumerate(prepared_selections)
+        )
+        owner = git("config", "user.name") or "unknown"
+        source_commit = git("rev-parse", "HEAD")
+        resolved = resolved_config(
+            config=config,
+            context=context,
+            owner=owner,
+            source_commit=source_commit,
+            started_at=started_at,
+            feature_spec=spec_manifest,
+        )
+        compact_selections = compact_fold_metrics(
+            [
+                {"fold": fold, "macro_f1": None, "feature_selection": selection.metadata}
+                for fold, selection in enumerate(prepared_selections)
+            ],
+            model_dir=model_dir,
+        )
+        metrics = {
+            "experiment_id": context.experiment_id,
+            "record_role": "official",
+            "status": "ABORTED",
+            "owner": owner,
+            "issue_number": context.issue_number,
+            "parent_experiment": config["parent_experiment"],
+            "git_commit": source_commit,
+            "started_at": started_at.isoformat(),
+            "finished_at": datetime.now(timezone.utc).isoformat(),
+            "primary_metric": "macro_f1",
+            "split_id": config["split"]["path"],
+            "folds": compact_selections,
+            "decision": "SELECTOR_INSUFFICIENT",
+            "leaderboard": None,
+            "runtime": {"seconds": time.perf_counter() - timer},
+            "artifacts": {
+                "feature_spec_manifest": str(
+                    (feature_dir / "feature_spec_manifest.json").relative_to(ROOT)
+                ),
+                "models": None,
+            },
+            "notes": (
+                "selector produced insufficient set: confirmed_gene_count is below "
+                f"minimum_confirmed_gene_count={minimum_confirmed} in folds {shortfalls}. "
+                "No XGBoost model, OOF, test probabilities, or submission was created."
+            ),
+        }
+        metrics_path = report_dir / "metrics.json"
+        metrics_path.write_text(json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        validate_json_document(metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json")
+        write_model_run_records(
+            root=ROOT,
+            output_dir=repro_dir,
+            experiment_id=context.experiment_id or "",
+            issue_number=context.issue_number or 0,
+            source_commit=source_commit,
+            resolved_config=resolved,
+            metrics=metrics,
+            data_files={"train": TRAIN, "test": TEST, "sample_submission": SAMPLE, "split": split_path},
+            artifacts={
+                "feature_spec_manifest": feature_dir / "feature_spec_manifest.json",
+                **{
+                    f"feature_selection_fold_{fold}": path
+                    for fold, path in enumerate(selection_paths)
+                },
+            },
+            environment=resolved["environment"],
+        )
+        print(
+            json.dumps(
+                {
+                    "experiment_id": context.experiment_id,
+                    "status": "ABORTED",
+                    "decision": "SELECTOR_INSUFFICIENT",
+                    "shortfalls": shortfalls,
+                    "metrics": str(metrics_path),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return
     result = run_canonical_cv(
         train_features=train_features,
         test_features=test_features,
@@ -245,7 +356,7 @@ def main(*, config_path: Path = DEFAULT_CONFIG) -> None:
         model_dir=model_dir,
         balanced_sample_weight=bool(config["training"]["balanced_sample_weight"]),
         feature_names=feature_names,
-        fold_feature_selector=selector,
+        prepared_fold_feature_selections=prepared_selections,
     )
     predictions = result.oof_probabilities.argmax(axis=1)
     fold_scores = np.asarray([fold["macro_f1"] for fold in result.fold_metrics])

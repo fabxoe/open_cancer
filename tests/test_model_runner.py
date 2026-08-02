@@ -11,6 +11,7 @@ from open_cancer.model_runner import (
     ModelRunnerError,
     _validate_probabilities,
     create_model_adapter,
+    fit_fold_feature_selections,
     run_canonical_cv,
     write_cross_validation_artifacts,
 )
@@ -214,3 +215,36 @@ def test_feature_selector_is_fit_on_outer_train_and_mask_is_saved(tmp_path) -> N
     assert all(adapter.valid_matrices[0].shape[1] == 2 for adapter in adapters)
     assert all(adapter.prediction_matrices[1].shape == (7, 2) for adapter in adapters)
     assert all(metric["feature_selection"]["selector"] == "test_selector" for metric in result.fold_metrics)
+
+
+def test_prepared_fold_selections_are_fit_before_and_reused_for_all_training(tmp_path) -> None:
+    targets = np.tile(np.arange(len(CLASS_LABELS)), 5)
+    folds = np.repeat(np.arange(5), len(CLASS_LABELS))
+    train = sparse.csr_matrix(np.ones((len(targets), 4), dtype=np.float32))
+    test = sparse.csr_matrix(np.ones((7, 4), dtype=np.float32))
+    selector = FirstTwoFeatureSelector()
+    names = ["A__mutated", "B__mutated", "A__missense", "sample__count"]
+
+    prepared = fit_fold_feature_selections(
+        train_features=train,
+        targets=targets,
+        folds=folds,
+        feature_names=names,
+        fold_feature_selector=selector,
+    )
+
+    assert selector.fit_shapes == [(104, 4)] * 5
+    result = run_canonical_cv(
+        train_features=train,
+        test_features=test,
+        targets=targets,
+        folds=folds,
+        adapter_factory=lambda fold: DummyAdapter(),
+        model_dir=tmp_path,
+        balanced_sample_weight=False,
+        feature_names=names,
+        prepared_fold_feature_selections=prepared,
+    )
+
+    assert selector.fit_shapes == [(104, 4)] * 5
+    assert [path is not None and path.is_file() for path in result.feature_selection_paths] == [True] * 5
