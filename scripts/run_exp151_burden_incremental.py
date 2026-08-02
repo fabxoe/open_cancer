@@ -64,7 +64,6 @@ def main() -> None:
     folds = split["fold"].to_numpy(dtype=np.int32)
     targets = train["SUBCLASS"].map({label: i for i, label in enumerate(CLASS_LABELS)}).to_numpy(dtype=np.int32)
     params = dict(config["model"])
-    params.pop("early_stopping_rounds", None)
     result = run_canonical_cv(
         train_features=x_train, test_features=x_test, targets=targets, folds=folds,
         adapter_factory=lambda fold: create_model_adapter("xgboost", params, 42 + fold),
