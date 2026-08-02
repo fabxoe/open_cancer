@@ -26,9 +26,10 @@
 | R1 | 상관 pair 범주형 요약 | [#191](https://github.com/fabxoe/open_cancer/issues/191) | EXP-191 | [#201](https://github.com/fabxoe/open_cancer/pull/201) | COMPLETED | 0.4144744818 | ARCHIVE; R2 실행 |
 | R2 | 희귀 mutation-presence filter | [#192](https://github.com/fabxoe/open_cancer/issues/192) | EXP-192 | [#202](https://github.com/fabxoe/open_cancer/pull/202) | COMPLETED | 0.4176058118 | ARCHIVE; R1~R2 threshold 재탐색 종료 |
 | S1 | Elastic Net stability selection | [#203](https://github.com/fabxoe/open_cancer/issues/203) | EXP-203 | [#204](https://github.com/fabxoe/open_cancer/pull/204) | COMPLETED | 0.2996289845 | ARCHIVE; dense selector가 512-gene cap을 유발, S1 규칙 재튜닝 없이 S2 진행 |
-| S2 | mRMR | [#205](https://github.com/fabxoe/open_cancer/issues/205) | EXP-205 | PR 생성 예정 | COMPLETED | 0.3976963538 | ARCHIVE; top-128 압축이 EXP-094보다 크게 하락, S2 규칙 재튜닝 없이 S3 진행 |
-| S3 | Boruta | [#207](https://github.com/fabxoe/open_cancer/issues/207) | EXP-207 | - | IN_PROGRESS | N/A | fold-safe selector 구현·smoke 검증 후 clean main에서 공식 5-fold 실행 |
-| S4 | TruncatedSVD 비교 모델 | 미발급 | 미발급 | - | PLANNED | N/A | S3 후 |
+| S2 | mRMR | [#205](https://github.com/fabxoe/open_cancer/issues/205) | EXP-205 | [#206](https://github.com/fabxoe/open_cancer/pull/206) | COMPLETED | 0.3976963538 | ARCHIVE; top-128 압축이 EXP-094보다 크게 하락, S2 규칙 재튜닝 없이 S3 진행 |
+| S3 | Boruta | [#207](https://github.com/fabxoe/open_cancer/issues/207) | EXP-207 | [#208](https://github.com/fabxoe/open_cancer/pull/208) | COMPLETED | 0.3484416378 | ARCHIVE; 15~18 confirmed genes로 과도하게 압축되어 Macro F1·DLBC F1 붕괴, 재튜닝 중단 |
+| M1 | Macro-F1 checkpoint 선택 감사·통제 실험 | 미발급 | 미발급 | - | PLANNED | N/A | EXP-094 동일 조건에서 mlogloss-best와 Macro-F1-best iteration 비교 |
+| S4 | TruncatedSVD 비교 모델 | 미발급 | 미발급 | - | PLANNED | N/A | M1 판정 후 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`만 사용하며, 필요하면 `BLOCKED` 또는 `REJECTED`로 종료한다. 이는 실험 재현 상태와 별개다.
 
@@ -104,7 +105,22 @@ S1~S3은 선택된 유전자의 v1 유전자 블록과 global/hotspot을 유지�
 3. clean `main` 기반에서 EXP-207 canonical 5-fold를 한 번만 실행하고, 실제
    산출물·OOF 또는 충분하지 않은 selector 결과를 기록한다.
 4. S3 결과가 gate를 통과하지 않으면 재튜닝 없이 `ARCHIVE`하고, 사전 등록된
-   S4 TruncatedSVD comparator Issue로 진행한다.
+   Macro-F1 checkpoint 선택 감사·통제 실험을 먼저 수행한 뒤 S4 TruncatedSVD
+   comparator Issue로 진행한다.
+
+## M1 — Macro F1 checkpoint 선택 감사
+
+S3 종료 후 S4에 앞서 공식 평가 지표와 XGBoost checkpoint 선택 기준의 정렬을
+통제 실험으로 확인한다. EXP-094의 feature, canonical fold, seed, 모델
+하이퍼파라미터를 유지하고 fold validation의 iteration별 Macro F1을 기록한다.
+현재 `mlogloss` best iteration과 validation Macro F1 best iteration으로 만든
+OOF를 비교하며 test와 Public LB는 iteration 선택에 사용하지 않는다.
+
+판정 우선순위는 전체 OOF Macro F1, 클래스별 F1 붕괴, fold 표준편차 순이다.
+Log Loss는 학습 상태와 확률 품질을 설명하는 보조 지표로 기록하며 단독 기각
+조건으로 사용하지 않는다. 통제 실험에서 Macro F1이 개선되면 이후 XGBoost
+실험의 checkpoint 정책 후보로 채택하고, 그렇지 않으면 기존 학습 방식을
+유지한다. 과거 실험 전체를 일괄 재학습하지 않는다.
 
 ## 후속 해석·튜닝·모델 비교
 

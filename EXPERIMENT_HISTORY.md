@@ -7,13 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 49
+- 실제 실험 수: 50
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
 - 최고 Public LB Macro F1: 0.3170803849 (`EXP-031`)
 - 최고 재현 검증 모델: `EXP-131` (`INFERENCE_VERIFIED`)
-- 최종 갱신일: 2026-08-02
+- 최종 갱신일: 2026-08-03
 
 ## 실험 요약
 
@@ -68,6 +68,7 @@
 | EXP-192 | COMPLETED | fabxoe | #192 | EXP-094 + fold-local 양성 수 `<5` mutation-presence 열 제거 | 0.4176058118 | 미제출 | MANIFEST_COMPLETE | Macro F1 +0.0007192지만 fold std +0.0073553으로 gate 실패, ARCHIVE | [보고서](reports/exp192_r2_rare_mutation_presence_filter/README.md) |
 | EXP-203 | COMPLETED | fabxoe | #203 | EXP-094 + outer-train Elastic Net stability selection (최대 512 genes) | 0.2996289845 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.1172576·Log Loss +0.3633948; dense selector가 512개 cap을 유발해 ARCHIVE | [보고서](reports/exp203_s1_elastic_net_stability_selection/README.md) |
 | EXP-205 | COMPLETED | fabxoe | #205 | EXP-094 + outer-train mRMR-MID top-128 mutation-presence genes | 0.3976963538 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0191902·Log Loss +0.0426300으로 gate 실패, ARCHIVE | [보고서](reports/exp205_s2_mrmr_feature_selection/README.md) |
+| EXP-207 | COMPLETED | fabxoe | #207 | EXP-094 + outer-train Boruta confirmed mutation-presence genes | 0.3484416378 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0684449·DLBC F1 0으로 붕괴, 재튜닝 없이 ARCHIVE | [보고서](reports/exp207_s3_boruta_feature_selection/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -127,6 +128,40 @@
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-207] S3 Boruta feature selection
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #207 / `issue-207-s3-boruta-feature-selection`
+- 소스 commit: `ddee2248c9aedaa518fc5e305d1d7f0ba1138f9e`
+- 시작/종료: 2026-08-02T14:15:53.550629+00:00 /
+  2026-08-02T15:30:46.334105+00:00
+
+#### 실행과 결과
+
+- Config: `configs/exp207_s3_boruta_feature_selection.yaml`
+- Runner: `scripts/run_exp207_s3_boruta_feature_selection.py`
+- Metrics: `reports/exp207_s3_boruta_feature_selection/metrics.json`
+- canonical outer-train에서만 Boruta를 fit했고 fold별 confirmed gene은
+  18 / 16 / 15 / 18 / 17개였다.
+- Fold Macro F1: 0.3457348416 / 0.3384758616 / 0.3420677438 /
+  0.3507670103 / 0.3604855979
+- OOF Macro F1: 0.3484416378 (EXP-094 대비 `-0.0684449361`)
+- Fold 표준편차: 0.0076597543 (EXP-094 대비 `-0.0002244977`)
+- Accuracy: 0.3534913724
+- Log Loss: 2.0194741289 (보조 지표, EXP-094 대비 `+0.1795367996`)
+- DLBC F1: 0.0, 클래스별 최악 하락: `-0.3773584906`
+- Public LB: 미제출
+- 재현 상태: `MANIFEST_COMPLETE`
+
+#### 결론
+
+안전 종료 하한 10개는 통과했지만 강한 유전자 15~18개만 남겨 26개 암종의
+약한 보완 신호를 과도하게 제거했다. 공식 Macro F1과 소수 클래스 F1이 크게
+붕괴했으므로 `ARCHIVE`하며 Boruta 설정을 결과에 맞춰 재튜닝하지 않는다.
+상세 해석과 산출물은
+[보고서](reports/exp207_s3_boruta_feature_selection/README.md)를 참고한다.
 
 ### [EXP-205] S2 mRMR feature selection
 
