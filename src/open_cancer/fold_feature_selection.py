@@ -218,6 +218,14 @@ class PhiJaccardGreedyPruner:
             },
             "mutation_presence_feature_count": len(mutation_indices),
             "candidate_pair_count": len(candidates),
+            "candidate_pairs": [
+                {
+                    key: value
+                    for key, value in pair.items()
+                    if key not in {"left_local_index", "right_local_index", "dropped_gene"}
+                }
+                for pair in candidates
+            ],
             "matched_pair_count": len(matched_pairs),
             "dropped_feature_names": [str(feature_names[index]) for index in sorted(dropped_global_indices)],
             "dropped_gene_names": [

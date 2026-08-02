@@ -19,7 +19,7 @@
 | 단계 | 작업 | Issue | EXP | PR | 상태 | OOF Macro F1 | 다음 행동 |
 |---|---|---:|---:|---:|---|---:|---|
 | T0 | fold-safe selector 공용 기반 | [#183](https://github.com/fabxoe/open_cancer/issues/183) | 해당 없음 | [#184](https://github.com/fabxoe/open_cancer/pull/184) | MERGED | N/A | C0 분석 기록 후 C1 Issue 발급 |
-| C0 | 극단 중복 진단 | 미발급 | explore | - | PLANNED | N/A | C1 전 분석 기록 |
+| C0 | 극단 중복 진단 | [#187](https://github.com/fabxoe/open_cancer/issues/187) | explore | - | IN_PROGRESS | N/A | 보고서·PR 작성 |
 | C1 | 보수적 Phi/Jaccard 삭제 | 미발급 | 미발급 | - | PLANNED | N/A | T0 병합 후 실행 |
 | C2 | 중간 강도 Phi/Jaccard 삭제 | 미발급 | 미발급 | - | PLANNED | N/A | T0 병합 후 실행 |
 | C3 | 넓은 Phi/Jaccard 삭제 | 미발급 | 미발급 | - | PLANNED | N/A | T0 병합 후 실행 |
