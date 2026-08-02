@@ -23,7 +23,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, log_loss
 
 from open_cancer.constants import CLASS_LABELS
 from open_cancer.experiment import resolve_experiment_context
-from open_cancer.fold_feature_selection import PhiJaccardGreedyPruner
+from open_cancer.fold_feature_selection import PhiJaccardGreedyPruner, RareMutationPresencePruner
 from open_cancer.frozen_feature_specs import materialize_frozen_feature_spec
 from open_cancer.hashing import sha256_file
 from open_cancer.model_artifacts import (
@@ -166,11 +166,18 @@ def main(*, config_path: Path = DEFAULT_CONFIG) -> None:
     if pd.isna(targets).any() or set(np.unique(folds)) != set(range(5)):
         raise RuntimeError("고정 class order 또는 canonical split 계약이 깨졌습니다.")
     selection_config = config["feature_selection"]
-    selector = PhiJaccardGreedyPruner(
-        phi_min=float(selection_config["phi_min"]),
-        jaccard_min=float(selection_config["jaccard_min"]),
-        min_joint_count=int(selection_config["min_joint_count"]),
-    )
+    if selection_config["method"] == "phi_jaccard_greedy_mutation_presence_pruner":
+        selector = PhiJaccardGreedyPruner(
+            phi_min=float(selection_config["phi_min"]),
+            jaccard_min=float(selection_config["jaccard_min"]),
+            min_joint_count=int(selection_config["min_joint_count"]),
+        )
+    elif selection_config["method"] == "rare_mutation_presence_pruner":
+        selector = RareMutationPresencePruner(
+            min_positive_count=int(selection_config["min_positive_count"]),
+        )
+    else:
+        raise RuntimeError(f"지원하지 않는 feature selection method: {selection_config['method']}")
     result = run_canonical_cv(
         train_features=train_features,
         test_features=test_features,
