@@ -89,8 +89,8 @@
     {
       "kind": "oof_probabilities",
       "path": "oof/exp192_r2_rare_mutation_presence_filter.csv",
-      "size_bytes": 3537340,
-      "sha256": "86acbad436119226020063dcf6fba5c80e2d7c81fd575c1fe9ae01abaec6cf17",
+      "size_bytes": 3537128,
+      "sha256": "0e76fd5820c47b5a9e0ee07f4197409f6d20226d3aefeeefacb83fd6670975f3",
       "storage_uri": null
     },
     {
@@ -103,8 +103,8 @@
     {
       "kind": "test_probabilities",
       "path": "preds/exp192_r2_rare_mutation_presence_filter_test_proba.csv",
-      "size_bytes": 1413101,
-      "sha256": "5b1fe5c91f7e715dfaebb061f6923b2f2efc8d64c332895e29b4289c6a4fcd4b",
+      "size_bytes": 1413053,
+      "sha256": "5afd4d5c170ff84ca3cce481dc34415ebb0fab26f32be07c72236ac7880fb9f5",
       "storage_uri": null
     },
     {
@@ -117,8 +117,8 @@
     {
       "kind": "metrics",
       "path": "reproducibility/exp192_r2_rare_mutation_presence_filter/metrics.json",
-      "size_bytes": 101444,
-      "sha256": "0e5b322060ecb3962e4c71aef7cb8ff4379d6624686ba53acc517720bd81e225",
+      "size_bytes": 14525,
+      "sha256": "7e15eb09a2d6ad4f5764ae6c4b625f0d91607d010c142837ebee704caaa1e769",
       "storage_uri": null
     }
   ]

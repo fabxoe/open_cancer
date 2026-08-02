@@ -121,6 +121,15 @@ def compact_fold_metrics(
             selection = dict(selection)
             selection.pop("candidate_pairs", None)
             selection.pop("matched_pairs", None)
+            dropped_feature_names = selection.pop("dropped_feature_names", [])
+            dropped_gene_names = selection.pop("dropped_gene_names", [])
+            dropped_prevalence = selection.pop("dropped_prevalence", None)
+            if dropped_feature_names:
+                selection["dropped_feature_count"] = len(dropped_feature_names)
+            if dropped_gene_names:
+                selection["dropped_gene_count"] = len(dropped_gene_names)
+            if dropped_prevalence is not None:
+                selection["dropped_prevalence_artifact"] = "fold feature selection artifact"
             fold = int(record["fold"])
             selection_artifact = str(selection.get("candidate_pairs_artifact") or (
                 model_dir / f"fold_{fold:02d}_feature_selection.json"
