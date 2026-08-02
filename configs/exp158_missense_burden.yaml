@@ -1,0 +1,36 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-158
+issue_number: 158
+parent_experiment: EXP-094
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+baseline:
+  feature_spec: v1
+  metrics_path: reports/exp094_feature_spec_v1/metrics.json
+variants:
+  - name: log_missense_count
+    added_features: [sample__missense_count_log1p]
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cuda
+  n_jobs: 16
+  verbosity: 0
+acceptance:
+  min_macro_f1_delta: 0.001
+  max_fold_std_delta: 0.002
+  require_no_log_loss_regression: true
+  require_no_lower_quartile_class_f1_regression: true
