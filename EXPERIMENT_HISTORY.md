@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 38
+- 실제 실험 수: 39
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -57,6 +57,7 @@
 | EXP-151 | COMPLETED | fabxoe | #151 | EXP-094 + log1p(mutated_gene_count), Secure RTX 4090 실행 | 0.4188970451 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0051158로 기준 실패·미채택 | [보고서](reports/exp151_mutated_gene_burden/README.md) |
 | EXP-154 | COMPLETED | fabxoe | #154 | EXP-094 + log1p(total_variant_count), Secure RTX 4090 실행 | 0.4183986443 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0056484로 기준 실패·미채택 | [보고서](reports/exp154_total_variant_burden/README.md) |
 | EXP-158 | COMPLETED | fabxoe | #158 | EXP-094 + log1p(missense_count), Secure RTX 4090 실행 | 0.4183327348 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0032953으로 기준 실패·미채택 | [보고서](reports/exp158_missense_burden/README.md) |
+| EXP-160 | COMPLETED | Kangho-Park | #160 | EXP-069 max_residue_position fold-safe permutation negative control (Issue #80 후속) | 0.3987413040(permuted 평균, 원본 0.4131007993) | 미제출(진단 실험) | NOT_STARTED | 25개 (seed, fold) 중 24개에서 하락(delta -0.0143594953)으로 신호 확인, Feature Spec v1 유지·Issue #80 계약 종료 | [보고서](reports/exp160_residue_position_negative_control/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -1768,3 +1769,59 @@ Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0
 악화됐다. 따라서 missense burden을 Feature Spec이나 Public 제출 후보로 채택하지
 않는다. 저장 checkpoint 재추론 확률도 원본 실행과 정확히 일치하지 않아
 `INFERENCE_VERIFIED`로 승격하지 않고, 원본 OOF·test 확률과 checkpoint만 분석용으로 보존한다.
+
+### [EXP-160] Residue-position negative control (Issue #80 후속)
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #160 / issue-160-negative-control-residue-position
+- 소스 commit: `53e6233ee533ec20a3dd7acdbeda0c0a607e5eb1`
+- 시작/종료: 2026-08-02T03:14:08.927601+00:00 /
+  2026-08-02T04:50:34.263043+00:00
+
+#### 실행
+
+- Config: `reproducibility/exp160_residue_position_negative_control/config.resolved.yaml`
+- Metrics: `reports/exp160_residue_position_negative_control/metrics.json`
+- Permutation 상세: `reports/exp160_residue_position_negative_control/permutation_detail.json`
+- Report: `reports/exp160_residue_position_negative_control/README.md`
+- 부모 실험: EXP-069 (max residue-position, `transform: raw`)
+- 배경: `scripts/explore_hotspot_numbering_consistency.py` 실행 결과 패널 전체
+  402,443개 (gene, position) 조합 중 14,685개(3.6490%)가 reference amino acid
+  불일치를 보였고, `max_residue_position`은 이 검증을 거치지 않은 원시 값임을
+  확인했다. Issue #80의 "후속 negative control 계약"과 `PROJECT_CONTEXT.md`
+  §4의 동일 규칙을 실행한다.
+- 방법: EXP-069와 동일한 v1 feature matrix를 재사용하고, 각 outer fold의 train
+  부분에서만 유전자별로 `max_residue_position` 값을 해당 유전자의
+  mutation-type(missense/synonymous/nonsense/frameshift/complex) strata 안에서
+  무작위 재배치했다. Validation 위치와 다른 모든 피처는 원본 그대로 유지, test는
+  사용하지 않았다. 5개 고정 permutation seed(1001–1005)로 반복했고, 모델
+  `random_state`는 EXP-069와 동일하게 `42 + fold`로 고정해 permutation 효과만
+  분리했다.
+
+#### 결과
+
+- 원본(EXP-069) OOF Macro F1: `0.4131007993`, fold 표준편차: `0.0082058569`
+- Permuted OOF Macro F1(5 seed 평균): `0.3987413040`, seed 간 표준편차:
+  `0.0023074239`
+- 전체 차이(permuted 평균 - 원본): `-0.0143594953`
+- Fold별 차이(permuted 평균 - 원본): fold0 `-0.0110250121`, fold1
+  `-0.0196334319`, fold2 `-0.0089344139`, fold3 `-0.0216405424`, fold4
+  `-0.0144066194` — 5개 fold 전부 하락
+- 25개 (seed, fold) 조합 중 24개가 원본보다 낮았다. 유일한 예외는 seed 1003의
+  fold 0(`+0.0012132900`)로 permutation seed 잡음 범위 안이다.
+- Public LB: 미제출(진단 실험)
+- 재현 상태: `NOT_STARTED` (일반 Local 실험, 리더보드 미제출이라
+  `INFERENCE_VERIFIED` manifest 불필요)
+
+#### 산출물과 결론
+
+- Metrics/Report: `reports/exp160_residue_position_negative_control/`
+- 결론: gene×mutation-type 소속 정보를 그대로 보존한 채 위치 값만 fold-train
+  안에서 재배치했는데도 5개 fold, 25개 조합 중 24개에서 일관되게 성능이
+  하락했다. `max_residue_position`은 노이즈가 아니라 fold를 넘어 일반화되는
+  실제 예측 신호를 담고 있다고 판단한다. Feature Spec v1을 그대로 유지하고,
+  Issue #80의 negative control 계약을 이 결과로 종료 처리한다. 다만 이 결과는
+  "신호가 실재한다"만 증명하며, 그 신호가 생물학적 hotspot·기능부위 효과인지
+  다른 상관 요인(코호트, transcript 넘버링 관례 등)인지는 별도 분석이 필요하고
+  이 실험만으로 단정하지 않는다.

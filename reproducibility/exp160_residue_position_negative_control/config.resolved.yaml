@@ -1,0 +1,168 @@
+experiment:
+  issue_number: 160
+  experiment_id: EXP-160
+  branch: issue-160-negative-control-residue-position
+  owner: Kangho Park
+  source_commit: 53e6233ee533ec20a3dd7acdbeda0c0a607e5eb1
+  dirty_worktree: false
+  started_at: '2026-08-02T03:14:08.927601+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features: []
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features:
+  - max_residue_position
+  position_missing_policy: zero
+  position_token_scope: include_complex
+  position_transform: raw
+  position_bin_width: null
+  position_semantics: protein residue indices explicitly written in source tokens;
+    no transcript, codon nucleotide, genomic coordinate, or protein-length inference
+  co_mutation_pairs: []
+  co_mutation_semantics: fixed, literature-curated gene pairs (mutual exclusivity
+    or co-occurrence); gene-level 'any mutation' presence, not restricted to a specific
+    hotspot codon; not fit from this dataset's target or frequency
+  feature_factory_version: 1.1.0
+  feature_spec_sha256: 9971882adcb53f64b3d7fb610d938f5d5b28a8c2810bd2132ae888b71d4100fd
+  requested_families:
+    mutation_type:
+      enabled: true
+    residue_position:
+      enabled: true
+      aggregates:
+      - max
+      missing_policy: zero
+      complex_tokens: include
+      transform: raw
+feature_outputs:
+  train_features.npz:
+    path: data/processed/feature_factory/v1/exp069_max_residue_position/train_features.npz
+    sha256: 544a11005a9a0d31806a2d27b20c42752fd3d04e0cd51385911afe533901e17d
+  test_features.npz:
+    path: data/processed/feature_factory/v1/exp069_max_residue_position/test_features.npz
+    sha256: 9f132c5a6c75e4240413b7748e62714efc2d220d6c287e8e92fcbb0964824b94
+  train_ids.csv:
+    path: data/processed/feature_factory/v1/exp069_max_residue_position/train_ids.csv
+    sha256: 76d4b6e523b4509d16c9b65e458f9616c94b7262a844ec107971649de20e95d1
+  test_ids.csv:
+    path: data/processed/feature_factory/v1/exp069_max_residue_position/test_ids.csv
+    sha256: 39321e5b32cdf9400476db97c38800a28fa58d20ddb25730da31fbcf91f3ebfe
+  train_labels.csv:
+    path: data/processed/feature_factory/v1/exp069_max_residue_position/train_labels.csv
+    sha256: ca66b734a3adefc9ce38348a71e29edc4c6061ffaab72e468c574a70fa6d2a06
+  feature_names.json:
+    path: data/processed/feature_factory/v1/exp069_max_residue_position/feature_names.json
+    sha256: 8ddde04496156f99dc831a656955098d0b5ecd1f4c5d1a0d17fdddd497847d64
+  feature_spec.json:
+    path: data/processed/feature_factory/v1/exp069_max_residue_position/feature_spec.json
+    sha256: 49753e2e62fd0d3fa9153636b62a9f1722e2ce11695edae5ad88096cd99fdfec
+  feature_registry.json:
+    path: data/processed/feature_factory/v1/exp069_max_residue_position/feature_registry.json
+    sha256: b73d8eafc48da08e7460f9dc537610e1c0dda74d9eaf6051a29f9b75ab73936c
+  parsing_qc.json:
+    path: data/processed/feature_factory/v1/exp069_max_residue_position/parsing_qc.json
+    sha256: c7795f512e6b7cfbe973ae422ee76e7225d97ca8d8449348131060f0d23f3b55
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+negative_control:
+  target_feature: max_residue_position
+  scope: fold_train_only
+  validation_untouched: true
+  test_unused: true
+  permutation_seeds:
+  - 1001
+  - 1002
+  - 1003
+  - 1004
+  - 1005
+  model_seed_base: 42
+  stratify_by:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  strata_note: 'Per gene, samples that carry a non-zero max_residue_position within
+    the fold-train partition are grouped by their (missense, synonymous, nonsense,
+    frameshift, complex) indicator signature for that gene, and position values are
+    shuffled only within each group. Groups of size 1 are left unchanged. Token-count
+    strata are not separated (not available without re-parsing); this is a documented
+    simplification of the "가능하면 mutation type·token-count strata" clause in PROJECT_CONTEXT.md.
+
+    '
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]
+  platform: Windows-10-10.0.26200-SP0
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: ee554d204078eb867ff240648ea1bd9d1c9fef8d243611ab6d6a691cf673ef03
