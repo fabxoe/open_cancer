@@ -83,6 +83,29 @@ target을 쓰는 selector도 반드시 outer-train 내부에서만 fit한다.
 
 S1~S3은 선택된 유전자의 v1 유전자 블록과 global/hotspot을 유지한다. S4만 저차원 comparator로 원시 유전자 블록을 대체한다.
 
+## 2026-08-02 마감 전 제출 관측과 재개 기준
+
+마감 전 리더보드 제출은 이 로드맵의 selector 정책을 고르기 위한 실험이 아니라,
+이미 재현 가능한 미제출 후보의 일반화 관측이다. 이 절은 **계획·재개 기준**이며,
+실제 제출 여부·제출 시각·Public 점수는 `EXPERIMENT_HISTORY.md`의 제출 이력에만
+사실대로 기록한다.
+
+- 관측 후보: `EXP-135`(EXP-094와 EXP-125의 사전 고정 0.5/0.5 확률 평균),
+  `EXP-094`(동결 Feature Spec v1 XGBoost 단독).
+- Public 결과를 보고 Boruta 설정, 상관 임계값, feature 정책, 모델
+  하이퍼파라미터 또는 blend 가중치를 역으로 바꾸지 않는다.
+- 동일 SHA-256의 기존 제출물은 중복 제출하지 않는다.
+
+제출 창이 끝난 뒤에는 다음 순서로 이 로드맵을 재개한다.
+
+1. S3의 `confirmed gene < 10` 안전 종료를 구현한다. 이 경우 XGBoost를 학습하지
+   않고 `selector produced insufficient set`으로 기록한다.
+2. unit/integration test, History validator, `git diff --check`를 통과시킨다.
+3. clean `main` 기반에서 EXP-207 canonical 5-fold를 한 번만 실행하고, 실제
+   산출물·OOF 또는 충분하지 않은 selector 결과를 기록한다.
+4. S3 결과가 gate를 통과하지 않으면 재튜닝 없이 `ARCHIVE`하고, 사전 등록된
+   S4 TruncatedSVD comparator Issue로 진행한다.
+
 ## 후속 해석·튜닝·모델 비교
 
 - TreeSHAP은 성능 또는 간소화 gate를 통과한 모델의 validation fold에서만 설명용으로 계산한다. 삭제 기준으로 쓰지 않는다.
