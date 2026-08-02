@@ -207,6 +207,7 @@ def main(*, config_path: Path = DEFAULT_CONFIG) -> None:
             max_genes=int(selection_config["max_genes"]),
             seed=int(config["seed"]),
             max_iter=int(selection_config.get("max_iter", 500)),
+            n_jobs=int(selection_config.get("n_jobs", 1)),
         )
     else:
         raise RuntimeError(f"지원하지 않는 feature selection method: {selection_config['method']}")

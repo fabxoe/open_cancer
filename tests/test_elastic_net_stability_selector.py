@@ -38,6 +38,7 @@ def test_elastic_net_selector_keeps_complete_gene_blocks_and_global_features() -
         max_genes=2,
         seed=42,
         max_iter=200,
+        n_jobs=2,
     )
 
     first = selector.select(sparse.csr_matrix(features), targets, names, fold=0)

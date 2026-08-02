@@ -23,6 +23,7 @@ feature_selection:
   min_genes: 50
   max_genes: 512
   max_iter: 500
+  n_jobs: 8
 training:
   balanced_sample_weight: true
 model:

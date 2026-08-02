@@ -305,6 +305,65 @@ def _mutation_presence_indices_and_genes(
     return indices, genes
 
 
+def _fit_elastic_net_model(
+    features: sparse.csr_matrix,
+    targets: np.ndarray,
+    *,
+    c_value: float,
+    l1_ratio: float,
+    max_iter: int,
+    random_state: int,
+) -> LogisticRegression:
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", ConvergenceWarning)
+        model = LogisticRegression(
+            C=float(c_value),
+            class_weight="balanced",
+            l1_ratio=float(l1_ratio),
+            max_iter=int(max_iter),
+            random_state=int(random_state),
+            solver="saga",
+        )
+        model.fit(features, targets)
+    return model
+
+
+def _elastic_net_inner_score(
+    features: sparse.csr_matrix,
+    targets: np.ndarray,
+    fit_index: np.ndarray,
+    valid_index: np.ndarray,
+    *,
+    c_value: float,
+    l1_ratio: float,
+    max_iter: int,
+    random_state: int,
+) -> tuple[float, float]:
+    model = _fit_elastic_net_model(
+        features[fit_index], targets[fit_index], c_value=c_value, l1_ratio=l1_ratio,
+        max_iter=max_iter, random_state=random_state,
+    )
+    prediction = model.predict(features[valid_index])
+    return c_value, float(f1_score(targets[valid_index], prediction, average="macro", zero_division=0))
+
+
+def _elastic_net_subsample_support(
+    features: sparse.csr_matrix,
+    targets: np.ndarray,
+    fit_index: np.ndarray,
+    *,
+    c_value: float,
+    l1_ratio: float,
+    max_iter: int,
+    random_state: int,
+) -> np.ndarray:
+    model = _fit_elastic_net_model(
+        features[fit_index], targets[fit_index], c_value=c_value, l1_ratio=l1_ratio,
+        max_iter=max_iter, random_state=random_state,
+    )
+    return np.flatnonzero(np.any(np.abs(model.coef_) > 1e-12, axis=0))
+
+
 @dataclass(frozen=True)
 class ElasticNetStabilitySelector:
     """Select stable gene blocks with outer-train-only Elastic Net fits.
@@ -324,27 +383,7 @@ class ElasticNetStabilitySelector:
     max_genes: int
     seed: int
     max_iter: int = 500
-
-    def _fit_model(
-        self,
-        features: sparse.csr_matrix,
-        targets: np.ndarray,
-        *,
-        c_value: float,
-        random_state: int,
-    ) -> LogisticRegression:
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", ConvergenceWarning)
-            model = LogisticRegression(
-                C=float(c_value),
-                class_weight="balanced",
-                l1_ratio=float(self.l1_ratio),
-                max_iter=int(self.max_iter),
-                random_state=int(random_state),
-                solver="saga",
-            )
-            model.fit(features, targets)
-        return model
+    n_jobs: int = 1
 
     def select(
         self,
@@ -361,6 +400,7 @@ class ElasticNetStabilitySelector:
         _require(self.repetitions >= 1, "repetitions는 1 이상이어야 합니다.")
         _require(self.min_frequency >= 1, "min_frequency는 1 이상이어야 합니다.")
         _require(1 <= self.min_genes <= self.max_genes, "min_genes/max_genes 범위가 잘못되었습니다.")
+        _require(self.n_jobs >= 1, "n_jobs는 1 이상이어야 합니다.")
         c_values = tuple(sorted({float(value) for value in self.c_values}))
         _require(c_values and c_values[0] > 0, "C 후보는 양수여야 합니다.")
 
@@ -376,19 +416,30 @@ class ElasticNetStabilitySelector:
             shuffle=True,
             random_state=self.seed + int(fold),
         )
-        inner_scores: dict[float, list[float]] = {value: [] for value in c_values}
+        inner_tasks: list[tuple[float, np.ndarray, np.ndarray, int]] = []
         for c_index, c_value in enumerate(c_values):
             for inner_fold, (fit_index, valid_index) in enumerate(inner_cv.split(presence, targets)):
-                model = self._fit_model(
-                    presence[fit_index],
-                    targets[fit_index],
-                    c_value=c_value,
-                    random_state=self.seed + int(fold) * 10_000 + c_index * 100 + inner_fold,
+                inner_tasks.append(
+                    (
+                        c_value,
+                        fit_index,
+                        valid_index,
+                        self.seed + int(fold) * 10_000 + c_index * 100 + inner_fold,
+                    )
                 )
-                prediction = model.predict(presence[valid_index])
-                inner_scores[c_value].append(
-                    float(f1_score(targets[valid_index], prediction, average="macro", zero_division=0))
-                )
+        from joblib import Parallel, delayed
+
+        inner_results = Parallel(n_jobs=self.n_jobs, prefer="processes")(
+            delayed(_elastic_net_inner_score)(
+                presence, targets, fit_index, valid_index,
+                c_value=c_value, l1_ratio=self.l1_ratio, max_iter=self.max_iter,
+                random_state=random_state,
+            )
+            for c_value, fit_index, valid_index, random_state in inner_tasks
+        )
+        inner_scores: dict[float, list[float]] = {value: [] for value in c_values}
+        for c_value, score in inner_results:
+            inner_scores[c_value].append(score)
         mean_scores = {value: float(np.mean(scores)) for value, scores in inner_scores.items()}
         best_value = max(c_values, key=lambda value: (mean_scores[value], -value))
         best_scores = np.asarray(inner_scores[best_value], dtype=np.float64)
@@ -396,7 +447,7 @@ class ElasticNetStabilitySelector:
         eligible = [value for value in c_values if mean_scores[value] >= mean_scores[best_value] - one_se]
         selected_c = min(eligible)
 
-        frequencies = np.zeros(len(genes), dtype=np.int64)
+        subsample_indices: list[tuple[np.ndarray, int]] = []
         for repetition in range(self.repetitions):
             split = StratifiedShuffleSplit(
                 n_splits=1,
@@ -404,13 +455,19 @@ class ElasticNetStabilitySelector:
                 random_state=self.seed + int(fold) * 100 + repetition,
             )
             fit_index, _ = next(split.split(presence, targets))
-            model = self._fit_model(
-                presence[fit_index],
-                targets[fit_index],
-                c_value=selected_c,
-                random_state=self.seed + int(fold) * 100 + repetition,
+            subsample_indices.append(
+                (fit_index, self.seed + int(fold) * 100 + repetition)
             )
-            selected_local = np.flatnonzero(np.any(np.abs(model.coef_) > 1e-12, axis=0))
+        supports = Parallel(n_jobs=self.n_jobs, prefer="processes")(
+            delayed(_elastic_net_subsample_support)(
+                presence, targets, fit_index,
+                c_value=selected_c, l1_ratio=self.l1_ratio, max_iter=self.max_iter,
+                random_state=random_state,
+            )
+            for fit_index, random_state in subsample_indices
+        )
+        frequencies = np.zeros(len(genes), dtype=np.int64)
+        for selected_local in supports:
             frequencies[selected_local] += 1
 
         ranked_local = sorted(range(len(genes)), key=lambda index: (-int(frequencies[index]), genes[index]))
@@ -444,6 +501,7 @@ class ElasticNetStabilitySelector:
                 "max_genes": self.max_genes,
                 "seed": self.seed,
                 "max_iter": self.max_iter,
+                "n_jobs": self.n_jobs,
             },
             "mutation_presence_feature_count": len(genes),
             "inner_cv_macro_f1": {str(value): mean_scores[value] for value in c_values},
