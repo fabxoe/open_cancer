@@ -26,8 +26,8 @@
 | R1 | 상관 pair 범주형 요약 | [#191](https://github.com/fabxoe/open_cancer/issues/191) | EXP-191 | [#201](https://github.com/fabxoe/open_cancer/pull/201) | COMPLETED | 0.4144744818 | ARCHIVE; R2 실행 |
 | R2 | 희귀 mutation-presence filter | [#192](https://github.com/fabxoe/open_cancer/issues/192) | EXP-192 | [#202](https://github.com/fabxoe/open_cancer/pull/202) | COMPLETED | 0.4176058118 | ARCHIVE; R1~R2 threshold 재탐색 종료 |
 | S1 | Elastic Net stability selection | [#203](https://github.com/fabxoe/open_cancer/issues/203) | EXP-203 | [#204](https://github.com/fabxoe/open_cancer/pull/204) | COMPLETED | 0.2996289845 | ARCHIVE; dense selector가 512-gene cap을 유발, S1 규칙 재튜닝 없이 S2 진행 |
-| S2 | mRMR | [#205](https://github.com/fabxoe/open_cancer/issues/205) | EXP-205 | - | IN_PROGRESS | N/A | fold-safe 구현·공식 5-fold 실행 |
-| S3 | Boruta | 미발급 | 미발급 | - | PLANNED | N/A | S2 후 |
+| S2 | mRMR | [#205](https://github.com/fabxoe/open_cancer/issues/205) | EXP-205 | PR 생성 예정 | COMPLETED | 0.3976963538 | ARCHIVE; top-128 압축이 EXP-094보다 크게 하락, S2 규칙 재튜닝 없이 S3 진행 |
+| S3 | Boruta | 미발급 | 미발급 | - | PLANNED | N/A | S2 ARCHIVE 완료, 다음 Issue 발급 |
 | S4 | TruncatedSVD 비교 모델 | 미발급 | 미발급 | - | PLANNED | N/A | S3 후 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`만 사용하며, 필요하면 `BLOCKED` 또는 `REJECTED`로 종료한다. 이는 실험 재현 상태와 별개다.
