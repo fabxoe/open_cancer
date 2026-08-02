@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 import pytest
+import yaml
 
 from open_cancer.checkpoint_selection import (
     CheckpointSelectionError,
@@ -152,3 +155,28 @@ def test_real_xgboost_iteration_audit_contract(tmp_path) -> None:
     assert probabilities.shape == (len(targets), len(CLASS_LABELS))
     assert np.allclose(probabilities.sum(axis=1), 1.0)
     assert np.allclose(restored_probabilities, probabilities, atol=1e-7, rtol=1e-7)
+
+
+def test_exp223_changes_only_checkpoint_policy_from_exp096() -> None:
+    root = Path(__file__).resolve().parents[1]
+    baseline = yaml.safe_load(
+        (root / "configs/exp096_fixed_pathway_burden.yaml").read_text(encoding="utf-8")
+    )
+    candidate = yaml.safe_load(
+        (root / "configs/exp223_pathway_macro_f1_checkpoint.yaml").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    for key in (
+        "seed",
+        "split",
+        "features",
+        "hotspots",
+        "external_knowledge",
+        "abc_families",
+        "model",
+    ):
+        assert candidate[key] == baseline[key]
+    assert candidate["training"]["balanced_sample_weight"] is True
+    assert candidate["training"]["checkpoint_selection"] == "macro_f1_validation"
