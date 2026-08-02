@@ -812,6 +812,12 @@
       ]
     ]
   },
+  "leaderboard": {
+    "public_score": 0.3125095748,
+    "private_score": null,
+    "rank": null,
+    "submitted_at": "2026-08-02T23:52:30+09:00"
+  },
   "artifacts": {
     "feature_spec_manifest": "data/processed/exp151_mutated_gene_burden_features/feature_spec_manifest.json",
     "models": "models/exp151_mutated_gene_burden"

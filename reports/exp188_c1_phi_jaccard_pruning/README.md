@@ -5,8 +5,9 @@
 EXP-094 Feature Spec v1에서 각 outer-fold 학습 행만 사용해, 매우 비슷하게 함께
 변이되는 유전자 쌍의 `GENE__mutated` 열 하나를 제거했다. OOF Macro F1은
 **0.4179737169**로 기준보다 **+0.0010871430** 높았지만, fold 간 흔들림이 크게
-커지고 Log Loss도 소폭 악화됐다. 사전 고정된 gate를 통과하지 못했으므로
-**ARCHIVE**이며 리더보드에 제출하지 않는다.
+커지고 Log Loss도 소폭 악화됐다. 사전 고정된 gate를 통과하지 못해
+**ARCHIVE** 판정은 유지한다. 이후 사전 생성된 제출 파일을 2026-08-02
+리더보드에 제출했고 Public Macro F1은 `0.3140052334`였다.
 
 ## C1 정책
 
@@ -35,6 +36,18 @@ validation과 test에는 해당 fold가 학습 행에서 확정한 mask만 적�
 
 Fold별 제거 열은 `6`, `13`, `8`, `13`, `8`개였다. 5개 fold에서 한 번이라도
 제거된 유전자는 32개이며, 이처럼 적은 mask 차이에서도 fold 변동성이 커졌다.
+
+## 리더보드 제출 결과
+
+- 제출 ID / 시각: `1508914` / 2026-08-02 23:53:56 KST
+- 제출 파일: `submissions/exp188_c1_phi_jaccard_pruning.csv`
+- SHA-256: `a36bffa5e4d055f99d5fc8584c795a08c9f1b608cc941716d61b5b94428a1d0a`
+- Public Macro F1: `0.3140052334`
+- EXP-094 대비: `+0.0021520704`
+- EXP-151 대비: `+0.0014956586`
+- 순위 해석: 팀 최고 EXP-031에 미달해 팀 점수·순위는 갱신되지 않았습니다.
+- 재현성 메모: 현재 `MANIFEST_COMPLETE`이므로 정식 History 제출 행과 Release
+  연결은 checkpoint inference 검증 후 진행합니다.
 
 ## 판정
 
