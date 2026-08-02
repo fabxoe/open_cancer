@@ -89,12 +89,39 @@ Macro F1 gate와 클래스별 F1 gate 모두 실패해 **기각**한다.
   재정의가 확정됐다. 매우 sparse할 것으로 예상되므로 B 결과를 본 뒤
   진행 여부를 재판단한다.
 
+## PR #172 리뷰 반영 (재학습 없음)
+
+병합 전 리뷰에서 세 가지를 보완했다. 학습된 모델과 위 OOF·기각 결론은
+전혀 바뀌지 않았다 — `pathway__cellcycle_any_nonsilent` 컬럼을 새 Feature
+Factory family로 감싼 뒤 실제 train/test 전체 데이터로 기존 직접 계산
+함수와 값이 완전히 동일함을 확인했다(`tests/test_pathway_aggregation_features.py`의
+`test_cell_cycle_family_matches_direct_compute_function` 및 별도 실행 검증).
+
+1. **resolved config**: `reproducibility/exp170_cellcycle_any_nonsilent/config.resolved.yaml`을
+   생성해 실험 identity·데이터/split/base v1 해시·모델 파라미터·환경 정보를
+   단일 원본으로 기록했다. `metrics.json`의 `artifacts.resolved_config`에서
+   연결된다.
+2. **Feature Factory 등록**: 단순 `sparse.hstack` 대신
+   `CellCyclePathwayFamily`(`src/open_cancer/pathway_aggregation_features.py`)로
+   `FeatureFamilyDescriptor`/`KnowledgeProvenance`를 갖춘 정식 family로
+   등록했다. output dimension, feature 이름, fit_scope(`stateless`), 외부
+   지식 출처가 이제 `build_family_registry`로 검증 가능하다.
+3. **외부 출처 provenance**: 존재하지 않는
+   `data/external/gene_pathway_mapping.csv`를 config의 runtime source처럼
+   표기하던 부분을 정리했다. 실제 runtime/재현 가능한 출처는 커밋된
+   `knowledge/tcga_pancanatlas_table_s3_cell_cycle_v1.json`이며, 이 파일
+   자체에 원본 논문 인용·DOI·라이선스·원본 워크북 SHA-256
+   (`df722435b7c069b9225c9e4bbef7ab812385bd5e8ab7c415837cde5f2838c640`)이
+   기록되어 있다.
+
 ## 재현과 관련 파일
 
 - Config: `configs/exp170_cellcycle_any_nonsilent.yaml`
+- Resolved config: `reproducibility/exp170_cellcycle_any_nonsilent/config.resolved.yaml`
 - Metrics: `reports/exp170_cellcycle_any_nonsilent/metrics.json`
 - Verdict 상세: `reports/exp170_cellcycle_any_nonsilent/verdict.json`
 - Feature 모듈: `src/open_cancer/pathway_aggregation_features.py`
+- Knowledge 파일(출처·라이선스·해시): `knowledge/tcga_pancanatlas_table_s3_cell_cycle_v1.json`
 - Submission: `submissions/exp170_cellcycle_any_nonsilent.csv` (미제출, 로컬 보관)
 - Source commit: `ab45c0df34eea7ae1b5c3fe686b7245fc22aec6b`
 - Reproduction status: `NOT_STARTED` (일반 Local 실험, 리더보드 미제출)

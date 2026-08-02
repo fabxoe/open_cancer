@@ -15,8 +15,14 @@ variants:
     added_features: [pathway__cellcycle_any_nonsilent]
     pathway: Cell Cycle
     gene_count: 15
-    source_catalog: data/external/gene_pathway_mapping.csv
-    hardcoded_gene_list: src/open_cancer/pathway_aggregation_features.py::CELL_CYCLE_GENES
+    feature_family: src/open_cancer/pathway_aggregation_features.py::cell_cycle_any_nonsilent_family
+    # Not a runtime dependency: data/external/gene_pathway_mapping.csv (Issue
+    # #167/#168) is the CSV this gene list was originally extracted from, but
+    # it is gitignored (CC BY-NC-ND, not redistributable) and is never read
+    # at experiment runtime. The runtime/reproducible source of truth is the
+    # committed knowledge file below, whose own source_file_sha256 field
+    # records the original licensed workbook's hash for provenance.
+    knowledge_file: knowledge/tcga_pancanatlas_table_s3_cell_cycle_v1.json
 model:
   objective: multi:softprob
   n_estimators: 500

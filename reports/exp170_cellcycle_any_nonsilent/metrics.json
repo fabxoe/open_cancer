@@ -813,11 +813,12 @@
     ]
   },
   "artifacts": {
+    "resolved_config": "reproducibility/exp170_cellcycle_any_nonsilent/config.resolved.yaml",
     "feature_spec_manifest": "data/processed/exp170_cellcycle_any_nonsilent_features/feature_spec_manifest.json",
     "models": "models/exp170_cellcycle_any_nonsilent"
   },
   "runtime": {
     "seconds": 1022.4744015999604
   },
-  "notes": "EXP-094 frozen Feature Spec v1 + P_any_nonsilent_cellcycle (Cell Cycle pathway, 15 genes, Issue #167 catalog, zero overlap with EXTENDED_HOTSPOTS). Train positive rate 0.085148, test positive rate 0.107620. Baseline EXP-094 OOF macro_f1 0.4168865739, delta -0.0031403572, fold_std delta +0.0013862802, log_loss delta -0.0010088127, worst per-class F1 delta -0.0500857633. Verdict: NOT ADOPTED."
+  "notes": "EXP-094 frozen Feature Spec v1 + pathway__cellcycle_any_nonsilent, registered as a Feature Factory family (see resolved_config for the KnowledgeProvenance-backed registry entry; Cell Cycle pathway, 15 genes, Issue #167 catalog, zero overlap with EXTENDED_HOTSPOTS). Train positive rate 0.085148, test positive rate 0.107620. Baseline EXP-094 OOF macro_f1 0.4168865739, delta -0.0031403572, fold_std delta +0.0013862802, log_loss delta -0.0010088127, worst per-class F1 delta -0.0500857633. Verdict: NOT ADOPTED. (PR review follow-up: the direct-hstack feature construction used for this recorded run was verified bit-identical to the newly registered Feature Factory family via tests/test_pathway_aggregation_features.py and a full train/test re-check -- OOF/metrics above are unchanged, not retrained.)"
 }
