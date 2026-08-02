@@ -46,8 +46,9 @@ Fold별 제거 열은 `6`, `13`, `8`, `13`, `8`개였다. 5개 fold에서 한 �
 - EXP-094 대비: `+0.0021520704`
 - EXP-151 대비: `+0.0014956586`
 - 순위 해석: 팀 최고 EXP-031에 미달해 팀 점수·순위는 갱신되지 않았습니다.
-- 재현성 메모: 현재 `MANIFEST_COMPLETE`이므로 정식 History 제출 행과 Release
-  연결은 checkpoint inference 검증 후 진행합니다.
+- 재현성: `INFERENCE_VERIFIED`. 저장된 fold별 mask와 checkpoint로 OOF·test
+  확률 및 제출 SHA-256을 원본과 완전히 동일하게 재생성했습니다.
+- Release: [`exp-188-repro-v2`](https://github.com/fabxoe/open_cancer/releases/tag/exp-188-repro-v2)
 
 ## 판정
 
@@ -66,7 +67,7 @@ C1 자체의 threshold·모델 파라미터를 추가 탐색하지 않는다.
 - Manifest: `reproducibility/exp188_c1_phi_jaccard_pruning/`
 - fold별 mask: `models/exp188_c1_phi_jaccard_pruning/fold_*_feature_selection.json`
 
-원 학습의 5개 checkpoint와 fold mask로 OOF/test/submission 산출물을 복구해
-manifest까지 기록했다. 아직 독립 inference 비교는 하지 않았으므로 재현 상태는
-`MANIFEST_COMPLETE`다. checkpoint·OOF·test 확률·submission은 Git에 커밋하지
-않는다.
+원 학습의 5개 checkpoint와 fold mask로 OOF/test/submission 산출물을 재생성했다.
+확률·라벨·제출 SHA-256이 원본과 완전히 일치해 `INFERENCE_VERIFIED`로 기록했다.
+재학습 검증은 수행하지 않았으며 checkpoint·OOF·test 확률·submission은 Git에
+커밋하지 않고 GitHub Release에 보관한다.

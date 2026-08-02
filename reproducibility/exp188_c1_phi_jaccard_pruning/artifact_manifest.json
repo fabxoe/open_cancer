@@ -1,48 +1,50 @@
 {
   "experiment_id": "EXP-188",
   "issue_number": 188,
-  "reproducibility_status": "MANIFEST_COMPLETE",
+  "reproducibility_status": "INFERENCE_VERIFIED",
   "source_commit": "1ff0663af2f682229d715136119e8e1db6bace62",
-  "source_tag": null,
+  "source_tag": "exp-188-repro-v2",
   "dirty_worktree": false,
   "data_manifest": "reproducibility/exp188_c1_phi_jaccard_pruning/data_manifest.json",
   "environment": "reproducibility/exp188_c1_phi_jaccard_pruning/environment.json",
-  "release_url": null,
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-188-repro-v2",
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-02T15:08:02Z",
   "artifacts": [
     {
-      "kind": "checkpoint_fold_0",
+      "kind": "checkpoint",
       "path": "models/exp188_c1_phi_jaccard_pruning/fold_00.json",
       "size_bytes": 11725251,
       "sha256": "81fec42b66285e05bdef15187b7ee418692dd156861a593e8b35c702e2a2d309",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-188-repro-v2/exp188_c1_phi_jaccard_pruning_repro.tar.gz#models/exp188_c1_phi_jaccard_pruning/fold_00.json"
     },
     {
-      "kind": "checkpoint_fold_1",
+      "kind": "checkpoint",
       "path": "models/exp188_c1_phi_jaccard_pruning/fold_01.json",
       "size_bytes": 12108878,
       "sha256": "b953fd405099d9daf98b156168f6bbbc5e994a491c2984db5e33c18b59a0fbf4",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-188-repro-v2/exp188_c1_phi_jaccard_pruning_repro.tar.gz#models/exp188_c1_phi_jaccard_pruning/fold_01.json"
     },
     {
-      "kind": "checkpoint_fold_2",
+      "kind": "checkpoint",
       "path": "models/exp188_c1_phi_jaccard_pruning/fold_02.json",
       "size_bytes": 13784443,
       "sha256": "0f7841205413748ef53abced0701b8250d3b9c146c5cae47bdecc1931cf79602",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-188-repro-v2/exp188_c1_phi_jaccard_pruning_repro.tar.gz#models/exp188_c1_phi_jaccard_pruning/fold_02.json"
     },
     {
-      "kind": "checkpoint_fold_3",
+      "kind": "checkpoint",
       "path": "models/exp188_c1_phi_jaccard_pruning/fold_03.json",
       "size_bytes": 13033984,
       "sha256": "f0bd00a359d8b3faf6fa6091383ae126254c5ee671181debb91e36c557812906",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-188-repro-v2/exp188_c1_phi_jaccard_pruning_repro.tar.gz#models/exp188_c1_phi_jaccard_pruning/fold_03.json"
     },
     {
-      "kind": "checkpoint_fold_4",
+      "kind": "checkpoint",
       "path": "models/exp188_c1_phi_jaccard_pruning/fold_04.json",
       "size_bytes": 12552286,
       "sha256": "1bf92d5929d8929998e9d0cafe28bf464aa26b4531dbdf2c68487bbe87027487",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-188-repro-v2/exp188_c1_phi_jaccard_pruning_repro.tar.gz#models/exp188_c1_phi_jaccard_pruning/fold_04.json"
     },
     {
       "kind": "feature_selection_fold_0",
@@ -87,39 +89,56 @@
       "storage_uri": null
     },
     {
-      "kind": "oof_probabilities",
+      "kind": "oof_probability",
       "path": "oof/exp188_c1_phi_jaccard_pruning.csv",
       "size_bytes": 3538120,
       "sha256": "7a9c7553b0a728cbe1d31a052a7bd3e73507a6445031bd9629f7b69b5e660757",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-188-repro-v2/exp188_c1_phi_jaccard_pruning_repro.tar.gz#oof/exp188_c1_phi_jaccard_pruning.csv"
     },
     {
       "kind": "submission",
       "path": "submissions/exp188_c1_phi_jaccard_pruning.csv",
       "size_bytes": 38160,
       "sha256": "a36bffa5e4d055f99d5fc8584c795a08c9f1b608cc941716d61b5b94428a1d0a",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-188-repro-v2/exp188_c1_phi_jaccard_pruning_repro.tar.gz#submissions/exp188_c1_phi_jaccard_pruning.csv"
     },
     {
-      "kind": "test_probabilities",
+      "kind": "test_probability",
       "path": "preds/exp188_c1_phi_jaccard_pruning_test_proba.csv",
       "size_bytes": 1413592,
       "sha256": "d6c981219c298d5ff63f6348e0c38c6f00dfc6475734c5033b63fb1ae3e37308",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-188-repro-v2/exp188_c1_phi_jaccard_pruning_repro.tar.gz#preds/exp188_c1_phi_jaccard_pruning_test_proba.csv"
     },
     {
       "kind": "resolved_config",
       "path": "reproducibility/exp188_c1_phi_jaccard_pruning/config.resolved.yaml",
       "size_bytes": 3564,
       "sha256": "9ce1bb3f7f0c223615bd8709ab2e3277ffe21f6761bc82fd6bf62573a5abf547",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-188-repro-v2/exp188_c1_phi_jaccard_pruning_repro.tar.gz#reproducibility/exp188_c1_phi_jaccard_pruning/config.resolved.yaml"
     },
     {
       "kind": "metrics",
       "path": "reproducibility/exp188_c1_phi_jaccard_pruning/metrics.json",
-      "size_bytes": 50994,
-      "sha256": "17ede959716f74839ec17d77b197e002552d18e2957e166bf248e43923397262",
+      "size_bytes": 51122,
+      "sha256": "6e922d57df3e6556298c1fabd1d5e48173d068fc494210b4e4316ba725ad7fce",
       "storage_uri": null
+    },
+    {
+      "kind": "release_bundle",
+      "path": "release-assets/exp188_c1_phi_jaccard_pruning_repro.tar.gz",
+      "size_bytes": 19072531,
+      "sha256": "13d2f033116550e361ba846239a04e2266e0829e9f1af55061943e97efbc5c7d",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-188-repro-v2/exp188_c1_phi_jaccard_pruning_repro.tar.gz"
     }
-  ]
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "oof_macro_f1_delta": 0.0,
+    "passed": true
+  }
 }
