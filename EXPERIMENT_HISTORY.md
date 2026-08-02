@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 48
+- 실제 실험 수: 49
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -67,6 +67,7 @@
 | EXP-191 | COMPLETED | fabxoe | #191 | EXP-094 + fold-local C2-policy pair `only_left/right/both` 요약 | 0.4144744818 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0024121·fold std +0.0047535로 gate 실패, ARCHIVE | [보고서](reports/exp191_r1_correlation_pair_summary/README.md) |
 | EXP-192 | COMPLETED | fabxoe | #192 | EXP-094 + fold-local 양성 수 `<5` mutation-presence 열 제거 | 0.4176058118 | 미제출 | MANIFEST_COMPLETE | Macro F1 +0.0007192지만 fold std +0.0073553으로 gate 실패, ARCHIVE | [보고서](reports/exp192_r2_rare_mutation_presence_filter/README.md) |
 | EXP-203 | COMPLETED | fabxoe | #203 | EXP-094 + outer-train Elastic Net stability selection (최대 512 genes) | 0.2996289845 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.1172576·Log Loss +0.3633948; dense selector가 512개 cap을 유발해 ARCHIVE | [보고서](reports/exp203_s1_elastic_net_stability_selection/README.md) |
+| EXP-205 | COMPLETED | fabxoe | #205 | EXP-094 + outer-train mRMR-MID top-128 mutation-presence genes | 0.3976963538 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0191902·Log Loss +0.0426300으로 gate 실패, ARCHIVE | [보고서](reports/exp205_s2_mrmr_feature_selection/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -120,6 +121,51 @@
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-205] S2 mRMR feature selection
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #205 / `issue-205-s2-mrmr-feature-selection`
+- 소스 commit: `67f89640cde3939141eede151bd3d965e53941c2`
+- 시작/종료: 2026-08-02T12:49:23.804304+00:00 /
+  2026-08-02T12:51:32.006984+00:00
+
+#### 실행
+
+- Config: `configs/exp205_s2_mrmr_feature_selection.yaml`
+- Runner: `scripts/run_exp205_s2_mrmr_feature_selection.py`
+- Metrics: `reports/exp205_s2_mrmr_feature_selection/metrics.json`
+- Report: `reports/exp205_s2_mrmr_feature_selection/README.md`
+- 부모 실험: EXP-094 (Feature Spec v1)
+- 각 outer fold의 학습 행에서만 양성 수 5 이상 `GENE__mutated` 열을 후보로 두고,
+  target과의 discrete MI relevance에서 이미 선택한 유전자와의 binary normalized MI
+  redundancy 평균을 뺀 greedy mRMR-MID로 128개를 골랐다.
+- 선택 유전자의 v1 유전자 블록 전체와 sample aggregate·fixed hotspot은 유지했고,
+  validation·test에는 저장한 fold별 같은 mask만 적용했다. balanced sample weight는
+  유지했고 SMOTE는 적용하지 않았다.
+
+#### 결과
+
+- Fold Macro F1: 0.4042948622, 0.3988811270, 0.3769138837, 0.3976361619,
+  0.4065986888
+- OOF Macro F1: 0.3976963538 (EXP-094 대비 `-0.0191902201`)
+- Fold 표준편차: 0.0105133634 (EXP-094 대비 `+0.0026291113`)
+- Accuracy: 0.3962264151
+- Log Loss: 1.8825673362 (EXP-094 대비 `+0.0426300069`)
+- fold별 후보 유전자 수: 4,143, 4,119, 4,138, 4,144, 4,129; 선택 수는 모두 128개
+- Public LB: 미제출
+- 재현 상태: `MANIFEST_COMPLETE` — 원 학습 checkpoint·fold별 selection mask·OOF/test
+  확률·submission manifest는 저장했으나 독립 checkpoint inference 비교는 아직
+  수행하지 않았다.
+
+#### 결론
+
+- mRMR 선택 목록은 생물학적으로 납득 가능한 recurrent gene을 반복 포함했지만,
+  128개 유전자로의 압축은 전체 Feature Spec v1보다 Macro F1·안정성·Log Loss가
+  모두 나빠 `ARCHIVE`다.
+- S2의 사전 고정 규칙은 결과를 보고 재튜닝하지 않는다. 다음 사전 등록 단계인 S3
+  Boruta를 독립 Experiment Issue에서 실행한다.
 
 ### [EXP-203] S1 Elastic Net stability selection
 

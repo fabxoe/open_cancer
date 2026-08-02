@@ -1,0 +1,125 @@
+{
+  "experiment_id": "EXP-205",
+  "issue_number": 205,
+  "reproducibility_status": "MANIFEST_COMPLETE",
+  "source_commit": "67f89640cde3939141eede151bd3d965e53941c2",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp205_s2_mrmr_feature_selection/data_manifest.json",
+  "environment": "reproducibility/exp205_s2_mrmr_feature_selection/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint_fold_0",
+      "path": "models/exp205_s2_mrmr_feature_selection/fold_00.json",
+      "size_bytes": 11573769,
+      "sha256": "08dd5ae5f1f8c7fbc53b42e346ef6a50e74e1f9419f720636427e0f9f667e737",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_1",
+      "path": "models/exp205_s2_mrmr_feature_selection/fold_01.json",
+      "size_bytes": 12482772,
+      "sha256": "b4b8512850eae1d57ef732b37411cce193bf7c32b220a9fac37b54d4bd8d13e4",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_2",
+      "path": "models/exp205_s2_mrmr_feature_selection/fold_02.json",
+      "size_bytes": 12497179,
+      "sha256": "a7bf081d2f7d404037935f8fe793f859c5ab131849f1f465df6ccb91581af731",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_3",
+      "path": "models/exp205_s2_mrmr_feature_selection/fold_03.json",
+      "size_bytes": 11945572,
+      "sha256": "240beb3c02fe63f57a370bc9769de9fff57340afc4cfdd4706663f0f49c29fc1",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_4",
+      "path": "models/exp205_s2_mrmr_feature_selection/fold_04.json",
+      "size_bytes": 12175512,
+      "sha256": "6d480ad6a1eaba0ca0888a4239ac1a1b16f85fb4c544f1bd91a0d5281340ca20",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_0",
+      "path": "models/exp205_s2_mrmr_feature_selection/fold_00_feature_selection.json",
+      "size_bytes": 47132,
+      "sha256": "700d00e9700668f064953aa14a258bc9d3f857d92c71d8c867839e57dc656f87",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_1",
+      "path": "models/exp205_s2_mrmr_feature_selection/fold_01_feature_selection.json",
+      "size_bytes": 47138,
+      "sha256": "ee422f0fbfd063e65acbb265d45650150150c8694d09b8ccefbbcd8c7b83df9e",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_2",
+      "path": "models/exp205_s2_mrmr_feature_selection/fold_02_feature_selection.json",
+      "size_bytes": 47098,
+      "sha256": "a5e5b0fe49532995bef9a724171fd66e77e0faa66104995a7a93c4d59d0d10f6",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_3",
+      "path": "models/exp205_s2_mrmr_feature_selection/fold_03_feature_selection.json",
+      "size_bytes": 47146,
+      "sha256": "823790f2bcaf9a7dcd0d440c2c2e8e3df2af00f03dbf914dfeaf49bcc53c4bf2",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_4",
+      "path": "models/exp205_s2_mrmr_feature_selection/fold_04_feature_selection.json",
+      "size_bytes": 47162,
+      "sha256": "39da87a170d746876b5a150a0d8e02496acb333a71dd16411815429f9be87971",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_spec_manifest",
+      "path": "data/processed/exp205_s2_mrmr_feature_selection_features/feature_spec_manifest.json",
+      "size_bytes": 1860,
+      "sha256": "2b90700b1a75d2f3c66eb1891eba4bcafd849750648489cb8b5763c701828a12",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probabilities",
+      "path": "oof/exp205_s2_mrmr_feature_selection.csv",
+      "size_bytes": 3532509,
+      "sha256": "96cf28e3adf19148823e0a96924098570aefaa560df66b69074c638d7739430a",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp205_s2_mrmr_feature_selection.csv",
+      "size_bytes": 38150,
+      "sha256": "a6129b81f6d189049eaceca221a89fc8a997aec8eb55eb001ed92bf6bd15e123",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probabilities",
+      "path": "preds/exp205_s2_mrmr_feature_selection_test_proba.csv",
+      "size_bytes": 1411932,
+      "sha256": "dd82683ccfdcb632d976f88ea0d6c36a9c2efb719734dbe83ca8463f0b2e118d",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp205_s2_mrmr_feature_selection/config.resolved.yaml",
+      "size_bytes": 3545,
+      "sha256": "72cf5c8b01f07a0e450d63250edc91832f9b942c124d8cb9f6e5efddd47e8d30",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp205_s2_mrmr_feature_selection/metrics.json",
+      "size_bytes": 200634,
+      "sha256": "2e692adf6b41dcd0e55d62368a422e4864bb30289fc00b2f921c59ecd042b62a",
+      "storage_uri": null
+    }
+  ]
+}

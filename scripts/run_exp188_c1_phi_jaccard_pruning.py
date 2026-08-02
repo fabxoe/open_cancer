@@ -25,6 +25,7 @@ from open_cancer.constants import CLASS_LABELS
 from open_cancer.experiment import resolve_experiment_context
 from open_cancer.fold_feature_selection import (
     ElasticNetStabilitySelector,
+    MrmrMutationPresenceSelector,
     PhiJaccardGreedyPruner,
     RareMutationPresencePruner,
 )
@@ -209,6 +210,11 @@ def main(*, config_path: Path = DEFAULT_CONFIG) -> None:
             max_iter=int(selection_config.get("max_iter", 500)),
             n_jobs=int(selection_config.get("n_jobs", 1)),
         )
+    elif selection_config["method"] == "mrmr_mutation_presence_selector":
+        selector = MrmrMutationPresenceSelector(
+            min_positive_count=int(selection_config["min_positive_count"]),
+            selected_gene_count=int(selection_config["selected_gene_count"]),
+        )
     else:
         raise RuntimeError(f"지원하지 않는 feature selection method: {selection_config['method']}")
     result = run_canonical_cv(
@@ -275,7 +281,7 @@ def main(*, config_path: Path = DEFAULT_CONFIG) -> None:
         "leaderboard": None,
         "runtime": {"seconds": time.perf_counter() - timer},
         "artifacts": {"feature_spec_manifest": str((feature_dir / "feature_spec_manifest.json").relative_to(ROOT)), "models": str(model_dir.relative_to(ROOT))},
-        "notes": "C1 Phi/Jaccard pruning is fit only on outer-train; validation/test reuse each saved fold mask.",
+        "notes": "Feature selection is fit only on outer-train; validation/test reuse each saved fold mask.",
     }
     metrics_path = report_dir / "metrics.json"
     metrics_path.write_text(json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
