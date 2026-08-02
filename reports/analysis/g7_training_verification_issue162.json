@@ -1,0 +1,23 @@
+{
+  "issue": 162,
+  "generated_at": "2026-08-02",
+  "training_performed": true,
+  "candidates": {
+    "EXP-131": {
+      "original_oof_macro_f1": 0.4222392962173039,
+      "reproduction_oof_macro_f1": 0.42176784100571285,
+      "delta": -0.000471455211591032,
+      "status": "TRAINING_VERIFIED_PENDING_HUMAN",
+      "reason": "CatBoost GPU 재학습 비결정성"
+    },
+    "EXP-125": {
+      "original_oof_macro_f1": 0.41890783641446827,
+      "reproduction_oof_macro_f1": 0.41890783641446827,
+      "delta": 0.0,
+      "status": "TRAINING_VERIFIED_PENDING_HUMAN",
+      "reason": "독립 실행 결과 일치, 사람 팀원 확인 대기"
+    }
+  },
+  "environment": "RunPod Secure RTX 4090 fresh clone",
+  "public_lb_used_for_selection": false
+}
