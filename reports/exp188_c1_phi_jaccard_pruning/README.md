@@ -5,8 +5,9 @@
 EXP-094 Feature Spec v1에서 각 outer-fold 학습 행만 사용해, 매우 비슷하게 함께
 변이되는 유전자 쌍의 `GENE__mutated` 열 하나를 제거했다. OOF Macro F1은
 **0.4179737169**로 기준보다 **+0.0010871430** 높았지만, fold 간 흔들림이 크게
-커지고 Log Loss도 소폭 악화됐다. 사전 고정된 gate를 통과하지 못했으므로
-**ARCHIVE**이며 리더보드에 제출하지 않는다.
+커지고 Log Loss도 소폭 악화됐다. 사전 고정된 gate를 통과하지 못해
+**ARCHIVE** 판정은 유지한다. 이후 사전 생성된 제출 파일을 2026-08-02
+리더보드에 제출했고 Public Macro F1은 `0.3140052334`였다.
 
 ## C1 정책
 
@@ -36,6 +37,19 @@ validation과 test에는 해당 fold가 학습 행에서 확정한 mask만 적�
 Fold별 제거 열은 `6`, `13`, `8`, `13`, `8`개였다. 5개 fold에서 한 번이라도
 제거된 유전자는 32개이며, 이처럼 적은 mask 차이에서도 fold 변동성이 커졌다.
 
+## 리더보드 제출 결과
+
+- 제출 ID / 시각: `1508914` / 2026-08-02 23:53:56 KST
+- 제출 파일: `submissions/exp188_c1_phi_jaccard_pruning.csv`
+- SHA-256: `a36bffa5e4d055f99d5fc8584c795a08c9f1b608cc941716d61b5b94428a1d0a`
+- Public Macro F1: `0.3140052334`
+- EXP-094 대비: `+0.0021520704`
+- EXP-151 대비: `+0.0014956586`
+- 순위 해석: 팀 최고 EXP-031에 미달해 팀 점수·순위는 갱신되지 않았습니다.
+- 재현성: `INFERENCE_VERIFIED`. 저장된 fold별 mask와 checkpoint로 OOF·test
+  확률 및 제출 SHA-256을 원본과 완전히 동일하게 재생성했습니다.
+- Release: [`exp-188-repro-v2`](https://github.com/fabxoe/open_cancer/releases/tag/exp-188-repro-v2)
+
 ## 판정
 
 성능 채택에는 Macro F1 `+0.001` 이상, fold 표준편차 악화 `<0.002`, Log Loss
@@ -53,7 +67,7 @@ C1 자체의 threshold·모델 파라미터를 추가 탐색하지 않는다.
 - Manifest: `reproducibility/exp188_c1_phi_jaccard_pruning/`
 - fold별 mask: `models/exp188_c1_phi_jaccard_pruning/fold_*_feature_selection.json`
 
-원 학습의 5개 checkpoint와 fold mask로 OOF/test/submission 산출물을 복구해
-manifest까지 기록했다. 아직 독립 inference 비교는 하지 않았으므로 재현 상태는
-`MANIFEST_COMPLETE`다. checkpoint·OOF·test 확률·submission은 Git에 커밋하지
-않는다.
+원 학습의 5개 checkpoint와 fold mask로 OOF/test/submission 산출물을 재생성했다.
+확률·라벨·제출 SHA-256이 원본과 완전히 일치해 `INFERENCE_VERIFIED`로 기록했다.
+재학습 검증은 수행하지 않았으며 checkpoint·OOF·test 확률·submission은 Git에
+커밋하지 않고 GitHub Release에 보관한다.

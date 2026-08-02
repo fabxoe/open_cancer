@@ -79,6 +79,12 @@ AI는 작업 전에 다음을 확인한다.
 - 공식 지표: **Macro F1**
 - Local primary metric: 전체 OOF Macro F1
 - 보조 지표: fold별 Macro F1, 클래스별 F1, Accuracy, Log Loss, Confusion Matrix
+- 모델·피처·checkpoint의 채택 판단은 전체 OOF Macro F1을 최우선으로 하고,
+  클래스별 F1 붕괴와 fold 변동성을 안전성 지표로 확인한다. Log Loss는 확률
+  품질과 학습 상태를 설명하는 보조 지표이며 단독 기각 조건으로 사용하지 않는다.
+- `mlogloss` objective/eval metric을 사용해 학습하더라도 그것이 공식 평가 지표를
+  바꾸지는 않는다. checkpoint 선택 기준이 Macro F1과 다르면 validation fold
+  안에서 두 기준을 통제 비교해 resolved config와 metrics에 기록한다.
 - 대회 데이터 안내:
   <https://dacon.io/competitions/official/236355/data>
 

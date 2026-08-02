@@ -1,0 +1,125 @@
+{
+  "experiment_id": "EXP-207",
+  "issue_number": 207,
+  "reproducibility_status": "MANIFEST_COMPLETE",
+  "source_commit": "ddee2248c9aedaa518fc5e305d1d7f0ba1138f9e",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp207_s3_boruta_feature_selection/data_manifest.json",
+  "environment": "reproducibility/exp207_s3_boruta_feature_selection/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint_fold_0",
+      "path": "models/exp207_s3_boruta_feature_selection/fold_00.json",
+      "size_bytes": 10400473,
+      "sha256": "8df6570f618ff1ec33efd29dfad790c4dd99ed7325b67d908363add4f5d3d066",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_1",
+      "path": "models/exp207_s3_boruta_feature_selection/fold_01.json",
+      "size_bytes": 10737785,
+      "sha256": "32ed4176648b4ceff5b97a7caa49714612ce87b2c475d69ddfd339941996ecec",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_2",
+      "path": "models/exp207_s3_boruta_feature_selection/fold_02.json",
+      "size_bytes": 11356987,
+      "sha256": "8fc609d2f226d525d8df87aa62e8b756cf623152793363064c853d4b4c17b131",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_3",
+      "path": "models/exp207_s3_boruta_feature_selection/fold_03.json",
+      "size_bytes": 11746201,
+      "sha256": "89d53e18dc8eb862a16583f3c251318b47338ffc0730550d69d3555d19b4b40a",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_4",
+      "path": "models/exp207_s3_boruta_feature_selection/fold_04.json",
+      "size_bytes": 11460858,
+      "sha256": "5926dc6f48b8ddf3111a5ab5b83f0270577e0e884c01841d9a5047f83a865142",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_0",
+      "path": "models/exp207_s3_boruta_feature_selection/fold_00_feature_selection.json",
+      "size_bytes": 83450,
+      "sha256": "e9ad9f9d111667f3f4b17fbef3fe64bc2135f9fa4fe62f413d2f7d59b1e7d4a6",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_1",
+      "path": "models/exp207_s3_boruta_feature_selection/fold_01_feature_selection.json",
+      "size_bytes": 83251,
+      "sha256": "d18c15bc1d3eaa8230266f5cfdb7d3b8c6ae69be3622a679378a80ba5821cbc2",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_2",
+      "path": "models/exp207_s3_boruta_feature_selection/fold_02_feature_selection.json",
+      "size_bytes": 83147,
+      "sha256": "8f185b40edd07f92a5ce8dfa275aa707a794a321fc2a790b6f59c7a1de1a45f5",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_3",
+      "path": "models/exp207_s3_boruta_feature_selection/fold_03_feature_selection.json",
+      "size_bytes": 83461,
+      "sha256": "b1cfbb05bdc35536333e83e5d2616451ff255edb04317787557930d65ab3b8a7",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_4",
+      "path": "models/exp207_s3_boruta_feature_selection/fold_04_feature_selection.json",
+      "size_bytes": 83363,
+      "sha256": "ea53fcb81c93c0060507c01aea424a65625c6a143880e8163dd8745131cd891d",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_spec_manifest",
+      "path": "data/processed/exp207_s3_boruta_feature_selection_features/feature_spec_manifest.json",
+      "size_bytes": 1866,
+      "sha256": "96891956299724f8f4ee93dc6c2c7b604ee66fbdb722f602679454cab17e9b1d",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probabilities",
+      "path": "oof/exp207_s3_boruta_feature_selection.csv",
+      "size_bytes": 3515655,
+      "sha256": "7e3577fb272eaae6ba0d4f41d02ab3c7f354a771c0b486012d8d85a58aa2ac0b",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp207_s3_boruta_feature_selection.csv",
+      "size_bytes": 38077,
+      "sha256": "5601dd714a27a7fd3a11a8258bf7d19a02ee30978be3b7adee8624e55f6626a8",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probabilities",
+      "path": "preds/exp207_s3_boruta_feature_selection_test_proba.csv",
+      "size_bytes": 1405242,
+      "sha256": "f6aecb51870133a0d8898f708c1384fdc138ea0c43c80ce07d2aafae514c28ba",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp207_s3_boruta_feature_selection/config.resolved.yaml",
+      "size_bytes": 3612,
+      "sha256": "86abcebfb08dcc867527310bf7bc354431967dcc45e356f2089bde0604ddfb4c",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp207_s3_boruta_feature_selection/metrics.json",
+      "size_bytes": 15737,
+      "sha256": "74cb5338f105e631337baa8585940f5c85e0c43c8d582fa4c6d3957e084d7f71",
+      "storage_uri": null
+    }
+  ]
+}

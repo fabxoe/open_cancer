@@ -104,10 +104,19 @@ def test_experiment_metrics_schema(tmp_path: Path) -> None:
                 "macro_f1": 0.5,
                 "resampling": {"method": "SMOTE", "input_rows": 8, "output_rows": 12},
                 "feature_selection": {"selector": "phi_jaccard", "dropped_feature_names": ["A__mutated"]},
+                "checkpoint_selection": {
+                    "policy": "macro_f1_validation",
+                    "selected_iteration": 21,
+                    "mlogloss_best_iteration": 17,
+                },
             }
         ],
         "oof": {"macro_f1": 0.5},
         "baseline_delta": {"macro_f1": 0.01},
+        "checkpoint_comparison": {
+            "macro_f1_selected_oof": 0.5,
+            "mlogloss_selected_oof": 0.49,
+        },
         "decision": "ARCHIVE",
         "artifacts": {"report": "reports/exp012_test/report.md"},
     }

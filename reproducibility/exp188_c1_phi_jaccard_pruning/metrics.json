@@ -2103,7 +2103,12 @@
     "worst_per_class_f1": -0.020453948781593845
   },
   "decision": "ARCHIVE",
-  "leaderboard": null,
+  "leaderboard": {
+    "public_score": 0.3140052334,
+    "private_score": null,
+    "rank": null,
+    "submitted_at": "2026-08-02T23:53:56+09:00"
+  },
   "runtime": {
     "seconds": 561.873660332989
   },
