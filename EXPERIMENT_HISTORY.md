@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 36
+- 실제 실험 수: 37
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -55,6 +55,7 @@
 | EXP-135 | COMPLETED | fabxoe | #135 | EXP-094 + EXP-125 fixed 0.5/0.5 probability blend | 0.4201772665 | 미제출 | INFERENCE_VERIFIED | Log Loss는 개선했지만 EXP-131 단독 F1·fold gate를 넘지 못해 제출·추가 blend 보류 | [보고서](reports/exp135_fixed_probability_blend/README.md) |
 | EXP-137 | COMPLETED | fabxoe | #137 | EXP-094 + EXP-125 leakage-safe cross-fitted Logistic stacking | 0.4068626451 | 미제출 | INFERENCE_VERIFIED | 소수 클래스 F1 붕괴·최고 단일 대비 -0.0153766511로 stack 기각 | [보고서](reports/exp137_cross_fitted_stacking/README.md) |
 | EXP-151 | COMPLETED | fabxoe | #151 | EXP-094 + log1p(mutated_gene_count), Secure RTX 4090 실행 | 0.4188970451 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0051158로 기준 실패·미채택 | [보고서](reports/exp151_mutated_gene_burden/README.md) |
+| EXP-154 | COMPLETED | fabxoe | #154 | EXP-094 + log1p(total_variant_count), Secure RTX 4090 실행 | 0.4183986443 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0056484로 기준 실패·미채택 | [보고서](reports/exp154_total_variant_burden/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -1712,3 +1713,29 @@ Accuracy와 fold 표준편차는 개선됐지만 Macro F1이 EXP-131보다 `-0.0
 
 Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0.002`보다 크게
 악화됐다. 따라서 burden 피처를 Feature Spec이나 Public 제출 후보로 채택하지 않는다.
+
+### [EXP-154] EXP-094 + log1p(total_variant_count)
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #154 / issue-154-exp-total-variant-burden
+- Config: `configs/exp154_total_variant_burden.yaml`
+- Metrics: `reports/exp154_total_variant_burden/metrics.json`
+- 보고서: [EXP-154 보고서](reports/exp154_total_variant_burden/README.md)
+
+#### 실행과 결과
+
+- EXP-094 frozen Feature Spec에 `log1p(total_variant_count)` 하나만 추가했다.
+- canonical `stratified_5fold_seed42.csv`와 고정 26개 클래스 순서를 사용했다.
+- Secure Cloud RTX 4090에서 XGBoost CUDA 설정으로 실행했다.
+- OOF Macro F1: `0.4183986443` (EXP-094 대비 `+0.0015120704`)
+- Fold 표준편차: `0.0135326743` (EXP-094 대비 `+0.0056484223`)
+- Log Loss: `1.8371068695` (EXP-094 대비 `-0.0028304598`)
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED` (checkpoint inference 및 독립 재학습 번들 미완료)
+
+#### 판단
+
+Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0.002`보다 크게
+악화됐다. 따라서 total variant burden을 Feature Spec이나 Public 제출 후보로
+채택하지 않는다. OOF·test 확률과 checkpoint는 후속 안정성·다양성 분석을 위해 보존한다.
