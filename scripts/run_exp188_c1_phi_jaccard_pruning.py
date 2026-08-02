@@ -122,9 +122,9 @@ def compact_fold_metrics(
             selection.pop("candidate_pairs", None)
             selection.pop("matched_pairs", None)
             fold = int(record["fold"])
-            selection_artifact = str(
-                (model_dir / f"fold_{fold:02d}_feature_selection.json").relative_to(ROOT)
-            )
+            selection_artifact = str(selection.get("candidate_pairs_artifact") or (
+                model_dir / f"fold_{fold:02d}_feature_selection.json"
+            ).relative_to(ROOT))
             selection["candidate_pairs_artifact"] = selection_artifact
             selection["matched_pairs_artifact"] = selection_artifact
             record["feature_selection"] = selection

@@ -1,0 +1,140 @@
+experiment:
+  experiment_id: EXP-191
+  issue_number: 191
+  branch: issue-191-r1-correlation-pair-summary
+  owner: fabxoe
+  parent_experiment: EXP-094
+  source_commit: 3e93bb3e6816cc927a7366d23fef1c02dbdbc9de
+  started_at: '2026-08-02T10:29:38.717122+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+base_feature_spec:
+  name: v1
+  base_experiment: EXP-094
+  evidence_experiment: EXP-094
+  base_feature_spec_sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+  families: []
+  family_registry: {}
+  semantic_duplicates_dropped: {}
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+  source_config: configs/exp094_feature_spec_v1.yaml
+  source_config_sha256: 4282727de03bd0f31989fdcce61d65530ba69e339e6dce1fe7f72fa85ebd57c4
+  train_input_sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test_input_sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  train_shape:
+  - 6201
+  - 35119
+  test_shape:
+  - 2546
+  - 35119
+  feature_names_sha256: 8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf
+  outputs:
+    train_features:
+      path: /Users/fabxoe/workbench/cancer_open/data/processed/exp191_r1_correlation_pair_summary_features/train_features.npz
+      sha256: dfb0b8fbade7d69c460411dfdbc5bb5fbd97eb9b5e1056dd82294135adac5c8a
+    test_features:
+      path: /Users/fabxoe/workbench/cancer_open/data/processed/exp191_r1_correlation_pair_summary_features/test_features.npz
+      sha256: 66f0471b230d25d688b1564d5adece0077d5deaaf52c8c987e3e719491127575
+    feature_names:
+      path: /Users/fabxoe/workbench/cancer_open/data/processed/exp191_r1_correlation_pair_summary_features/feature_names.json
+      sha256: b7464c1fd0e985e722eabd2f8becb33051879d4b4cdfd25d99cd1e6b793b98c8
+pair_selection:
+  method: phi_jaccard_greedy_mutation_presence_pairs
+  scope: outer_fold_train_only
+  phi_min: 0.25
+  jaccard_min: 0.15
+  min_joint_count: 20
+training:
+  balanced_sample_weight: true
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+environment:
+  python: 3.11.10 (main, Oct 11 2024, 15:45:30) [Clang 15.0.0 (clang-1500.3.9.4)]
+  platform: macOS-26.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: 87876a7c41c030503ed1b95a2d1254c5ab395cfbb865c7538fa5de42bd28902a
