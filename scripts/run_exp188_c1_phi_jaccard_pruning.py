@@ -36,7 +36,7 @@ from open_cancer.validation import validate_json_document, validate_submission
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CONFIG = ROOT / "configs" / "exp188_c1_phi_jaccard_pruning.yaml"
+DEFAULT_CONFIG = ROOT / "configs" / "exp188_c1_phi_jaccard_pruning.yaml"
 TRAIN = ROOT / "data" / "raw" / "train.csv"
 TEST = ROOT / "data" / "raw" / "test.csv"
 SAMPLE = ROOT / "data" / "raw" / "sample_submission.csv"
@@ -107,13 +107,13 @@ def verdict(*, delta: dict[str, float], acceptance: dict[str, float]) -> str:
     return "SIMPLIFICATION_CANDIDATE" if simplification else "ARCHIVE"
 
 
-def main() -> None:
+def main(*, config_path: Path = DEFAULT_CONFIG) -> None:
     started_at = datetime.now(timezone.utc)
     timer = time.perf_counter()
-    config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
     if context.experiment_id != config["experiment_id"] or context.issue_number != config["issue_number"]:
-        raise RuntimeError("EXP-188 config와 현재 Issue 브랜치가 일치하지 않습니다.")
+        raise RuntimeError("config와 현재 Issue 브랜치의 EXP-ID가 일치하지 않습니다.")
     if git("status", "--porcelain", "--untracked-files=no"):
         raise RuntimeError("공식 실험은 tracked worktree가 clean한 상태에서만 실행합니다.")
     slug = str(config["slug"])
@@ -241,12 +241,12 @@ def main() -> None:
     print(json.dumps({"experiment_id": context.experiment_id, "oof_macro_f1": macro_f1, "delta": delta, "decision": decision, "metrics": str(metrics_path)}, ensure_ascii=False, indent=2))
 
 
-def replay_checkpoints() -> None:
-    """Finish EXP-188 artifacts from saved fold masks and checkpoints only."""
-    config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+def replay_checkpoints(*, config_path: Path = DEFAULT_CONFIG) -> None:
+    """Finish one experiment's artifacts from saved fold masks and checkpoints only."""
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
-    if context.experiment_id != "EXP-188":
-        raise RuntimeError("EXP-188 Issue 브랜치에서만 checkpoint replay를 실행합니다.")
+    if context.experiment_id != config["experiment_id"]:
+        raise RuntimeError("checkpoint replay config와 현재 Issue 브랜치의 EXP-ID가 일치하지 않습니다.")
     slug = str(config["slug"])
     report_dir = ROOT / "reports" / slug
     metrics_path = report_dir / "metrics.json"
@@ -307,7 +307,8 @@ def replay_checkpoints() -> None:
         started_at=datetime.fromisoformat(metrics["started_at"]), feature_spec=spec_manifest,
     )
     write_model_run_records(
-        root=ROOT, output_dir=ROOT / "reproducibility" / slug, experiment_id="EXP-188", issue_number=188,
+        root=ROOT, output_dir=ROOT / "reproducibility" / slug,
+        experiment_id=str(config["experiment_id"]), issue_number=int(config["issue_number"]),
         source_commit=source_commit, resolved_config=resolved, metrics=metrics,
         data_files={"train": TRAIN, "test": TEST, "sample_submission": SAMPLE, "split": split_path},
         artifacts={
@@ -320,13 +321,15 @@ def replay_checkpoints() -> None:
         },
         environment=resolved["environment"],
     )
-    print(json.dumps({"experiment_id": "EXP-188", "mode": "checkpoint_replay", "oof_macro_f1": replay_macro_f1, "submission": str(submission_path)}, ensure_ascii=False, indent=2))
+    print(json.dumps({"experiment_id": config["experiment_id"], "mode": "checkpoint_replay", "oof_macro_f1": replay_macro_f1, "submission": str(submission_path)}, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--replay-checkpoints", action="store_true")
-    if parser.parse_args().replay_checkpoints:
-        replay_checkpoints()
+    args = parser.parse_args()
+    if args.replay_checkpoints:
+        replay_checkpoints(config_path=args.config)
     else:
-        main()
+        main(config_path=args.config)
