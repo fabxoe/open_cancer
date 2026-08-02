@@ -1,0 +1,56 @@
+run_mode: experiment
+slug: residue_position_negative_control
+seed: 42
+parent_experiment: EXP-069
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mutation_type:
+    enabled: true
+  residue_position:
+    enabled: true
+    aggregates:
+      - max
+    missing_policy: zero
+    complex_tokens: include
+    transform: raw
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+negative_control:
+  target_feature: max_residue_position
+  scope: fold_train_only
+  validation_untouched: true
+  test_unused: true
+  permutation_seeds: [1001, 1002, 1003, 1004, 1005]
+  model_seed_base: 42
+  stratify_by:
+    - missense
+    - synonymous
+    - nonsense
+    - frameshift
+    - complex
+  strata_note: >
+    Per gene, samples that carry a non-zero max_residue_position within the
+    fold-train partition are grouped by their (missense, synonymous, nonsense,
+    frameshift, complex) indicator signature for that gene, and position
+    values are shuffled only within each group. Groups of size 1 are left
+    unchanged. Token-count strata are not separated (not available without
+    re-parsing); this is a documented simplification of the "가능하면
+    mutation type·token-count strata" clause in PROJECT_CONTEXT.md.
