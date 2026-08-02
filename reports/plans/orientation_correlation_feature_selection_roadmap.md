@@ -27,7 +27,7 @@
 | R2 | 희귀 mutation-presence filter | [#192](https://github.com/fabxoe/open_cancer/issues/192) | EXP-192 | [#202](https://github.com/fabxoe/open_cancer/pull/202) | COMPLETED | 0.4176058118 | ARCHIVE; R1~R2 threshold 재탐색 종료 |
 | S1 | Elastic Net stability selection | [#203](https://github.com/fabxoe/open_cancer/issues/203) | EXP-203 | [#204](https://github.com/fabxoe/open_cancer/pull/204) | COMPLETED | 0.2996289845 | ARCHIVE; dense selector가 512-gene cap을 유발, S1 규칙 재튜닝 없이 S2 진행 |
 | S2 | mRMR | [#205](https://github.com/fabxoe/open_cancer/issues/205) | EXP-205 | PR 생성 예정 | COMPLETED | 0.3976963538 | ARCHIVE; top-128 압축이 EXP-094보다 크게 하락, S2 규칙 재튜닝 없이 S3 진행 |
-| S3 | Boruta | 미발급 | 미발급 | - | PLANNED | N/A | S2 ARCHIVE 완료, 다음 Issue 발급 |
+| S3 | Boruta | [#207](https://github.com/fabxoe/open_cancer/issues/207) | EXP-207 | - | IN_PROGRESS | N/A | fold-safe selector 구현·smoke 검증 후 clean main에서 공식 5-fold 실행 |
 | S4 | TruncatedSVD 비교 모델 | 미발급 | 미발급 | - | PLANNED | N/A | S3 후 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`만 사용하며, 필요하면 `BLOCKED` 또는 `REJECTED`로 종료한다. 이는 실험 재현 상태와 별개다.
@@ -82,6 +82,29 @@ target을 쓰는 selector도 반드시 outer-train 내부에서만 fit한다.
 4. **S4 TruncatedSVD:** raw presence에 outer-train-only 256 components를 fit하고, sample aggregate·fixed hotspot과 함께 XGBoost에 전달한다. 해석성이 낮으므로 통과해도 독립 비교·앙상블 후보로만 보존한다.
 
 S1~S3은 선택된 유전자의 v1 유전자 블록과 global/hotspot을 유지한다. S4만 저차원 comparator로 원시 유전자 블록을 대체한다.
+
+## 2026-08-02 마감 전 제출 관측과 재개 기준
+
+마감 전 리더보드 제출은 이 로드맵의 selector 정책을 고르기 위한 실험이 아니라,
+이미 재현 가능한 미제출 후보의 일반화 관측이다. 이 절은 **계획·재개 기준**이며,
+실제 제출 여부·제출 시각·Public 점수는 `EXPERIMENT_HISTORY.md`의 제출 이력에만
+사실대로 기록한다.
+
+- 관측 후보: `EXP-135`(EXP-094와 EXP-125의 사전 고정 0.5/0.5 확률 평균),
+  `EXP-094`(동결 Feature Spec v1 XGBoost 단독).
+- Public 결과를 보고 Boruta 설정, 상관 임계값, feature 정책, 모델
+  하이퍼파라미터 또는 blend 가중치를 역으로 바꾸지 않는다.
+- 동일 SHA-256의 기존 제출물은 중복 제출하지 않는다.
+
+제출 창이 끝난 뒤에는 다음 순서로 이 로드맵을 재개한다.
+
+1. S3의 `confirmed gene < 10` 안전 종료를 구현한다. 이 경우 XGBoost를 학습하지
+   않고 `selector produced insufficient set`으로 기록한다.
+2. unit/integration test, History validator, `git diff --check`를 통과시킨다.
+3. clean `main` 기반에서 EXP-207 canonical 5-fold를 한 번만 실행하고, 실제
+   산출물·OOF 또는 충분하지 않은 selector 결과를 기록한다.
+4. S3 결과가 gate를 통과하지 않으면 재튜닝 없이 `ARCHIVE`하고, 사전 등록된
+   S4 TruncatedSVD comparator Issue로 진행한다.
 
 ## 후속 해석·튜닝·모델 비교
 
