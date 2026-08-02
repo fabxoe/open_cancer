@@ -234,3 +234,55 @@ class PhiJaccardGreedyPruner:
             "matched_pairs": matched_pairs,
         }
         return FoldFeatureSelection(selected_indices, metadata)
+
+
+@dataclass(frozen=True)
+class RareMutationPresencePruner:
+    """Remove only mutation-presence features that are too rare in outer-train."""
+
+    min_positive_count: int
+
+    def select(
+        self,
+        features: sparse.csr_matrix,
+        targets: np.ndarray,
+        feature_names: Sequence[str],
+        fold: int,
+    ) -> FoldFeatureSelection:
+        del targets
+        _require(sparse.isspmatrix_csr(features), "feature selector 입력은 CSR sparse matrix여야 합니다.")
+        _require(features.shape[1] == len(feature_names), "feature matrix와 feature 이름 수가 다릅니다.")
+        _require(self.min_positive_count >= 1, "min_positive_count는 1 이상이어야 합니다.")
+        mutation_indices = [
+            index for index, name in enumerate(feature_names) if str(name).endswith("__mutated")
+        ]
+        _require(mutation_indices, "gene__mutated feature를 찾지 못했습니다.")
+        presence = features[:, mutation_indices].astype(np.int32, copy=True).tocsr()
+        presence.eliminate_zeros()
+        presence.data = np.ones_like(presence.data, dtype=np.int32)
+        prevalence = np.asarray(presence.sum(axis=0)).ravel().astype(np.int64)
+        dropped_global_indices = [
+            mutation_indices[local_index]
+            for local_index, count in enumerate(prevalence)
+            if int(count) < self.min_positive_count
+        ]
+        selected_indices = tuple(
+            index for index in range(features.shape[1]) if index not in set(dropped_global_indices)
+        )
+        metadata = {
+            "selector": "rare_mutation_presence_pruner",
+            "fold": int(fold),
+            "fit_rows": int(features.shape[0]),
+            "parameters": {"min_positive_count": self.min_positive_count},
+            "mutation_presence_feature_count": len(mutation_indices),
+            "dropped_feature_names": [str(feature_names[index]) for index in dropped_global_indices],
+            "dropped_gene_names": [
+                str(feature_names[index]).removesuffix("__mutated") for index in dropped_global_indices
+            ],
+            "dropped_prevalence": {
+                str(feature_names[mutation_indices[local_index]]).removesuffix("__mutated"): int(count)
+                for local_index, count in enumerate(prevalence)
+                if int(count) < self.min_positive_count
+            },
+        }
+        return FoldFeatureSelection(selected_indices, metadata)
