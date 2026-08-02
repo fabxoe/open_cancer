@@ -30,6 +30,7 @@ from open_cancer.pathway_aggregation_features import (
     CELL_CYCLE_GENES,
     compute_any_nonsilent_flag,
 )
+from open_cancer.paths import relative_posix
 from open_cancer.validation import validate_json_document, validate_submission
 import yaml
 
@@ -175,10 +176,10 @@ def main() -> None:
             ).tolist(),
         },
         "artifacts": {
-            "feature_spec_manifest": str(
-                (feature_dir / "feature_spec_manifest.json").relative_to(ROOT)
+            "feature_spec_manifest": relative_posix(
+                feature_dir / "feature_spec_manifest.json", ROOT
             ),
-            "models": str(model_dir.relative_to(ROOT)),
+            "models": relative_posix(model_dir, ROOT),
         },
         "runtime": {"seconds": time.perf_counter() - clock},
         "notes": (
