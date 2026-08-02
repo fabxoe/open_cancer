@@ -66,6 +66,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 원본 변이 분포를 암종별로 확인하는 탐색용 EDA:
 
 - [Train mutation violin EDA](analysis/eda_violin/README.md)
+- [Train/Test tokenization OOD QC](analysis/tokenization_ood/README.md)
 - [동결 Feature Spec·공통 모델 runner 계약](analysis/frozen_feature_model_runner_contract.md)
 
 프로젝트 전체에 영향을 주는 target-independent QC와 의미 감사는
