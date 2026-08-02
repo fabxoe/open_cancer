@@ -1,4 +1,4 @@
-"""Fold-safe, target-independent feature selection primitives.
+"""Fold-safe feature selection primitives.
 
 The selectors in this module are fit on one outer training fold only.  Their
 saved selection documents let a checkpoint inference path replay exactly the
@@ -511,6 +511,188 @@ class ElasticNetStabilitySelector:
             "selected_gene_count": len(selected_genes),
             "selected_gene_names": list(selected_genes),
             "selection_frequency": {genes[index]: int(frequencies[index]) for index in ranked_local},
+            "selected_feature_count": len(selected_indices),
+            "retained_non_gene_feature_count": sum(
+                1 for name in feature_names if str(name).split("__", 1)[0] not in raw_gene_set
+            ),
+        }
+        return FoldFeatureSelection(selected_indices, metadata)
+
+
+def _binary_entropy(probability: np.ndarray) -> np.ndarray:
+    """Return binary entropy for probabilities strictly between zero and one."""
+    probability = np.asarray(probability, dtype=np.float64)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        return np.where(
+            (probability > 0.0) & (probability < 1.0),
+            -probability * np.log(probability) - (1.0 - probability) * np.log(1.0 - probability),
+            0.0,
+        )
+
+
+def _binary_mi_from_joint(
+    joint_count: np.ndarray,
+    *,
+    left_count: np.ndarray,
+    right_count: float,
+    row_count: int,
+) -> np.ndarray:
+    """Vectorized mutual information between binary columns and one binary column."""
+    joint = np.asarray(joint_count, dtype=np.float64) / float(row_count)
+    left = np.asarray(left_count, dtype=np.float64) / float(row_count)
+    right = float(right_count) / float(row_count)
+    cells = (
+        (joint, left * right),
+        (left - joint, left * (1.0 - right)),
+        (right - joint, (1.0 - left) * right),
+        (1.0 - left - right + joint, (1.0 - left) * (1.0 - right)),
+    )
+    result = np.zeros_like(left, dtype=np.float64)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        for probability, expected in cells:
+            result += np.where(probability > 0.0, probability * np.log(probability / expected), 0.0)
+    return result
+
+
+@dataclass(frozen=True)
+class MrmrMutationPresenceSelector:
+    """Greedily select mutation-presence genes with fold-local mRMR-MID.
+
+    Relevance is exact discrete mutual information with the multi-class target.
+    Redundancy is normalized binary mutual information, using arithmetic-mean
+    entropy normalization (the same normalization as sklearn's default NMI).
+    Only outer-train rows participate in either calculation.
+    """
+
+    min_positive_count: int
+    selected_gene_count: int
+
+    def select(
+        self,
+        features: sparse.csr_matrix,
+        targets: np.ndarray,
+        feature_names: Sequence[str],
+        fold: int,
+    ) -> FoldFeatureSelection:
+        _require(sparse.isspmatrix_csr(features), "feature selector 입력은 CSR sparse matrix여야 합니다.")
+        _require(features.shape[1] == len(feature_names), "feature matrix와 feature 이름 수가 다릅니다.")
+        _require(self.min_positive_count >= 1, "min_positive_count는 1 이상이어야 합니다.")
+        _require(self.selected_gene_count >= 1, "selected_gene_count는 1 이상이어야 합니다.")
+        _require(features.shape[0] == len(targets), "feature와 target 행 수가 다릅니다.")
+
+        mutation_indices, all_genes = _mutation_presence_indices_and_genes(feature_names)
+        presence = features[:, mutation_indices].astype(np.float64, copy=True).tocsr()
+        presence.eliminate_zeros()
+        presence.data = np.ones_like(presence.data, dtype=np.float64)
+        row_count = int(presence.shape[0])
+        prevalence = np.asarray(presence.sum(axis=0)).ravel().astype(np.int64)
+        candidate_local = np.flatnonzero(
+            (prevalence >= self.min_positive_count) & (prevalence < row_count)
+        )
+        _require(
+            len(candidate_local) >= self.selected_gene_count,
+            "mRMR 후보 유전자 수가 selected_gene_count보다 적습니다.",
+        )
+        candidate_presence = presence[:, candidate_local].tocsr()
+        candidate_prevalence = prevalence[candidate_local]
+        candidate_genes = tuple(all_genes[index] for index in candidate_local)
+        target_values = np.asarray(targets, dtype=np.int64)
+        class_count = int(target_values.max()) + 1
+        _require(class_count >= 2, "mRMR에는 두 개 이상의 target class가 필요합니다.")
+        class_sizes = np.bincount(target_values, minlength=class_count).astype(np.float64)
+        class_one_hot = sparse.csr_matrix(
+            (np.ones(row_count, dtype=np.float64), (np.arange(row_count), target_values)),
+            shape=(row_count, class_count),
+        )
+        positive_by_class = (candidate_presence.T @ class_one_hot).toarray()
+        positive_probability = candidate_prevalence.astype(np.float64) / float(row_count)
+        class_probability = class_sizes / float(row_count)
+        p_one_class = positive_by_class / float(row_count)
+        p_zero_class = (class_sizes[None, :] - positive_by_class) / float(row_count)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            relevance = np.where(
+                p_one_class > 0.0,
+                p_one_class * np.log(p_one_class / (positive_probability[:, None] * class_probability[None, :])),
+                0.0,
+            ).sum(axis=1)
+            relevance += np.where(
+                p_zero_class > 0.0,
+                p_zero_class
+                * np.log(p_zero_class / ((1.0 - positive_probability[:, None]) * class_probability[None, :])),
+                0.0,
+            ).sum(axis=1)
+        entropy = _binary_entropy(positive_probability)
+        candidate_csc = candidate_presence.tocsc()
+        redundancy_sum = np.zeros(len(candidate_genes), dtype=np.float64)
+        selected_local: list[int] = []
+        selected_scores: list[dict[str, float | str | int]] = []
+
+        for rank in range(self.selected_gene_count):
+            if rank == 0:
+                score = relevance.copy()
+            else:
+                score = relevance - redundancy_sum / float(rank)
+            if selected_local:
+                score[np.asarray(selected_local, dtype=np.int64)] = -np.inf
+            best_score = float(np.max(score))
+            tied = np.flatnonzero(np.isclose(score, best_score, rtol=0.0, atol=1e-15))
+            chosen = min(tied.tolist(), key=lambda index: candidate_genes[index])
+            mean_redundancy = 0.0 if rank == 0 else float(redundancy_sum[chosen] / float(rank))
+            selected_local.append(chosen)
+            selected_scores.append(
+                {
+                    "rank": rank + 1,
+                    "gene": candidate_genes[chosen],
+                    "relevance_mutual_information": float(relevance[chosen]),
+                    "mean_normalized_redundancy": mean_redundancy,
+                    "mrmr_mid_score": float(score[chosen]),
+                    "prevalence": int(candidate_prevalence[chosen]),
+                }
+            )
+            start, end = candidate_csc.indptr[chosen], candidate_csc.indptr[chosen + 1]
+            selected_rows = candidate_csc.indices[start:end]
+            joint = np.asarray(candidate_presence[selected_rows].sum(axis=0)).ravel()
+            mutual_information = _binary_mi_from_joint(
+                joint,
+                left_count=candidate_prevalence,
+                right_count=float(candidate_prevalence[chosen]),
+                row_count=row_count,
+            )
+            denominator = entropy + entropy[chosen]
+            normalized_mi = np.divide(
+                2.0 * mutual_information,
+                denominator,
+                out=np.zeros_like(mutual_information),
+                where=denominator > 0.0,
+            )
+            redundancy_sum += normalized_mi
+
+        selected_genes = tuple(candidate_genes[index] for index in selected_local)
+        selected_gene_set = set(selected_genes)
+        raw_gene_set = set(all_genes)
+        selected_indices = tuple(
+            index
+            for index, name in enumerate(feature_names)
+            if str(name).split("__", 1)[0] not in raw_gene_set
+            or str(name).split("__", 1)[0] in selected_gene_set
+        )
+        _require(selected_indices, "mRMR selector가 빈 feature mask를 만들었습니다.")
+        metadata = {
+            "selector": "mrmr_mutation_presence_selector",
+            "fold": int(fold),
+            "fit_rows": row_count,
+            "parameters": {
+                "min_positive_count": self.min_positive_count,
+                "selected_gene_count": self.selected_gene_count,
+                "relevance": "discrete_mutual_information_multiclass_target",
+                "redundancy": "binary_normalized_mutual_information_arithmetic",
+                "strategy": "greedy_mrmr_mid",
+            },
+            "mutation_presence_feature_count": len(all_genes),
+            "candidate_gene_count": len(candidate_genes),
+            "selected_gene_count": len(selected_genes),
+            "selected_gene_names": list(selected_genes),
+            "selected_gene_scores": selected_scores,
             "selected_feature_count": len(selected_indices),
             "retained_non_gene_feature_count": sum(
                 1 for name in feature_names if str(name).split("__", 1)[0] not in raw_gene_set
