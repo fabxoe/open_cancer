@@ -1,0 +1,107 @@
+{
+  "experiment_id": "EXP-211",
+  "issue_number": 211,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "38955bcb7f1a0e8d72e933fd9fa4d48bd1a7873a",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp211_ovr_xgboost_v2_performance/data_manifest.json",
+  "environment": "reproducibility/exp211_ovr_xgboost_v2_performance/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint_fold_0",
+      "path": "models/exp211_ovr_xgboost_v2_performance/fold_00.joblib",
+      "size_bytes": 17493333,
+      "sha256": "5def00b4b498f441bf59f27f55d7e33f70e31dd7446f0b40812be3bd95c2c5d4",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_1",
+      "path": "models/exp211_ovr_xgboost_v2_performance/fold_01.joblib",
+      "size_bytes": 18198424,
+      "sha256": "eabfdf0f019fc15525e0c768cabe3858166375fbe82b3abc80b75da1371bcfea",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_2",
+      "path": "models/exp211_ovr_xgboost_v2_performance/fold_02.joblib",
+      "size_bytes": 17914592,
+      "sha256": "652cbb98337b5e74faf1b95f6aaed2c959e31d8d657a5546445eafd2c438a06c",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_3",
+      "path": "models/exp211_ovr_xgboost_v2_performance/fold_03.joblib",
+      "size_bytes": 17268915,
+      "sha256": "49c07dea7302c5c18995aabc1bd7e4a7354d2b90eff46c61c197254129e10194",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_4",
+      "path": "models/exp211_ovr_xgboost_v2_performance/fold_04.joblib",
+      "size_bytes": 17845308,
+      "sha256": "f6d9386539f59c7696cbb89e17ec6ad97a8a89c51a58cabe4652c49ce7566969",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_spec_manifest",
+      "path": "data/processed/exp211_ovr_xgboost_v2_performance_features/feature_spec_manifest.json",
+      "size_bytes": 2681,
+      "sha256": "015dce91d3b505a5366e70c2d5e5be958994b1eaf907e6be4515b9640a21efef",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof",
+      "path": "oof/exp211_ovr_xgboost_v2_performance.csv",
+      "size_bytes": 3576774,
+      "sha256": "79ae9b30b7e447dcdcadaee595e9e8af1d562a0130f5fce3404ad9894c8ab2f3",
+      "storage_uri": null
+    },
+    {
+      "kind": "report_metrics",
+      "path": "reports/exp211_ovr_xgboost_v2_performance/metrics.json",
+      "size_bytes": 11346,
+      "sha256": "4418286bb2fffcc51e0dc4f158304b88ee10aa0bc110ff1bbfa9c05dabfb2d9f",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp211_ovr_xgboost_v2_performance.csv",
+      "size_bytes": 38283,
+      "sha256": "6c4b4dae61409063e10c6b2f1941d4c0cbc46745a01c2d9e38562782e2581860",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp211_ovr_xgboost_v2_performance_test_proba.csv",
+      "size_bytes": 1435117,
+      "sha256": "044bcfe8a6d240cdff4961755f4c833564fb4ed18f558b224852b61365887a0a",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp211_ovr_xgboost_v2_performance/config.resolved.yaml",
+      "size_bytes": 4126,
+      "sha256": "eb186cac5858bc5fee26bdf7a6cc204f420506d81b97cbb59db36cbcecffc11e",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp211_ovr_xgboost_v2_performance/metrics.json",
+      "size_bytes": 11346,
+      "sha256": "4418286bb2fffcc51e0dc4f158304b88ee10aa0bc110ff1bbfa9c05dabfb2d9f",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "oof_macro_f1_delta": 0.0,
+    "passed": true
+  }
+}

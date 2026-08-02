@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 52
+- 실제 실험 수: 53
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -71,6 +71,7 @@
 | EXP-207 | COMPLETED | fabxoe | #207 | EXP-094 + outer-train Boruta confirmed mutation-presence genes | 0.3484416378 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0684449·DLBC F1 0으로 붕괴, 재튜닝 없이 ARCHIVE | [보고서](reports/exp207_s3_boruta_feature_selection/README.md) |
 | EXP-219 | COMPLETED | fabxoe | #219 | EXP-094 동일 조건 + validation Macro-F1-best checkpoint 선택 | 0.4222321460 | 미제출 | INFERENCE_VERIFIED | 기존 mlogloss-best 대비 +0.0053456·fold std 개선, 향후 XGBoost 정책 채택 | [보고서](reports/exp219_macro_f1_checkpoint_selection/README.md) |
 | EXP-196 | COMPLETED | fabxoe | #196 | outer-train raw mutation-presence TruncatedSVD 256 + aggregate·hotspot | 0.3496748557 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0672117·fold std와 DLBC F1 붕괴로 ARCHIVE | [보고서](reports/exp196_s4_truncated_svd/README.md) |
+| EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -124,6 +125,7 @@
 | 2026-08-01T12:24:32.873783+00:00 | EXP-125 | fabxoe | `8d4fe9c99e05306c691f1c4f23903066b92f7ddf` / [`exp-125-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-125-repro-v1) | 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp125_lightgbm_v1/comparison.json) |
 | 2026-08-01T14:26:44.634572+00:00 | EXP-127 | fabxoe | `03af58890c1cac9d90e61430e550b7ae6cc7060d` / [`exp-127-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-127-repro-v1) | 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp127_catboost_v1/comparison.json) |
 | 2026-08-02T09:15:19.096281+00:00 | EXP-179 | fabxoe | `704731a20520339e21f4c84eae93708d2e1dfd3e` / 태그 없음 | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp179_xgb_feature_spec_v1_smote/comparison.json) |
+| 2026-08-02T16:32:46.152425+00:00 | EXP-211 | 2heej | `38955bcb7f1a0e8d72e933fd9fa4d48bd1a7873a` / 태그 없음 | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 2.12e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp211_ovr_xgboost_v2_performance/comparison.json) |
 | 2026-08-02T15:08:02+00:00 | EXP-151 | fabxoe | `17d433f81cf41fce54045739b0531915cc89b565` / [`exp-151-repro-v2`](https://github.com/fabxoe/open_cancer/releases/tag/exp-151-repro-v2) | SHA-256 일치 | 제출 SHA-256·test 라벨 100% 일치; GPU→CPU 확률 차이와 OOF 라벨 99.9839% 일치 기록 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp151_mutated_gene_burden/comparison.json) |
 | 2026-08-02T15:08:02+00:00 | EXP-188 | fabxoe | `1ff0663af2f682229d715136119e8e1db6bace62` / [`exp-188-repro-v2`](https://github.com/fabxoe/open_cancer/releases/tag/exp-188-repro-v2) | SHA-256 일치 | 제출 SHA-256·OOF/test 라벨·확률 100% 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp188_c1_phi_jaccard_pruning/comparison.json) |
 | 2026-08-02T15:58:51.992672+00:00 | EXP-219 | fabxoe | `41d07096e1c87eb55e7d7a73645629ea3d0952e3` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.45e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp219_macro_f1_checkpoint_selection/comparison.json) |
@@ -131,6 +133,46 @@
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-211] One-vs-Rest XGBoost + v2-performance
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #211 / `issue-211-exp-ovr-xgboost-v2-performance`
+- 소스 commit: `38955bcb7f1a0e8d72e933fd9fa4d48bd1a7873a`
+- 시작/종료: 2026-08-02T14:59:31.061759+00:00 /
+  2026-08-02T16:32:46.152425+00:00
+
+#### 실행
+
+- 부모: EXP-096
+- Feature Spec `v2-performance`, canonical 5-fold와 tree 설정 유지
+- 유일한 변경: multiclass XGBoost를 26개 OvR binary XGBoost로 교체
+- binary class weight는 각 outer-fold 학습 행에서만 계산
+- Config: `configs/exp211_ovr_xgboost_v2_performance.yaml`
+- Metrics: `reports/exp211_ovr_xgboost_v2_performance/metrics.json`
+- Report: `reports/exp211_ovr_xgboost_v2_performance/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4215797651, 0.4019137795, 0.4006264832,
+  0.4160726895, 0.4097042237
+- OOF Macro F1: 0.4112914798 (EXP-096 대비 `-0.0068238282`)
+- Fold 표준편차: 0.0080536160 (EXP-096 대비 `-0.0014385016`)
+- Accuracy: 0.4091275601 (EXP-096 대비 `+0.0012901145`)
+- Log Loss: 1.8769391573 (EXP-096 대비 `+0.0400049484`)
+- Runtime: 5,595.09초
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 결론
+
+- 안정성은 소폭 개선됐지만 Macro F1과 Log Loss가 모두 채택 기준보다 나빠
+  `ARCHIVE`한다. 제출과 OvR 추가 튜닝은 진행하지 않는다.
+- 저장 checkpoint 재추론에서 OOF·test 라벨 100%, 확률 최대 절대 차이
+  `2.12e-7`, 제출 CSV SHA-256 일치를 확인했다.
+- 다음 실험은 EXP-219에서 채택된 validation Macro-F1 checkpoint 정책을
+  EXP-096 v2-performance에 독립 적용한다.
 
 ### [EXP-196] S4 TruncatedSVD 저차원 비교 모델
 
