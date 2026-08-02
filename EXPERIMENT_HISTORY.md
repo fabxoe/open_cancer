@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 35
+- 실제 실험 수: 36
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -54,6 +54,7 @@
 | EXP-131 | COMPLETED | fabxoe | #131 | EXP-127 CatBoost v1 extended training | 0.4222392962 | 미제출 | INFERENCE_VERIFIED | OOF는 개선했지만 fold·Log Loss 악화, 추가 CatBoost iteration 확장 중단 | [보고서](reports/exp131_catboost_v1_extended/README.md) |
 | EXP-135 | COMPLETED | fabxoe | #135 | EXP-094 + EXP-125 fixed 0.5/0.5 probability blend | 0.4201772665 | 미제출 | INFERENCE_VERIFIED | Log Loss는 개선했지만 EXP-131 단독 F1·fold gate를 넘지 못해 제출·추가 blend 보류 | [보고서](reports/exp135_fixed_probability_blend/README.md) |
 | EXP-137 | COMPLETED | fabxoe | #137 | EXP-094 + EXP-125 leakage-safe cross-fitted Logistic stacking | 0.4068626451 | 미제출 | INFERENCE_VERIFIED | 소수 클래스 F1 붕괴·최고 단일 대비 -0.0153766511로 stack 기각 | [보고서](reports/exp137_cross_fitted_stacking/README.md) |
+| EXP-151 | COMPLETED | fabxoe | #151 | EXP-094 + log1p(mutated_gene_count), Secure RTX 4090 실행 | 0.4188970451 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0051158로 기준 실패·미채택 | [보고서](reports/exp151_mutated_gene_burden/README.md) |
 
 ## 리더보드 제출 이력
 
