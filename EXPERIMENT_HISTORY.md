@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 51
+- 실제 실험 수: 52
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -70,6 +70,7 @@
 | EXP-205 | COMPLETED | fabxoe | #205 | EXP-094 + outer-train mRMR-MID top-128 mutation-presence genes | 0.3976963538 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0191902·Log Loss +0.0426300으로 gate 실패, ARCHIVE | [보고서](reports/exp205_s2_mrmr_feature_selection/README.md) |
 | EXP-207 | COMPLETED | fabxoe | #207 | EXP-094 + outer-train Boruta confirmed mutation-presence genes | 0.3484416378 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0684449·DLBC F1 0으로 붕괴, 재튜닝 없이 ARCHIVE | [보고서](reports/exp207_s3_boruta_feature_selection/README.md) |
 | EXP-219 | COMPLETED | fabxoe | #219 | EXP-094 동일 조건 + validation Macro-F1-best checkpoint 선택 | 0.4222321460 | 미제출 | INFERENCE_VERIFIED | 기존 mlogloss-best 대비 +0.0053456·fold std 개선, 향후 XGBoost 정책 채택 | [보고서](reports/exp219_macro_f1_checkpoint_selection/README.md) |
+| EXP-196 | COMPLETED | fabxoe | #196 | outer-train raw mutation-presence TruncatedSVD 256 + aggregate·hotspot | 0.3496748557 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0672117·fold std와 DLBC F1 붕괴로 ARCHIVE | [보고서](reports/exp196_s4_truncated_svd/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -130,6 +131,37 @@
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-196] S4 TruncatedSVD 저차원 비교 모델
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #196 / `issue-196-s4-truncated-svd`
+- 소스 commit: `eff4538a7c12dc6af465cddcd5f8614a0374d7a6`
+- 시작/종료: 2026-08-02T16:05:25.678718+00:00 /
+  2026-08-02T16:09:07.810346+00:00
+
+#### 실행과 결과
+
+- Config: `configs/exp196_s4_truncated_svd.yaml`
+- Runner: `scripts/run_exp196_s4_truncated_svd.py`
+- Metrics: `reports/exp196_s4_truncated_svd/metrics.json`
+- 각 outer-train의 4,384개 mutation-presence에만 TruncatedSVD 256차원을
+  fit하고 sample aggregate·고정 hotspot을 passthrough했다. validation·test는
+  저장된 fold projector만 사용했고 checkpoint는 validation Macro F1로 골랐다.
+- Fold Macro F1: 0.311846 / 0.351196 / 0.362893 / 0.360420 / 0.354315
+- OOF Macro F1: 0.3496748557 (EXP-094 대비 `-0.0672117181`)
+- Fold 표준편차: 0.0186183177 (EXP-094 대비 `+0.0107340657`)
+- Log Loss: 2.0729362413 (보조 지표, `+0.2329989120`)
+- DLBC F1: 0.0930232558 (클래스별 최악 변화 `-0.2843352348`)
+- Public LB: 미제출
+- 재현 상태: `MANIFEST_COMPLETE`
+
+#### 결론
+
+저차원 선형 투영이 희소한 암종별 유전자 신호를 크게 훼손해 모든 핵심 gate에
+실패했다. `ARCHIVE`하며 SVD 차원·iteration을 추가 탐색하거나 제출하지 않는다.
+상세 내용은 [보고서](reports/exp196_s4_truncated_svd/README.md)를 참고한다.
 
 ### [EXP-219] Macro F1 checkpoint 선택 통제 비교
 
