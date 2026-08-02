@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import platform
 import subprocess
@@ -152,6 +153,192 @@ def verify_saved_xgb_inference(
         ),
         "reproduced_submission": str(reproduced_submission.relative_to(ROOT)),
     }
+
+
+def replay_checkpoints() -> None:
+    """Recover canonical outputs without fitting or resampling a model again.
+
+    The original training metrics are the source of truth.  This mode first
+    proves checkpoint OOF metrics match that record, then writes the missing
+    OOF/test/submission and the normal reproducibility bundle.
+    """
+    config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
+    if context.experiment_id != "EXP-179":
+        raise RuntimeError(f"Issue #179가 아닌 브랜치에서 실행 중입니다: {context.experiment_id}")
+
+    model_dir = ROOT / "models" / SLUG
+    report_dir = ROOT / "reports" / SLUG
+    reproducibility_dir = ROOT / "reproducibility" / SLUG
+    report_metrics = report_dir / "metrics.json"
+    if not report_metrics.is_file():
+        raise RuntimeError("원 실행 metrics.json이 없어 checkpoint recovery를 시작할 수 없습니다.")
+    metrics = json.loads(report_metrics.read_text(encoding="utf-8"))
+    if metrics.get("git_commit") != "704731a20520339e21f4c84eae93708d2e1dfd3e":
+        raise RuntimeError("EXP-179 원 실행 source commit이 예상 값과 다릅니다.")
+
+    feature_dir = ROOT / "data" / "processed" / f"{SLUG}_features"
+    materialize_frozen_feature_spec(
+        root=ROOT, name="v1", output_dir=feature_dir, train_path=TRAIN, test_path=TEST
+    )
+    from scipy import sparse
+
+    train_features = sparse.load_npz(feature_dir / "train_features.npz").tocsr()
+    test_features = sparse.load_npz(feature_dir / "test_features.npz").tocsr()
+    train = pd.read_csv(TRAIN, usecols=["ID", "SUBCLASS"], dtype=str)
+    test = pd.read_csv(TEST, usecols=["ID"], dtype=str)
+    split_path = ROOT / config["split"]["path"]
+    folds = (
+        train[["ID"]]
+        .merge(
+            pd.read_csv(split_path, dtype={"ID": str, "fold": int}),
+            on="ID",
+            how="left",
+            validate="one_to_one",
+            sort=False,
+        )["fold"]
+        .to_numpy(dtype=np.int32)
+    )
+    if np.any(~np.isin(folds, np.arange(5))):
+        raise RuntimeError("canonical split을 EXP-179 checkpoint recovery에 적용할 수 없습니다.")
+    targets = train["SUBCLASS"].map({label: index for index, label in enumerate(CLASS_LABELS)}).to_numpy(dtype=np.int32)
+    if pd.isna(targets).any():
+        raise RuntimeError("고정 class order에 없는 SUBCLASS가 있습니다.")
+
+    model_paths = tuple(model_dir / f"fold_{fold:02d}.json" for fold in range(5))
+    missing_paths = [str(path.relative_to(ROOT)) for path in model_paths if not path.is_file()]
+    if missing_paths:
+        raise RuntimeError("checkpoint가 없어 recovery할 수 없습니다: " + ", ".join(missing_paths))
+    oof = np.full((len(train), len(CLASS_LABELS)), np.nan, dtype=np.float64)
+    test_probabilities = np.zeros((len(test), len(CLASS_LABELS)), dtype=np.float64)
+    for fold, model_path in enumerate(model_paths):
+        model = xgb.XGBClassifier()
+        model.load_model(model_path)
+        valid = folds == fold
+        oof[valid] = model.predict_proba(train_features[valid])
+        test_probabilities += model.predict_proba(test_features) / len(model_paths)
+    if np.isnan(oof).any():
+        raise RuntimeError("checkpoint replay OOF가 완성되지 않았습니다.")
+
+    replay_macro_f1 = float(f1_score(targets, oof.argmax(axis=1), average="macro"))
+    replay_log_loss = float(log_loss(targets, oof, labels=np.arange(len(CLASS_LABELS))))
+    expected_oof = metrics["oof"]
+    if not np.isclose(replay_macro_f1, float(expected_oof["macro_f1"]), atol=1e-12, rtol=0):
+        raise RuntimeError("checkpoint replay OOF Macro F1이 원 실행 기록과 다릅니다.")
+    if not np.isclose(replay_log_loss, float(expected_oof["log_loss"]), atol=1e-9, rtol=0):
+        raise RuntimeError("checkpoint replay Log Loss가 원 실행 기록과 다릅니다.")
+
+    oof_path = ROOT / "oof" / f"{SLUG}.csv"
+    test_probability_path = ROOT / "preds" / f"{SLUG}_test_proba.csv"
+    submission_path = ROOT / "submissions" / f"{SLUG}.csv"
+    for directory in (oof_path.parent, test_probability_path.parent, submission_path.parent, reproducibility_dir):
+        directory.mkdir(parents=True, exist_ok=True)
+    build_oof_probability_frame(
+        ids=train["ID"].tolist(), true_labels=train["SUBCLASS"].tolist(), folds=folds, probabilities=oof
+    ).to_csv(oof_path, index=False)
+    build_test_probability_frame(ids=test["ID"].tolist(), probabilities=test_probabilities).to_csv(
+        test_probability_path, index=False
+    )
+    submission = pd.read_csv(SAMPLE, dtype=str, keep_default_na=False)
+    submission["SUBCLASS"] = np.asarray(CLASS_LABELS)[test_probabilities.argmax(axis=1)]
+    submission.to_csv(submission_path, index=False, lineterminator="\n")
+    validate_submission(submission_path, TEST)
+
+    metrics["artifacts"].update(
+        {
+            "oof_probabilities": str(oof_path.relative_to(ROOT)),
+            "test_probabilities": str(test_probability_path.relative_to(ROOT)),
+            "submission": str(submission_path.relative_to(ROOT)),
+        }
+    )
+    metrics["notes"] = (
+        "EXP-094 v1 + fold-local standard SMOTE; validation/test were not resampled. "
+        "Original run ended after metric writing; outputs were recovered by checkpoint replay without retraining."
+    )
+    report_metrics.write_text(json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    validate_json_document(report_metrics, ROOT / "schemas" / "experiment_metrics.schema.json")
+
+    original_started_at = datetime.fromisoformat(metrics["started_at"])
+    resolved = build_resolved_config(
+        context=context,
+        owner=str(metrics["owner"]),
+        source_commit=str(metrics["git_commit"]),
+        started_at=original_started_at,
+        feature_spec=json.loads((feature_dir / "feature_spec_manifest.json").read_text(encoding="utf-8")),
+        config=config,
+    )
+    records = write_model_run_records(
+        root=ROOT,
+        output_dir=reproducibility_dir,
+        experiment_id="EXP-179",
+        issue_number=179,
+        source_commit=str(metrics["git_commit"]),
+        resolved_config=resolved,
+        metrics=metrics,
+        data_files={"train": TRAIN, "test": TEST, "sample_submission": SAMPLE, "split": split_path},
+        artifacts={
+            "feature_spec_manifest": feature_dir / "feature_spec_manifest.json",
+            "oof_probabilities": oof_path,
+            "test_probabilities": test_probability_path,
+            "submission": submission_path,
+            **{f"checkpoint_fold_{fold}": path for fold, path in enumerate(model_paths)},
+        },
+        environment=resolved["environment"],
+    )
+    comparison = verify_saved_xgb_inference(
+        model_paths=model_paths,
+        train_features=train_features,
+        test_features=test_features,
+        folds=folds,
+        original_oof=oof,
+        original_test=test_probabilities,
+        submission_path=submission_path,
+        expected_submission_sha256=sha256_file(submission_path),
+    )
+    comparison["oof_macro_f1_delta"] = 0.0
+    comparison["recorded_oof_macro_f1"] = float(expected_oof["macro_f1"])
+    comparison["checkpoint_replay_oof_macro_f1"] = replay_macro_f1
+    comparison_path = reproducibility_dir / "comparison.json"
+    comparison_path.write_text(json.dumps(comparison, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    verification = {
+        key: comparison[key]
+        for key in (
+            "data_hashes_match",
+            "submission_sha256_match",
+            "oof_label_agreement",
+            "test_label_agreement",
+            "probability_atol",
+            "probability_rtol",
+            "oof_macro_f1_delta",
+            "passed",
+        )
+    }
+    artifact_manifest = json.loads(records["artifact_manifest"].read_text(encoding="utf-8"))
+    artifact_manifest.update(
+        {
+            "reproducibility_status": "INFERENCE_VERIFIED" if verification["passed"] else "FAILED",
+            "verifier": "scripts/run_exp179_xgb_feature_spec_v1_smote.py --replay-checkpoints",
+            "verified_at": datetime.now(timezone.utc).isoformat(),
+            "verification": verification,
+        }
+    )
+    records["artifact_manifest"].write_text(
+        json.dumps(artifact_manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    validate_json_document(records["artifact_manifest"], ROOT / "schemas" / "reproducibility_manifest.schema.json")
+    print(
+        json.dumps(
+            {
+                "oof_macro_f1": replay_macro_f1,
+                "oof_log_loss": replay_log_loss,
+                "submission": str(submission_path),
+                "inference_verified": verification["passed"],
+                "mode": "checkpoint_replay",
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
 
 
 def main() -> None:
@@ -354,4 +541,14 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--replay-checkpoints",
+        action="store_true",
+        help="학습 없이 저장 checkpoint로 EXP-179 산출물과 재현성 증빙을 복구합니다.",
+    )
+    args = parser.parse_args()
+    if args.replay_checkpoints:
+        replay_checkpoints()
+    else:
+        main()

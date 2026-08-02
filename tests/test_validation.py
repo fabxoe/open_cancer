@@ -98,7 +98,14 @@ def test_experiment_metrics_schema(tmp_path: Path) -> None:
         "finished_at": "2026-07-30T02:00:00Z",
         "primary_metric": "macro_f1",
         "split_id": "stratified_5fold_seed42",
-        "folds": [{"fold": 0, "macro_f1": 0.5}],
+        "folds": [
+            {
+                "fold": 0,
+                "macro_f1": 0.5,
+                "resampling": {"method": "SMOTE", "input_rows": 8, "output_rows": 12},
+                "feature_selection": {"selector": "phi_jaccard", "dropped_feature_names": ["A__mutated"]},
+            }
+        ],
         "oof": {"macro_f1": 0.5},
         "artifacts": {"report": "reports/exp012_test/report.md"},
     }

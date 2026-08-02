@@ -92,6 +92,14 @@
           "best_iteration": {
             "type": ["integer", "null"],
             "minimum": 0
+          },
+          "resampling": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "feature_selection": {
+            "type": "object",
+            "additionalProperties": true
           }
         }
       }
