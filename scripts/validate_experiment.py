@@ -9,6 +9,7 @@ from pathlib import Path
 
 from open_cancer.validation import (
     validate_experiment_record_identity,
+    validate_experiment_source_identity,
     validate_history,
     validate_json_document,
     validate_portable_artifact_paths,
@@ -39,6 +40,10 @@ def main() -> None:
         root,
         root / "EXPERIMENT_HISTORY.md",
     )
+    source_identity_summary = validate_experiment_source_identity(
+        root,
+        root / "EXPERIMENT_HISTORY.md",
+    )
     split_summary = validate_split_metadata(
         root / "data/splits/stratified_5fold_seed42.csv",
         root / "data/splits/stratified_5fold_seed42.meta.json",
@@ -66,6 +71,7 @@ def main() -> None:
             {
                 "history": history_summary,
                 "repository_contract": repository_contract_summary,
+                "source_identity": source_identity_summary,
                 "canonical_split": split_summary,
                 "submission_storage": storage_summary,
                 "metrics_files": len(metrics_files),

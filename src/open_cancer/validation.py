@@ -383,6 +383,145 @@ def validate_repository_contract(
     }
 
 
+def validate_experiment_source_identity(
+    root: str | Path,
+    history_path: str | Path,
+) -> dict[str, int]:
+    """Validate the config/runner/report identity chain for official experiments.
+
+    Historical configs and shared runners predate the one-runner-per-EXP contract.
+    They must be listed explicitly in ``configs/experiment_source_legacy.yaml``;
+    new official experiments are never silently exempted.
+    """
+
+    root = Path(root)
+    history_path = Path(history_path)
+    manifest_path = root / "configs" / "experiment_source_legacy.yaml"
+    _require(manifest_path.is_file(), f"source legacy manifest가 없습니다: {manifest_path}")
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8")) or {}
+
+    identity_section = manifest.get("config_without_experiment_id", {})
+    legacy_config_stems = set(identity_section.get("config_stems", []))
+    missing_history_entries = {
+        str(item["experiment_id"]): str(item["reason"])
+        for item in manifest.get("missing_history_config", [])
+    }
+    missing_runner_entries = {
+        str(item["config_stem"]): str(item["reason"])
+        for item in manifest.get("missing_runner", [])
+    }
+
+    history = history_path.read_text(encoding="utf-8")
+    history_reports: dict[str, Path] = {}
+    for line in history.splitlines():
+        if not re.match(r"^\| EXP-\d+ \|", line):
+            continue
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        experiment_id = cells[0]
+        report_match = re.fullmatch(r"\[보고서\]\((reports/[^)]+/README\.md)\)", cells[9])
+        if report_match is not None:
+            history_reports[experiment_id] = root / report_match.group(1)
+
+    configs: dict[str, list[tuple[Path, dict[str, Any], str]]] = {}
+    for config_path in sorted((root / "configs").glob("exp[0-9]*_*.yaml")):
+        match = re.fullmatch(r"(exp(\d+)_.*)\.yaml", config_path.name)
+        if match is None:
+            continue
+        stem, number_text = match.groups()
+        experiment_id = f"EXP-{int(number_text):03d}"
+        document = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
+        configs.setdefault(experiment_id, []).append((config_path, document, stem))
+
+    for experiment_id in history_reports:
+        if experiment_id not in configs and experiment_id not in missing_history_entries:
+            raise ValidationError(
+                f"{experiment_id}: History에 있으나 config가 없습니다. "
+                "분석 전용 또는 legacy 예외를 manifest에 명시하세요."
+            )
+
+    checked = 0
+    legacy_config_identity = 0
+    legacy_missing_runners = 0
+    for experiment_id, records in configs.items():
+        for config_path, document, stem in records:
+            if _record_role(document) != "official":
+                continue
+
+            declared_id = document.get("experiment_id")
+            if declared_id is None:
+                _require(
+                    stem in legacy_config_stems,
+                    f"{config_path}: experiment_id가 없고 source legacy manifest에도 없습니다.",
+                )
+                legacy_config_identity += 1
+            else:
+                _require(
+                    declared_id == experiment_id,
+                    f"{config_path}: filename({experiment_id})과 experiment_id({declared_id})가 다릅니다.",
+                )
+                issue_number = document.get("issue_number")
+                if issue_number is not None:
+                    _require(
+                        issue_number == int(experiment_id[4:]),
+                        f"{config_path}: experiment_id와 issue_number가 다릅니다.",
+                    )
+
+            runner_path = root / "scripts" / f"run_{stem}.py"
+            if not runner_path.is_file():
+                _require(
+                    stem in missing_runner_entries,
+                    f"{config_path}: 정식 runner가 없습니다: {runner_path}",
+                )
+                legacy_missing_runners += 1
+            else:
+                source = runner_path.read_text(encoding="utf-8")
+                markers = set(re.findall(r"EXP-\d{3}", source))
+                if markers:
+                    _require(
+                        experiment_id in markers,
+                        f"{runner_path}: 파일명 실험 ID({experiment_id})와 내부 EXP-ID가 다릅니다.",
+                    )
+                else:
+                    _require(
+                        "resolve_experiment_context" in source,
+                        f"{runner_path}: EXP-ID 고정 또는 Issue 기반 resolver가 필요합니다.",
+                    )
+            checked += 1
+
+    for experiment_id, report_path in history_reports.items():
+        report_dir = report_path.parent
+        _require(
+            report_dir.name.startswith(f"exp{int(experiment_id[4:]):03d}_"),
+            f"{experiment_id}: report 디렉터리와 EXP-ID가 다릅니다: {report_dir}",
+        )
+        metrics_path = report_dir / "metrics.json"
+        if metrics_path.is_file():
+            metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
+            declared_id = metrics.get("experiment_id")
+            if declared_id is not None:
+                _require(
+                    declared_id == experiment_id,
+                    f"{metrics_path}: report 경로({experiment_id})와 metrics experiment_id({declared_id})가 다릅니다.",
+                )
+            artifact_paths = metrics.get("artifacts", {})
+            if isinstance(artifact_paths, dict):
+                prefix = f"exp{int(experiment_id[4:]):03d}_"
+                for key, value in artifact_paths.items():
+                    if not isinstance(value, str) or "/" not in value:
+                        continue
+                    _require(
+                        prefix in value,
+                        f"{metrics_path}: artifact {key} 경로가 {experiment_id} slug와 다릅니다: {value}",
+                    )
+
+    return {
+        "source_identity_checked": checked,
+        "legacy_config_identity": legacy_config_identity,
+        "legacy_missing_runners": legacy_missing_runners,
+        "legacy_missing_history_configs": len(missing_history_entries),
+    }
+
+
 def validate_experiment_record_identity(document_path: str | Path) -> dict[str, int | str]:
     """Validate EXP-NNN against the Issue number stored in a JSON record."""
     document_path = Path(document_path)

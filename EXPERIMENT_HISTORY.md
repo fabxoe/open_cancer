@@ -1711,6 +1711,13 @@ Accuracy와 fold 표준편차는 개선됐지만 Macro F1이 EXP-131보다 `-0.0
 - Public LB: 미제출
 - 재현 상태: `NOT_STARTED` (inference replay bundle 미완료)
 
+#### 실행 소스 정합성
+
+- 정식 runner: `scripts/run_exp151_burden_incremental.py`
+- Config: `configs/exp151_burden_incremental.yaml`
+- 과거 EXP-154·EXP-158 실행에서 같은 runner 경로가 재사용되어, Git 이력
+  `17d433f`의 EXP-151 config·source를 복원했다. 결과와 점수는 변경하지 않았다.
+
 #### 판단
 
 Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0.002`보다 크게
@@ -1735,6 +1742,13 @@ Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0
 - Log Loss: `1.8371068695` (EXP-094 대비 `-0.0028304598`)
 - Public LB: 미제출
 - 재현 상태: `NOT_STARTED` (checkpoint inference 및 독립 재학습 번들 미완료)
+
+#### 실행 소스 정합성
+
+- 정식 runner: `scripts/run_exp154_total_variant_burden.py`
+- Config: `configs/exp154_total_variant_burden.yaml`
+- Git 이력 `e610d75`에 보존된 EXP-154 source를 정식 runner 경로로 복원했다.
+  결과와 점수는 변경하지 않았다.
 
 #### 판단
 
@@ -1762,6 +1776,13 @@ Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0
 - Log Loss: `1.8384449866` (EXP-094 대비 `-0.0014923427`)
 - Public LB: 미제출
 - 재현 상태: `NOT_STARTED`
+
+#### 실행 소스 정합성
+
+- 정식 runner: `scripts/run_exp158_missense_burden.py`
+- Config: `configs/exp158_missense_burden.yaml`
+- 과거 `scripts/run_exp151_burden_incremental.py`에 있던 EXP-158 source를
+  EXP-ID에 맞는 runner 경로로 이동했다. 결과와 점수는 변경하지 않았다.
 
 #### 판단
 
