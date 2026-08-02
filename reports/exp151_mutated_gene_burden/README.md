@@ -31,6 +31,14 @@ fold Macro F1은 `0.4162682, 0.4292479, 0.4017717, 0.4084666, 0.4370477`입니�
   `preds/exp151_mutated_gene_burden_test_proba.csv`,
   `submissions/exp151_mutated_gene_burden.csv`
 
+## 실행 소스 정합성
+
+- 정식 runner: `scripts/run_exp151_burden_incremental.py`
+- config: `configs/exp151_burden_incremental.yaml`
+- 과거 config가 EXP-154용으로 rename되고 runner 경로가 재사용된 이력이 있어,
+  Git 이력 `17d433f`에서 EXP-151 source를 복원했다. 결과·점수는 변경하지 않았다.
+- 재현 상태는 source 복구만으로 승격하지 않으며 현재 `NOT_STARTED`를 유지한다.
+
 ## 판단
 
 사전 기준 중 Macro F1·Log Loss는 통과했지만 fold 표준편차 기준을 실패했습니다.

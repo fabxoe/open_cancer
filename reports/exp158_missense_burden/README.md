@@ -14,6 +14,10 @@ EXP-094의 동결 Feature Spec v1에 샘플별 missense 변이 개수의 `log1p`
 - 환경: RunPod Secure Cloud RTX 4090, Python 3.11.10, XGBoost 3.2.0
 - 실행 시간: 171.1666초
 - 소스 commit: `aa145d7889836286ae9d48f4fd22c269b7525e41`
+- 정식 runner: `scripts/run_exp158_missense_burden.py`
+- config: `configs/exp158_missense_burden.yaml`
+- 과거 `scripts/run_exp151_burden_incremental.py`에 EXP-158 코드가 들어 있던
+  경로를 EXP-ID에 맞게 이동했다. 결과·점수는 변경하지 않았다.
 
 ## 결과
 

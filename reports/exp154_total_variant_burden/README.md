@@ -15,6 +15,14 @@ EXP-094 Feature Spec v1에 샘플별 전체 변이 토큰 수(`total_variant_cou
 - 실행 환경: RunPod Secure Cloud RTX 4090, CUDA
 - 산출 metrics: [`metrics.json`](metrics.json)
 
+## 실행 소스 정합성
+
+- 정식 runner: `scripts/run_exp154_total_variant_burden.py`
+- config: `configs/exp154_total_variant_burden.yaml`
+- 과거에는 EXP-151 runner 경로를 재사용했으므로 Git 이력 `e610d75`의
+  EXP-154 source를 정식 경로로 복원했다. 결과·점수는 변경하지 않았다.
+- 재현 상태는 source 복구만으로 승격하지 않으며 현재 `NOT_STARTED`를 유지한다.
+
 ## 결과
 
 | 지표 | EXP-154 | EXP-094 | 차이 |

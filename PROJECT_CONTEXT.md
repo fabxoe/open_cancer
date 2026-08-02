@@ -236,6 +236,17 @@ submissions/exp012_<slug>.csv
 reproducibility/exp012_<slug>/
 ```
 
+공식 실험은 하나의 EXP-ID에 하나의 정식 runner만 둔다. 이미 사용한 runner
+파일을 다음 실험의 코드로 덮어쓰지 말고, 변형은 새 Issue·새 파일·새 EXP-ID로
+분리한다. 파일명을 고칠 때는 `git mv`와 History·보고서·실행 명령 갱신을 같은
+PR에서 처리한다. 과거의 분석 전용 기록, 공용 runner, 보존되지 않은 역사적
+runner는 `configs/experiment_source_legacy.yaml`에 실험 ID·예외 유형·대체 경로·
+사유를 명시한다. 새 공식 실험은 legacy 예외에 추가하지 않는다.
+
+`uv run python scripts/validate_experiment.py`는 config·runner·metrics·report의
+EXP-ID 연결을 검사한다. 이 검사를 통과하지 못하면 점수나 재현 상태를 History에
+승격하지 않는다.
+
 ### 실험 보고서 구조
 
 `EXPERIMENT_HISTORY.md`는 전체 실험을 한눈에 찾는 단일 색인과 사실 장부로
