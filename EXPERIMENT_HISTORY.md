@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 41
+- 실제 실험 수: 42
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -60,6 +60,7 @@
 | EXP-160 | COMPLETED | Kangho-Park | #160 | EXP-069 max_residue_position fold-safe permutation negative control (Issue #80 후속) | 0.3987413040(permuted 평균, 원본 0.4131007993) | 미제출(진단 실험) | NOT_STARTED | 25개 (seed, fold) 중 24개에서 하락(delta -0.0143594953)으로 신호 확인, Feature Spec v1 유지·Issue #80 계약 종료 | [보고서](reports/exp160_residue_position_negative_control/README.md) |
 | EXP-170 | COMPLETED | Kangho-Park | #170 | EXP-094 + P_any_nonsilent_cellcycle (Cell Cycle pathway, #167 카탈로그 활용 파일럿 A) | 0.4137462167 | 미제출 | NOT_STARTED | Macro F1 -0.0031404, DLBC F1 -0.0500858 급락으로 기준 실패·미채택 | [보고서](reports/exp170_cellcycle_any_nonsilent/README.md) |
 | EXP-173 | COMPLETED | Kangho-Park | #173 | EXP-094 + P_lof_in_tsg_cellcycle (Cell Cycle TSG LoF, #170 후속 파일럿 B, baseline=EXP-094) | 0.4135108482 | 미제출 | NOT_STARTED | Macro F1 -0.0033757, LUAD F1 -0.0235652 최대 하락으로 기준 실패·미채택. DLBC/LAML은 양성률 0%인데도 반대 방향으로 움직여 perturbation 해석 뒷받침 | [보고서](reports/exp173_cellcycle_lof_tsg/README.md) |
+| EXP-179 | COMPLETED | fabxoe | #179 | EXP-094 Feature Spec v1 + outer-fold train 전용 SMOTE (`k=5`, `not majority`) | 0.4080771375 | 미제출 | INFERENCE_VERIFIED | EXP-094 대비 Macro F1 -0.0088094 및 LGG·BLCA·SARC F1 하락으로 ARCHIVE; 제출·추가 SMOTE tuning 중단 | [보고서](reports/exp179_xgb_feature_spec_v1_smote/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -108,6 +109,7 @@
 | 2026-08-01T10:45:05.297140+00:00 | EXP-096 | fabxoe | `296c39fe9259fd4ee93bd8158aeaecec0c891545` / [`exp-096-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-096-repro-v1) | 일치 | SHA-256 일치, 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp096_fixed_pathway_burden/comparison.json) |
 | 2026-08-01T12:24:32.873783+00:00 | EXP-125 | fabxoe | `8d4fe9c99e05306c691f1c4f23903066b92f7ddf` / [`exp-125-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-125-repro-v1) | 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp125_lightgbm_v1/comparison.json) |
 | 2026-08-01T14:26:44.634572+00:00 | EXP-127 | fabxoe | `03af58890c1cac9d90e61430e550b7ae6cc7060d` / [`exp-127-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-127-repro-v1) | 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp127_catboost_v1/comparison.json) |
+| 2026-08-02T09:15:19.096281+00:00 | EXP-179 | fabxoe | `704731a20520339e21f4c84eae93708d2e1dfd3e` / 태그 없음 | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp179_xgb_feature_spec_v1_smote/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -1959,3 +1961,50 @@ Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0
   대비) 기각된 것은 Cell Cycle pathway aggregation 방향 자체가 이 Feature
   Spec v1 위에서 추가 신호를 주기 어렵다는 신호로 본다. C(`P_hotspot_in_
   oncogene_cellcycle`)는 B도 기각된 점을 고려해 진행 여부를 재검토한다.
+
+### [EXP-179] Feature Spec v1 + fold-local SMOTE
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #179 / `issue-179-xgb-feature-spec-v1-smote`
+- 원 실행 소스 commit: `704731a20520339e21f4c84eae93708d2e1dfd3e`
+- 시작/종료: 2026-08-02T07:45:42.682703+00:00 /
+  2026-08-02T08:59:03.414230+00:00
+
+#### 실행
+
+- Config: `configs/exp179_xgb_feature_spec_v1_smote.yaml`
+- Resolved config: `reproducibility/exp179_xgb_feature_spec_v1_smote/config.resolved.yaml`
+- Runner: `scripts/run_exp179_xgb_feature_spec_v1_smote.py`
+- Metrics: `reports/exp179_xgb_feature_spec_v1_smote/metrics.json`
+- Report: `reports/exp179_xgb_feature_spec_v1_smote/README.md`
+- 부모 실험: EXP-094 (Feature Spec v1)
+- 유일한 변경: canonical 5-fold의 각 outer-fold **학습 행에만** standard SMOTE를
+  적용했다. `k_neighbors=5`, `sampling_strategy=not majority`, seed는 fold별
+  `42..46`이며 validation·test에는 적용하지 않았다. 이중 보정을 피하기 위해
+  `balanced_sample_weight=false`로 고정했다.
+- SMOTE 후 fold별 학습 행 수: 16,354 / 16,354 / 16,354 / 16,328 / 16,354
+  (원본 outer-train은 4,960 또는 4,961행).
+
+#### 결과
+
+- Fold Macro F1: 0.3974984540, 0.3992874129, 0.4138424225,
+  0.4127372064, 0.4123181959
+- OOF Macro F1: 0.4080771375 (EXP-094 대비 `-0.0088094364`)
+- Fold 표준편차: 0.0071789606 (EXP-094 대비 `-0.0007052914`)
+- Accuracy: 0.4046121593 (EXP-094 대비 `-0.0025802290`)
+- Log Loss: 1.8043550352 (EXP-094 대비 `-0.0355822941`)
+- 크게 개선된 클래스: DLBC `+0.05121`, GBMLGG `+0.04544`, TGCT `+0.04042`
+- 크게 하락한 클래스: LGG `-0.11775`, BLCA `-0.10784`, SARC `-0.08514`
+- Public LB: 미제출
+
+#### 재현성·결론
+
+- 원 실행은 metrics와 checkpoint를 남긴 뒤 산출물 기록 단계가 중단됐다. 저장된
+  5개 checkpoint를 `--replay-checkpoints`로 재추론했으며, 재학습은 하지 않았다.
+- OOF·test 라벨은 100% 일치, 확률 최대 차이 0, submission SHA-256은 일치했고
+  OOF Macro F1 차이도 0이어서 `INFERENCE_VERIFIED`로 기록한다. 독립 재학습은
+  수행하지 않았으므로 `TRAINING_VERIFIED`는 아니다.
+- SMOTE는 일부 소수 클래스와 Log Loss에는 이득이 있었지만 Macro F1의 큰 하락과
+  다수 클래스 붕괴를 상쇄하지 못했다. EXP-094 Feature Spec v1의 후속 기준에서는
+  `ARCHIVE`로 보존하며, 리더보드 제출 및 SMOTE 파라미터 재탐색은 진행하지 않는다.
