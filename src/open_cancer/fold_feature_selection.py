@@ -16,7 +16,9 @@ from typing import Any, Protocol, Sequence
 
 import numpy as np
 from scipy import sparse
+from scipy.stats import binom
 from sklearn.exceptions import ConvergenceWarning
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import f1_score
 from sklearn.model_selection import StratifiedKFold, StratifiedShuffleSplit
@@ -693,6 +695,104 @@ class MrmrMutationPresenceSelector:
             "selected_gene_count": len(selected_genes),
             "selected_gene_names": list(selected_genes),
             "selected_gene_scores": selected_scores,
+            "selected_feature_count": len(selected_indices),
+            "retained_non_gene_feature_count": sum(
+                1 for name in feature_names if str(name).split("__", 1)[0] not in raw_gene_set
+            ),
+        }
+        return FoldFeatureSelection(selected_indices, metadata)
+
+
+@dataclass(frozen=True)
+class BorutaMutationPresenceSelector:
+    """Confirm mutation-presence genes with fold-local Boruta shadow features.
+
+    The selector follows the conservative Boruta decision rule: a real feature
+    earns a hit only when its importance exceeds the strongest shadow feature;
+    after the fixed iterations it is confirmed by a Bonferroni-corrected
+    binomial test.  This deliberately trades speed for a low false-positive
+    rate in the high-dimensional setting.
+    """
+
+    n_estimators: int
+    max_iter: int
+    perc: float
+    seed: int
+    alpha: float = 0.05
+    n_jobs: int = 1
+
+    def select(
+        self,
+        features: sparse.csr_matrix,
+        targets: np.ndarray,
+        feature_names: Sequence[str],
+        fold: int,
+    ) -> FoldFeatureSelection:
+        _require(sparse.isspmatrix_csr(features), "feature selector 입력은 CSR sparse matrix여야 합니다.")
+        _require(features.shape[1] == len(feature_names), "feature matrix와 feature 이름 수가 다릅니다.")
+        _require(self.n_estimators >= 1, "n_estimators는 1 이상이어야 합니다.")
+        _require(self.max_iter >= 1, "max_iter는 1 이상이어야 합니다.")
+        _require(0.0 < self.perc <= 100.0, "perc는 (0, 100] 범위여야 합니다.")
+        _require(0.0 < self.alpha < 1.0, "alpha는 (0, 1) 범위여야 합니다.")
+        _require(self.n_jobs >= 1, "n_jobs는 1 이상이어야 합니다.")
+
+        mutation_indices, genes = _mutation_presence_indices_and_genes(feature_names)
+        presence = features[:, mutation_indices].astype(np.uint8, copy=True).tocsr()
+        presence.eliminate_zeros()
+        presence.data = np.ones_like(presence.data, dtype=np.uint8)
+        # A dense copy is 21 MiB for the canonical outer-train fold and makes
+        # independent per-column shadow permutations explicit and reproducible.
+        real = presence.toarray()
+        rng = np.random.default_rng(self.seed + int(fold))
+        hits = np.zeros(len(genes), dtype=np.int64)
+        max_shadow_importances: list[float] = []
+        for iteration in range(self.max_iter):
+            shadow = rng.permuted(real, axis=0)
+            augmented = np.concatenate((real, shadow), axis=1)
+            forest = RandomForestClassifier(
+                n_estimators=self.n_estimators,
+                class_weight="balanced_subsample",
+                random_state=self.seed + int(fold) * 10_000 + iteration,
+                n_jobs=self.n_jobs,
+            )
+            forest.fit(augmented, targets)
+            importances = forest.feature_importances_
+            shadow_cutoff = float(np.max(importances[len(genes) :])) * (self.perc / 100.0)
+            hits += importances[: len(genes)] > shadow_cutoff
+            max_shadow_importances.append(shadow_cutoff)
+
+        correction = self.alpha / float(len(genes))
+        acceptance_pvalue = binom.sf(hits - 1, self.max_iter, 0.5)
+        confirmed_local = np.flatnonzero(acceptance_pvalue <= correction)
+        selected_genes = tuple(genes[index] for index in confirmed_local)
+        selected_gene_set = set(selected_genes)
+        raw_gene_set = set(genes)
+        selected_indices = tuple(
+            index
+            for index, name in enumerate(feature_names)
+            if str(name).split("__", 1)[0] not in raw_gene_set
+            or str(name).split("__", 1)[0] in selected_gene_set
+        )
+        _require(selected_indices, "Boruta selector가 빈 feature mask를 만들었습니다.")
+        metadata = {
+            "selector": "boruta_mutation_presence_selector",
+            "fold": int(fold),
+            "fit_rows": int(features.shape[0]),
+            "parameters": {
+                "n_estimators": self.n_estimators,
+                "max_iter": self.max_iter,
+                "perc": self.perc,
+                "seed": self.seed,
+                "alpha": self.alpha,
+                "multiple_testing": "bonferroni",
+                "class_weight": "balanced_subsample",
+                "n_jobs": self.n_jobs,
+            },
+            "mutation_presence_feature_count": len(genes),
+            "confirmed_gene_count": len(selected_genes),
+            "confirmed_gene_names": list(selected_genes),
+            "hit_count_by_gene": {gene: int(hits[index]) for index, gene in enumerate(genes)},
+            "max_shadow_importance_by_iteration": max_shadow_importances,
             "selected_feature_count": len(selected_indices),
             "retained_non_gene_feature_count": sum(
                 1 for name in feature_names if str(name).split("__", 1)[0] not in raw_gene_set

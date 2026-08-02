@@ -24,6 +24,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, log_loss
 from open_cancer.constants import CLASS_LABELS
 from open_cancer.experiment import resolve_experiment_context
 from open_cancer.fold_feature_selection import (
+    BorutaMutationPresenceSelector,
     ElasticNetStabilitySelector,
     MrmrMutationPresenceSelector,
     PhiJaccardGreedyPruner,
@@ -130,7 +131,10 @@ def compact_fold_metrics(
             dropped_gene_names = selection.pop("dropped_gene_names", [])
             dropped_prevalence = selection.pop("dropped_prevalence", None)
             selected_gene_names = selection.pop("selected_gene_names", [])
+            confirmed_gene_names = selection.pop("confirmed_gene_names", [])
             selection_frequency = selection.pop("selection_frequency", None)
+            hit_count_by_gene = selection.pop("hit_count_by_gene", None)
+            max_shadow_importance_by_iteration = selection.pop("max_shadow_importance_by_iteration", None)
             if dropped_feature_names:
                 selection["dropped_feature_count"] = len(dropped_feature_names)
             if dropped_gene_names:
@@ -139,8 +143,14 @@ def compact_fold_metrics(
                 selection["dropped_prevalence_artifact"] = "fold feature selection artifact"
             if selected_gene_names:
                 selection["selected_gene_count"] = len(selected_gene_names)
+            if confirmed_gene_names:
+                selection["confirmed_gene_count"] = len(confirmed_gene_names)
             if selection_frequency is not None:
                 selection["selection_frequency_artifact"] = "fold feature selection artifact"
+            if hit_count_by_gene is not None:
+                selection["hit_count_artifact"] = "fold feature selection artifact"
+            if max_shadow_importance_by_iteration is not None:
+                selection["shadow_importance_artifact"] = "fold feature selection artifact"
             fold = int(record["fold"])
             selection_artifact = str(selection.get("candidate_pairs_artifact") or (
                 model_dir / f"fold_{fold:02d}_feature_selection.json"
@@ -214,6 +224,15 @@ def main(*, config_path: Path = DEFAULT_CONFIG) -> None:
         selector = MrmrMutationPresenceSelector(
             min_positive_count=int(selection_config["min_positive_count"]),
             selected_gene_count=int(selection_config["selected_gene_count"]),
+        )
+    elif selection_config["method"] == "boruta_mutation_presence_selector":
+        selector = BorutaMutationPresenceSelector(
+            n_estimators=int(selection_config["n_estimators"]),
+            max_iter=int(selection_config["max_iter"]),
+            perc=float(selection_config["perc"]),
+            seed=int(config["seed"]),
+            alpha=float(selection_config.get("alpha", 0.05)),
+            n_jobs=int(selection_config.get("n_jobs", 1)),
         )
     else:
         raise RuntimeError(f"지원하지 않는 feature selection method: {selection_config['method']}")
