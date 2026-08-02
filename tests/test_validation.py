@@ -107,6 +107,8 @@ def test_experiment_metrics_schema(tmp_path: Path) -> None:
             }
         ],
         "oof": {"macro_f1": 0.5},
+        "baseline_delta": {"macro_f1": 0.01},
+        "decision": "ARCHIVE",
         "artifacts": {"report": "reports/exp012_test/report.md"},
     }
     path = tmp_path / "metrics.json"

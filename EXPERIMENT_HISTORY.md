@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 42
+- 실제 실험 수: 43
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -61,6 +61,7 @@
 | EXP-170 | COMPLETED | Kangho-Park | #170 | EXP-094 + P_any_nonsilent_cellcycle (Cell Cycle pathway, #167 카탈로그 활용 파일럿 A) | 0.4137462167 | 미제출 | NOT_STARTED | Macro F1 -0.0031404, DLBC F1 -0.0500858 급락으로 기준 실패·미채택 | [보고서](reports/exp170_cellcycle_any_nonsilent/README.md) |
 | EXP-173 | COMPLETED | Kangho-Park | #173 | EXP-094 + P_lof_in_tsg_cellcycle (Cell Cycle TSG LoF, #170 후속 파일럿 B, baseline=EXP-094) | 0.4135108482 | 미제출 | NOT_STARTED | Macro F1 -0.0033757, LUAD F1 -0.0235652 최대 하락으로 기준 실패·미채택. DLBC/LAML은 양성률 0%인데도 반대 방향으로 움직여 perturbation 해석 뒷받침 | [보고서](reports/exp173_cellcycle_lof_tsg/README.md) |
 | EXP-179 | COMPLETED | fabxoe | #179 | EXP-094 Feature Spec v1 + outer-fold train 전용 SMOTE (`k=5`, `not majority`) | 0.4080771375 | 미제출 | INFERENCE_VERIFIED | EXP-094 대비 Macro F1 -0.0088094 및 LGG·BLCA·SARC F1 하락으로 ARCHIVE; 제출·추가 SMOTE tuning 중단 | [보고서](reports/exp179_xgb_feature_spec_v1_smote/README.md) |
+| EXP-188 | COMPLETED | fabxoe | #188 | EXP-094 + fold-local C1 Phi≥0.30/Jaccard≥0.15 pruning | 0.4179737169 | 미제출 | MANIFEST_COMPLETE | Macro F1 +0.0010871이나 fold std +0.0032589·Log Loss +0.0003735로 gate 실패, ARCHIVE | [보고서](reports/exp188_c1_phi_jaccard_pruning/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -2008,3 +2009,48 @@ Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0
 - SMOTE는 일부 소수 클래스와 Log Loss에는 이득이 있었지만 Macro F1의 큰 하락과
   다수 클래스 붕괴를 상쇄하지 못했다. EXP-094 Feature Spec v1의 후속 기준에서는
   `ARCHIVE`로 보존하며, 리더보드 제출 및 SMOTE 파라미터 재탐색은 진행하지 않는다.
+
+### [EXP-188] C1 보수적 Phi/Jaccard 상관 삭제
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #188 / `issue-188-c1-conservative-correlation-pruning`
+- 소스 commit: `1ff0663af2f682229d715136119e8e1db6bace62`
+- 시작/종료: 2026-08-02T09:37:00.328570+00:00 /
+  2026-08-02T09:46:22.197750+00:00
+
+#### 실행
+
+- Config: `configs/exp188_c1_phi_jaccard_pruning.yaml`
+- Runner: `scripts/run_exp188_c1_phi_jaccard_pruning.py`
+- Metrics: `reports/exp188_c1_phi_jaccard_pruning/metrics.json`
+- Report: `reports/exp188_c1_phi_jaccard_pruning/README.md`
+- 부모 실험: EXP-094 (Feature Spec v1)
+- 유일한 변경: 각 canonical outer fold의 **학습 행에서만** Phi≥0.30,
+  Jaccard≥0.15, 공동 변이 수≥20 기준으로 `GENE__mutated` 열을 greedy
+  non-overlap pruning했다. validation·test에는 해당 fold에서 저장한 동일 mask를
+  적용했고, mutation-type·missing·position·aggregate·hotspot 열은 보존했다.
+- balanced sample weight는 유지했고 SMOTE는 적용하지 않았다.
+
+#### 결과
+
+- Fold Macro F1: 0.4135842952, 0.4183324059, 0.4020332026,
+  0.4167836837, 0.4366075326
+- OOF Macro F1: 0.4179737169 (EXP-094 대비 `+0.0010871430`)
+- Fold 표준편차: 0.0111431892 (EXP-094 대비 `+0.0032589371`)
+- Accuracy: 0.4075149169
+- Log Loss: 1.8403107969 (EXP-094 대비 `+0.0003734676`)
+- fold별 제거 열: 6 / 13 / 8 / 13 / 8개 (전체 고유 유전자 32개)
+- 후보 pair/매칭 pair: fold별 7/6, 20/13, 9/8, 22/13, 9/8
+- Public LB: 미제출
+- 재현 상태: `MANIFEST_COMPLETE` — 원 학습 checkpoint·fold mask·OOF/test
+  확률·submission manifest는 저장했으나 독립 checkpoint inference 검증은 아직
+  수행하지 않았다.
+
+#### 결론
+
+- Macro F1만 보면 성능 채택 하한을 간신히 넘었지만, fold-std 악화가 허용치
+  0.002를 넘고 Log Loss도 악화됐다. 따라서 사전 고정 성능 gate를 통과하지 못해
+  `ARCHIVE`다.
+- 이 판단은 threshold를 재조정하거나 Public LB를 본 뒤 내린 것이 아니다. C2와
+  C3은 미리 고정된 별도 실험으로만 이어가며, C1 설정을 추가 튜닝하지 않는다.
