@@ -26,8 +26,8 @@ model:
   eval_metric: mlogloss
   early_stopping_rounds: 30
   tree_method: hist
-  device: cpu
-  n_jobs: 8
+  device: cuda
+  n_jobs: 16
   verbosity: 0
 acceptance:
   min_macro_f1_delta: 0.001
