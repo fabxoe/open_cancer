@@ -1,0 +1,177 @@
+[
+  {
+    "gene": "A2M",
+    "abs_shift_score": 0.908525693362296,
+    "mutated_cell_rate_diff": 0.02012345524180589,
+    "complex_fraction_diff": 0.04395604395604396,
+    "token_mean_ratio_test_over_train": 3.6533778476040846
+  },
+  {
+    "gene": "AAAS",
+    "abs_shift_score": 0.37769311636021924,
+    "mutated_cell_rate_diff": 0.004687559579435848,
+    "complex_fraction_diff": 0.0,
+    "token_mean_ratio_test_over_train": 1.9041848175390987
+  },
+  {
+    "gene": "AADAT",
+    "abs_shift_score": 0.8697720208922739,
+    "mutated_cell_rate_diff": 0.005394943648067306,
+    "complex_fraction_diff": 0.0,
+    "token_mean_ratio_test_over_train": 3.747054202670856
+  },
+  {
+    "gene": "AARS1",
+    "abs_shift_score": 0.040710919088766694,
+    "mutated_cell_rate_diff": 0.015710919088766692,
+    "complex_fraction_diff": 0.025,
+    "token_mean_ratio_test_over_train": NaN
+  },
+  {
+    "gene": "ABAT",
+    "abs_shift_score": 0.357985184133085,
+    "mutated_cell_rate_diff": 0.007970232102796689,
+    "complex_fraction_diff": 0.0,
+    "token_mean_ratio_test_over_train": 1.8381775333857029
+  },
+  {
+    "gene": "ABCA1",
+    "abs_shift_score": 0.25708507624582827,
+    "mutated_cell_rate_diff": 0.018440567766925056,
+    "complex_fraction_diff": 0.044642857142857144,
+    "token_mean_ratio_test_over_train": 1.4281965756776878
+  },
+  {
+    "gene": "ABCA2",
+    "abs_shift_score": 1.0342974430595762,
+    "mutated_cell_rate_diff": 0.0388489275163155,
+    "complex_fraction_diff": 0.014598540145985401,
+    "token_mean_ratio_test_over_train": 4.333443853868049
+  },
+  {
+    "gene": "ABCA3",
+    "abs_shift_score": 0.4164216301271571,
+    "mutated_cell_rate_diff": 0.02702418698654007,
+    "complex_fraction_diff": 0.023809523809523808,
+    "token_mean_ratio_test_over_train": 1.8827223263726571
+  },
+  {
+    "gene": "ABCA4",
+    "abs_shift_score": 0.21826346861679585,
+    "mutated_cell_rate_diff": 0.027518874448575495,
+    "complex_fraction_diff": 0.03225806451612903,
+    "token_mean_ratio_test_over_train": 1.3434722808508497
+  },
+  {
+    "gene": "ABCA5",
+    "abs_shift_score": 0.38367223355365554,
+    "mutated_cell_rate_diff": 0.01948333853356901,
+    "complex_fraction_diff": 0.1111111111111111,
+    "token_mean_ratio_test_over_train": 1.5759669146527424
+  },
+  {
+    "gene": "ABCA6",
+    "abs_shift_score": 0.2714575456622878,
+    "mutated_cell_rate_diff": 0.02129385664046026,
+    "complex_fraction_diff": 0.012112522865476837,
+    "token_mean_ratio_test_over_train": 1.5375482189171752
+  },
+  {
+    "gene": "ABCA8",
+    "abs_shift_score": 0.875219496577529,
+    "mutated_cell_rate_diff": 0.019387378033571098,
+    "complex_fraction_diff": 0.033112582781456956,
+    "token_mean_ratio_test_over_train": 3.553365893643909
+  },
+  {
+    "gene": "ABCA9",
+    "abs_shift_score": 0.4027655822981498,
+    "mutated_cell_rate_diff": 0.02332796587935985,
+    "complex_fraction_diff": 0.0743801652892562,
+    "token_mean_ratio_test_over_train": 1.713405889767807
+  },
+  {
+    "gene": "ABCB1",
+    "abs_shift_score": 0.17338613736726402,
+    "mutated_cell_rate_diff": -0.0006202912055970483,
+    "complex_fraction_diff": 0.02142857142857143,
+    "token_mean_ratio_test_over_train": 1.3267779472492136
+  },
+  {
+    "gene": "ABCB11",
+    "abs_shift_score": 0.13818315952671378,
+    "mutated_cell_rate_diff": 0.011908856400400663,
+    "complex_fraction_diff": 0.04878048780487805,
+    "token_mean_ratio_test_over_train": 1.1611510988509106
+  },
+  {
+    "gene": "ABCB4",
+    "abs_shift_score": 0.34326894700903204,
+    "mutated_cell_rate_diff": 0.01760555306628318,
+    "complex_fraction_diff": 0.047619047619047616,
+    "token_mean_ratio_test_over_train": 1.6410895144317814
+  },
+  {
+    "gene": "ABCB6",
+    "abs_shift_score": 0.46239531152636304,
+    "mutated_cell_rate_diff": 0.005481023066877311,
+    "complex_fraction_diff": 0.017543859649122806,
+    "token_mean_ratio_test_over_train": 2.103459972862958
+  },
+  {
+    "gene": "ABCB7",
+    "abs_shift_score": 1.128070970072384,
+    "mutated_cell_rate_diff": 0.007304399247365647,
+    "complex_fraction_diff": 0.03759398496240601,
+    "token_mean_ratio_test_over_train": 4.908073270013569
+  },
+  {
+    "gene": "ABCB8",
+    "abs_shift_score": 1.0600371217836713,
+    "mutated_cell_rate_diff": 0.00982230142288836,
+    "complex_fraction_diff": 0.0,
+    "token_mean_ratio_test_over_train": 4.716530131298396
+  },
+  {
+    "gene": "ABCB9",
+    "abs_shift_score": 0.9606508252026003,
+    "mutated_cell_rate_diff": 0.016098751525391905,
+    "complex_fraction_diff": 0.012987012987012988,
+    "token_mean_ratio_test_over_train": 4.0769578879060075
+  },
+  {
+    "gene": "ABCC1",
+    "abs_shift_score": 0.2469702482730976,
+    "mutated_cell_rate_diff": 0.013178195291462122,
+    "complex_fraction_diff": 0.04878048780487805,
+    "token_mean_ratio_test_over_train": 1.4064647112842015
+  },
+  {
+    "gene": "ABCC2",
+    "abs_shift_score": 0.2659676083941871,
+    "mutated_cell_rate_diff": 0.017238496236258168,
+    "complex_fraction_diff": 0.011494252873563218,
+    "token_mean_ratio_test_over_train": 1.5354776460944703
+  },
+  {
+    "gene": "ABCC3",
+    "abs_shift_score": 0.10615323853977711,
+    "mutated_cell_rate_diff": 0.009762951595496911,
+    "complex_fraction_diff": 0.0,
+    "token_mean_ratio_test_over_train": 1.2023775194646356
+  },
+  {
+    "gene": "ABCC4",
+    "abs_shift_score": 0.8977055141440189,
+    "mutated_cell_rate_diff": 0.02361388383116881,
+    "complex_fraction_diff": 0.03409090909090909,
+    "token_mean_ratio_test_over_train": 3.6327372947927623
+  },
+  {
+    "gene": "ABCC5",
+    "abs_shift_score": 0.8696848391638785,
+    "mutated_cell_rate_diff": 0.026503783377310478,
+    "complex_fraction_diff": 0.04,
+    "token_mean_ratio_test_over_train": 3.465263541087885
+  }
+]
