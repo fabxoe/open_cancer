@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 38
+- 실제 실험 수: 39
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -56,6 +56,7 @@
 | EXP-137 | COMPLETED | fabxoe | #137 | EXP-094 + EXP-125 leakage-safe cross-fitted Logistic stacking | 0.4068626451 | 미제출 | INFERENCE_VERIFIED | 소수 클래스 F1 붕괴·최고 단일 대비 -0.0153766511로 stack 기각 | [보고서](reports/exp137_cross_fitted_stacking/README.md) |
 | EXP-151 | COMPLETED | fabxoe | #151 | EXP-094 + log1p(mutated_gene_count), Secure RTX 4090 실행 | 0.4188970451 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0051158로 기준 실패·미채택 | [보고서](reports/exp151_mutated_gene_burden/README.md) |
 | EXP-154 | COMPLETED | fabxoe | #154 | EXP-094 + log1p(total_variant_count), Secure RTX 4090 실행 | 0.4183986443 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0056484로 기준 실패·미채택 | [보고서](reports/exp154_total_variant_burden/README.md) |
+| EXP-158 | COMPLETED | fabxoe | #158 | EXP-094 + log1p(missense_count), Secure RTX 4090 실행 | 0.4183327348 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0032953으로 기준 실패·미채택 | [보고서](reports/exp158_missense_burden/README.md) |
 | EXP-160 | COMPLETED | Kangho-Park | #160 | EXP-069 max_residue_position fold-safe permutation negative control (Issue #80 후속) | 0.3987413040(permuted 평균, 원본 0.4131007993) | 미제출(진단 실험) | NOT_STARTED | 25개 (seed, fold) 중 24개에서 하락(delta -0.0143594953)으로 신호 확인, Feature Spec v1 유지·Issue #80 계약 종료 | [보고서](reports/exp160_residue_position_negative_control/README.md) |
 
 ## 리더보드 제출 이력
@@ -1740,6 +1741,34 @@ Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0
 Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0.002`보다 크게
 악화됐다. 따라서 total variant burden을 Feature Spec이나 Public 제출 후보로
 채택하지 않는다. OOF·test 확률과 checkpoint는 후속 안정성·다양성 분석을 위해 보존한다.
+
+### [EXP-158] EXP-094 + log1p(missense_count)
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #158 / issue-158-exp-missense-burden
+- 부모 실험: EXP-094
+- Config: `configs/exp158_missense_burden.yaml`
+- Metrics: `reports/exp158_missense_burden/metrics.json`
+- 보고서: [EXP-158 보고서](reports/exp158_missense_burden/README.md)
+
+#### 실행과 결과
+
+- EXP-094 frozen Feature Spec에 `log1p(missense_count)` 하나만 추가했다.
+- canonical `stratified_5fold_seed42.csv`, seed 42, XGBoost CUDA를 사용했다.
+- Secure Cloud RTX 4090에서 171.1666초 동안 5-fold를 실행했다.
+- OOF Macro F1: `0.4183327348` (EXP-094 대비 `+0.0014461609`)
+- Fold 표준편차: `0.0111795533` (EXP-094 대비 `+0.0032953012`)
+- Log Loss: `1.8384449866` (EXP-094 대비 `-0.0014923427`)
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+
+#### 판단
+
+Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0.002`보다 크게
+악화됐다. 따라서 missense burden을 Feature Spec이나 Public 제출 후보로 채택하지
+않는다. 저장 checkpoint 재추론 확률도 원본 실행과 정확히 일치하지 않아
+`INFERENCE_VERIFIED`로 승격하지 않고, 원본 OOF·test 확률과 checkpoint만 분석용으로 보존한다.
 
 ### [EXP-160] Residue-position negative control (Issue #80 후속)
 
