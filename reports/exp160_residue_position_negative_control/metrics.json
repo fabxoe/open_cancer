@@ -1,0 +1,66 @@
+{
+  "experiment_id": "EXP-160",
+  "status": "COMPLETED",
+  "owner": "Kangho Park",
+  "issue_number": 160,
+  "parent_experiment": "EXP-069",
+  "git_commit": "53e6233ee533ec20a3dd7acdbeda0c0a607e5eb1",
+  "started_at": "2026-08-02T03:14:08.927601+00:00",
+  "finished_at": "2026-08-02T04:50:34.263043+00:00",
+  "primary_metric": "macro_f1",
+  "split_id": "data/splits/stratified_5fold_seed42.csv",
+  "folds": [
+    {
+      "fold": 0,
+      "macro_f1": 0.39780204114658463,
+      "accuracy": 0.39693795326349723,
+      "log_loss": 1.8884472846984863,
+      "best_iteration": null
+    },
+    {
+      "fold": 1,
+      "macro_f1": 0.4043662584162987,
+      "accuracy": 0.3991935483870968,
+      "log_loss": 1.9009311199188232,
+      "best_iteration": null
+    },
+    {
+      "fold": 2,
+      "macro_f1": 0.3909733864643063,
+      "accuracy": 0.39822580645161293,
+      "log_loss": 1.8265504360198974,
+      "best_iteration": null
+    },
+    {
+      "fold": 3,
+      "macro_f1": 0.3912964195526204,
+      "accuracy": 0.4064516129032258,
+      "log_loss": 1.8537593364715577,
+      "best_iteration": null
+    },
+    {
+      "fold": 4,
+      "macro_f1": 0.40380063824944556,
+      "accuracy": 0.4109677419354839,
+      "log_loss": 1.836041522026062,
+      "best_iteration": null
+    }
+  ],
+  "oof": {
+    "macro_f1": 0.3987413040153706,
+    "fold_mean": 0.3976477487658512,
+    "fold_std": 0.0057949412760848135,
+    "accuracy": 0.40235533258818335,
+    "log_loss": 1.8611459398269654
+  },
+  "leaderboard": null,
+  "runtime": {
+    "seconds": 5785.461137900013,
+    "hardware": "Windows-10-10.0.26200-SP0"
+  },
+  "artifacts": {
+    "resolved_config": "reproducibility/exp160_residue_position_negative_control/config.resolved.yaml",
+    "permutation_detail": "reports/exp160_residue_position_negative_control/permutation_detail.json"
+  },
+  "notes": "Fold-safe, gene-wise, mutation-type-stratified permutation of max_residue_position within each outer fold's train partition only (validation kept original, test unused), repeated over 5 permutation seeds with the EXP-069 model random_state held fixed per fold. 'oof.macro_f1' and per-fold scores above are means across the 5 permutation seeds; see permutation_detail.json for the full per-seed, per-fold breakdown and the paired comparison against the EXP-069 baseline."
+}

@@ -86,6 +86,25 @@ Vera의 진단 축 분리와 표 구성은 유용하지만 제공 코드는 그�
 이 검증 전에는 residue-position 실험의 OOF 개선을 생물학적 hotspot이나 기능부위
 효과로 단정하지 않는다.
 
+## 후속 negative control 실행 결과 (EXP-160, 계약 종료)
+
+위 "후속 negative control 계약"을 [EXP-160](../exp160_residue_position_negative_control/README.md)에서
+실행했다. 각 outer fold의 train 부분에서만 유전자별 `max_residue_position` 값을
+mutation-type strata 안에서 무작위 재배치하고(validation·test는 원본 유지),
+5개 고정 seed로 반복해 EXP-069와 짝지어 비교했다.
+
+- 원본(EXP-069) OOF Macro F1 `0.4131007993` → permuted 평균 `0.3987413040`
+  (차이 `-0.0143594953`)
+- 5개 fold 전부 하락, 25개 (seed, fold) 조합 중 24개가 원본보다 낮음
+- 상세: `reports/exp160_residue_position_negative_control/metrics.json`,
+  `reports/exp160_residue_position_negative_control/permutation_detail.json`
+
+**결론(계약 종료)**: `max_residue_position`은 gene×mutation-type 소속 정보만으로
+설명되지 않는, fold를 넘어 일반화되는 실제 신호를 담고 있다. 노이즈 가설은
+기각한다. Feature Spec v1의 `max_residue_position` 컴포넌트를 그대로 유지한다.
+단, 이 결과는 신호의 존재만 확인하며 생물학적 hotspot·기능부위 효과로의 해석은
+별도 검증 없이 단정하지 않는다.
+
 ## 관련 파일
 
 - Machine-readable QC: `reports/analysis/residue_position_semantics_qc.json`
@@ -93,3 +112,4 @@ Vera의 진단 축 분리와 표 구성은 유용하지만 제공 코드는 그�
 - 진단 모듈: `src/open_cancer/position_diagnostics.py`
 - EXP-063 보고서: `reports/exp063_xgb_residue_indicator/README.md`
 - EXP-078 보고서: `reports/exp078_xgb_max_residue_indicator/README.md`
+- EXP-160 보고서(negative control 실행): `reports/exp160_residue_position_negative_control/README.md`
