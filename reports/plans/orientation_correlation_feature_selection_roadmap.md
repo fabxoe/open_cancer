@@ -22,7 +22,7 @@
 | C0 | 극단 중복 진단 | [#187](https://github.com/fabxoe/open_cancer/issues/187) | explore | [#197](https://github.com/fabxoe/open_cancer/pull/197) | COMPLETED | N/A | 극단 후보 0개 확인, C1 완료 |
 | C1 | 보수적 Phi/Jaccard 삭제 | [#188](https://github.com/fabxoe/open_cancer/issues/188) | EXP-188 | [#198](https://github.com/fabxoe/open_cancer/pull/198) | COMPLETED | 0.4179737169 | ARCHIVE; 사전 등록 C2 실행 |
 | C2 | 중간 강도 Phi/Jaccard 삭제 | [#189](https://github.com/fabxoe/open_cancer/issues/189) | EXP-189 | [#199](https://github.com/fabxoe/open_cancer/pull/199) | COMPLETED | 0.4147096714 | ARCHIVE; 사전 등록 C3 실행 |
-| C3 | 넓은 Phi/Jaccard 삭제 | [#190](https://github.com/fabxoe/open_cancer/issues/190) | EXP-190 | - | IN_PROGRESS | 0.4157643312 | ARCHIVE; 결과 PR 생성·CI 검증; 이후 threshold 탐색 종료 |
+| C3 | 넓은 Phi/Jaccard 삭제 | [#190](https://github.com/fabxoe/open_cancer/issues/190) | EXP-190 | [#200](https://github.com/fabxoe/open_cancer/pull/200) | PR_OPEN | 0.4157643312 | ARCHIVE; CI·병합 후 R1 또는 R2 실행; threshold 탐색 종료 |
 | R1 | 상관 pair 범주형 요약 | 미발급 | 미발급 | - | PLANNED | N/A | C2 결과와 독립 실행 |
 | R2 | 희귀 mutation-presence filter | 미발급 | 미발급 | - | PLANNED | N/A | T0 병합 후 실행 |
 | S1 | Elastic Net stability selection | 미발급 | 미발급 | - | PLANNED | N/A | R 단계 후 |
