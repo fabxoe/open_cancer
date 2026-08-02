@@ -1,0 +1,125 @@
+{
+  "experiment_id": "EXP-203",
+  "issue_number": 203,
+  "reproducibility_status": "MANIFEST_COMPLETE",
+  "source_commit": "fb0c25c74339b04f887bea19e307fd5472f8a227",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp203_s1_elastic_net_stability_selection/data_manifest.json",
+  "environment": "reproducibility/exp203_s1_elastic_net_stability_selection/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint_fold_0",
+      "path": "models/exp203_s1_elastic_net_stability_selection/fold_00.json",
+      "size_bytes": 10636824,
+      "sha256": "fda0a0bb41fc4e086a0d9954891522cc13fcae5b7e0a5a584529031a785ae1f1",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_1",
+      "path": "models/exp203_s1_elastic_net_stability_selection/fold_01.json",
+      "size_bytes": 10198822,
+      "sha256": "8c62dbec090bc1fcaf91aefd5c25f7fb501b46eaa1da2842e3ece03b22f57d60",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_2",
+      "path": "models/exp203_s1_elastic_net_stability_selection/fold_02.json",
+      "size_bytes": 9740712,
+      "sha256": "3665a249d41e6ff7c1fb223ad7683714b97ac6800c52c4473516f7e6398aeebd",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_3",
+      "path": "models/exp203_s1_elastic_net_stability_selection/fold_03.json",
+      "size_bytes": 10987751,
+      "sha256": "613a2503bce78f879cdbcf1777a06b4274e5d394c681f3c7fd94697547c7c436",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_4",
+      "path": "models/exp203_s1_elastic_net_stability_selection/fold_04.json",
+      "size_bytes": 11588873,
+      "sha256": "f75dd1b09b42a600d48a04965a0be6a9e5daf044e5be2c687b54e64cbd675b41",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_0",
+      "path": "models/exp203_s1_elastic_net_stability_selection/fold_00_feature_selection.json",
+      "size_bytes": 132399,
+      "sha256": "d0d7b39e0adde1d59a59bba964cc4d66fcdbc9f5d642518c192f8fcc1e7f3fe8",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_1",
+      "path": "models/exp203_s1_elastic_net_stability_selection/fold_01_feature_selection.json",
+      "size_bytes": 132388,
+      "sha256": "3e76ce27650f1cf3c3f4ee14e46d7022ed623809e0afd5406614c4b21d004171",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_2",
+      "path": "models/exp203_s1_elastic_net_stability_selection/fold_02_feature_selection.json",
+      "size_bytes": 132429,
+      "sha256": "dd308880c615d07b198c00327eb047a282d2b4c0bafe6b1c76cdae0ae016d386",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_3",
+      "path": "models/exp203_s1_elastic_net_stability_selection/fold_03_feature_selection.json",
+      "size_bytes": 132373,
+      "sha256": "b0d9084305b52c21871486ab134f03f9dfb1b4fc5eabb8ab704f4bf96bbb8568",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_4",
+      "path": "models/exp203_s1_elastic_net_stability_selection/fold_04_feature_selection.json",
+      "size_bytes": 132371,
+      "sha256": "e84b1600e311696509aa935df1be606876b2488e8fff752e4560dc6f49a0ac5e",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_spec_manifest",
+      "path": "data/processed/exp203_s1_elastic_net_stability_selection_features/feature_spec_manifest.json",
+      "size_bytes": 1887,
+      "sha256": "3ef2a4fe8e585278dca50613fffd4b1488759487593d0d282d425491bf8753d0",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probabilities",
+      "path": "oof/exp203_s1_elastic_net_stability_selection.csv",
+      "size_bytes": 3507692,
+      "sha256": "ccaf0d43e20b0cf688cb9ec9a2b51abd07c233ba1f8c15686ee6366650121a0f",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp203_s1_elastic_net_stability_selection.csv",
+      "size_bytes": 38148,
+      "sha256": "b7e1a727d293239b987711e221995f87eb1f883639571a227630d35ed518fd6b",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probabilities",
+      "path": "preds/exp203_s1_elastic_net_stability_selection_test_proba.csv",
+      "size_bytes": 1404191,
+      "sha256": "850eda409aeb2d6b595be62f04a10edcf69926f54959cc91382cb947b063eeda",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp203_s1_elastic_net_stability_selection/config.resolved.yaml",
+      "size_bytes": 3744,
+      "sha256": "440cdef8255f14de77f03a8a636a86d3bb2e6661eef428ec637ed2e1f32b8e26",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp203_s1_elastic_net_stability_selection/metrics.json",
+      "size_bytes": 18048,
+      "sha256": "5eaad66c9f04b8b877072f0158268802956385afac224629d9aa4615b259115c",
+      "storage_uri": null
+    }
+  ]
+}

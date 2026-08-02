@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 47
+- 실제 실험 수: 48
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -66,6 +66,7 @@
 | EXP-190 | COMPLETED | fabxoe | #190 | EXP-094 + fold-local C3 Phi≥0.20/Jaccard≥0.10 pruning | 0.4157643312 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0011222·fold std +0.0045573로 gate 실패, ARCHIVE; Phi/Jaccard ladder 종료 | [보고서](reports/exp190_c3_phi_jaccard_pruning/README.md) |
 | EXP-191 | COMPLETED | fabxoe | #191 | EXP-094 + fold-local C2-policy pair `only_left/right/both` 요약 | 0.4144744818 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0024121·fold std +0.0047535로 gate 실패, ARCHIVE | [보고서](reports/exp191_r1_correlation_pair_summary/README.md) |
 | EXP-192 | COMPLETED | fabxoe | #192 | EXP-094 + fold-local 양성 수 `<5` mutation-presence 열 제거 | 0.4176058118 | 미제출 | MANIFEST_COMPLETE | Macro F1 +0.0007192지만 fold std +0.0073553으로 gate 실패, ARCHIVE | [보고서](reports/exp192_r2_rare_mutation_presence_filter/README.md) |
+| EXP-203 | COMPLETED | fabxoe | #203 | EXP-094 + outer-train Elastic Net stability selection (최대 512 genes) | 0.2996289845 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.1172576·Log Loss +0.3633948; dense selector가 512개 cap을 유발해 ARCHIVE | [보고서](reports/exp203_s1_elastic_net_stability_selection/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -119,6 +120,52 @@
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-203] S1 Elastic Net stability selection
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #203 / `issue-203-s1-elastic-net-stability-selection`
+- 소스 commit: `fb0c25c74339b04f887bea19e307fd5472f8a227`
+- 시작/종료: 2026-08-02T11:53:20.641649+00:00 /
+  2026-08-02T12:40:59.764236+00:00
+
+#### 실행
+
+- Config: `configs/exp203_s1_elastic_net_stability_selection.yaml`
+- Runner: `scripts/run_exp203_s1_elastic_net_stability_selection.py`
+- Metrics: `reports/exp203_s1_elastic_net_stability_selection/metrics.json`
+- Report: `reports/exp203_s1_elastic_net_stability_selection/README.md`
+- 부모 실험: EXP-094 (Feature Spec v1)
+- 각 outer fold의 학습 행에서만 `GENE__mutated` 4,384개를 대상으로 3-fold inner
+  CV와 one-SE 규칙으로 `C`를 정했다. 이어 75% stratified subsample 20회에서
+  `l1_ratio=0.5` Elastic Net을 fit해 16회 이상 선택된 gene을 채택하고 최소 50개,
+  최대 512개로 고정했다.
+- 선택된 gene의 v1 유전자 블록 전체와 sample aggregate·fixed hotspot은 유지했고,
+  validation·test에는 저장한 fold별 동일 mask를 적용했다. balanced sample weight는
+  유지했고 SMOTE는 적용하지 않았다.
+
+#### 결과
+
+- Fold Macro F1: 0.2917453760, 0.3136269311, 0.2967567243, 0.2819547224,
+  0.3075216276
+- OOF Macro F1: 0.2996289845 (EXP-094 대비 `-0.1172575894`)
+- Fold 표준편차: 0.0112469010 (EXP-094 대비 `+0.0033626489`)
+- Accuracy: 0.2981777133
+- Log Loss: 2.2033321396 (EXP-094 대비 `+0.3633948103`)
+- 모든 fold가 `C=1.0`을 선택했고, frequency threshold를 통과한 gene 수는
+  4,003~4,038개였다. 최대 512개 상한이 모든 fold에서 작동했다.
+- Public LB: 미제출
+- 재현 상태: `MANIFEST_COMPLETE` — 원 학습 checkpoint·fold별 selection mask·OOF/test
+  확률·submission manifest는 저장했으나 독립 checkpoint inference 비교는 아직
+  수행하지 않았다.
+
+#### 결론
+
+- 성능·간소화 gate를 모두 크게 벗어나 `ARCHIVE`다. selector가 충분히 희소하지 않아
+  cap 기반 절단이 발생했고, 원본 변이 정보 감소가 큰 성능 하락으로 이어졌다.
+- S1의 사전 고정 규칙은 결과를 보고 재튜닝하지 않는다. 다음 사전 등록 단계인 S2
+  mRMR를 독립 Experiment Issue에서 실행한다.
 
 ### [EXP-192] R2 희귀 mutation-presence filter
 
