@@ -1860,6 +1860,10 @@ Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0
 #### 실행
 
 - Config: `configs/exp170_cellcycle_any_nonsilent.yaml`
+- Resolved config: `reproducibility/exp170_cellcycle_any_nonsilent/config.resolved.yaml`
+  (PR #172 리뷰 반영, 재학습 없음: `pathway__cellcycle_any_nonsilent`을 Feature
+  Factory family로 등록하고 KnowledgeProvenance를 연결, 값은 기존과 동일함을
+  전체 train/test로 검증)
 - Metrics: `reports/exp170_cellcycle_any_nonsilent/metrics.json`
 - Verdict 상세: `reports/exp170_cellcycle_any_nonsilent/verdict.json`
 - Report: `reports/exp170_cellcycle_any_nonsilent/README.md`
