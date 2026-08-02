@@ -55,6 +55,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 
 - [Residue-position·Hotspot 개발 로드맵](plans/residue_position_hotspot_roadmap.md)
 - [ABC 신호 포트폴리오·스태킹 로드맵](plans/abc_signal_portfolio_stacking_roadmap.md)
+- [오리엔테이션 기반 상관 삭제·피처 선택 로드맵](plans/orientation_correlation_feature_selection_roadmap.md)
 
 현재 동결된 ABC Feature Spec v2와 선택 근거:
 
