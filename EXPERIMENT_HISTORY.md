@@ -1687,3 +1687,28 @@ Accuracy와 fold 표준편차는 개선됐지만 Macro F1이 EXP-131보다 `-0.0
 하락했고 DLBC·PAAD·SARC 등 소수 클래스 F1이 붕괴했다. G6의 채택 기준인
 최고 단일 또는 고정 blend 대비 `+0.002`를 충족하지 못하므로 stack은 기각하며,
 추가 meta learner·C 탐색은 중단한다.
+
+### [EXP-151] EXP-094 + log1p(mutated_gene_count)
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #151 / issue-151-exp-burden-incremental
+- Config: `configs/exp151_burden_incremental.yaml`
+- Metrics: `reports/exp151_mutated_gene_burden/metrics.json`
+- 보고서: [EXP-151 보고서](reports/exp151_mutated_gene_burden/README.md)
+
+#### 실행과 결과
+
+- EXP-094 frozen Feature Spec에 `log1p(mutated_gene_count)` 하나만 추가했다.
+- canonical `stratified_5fold_seed42.csv`와 고정 26개 클래스 순서를 사용했다.
+- Secure Cloud RTX 4090에서 XGBoost CUDA 설정으로 실행했다.
+- OOF Macro F1: `0.4188970451` (EXP-094 대비 `+0.0020104712`)
+- Fold 표준편차: `0.0130000285` (EXP-094 대비 `+0.0051157765`)
+- Log Loss: `1.8381872786` (EXP-094 대비 `-0.0017500507`)
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED` (inference replay bundle 미완료)
+
+#### 판단
+
+Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0.002`보다 크게
+악화됐다. 따라서 burden 피처를 Feature Spec이나 Public 제출 후보로 채택하지 않는다.
