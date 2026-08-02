@@ -812,7 +812,12 @@
       ]
     ]
   },
-  "leaderboard": null,
+  "leaderboard": {
+    "public_score": 0.311853163,
+    "private_score": null,
+    "rank": null,
+    "submitted_at": "2026-08-02T23:04:51+09:00"
+  },
   "runtime": {
     "seconds": 557.1234017498791,
     "hardware": "macOS-26.2-arm64-arm-64bit"
