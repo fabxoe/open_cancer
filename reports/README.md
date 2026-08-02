@@ -62,6 +62,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 - [ABC-Stack OOF 포트폴리오 감사](analysis/abc_oof_portfolio_audit.md)
 - [G4 모델 OOF 다양성·확률 품질 감사](analysis/g4_model_portfolio_audit.md)
 - [G7 최종 후보 재현·제출 준비 감사](analysis/g7_final_candidate_audit.md)
+- [최종 후보 제출·재현 체크리스트](final_candidate_checklist.md)
 
 원본 변이 분포를 암종별로 확인하는 탐색용 EDA:
 
