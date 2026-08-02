@@ -37,11 +37,26 @@ CELL_CYCLE_GENES: tuple[str, ...] = (
     "E2F3",
 )
 
+# The TSG-labeled subset of CELL_CYCLE_GENES (og_tsg == "TSG" in the
+# catalog). Used by Issue #173 (P_lof_in_tsg_cellcycle).
+CELL_CYCLE_TSG_GENES: tuple[str, ...] = (
+    "CDKN1A",
+    "CDKN1B",
+    "CDKN2A",
+    "CDKN2B",
+    "CDKN2C",
+    "RB1",
+)
 
-def compute_any_nonsilent_flag(
-    frame: pd.DataFrame, genes: tuple[str, ...]
+_TRUNCATING_TYPES = frozenset({"nonsense", "frameshift"})
+
+
+def _compute_token_flag(
+    frame: pd.DataFrame,
+    genes: tuple[str, ...],
+    matches: "callable[[str], bool]",
 ) -> np.ndarray:
-    """1.0 if any of `genes` carries a nonsilent (non-WT, non-synonymous) token.
+    """1.0 if any token in any of `genes` satisfies `matches(mutation_type)`.
 
     `frame` must contain raw gene-cell strings (WT / blank / space-separated
     mutation tokens), keyed by gene symbol columns.
@@ -59,9 +74,27 @@ def compute_any_nonsilent_flag(
             for token in cell.split():
                 if token == "WT":
                     continue
-                if classify_mutation_token(token) != "synonymous":
+                if matches(classify_mutation_token(token)):
                     flags[row] = 1.0
                     break
             if flags[row]:
                 break
     return flags
+
+
+def compute_any_nonsilent_flag(
+    frame: pd.DataFrame, genes: tuple[str, ...]
+) -> np.ndarray:
+    """1.0 if any of `genes` carries a nonsilent (non-WT, non-synonymous) token."""
+
+    return _compute_token_flag(frame, genes, matches=lambda kind: kind != "synonymous")
+
+
+def compute_truncating_flag(frame: pd.DataFrame, genes: tuple[str, ...]) -> np.ndarray:
+    """1.0 if any of `genes` carries a truncating (nonsense or frameshift) token.
+
+    Missense is intentionally excluded (LoF-specific signal for TSGs), and
+    synonymous is excluded by definition of `_TRUNCATING_TYPES`.
+    """
+
+    return _compute_token_flag(frame, genes, matches=lambda kind: kind in _TRUNCATING_TYPES)
