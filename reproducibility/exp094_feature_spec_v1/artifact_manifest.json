@@ -3,11 +3,11 @@
   "issue_number": 94,
   "reproducibility_status": "INFERENCE_VERIFIED",
   "source_commit": "19d5c067517af42f1b5e353b2106e352bae185df",
-  "source_tag": null,
+  "source_tag": "exp-094-repro-v1",
   "dirty_worktree": false,
   "data_manifest": "reproducibility/exp094_feature_spec_v1/data_manifest.json",
   "environment": "reproducibility/exp094_feature_spec_v1/environment.json",
-  "release_url": null,
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-094-repro-v1",
   "verifier": "fabxoe",
   "verified_at": "2026-08-01T06:21:49.113157+00:00",
   "artifacts": [
@@ -16,62 +16,62 @@
       "path": "models/exp094_feature_spec_v1/fold_00.json",
       "size_bytes": 11732374,
       "sha256": "9dad131c07f10524f2744c8d696e4797323af19fc39056bb58981d63fd6d7a7c",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-094-repro-v1/exp094_feature_spec_v1_repro.tar.gz#models/exp094_feature_spec_v1/fold_00.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp094_feature_spec_v1/fold_01.json",
       "size_bytes": 12049583,
       "sha256": "e5e5b6d192bd970df6cb3596a85519da480fa9cc436ad959af3c19a3f3f85f61",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-094-repro-v1/exp094_feature_spec_v1_repro.tar.gz#models/exp094_feature_spec_v1/fold_01.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp094_feature_spec_v1/fold_02.json",
       "size_bytes": 13633447,
       "sha256": "28e6145584f7e4f060dd64996e7f71dc6a0f42b9104ef7c612b01e9842836ada",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-094-repro-v1/exp094_feature_spec_v1_repro.tar.gz#models/exp094_feature_spec_v1/fold_02.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp094_feature_spec_v1/fold_03.json",
       "size_bytes": 12631991,
       "sha256": "c298184be5d20ee39ce55562610cf7a5766dd282269cf883bfb748416fc1243d",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-094-repro-v1/exp094_feature_spec_v1_repro.tar.gz#models/exp094_feature_spec_v1/fold_03.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp094_feature_spec_v1/fold_04.json",
       "size_bytes": 12313977,
       "sha256": "1308f5d938e96ae9a3df2acea0003860cfa9d9d5d3571f4b81b0850be79f884c",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-094-repro-v1/exp094_feature_spec_v1_repro.tar.gz#models/exp094_feature_spec_v1/fold_04.json"
     },
     {
       "kind": "submission",
       "path": "submissions/exp094_feature_spec_v1.csv",
       "size_bytes": 38157,
       "sha256": "89e4ade9df511b49fbf58fc093744417f2980cdd20b4a86849a0c4b93b1c5411",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-094-repro-v1/exp094_feature_spec_v1_repro.tar.gz#submissions/exp094_feature_spec_v1.csv"
     },
     {
       "kind": "oof_probability",
       "path": "oof/exp094_feature_spec_v1.csv",
       "size_bytes": 2129760,
       "sha256": "c2b9e0b8e6548a89a9f5d4aac71fae4c9b301983761d1a0b3458a0ee0b9d1aad",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-094-repro-v1/exp094_feature_spec_v1_repro.tar.gz#oof/exp094_feature_spec_v1.csv"
     },
     {
       "kind": "test_probability",
       "path": "preds/exp094_feature_spec_v1_test_proba.csv",
       "size_bytes": 835115,
       "sha256": "63f8927a17ff3b952167d2844aef79d6e6b632c552f5aab45503105110b53e5d",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-094-repro-v1/exp094_feature_spec_v1_repro.tar.gz#preds/exp094_feature_spec_v1_test_proba.csv"
     },
     {
       "kind": "metrics",
       "path": "reports/exp094_feature_spec_v1/metrics.json",
-      "size_bytes": 11254,
-      "sha256": "d5cb43a47e60c3fa150ee3c0dfe79336ec7432b99ff6e4990ec1b0494f91c2c3",
+      "size_bytes": 11381,
+      "sha256": "aec60488699a2337a3899f10551ac9167f7ec23165184ac76f5111e485a5af83",
       "storage_uri": null
     },
     {
@@ -79,7 +79,14 @@
       "path": "reproducibility/exp094_feature_spec_v1/config.resolved.yaml",
       "size_bytes": 17973,
       "sha256": "20a7fc4cd043ddf140b48fdab92cd5ab4c5ecc721dc9626a24626a28a621ab48",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-094-repro-v1/exp094_feature_spec_v1_repro.tar.gz#reproducibility/exp094_feature_spec_v1/config.resolved.yaml"
+    },
+    {
+      "kind": "release_bundle",
+      "path": "release-assets/exp094_feature_spec_v1_repro.tar.gz",
+      "size_bytes": 17832471,
+      "sha256": "2b0d276dce98ed482a47956a12a1fd90e44223dee651156e8de2ae6d56610633",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-094-repro-v1/exp094_feature_spec_v1_repro.tar.gz"
     }
   ],
   "verification": {

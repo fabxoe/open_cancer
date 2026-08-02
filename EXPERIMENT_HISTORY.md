@@ -42,7 +42,7 @@
 | EXP-078 | COMPLETED | fabxoe | #78 | EXP-069 max residue-position + 관측 indicator | 0.4110815504 | 미제출 | INFERENCE_VERIFIED | OOF 하락·fold 변동성 악화 및 Issue #80 중복 확인으로 기각, EXP-069 max+zero 동결 | [보고서](reports/exp078_xgb_max_residue_indicator/README.md) |
 | EXP-085 | COMPLETED | fabxoe | #85 | EXP-005 + reference-aware 고정 문헌 hotspot 34개 | 0.4125795545 | 0.3103760308 | INFERENCE_VERIFIED | clean hotspot 복구·Public은 EXP-031보다 낮음 | [보고서](reports/exp085_hotspot_clean/README.md) |
 | EXP-093 | COMPLETED | 2heej | #93 | EXP-005 + max residue-position + clean hotspot 34개 | 0.4157606623 | 미제출 | INFERENCE_VERIFIED | 부모 OOF는 개선했지만 fold 변동성 기준 실패로 조합 동결 보류 | [보고서](reports/exp093_mutation_position_hotspot/README.md) |
-| EXP-094 | COMPLETED | fabxoe | #94 | EXP-005 + EXP-069 max residue position + EXP-085 고정 hotspot | 0.4168865739 | 미제출 | INFERENCE_VERIFIED | 채택·Feature Spec v1 동결, 신규 Local 최고 | [보고서](reports/exp094_feature_spec_v1/README.md) |
+| EXP-094 | COMPLETED | fabxoe | #94 | EXP-005 + EXP-069 max residue position + EXP-085 고정 hotspot | 0.4168865739 | 0.311853163 | INFERENCE_VERIFIED | 채택·Feature Spec v1 동결; Public은 EXP-031·096 미달 | [보고서](reports/exp094_feature_spec_v1/README.md) |
 | EXP-106 | COMPLETED | fabxoe | #106 | EXP-094 + fold-train recurrent exact-token | 0.4147478922 | 미제출 | INFERENCE_VERIFIED | 성능 후보 미채택·OOF/test 확률은 다양성 비교용 보존 | [보고서](reports/exp106_recurrent_exact_token/README.md) |
 | EXP-107 | COMPLETED | fabxoe | #107 | EXP-094 + amino-acid 물성 변화 카운트 4개 | 0.4131379001 | 미제출 | INFERENCE_VERIFIED | 성능 후보 미채택·v2-diversity 관찰 후보로 확률 보존 | [보고서](reports/exp107_amino_acid_change/README.md) |
 | EXP-109 | COMPLETED | fabxoe | #109 | EXP-094 + complex morphology·spectrum 요약 8개 | 0.4135182559 | 미제출 | INFERENCE_VERIFIED | 성능 후보 미채택·fold 안정성 및 diversity 관찰 후보 | [보고서](reports/exp109_complex_morphology/README.md) |
@@ -52,7 +52,7 @@
 | EXP-125 | COMPLETED | fabxoe | #125 | 동결 Feature Spec v1 + LightGBM | 0.4189078364 | 0.3075810937 | INFERENCE_VERIFIED | Local gate 통과, Public은 EXP-031·096 미달 | [보고서](reports/exp125_lightgbm_v1/README.md) |
 | EXP-127 | COMPLETED | fabxoe | #127 | 동결 Feature Spec v1 + CatBoost GPU | 0.4194572294 | 0.3014741179 | INFERENCE_VERIFIED | Local 최고지만 Public 하락, 단독 후보 제외·diversity 자산 | [보고서](reports/exp127_catboost_v1/README.md) |
 | EXP-131 | COMPLETED | fabxoe | #131 | EXP-127 CatBoost v1 extended training | 0.4222392962 | 미제출 | INFERENCE_VERIFIED | OOF는 개선했지만 fold·Log Loss 악화, 추가 CatBoost iteration 확장 중단 | [보고서](reports/exp131_catboost_v1_extended/README.md) |
-| EXP-135 | COMPLETED | fabxoe | #135 | EXP-094 + EXP-125 fixed 0.5/0.5 probability blend | 0.4201772665 | 미제출 | INFERENCE_VERIFIED | Log Loss는 개선했지만 EXP-131 단독 F1·fold gate를 넘지 못해 제출·추가 blend 보류 | [보고서](reports/exp135_fixed_probability_blend/README.md) |
+| EXP-135 | COMPLETED | fabxoe | #135 | EXP-094 + EXP-125 fixed 0.5/0.5 probability blend | 0.4201772665 | 0.3166527939 | INFERENCE_VERIFIED | 재현 가능한 Public 2위·EXP-096 대비 -0.0002528810; 추가 blend 탐색은 보류 | [보고서](reports/exp135_fixed_probability_blend/README.md) |
 | EXP-137 | COMPLETED | fabxoe | #137 | EXP-094 + EXP-125 leakage-safe cross-fitted Logistic stacking | 0.4068626451 | 미제출 | INFERENCE_VERIFIED | 소수 클래스 F1 붕괴·최고 단일 대비 -0.0153766511로 stack 기각 | [보고서](reports/exp137_cross_fitted_stacking/README.md) |
 | EXP-151 | COMPLETED | fabxoe | #151 | EXP-094 + log1p(mutated_gene_count), Secure RTX 4090 실행 | 0.4188970451 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0051158로 기준 실패·미채택 | [보고서](reports/exp151_mutated_gene_burden/README.md) |
 | EXP-154 | COMPLETED | fabxoe | #154 | EXP-094 + log1p(total_variant_count), Secure RTX 4090 실행 | 0.4183986443 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0056484로 기준 실패·미채택 | [보고서](reports/exp154_total_variant_burden/README.md) |
@@ -85,6 +85,8 @@
 | 2026-08-01T23:36:59+09:00 | EXP-096 | #96 | `submissions/exp096_fixed_pathway_burden.csv` (제출 ID `1508043`) | `0d6bdaacec8c9853bc44c3d00fa6eec04f4e0b5b2fd583971e4057a2beefaf0d` | 0.3169056749 | EXP-031 대비 -0.0001747100·확인 당시 참가 4팀 중 4위 유지 | INFERENCE_VERIFIED |
 | 2026-08-01T23:39:49+09:00 | EXP-075 | #75 | `submissions/exp075_residue_probability_blend.csv` (제출 ID `1508045`) | `25f00f1a97acbd5364df0dd7b391f75a930888fefc887edf696f681d482d7b3e` | 0.31125491 | EXP-031 최고 미달·확인 당시 참가 4팀 중 4위 유지 | INFERENCE_VERIFIED |
 | 2026-08-01T23:41:04+09:00 | EXP-127 | #127 | `submissions/exp127_catboost_v1.csv` (제출 ID `1508047`) | `f4fdd043a1875a41d333fa88f34911fd0f6f20758a3bd41deea1288d473cb543` | 0.3014741179 | EXP-031 최고 미달·확인 당시 참가 4팀 중 4위 유지 | INFERENCE_VERIFIED |
+| 2026-08-02T23:04:51+09:00 | EXP-094 | #94 | `submissions/exp094_feature_spec_v1.csv` (제출 ID `1508852`) | `89e4ade9df511b49fbf58fc093744417f2980cdd20b4a86849a0c4b93b1c5411` | 0.311853163 | EXP-031 최고 점수<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span> | INFERENCE_VERIFIED |
+| 2026-08-02T23:07:03+09:00 | EXP-135 | #135 | `submissions/exp135_fixed_probability_blend.csv` (제출 ID `1508856`) | `5eef332c50322a8f2be1fb64b15bef49d8f5c91ac6200a7dbc587cebaa75b70a` | 0.3166527939 | EXP-031 최고 대비 -0.0004275910<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">재현 가능한 제출 중 2위</span> | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -555,7 +557,10 @@
 - EXP-069 대비: +0.0037857746
 - EXP-085 대비: +0.0043070194
 - 기존 Local 최고 EXP-075 대비: +0.0010954964
-- Public LB: 미제출
+- Public LB: 0.311853163 (제출 ID `1508852`, 2026-08-02 23:04:51 KST)
+- 재현 번들: [`exp-094-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-094-repro-v1)
+  (`17,832,471` bytes, SHA-256
+  `2b0d276dce98ed482a47956a12a1fd90e44223dee651156e8de2ae6d56610633`)
 - 재현 상태: INFERENCE_VERIFIED
 - 판단: 채택, Feature Spec v1 동결
 
@@ -1936,16 +1941,21 @@ config 변경만으로 재실행했다(Feature Factory 코드 변경 없음).
 - Fold 표준편차: `0.0126953092`
 - Accuracy: `0.4110627318`
 - Log Loss: `1.8083444812`
-- 제출 파일: `submissions/exp135_fixed_probability_blend.csv` (DACON 미제출)
+- 제출 파일: `submissions/exp135_fixed_probability_blend.csv`
+- Public LB: 0.3166527939 (제출 ID `1508856`, 2026-08-02 23:07:03 KST)
+- 재현 번들: [`exp-135-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-135-repro-v1)
+  (`44,786,385` bytes, SHA-256
+  `d736b48262f51b0521c4db6fcb55a746e13f62fe60f3f984084d8031dc0cb4f7`)
 - 재현 상태: `INFERENCE_VERIFIED`
 
 #### 판단
 
 EXP-094와 EXP-125의 평균은 EXP-125보다 Macro F1이 `+0.0012694301`,
 Log Loss가 `-0.014454` 개선됐지만, EXP-131 최고 단일 모델보다 Macro F1이
-`-0.0020620298` 낮고 fold 표준편차가 더 크다. G5 채택 기준을 충족하지 못해
-리더보드 제출과 추가 blend 탐색은 보류한다. OOF·test 확률과 제출 CSV의
-재생성 해시는 일치했다.
+`-0.0020620298` 낮고 fold 표준편차가 더 크다. 이후 사전 생성된 파일을
+리더보드에 제출했지만 EXP-096보다 `-0.0002528810`, EXP-031보다
+`-0.0004275910` 낮았다. Public 결과를 이용한 추가 blend 탐색은 하지 않는다.
+OOF·test 확률과 제출 CSV의 재생성 해시는 일치했다.
 
 ### [EXP-137] EXP-094 + EXP-125 leakage-safe cross-fitted Logistic stacking
 

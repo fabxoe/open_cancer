@@ -3,11 +3,11 @@
   "issue_number": 135,
   "reproducibility_status": "INFERENCE_VERIFIED",
   "source_commit": "50e6e3381e9fe93cddc41d59b9f6552139d20bf0",
-  "source_tag": null,
+  "source_tag": "exp-135-repro-v1",
   "dirty_worktree": false,
   "data_manifest": "reproducibility/exp135_fixed_probability_blend/data_manifest.json",
   "environment": "reproducibility/exp135_fixed_probability_blend/environment.json",
-  "release_url": null,
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-135-repro-v1",
   "verifier": "fabxoe",
   "verified_at": "2026-08-01T17:28:09.146359+00:00",
   "artifacts": [
@@ -16,27 +16,27 @@
       "path": "submissions/exp135_fixed_probability_blend.csv",
       "size_bytes": 38184,
       "sha256": "5eef332c50322a8f2be1fb64b15bef49d8f5c91ac6200a7dbc587cebaa75b70a",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#submissions/exp135_fixed_probability_blend.csv"
     },
     {
       "kind": "oof_probability",
       "path": "oof/exp135_fixed_probability_blend.csv",
       "size_bytes": 3352094,
       "sha256": "b64eabe71d9bdee185ded515e67fc9a90cf98b9ebd80a2adf5343d60dea1e54c",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#oof/exp135_fixed_probability_blend.csv"
     },
     {
       "kind": "test_probability",
       "path": "preds/exp135_fixed_probability_blend_test_proba.csv",
       "size_bytes": 1341108,
       "sha256": "154c00c173989b7562f0a5218bd87bf500e6e38483ee87e37564fc7d7ca68835",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#preds/exp135_fixed_probability_blend_test_proba.csv"
     },
     {
       "kind": "metrics",
       "path": "reports/exp135_fixed_probability_blend/metrics.json",
-      "size_bytes": 11106,
-      "sha256": "87707ad8e1187cc4e4bbb3b88c4b41e6175be6c8adc0494e299d8fa9c1f09c13",
+      "size_bytes": 11235,
+      "sha256": "fa34c43eb19cf0ea338b877e1d989dcc3ab9a4800c927a45e0214f70aeff2ab7",
       "storage_uri": null
     },
     {
@@ -44,7 +44,7 @@
       "path": "reproducibility/exp135_fixed_probability_blend/config.resolved.yaml",
       "size_bytes": 1818,
       "sha256": "8d4258399b43dc3b2e12a4f90fd15d6d56c42b18d2ca88c383b636f9501fd350",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#reproducibility/exp135_fixed_probability_blend/config.resolved.yaml"
     },
     {
       "kind": "comparison",
@@ -52,6 +52,125 @@
       "size_bytes": 477,
       "sha256": "3b5caed41da0c26b2ac78a7a19e21ab708611dbaf3e85fdb8eb9ac7669d4e364",
       "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp094_feature_spec_v1/fold_00.json",
+      "size_bytes": 11732374,
+      "sha256": "9dad131c07f10524f2744c8d696e4797323af19fc39056bb58981d63fd6d7a7c",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#models/exp094_feature_spec_v1/fold_00.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp094_feature_spec_v1/fold_01.json",
+      "size_bytes": 12049583,
+      "sha256": "e5e5b6d192bd970df6cb3596a85519da480fa9cc436ad959af3c19a3f3f85f61",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#models/exp094_feature_spec_v1/fold_01.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp094_feature_spec_v1/fold_02.json",
+      "size_bytes": 13633447,
+      "sha256": "28e6145584f7e4f060dd64996e7f71dc6a0f42b9104ef7c612b01e9842836ada",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#models/exp094_feature_spec_v1/fold_02.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp094_feature_spec_v1/fold_03.json",
+      "size_bytes": 12631991,
+      "sha256": "c298184be5d20ee39ce55562610cf7a5766dd282269cf883bfb748416fc1243d",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#models/exp094_feature_spec_v1/fold_03.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp094_feature_spec_v1/fold_04.json",
+      "size_bytes": 12313977,
+      "sha256": "1308f5d938e96ae9a3df2acea0003860cfa9d9d5d3571f4b81b0850be79f884c",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#models/exp094_feature_spec_v1/fold_04.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp125_lightgbm_v1/fold_00.txt",
+      "size_bytes": 12908304,
+      "sha256": "5dc442c5a272421c835ec3a349a9c3eca2c3836c08964353854c68797737a394",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#models/exp125_lightgbm_v1/fold_00.txt"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp125_lightgbm_v1/fold_01.txt",
+      "size_bytes": 13354125,
+      "sha256": "8ccca0da7e3e52858254a386f9199afedd12d8cd81e7730e0981104724d11ac0",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#models/exp125_lightgbm_v1/fold_01.txt"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp125_lightgbm_v1/fold_02.txt",
+      "size_bytes": 12922898,
+      "sha256": "176f22205cbb63852996ef36095f08a235dc59f3c98870092365aff43d4f5a4f",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#models/exp125_lightgbm_v1/fold_02.txt"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp125_lightgbm_v1/fold_03.txt",
+      "size_bytes": 11789423,
+      "sha256": "837cd81a1980e284ea13872410251a9c6a6e5cd9686e0a7dfb4c852c4d041fde",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#models/exp125_lightgbm_v1/fold_03.txt"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp125_lightgbm_v1/fold_04.txt",
+      "size_bytes": 11826344,
+      "sha256": "d7cd287e9a8d90cc72d610a36e98dad1772484a912ad7a7ea4ba627bc1e5186f",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#models/exp125_lightgbm_v1/fold_04.txt"
+    },
+    {
+      "kind": "component_oof_probability",
+      "path": "oof/exp094_feature_spec_v1.csv",
+      "size_bytes": 2129760,
+      "sha256": "c2b9e0b8e6548a89a9f5d4aac71fae4c9b301983761d1a0b3458a0ee0b9d1aad",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#oof/exp094_feature_spec_v1.csv"
+    },
+    {
+      "kind": "component_test_probability",
+      "path": "preds/exp094_feature_spec_v1_test_proba.csv",
+      "size_bytes": 835115,
+      "sha256": "63f8927a17ff3b952167d2844aef79d6e6b632c552f5aab45503105110b53e5d",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#preds/exp094_feature_spec_v1_test_proba.csv"
+    },
+    {
+      "kind": "component_resolved_config",
+      "path": "reproducibility/exp094_feature_spec_v1/config.resolved.yaml",
+      "size_bytes": 17973,
+      "sha256": "20a7fc4cd043ddf140b48fdab92cd5ab4c5ecc721dc9626a24626a28a621ab48",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#reproducibility/exp094_feature_spec_v1/config.resolved.yaml"
+    },
+    {
+      "kind": "component_oof_probability",
+      "path": "oof/exp125_lightgbm_v1.csv",
+      "size_bytes": 3534317,
+      "sha256": "80344a39218cd892374beb3b60e4b061db5fc1cb06a2a9b036614a478e006761",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#oof/exp125_lightgbm_v1.csv"
+    },
+    {
+      "kind": "component_test_probability",
+      "path": "preds/exp125_lightgbm_v1_test_proba.csv",
+      "size_bytes": 1409809,
+      "sha256": "278aba6177aa5f214236f551fecaecc79c4a6ba36e07a0cc9b4f3d8f7fbe41aa",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#preds/exp125_lightgbm_v1_test_proba.csv"
+    },
+    {
+      "kind": "component_resolved_config",
+      "path": "reproducibility/exp125_lightgbm_v1/config.resolved.yaml",
+      "size_bytes": 3344,
+      "sha256": "87440a4f55f295cf8d6c91a861fefe78b59dca2c36adadd50f3d419194296bdc",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz#reproducibility/exp125_lightgbm_v1/config.resolved.yaml"
+    },
+    {
+      "kind": "release_bundle",
+      "path": "release-assets/exp135_fixed_probability_blend_repro.tar.gz",
+      "size_bytes": 44786385,
+      "sha256": "d736b48262f51b0521c4db6fcb55a746e13f62fe60f3f984084d8031dc0cb4f7",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-135-repro-v1/exp135_fixed_probability_blend_repro.tar.gz"
     }
   ],
   "verification": {

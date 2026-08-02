@@ -4,8 +4,9 @@
 
 EXP-094 Feature Spec v1에 `log1p(mutated_gene_count)` 하나만 추가해 canonical
 5-fold를 실행했습니다. Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 크게
-악화되어 사전 채택 기준을 통과하지 못했습니다. 이 피처를 Feature Spec에 채택하거나
-Public 제출에 사용하지 않습니다.
+악화되어 사전 채택 기준을 통과하지 못했습니다. 이후 사전 생성된 제출 파일을
+2026-08-02 리더보드에 제출했고 Public Macro F1은 `0.3125095748`이었습니다.
+Feature Spec에는 채택하지 않습니다.
 
 ## 결과
 
@@ -17,6 +18,17 @@ Public 제출에 사용하지 않습니다.
 
 fold Macro F1은 `0.4162682, 0.4292479, 0.4017717, 0.4084666, 0.4370477`입니다.
 점수 상승보다 fold 간 변동성 증가가 커서 채택하지 않습니다.
+
+## 리더보드 제출 결과
+
+- 제출 ID / 시각: `1508912` / 2026-08-02 23:52:30 KST
+- 제출 파일: `submissions/exp151_mutated_gene_burden.csv`
+- SHA-256: `dddaf57cf2c497b08264a2c883223afff0d347edcadb9585783f06e1294e4349`
+- Public Macro F1: `0.3125095748`
+- EXP-094 대비: `+0.0006564118`
+- 순위 해석: 팀 최고 EXP-031에 미달해 팀 점수·순위는 갱신되지 않았습니다.
+- 재현성 메모: 현재 `NOT_STARTED`이므로 정식 History 제출 행과 Release 연결은
+  checkpoint inference 검증 후 진행합니다.
 
 ## 실행 조건
 
