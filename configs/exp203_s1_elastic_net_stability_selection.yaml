@@ -22,7 +22,7 @@ feature_selection:
   min_frequency: 16
   min_genes: 50
   max_genes: 512
-  max_iter: 500
+  max_iter: 200
   n_jobs: 8
 training:
   balanced_sample_weight: true
