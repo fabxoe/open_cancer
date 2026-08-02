@@ -1,0 +1,5 @@
+{
+  "python": "3.11.10",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "xgboost": "3.2.0"
+}

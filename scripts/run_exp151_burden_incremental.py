@@ -2,14 +2,19 @@
 """Run EXP-151: EXP-094 frozen features plus one log burden feature."""
 from __future__ import annotations
 
+import argparse
 import json
+import platform
 import subprocess
+import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pandas as pd
+import xgboost as xgb
 import yaml
 from scipy import sparse
 from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, log_loss
@@ -18,6 +23,11 @@ from open_cancer.constants import CLASS_LABELS
 from open_cancer.experiment import resolve_experiment_context
 from open_cancer.frozen_feature_specs import materialize_frozen_feature_spec
 from open_cancer.hashing import sha256_file
+from open_cancer.model_artifacts import (
+    build_oof_probability_frame,
+    build_test_probability_frame,
+    write_model_run_records,
+)
 from open_cancer.model_runner import create_model_adapter, run_canonical_cv
 from open_cancer.validation import validate_json_document, validate_submission
 from run_eda_violin import build_summary
@@ -31,6 +41,62 @@ SAMPLE = ROOT / "data/raw/sample_submission.csv"
 
 def git(*args: str) -> str:
     return subprocess.run(["git", *args], cwd=ROOT, check=True, capture_output=True, text=True).stdout.strip()
+
+
+def resolved_config(
+    *,
+    config: dict[str, Any],
+    context: Any,
+    metrics: dict[str, Any],
+    feature_spec: dict[str, Any],
+) -> dict[str, Any]:
+    """Record the effective EXP-151 training and inference contract."""
+    return {
+        "experiment": {
+            "experiment_id": context.experiment_id,
+            "issue_number": context.issue_number,
+            "branch": context.branch,
+            "owner": metrics["owner"],
+            "parent_experiment": config["parent_experiment"],
+            "source_commit": metrics["git_commit"],
+            "started_at": metrics["started_at"],
+        },
+        "data": {
+            "train": {"path": "data/raw/train.csv", "sha256": sha256_file(TRAIN)},
+            "test": {"path": "data/raw/test.csv", "sha256": sha256_file(TEST)},
+            "sample_submission": {
+                "path": "data/raw/sample_submission.csv",
+                "sha256": sha256_file(SAMPLE),
+            },
+            "class_order": list(CLASS_LABELS),
+        },
+        "split": {
+            **config["split"],
+            "method": "StratifiedKFold",
+            "sha256": sha256_file(ROOT / config["split"]["path"]),
+        },
+        "base_feature_spec": feature_spec,
+        "derived_features": config["variants"],
+        "model": config["model"],
+        "training": {
+            "balanced_sample_weight": True,
+            "base_seed": config["seed"],
+            "fold_seed_rule": "base_seed + fold",
+            "python_hash_seed": 42,
+        },
+        "commands": {
+            "train": "uv run python scripts/run_exp151_burden_incremental.py",
+            "inference": (
+                "uv run python scripts/run_exp151_burden_incremental.py "
+                "--replay-checkpoints"
+            ),
+        },
+        "environment": {
+            "python": sys.version.split()[0],
+            "platform": platform.platform(),
+            "xgboost": xgb.__version__,
+        },
+    }
 
 
 def main() -> None:
@@ -102,5 +168,156 @@ def main() -> None:
     print(json.dumps({"metrics": str(metrics_path), "oof_macro_f1": float(f1), "submission": str(submission_path)}, ensure_ascii=False))
 
 
+def replay_checkpoints() -> None:
+    """Recreate EXP-151 probabilities and submission without retraining."""
+    config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
+    context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
+    if context.experiment_id != "EXP-151":
+        raise RuntimeError("EXP-151 Issue context에서만 checkpoint replay를 실행합니다.")
+
+    slug = "exp151_mutated_gene_burden"
+    feature_dir = ROOT / "data/processed" / f"{slug}_features"
+    model_dir = ROOT / "models" / slug
+    metrics_path = ROOT / "reports" / slug / "metrics.json"
+    metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
+
+    x_train = sparse.load_npz(feature_dir / "train_features.npz").tocsr()
+    x_test = sparse.load_npz(feature_dir / "test_features.npz").tocsr()
+    train_burden = np.log1p(
+        build_summary(TRAIN)["mutated_gene_count"].to_numpy(dtype=np.float32)
+    )
+    test_burden = np.log1p(
+        build_summary(TEST, with_label=False)["mutated_gene_count"].to_numpy(
+            dtype=np.float32
+        )
+    )
+    x_train = sparse.hstack(
+        [x_train, sparse.csr_matrix(train_burden[:, None])], format="csr"
+    )
+    x_test = sparse.hstack(
+        [x_test, sparse.csr_matrix(test_burden[:, None])], format="csr"
+    )
+
+    train = pd.read_csv(TRAIN, usecols=["ID", "SUBCLASS"], dtype=str)
+    test = pd.read_csv(TEST, usecols=["ID"], dtype=str)
+    split_path = ROOT / config["split"]["path"]
+    folds = train[["ID"]].merge(
+        pd.read_csv(split_path, dtype={"ID": str, "fold": int}),
+        on="ID",
+        how="left",
+        validate="one_to_one",
+        sort=False,
+    )["fold"].to_numpy(dtype=np.int32)
+    targets = train["SUBCLASS"].map(
+        {label: index for index, label in enumerate(CLASS_LABELS)}
+    ).to_numpy(dtype=np.int32)
+
+    oof = np.full((len(train), len(CLASS_LABELS)), np.nan, dtype=np.float64)
+    test_probabilities = np.zeros((len(test), len(CLASS_LABELS)), dtype=np.float64)
+    model_paths: list[Path] = []
+    for fold in range(5):
+        model_path = model_dir / f"fold_{fold:02d}.json"
+        model = xgb.XGBClassifier()
+        model.load_model(model_path)
+        valid = folds == fold
+        oof[valid] = model.predict_proba(x_train[valid])
+        test_probabilities += model.predict_proba(x_test) / 5
+        model_paths.append(model_path)
+
+    if np.isnan(oof).any():
+        raise RuntimeError("checkpoint replay OOF가 완성되지 않았습니다.")
+    replay_macro_f1 = float(f1_score(targets, oof.argmax(axis=1), average="macro"))
+    recorded_macro_f1 = float(metrics["oof"]["macro_f1"])
+    oof_macro_f1_delta = replay_macro_f1 - recorded_macro_f1
+
+    oof_path = ROOT / "oof" / f"{slug}.csv"
+    test_path = ROOT / "preds" / f"{slug}_test_proba.csv"
+    submission_path = ROOT / "submissions" / f"{slug}.csv"
+    build_oof_probability_frame(
+        ids=train["ID"].tolist(),
+        true_labels=train["SUBCLASS"].tolist(),
+        folds=folds,
+        probabilities=oof,
+    ).to_csv(oof_path, index=False)
+    build_test_probability_frame(
+        ids=test["ID"].tolist(), probabilities=test_probabilities
+    ).to_csv(test_path, index=False)
+    submission = pd.read_csv(SAMPLE, dtype=str, keep_default_na=False)
+    submission["SUBCLASS"] = np.asarray(CLASS_LABELS)[
+        test_probabilities.argmax(axis=1)
+    ]
+    submission.to_csv(submission_path, index=False, lineterminator="\n")
+    validate_submission(submission_path, TEST)
+
+    metrics["artifacts"].update(
+        {
+            "oof_probabilities": str(oof_path.relative_to(ROOT)),
+            "test_probabilities": str(test_path.relative_to(ROOT)),
+            "submission": str(submission_path.relative_to(ROOT)),
+        }
+    )
+    replay_note = (
+        " Checkpoint replay recreated OOF, test probabilities, and submission "
+        "without retraining."
+    )
+    if replay_note.strip() not in metrics["notes"]:
+        metrics["notes"] += replay_note
+    metrics_path.write_text(
+        json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
+    feature_spec = json.loads(
+        (feature_dir / "feature_spec_manifest.json").read_text(encoding="utf-8")
+    )
+    resolved = resolved_config(
+        config=config, context=context, metrics=metrics, feature_spec=feature_spec
+    )
+    write_model_run_records(
+        root=ROOT,
+        output_dir=ROOT / "reproducibility" / slug,
+        experiment_id="EXP-151",
+        issue_number=151,
+        source_commit=str(metrics["git_commit"]),
+        resolved_config=resolved,
+        metrics=metrics,
+        data_files={
+            "train": TRAIN,
+            "test": TEST,
+            "sample_submission": SAMPLE,
+            "split": split_path,
+        },
+        artifacts={
+            "feature_spec_manifest": feature_dir / "feature_spec_manifest.json",
+            "oof_probabilities": oof_path,
+            "test_probabilities": test_path,
+            "submission": submission_path,
+            **{
+                f"checkpoint_fold_{fold}": path
+                for fold, path in enumerate(model_paths)
+            },
+        },
+        environment=resolved["environment"],
+    )
+    print(
+        json.dumps(
+            {
+                "experiment_id": "EXP-151",
+                "mode": "checkpoint_replay",
+                "oof_macro_f1": replay_macro_f1,
+                "recorded_oof_macro_f1": recorded_macro_f1,
+                "oof_macro_f1_delta": oof_macro_f1_delta,
+                "submission": str(submission_path),
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
+
+
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--replay-checkpoints", action="store_true")
+    if parser.parse_args().replay_checkpoints:
+        replay_checkpoints()
+    else:
+        main()

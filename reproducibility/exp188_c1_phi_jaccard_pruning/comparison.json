@@ -1,0 +1,19 @@
+{
+  "experiment_id": "EXP-188",
+  "verification_mode": "checkpoint_inference",
+  "original_submission_sha256": "a36bffa5e4d055f99d5fc8584c795a08c9f1b608cc941716d61b5b94428a1d0a",
+  "reproduced_submission_sha256": "a36bffa5e4d055f99d5fc8584c795a08c9f1b608cc941716d61b5b94428a1d0a",
+  "submission_sha256_match": true,
+  "oof_probability_max_abs_diff": 0.0,
+  "oof_probability_allclose_at_1e_6": true,
+  "oof_label_agreement": 1.0,
+  "oof_macro_f1_original": 0.41797371692777424,
+  "oof_macro_f1_reproduced": 0.41797371692777424,
+  "oof_macro_f1_abs_delta": 0.0,
+  "test_probability_max_abs_diff": 0.0,
+  "test_probability_allclose_at_1e_6": true,
+  "test_label_agreement": 1.0,
+  "inference_verification_passed": true,
+  "training_verification_passed": false,
+  "notes": "저장된 fold별 feature mask와 XGBoost checkpoint만으로 OOF, test 확률 및 제출 CSV를 재생성했다. 원본과 모든 확률 및 제출 SHA-256이 일치했다. 재학습 검증은 수행하지 않았다."
+}

@@ -92,3 +92,35 @@ def test_write_model_run_records_creates_schema_valid_manifest(tmp_path) -> None
         paths["artifact_manifest"],
         Path(__file__).resolve().parents[1] / "schemas" / "reproducibility_manifest.schema.json",
     )
+
+
+def test_write_model_run_records_normalizes_fold_artifact_kinds(tmp_path) -> None:
+    root = tmp_path
+    data_path = root / "data.csv"
+    checkpoint_path = root / "fold_00.json"
+    oof_path = root / "oof.csv"
+    test_path = root / "test.csv"
+    for path in (data_path, checkpoint_path, oof_path, test_path):
+        path.write_text("fixture\n", encoding="utf-8")
+
+    paths = write_model_run_records(
+        root=root,
+        output_dir=root / "reproducibility" / "exp101_contract",
+        experiment_id="EXP-101",
+        issue_number=101,
+        source_commit="b" * 40,
+        resolved_config={"experiment": {"id": "EXP-101"}},
+        metrics={"experiment_id": "EXP-101"},
+        data_files={"fixture": data_path},
+        artifacts={
+            "checkpoint_fold_0": checkpoint_path,
+            "oof_probabilities": oof_path,
+            "test_probabilities": test_path,
+        },
+    )
+
+    manifest = json.loads(paths["artifact_manifest"].read_text(encoding="utf-8"))
+    kinds = [item["kind"] for item in manifest["artifacts"]]
+    assert "checkpoint" in kinds
+    assert "oof_probability" in kinds
+    assert "test_probability" in kinds
