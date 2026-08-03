@@ -1,0 +1,13 @@
+{
+  "experiment_id": "EXP-235",
+  "verification_type": "checkpoint_inference",
+  "verified_at": "2026-08-03T11:44:41.876258+00:00",
+  "data_hashes_match": true,
+  "submission_sha256_match": true,
+  "test_label_agreement": 1.0,
+  "test_probability_allclose": true,
+  "test_probability_max_abs_diff": 5.575672856750202e-08,
+  "probability_atol": 1e-06,
+  "probability_rtol": 1e-06,
+  "passed": true
+}
