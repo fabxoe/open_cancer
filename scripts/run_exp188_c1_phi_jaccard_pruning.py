@@ -503,7 +503,9 @@ def replay_checkpoints(*, config_path: Path = DEFAULT_CONFIG) -> None:
         "test_probabilities": str(test_path.relative_to(ROOT)),
         "submission": str(submission_path.relative_to(ROOT)),
     })
-    metrics["notes"] += " Checkpoint replay completed the post-training artifact write without retraining."
+    replay_note = "Checkpoint replay completed the post-training artifact write without retraining."
+    if replay_note not in metrics["notes"]:
+        metrics["notes"] += f" {replay_note}"
     metrics_path.write_text(json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     spec_manifest = json.loads((feature_dir / "feature_spec_manifest.json").read_text(encoding="utf-8"))
     source_commit = str(metrics["git_commit"])

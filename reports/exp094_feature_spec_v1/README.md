@@ -66,7 +66,13 @@ LUSC `-0.0189`, GBMLGG `-0.0156`이었습니다. 전체 Macro F1과 fold 안정�
 - 재현 상태: `INFERENCE_VERIFIED`
 - 제출 라벨 일치율: 100%
 - test 확률 최대 절대 오차: `2.9776000998182894e-08`
-- Public LB: 미제출
+- Public LB: `0.311853163`
+- 제출 ID / 시각: `1508852` / 2026-08-02 23:04:51 KST
+- 순위 해석: 팀 최고 EXP-031(`0.3170803849`)과 재현 가능한 최고
+  EXP-096(`0.3169056749`)에 미달해 팀 점수·순위는 갱신되지 않았습니다.
+- 재현 번들: [`exp-094-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-094-repro-v1)
+  (`17,832,471` bytes, SHA-256
+  `2b0d276dce98ed482a47956a12a1fd90e44223dee651156e8de2ae6d56610633`)
 
 첫 공식 실행은 5개 fold 학습을 끝낸 뒤 metrics JSON 최상위에 스키마가
 허용하지 않는 `component_experiments`를 기록해 검증 단계에서 실패했습니다.

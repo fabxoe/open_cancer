@@ -131,6 +131,17 @@ def _relative_file_record(path: Path, root: Path) -> dict[str, Any]:
     return {"path": relative, "size_bytes": resolved.stat().st_size, "sha256": sha256_file(resolved)}
 
 
+def _canonical_artifact_kind(kind: str) -> str:
+    """Map fold-specific mapping keys onto the reproducibility policy vocabulary."""
+    if re.fullmatch(r"checkpoint_fold_\d+", kind):
+        return "checkpoint"
+    if kind == "oof_probabilities":
+        return "oof_probability"
+    if kind == "test_probabilities":
+        return "test_probability"
+    return kind
+
+
 def write_model_run_records(
     *,
     root: Path,
@@ -184,7 +195,11 @@ def write_model_run_records(
     )
 
     artifact_records = [
-        {"kind": kind, **_relative_file_record(path, root), "storage_uri": None}
+        {
+            "kind": _canonical_artifact_kind(kind),
+            **_relative_file_record(path, root),
+            "storage_uri": None,
+        }
         for kind, path in sorted(artifacts.items())
     ]
     artifact_records.extend(

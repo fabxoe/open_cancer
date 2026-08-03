@@ -1,0 +1,21 @@
+{
+  "experiment_id": "EXP-151",
+  "verification_mode": "checkpoint_inference",
+  "recorded_runtime_commit": "f0419e1e059ff9ef829153d177bc11da817523e1",
+  "recovered_source_commit": "17d433f81cf41fce54045739b0531915cc89b565",
+  "original_submission_sha256": "dddaf57cf2c497b08264a2c883223afff0d347edcadb9585783f06e1294e4349",
+  "reproduced_submission_sha256": "dddaf57cf2c497b08264a2c883223afff0d347edcadb9585783f06e1294e4349",
+  "submission_sha256_match": true,
+  "oof_probability_max_abs_diff": 0.036115923649926995,
+  "oof_probability_allclose_at_1e_6": false,
+  "oof_label_agreement": 0.9998387356877922,
+  "oof_macro_f1_original": 0.41889704511464276,
+  "oof_macro_f1_reproduced": 0.41888911972081705,
+  "oof_macro_f1_abs_delta": 0.000007925393825714,
+  "test_probability_max_abs_diff": 0.0046820602315736926,
+  "test_probability_allclose_at_1e_6": false,
+  "test_label_agreement": 1.0,
+  "inference_verification_passed": true,
+  "training_verification_passed": false,
+  "notes": "metrics에 기록된 런타임 commit f0419e1 객체는 원격 Git 이력에 남지 않았다. 실행 코드와 config가 동일한 보존 commit 17d433f를 Release source tag 대상으로 사용했다. RTX 4090에서 생성한 XGBoost checkpoint를 macOS CPU에서 재생했으며, 확률은 장치 차이로 일치하지 않았지만 test argmax 2546개와 제출 CSV SHA-256은 모두 일치했다. 따라서 checkpoint 제출 재생성만 검증하며 TRAINING_VERIFIED로 승격하지 않는다."
+}

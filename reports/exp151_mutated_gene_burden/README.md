@@ -4,8 +4,9 @@
 
 EXP-094 Feature Spec v1에 `log1p(mutated_gene_count)` 하나만 추가해 canonical
 5-fold를 실행했습니다. Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 크게
-악화되어 사전 채택 기준을 통과하지 못했습니다. 이 피처를 Feature Spec에 채택하거나
-Public 제출에 사용하지 않습니다.
+악화되어 사전 채택 기준을 통과하지 못했습니다. 이후 사전 생성된 제출 파일을
+2026-08-02 리더보드에 제출했고 Public Macro F1은 `0.3125095748`이었습니다.
+Feature Spec에는 채택하지 않습니다.
 
 ## 결과
 
@@ -17,6 +18,19 @@ Public 제출에 사용하지 않습니다.
 
 fold Macro F1은 `0.4162682, 0.4292479, 0.4017717, 0.4084666, 0.4370477`입니다.
 점수 상승보다 fold 간 변동성 증가가 커서 채택하지 않습니다.
+
+## 리더보드 제출 결과
+
+- 제출 ID / 시각: `1508912` / 2026-08-02 23:52:30 KST
+- 제출 파일: `submissions/exp151_mutated_gene_burden.csv`
+- SHA-256: `dddaf57cf2c497b08264a2c883223afff0d347edcadb9585783f06e1294e4349`
+- Public Macro F1: `0.3125095748`
+- EXP-094 대비: `+0.0006564118`
+- 순위 해석: 팀 최고 EXP-031에 미달해 팀 점수·순위는 갱신되지 않았습니다.
+- 재현성: `INFERENCE_VERIFIED`. 저장 checkpoint에서 test 라벨 2,546개와 제출
+  SHA-256을 동일하게 재생성했습니다. GPU→CPU 확률 차이는 비교 문서에 보존했고
+  재학습 검증은 수행하지 않았습니다.
+- Release: [`exp-151-repro-v2`](https://github.com/fabxoe/open_cancer/releases/tag/exp-151-repro-v2)
 
 ## 실행 조건
 
@@ -37,7 +51,10 @@ fold Macro F1은 `0.4162682, 0.4292479, 0.4017717, 0.4084666, 0.4370477`입니�
 - config: `configs/exp151_burden_incremental.yaml`
 - 과거 config가 EXP-154용으로 rename되고 runner 경로가 재사용된 이력이 있어,
   Git 이력 `17d433f`에서 EXP-151 source를 복원했다. 결과·점수는 변경하지 않았다.
-- 재현 상태는 source 복구만으로 승격하지 않으며 현재 `NOT_STARTED`를 유지한다.
+- metrics에 기록된 임시 런타임 commit 객체는 원격에 남아 있지 않아, 실행 코드와
+  config가 동일한 `17d433f`를 source tag로 사용했습니다. 이 복구 사실과
+  checkpoint inference 비교는 `reproducibility/exp151_mutated_gene_burden/`에
+  기록했습니다.
 
 ## 판단
 

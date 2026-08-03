@@ -1,0 +1,109 @@
+{
+  "experiment_id": "EXP-151",
+  "issue_number": 151,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "17d433f81cf41fce54045739b0531915cc89b565",
+  "source_tag": "exp-151-repro-v2",
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp151_mutated_gene_burden/data_manifest.json",
+  "environment": "reproducibility/exp151_mutated_gene_burden/environment.json",
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-151-repro-v2",
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-02T15:08:02Z",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp151_mutated_gene_burden/fold_00.json",
+      "size_bytes": 11882535,
+      "sha256": "52bf05018f49e385ebd282735f41bbafc5cf05eb0c4db0cb1ee76fc7d8a6d5b4",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-151-repro-v2/exp151_mutated_gene_burden_repro.tar.gz#models/exp151_mutated_gene_burden/fold_00.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp151_mutated_gene_burden/fold_01.json",
+      "size_bytes": 12073901,
+      "sha256": "1388db8b0015a4abf6e5b54037fbd2c23477f93dd673f600c76ccdac77e2b5cc",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-151-repro-v2/exp151_mutated_gene_burden_repro.tar.gz#models/exp151_mutated_gene_burden/fold_01.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp151_mutated_gene_burden/fold_02.json",
+      "size_bytes": 13355222,
+      "sha256": "9efefbdad990a3926fdde206d3710d115aa002efb4043f5b73215c2af22d0962",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-151-repro-v2/exp151_mutated_gene_burden_repro.tar.gz#models/exp151_mutated_gene_burden/fold_02.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp151_mutated_gene_burden/fold_03.json",
+      "size_bytes": 12824590,
+      "sha256": "6a86c88cee363060b0523440a4d7a0182d4988335ebb4ab3fd4deb7abc54989b",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-151-repro-v2/exp151_mutated_gene_burden_repro.tar.gz#models/exp151_mutated_gene_burden/fold_03.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp151_mutated_gene_burden/fold_04.json",
+      "size_bytes": 12598661,
+      "sha256": "1db5cc0ff0d09b5292308645fa1a835ddd9aea7e0f16acc629fe88134bb31200",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-151-repro-v2/exp151_mutated_gene_burden_repro.tar.gz#models/exp151_mutated_gene_burden/fold_04.json"
+    },
+    {
+      "kind": "feature_spec_manifest",
+      "path": "data/processed/exp151_mutated_gene_burden_features/feature_spec_manifest.json",
+      "size_bytes": 1842,
+      "sha256": "933a2b08847a09e007326fbfa72f1a1a4c8a352958e4eba35dc55f4f6fd9ebce",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp151_mutated_gene_burden.csv",
+      "size_bytes": 3537233,
+      "sha256": "995db3b7b4afdeed0420105eed740cd66bd4ff4277d07b946cf922d6e76f5a8f",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-151-repro-v2/exp151_mutated_gene_burden_repro.tar.gz#oof/exp151_mutated_gene_burden.csv"
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp151_mutated_gene_burden.csv",
+      "size_bytes": 38172,
+      "sha256": "dddaf57cf2c497b08264a2c883223afff0d347edcadb9585783f06e1294e4349",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-151-repro-v2/exp151_mutated_gene_burden_repro.tar.gz#submissions/exp151_mutated_gene_burden.csv"
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp151_mutated_gene_burden_test_proba.csv",
+      "size_bytes": 1413350,
+      "sha256": "5480cf4c5e44db260c499142afb3b3b04c1999ce47ecd51e50b5a31cbaf3ec3e",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-151-repro-v2/exp151_mutated_gene_burden_repro.tar.gz#preds/exp151_mutated_gene_burden_test_proba.csv"
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp151_mutated_gene_burden/config.resolved.yaml",
+      "size_bytes": 3449,
+      "sha256": "5c39546a8d5ca872b0725ed10e1c918a8fc0375b339f96640d5fcedbd06873a1",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-151-repro-v2/exp151_mutated_gene_burden_repro.tar.gz#reproducibility/exp151_mutated_gene_burden/config.resolved.yaml"
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp151_mutated_gene_burden/metrics.json",
+      "size_bytes": 11207,
+      "sha256": "a81dc5e4f57495838974a98dbde622a43087f3f2f41c2c6ec551473538f5595b",
+      "storage_uri": null
+    },
+    {
+      "kind": "release_bundle",
+      "path": "release-assets/exp151_mutated_gene_burden_repro.tar.gz",
+      "size_bytes": 18935311,
+      "sha256": "4c208efd34f1878296a0355cda1d3136f6815ce3750c74392658a0f23dde634d",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-151-repro-v2/exp151_mutated_gene_burden_repro.tar.gz"
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 0.9998387356877922,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "oof_macro_f1_delta": 7.925393825714e-06,
+    "passed": true
+  }
+}
