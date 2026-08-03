@@ -1,0 +1,398 @@
+{
+  "EXP-170": {
+    "experiment_id": "EXP-170",
+    "slug": "exp170_cellcycle_any_nonsilent",
+    "fold_reports": [
+      {
+        "fold": 0,
+        "mlogloss_best_iteration": 182,
+        "macro_f1_best_iteration": 191,
+        "mlogloss_checkpoint_macro_f1": 0.4050374712160517,
+        "macro_f1_checkpoint_macro_f1": 0.40574026815634073,
+        "delta": 0.0007027969402890188
+      },
+      {
+        "fold": 1,
+        "mlogloss_best_iteration": 213,
+        "macro_f1_best_iteration": 132,
+        "mlogloss_checkpoint_macro_f1": 0.4114668555216817,
+        "macro_f1_checkpoint_macro_f1": 0.4185961728175336,
+        "delta": 0.007129317295851867
+      },
+      {
+        "fold": 2,
+        "mlogloss_best_iteration": 259,
+        "macro_f1_best_iteration": 29,
+        "mlogloss_checkpoint_macro_f1": 0.402785042138607,
+        "macro_f1_checkpoint_macro_f1": 0.40396003903962197,
+        "delta": 0.0011749969010149686
+      },
+      {
+        "fold": 3,
+        "mlogloss_best_iteration": 236,
+        "macro_f1_best_iteration": 113,
+        "mlogloss_checkpoint_macro_f1": 0.4203272259247369,
+        "macro_f1_checkpoint_macro_f1": 0.43484346953860864,
+        "delta": 0.014516243613871715
+      },
+      {
+        "fold": 4,
+        "mlogloss_best_iteration": 208,
+        "macro_f1_best_iteration": 191,
+        "mlogloss_checkpoint_macro_f1": 0.42737787985550657,
+        "macro_f1_checkpoint_macro_f1": 0.4302671410146687,
+        "delta": 0.0028892611591621042
+      }
+    ],
+    "oof_macro_f1": 0.41875395791574055,
+    "fold_mean": 0.41868141811335474,
+    "fold_std": 0.012487117459377903,
+    "log_loss": 1.9291710711155352,
+    "per_class_f1": {
+      "COAD": 0.7146282973621103,
+      "UCEC": 0.6056338028169014,
+      "DLBC": 0.3870967741935484
+    },
+    "per_class_f1_full": {
+      "ACC": 0.8571428571428571,
+      "BLCA": 0.4919786096256685,
+      "BRCA": 0.5287553648068669,
+      "CESC": 0.275,
+      "COAD": 0.7146282973621103,
+      "DLBC": 0.3870967741935484,
+      "GBMLGG": 0.2918454935622318,
+      "HNSC": 0.3096446700507614,
+      "KIPAN": 0.21247113163972287,
+      "KIRC": 0.22188905547226387,
+      "LAML": 0.5639097744360902,
+      "LGG": 0.4586206896551724,
+      "LIHC": 0.2807017543859649,
+      "LUAD": 0.3343465045592705,
+      "LUSC": 0.45754716981132076,
+      "OV": 0.3724696356275304,
+      "PAAD": 0.1688888888888889,
+      "PCPG": 0.30831643002028397,
+      "PRAD": 0.3020527859237537,
+      "SARC": 0.24537037037037038,
+      "SKCM": 0.7472924187725631,
+      "STES": 0.4336283185840708,
+      "TGCT": 0.32179226069246436,
+      "THCA": 0.7108655616942909,
+      "THYM": 0.2857142857142857,
+      "UCEC": 0.6056338028169014
+    },
+    "own_mlogloss_checkpoint_oof_macro_f1": 0.41374621669512046,
+    "delta_vs_own_mlogloss_checkpoint": 0.005007741220620088,
+    "exp219_macro_f1_checkpoint_baseline_oof_macro_f1": 0.42223214599395903,
+    "delta_vs_exp219_macro_f1_checkpoint_baseline": -0.0034781880782184804,
+    "watch_class_delta_vs_exp219": {
+      "COAD": 0.003411113591227255,
+      "UCEC": -0.004943120260021749,
+      "DLBC": -0.04147465437788017
+    },
+    "gate_vs_exp219_macro_f1_checkpoint_baseline": {
+      "macro_f1_gate_passed": false,
+      "fold_std_gate_passed": false,
+      "log_loss_gate_passed": false,
+      "per_class_f1_gate_passed": false,
+      "adopted": false
+    }
+  },
+  "EXP-173": {
+    "experiment_id": "EXP-173",
+    "slug": "exp173_cellcycle_lof_tsg",
+    "fold_reports": [
+      {
+        "fold": 0,
+        "mlogloss_best_iteration": 205,
+        "macro_f1_best_iteration": 227,
+        "mlogloss_checkpoint_macro_f1": 0.4070763610912556,
+        "macro_f1_checkpoint_macro_f1": 0.4100954831421025,
+        "delta": 0.0030191220508468675
+      },
+      {
+        "fold": 1,
+        "mlogloss_best_iteration": 228,
+        "macro_f1_best_iteration": 251,
+        "mlogloss_checkpoint_macro_f1": 0.4211857810473184,
+        "macro_f1_checkpoint_macro_f1": 0.4263117624595256,
+        "delta": 0.0051259814122072145
+      },
+      {
+        "fold": 2,
+        "mlogloss_best_iteration": 223,
+        "macro_f1_best_iteration": 159,
+        "mlogloss_checkpoint_macro_f1": 0.3972890718781032,
+        "macro_f1_checkpoint_macro_f1": 0.40352415389247503,
+        "delta": 0.00623508201437184
+      },
+      {
+        "fold": 3,
+        "mlogloss_best_iteration": 199,
+        "macro_f1_best_iteration": 118,
+        "mlogloss_checkpoint_macro_f1": 0.41888815214995023,
+        "macro_f1_checkpoint_macro_f1": 0.4281595922092624,
+        "delta": 0.009271440059312186
+      },
+      {
+        "fold": 4,
+        "mlogloss_best_iteration": 207,
+        "macro_f1_best_iteration": 237,
+        "mlogloss_checkpoint_macro_f1": 0.42208728150585206,
+        "macro_f1_checkpoint_macro_f1": 0.4272653665839587,
+        "delta": 0.005178085078106631
+      }
+    ],
+    "oof_macro_f1": 0.4190943128148182,
+    "fold_mean": 0.41907127165746483,
+    "fold_std": 0.010241514726272846,
+    "log_loss": 1.8483313083841098,
+    "per_class_f1": {
+      "COAD": 0.7146282973621103,
+      "UCEC": 0.6019417475728155,
+      "DLBC": 0.39285714285714285
+    },
+    "per_class_f1_full": {
+      "ACC": 0.8421052631578947,
+      "BLCA": 0.5111111111111111,
+      "BRCA": 0.5456066945606695,
+      "CESC": 0.29518072289156627,
+      "COAD": 0.7146282973621103,
+      "DLBC": 0.39285714285714285,
+      "GBMLGG": 0.3078982597054886,
+      "HNSC": 0.30617283950617286,
+      "KIPAN": 0.2264957264957265,
+      "KIRC": 0.15178571428571427,
+      "LAML": 0.5594405594405595,
+      "LGG": 0.3898916967509025,
+      "LIHC": 0.31833910034602075,
+      "LUAD": 0.3167701863354037,
+      "LUSC": 0.46115288220551376,
+      "OV": 0.36827195467422097,
+      "PAAD": 0.18433179723502305,
+      "PCPG": 0.3204868154158215,
+      "PRAD": 0.31486880466472306,
+      "SARC": 0.24766355140186916,
+      "SKCM": 0.7591240875912408,
+      "STES": 0.41562064156206413,
+      "TGCT": 0.33488372093023255,
+      "THCA": 0.7005444646098004,
+      "THYM": 0.30927835051546393,
+      "UCEC": 0.6019417475728155
+    },
+    "own_mlogloss_checkpoint_oof_macro_f1": 0.41351084821207873,
+    "delta_vs_own_mlogloss_checkpoint": 0.005583464602739452,
+    "exp219_macro_f1_checkpoint_baseline_oof_macro_f1": 0.42223214599395903,
+    "delta_vs_exp219_macro_f1_checkpoint_baseline": -0.0031378331791408476,
+    "watch_class_delta_vs_exp219": {
+      "COAD": 0.003411113591227255,
+      "UCEC": -0.00863517550410764,
+      "DLBC": -0.0357142857142857
+    },
+    "gate_vs_exp219_macro_f1_checkpoint_baseline": {
+      "macro_f1_gate_passed": false,
+      "fold_std_gate_passed": false,
+      "log_loss_gate_passed": false,
+      "per_class_f1_gate_passed": false,
+      "adopted": false
+    }
+  },
+  "EXP-181": {
+    "experiment_id": "EXP-181",
+    "slug": "exp181_pole_hotspot5",
+    "fold_reports": [
+      {
+        "fold": 0,
+        "mlogloss_best_iteration": 201,
+        "macro_f1_best_iteration": 175,
+        "mlogloss_checkpoint_macro_f1": 0.40834769344559063,
+        "macro_f1_checkpoint_macro_f1": 0.41144024427013337,
+        "delta": 0.003092550824542739
+      },
+      {
+        "fold": 1,
+        "mlogloss_best_iteration": 223,
+        "macro_f1_best_iteration": 195,
+        "mlogloss_checkpoint_macro_f1": 0.4172520544870088,
+        "macro_f1_checkpoint_macro_f1": 0.4190257153784633,
+        "delta": 0.001773660891454476
+      },
+      {
+        "fold": 2,
+        "mlogloss_best_iteration": 220,
+        "macro_f1_best_iteration": 246,
+        "mlogloss_checkpoint_macro_f1": 0.40107984176394024,
+        "macro_f1_checkpoint_macro_f1": 0.4063149703202693,
+        "delta": 0.005235128556329072
+      },
+      {
+        "fold": 3,
+        "mlogloss_best_iteration": 199,
+        "macro_f1_best_iteration": 117,
+        "mlogloss_checkpoint_macro_f1": 0.4208164165867345,
+        "macro_f1_checkpoint_macro_f1": 0.4292619059583309,
+        "delta": 0.008445489371596393
+      },
+      {
+        "fold": 4,
+        "mlogloss_best_iteration": 201,
+        "macro_f1_best_iteration": 180,
+        "mlogloss_checkpoint_macro_f1": 0.42109254816833397,
+        "macro_f1_checkpoint_macro_f1": 0.4275962317466134,
+        "delta": 0.006503683578279407
+      }
+    ],
+    "oof_macro_f1": 0.4183917894520435,
+    "fold_mean": 0.418727813534762,
+    "fold_std": 0.008909456018539033,
+    "log_loss": 1.8459765002043362,
+    "per_class_f1": {
+      "COAD": 0.7220902612826603,
+      "UCEC": 0.6150121065375302,
+      "DLBC": 0.37037037037037035
+    },
+    "per_class_f1_full": {
+      "ACC": 0.835820895522388,
+      "BLCA": 0.5026737967914439,
+      "BRCA": 0.5463659147869674,
+      "CESC": 0.2857142857142857,
+      "COAD": 0.7220902612826603,
+      "DLBC": 0.37037037037037035,
+      "GBMLGG": 0.3089430894308943,
+      "HNSC": 0.3027295285359802,
+      "KIPAN": 0.210412147505423,
+      "KIRC": 0.15797317436661698,
+      "LAML": 0.5655172413793104,
+      "LGG": 0.4050632911392405,
+      "LIHC": 0.29285714285714287,
+      "LUAD": 0.31875,
+      "LUSC": 0.45255474452554745,
+      "OV": 0.37183098591549296,
+      "PAAD": 0.18584070796460178,
+      "PCPG": 0.32231404958677684,
+      "PRAD": 0.3275862068965517,
+      "SARC": 0.2534562211981567,
+      "SKCM": 0.7572463768115942,
+      "STES": 0.4219409282700422,
+      "TGCT": 0.3333333333333333,
+      "THCA": 0.7056672760511883,
+      "THYM": 0.30612244897959184,
+      "UCEC": 0.6150121065375302
+    },
+    "own_mlogloss_checkpoint_oof_macro_f1": 0.4137048981216314,
+    "delta_vs_own_mlogloss_checkpoint": 0.004686891330412113,
+    "exp219_macro_f1_checkpoint_baseline_oof_macro_f1": 0.42223214599395903,
+    "delta_vs_exp219_macro_f1_checkpoint_baseline": -0.0038403565419155017,
+    "watch_class_delta_vs_exp219": {
+      "COAD": 0.01087307751177724,
+      "UCEC": 0.004435183460607117,
+      "DLBC": -0.0582010582010582
+    },
+    "gate_vs_exp219_macro_f1_checkpoint_baseline": {
+      "macro_f1_gate_passed": false,
+      "fold_std_gate_passed": false,
+      "log_loss_gate_passed": true,
+      "per_class_f1_gate_passed": false,
+      "adopted": false
+    }
+  },
+  "EXP-226": {
+    "experiment_id": "EXP-226",
+    "slug": "exp226_pole_ed_driver_extended",
+    "fold_reports": [
+      {
+        "fold": 0,
+        "mlogloss_best_iteration": 201,
+        "macro_f1_best_iteration": 175,
+        "mlogloss_checkpoint_macro_f1": 0.40834769344559063,
+        "macro_f1_checkpoint_macro_f1": 0.41144024427013337,
+        "delta": 0.003092550824542739
+      },
+      {
+        "fold": 1,
+        "mlogloss_best_iteration": 223,
+        "macro_f1_best_iteration": 195,
+        "mlogloss_checkpoint_macro_f1": 0.4172520544870088,
+        "macro_f1_checkpoint_macro_f1": 0.4190257153784633,
+        "delta": 0.001773660891454476
+      },
+      {
+        "fold": 2,
+        "mlogloss_best_iteration": 220,
+        "macro_f1_best_iteration": 246,
+        "mlogloss_checkpoint_macro_f1": 0.40107984176394024,
+        "macro_f1_checkpoint_macro_f1": 0.4063149703202693,
+        "delta": 0.005235128556329072
+      },
+      {
+        "fold": 3,
+        "mlogloss_best_iteration": 198,
+        "macro_f1_best_iteration": 117,
+        "mlogloss_checkpoint_macro_f1": 0.422897744211684,
+        "macro_f1_checkpoint_macro_f1": 0.42834568986139193,
+        "delta": 0.005447945649707908
+      },
+      {
+        "fold": 4,
+        "mlogloss_best_iteration": 201,
+        "macro_f1_best_iteration": 180,
+        "mlogloss_checkpoint_macro_f1": 0.42109254816833397,
+        "macro_f1_checkpoint_macro_f1": 0.4275962317466134,
+        "delta": 0.006503683578279407
+      }
+    ],
+    "oof_macro_f1": 0.41821762873187956,
+    "fold_mean": 0.4185445703153743,
+    "fold_std": 0.008697822534292195,
+    "log_loss": 1.84598910352991,
+    "per_class_f1": {
+      "COAD": 0.719047619047619,
+      "UCEC": 0.6135265700483091,
+      "DLBC": 0.37037037037037035
+    },
+    "per_class_f1_full": {
+      "ACC": 0.835820895522388,
+      "BLCA": 0.5026737967914439,
+      "BRCA": 0.5463659147869674,
+      "CESC": 0.2857142857142857,
+      "COAD": 0.719047619047619,
+      "DLBC": 0.37037037037037035,
+      "GBMLGG": 0.3089430894308943,
+      "HNSC": 0.3027295285359802,
+      "KIPAN": 0.210412147505423,
+      "KIRC": 0.15797317436661698,
+      "LAML": 0.5655172413793104,
+      "LGG": 0.4050632911392405,
+      "LIHC": 0.29285714285714287,
+      "LUAD": 0.31875,
+      "LUSC": 0.45255474452554745,
+      "OV": 0.37183098591549296,
+      "PAAD": 0.18584070796460178,
+      "PCPG": 0.32231404958677684,
+      "PRAD": 0.3275862068965517,
+      "SARC": 0.2534562211981567,
+      "SKCM": 0.7572463768115942,
+      "STES": 0.4219409282700422,
+      "TGCT": 0.3333333333333333,
+      "THCA": 0.7056672760511883,
+      "THYM": 0.30612244897959184,
+      "UCEC": 0.6135265700483091
+    },
+    "own_mlogloss_checkpoint_oof_macro_f1": 0.41415605418363904,
+    "delta_vs_own_mlogloss_checkpoint": 0.004061574548240521,
+    "exp219_macro_f1_checkpoint_baseline_oof_macro_f1": 0.42223214599395903,
+    "delta_vs_exp219_macro_f1_checkpoint_baseline": -0.0040145172620794645,
+    "watch_class_delta_vs_exp219": {
+      "COAD": 0.007830435276735992,
+      "UCEC": 0.0029496469713859996,
+      "DLBC": -0.0582010582010582
+    },
+    "gate_vs_exp219_macro_f1_checkpoint_baseline": {
+      "macro_f1_gate_passed": false,
+      "fold_std_gate_passed": true,
+      "log_loss_gate_passed": true,
+      "per_class_f1_gate_passed": false,
+      "adopted": false
+    }
+  }
+}

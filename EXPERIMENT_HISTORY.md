@@ -7,11 +7,11 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 57
+- 실제 실험 수: 58
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4229885745 (`EXP-229`)
-- 최고 Public LB Macro F1: 0.3170803849 (`EXP-031`)
+- 최고 Public LB Macro F1: 0.323243525 (`EXP-223`)
 - 최고 재현 검증 모델: `EXP-229` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-03
 
@@ -61,7 +61,8 @@
 | EXP-170 | COMPLETED | Kangho-Park | #170 | EXP-094 + P_any_nonsilent_cellcycle (Cell Cycle pathway, #167 카탈로그 활용 파일럿 A) | 0.4137462167 | 미제출 | NOT_STARTED | Macro F1 -0.0031404, DLBC F1 -0.0500858 급락으로 기준 실패·미채택 | [보고서](reports/exp170_cellcycle_any_nonsilent/README.md) |
 | EXP-173 | COMPLETED | Kangho-Park | #173 | EXP-094 + P_lof_in_tsg_cellcycle (Cell Cycle TSG LoF, #170 후속 파일럿 B, baseline=EXP-094) | 0.4135108482 | 미제출 | NOT_STARTED | Macro F1 -0.0033757, LUAD F1 -0.0235652 최대 하락으로 기준 실패·미채택. DLBC/LAML은 양성률 0%인데도 반대 방향으로 움직여 perturbation 해석 뒷받침 | [보고서](reports/exp173_cellcycle_lof_tsg/README.md) |
 | EXP-179 | COMPLETED | fabxoe | #179 | EXP-094 Feature Spec v1 + outer-fold train 전용 SMOTE (`k=5`, `not majority`) | 0.4080771375 | 미제출 | INFERENCE_VERIFIED | EXP-094 대비 Macro F1 -0.0088094 및 LGG·BLCA·SARC F1 하락으로 ARCHIVE; 제출·추가 SMOTE tuning 중단 | [보고서](reports/exp179_xgb_feature_spec_v1_smote/README.md) |
-| EXP-181 | COMPLETED | Kangho-Park | #181 | EXP-094 + pole__hotspot5 (POLE ED hotspot5, Vera Health 자문 반영 파일럿 D) | 0.4137048981 | 미제출 | NOT_STARTED | Macro F1 -0.0031817, DLBC F1 -0.0500858로 기준 실패·미채택. seed 42가 4-seed 중 뚜렷한 이상치(3개 stability seed는 baseline 근방); COAD는 4개 seed 전부 양의 방향으로 일관, UCEC/DLBC는 비일관 | [보고서](reports/exp181_pole_hotspot5/README.md) |
+| EXP-181 | COMPLETED | Kangho-Park | #181 | EXP-094 + pole__hotspot5 (POLE ED hotspot5, Vera Health 자문 반영 파일럿 D) | 0.4137048981 | 미제출 | NOT_STARTED | Macro F1 -0.0031817, DLBC F1 -0.0500858로 기준 실패·미채택. seed 42가 4-seed 중 뚜렷한 이상치(3개 stability seed는 baseline 근방); COAD는 4개 seed 전부 양의 방향으로 일관, UCEC/DLBC는 비일관. macro-f1-checkpoint 재평가(EXP-219 대비)로도 기각 유지 확정 | [보고서](reports/exp181_pole_hotspot5/README.md) |
+| EXP-226 | COMPLETED | Kangho-Park | #226 | EXP-094 + pole__ed_driver_extended (POLE ED driver_extended, D의 COAD 신호 확증 파일럿 E) | 0.4141560542 | 미제출 | NOT_STARTED | Macro F1 -0.0027305, DLBC F1 -0.0500858로 기준 실패·미채택(확증 실험, gate는 참고용). COAD delta가 D와 정확히 동일(결정 경계 불변). macro-f1-checkpoint 재평가(EXP-219 대비)로도 기각 유지 — POLE pilot 트랙 최종 종료 | [보고서](reports/exp226_pole_ed_driver_extended/README.md) |
 | EXP-188 | COMPLETED | fabxoe | #188 | EXP-094 + fold-local C1 Phi≥0.30/Jaccard≥0.15 pruning | 0.4179737169 | 0.3140052334 | INFERENCE_VERIFIED | Public은 EXP-094 대비 +0.0021520704이나 EXP-031·096·135 미달, ARCHIVE | [보고서](reports/exp188_c1_phi_jaccard_pruning/README.md) |
 | EXP-189 | COMPLETED | fabxoe | #189 | EXP-094 + fold-local C2 Phi≥0.25/Jaccard≥0.15 pruning | 0.4147096714 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0021769·fold std +0.0027542·최저 클래스 F1 -0.0568182로 gate 실패, ARCHIVE | [보고서](reports/exp189_c2_phi_jaccard_pruning/README.md) |
 | EXP-190 | COMPLETED | fabxoe | #190 | EXP-094 + fold-local C3 Phi≥0.20/Jaccard≥0.10 pruning | 0.4157643312 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0011222·fold std +0.0045573로 gate 실패, ARCHIVE; Phi/Jaccard ladder 종료 | [보고서](reports/exp190_c3_phi_jaccard_pruning/README.md) |
@@ -73,7 +74,7 @@
 | EXP-207 | COMPLETED | fabxoe | #207 | EXP-094 + outer-train Boruta confirmed mutation-presence genes | 0.3484416378 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0684449·DLBC F1 0으로 붕괴, 재튜닝 없이 ARCHIVE | [보고서](reports/exp207_s3_boruta_feature_selection/README.md) |
 | EXP-219 | COMPLETED | fabxoe | #219 | EXP-094 동일 조건 + validation Macro-F1-best checkpoint 선택 | 0.4222321460 | 미제출 | INFERENCE_VERIFIED | 기존 mlogloss-best 대비 +0.0053456·fold std 개선, 향후 XGBoost 정책 채택 | [보고서](reports/exp219_macro_f1_checkpoint_selection/README.md) |
 | EXP-196 | COMPLETED | fabxoe | #196 | outer-train raw mutation-presence TruncatedSVD 256 + aggregate·hotspot | 0.3496748557 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0672117·fold std와 DLBC F1 붕괴로 ARCHIVE | [보고서](reports/exp196_s4_truncated_svd/README.md) |
-| EXP-223 | COMPLETED | 2heej | #223 | EXP-096 pathway XGBoost + validation Macro-F1-best checkpoint | 0.4213739476 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 +0.0032586·fold std 개선으로 채택, 제출 후보 | [보고서](reports/exp223_pathway_macro_f1_checkpoint/README.md) |
+| EXP-223 | COMPLETED | 2heej | #223 | EXP-096 pathway XGBoost + validation Macro-F1-best checkpoint | 0.4213739476 | 0.323243525 | INFERENCE_VERIFIED | EXP-096 대비 +0.0032586·Public 팀 최고 갱신으로 채택 | [보고서](reports/exp223_pathway_macro_f1_checkpoint/README.md) |
 | EXP-229 | COMPLETED | 2heej | #229 | EXP-223 + pathway별 변이 종류 유전자 수 50개 후보 | 0.4229885745 | 미제출 | INFERENCE_VERIFIED | EXP-223 대비 +0.0016146·안정성 및 클래스 gate 통과로 조건부 채택 | [보고서](reports/exp229_pathway_mutation_types/README.md) |
 | EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
 
@@ -97,6 +98,7 @@
 | 2026-08-02T23:07:03+09:00 | EXP-135 | #135 | `submissions/exp135_fixed_probability_blend.csv` (제출 ID `1508856`) | `5eef332c50322a8f2be1fb64b15bef49d8f5c91ac6200a7dbc587cebaa75b70a` | 0.3166527939 | EXP-031 최고 대비 -0.0004275910<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">재현 가능한 제출 중 2위</span> | INFERENCE_VERIFIED |
 | 2026-08-02T23:52:30+09:00 | EXP-151 | #151 | `submissions/exp151_mutated_gene_burden.csv` (제출 ID `1508912`) | `dddaf57cf2c497b08264a2c883223afff0d347edcadb9585783f06e1294e4349` | 0.3125095748 | EXP-031 최고 점수<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span> | INFERENCE_VERIFIED |
 | 2026-08-02T23:53:56+09:00 | EXP-188 | #188 | `submissions/exp188_c1_phi_jaccard_pruning.csv` (제출 ID `1508914`) | `a36bffa5e4d055f99d5fc8584c795a08c9f1b608cc941716d61b5b94428a1d0a` | 0.3140052334 | EXP-031 최고 점수<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span> | INFERENCE_VERIFIED |
+| 2026-08-03T10:30:33+09:00 | EXP-223 | #223 | `submissions/exp223_pathway_macro_f1_checkpoint.csv` (제출 ID `1509283`) | `74a23b6337b17fc4ed70ae1e3639331065e0d74432bed6b8fcf9dc9344e6c48c` | 0.323243525 | 제출 확인 당시 참가 4팀 중 4위·팀 Public 최고 갱신 | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -245,6 +247,9 @@
 - Accuracy: 0.4112239961 (EXP-096 대비 `+0.0033865506`)
 - Log Loss: 1.8441621065 (보조 지표, EXP-096 대비 `+0.0072278976`)
 - 클래스별 최악 변화: THYM `-0.0152823920`
+- Public LB: `0.323243525` (제출 ID `1509283`, 2026-08-03 10:30:33
+  KST, 확인 당시 참가 4팀 중 4위). EXP-031 대비 `+0.0061631401`로 팀 최고
+  Public 점수를 갱신했다.
 ### [EXP-211] One-vs-Rest XGBoost + v2-performance
 
 - 상태: COMPLETED
@@ -2469,6 +2474,9 @@ Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0
   Issue #170 계획상 B는 "A 결과가 반영된 baseline"에서 진행하기로 했으나
   A가 기각됐으므로, 후속 B(`P_lof_in_tsg_cellcycle`)는 EXP-094(원본 v1)를
   그대로 baseline으로 사용하는 새 Experiment Issue에서 진행한다.
+- **Update(POLE D/E와 함께 완료)**: macro-f1-checkpoint 정책으로 재평가한
+  결과(재학습 없음) EXP-219 대비 `-0.0035`로 기각이 유지됐다. 상세:
+  `reports/analysis/pole_cellcycle_macro_f1_checkpoint_reevaluation.md`.
 
 ### [EXP-173] Cell Cycle pathway aggregation — B: LoF-in-TSG
 
@@ -2523,6 +2531,10 @@ Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0
   대비) 기각된 것은 Cell Cycle pathway aggregation 방향 자체가 이 Feature
   Spec v1 위에서 추가 신호를 주기 어렵다는 신호로 본다. C(`P_hotspot_in_
   oncogene_cellcycle`)는 B도 기각된 점을 고려해 진행 여부를 재검토한다.
+- **Update(POLE D/E와 함께 완료)**: macro-f1-checkpoint 정책으로 재평가한
+  결과(재학습 없음) EXP-219 대비 `-0.0031`로 기각이 유지됐다. COAD는 여기서도
+  `+0.0034`로 여전히 양의 방향(Cell Cycle/POLE 공통 관찰, 판단 보류). 상세:
+  `reports/analysis/pole_cellcycle_macro_f1_checkpoint_reevaluation.md`.
 
 ### [EXP-179] Feature Spec v1 + fold-local SMOTE
 
@@ -2636,6 +2648,70 @@ Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0
   양의 방향을 보였다는 점은 투명하게 기록한다. 다음 후보 E
   (`POLE_ED_driver_extended`)는 baseline을 EXP-094로 유지하고, fold 분포가
   D보다 덜 치우친 점을 활용해 진행 여부를 재판단한다.
+- **Update(EXP-226과 함께 완료)**: macro-f1-checkpoint 정책으로 재평가한
+  결과(재학습 없음, 저장된 checkpoint 재사용) EXP-219 대비 `-0.0038`로
+  기각이 유지됐다. 상세:
+  `reports/analysis/pole_cellcycle_macro_f1_checkpoint_reevaluation.md`.
+
+### [EXP-226] POLE ED hotspot features — E: driver_extended (D의 COAD 신호 확증)
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #226 / issue-226-pole-ed-driver-extended
+- 소스 commit: `4a25c17` (prepare 커밋)
+
+#### 실행
+
+- Config: `configs/exp226_pole_ed_driver_extended.yaml`
+- Resolved config: `reproducibility/exp226_pole_ed_driver_extended/config.resolved.yaml`
+- Metrics: `reports/exp226_pole_ed_driver_extended/metrics.json`
+- Verdict 상세: `reports/exp226_pole_ed_driver_extended/verdict.json`
+- Report: `reports/exp226_pole_ed_driver_extended/README.md`
+- 부모 실험: EXP-094 (Feature Spec v1)
+- 배경: D(EXP-181)의 4-seed stability 검증에서 COAD F1 delta가 4/4 seed
+  전부 일관되게 양의 방향이었던 것을, 표본이 소폭 늘어난(22→28건) E로
+  확증하기 위한 실험. 성능 개선이 아니라 확증이 목적이라 official seed
+  42 단일 실행만 하고 3-seed stability check는 생략했다. 새 feature
+  코드는 없고 `pole_ed_driver_extended_family()`(EXP-181에서 이미 구현)를
+  재사용했다.
+- 사전 검증: train.csv에서 양성 28건(0.452%), fold별 분포
+  `{0:8, 1:5, 2:5, 3:2, 4:8}`(D의 `{0:8,1:5,2:5,3:1,4:3}`보다 fold 3
+  쏠림이 1→2건으로 완화).
+
+#### 결과
+
+- OOF Macro F1: 0.4141560542 (EXP-094 대비 `-0.0027305197`)
+- Fold 표준편차: +0.0003478711(게이트 통과), Log Loss: -0.0016359968(개선)
+- **COAD delta: +0.005080180477105012** — D(seed 42)와 정확히 동일한
+  부호·숫자값. row-level 대조 결과 COAD "예측=positive 집합" 자체가
+  D→E 확장에도 불변이었다(결정 경계 유지, 재현이라기보다 안정성 확인).
+- UCEC -0.0087, DLBC -0.0501(D의 seed 42와 완전 동일 — DLBC 예측
+  집합도 불변)
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+
+#### Macro-F1-checkpoint 재평가 (post-hoc, 재학습 없음)
+
+D와 함께 Cell Cycle A/B(EXP-170/173)까지 총 4개 실험을 저장된 checkpoint로
+재평가했다(`scripts/verify_macro_f1_checkpoint_reevaluation.py`,
+`audit_xgboost_validation_iterations` 재사용). 올바른 비교 대상인
+EXP-219(같은 정책의 EXP-094) 기준으로 E는 `-0.0040`, D는 `-0.0038`,
+Cell Cycle A/B는 각각 `-0.0035`/`-0.0031`로 **4개 전부 기각이 유지됐다.**
+checkpoint 정책 전환 자체는 4개 모두에서 `+0.004~0.006`의 개선을 보였지만,
+같은 정책을 쓴 EXP-219와 비교하면 feature 자체의 효과는 여전히 마이너스다.
+COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
+유지했다. 전체 방법론·수치·COAD 잔여 신호에 대한 두 가지 대안 가설(생물학적
+신호 vs checkpoint-클래스 구조적 상호작용, 판단 보류)은
+`reports/analysis/pole_cellcycle_macro_f1_checkpoint_reevaluation.md`에
+정리했다.
+
+#### 산출물과 결론
+
+- Metrics/Report: `reports/exp226_pole_ed_driver_extended/`
+- 결론: mlogloss-checkpoint와 macro-f1-checkpoint 재평가 두 정책 모두에서
+  기각이 확정됐다. 게이트가 발동하지 않았으므로 #174 정책 문서의 결론을
+  재검토할 근거도 없다. **POLE pilot 트랙(D/E)을 최종 종료한다.**
+  F(`POLE_ED_any_missense`)는 진행하지 않는다.
 
 ### [EXP-188] C1 보수적 Phi/Jaccard 상관 삭제
 
