@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 52
+- 실제 실험 수: 53
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -61,6 +61,7 @@
 | EXP-170 | COMPLETED | Kangho-Park | #170 | EXP-094 + P_any_nonsilent_cellcycle (Cell Cycle pathway, #167 카탈로그 활용 파일럿 A) | 0.4137462167 | 미제출 | NOT_STARTED | Macro F1 -0.0031404, DLBC F1 -0.0500858 급락으로 기준 실패·미채택 | [보고서](reports/exp170_cellcycle_any_nonsilent/README.md) |
 | EXP-173 | COMPLETED | Kangho-Park | #173 | EXP-094 + P_lof_in_tsg_cellcycle (Cell Cycle TSG LoF, #170 후속 파일럿 B, baseline=EXP-094) | 0.4135108482 | 미제출 | NOT_STARTED | Macro F1 -0.0033757, LUAD F1 -0.0235652 최대 하락으로 기준 실패·미채택. DLBC/LAML은 양성률 0%인데도 반대 방향으로 움직여 perturbation 해석 뒷받침 | [보고서](reports/exp173_cellcycle_lof_tsg/README.md) |
 | EXP-179 | COMPLETED | fabxoe | #179 | EXP-094 Feature Spec v1 + outer-fold train 전용 SMOTE (`k=5`, `not majority`) | 0.4080771375 | 미제출 | INFERENCE_VERIFIED | EXP-094 대비 Macro F1 -0.0088094 및 LGG·BLCA·SARC F1 하락으로 ARCHIVE; 제출·추가 SMOTE tuning 중단 | [보고서](reports/exp179_xgb_feature_spec_v1_smote/README.md) |
+| EXP-181 | COMPLETED | Kangho-Park | #181 | EXP-094 + pole__hotspot5 (POLE ED hotspot5, Vera Health 자문 반영 파일럿 D) | 0.4137048981 | 미제출 | NOT_STARTED | Macro F1 -0.0031817, DLBC F1 -0.0500858로 기준 실패·미채택. seed 42가 4-seed 중 뚜렷한 이상치(3개 stability seed는 baseline 근방); COAD는 4개 seed 전부 양의 방향으로 일관, UCEC/DLBC는 비일관 | [보고서](reports/exp181_pole_hotspot5/README.md) |
 | EXP-188 | COMPLETED | fabxoe | #188 | EXP-094 + fold-local C1 Phi≥0.30/Jaccard≥0.15 pruning | 0.4179737169 | 0.3140052334 | INFERENCE_VERIFIED | Public은 EXP-094 대비 +0.0021520704이나 EXP-031·096·135 미달, ARCHIVE | [보고서](reports/exp188_c1_phi_jaccard_pruning/README.md) |
 | EXP-189 | COMPLETED | fabxoe | #189 | EXP-094 + fold-local C2 Phi≥0.25/Jaccard≥0.15 pruning | 0.4147096714 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0021769·fold std +0.0027542·최저 클래스 F1 -0.0568182로 gate 실패, ARCHIVE | [보고서](reports/exp189_c2_phi_jaccard_pruning/README.md) |
 | EXP-190 | COMPLETED | fabxoe | #190 | EXP-094 + fold-local C3 Phi≥0.20/Jaccard≥0.10 pruning | 0.4157643312 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0011222·fold std +0.0045573로 gate 실패, ARCHIVE; Phi/Jaccard ladder 종료 | [보고서](reports/exp190_c3_phi_jaccard_pruning/README.md) |
@@ -2411,6 +2412,72 @@ Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0
 - SMOTE는 일부 소수 클래스와 Log Loss에는 이득이 있었지만 Macro F1의 큰 하락과
   다수 클래스 붕괴를 상쇄하지 못했다. EXP-094 Feature Spec v1의 후속 기준에서는
   `ARCHIVE`로 보존하며, 리더보드 제출 및 SMOTE 파라미터 재탐색은 진행하지 않는다.
+
+### [EXP-181] POLE ED hotspot features — D: hotspot5
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #181 / issue-181-pole-hotspot5
+- 소스 commit: `baaf99ab5c5cbf6f26c2492f3620a4f425e25b10`
+- 시작/종료: 2026-08-02T~ / (공식 seed 42 실행, 전체 4-seed 총 4046.84초)
+
+#### 실행
+
+- Config: `configs/exp181_pole_hotspot5.yaml`
+- Resolved config: `reproducibility/exp181_pole_hotspot5/config.resolved.yaml`
+- Metrics: `reports/exp181_pole_hotspot5/metrics.json`
+- Verdict 상세(stability_check 포함): `reports/exp181_pole_hotspot5/verdict.json`
+- UCEC/COAD/DLBC 4-seed per-class 상세: `reports/exp181_pole_hotspot5/watch_class_stability.json`
+- Report: `reports/exp181_pole_hotspot5/README.md`
+- 부모 실험: EXP-094 (Feature Spec v1)
+- 배경: Cell Cycle pathway aggregation(#170 EXP-A, #173 EXP-B)이 연속
+  기각되고 #174 정책 문서가 "여러 유전자 OR" 방향의 우선순위를 낮춘 것과
+  달리, 이 실험은 단일 유전자(POLE) 기존 컬럼을 위치 특이적으로 정밀화하는
+  설계로 팀이 이미 채택한 hotspot-34 방식과 구조적으로 동일하다(Vera
+  Health 자문 반영).
+- 유일한 변경: `src/open_cancer/pole_ed_features.py`의 `PoleEdFamily`로
+  등록한 `pole__hotspot5`(POLE이 P286R/V411L/S297F/A456P/S459F 중 하나를
+  가지면 1) 1개 컬럼 추가. Feature Factory family로 처음부터 등록해
+  PR #172 리뷰 패턴을 재사용했다(KnowledgeProvenance는 파일이 아니라
+  문헌 인용 hardcoded literal, `EXTENDED_HOTSPOTS`와 동일 관례).
+- 사전 검증: train.csv에서 양성 22건(0.355%), fold별 분포
+  `{0:8, 1:5, 2:5, 3:1, 4:3}`(fold 3에 1건뿐)을 확인해 3-seed
+  stability check(1001/1002/1003, model seed만 다르고 나머지는 공식 seed
+  42와 동일)를 계획했다.
+
+#### 결과
+
+- OOF Macro F1(공식 seed 42): 0.4137048981 (EXP-094 대비 `-0.0031816758`)
+- Fold 표준편차: -0.0000634560(개선), Log Loss: -0.0013797525(개선)
+- 최대 하락 클래스: DLBC `-0.0500857633`
+- **Seed별 개별 수치**: 42(공식) 0.4137048981(delta -0.0031816758), 1001
+  0.4169853250(+0.0000987511), 1002 0.4178158047(+0.0009292308), 1003
+  0.4169726284(+0.0000860545). stability 3-seed 표준편차 0.000395로
+  baseline 근방에 뭉쳐있고, 공식 seed 42만 4개 중 뚜렷한 이상치(4-seed
+  전체 표준편차 약 0.00268)다.
+- **UCEC/COAD/DLBC 4-seed per-class 재검증**(재학습 없이 seed 42는 저장된
+  OOF 재사용, 1001/1002/1003만 재실행해 기존 fold별 점수와 완전히 일치함을
+  먼저 확인): COAD는 4개 seed 전부 양의 delta(+0.0051~+0.0152, 평균
+  +0.0076, std 0.0044)로 일관됐다. UCEC(3/4 음수)와 DLBC(2/4 음수, std가
+  평균보다 훨씬 큼)는 방향이 일관되지 않았다.
+- DLBC row-level 대조(별도 노트
+  `reports/analysis/sparse_binary_feature_dlbc_sensitivity.md`): EXP-170과
+  DLBC "예측=positive 집합"이 완전히 동일(17개 ID 일치)해 F1이 같았음을
+  확인했고, 4-seed 결과는 그 결정 경계 자체가 seed에 따라 다시 흔들린다는
+  것을 보여줘 perturbation 해석을 강화한다.
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+
+#### 산출물과 결론
+
+- Metrics/Report: `reports/exp181_pole_hotspot5/`
+- 승격 기준 대조(공식 seed 42): Macro F1 +0.001 이상 실패, fold-std 통과,
+  Log Loss 통과, 전 클래스 F1 악화 없음 실패(DLBC)
+- 결론: 공식 판정(seed 42 기준)은 프로젝트 컨벤션대로 **기각**을 유지한다.
+  다만 seed 42가 4개 중 뚜렷한 이상치였다는 점, COAD가 4-seed 전부 일관된
+  양의 방향을 보였다는 점은 투명하게 기록한다. 다음 후보 E
+  (`POLE_ED_driver_extended`)는 baseline을 EXP-094로 유지하고, fold 분포가
+  D보다 덜 치우친 점을 활용해 진행 여부를 재판단한다.
 
 ### [EXP-188] C1 보수적 Phi/Jaccard 상관 삭제
 
