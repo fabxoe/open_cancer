@@ -102,6 +102,7 @@ def main(
     *,
     fold_feature_builder: Any | None = None,
     runner_command: str | None = None,
+    prevalidated_source_commit: str | None = None,
 ) -> None:
     args = parse_args() if config_override is None else None
     started_at = datetime.now(timezone.utc)
@@ -133,7 +134,17 @@ def main(
 
     source_commit = run_git("rev-parse", "HEAD")
     dirty_worktree = bool(run_git("status", "--porcelain"))
-    if dirty_worktree:
+    if prevalidated_source_commit is not None:
+        if source_commit != prevalidated_source_commit:
+            raise RuntimeError(
+                "multi-run 도중 source commit이 변경됐습니다: "
+                f"{prevalidated_source_commit} -> {source_commit}"
+            )
+        # The orchestrating runner checked a clean worktree before creating any
+        # seed-specific artifacts. Later calls may see only those generated
+        # outputs, while the committed source remains the prevalidated commit.
+        dirty_worktree = False
+    elif dirty_worktree:
         raise RuntimeError(
             "공식 실험은 clean worktree에서만 실행할 수 있습니다. "
             "코드와 config를 먼저 commit한 뒤 다시 실행하세요."

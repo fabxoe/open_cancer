@@ -1,0 +1,89 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-272
+issue_number: 272
+slug: exp219_multiseed_ensemble
+parent_experiment: EXP-219
+component_experiments:
+  - EXP-219
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mutation_type:
+    enabled: true
+  robust_aggregates:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+  residue_position:
+    enabled: true
+    aggregates:
+      - max
+    missing_policy: zero
+    complex_tokens: include
+    transform: raw
+hotspots:
+  table: extended_34
+  evidence_scope: additions_15
+  minimum_matching_train_rows: 5
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - mutation_presence
+    - missense
+    - synonymous
+    - nonsense
+    - frameshift
+    - complex
+    - log_mutated_gene_count
+    - log_total_variant_count
+    - log_multi_variant_gene_count
+    - max_residue_position
+    - fixed_literature_hotspot_34
+multiseed:
+  seeds:
+    - 42
+    - 142
+    - 242
+    - 342
+    - 442
+  weights:
+    - 0.2
+    - 0.2
+    - 0.2
+    - 0.2
+    - 0.2
+  weights_fixed_before_evaluation: true
+  seed_selection_after_evaluation: false
+  reference_experiment: EXP-219
+  reference_oof_probability_path: oof/exp219_macro_f1_checkpoint_selection.csv
+  reference_test_probability_path: preds/exp219_macro_f1_checkpoint_selection_test_proba.csv
+submission:
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
+notes: >-
+  EXP-219 policy with five pre-fixed model seeds 42, 142, 242, 342, and
+  442. Every seed uses the canonical five folds and validation Macro-F1-best
+  checkpoint selection. The final prediction is the fixed arithmetic mean
+  with weight 0.2 per seed. No seed or weight is selected using OOF results,
+  test distribution, or Public leaderboard feedback.
