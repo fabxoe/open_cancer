@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 58
+- 실제 실험 수: 59
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4229885745 (`EXP-229`)
@@ -76,6 +76,7 @@
 | EXP-196 | COMPLETED | fabxoe | #196 | outer-train raw mutation-presence TruncatedSVD 256 + aggregate·hotspot | 0.3496748557 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0672117·fold std와 DLBC F1 붕괴로 ARCHIVE | [보고서](reports/exp196_s4_truncated_svd/README.md) |
 | EXP-223 | COMPLETED | 2heej | #223 | EXP-096 pathway XGBoost + validation Macro-F1-best checkpoint | 0.4213739476 | 0.323243525 | INFERENCE_VERIFIED | EXP-096 대비 +0.0032586·Public 팀 최고 갱신으로 채택 | [보고서](reports/exp223_pathway_macro_f1_checkpoint/README.md) |
 | EXP-229 | COMPLETED | 2heej | #229 | EXP-223 + pathway별 변이 종류 유전자 수 50개 후보 | 0.4229885745 | 미제출 | INFERENCE_VERIFIED | EXP-223 대비 +0.0016146·안정성 및 클래스 gate 통과로 조건부 채택 | [보고서](reports/exp229_pathway_mutation_types/README.md) |
+| EXP-232 | COMPLETED | 2heej | #232 | EXP-229 pathway 변이 피처의 nested group permutation 선택 | 0.4214874085 | 미제출 | INFERENCE_VERIFIED | 피처 수는 감소했지만 EXP-229 대비 -0.0015012로 Macro F1 gate 실패, ARCHIVE | [보고서](reports/exp232_pathway_group_selection/README.md) |
 | EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
 
 ## 리더보드 제출 이력
@@ -180,10 +181,51 @@
 | 2026-08-02T15:58:51.992672+00:00 | EXP-219 | fabxoe | `41d07096e1c87eb55e7d7a73645629ea3d0952e3` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.45e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp219_macro_f1_checkpoint_selection/comparison.json) |
 | 2026-08-02T17:02:54.418077+00:00 | EXP-223 | 2heej | `41eaafc17f286ebc38568d076df5bf16fd0626ac` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.44e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp223_pathway_macro_f1_checkpoint/comparison.json) |
 | 2026-08-03T02:18:40.740535+00:00 | EXP-229 | 2heej | `75977326ab526f0b4c34ad5af90b29fb833c44c6` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.72e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp229_pathway_mutation_types/comparison.json) |
+| 2026-08-03T03:06:15.409629+00:00 | EXP-232 | 2heej | `7a940bcaae6cd1bb36f3c9d5e5d3296c8ce1b88c` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.36e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp232_pathway_group_selection/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-232] nested pathway group permutation 선택
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #232 / `issue-232-exp-pathway-group-selection`
+- 소스 commit: `7a940bcaae6cd1bb36f3c9d5e5d3296c8ce1b88c`
+- 시작/종료: 2026-08-03T02:38:47.392984+00:00 /
+  2026-08-03T03:06:13.825826+00:00
+
+#### 실행과 결과
+
+- 부모: EXP-229
+- 각 outer-fold 학습 행 안에서만 3-fold group permutation importance를 계산
+- pathway group이 inner fold 3개 중 2개 이상에서 양의 delta이고 평균 delta도
+  양수일 때만 해당 pathway의 변이종류 피처를 유지
+- 선택 pathway 수: 1 / 4 / 3 / 5 / 3개
+- 선택 후보 피처 수: 4 / 18 / 13 / 21 / 12개
+- Fold Macro F1: 0.4226803937 / 0.4209928029 / 0.4103250276 /
+  0.4141375814 / 0.4366236146
+- OOF Macro F1: 0.4214874085 (EXP-229 대비 `-0.0015011660`)
+- Fold 표준편차: 0.0090327997 (EXP-229 대비 `-0.0008351652`)
+- Accuracy: 0.4109014675 (EXP-229 대비 `-0.0016126431`)
+- Log Loss: 1.8429074287 (EXP-229 대비 `-0.0080538988`, 개선)
+- EXP-223 대비 OOF Macro F1: `+0.0001134609`(사실상 동률)
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 선택 진단과 결론
+
+- outer fold별 선택 빈도: cell_cycle 4회, notch 3회, nrf2·rtk_ras·tgf_beta
+  각 2회, hippo·pi3k·tp53 각 1회
+- 피처 압축과 fold 안정성·Log Loss 개선은 확인했지만, 사전 기준인 “EXP-229
+  Macro F1 비하락”을 충족하지 못해 **ARCHIVE**한다.
+- outer-fold 선택 빈도를 보고 같은 canonical split에서 고정 pathway를 다시
+  선택하면 validation 정보가 간접 재사용될 수 있으므로, 이 결과만으로 새 고정
+  피처를 채택하지 않는다.
+- 저장 checkpoint 재추론에서 test 라벨 100%, 확률 최대 절대 차이 `1.36e-7`,
+  제출 CSV SHA-256 일치를 확인했다.
+- Metrics/Report: `reports/exp232_pathway_group_selection/`
 
 ### [EXP-229] pathway별 변이 종류 유전자 수
 
