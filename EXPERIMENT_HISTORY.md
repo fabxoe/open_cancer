@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 55
+- 실제 실험 수: 56
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
@@ -73,6 +73,7 @@
 | EXP-207 | COMPLETED | fabxoe | #207 | EXP-094 + outer-train Boruta confirmed mutation-presence genes | 0.3484416378 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0684449·DLBC F1 0으로 붕괴, 재튜닝 없이 ARCHIVE | [보고서](reports/exp207_s3_boruta_feature_selection/README.md) |
 | EXP-219 | COMPLETED | fabxoe | #219 | EXP-094 동일 조건 + validation Macro-F1-best checkpoint 선택 | 0.4222321460 | 미제출 | INFERENCE_VERIFIED | 기존 mlogloss-best 대비 +0.0053456·fold std 개선, 향후 XGBoost 정책 채택 | [보고서](reports/exp219_macro_f1_checkpoint_selection/README.md) |
 | EXP-196 | COMPLETED | fabxoe | #196 | outer-train raw mutation-presence TruncatedSVD 256 + aggregate·hotspot | 0.3496748557 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0672117·fold std와 DLBC F1 붕괴로 ARCHIVE | [보고서](reports/exp196_s4_truncated_svd/README.md) |
+| EXP-223 | COMPLETED | 2heej | #223 | EXP-096 pathway XGBoost + validation Macro-F1-best checkpoint | 0.4213739476 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 +0.0032586·fold std 개선으로 채택, 제출 후보 | [보고서](reports/exp223_pathway_macro_f1_checkpoint/README.md) |
 | EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
 
 ## 리더보드 제출 이력
@@ -174,11 +175,33 @@
 | 2026-08-02T15:08:02+00:00 | EXP-151 | fabxoe | `17d433f81cf41fce54045739b0531915cc89b565` / [`exp-151-repro-v2`](https://github.com/fabxoe/open_cancer/releases/tag/exp-151-repro-v2) | SHA-256 일치 | 제출 SHA-256·test 라벨 100% 일치; GPU→CPU 확률 차이와 OOF 라벨 99.9839% 일치 기록 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp151_mutated_gene_burden/comparison.json) |
 | 2026-08-02T15:08:02+00:00 | EXP-188 | fabxoe | `1ff0663af2f682229d715136119e8e1db6bace62` / [`exp-188-repro-v2`](https://github.com/fabxoe/open_cancer/releases/tag/exp-188-repro-v2) | SHA-256 일치 | 제출 SHA-256·OOF/test 라벨·확률 100% 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp188_c1_phi_jaccard_pruning/comparison.json) |
 | 2026-08-02T15:58:51.992672+00:00 | EXP-219 | fabxoe | `41d07096e1c87eb55e7d7a73645629ea3d0952e3` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.45e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp219_macro_f1_checkpoint_selection/comparison.json) |
+| 2026-08-02T17:02:54.418077+00:00 | EXP-223 | 2heej | `41eaafc17f286ebc38568d076df5bf16fd0626ac` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.44e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp223_pathway_macro_f1_checkpoint/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
 
+### [EXP-223] pathway XGBoost Macro F1 checkpoint 선택
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #223 / `issue-223-exp-pathway-macro-f1-checkpoint`
+- 소스 commit: `41eaafc17f286ebc38568d076df5bf16fd0626ac`
+- 시작/종료: 2026-08-02T16:53:36.447851+00:00 /
+  2026-08-02T17:02:52.651353+00:00
+
+#### 실행과 결과
+
+- 부모: EXP-096
+- EXP-096 피처·모델·seed·canonical fold 유지
+- 유일한 변경: validation mlogloss-best 대신 Macro-F1-best checkpoint 저장
+- Fold Macro F1: 0.4109700215 / 0.4210640745 / 0.4181611577 /
+  0.4172319385 / 0.4384246233
+- OOF Macro F1: 0.4213739476 (EXP-096 대비 `+0.0032586396`)
+- Fold 표준편차: 0.0092340053 (EXP-096 대비 `-0.0002581124`)
+- Accuracy: 0.4112239961 (EXP-096 대비 `+0.0033865506`)
+- Log Loss: 1.8441621065 (보조 지표, EXP-096 대비 `+0.0072278976`)
+- 클래스별 최악 변화: THYM `-0.0152823920`
 ### [EXP-211] One-vs-Rest XGBoost + v2-performance
 
 - 상태: COMPLETED
@@ -212,6 +235,12 @@
 
 #### 결론
 
+- 사전 성능·안정성·클래스 붕괴 기준을 통과해 채택하고 제출 후보로 보존한다.
+- validation checkpoint 선택의 낙관 편향 가능성은 Public 또는 독립 반복에서
+  계속 관찰한다.
+- 저장 checkpoint 재추론에서 test 라벨 100%, 확률 최대 절대 차이 `1.44e-7`,
+  제출 CSV SHA-256 일치를 확인했다.
+- 후속은 pathway별 변이 종류 구성 피처를 별도 Experiment Issue에서 검증한다.
 - 안정성은 소폭 개선됐지만 Macro F1과 Log Loss가 모두 채택 기준보다 나빠
   `ARCHIVE`한다. 제출과 OvR 추가 튜닝은 진행하지 않는다.
 - 저장 checkpoint 재추론에서 OOF·test 라벨 100%, 확률 최대 절대 차이

@@ -27,7 +27,8 @@ MEMBERSHIP_PATH = (
 class FixedPathwayBurdenFoldBuilder:
     """Cache a stateless pathway matrix and align it to each canonical fold."""
 
-    def __init__(self) -> None:
+    def __init__(self, membership_path=MEMBERSHIP_PATH) -> None:
+        self.membership_path = membership_path
         self.train = pd.read_csv(TRAIN_PATH, dtype=str, keep_default_na=False)
         self.test = pd.read_csv(TEST_PATH, dtype=str, keep_default_na=False)
         self.gene_columns = tuple(
@@ -45,8 +46,8 @@ class FixedPathwayBurdenFoldBuilder:
         self.train_matrix = transform_checked(self.fitted, self.train)
         self.test_matrix = transform_checked(self.fitted, self.test)
         groups, document = load_fixed_groups(KNOWLEDGE_PATH, kind="pathways")
-        MEMBERSHIP_PATH.parent.mkdir(parents=True, exist_ok=True)
-        MEMBERSHIP_PATH.write_text(
+        self.membership_path.parent.mkdir(parents=True, exist_ok=True)
+        self.membership_path.write_text(
             json.dumps(
                 {
                     "knowledge_file": str(KNOWLEDGE_PATH.relative_to(ROOT)),
