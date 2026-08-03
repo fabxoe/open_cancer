@@ -19,9 +19,9 @@
 - 파생변수 탐색 동결: 2026-08-03 저녁
 - 모델·가중치 동결: 2026-08-06 저녁
 - 2026-08-07: 재현·Release·최종 제출 복구 버퍼
-- 다음 행동: Issue #260의 EXP-209·229·253 원격 artifact 검증과 manifest PR을
-  완료한다. 그동안 Issue #233 decision offset과 Issue #238 플랫폼 재현성 계약을
-  독립적으로 진행하고, 신규 문헌 family 확장은 중단한다.
+- 다음 행동: EXP-253 submission의 ID·클래스·SHA-256을 다시 검증하고 수동 제출
+  여부를 결정한다. Issue #233 decision offset은 독립적으로 진행하며 신규 문헌
+  family 확장은 중단한다.
 
 ## 이름과 목표
 
@@ -58,10 +58,10 @@ EXP-094는 Feature Spec v1으로 보존합니다. 이후 family는 v2 후보로�
 | G7 | 최종 후보 재현·제출 준비 | #143·#162·#164 | 해당 없음 | 미발급 | IN_PROGRESS | EXP-125는 fresh clone 결과 일치, EXP-131은 GPU 재학습 변동 | [최종 후보 체크리스트](../final_candidate_checklist.md) 확인 후 사람 팀원 댓글 대기 |
 | G8 | 공식 지표 checkpoint 통제 비교 | #217·#219 | EXP-219 | #218·#220 | COMPLETED | OOF 0.4222321460, Macro F1 checkpoint 정책 채택 | 같은 validation에서 선택·평가한 낙관 편향을 최종 후보 감사에서 확인 |
 | G9 | pathway checkpoint·변이종류 확장 | #223·#229 | EXP-223·229 | #224·#231 | COMPLETED | EXP-223 Public 0.323243525, EXP-229 OOF 0.4229885745 | EXP-229를 단일 XGBoost 후보로 보존 |
-| G10 | LightGBM·XGBoost 고정 0.5/0.5 blend | #253 | EXP-253 | #256 | COMPLETED | OOF 0.4254998819, Log Loss 개선, fold 안정성 gate 근소 통과 | #260 artifact 복구 완료 후 제출 후보 확정 |
-| G11 | 후보 artifact·Release 복구 | #258·#260 | 해당 없음 | #259·미발급 | IN_PROGRESS | EXP-219 복구 완료, EXP-209·229·253 asset 생성 확인 | manifest·remote-storage 검증과 PR 대기 |
+| G10 | LightGBM·XGBoost 고정 0.5/0.5 blend | #253 | EXP-253 | #256 | COMPLETED | OOF 0.4254998819, Log Loss 개선, fold 안정성 gate 근소 통과 | 제출 파일 재검증 후 수동 제출 판단 |
+| G11 | 후보 artifact·Release 복구 | #258·#260 | 해당 없음 | #259·#263 | COMPLETED | EXP-219·209·229·253 source tag·manifest·Release bundle·원격 SHA 검증 완료 | 최종 후보 재학습 검증에서 bundle 사용 |
 | G12 | nested class-wise decision offset | #233 | EXP-233 | 미발급 | IN_PROGRESS | train-only nested 정책과 기존 EXP-219 artifact 사용 | 결과가 없으면 점수·채택 판단을 기록하지 않음 |
-| G13 | 최종 후보 고정·비작성자 재학습 | #238·#254 | 해당 없음 | 미발급 | PLANNED | 플랫폼 범위·DLBC seed 변동성·TRAINING_VERIFIED 확인 | [최종 후보 체크리스트](../final_candidate_checklist.md)로 결정 |
+| G13 | 최종 후보 고정·비작성자 재학습 | #238·#254 | 해당 없음 | #264·미발급 | IN_PROGRESS | 플랫폼 검증 범위 계약 완료, DLBC seed 변동성·TRAINING_VERIFIED 확인 필요 | [최종 후보 체크리스트](../final_candidate_checklist.md)로 결정 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`를 사용하고,
 중단하면 `BLOCKED` 또는 `REJECTED`로 기록합니다.
