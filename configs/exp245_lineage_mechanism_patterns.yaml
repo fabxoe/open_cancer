@@ -1,0 +1,109 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-245
+issue_number: 245
+slug: lineage_mechanism_patterns
+parent_experiment: EXP-229
+component_experiments:
+  - EXP-094
+  - EXP-096
+  - EXP-219
+  - EXP-223
+  - EXP-229
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mutation_type:
+    enabled: true
+  robust_aggregates:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+  residue_position:
+    enabled: true
+    aggregates:
+      - max
+    missing_policy: zero
+    complex_tokens: include
+    transform: raw
+hotspots:
+  table: extended_34
+  evidence_scope: additions_15
+  minimum_matching_train_rows: 5
+external_knowledge:
+  pathway_file: knowledge/canonical_pathways_sanchez_vega_v1.json
+  pathway_organizer_approval_reference: https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180
+  lineage_mechanism_file: knowledge/cancer_lineage_mechanism_patterns_tcga_v1.json
+  lineage_mechanism_sha256: dcc92cfc8d845264d3dd5c74772b53cbf4415c13a1f05b88884a61b3e838a34c
+  lineage_mechanism_data_scope: fixed_rules_only_no_external_patient_data
+abc_families:
+  fixed_pathway_burden:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    groups: 10
+    values:
+      - mutated_gene_count
+      - lof_gene_count
+    output_dimension: 20
+  pathway_mutation_type_composition:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    groups: 10
+    values:
+      - missense_gene_count
+      - synonymous_gene_count
+      - nonsense_gene_count
+      - frameshift_gene_count
+      - complex_gene_count
+    candidate_output_dimension: 50
+    semantic_equivalence_filter: fold_train_against_feature_spec_v1
+  lineage_mechanism_patterns:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    modules: 8
+    values:
+      - missense_gene_count
+      - lof_gene_count
+      - context_gene_count
+      - mixed_indicator
+    candidate_output_dimension: 32
+    semantic_equivalence_filter: fold_train_against_exp229_features
+  functional_role_burden:
+    enabled: false
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - feature_spec_v1
+    - fixed_pathway_mutated_and_lof_gene_counts
+    - fixed_pathway_mutation_type_gene_counts
+    - fixed_lineage_mechanism_patterns
+notes: >-
+  Issue #245. EXP-229 model, checkpoint selection, seed, and canonical folds are
+  held fixed. EXP-240 generic constellation features are not retained. The sole
+  change is adding 32 literature-fixed mutation-type proxy features for eight
+  additional cancer lineages. These proxies do not assert activation,
+  pathogenicity, biallelic loss, expression, amplification, or fusion.
+comparison_metrics_path: reports/exp229_pathway_mutation_types/metrics.json
