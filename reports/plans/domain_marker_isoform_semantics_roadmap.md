@@ -30,7 +30,7 @@
 | A3 | 고정 표지 패널 canonical 5-fold | #302 | EXP-302 | #305 | REJECTED | 0.4212799841 | EXP-229 대비 -0.0017085904 | [보고서](../exp302_observable_marker_proxies/README.md), Track A 종료 |
 | B0 | Ensembl annotation snapshot·허용 범위 확인 | #307 | 해당 없음 | #308 | COMPLETED | N/A | release 116 동결·외부 annotation 허용 미확인 | [manifest](../../knowledge/ensembl_isoform_annotation_v1.json) |
 | B1 | isoform token 의미 QC | #307 | explore | #308 | COMPLETED | N/A | coverage 충분·train/test 의미 분포 큰 차이 | [보고서](../analysis/isoform_residue_semantics/README.md) |
-| B2-1 | 불확실 residue-position mask | #311(구현), #313(실험) | EXP-313 | 이번 PR | COMPLETED | 0.4267909268 | EXP-229 대비 +0.0038023523·fold std·Log Loss 개선, INFERENCE_VERIFIED | 채택 후보 유지·B2-2는 별도 Issue |
+| B2-1 | 불확실 residue-position mask | #311(구현), #313(실험) | EXP-313 | #314 | COMPLETED | 0.4267909268 | EXP-229 대비 +0.0038023523·fold std·Log Loss 개선, INFERENCE_VERIFIED | 채택 후보 유지·B2-2는 별도 Issue |
 | B2-2 | sample 범주 요약 | 미발급 | 미발급 | 미발급 | BLOCKED | N/A | #311 예외 범위 밖 | 별도 범위 검토 |
 | B2-3 | isoform-relative coarse bin | 미발급 | 미발급 | 미발급 | BLOCKED | N/A | #311 예외 범위 밖 | 별도 범위 검토 |
 | C | Track A+B 조건부 조합 | 미발급 | 미발급 | 미발급 | REJECTED | N/A | Track A gate 실패 | 조합 실험을 열지 않음 |
