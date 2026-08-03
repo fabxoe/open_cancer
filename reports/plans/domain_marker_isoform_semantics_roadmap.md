@@ -31,7 +31,7 @@
 | B0 | Ensembl annotation snapshot·허용 범위 확인 | #307 | 해당 없음 | #308 | COMPLETED | N/A | release 116 동결·외부 annotation 허용 미확인 | [manifest](../../knowledge/ensembl_isoform_annotation_v1.json) |
 | B1 | isoform token 의미 QC | #307 | explore | #308 | COMPLETED | N/A | coverage 충분·train/test 의미 분포 큰 차이 | [보고서](../analysis/isoform_residue_semantics/README.md) |
 | B2-1 | 불확실 residue-position mask | #311(구현), #313(실험) | EXP-313 | #314 | COMPLETED | 0.4267909268 | EXP-229 대비 +0.0038023523·fold std·Log Loss 개선, INFERENCE_VERIFIED | 채택 후보 유지·B2-2는 별도 Issue |
-| B2-2 | sample 범주 요약 | #315(구현), #317(실험) | EXP-317 | 미발급 | IN_PROGRESS | N/A | 6개 범주의 count/any 12개 사전 고정·B2-1 mask 미적용 | canonical 5-fold 실행 |
+| B2-2 | sample 범주 요약 | #315(구현), #317(실험) | EXP-317 | 이번 PR | REJECTED | 0.4170163022 | EXP-229 대비 -0.0059723·fold std·Log Loss·DLBC 악화, INFERENCE_VERIFIED | ARCHIVE·추가 튜닝 중단 |
 | B2-3 | isoform-relative coarse bin | 미발급 | 미발급 | 미발급 | BLOCKED | N/A | #311 예외 범위 밖 | 별도 범위 검토 |
 | C | Track A+B 조건부 조합 | 미발급 | 미발급 | 미발급 | REJECTED | N/A | Track A gate 실패 | 조합 실험을 열지 않음 |
 
@@ -263,3 +263,4 @@ fold별 checkpoint, OOF/test 확률을 저장합니다. 리더보드 제출 후�
 | 2026-08-04 | Task #311과 첫 B2 불확실 위치 mask에 외부 annotation 예외 허용 | 팀장 명시 지시; 고정 Ensembl 116의 정적 sequence 일치 범주만 허용, 외부 환자 데이터·암종 빈도·test 기반 조정은 계속 금지 |
 | 2026-08-04 | EXP-313 B2-1 mask 채택 후보 | EXP-229 대비 OOF +0.0038024, fold std와 Log Loss 동시 개선; 범주 재조정 없이 B2-2·B2-3을 독립 검증 |
 | 2026-08-04 | Task #315 B2-2 sample 범주 요약 예외 허용 | 기존 EXP-313 manifest는 불변 보존하고 별도 revision에서 6개 count·6개 any만 허용 |
+| 2026-08-04 | EXP-317 B2-2 기각 | Macro F1 -0.0059723, fold std·Log Loss·DLBC 악화; 의미 범주 직접 요약은 추가 탐색 중단 |
