@@ -1,12 +1,12 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": "2026-08-03T18:03:16.635244+00:00",
+  "generated_at": "2026-08-03T18:24:30.422778+00:00",
   "analysis_only": true,
   "target_used": false,
   "public_leaderboard_used": false,
-  "external_annotation_permission": "UNCONFIRMED",
+  "external_annotation_permission": "CONFIRMED_ALLOWED_TRACK_B_B2_TEAM_LEAD_EXCEPTION",
   "annotation_manifest_path": "knowledge/ensembl_isoform_annotation_v1.json",
-  "annotation_manifest_sha256": "220d41fc2db64de885c5a7b997f072e3da7a881936ee98de9aa0e874b4a61eef",
+  "annotation_manifest_sha256": "568ea31f5b7fc7ff47d181fe552d39f3b9185f8d0a76cbb2a49d06be022d5bc0",
   "annotation_release": 116,
   "annotation_cache_sha256": "b9565339f1755d5b07e782c39064207310fa6c254b2e915a15492f4f38903daa",
   "gene_columns": 4384,
@@ -2529,6 +2529,6 @@
     "OUTSIDE_ALL_KNOWN_ISOFORMS": 0.0009111868210262099,
     "COMPLEX_OR_UNMAPPABLE": 0.09251102067939496
   },
-  "b2_blocked": true,
-  "b2_block_reason": "대회 주최측의 외부 annotation 사용 허용이 확인되지 않아 분석 전용으로 제한"
+  "b2_blocked": false,
+  "b2_block_reason": null
 }
