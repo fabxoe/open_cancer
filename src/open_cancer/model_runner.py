@@ -128,6 +128,72 @@ class XGBoostAdapter:
             return None
 
 
+class OneVsRestXGBoostAdapter:
+    """Train one binary XGBoost classifier per fixed cancer class."""
+
+    file_suffix = ".joblib"
+
+    def __init__(self, parameters: dict[str, Any], seed: int) -> None:
+        import xgboost as xgb
+
+        self.xgb = xgb
+        self.seed = seed
+        self.binary_balanced_sample_weight = bool(
+            parameters.pop("binary_balanced_sample_weight", True)
+        )
+        self.parameters = {
+            "objective": "binary:logistic",
+            "random_state": seed,
+            **parameters,
+        }
+        self.models: list[Any] = []
+
+    def fit(self, x_train, y_train, x_valid, y_valid, sample_weight) -> None:
+        _require(
+            sample_weight is None or not self.binary_balanced_sample_weight,
+            "OvR binary weight와 공용 multiclass weight를 동시에 적용할 수 없습니다.",
+        )
+        self.models = []
+        for class_index in range(len(CLASS_LABELS)):
+            binary_train = (y_train == class_index).astype(np.int32)
+            binary_valid = (y_valid == class_index).astype(np.int32)
+            weights = (
+                compute_sample_weight(class_weight="balanced", y=binary_train)
+                if self.binary_balanced_sample_weight
+                else sample_weight
+            )
+            model = self.xgb.XGBClassifier(**self.parameters)
+            model.fit(
+                x_train,
+                binary_train,
+                sample_weight=weights,
+                eval_set=[(x_valid, binary_valid)],
+                verbose=False,
+            )
+            self.models.append(model)
+
+    def predict_proba(self, matrix) -> np.ndarray:
+        _require(len(self.models) == len(CLASS_LABELS), "OvR binary model 26개가 필요합니다.")
+        return np.column_stack(
+            [model.predict_proba(matrix)[:, 1] for model in self.models]
+        )
+
+    def save(self, path: Path) -> None:
+        import joblib
+
+        joblib.dump({"models": self.models}, path)
+
+    @property
+    def best_iteration(self) -> int | None:
+        iterations = []
+        for model in self.models:
+            try:
+                iterations.append(int(model.best_iteration))
+            except (AttributeError, ValueError):
+                continue
+        return max(iterations) if iterations else None
+
+
 class LightGBMAdapter:
     file_suffix = ".txt"
 
@@ -210,6 +276,7 @@ def create_model_adapter(name: str, parameters: dict[str, Any], seed: int) -> Mo
     factories = {
         "logistic_regression": LogisticRegressionAdapter,
         "xgboost": XGBoostAdapter,
+        "ovr_xgboost": OneVsRestXGBoostAdapter,
         "lightgbm": LightGBMAdapter,
         "catboost": CatBoostAdapter,
     }
