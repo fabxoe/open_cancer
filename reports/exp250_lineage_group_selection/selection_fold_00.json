@@ -1,0 +1,354 @@
+{
+  "outer_fold": 0,
+  "selection_scope": "outer_fold_train_only",
+  "selected_lineages": [
+    "bladder",
+    "breast",
+    "cervical",
+    "head_neck",
+    "ovarian",
+    "prostate",
+    "thyroid"
+  ],
+  "selected_candidate_features": 27,
+  "summary": {
+    "bladder": {
+      "inner_fold_deltas": [
+        0.0010422984494847982,
+        0.00044942286244252044,
+        0.0013424348018734045
+      ],
+      "positive_inner_folds": 3,
+      "mean_delta": 0.0009447187046002411
+    },
+    "breast": {
+      "inner_fold_deltas": [
+        5.613435186870482e-05,
+        0.0027602100483891667,
+        0.002907401569812044
+      ],
+      "positive_inner_folds": 3,
+      "mean_delta": 0.0019079153233566386
+    },
+    "cervical": {
+      "inner_fold_deltas": [
+        0.01248849408207812,
+        0.00965406734892558,
+        0.012778449901383104
+      ],
+      "positive_inner_folds": 3,
+      "mean_delta": 0.0116403371107956
+    },
+    "head_neck": {
+      "inner_fold_deltas": [
+        0.010734533013223635,
+        0.0037765063735179885,
+        0.012528327107679482
+      ],
+      "positive_inner_folds": 3,
+      "mean_delta": 0.009013122164807034
+    },
+    "liver": {
+      "inner_fold_deltas": [
+        0.003025026010545125,
+        -0.0021893872208218665,
+        -0.0008302277142431073
+      ],
+      "positive_inner_folds": 1,
+      "mean_delta": 1.8036918267171351e-06
+    },
+    "ovarian": {
+      "inner_fold_deltas": [
+        0.00040360887955050623,
+        0.0007538945256317006,
+        0.000775458542915238
+      ],
+      "positive_inner_folds": 3,
+      "mean_delta": 0.0006443206493658149
+    },
+    "prostate": {
+      "inner_fold_deltas": [
+        0.00844944416869011,
+        0.002653136117368097,
+        0.00318741916033947
+      ],
+      "positive_inner_folds": 3,
+      "mean_delta": 0.004763333148799225
+    },
+    "thyroid": {
+      "inner_fold_deltas": [
+        0.009108754279187966,
+        0.006935616999856398,
+        -0.00020613015400518705
+      ],
+      "positive_inner_folds": 2,
+      "mean_delta": 0.005279413708346393
+    }
+  },
+  "records": [
+    {
+      "inner_fold": 0,
+      "group": "bladder",
+      "baseline_macro_f1": 0.4055761541523137,
+      "permutation_deltas": [
+        0.001081329534425357,
+        0.0012767237451393187,
+        0.0007688420688897191
+      ],
+      "mean_delta": 0.0010422984494847982
+    },
+    {
+      "inner_fold": 0,
+      "group": "breast",
+      "baseline_macro_f1": 0.4055761541523137,
+      "permutation_deltas": [
+        8.014602585881825e-05,
+        0.00017066290665845862,
+        -8.240587691116241e-05
+      ],
+      "mean_delta": 5.613435186870482e-05
+    },
+    {
+      "inner_fold": 0,
+      "group": "cervical",
+      "baseline_macro_f1": 0.4055761541523137,
+      "permutation_deltas": [
+        0.010063432901524172,
+        0.014171185135305853,
+        0.013230864209404336
+      ],
+      "mean_delta": 0.01248849408207812
+    },
+    {
+      "inner_fold": 0,
+      "group": "head_neck",
+      "baseline_macro_f1": 0.4055761541523137,
+      "permutation_deltas": [
+        0.008395768800200043,
+        0.013792879206607822,
+        0.01001495103286304
+      ],
+      "mean_delta": 0.010734533013223635
+    },
+    {
+      "inner_fold": 0,
+      "group": "liver",
+      "baseline_macro_f1": 0.4055761541523137,
+      "permutation_deltas": [
+        0.00365027623289077,
+        0.005708731223185659,
+        -0.00028392942444105396
+      ],
+      "mean_delta": 0.003025026010545125
+    },
+    {
+      "inner_fold": 0,
+      "group": "ovarian",
+      "baseline_macro_f1": 0.4055761541523137,
+      "permutation_deltas": [
+        0.0022368142612841924,
+        0.0007960918543201689,
+        -0.0018220794769528426
+      ],
+      "mean_delta": 0.00040360887955050623
+    },
+    {
+      "inner_fold": 0,
+      "group": "prostate",
+      "baseline_macro_f1": 0.4055761541523137,
+      "permutation_deltas": [
+        0.0071609559718265325,
+        0.007552423025155908,
+        0.010634953509087886
+      ],
+      "mean_delta": 0.00844944416869011
+    },
+    {
+      "inner_fold": 0,
+      "group": "thyroid",
+      "baseline_macro_f1": 0.4055761541523137,
+      "permutation_deltas": [
+        0.00888040658468986,
+        0.007325925078833229,
+        0.011119931174040809
+      ],
+      "mean_delta": 0.009108754279187966
+    },
+    {
+      "inner_fold": 1,
+      "group": "bladder",
+      "baseline_macro_f1": 0.4069924179257938,
+      "permutation_deltas": [
+        0.001276555402981383,
+        -0.0011995465533594096,
+        0.0012712597377055879
+      ],
+      "mean_delta": 0.00044942286244252044
+    },
+    {
+      "inner_fold": 1,
+      "group": "breast",
+      "baseline_macro_f1": 0.4069924179257938,
+      "permutation_deltas": [
+        0.002524940574372747,
+        0.0033891212677208404,
+        0.0023665683030739126
+      ],
+      "mean_delta": 0.0027602100483891667
+    },
+    {
+      "inner_fold": 1,
+      "group": "cervical",
+      "baseline_macro_f1": 0.4069924179257938,
+      "permutation_deltas": [
+        0.007847154395220268,
+        0.010894775112417487,
+        0.010220272539138986
+      ],
+      "mean_delta": 0.00965406734892558
+    },
+    {
+      "inner_fold": 1,
+      "group": "head_neck",
+      "baseline_macro_f1": 0.4069924179257938,
+      "permutation_deltas": [
+        0.004894484467984572,
+        0.004271231785986651,
+        0.0021638028665827425
+      ],
+      "mean_delta": 0.0037765063735179885
+    },
+    {
+      "inner_fold": 1,
+      "group": "liver",
+      "baseline_macro_f1": 0.4069924179257938,
+      "permutation_deltas": [
+        -0.0025614045398849594,
+        -0.0014659133968348281,
+        -0.0025408437257458116
+      ],
+      "mean_delta": -0.0021893872208218665
+    },
+    {
+      "inner_fold": 1,
+      "group": "ovarian",
+      "baseline_macro_f1": 0.4069924179257938,
+      "permutation_deltas": [
+        -0.00020974637893911297,
+        0.0017373618966684545,
+        0.00073406805916576
+      ],
+      "mean_delta": 0.0007538945256317006
+    },
+    {
+      "inner_fold": 1,
+      "group": "prostate",
+      "baseline_macro_f1": 0.4069924179257938,
+      "permutation_deltas": [
+        0.0035712038689237335,
+        0.00272413205416544,
+        0.0016640724290151176
+      ],
+      "mean_delta": 0.002653136117368097
+    },
+    {
+      "inner_fold": 1,
+      "group": "thyroid",
+      "baseline_macro_f1": 0.4069924179257938,
+      "permutation_deltas": [
+        0.004027870660861077,
+        0.004661784677679359,
+        0.012117195661028757
+      ],
+      "mean_delta": 0.006935616999856398
+    },
+    {
+      "inner_fold": 2,
+      "group": "bladder",
+      "baseline_macro_f1": 0.39724882918400556,
+      "permutation_deltas": [
+        0.003154001612244328,
+        0.001144223968614022,
+        -0.00027092117523813686
+      ],
+      "mean_delta": 0.0013424348018734045
+    },
+    {
+      "inner_fold": 2,
+      "group": "breast",
+      "baseline_macro_f1": 0.39724882918400556,
+      "permutation_deltas": [
+        0.0025131747027857254,
+        0.001641088770465371,
+        0.004567941236185036
+      ],
+      "mean_delta": 0.002907401569812044
+    },
+    {
+      "inner_fold": 2,
+      "group": "cervical",
+      "baseline_macro_f1": 0.39724882918400556,
+      "permutation_deltas": [
+        0.011527134240921,
+        0.008286850659297296,
+        0.018521364803931017
+      ],
+      "mean_delta": 0.012778449901383104
+    },
+    {
+      "inner_fold": 2,
+      "group": "head_neck",
+      "baseline_macro_f1": 0.39724882918400556,
+      "permutation_deltas": [
+        0.014306821278038229,
+        0.015219684037838188,
+        0.00805847600716203
+      ],
+      "mean_delta": 0.012528327107679482
+    },
+    {
+      "inner_fold": 2,
+      "group": "liver",
+      "baseline_macro_f1": 0.39724882918400556,
+      "permutation_deltas": [
+        0.00017234446263175718,
+        -0.002702940655664454,
+        3.991305030337511e-05
+      ],
+      "mean_delta": -0.0008302277142431073
+    },
+    {
+      "inner_fold": 2,
+      "group": "ovarian",
+      "baseline_macro_f1": 0.39724882918400556,
+      "permutation_deltas": [
+        0.002647473567294667,
+        -0.001956115136293568,
+        0.0016350171977446148
+      ],
+      "mean_delta": 0.000775458542915238
+    },
+    {
+      "inner_fold": 2,
+      "group": "prostate",
+      "baseline_macro_f1": 0.39724882918400556,
+      "permutation_deltas": [
+        -0.0003833862871834848,
+        0.004030107617884748,
+        0.005915536150317147
+      ],
+      "mean_delta": 0.00318741916033947
+    },
+    {
+      "inner_fold": 2,
+      "group": "thyroid",
+      "baseline_macro_f1": 0.39724882918400556,
+      "permutation_deltas": [
+        0.000775229645730624,
+        -0.0006352842032813499,
+        -0.0007583359044648352
+      ],
+      "mean_delta": -0.00020613015400518705
+    }
+  ]
+}
