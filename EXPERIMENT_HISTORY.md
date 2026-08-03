@@ -82,7 +82,7 @@
 | EXP-240 | COMPLETED | 2heej | #240 | EXP-229 + 문헌 고정 암종별 분자 변이조합 21개 | 0.4189644465 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 -0.0040241·Log Loss 악화로 ARCHIVE, 일부 클래스 신호만 후속 검토 | [보고서](reports/exp240_molecular_constellations/README.md) |
 | EXP-245 | COMPLETED | 2heej | #245 | EXP-229 + 8개 암종 문헌 고정 mutation-mechanism proxy | 0.4213989560 | 미제출 | INFERENCE_VERIFIED | EXP-240 대비 개선했지만 EXP-229 대비 -0.0015896·Log Loss 악화로 ARCHIVE | [보고서](reports/exp245_lineage_mechanism_patterns/README.md) |
 | EXP-250 | COMPLETED | 2heej | #250 | EXP-245 암종 모듈의 outer-train nested permutation 선택 | 0.4209182565 | 미제출 | INFERENCE_VERIFIED | 31개 중 fold별 27~31개를 유지하고 EXP-229·245 대비 성능과 안정성이 악화되어 ARCHIVE | [보고서](reports/exp250_lineage_group_selection/README.md) |
-| EXP-253 | COMPLETED | 2heej | #253 | EXP-209 LightGBM + EXP-229 XGBoost 고정 0.5/0.5 확률 평균 | 0.4254998819 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 +0.0025113·Log Loss 개선·fold 안정성 기준 통과로 채택 후보 | [보고서](reports/exp253_lightgbm_xgboost_blend/README.md) |
+| EXP-253 | COMPLETED | 2heej | #253 | EXP-209 LightGBM + EXP-229 XGBoost 고정 0.5/0.5 확률 평균 | 0.4254998819 | 0.3054410279 | INFERENCE_VERIFIED | Local 최고였으나 EXP-223 Public 대비 -0.0178024971로 전이 실패·제출 후보 제외 | [보고서](reports/exp253_lightgbm_xgboost_blend/README.md) |
 | EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
 | EXP-257 | COMPLETED | Kangho-Park | #257 | EXP-096 + functional_role_burden_extended(oncogene/TSG count raw/frac/resid/log1p, fold-train 게이팅, #176 확장) | 0.4118051266 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0063102·Log Loss 악화, 26개 중 19개 클래스 하락으로 ARCHIVE | [보고서](reports/exp257_functional_role_burden_extended/README.md) |
 | EXP-272 | COMPLETED | fabxoe | #272 | EXP-219 고정 5-seed(42·142·242·342·442) 확률 0.2 평균 | 0.4208578157 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0013743·fold 표준편차와 Log Loss 악화로 ARCHIVE | [보고서](reports/exp272_exp219_multiseed_ensemble/README.md) |
@@ -111,6 +111,7 @@
 | 2026-08-02T23:53:56+09:00 | EXP-188 | #188 | `submissions/exp188_c1_phi_jaccard_pruning.csv` (제출 ID `1508914`) | `a36bffa5e4d055f99d5fc8584c795a08c9f1b608cc941716d61b5b94428a1d0a` | 0.3140052334 | EXP-031 최고 점수<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span> | INFERENCE_VERIFIED |
 | 2026-08-03T10:30:33+09:00 | EXP-223 | #223 | `submissions/exp223_pathway_macro_f1_checkpoint.csv` (제출 ID `1509283`) | `74a23b6337b17fc4ed70ae1e3639331065e0d74432bed6b8fcf9dc9344e6c48c` | 0.323243525 | 팀 Public 최고 갱신<span style="display:block">2026-08-03 19:13 KST 기준 참가 4팀 중 4위·팀 제출 17회</span> | INFERENCE_VERIFIED |
 | 2026-08-03T23:45:30+09:00 | EXP-229 | #229 | `submissions/exp229_pathway_mutation_types.csv` (제출 ID `1509990`) | `66f50d7fdd3c0ca65e586f83c4ee4d8cfb3a99d85d03c04ef9b8fbea7b1af61b` | 0.3203598833 | EXP-223 최고 대비 -0.0028836417<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">확인 당시 참가 4팀 중 4위·팀 제출 20회</span> | INFERENCE_VERIFIED |
+| 2026-08-03T23:32:05+09:00 | EXP-253 | #253 | `submissions/exp253_lightgbm_xgboost_blend.csv` (제출 ID `1509964`) | `c57c06bcfadae47741f9c5392ecf73fc3d16ed36ed410901b73acda81b320f48` | 0.3054410279 | EXP-223 최고 대비 -0.0178024971<span style="display:block">제출 직후 참가 4팀 중 4위·팀 제출 18회·선택 제출은 EXP-223 유지</span> | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -335,7 +336,7 @@
 - OOF Macro F1: 0.4254998819 (EXP-229 대비 `+0.0025113074`)
 - Fold 표준편차: 0.0117799734 (EXP-229 대비 `+0.0019120085`)
 - Accuracy: 0.4136429608, Log Loss: 1.8103251656
-- Public LB: 미제출
+- Public LB: 0.3054410279 (제출 ID `1509964`, 2026-08-03 23:32:05 KST)
 - 재현 상태: `INFERENCE_VERIFIED`
 - Release: [`exp-253-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-253-repro-v1)
 
@@ -345,9 +346,8 @@
 - Metrics: `reports/exp253_lightgbm_xgboost_blend/metrics.json`
 - Report: `reports/exp253_lightgbm_xgboost_blend/README.md`
 - Reproduction: `reproducibility/exp253_lightgbm_xgboost_blend/`
-- 결론: Macro F1 `+0.001`, fold 표준편차 악화 `<0.002`, Log Loss 비악화
-  기준을 모두 통과해 현재 Local 최고 채택 후보로 보존한다. 가중치 grid search는
-  이 실험에 소급 적용하지 않는다.
+- 결론: Local 기준은 통과했지만 EXP-223 Public 대비 `-0.0178024971`로 하락해
+  최종 제출 후보에서 제외한다. 가중치 grid search는 이 실험에 소급 적용하지 않는다.
 
 ### [EXP-250] 암종별 변이 패턴 그룹 선택
 
