@@ -7,8 +7,9 @@ role(oncogene 29개, tumor_suppressor 39개)별 mutated-gene count의 4가지 �
 view(raw/frac/resid/log1p, 최대 8개)를 fold-train 게이팅을 거쳐 추가했습니다.
 공식 공용 5-fold OOF Macro F1은 **0.4118051266**으로 EXP-096보다
 **-0.0063101814** 하락했고, Log Loss도 `+0.0145742893` 악화됐습니다.
-26개 클래스 중 23개가 하락(최대 LAML `-0.0244`)했고 개선은 DLBC/LUSC/STES/UCEC/
-BRCA/TGCT 6개뿐이었습니다. **기각(ARCHIVE)합니다.**
+26개 클래스 중 19개가 하락(최대 LAML `-0.0244`)했고 개선은
+DLBC/LUSC/STES/SKCM/UCEC/BRCA 6개뿐이며 TGCT는 변화가 없었습니다.
+**기각(ARCHIVE)합니다.**
 
 ## 배경
 
