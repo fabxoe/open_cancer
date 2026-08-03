@@ -24,7 +24,7 @@ MEMBERSHIP = REPORT_DIR / "molecular_module_membership.json"
 
 
 class MolecularConstellationFoldBuilder(PathwayMutationTypeFoldBuilder):
-    """Materialize EXP-229 families and 24 fixed lineage-module candidates."""
+    """Materialize EXP-229 families and 21 fixed lineage-module candidates."""
 
     def __init__(self) -> None:
         super().__init__(REPORT_DIR / "pathway_membership.json")

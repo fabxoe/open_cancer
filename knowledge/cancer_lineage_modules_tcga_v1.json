@@ -15,12 +15,6 @@
       "url": "https://www.nejm.org/doi/full/10.1056/NEJMoa1402121"
     },
     {
-      "module_names": ["clear_cell_renal"],
-      "citation": "TCGA Research Network, Comprehensive molecular characterization of clear cell renal cell carcinoma, Nature 2013",
-      "doi": "10.1038/nature12222",
-      "url": "https://www.nature.com/articles/nature12222"
-    },
-    {
       "module_names": ["colorectal"],
       "citation": "TCGA Research Network, Comprehensive molecular characterization of human colon and rectal cancer, Nature 2012",
       "doi": "10.1038/nature11252",
@@ -59,10 +53,6 @@
     "glioma_oligodendroglial": {
       "core_genes": ["IDH1", "IDH2"],
       "partner_genes": ["CIC", "FUBP1", "NOTCH1"]
-    },
-    "clear_cell_renal": {
-      "core_genes": ["VHL"],
-      "partner_genes": ["PBRM1", "SETD2", "BAP1", "KDM5C"]
     },
     "colorectal": {
       "core_genes": ["APC"],

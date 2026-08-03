@@ -62,5 +62,5 @@ def test_repository_module_catalog_is_target_independent() -> None:
     )
     assert document["rule_review_status"].startswith("NO_PROHIBITION_IDENTIFIED")
     assert "no external patient data" in document["competition_rule_basis"]
-    assert len(document["modules"]) == 8
+    assert len(document["modules"]) == 7
     assert "SUBCLASS" not in json.dumps(document)

@@ -23,7 +23,7 @@ def test_exp240_keeps_exp229_training_contract() -> None:
     assert candidate["training"]["checkpoint_selection"] == "macro_f1_validation"
     assert candidate["parent_experiment"] == "EXP-229"
     family = candidate["abc_families"]["molecular_constellation"]
-    assert family["candidate_output_dimension"] == 24
+    assert family["candidate_output_dimension"] == 21
     assert family["fit_scope"] == "stateless"
 
 
