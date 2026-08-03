@@ -1,0 +1,65 @@
+experiment_id: EXP-235
+run_mode: experiment
+record_role: official
+slug: onconpc_xgb_confidence
+parent_experiment: EXP-094
+seed: 42
+
+feature_spec:
+  name: v1
+  materializer: frozen_feature_spec_v1
+  parent_feature_experiment: EXP-094
+
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  expected_sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  n_splits: 5
+  seed: 42
+
+search:
+  method: randomized_nested_cv
+  primary_metric: macro_f1
+  secondary_metric: log_loss
+  n_iter: 2
+  inner_splits: 2
+  base_parameters:
+    objective: multi:softprob
+    n_estimators: 800
+    eval_metric: mlogloss
+    early_stopping_rounds: 40
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+  parameter_space:
+    learning_rate: [0.02, 0.03, 0.05, 0.08]
+    max_depth: [3, 4, 5, 6]
+    min_child_weight: [1, 2, 5, 10]
+    subsample: [0.6, 0.8, 1.0]
+    colsample_bytree: [0.5, 0.7, 0.9]
+    reg_alpha: [0.0, 0.05, 0.5, 1.0]
+    reg_lambda: [1.0, 2.0, 5.0, 10.0]
+    gamma: [0.0, 0.1, 0.5]
+
+training:
+  balanced_sample_weight: true
+  test_used_for_fit: false
+  postprocessing: none
+
+confidence_analysis:
+  thresholds: [0.0, 0.5, 0.7, 0.9]
+  model_selection_use: false
+  submission_filtering: false
+  metrics:
+    - macro_f1
+    - weighted_f1
+    - macro_precision
+    - accuracy
+    - coverage
+
+notes:
+  - Hyperparameters are selected separately inside each canonical outer-train fold.
+  - The outer validation fold and test rows are never used by the inner search.
+  - Macro F1 is the primary selection metric because it is the competition metric.
+  - Weighted F1 and pmax results are secondary analyses inspired by OncoNPC.
+  - Every test row receives an argmax class; pmax never filters the submission.
