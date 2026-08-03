@@ -98,6 +98,17 @@ def replay_saved_model(
             test_probability = np.asarray(
                 model.predict_proba(test_features), dtype=np.float64
             )
+        elif model_name == "ovr_xgboost":
+            payload = joblib.load(path)
+            models = payload["models"]
+            if len(models) != len(CLASS_LABELS):
+                raise ValueError("OvR checkpoint에는 binary model 26개가 필요합니다.")
+            valid_probability = np.column_stack(
+                [model.predict_proba(train_features[valid])[:, 1] for model in models]
+            )
+            test_probability = np.column_stack(
+                [model.predict_proba(test_features)[:, 1] for model in models]
+            )
         else:
             raise ValueError(f"checkpoint 재추론을 지원하지 않는 모델입니다: {model_name}")
         oof[valid] = valid_probability / valid_probability.sum(axis=1, keepdims=True)
@@ -172,6 +183,11 @@ def main(
         resolved_model_parameters = {
             "loss_function": "MultiClass",
             "verbose": False,
+            **resolved_model_parameters,
+        }
+    elif model_name == "ovr_xgboost":
+        resolved_model_parameters = {
+            "objective": "binary:logistic",
             **resolved_model_parameters,
         }
     result = run_canonical_cv(
@@ -337,7 +353,11 @@ def main(
             "scikit_learn": sklearn.__version__,
             "model_library": model_name,
             "model_library_version": importlib.metadata.version(
-                "scikit-learn" if model_name == "logistic_regression" else model_name
+                "scikit-learn"
+                if model_name == "logistic_regression"
+                else "xgboost"
+                if model_name == "ovr_xgboost"
+                else model_name
             ),
             "uv_lock_sha256": sha256_file(ROOT / "uv.lock"),
         },

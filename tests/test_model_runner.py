@@ -100,6 +100,42 @@ def test_logistic_adapter_rejects_unknown_scaling() -> None:
         create_model_adapter("logistic_regression", {"scale": "standard"}, 42)
 
 
+def test_ovr_xgboost_trains_one_binary_model_per_class(monkeypatch) -> None:
+    fitted_targets: list[np.ndarray] = []
+
+    class FakeBinaryModel:
+        best_iteration = 3
+
+        def __init__(self, **parameters) -> None:
+            self.parameters = parameters
+
+        def fit(self, features, targets, **kwargs) -> None:
+            del features
+            fitted_targets.append(np.asarray(targets))
+            assert kwargs["sample_weight"] is not None
+
+        def predict_proba(self, matrix) -> np.ndarray:
+            positive = np.full(matrix.shape[0], 0.25, dtype=np.float64)
+            return np.column_stack([1 - positive, positive])
+
+    import xgboost
+
+    monkeypatch.setattr(xgboost, "XGBClassifier", FakeBinaryModel)
+    adapter = create_model_adapter(
+        "ovr_xgboost",
+        {"binary_balanced_sample_weight": True, "n_estimators": 1},
+        42,
+    )
+    targets = np.tile(np.arange(len(CLASS_LABELS)), 2)
+    matrix = sparse.csr_matrix(np.ones((len(targets), 2), dtype=np.float32))
+    adapter.fit(matrix, targets, matrix, targets, None)
+
+    assert len(fitted_targets) == len(CLASS_LABELS)
+    assert all(set(np.unique(values)) == {0, 1} for values in fitted_targets)
+    assert adapter.predict_proba(matrix[:3]).shape == (3, len(CLASS_LABELS))
+    assert adapter.best_iteration == 3
+
+
 def test_common_runner_writes_canonical_artifacts(tmp_path) -> None:
     targets = np.tile(np.arange(len(CLASS_LABELS)), 5)
     folds = np.repeat(np.arange(5), len(CLASS_LABELS))
