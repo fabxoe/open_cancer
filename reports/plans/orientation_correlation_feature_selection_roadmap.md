@@ -35,7 +35,7 @@
 | M1 | Macro-F1 checkpoint 선택 통제 실험 | [#219](https://github.com/fabxoe/open_cancer/issues/219) | EXP-219 | [#220](https://github.com/fabxoe/open_cancer/pull/220) | COMPLETED | 0.4222321460 | EXP-094 대비 +0.0053455721, fold std 개선·INFERENCE_VERIFIED; 정책 채택 |
 | M2 | EXP-219 고정 5-seed 안정성 검증 | [#272](https://github.com/fabxoe/open_cancer/issues/272) | EXP-272 | 미발급 | COMPLETED | 0.4208578157 | EXP-219 대비 -0.0013743303·fold std와 Log Loss 악화로 ARCHIVE; seed·가중치 재탐색 중단 |
 | M3 | trailing rolling-median checkpoint 안정화 | [#279](https://github.com/fabxoe/open_cancer/issues/279) | EXP-279 | [#280](https://github.com/fabxoe/open_cancer/pull/280) | COMPLETED | 0.4206209582 | fold std 허용 범위·Log Loss 개선·클래스 붕괴 없음, Macro F1 -0.0016111878로 gate 실패·ARCHIVE; window·minimum iteration 재탐색 없이 종료 |
-| M4 | 채택 XGBoost validation-only TreeSHAP 설명 감사 | [#281](https://github.com/fabxoe/open_cancer/issues/281) | 해당 없음 | [#282](https://github.com/fabxoe/open_cancer/pull/282) | PR_OPEN | N/A | EXP-219·229의 기존·pathway 신호 사용을 설명하고 삭제·선택·점수 변경에는 사용하지 않음 |
+| M4 | 채택 XGBoost validation-only TreeSHAP 설명 감사 | [#281](https://github.com/fabxoe/open_cancer/issues/281) | 해당 없음 | [#282](https://github.com/fabxoe/open_cancer/pull/282) | COMPLETED | N/A | EXP-219·229의 기존·pathway 신호 사용을 설명하고 삭제·선택·점수 변경에는 사용하지 않음 |
 | S4 | TruncatedSVD 비교 모델 | [#196](https://github.com/fabxoe/open_cancer/issues/196) | EXP-196 | [#221](https://github.com/fabxoe/open_cancer/pull/221) | COMPLETED | 0.3496748557 | Macro F1 -0.0672117·fold std와 DLBC 붕괴로 ARCHIVE; 차원 재탐색 중단 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`만 사용하며, 필요하면 `BLOCKED` 또는 `REJECTED`로 종료한다. 이는 실험 재현 상태와 별개다.
