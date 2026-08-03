@@ -3,11 +3,11 @@
   "issue_number": 223,
   "reproducibility_status": "INFERENCE_VERIFIED",
   "source_commit": "41eaafc17f286ebc38568d076df5bf16fd0626ac",
-  "source_tag": null,
+  "source_tag": "exp-223-repro-v1",
   "dirty_worktree": false,
   "data_manifest": "reproducibility/exp223_pathway_macro_f1_checkpoint/data_manifest.json",
   "environment": "reproducibility/exp223_pathway_macro_f1_checkpoint/environment.json",
-  "release_url": null,
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-223-repro-v1",
   "verifier": "2heej",
   "verified_at": "2026-08-02T17:02:54.418077+00:00",
   "artifacts": [
@@ -16,56 +16,56 @@
       "path": "models/exp223_pathway_macro_f1_checkpoint/fold_00.json",
       "size_bytes": 10321173,
       "sha256": "9e3936c54c9cfe51d4b96374a77578777d67206cf83af12c9559a623812d31b7",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-223-repro-v1/exp223_pathway_macro_f1_checkpoint_repro.tar.gz#models/exp223_pathway_macro_f1_checkpoint/fold_00.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp223_pathway_macro_f1_checkpoint/fold_01.json",
       "size_bytes": 12039485,
       "sha256": "4bf031cf7bae026afa0809a73ec03664f65d0247ffa02dda8e7960d571c86ab7",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-223-repro-v1/exp223_pathway_macro_f1_checkpoint_repro.tar.gz#models/exp223_pathway_macro_f1_checkpoint/fold_01.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp223_pathway_macro_f1_checkpoint/fold_02.json",
       "size_bytes": 7510120,
       "sha256": "705314e5b3751ebd4ca7f80c1b8cacc19d8ee4ae40053158d025bc0d319cb5b9",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-223-repro-v1/exp223_pathway_macro_f1_checkpoint_repro.tar.gz#models/exp223_pathway_macro_f1_checkpoint/fold_02.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp223_pathway_macro_f1_checkpoint/fold_03.json",
       "size_bytes": 11491777,
       "sha256": "d88b11017f6c8c560181899c543cb3912be3abb472cfc22498a9fd4bb4cb0630",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-223-repro-v1/exp223_pathway_macro_f1_checkpoint_repro.tar.gz#models/exp223_pathway_macro_f1_checkpoint/fold_03.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp223_pathway_macro_f1_checkpoint/fold_04.json",
       "size_bytes": 11540723,
       "sha256": "9b8913219180b67b6490dcc576cf1a85b5b4f66337b954161233dd91aedfa58d",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-223-repro-v1/exp223_pathway_macro_f1_checkpoint_repro.tar.gz#models/exp223_pathway_macro_f1_checkpoint/fold_04.json"
     },
     {
       "kind": "submission",
       "path": "submissions/exp223_pathway_macro_f1_checkpoint.csv",
       "size_bytes": 38148,
       "sha256": "74a23b6337b17fc4ed70ae1e3639331065e0d74432bed6b8fcf9dc9344e6c48c",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-223-repro-v1/exp223_pathway_macro_f1_checkpoint_repro.tar.gz#submissions/exp223_pathway_macro_f1_checkpoint.csv"
     },
     {
       "kind": "oof_probability",
       "path": "oof/exp223_pathway_macro_f1_checkpoint.csv",
       "size_bytes": 2125907,
       "sha256": "357dd1346eb45647126efc207b7a487b960431d0f3cac20679ccebd8e9811206",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-223-repro-v1/exp223_pathway_macro_f1_checkpoint_repro.tar.gz#oof/exp223_pathway_macro_f1_checkpoint.csv"
     },
     {
       "kind": "test_probability",
       "path": "preds/exp223_pathway_macro_f1_checkpoint_test_proba.csv",
       "size_bytes": 833278,
       "sha256": "72a694fe79398ca1cef07a629036e02fc229af1ed4272818c9ca551907769fb6",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-223-repro-v1/exp223_pathway_macro_f1_checkpoint_repro.tar.gz#preds/exp223_pathway_macro_f1_checkpoint_test_proba.csv"
     },
     {
       "kind": "metrics",
@@ -79,7 +79,7 @@
       "path": "reproducibility/exp223_pathway_macro_f1_checkpoint/config.resolved.yaml",
       "size_bytes": 25835,
       "sha256": "e55af890dd6df2007d904594acde55f874f955e9ace6f3795d02cdaed5b50403",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-223-repro-v1/exp223_pathway_macro_f1_checkpoint_repro.tar.gz#reproducibility/exp223_pathway_macro_f1_checkpoint/config.resolved.yaml"
     },
     {
       "kind": "checkpoint_iteration_audit",
@@ -115,6 +115,13 @@
       "size_bytes": 29574,
       "sha256": "42c829371af599cf5484886ea21b6e623c052818cf5ebb84c5d96c6fde4eb14d",
       "storage_uri": null
+    },
+    {
+      "kind": "release_bundle",
+      "path": "release-assets/exp223_pathway_macro_f1_checkpoint_repro.tar.gz",
+      "size_bytes": 15390461,
+      "sha256": "b9c2c16a6cfb252ba66a6b6b301cadecd7a9c731bbde8b04e072a17c4f949d44",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-223-repro-v1/exp223_pathway_macro_f1_checkpoint_repro.tar.gz"
     }
   ],
   "verification": {

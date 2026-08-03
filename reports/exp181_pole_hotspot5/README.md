@@ -112,6 +112,19 @@ Macro F1 gate와 클래스별 F1 gate 모두 실패해 **기각**한다.
 - F(`POLE_ED_any_missense`, 41건)는 표본이 가장 많아 seed 민감도가 가장
   낮을 것으로 예상되며, D/E보다 안정적인 판정이 가능할 수 있다.
 
+## Update: Macro-F1-checkpoint 재평가 결과 (E와 함께 완료, 트랙 종료)
+
+E(`POLE_ED_driver_extended`)가 D의 COAD 신호를 그대로 재현(정확히는 결정
+경계 불변)한 뒤, D/E와 Cell Cycle A/B(EXP-170/173) 전체를
+macro-f1-checkpoint 정책으로 재평가했다(재학습 없이 저장된 checkpoint
+재사용). 올바른 비교 대상인 EXP-219(같은 정책의 EXP-094) 기준으로도 D는
+여전히 `-0.0038`로 기각이 유지된다. **게이트가 뒤집히지 않아 위 "다음
+실험 후보"에서 언급한 E 진행은 완료했고 F는 진행하지 않는다.** 전체
+결과와 COAD 잔여 신호에 대한 두 가지 대안 가설(생물학적 신호 vs
+checkpoint-클래스 구조적 상호작용)은
+[`pole_cellcycle_macro_f1_checkpoint_reevaluation.md`](../analysis/pole_cellcycle_macro_f1_checkpoint_reevaluation.md)에
+정리했다. **POLE pilot 트랙은 이걸로 최종 종료한다.**
+
 ## 재현과 관련 파일
 
 - Config: `configs/exp181_pole_hotspot5.yaml`

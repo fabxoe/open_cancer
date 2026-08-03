@@ -8,8 +8,8 @@ EXP-096의 fixed pathway burden 피처·XGBoost 설정·canonical 5-fold는 유�
 `+0.0032586396` 개선됐고 fold 표준편차도 `-0.0002581124` 감소했습니다.
 
 사전 기준인 Macro F1 `+0.001`, fold 표준편차 악화 `<0.002`, 클래스별 대규모
-붕괴 없음 조건을 모두 충족해 **채택**합니다. Public LB에는 아직 제출하지
-않았습니다.
+붕괴 없음 조건을 모두 충족해 **채택**합니다. 이후 Public Macro F1
+`0.323243525`를 기록해 기존 팀 최고 EXP-031보다 `+0.0061631401` 높았습니다.
 
 ## 유일한 변경
 
@@ -46,6 +46,16 @@ Log Loss는 악화됐지만 대회 공식 지표는 Macro F1입니다. 다만 �
 fold에서 checkpoint를 선택하고 점수를 측정하므로 낙관 편향 가능성은 남아 있으며,
 Public 제출이나 독립 반복에서 일반화를 확인해야 합니다.
 
+## 리더보드 제출 결과
+
+- 제출 ID / 시각: `1509283` / 2026-08-03 10:30:33 KST
+- 제출 파일: `submissions/exp223_pathway_macro_f1_checkpoint.csv`
+- SHA-256: `74a23b6337b17fc4ed70ae1e3639331065e0d74432bed6b8fcf9dc9344e6c48c`
+- Public Macro F1: `0.323243525`
+- 기존 팀 최고 EXP-031 대비: `+0.0061631401`
+- 순위: 제출 확인 당시 참가 4팀 중 4위
+- 재현 상태: `INFERENCE_VERIFIED`
+
 ## 재현성과 산출물
 
 - Issue: [#223](https://github.com/fabxoe/open_cancer/issues/223)
@@ -54,7 +64,7 @@ Public 제출이나 독립 반복에서 일반화를 확인해야 합니다.
 - Resolved config: `reproducibility/exp223_pathway_macro_f1_checkpoint/config.resolved.yaml`
 - Metrics: `reports/exp223_pathway_macro_f1_checkpoint/metrics.json`
 - pathway membership: `reports/exp223_pathway_macro_f1_checkpoint/pathway_membership.json`
-- 제출 후보: `submissions/exp223_pathway_macro_f1_checkpoint.csv` (DACON 미제출)
+- 제출 파일: `submissions/exp223_pathway_macro_f1_checkpoint.csv`
 - 제출 SHA-256:
   `74a23b6337b17fc4ed70ae1e3639331065e0d74432bed6b8fcf9dc9344e6c48c`
 - 실행시간: 556.44초

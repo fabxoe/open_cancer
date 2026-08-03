@@ -1,0 +1,74 @@
+{
+  "macro_f1_delta": -0.0027305196948878563,
+  "macro_f1_gate_passed": false,
+  "fold_std_delta": 0.0003478711139045503,
+  "fold_std_gate_passed": true,
+  "log_loss_delta": -0.001635996813375229,
+  "log_loss_gate_passed": true,
+  "worst_per_class_f1_delta": -0.05008576329331049,
+  "per_class_f1_gate_passed": false,
+  "adopted": false,
+  "acceptance_criteria": {
+    "min_macro_f1_delta": 0.001,
+    "max_fold_std_delta": 0.002,
+    "require_no_log_loss_regression": true,
+    "require_no_per_class_f1_regression": true,
+    "note": "Gate result is recorded but is not the deciding factor for this confirmatory run -- see scope."
+  },
+  "baseline_experiment_id": "EXP-094",
+  "baseline_oof_macro_f1": 0.4168865738785269,
+  "positive_rate_train": 0.004515400622040033,
+  "positive_rate_test": 0.007855459116399288,
+  "fold_positive_counts": {
+    "0": 8,
+    "1": 5,
+    "2": 5,
+    "3": 2,
+    "4": 8
+  },
+  "watch_classes": [
+    "COAD",
+    "UCEC",
+    "DLBC"
+  ],
+  "watch_class_train_positive_rate": {
+    "COAD": 0.026905829086899757,
+    "UCEC": 0.09090909361839294,
+    "DLBC": 0.0
+  },
+  "watch_class_f1_delta": {
+    "COAD": 0.005080180477105012,
+    "UCEC": -0.008716081708782464,
+    "DLBC": -0.05008576329331049
+  },
+  "coad_direction_matches_d": true,
+  "d_coad_delta_for_reference": 0.005080180477105012,
+  "per_class_f1_delta": {
+    "ACC": 0.00628436763550666,
+    "BLCA": -0.013513513513513487,
+    "BRCA": -0.002737120006211957,
+    "CESC": 0.035179001320183256,
+    "COAD": 0.005080180477105012,
+    "DLBC": -0.05008576329331049,
+    "GBMLGG": -0.0008324397539364314,
+    "HNSC": -0.01177055702917773,
+    "KIPAN": -0.00021892017623073579,
+    "KIRC": -0.0014727540500736325,
+    "LAML": 0.019782214156079836,
+    "LGG": -0.013353734872722234,
+    "LIHC": -0.017414585318202114,
+    "LUAD": -0.01669938182990066,
+    "LUSC": 0.011616686925901343,
+    "OV": -0.0021145573553505437,
+    "PAAD": 0.00261915155363307,
+    "PCPG": -0.007001439884809224,
+    "PRAD": 0.001670843776106934,
+    "SARC": -0.004683840749414525,
+    "SKCM": 0.009908556671146651,
+    "STES": -0.002066174665958931,
+    "TGCT": -0.012183836192367292,
+    "THCA": 0.0,
+    "THYM": 0.0017301858172165674,
+    "UCEC": -0.008716081708782464
+  }
+}
