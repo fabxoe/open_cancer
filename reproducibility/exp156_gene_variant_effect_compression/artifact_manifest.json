@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-156",
+  "issue_number": 156,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "5b1cff179ee68bc8f873f4f9dd4c73305aec3e65",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp156_gene_variant_effect_compression/data_manifest.json",
+  "environment": "reproducibility/exp156_gene_variant_effect_compression/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp156_gene_variant_effect_compression/fold_00.json",
+      "size_bytes": 12252483,
+      "sha256": "9a5d9752056360a99ac4842ea18356c1709e82365b4794154ac0ec0de8e0af32",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp156_gene_variant_effect_compression/fold_01.json",
+      "size_bytes": 11874078,
+      "sha256": "9f6794ee6589fa33978b95db6cbe4ddff2e04d5b206182a03888d928824840d1",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp156_gene_variant_effect_compression/fold_02.json",
+      "size_bytes": 13198882,
+      "sha256": "b16afc516c21d07830ee4d434bb8aa6fa775407fa76fa0959c00f2595b219c69",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp156_gene_variant_effect_compression/fold_03.json",
+      "size_bytes": 12766751,
+      "sha256": "e07a19a2191e92172e77cd4276ebd303c8ae321f9e5de9f7495078458dc60ac2",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp156_gene_variant_effect_compression/fold_04.json",
+      "size_bytes": 12139441,
+      "sha256": "d1cbbea116b75eec6175f7f33432942b72deb81cf51ee15876c8cb898e12f2a9",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp156_gene_variant_effect_compression.csv",
+      "size_bytes": 3538587,
+      "sha256": "fb2aa5e060983006effc5da0ca6e7469ddd37e938c190af484c97e7ad9207b38",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp156_gene_variant_effect_compression.csv",
+      "size_bytes": 38180,
+      "sha256": "0898924d3d6cd8ccff6d69b1347659026eb01b909f4eb5082a61dbb4a2ad1480",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp156_gene_variant_effect_compression_test_proba.csv",
+      "size_bytes": 1414853,
+      "sha256": "141474946a193f4a89e497f982e994bbe67b9fa8f848c6865ec32bd28a9c22af",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp156_gene_variant_effect_compression/config.resolved.yaml",
+      "size_bytes": 4507,
+      "sha256": "e938501e3887b3d8325f4773b94e4a72db797d87d13a0a1a08f823071661f3c2",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp156_gene_variant_effect_compression/metrics.json",
+      "size_bytes": 11177,
+      "sha256": "a26b046b7e360cabb225c03605818e4bb592eda4719032474539dbb9284f9234",
+      "storage_uri": null
+    }
+  ],
+  "verifier": "Gomin-art",
+  "verified_at": "2026-08-03T02:34:48.643447+00:00",
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

@@ -1,0 +1,178 @@
+experiment:
+  experiment_id: EXP-156
+  issue_number: 156
+  branch: issue-156-exp-gene-variant-effect-compression
+  owner: Gomin-art
+  source_commit: 5b1cff179ee68bc8f873f4f9dd4c73305aec3e65
+  dirty_worktree: false
+  started_at: '2026-08-03T02:02:48.601660+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  n_splits: 5
+  seed: 42
+feature_spec:
+  name: exp156-compact-effect-ablation
+  parent_name: v1
+  parent_experiment: EXP-094
+  base_feature_spec_sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+  feature_spec_sha256: 2b11715170d3e966939d853d6aebd482a8b4963567783808eb5bedfacab75f4d
+  definition_version: 1.0.0
+  fit_scope: stateless
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+  replacement:
+    removed_family: per_gene_mutation_type_indicators
+    removed_types:
+    - missense
+    - synonymous
+    - nonsense
+    - frameshift
+    - complex
+    removed_dimension: 21920
+    removed_feature_names_sha256: e06d0ea992b5e46fe2480d29e7bdffbd78ff0565950db9d904d2edc4489d2cf9
+    added_family: compact_gene_effect
+    added_features_per_gene:
+    - compressed_effect_severity_max
+    - compressed_variant_count_1_or_2plus
+    - compressed_effect_diversity
+    - compressed_complex_or_unparsed
+    added_dimension: 17536
+  train_input_sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test_input_sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  train_shape:
+  - 6201
+  - 30735
+  test_shape:
+  - 2546
+  - 30735
+  feature_names_sha256: 842d8a6127db54997d8fa860c53cff0c30ef4dae4e80e4b5f468429f323f9117
+  train_qc:
+    definition_version: 1.0.0
+    fit_scope: stateless
+    rows: 6201
+    gene_count: 4384
+    output_dimension: 17536
+    matrix_nnz: 656733
+    mutated_gene_cells: 218893
+    multi_token_gene_cells: 22026
+    complex_or_unparsed_gene_cells: 324
+    feature_names_sha256: 561cd379056926738e00e5fe06ef207c856aef2ef6ea09db7598d46c6db5c777
+  test_qc:
+    definition_version: 1.0.0
+    fit_scope: stateless
+    rows: 2546
+    gene_count: 4384
+    output_dimension: 17536
+    matrix_nnz: 596810
+    mutated_gene_cells: 198930
+    multi_token_gene_cells: 63178
+    complex_or_unparsed_gene_cells: 8304
+    feature_names_sha256: 561cd379056926738e00e5fe06ef207c856aef2ef6ea09db7598d46c6db5c777
+  outputs:
+    train_features:
+      path: /home/hakyh/git/open_cancer/data/processed/exp156_gene_variant_effect_compression/train_features.npz
+      sha256: d7be643e8788ada9ae764c94bcee44b5ac5e71579f388a64a07c104568cbb73d
+    test_features:
+      path: /home/hakyh/git/open_cancer/data/processed/exp156_gene_variant_effect_compression/test_features.npz
+      sha256: 6ce572c2b08dce1cf0f8b78327b78315ca3c2d657a58386b7bad5a9c1ee9739d
+    feature_names:
+      path: /home/hakyh/git/open_cancer/data/processed/exp156_gene_variant_effect_compression/feature_names.json
+      sha256: 2f1acd12b76f04d31e768b09e58e191691f8705cbd22ca6ed491ffe817a0d929
+feature_count: 30735
+model:
+  name: xgboost
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+training:
+  balanced_sample_weight: true
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  best_iterations:
+  - 214
+  - 205
+  - 237
+  - 226
+  - 212
+  command: uv run python scripts/run_exp156_gene_variant_effect_compression.py --config
+    configs/exp156_gene_variant_effect_compression.yaml
