@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 66
+- 실제 실험 수: 67
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4254998819 (`EXP-253`)
@@ -85,6 +85,7 @@
 | EXP-253 | COMPLETED | 2heej | #253 | EXP-209 LightGBM + EXP-229 XGBoost 고정 0.5/0.5 확률 평균 | 0.4254998819 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 +0.0025113·Log Loss 개선·fold 안정성 기준 통과로 채택 후보 | [보고서](reports/exp253_lightgbm_xgboost_blend/README.md) |
 | EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
 | EXP-257 | COMPLETED | Kangho-Park | #257 | EXP-096 + functional_role_burden_extended(oncogene/TSG count raw/frac/resid/log1p, fold-train 게이팅, #176 확장) | 0.4118051266 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0063102·Log Loss 악화, 26개 중 19개 클래스 하락으로 ARCHIVE | [보고서](reports/exp257_functional_role_burden_extended/README.md) |
+| EXP-272 | COMPLETED | fabxoe | #272 | EXP-219 고정 5-seed(42·142·242·342·442) 확률 0.2 평균 | 0.4208578157 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0013743·fold 표준편차와 Log Loss 악화로 ARCHIVE | [보고서](reports/exp272_exp219_multiseed_ensemble/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -142,10 +143,46 @@
 | 2026-08-02T16:32:46.152425+00:00 | EXP-211 | 2heej | `38955bcb7f1a0e8d72e933fd9fa4d48bd1a7873a` / 태그 없음 | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 2.12e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp211_ovr_xgboost_v2_performance/comparison.json) |
 | 2026-08-02T14:26:22.219111+00:00 | EXP-209 | 2heej | `ec05d217aeed555e3beb18151920a07fe275dd6f` / [`exp-209-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-209-repro-v1) | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0; Issue #260에서 원본 Release 복구 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp209_lightgbm_v2_performance/comparison.json) |
 | 2026-08-03T09:41:48.286924+00:00 | EXP-257 | Kangho-Park | `56b1b1d3515b9ff09f36fc7ca691ccdeaf53d487` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp257_functional_role_burden_extended/comparison.json) |
+| 2026-08-03T13:17:22.042664+00:00 | EXP-272 | fabxoe | `5913bf49e920d5e1ff36e9ff56bf9f16aa90f40b` / 태그 없음 | SHA-256 일치 | 5개 seed checkpoint 검증 통과·고정 평균 제출 SHA-256 일치·라벨 100%·확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp272_exp219_multiseed_ensemble/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-272] EXP-219 고정 5-seed 확률 평균
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #272 / `issue-272-exp219-multiseed-ensemble`
+- 학습 소스 commit: `5913bf49e920d5e1ff36e9ff56bf9f16aa90f40b`
+- 최종화 소스 commit: `61a1fe7b4864935cbf41a3793bfb0e3c48f67365`
+- 시작/종료: 2026-08-03T13:17:21.394000+00:00 /
+  2026-08-03T13:17:22.042664+00:00 (최종 고정 평균 생성 시간)
+
+#### 실행과 결과
+
+- 부모 EXP-219의 피처·canonical 5-fold·Macro-F1-best checkpoint 정책을 유지하고
+  seed `42, 142, 242, 342, 442`를 각각 독립 학습했다.
+- 결과를 보기 전에 고정한 `0.2`씩의 OOF/test 확률 평균만 평가했다.
+- seed별 OOF Macro F1: 0.4222321460 / 0.4245190846 / 0.4246887695 /
+  0.4238191001 / 0.4214180383
+- Fold Macro F1: 0.4170648211 / 0.4298147148 / 0.4017862524 /
+  0.4211686299 / 0.4342485967
+- OOF Macro F1: 0.4208578157 (EXP-219 대비 `-0.0013743303`)
+- Fold 표준편차: 0.0112937018 (EXP-219 대비 `+0.0045733083`)
+- Accuracy: 0.4091275601, Log Loss: 1.8553646704
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 산출물과 결론
+
+- Config: `configs/exp272_exp219_multiseed_ensemble.yaml`
+- Metrics: `reports/exp272_exp219_multiseed_ensemble/metrics.json`
+- Report: `reports/exp272_exp219_multiseed_ensemble/README.md`
+- Reproduction: `reproducibility/exp272_exp219_multiseed_ensemble/`
+- seed 42는 EXP-219 원본 OOF·test 확률과 byte-level로 일치했다.
+- 5-seed 고정 평균은 Macro F1, fold 안정성과 Log Loss가 모두 악화돼
+  `ARCHIVE`한다. seed 제외·가중치 재탐색·리더보드 제출은 진행하지 않는다.
 
 ### [EXP-209] LightGBM + 동결 v2-performance
 
