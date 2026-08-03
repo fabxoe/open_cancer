@@ -7,12 +7,12 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 57
+- 실제 실험 수: 66
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
+- 최고 Local OOF Macro F1: 0.4254998819 (`EXP-253`)
 - 최고 Public LB Macro F1: 0.323243525 (`EXP-223`)
-- 최고 재현 검증 모델: `EXP-131` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-253` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-03
 
 ## 실험 요약
@@ -56,6 +56,7 @@
 | EXP-137 | COMPLETED | fabxoe | #137 | EXP-094 + EXP-125 leakage-safe cross-fitted Logistic stacking | 0.4068626451 | 미제출 | INFERENCE_VERIFIED | 소수 클래스 F1 붕괴·최고 단일 대비 -0.0153766511로 stack 기각 | [보고서](reports/exp137_cross_fitted_stacking/README.md) |
 | EXP-151 | COMPLETED | fabxoe | #151 | EXP-094 + log1p(mutated_gene_count), Secure RTX 4090 실행 | 0.4188970451 | 0.3125095748 | INFERENCE_VERIFIED | Public은 EXP-094 대비 +0.0006564118이나 EXP-031 최고 미달·burden 피처 미채택 | [보고서](reports/exp151_mutated_gene_burden/README.md) |
 | EXP-154 | COMPLETED | fabxoe | #154 | EXP-094 + log1p(total_variant_count), Secure RTX 4090 실행 | 0.4183986443 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0056484로 기준 실패·미채택 | [보고서](reports/exp154_total_variant_burden/README.md) |
+| EXP-156 | COMPLETED | Gomin-art | #156 | EXP-094의 유전자별 변이유형 indicator 5종을 compact effect descriptor 4종으로 압축 | 0.4148494335 | 미제출 | INFERENCE_VERIFIED | 특징 4,384개 감소에도 Macro F1 -0.0020371·fold 표준편차 +0.0046845로 기준 실패, ARCHIVE | [보고서](reports/exp156_gene_variant_effect_compression/README.md) |
 | EXP-158 | COMPLETED | fabxoe | #158 | EXP-094 + log1p(missense_count), Secure RTX 4090 실행 | 0.4183327348 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0032953으로 기준 실패·미채택 | [보고서](reports/exp158_missense_burden/README.md) |
 | EXP-160 | COMPLETED | Kangho-Park | #160 | EXP-069 max_residue_position fold-safe permutation negative control (Issue #80 후속) | 0.3987413040(permuted 평균, 원본 0.4131007993) | 미제출(진단 실험) | NOT_STARTED | 25개 (seed, fold) 중 24개에서 하락(delta -0.0143594953)으로 신호 확인, Feature Spec v1 유지·Issue #80 계약 종료 | [보고서](reports/exp160_residue_position_negative_control/README.md) |
 | EXP-170 | COMPLETED | Kangho-Park | #170 | EXP-094 + P_any_nonsilent_cellcycle (Cell Cycle pathway, #167 카탈로그 활용 파일럿 A) | 0.4137462167 | 미제출 | NOT_STARTED | Macro F1 -0.0031404, DLBC F1 -0.0500858 급락으로 기준 실패·미채택 | [보고서](reports/exp170_cellcycle_any_nonsilent/README.md) |
@@ -75,7 +76,15 @@
 | EXP-219 | COMPLETED | fabxoe | #219 | EXP-094 동일 조건 + validation Macro-F1-best checkpoint 선택 | 0.4222321460 | 미제출 | INFERENCE_VERIFIED | 기존 mlogloss-best 대비 +0.0053456·fold std 개선, 향후 XGBoost 정책 채택 | [보고서](reports/exp219_macro_f1_checkpoint_selection/README.md) |
 | EXP-196 | COMPLETED | fabxoe | #196 | outer-train raw mutation-presence TruncatedSVD 256 + aggregate·hotspot | 0.3496748557 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0672117·fold std와 DLBC F1 붕괴로 ARCHIVE | [보고서](reports/exp196_s4_truncated_svd/README.md) |
 | EXP-223 | COMPLETED | 2heej | #223 | EXP-096 pathway XGBoost + validation Macro-F1-best checkpoint | 0.4213739476 | 0.323243525 | INFERENCE_VERIFIED | EXP-096 대비 +0.0032586·Public 팀 최고 갱신으로 채택 | [보고서](reports/exp223_pathway_macro_f1_checkpoint/README.md) |
+| EXP-229 | COMPLETED | 2heej | #229 | EXP-223 + pathway별 변이 종류 유전자 수 50개 후보 | 0.4229885745 | 미제출 | INFERENCE_VERIFIED | EXP-223 대비 +0.0016146·안정성 및 클래스 gate 통과로 조건부 채택 | [보고서](reports/exp229_pathway_mutation_types/README.md) |
+| EXP-232 | COMPLETED | 2heej | #232 | EXP-229 pathway 변이 피처의 nested group permutation 선택 | 0.4214874085 | 미제출 | INFERENCE_VERIFIED | 피처 수는 감소했지만 EXP-229 대비 -0.0015012로 Macro F1 gate 실패, ARCHIVE | [보고서](reports/exp232_pathway_group_selection/README.md) |
+| EXP-237 | COMPLETED | 2heej | #237 | EXP-229 pathway 변이종류 raw count를 pathway 내부 fraction으로 교체 | 0.4204138300 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 -0.0025747·Log Loss 크게 악화로 ARCHIVE | [보고서](reports/exp237_pathway_mutation_fractions/README.md) |
+| EXP-240 | COMPLETED | 2heej | #240 | EXP-229 + 문헌 고정 암종별 분자 변이조합 21개 | 0.4189644465 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 -0.0040241·Log Loss 악화로 ARCHIVE, 일부 클래스 신호만 후속 검토 | [보고서](reports/exp240_molecular_constellations/README.md) |
+| EXP-245 | COMPLETED | 2heej | #245 | EXP-229 + 8개 암종 문헌 고정 mutation-mechanism proxy | 0.4213989560 | 미제출 | INFERENCE_VERIFIED | EXP-240 대비 개선했지만 EXP-229 대비 -0.0015896·Log Loss 악화로 ARCHIVE | [보고서](reports/exp245_lineage_mechanism_patterns/README.md) |
+| EXP-250 | COMPLETED | 2heej | #250 | EXP-245 암종 모듈의 outer-train nested permutation 선택 | 0.4209182565 | 미제출 | INFERENCE_VERIFIED | 31개 중 fold별 27~31개를 유지하고 EXP-229·245 대비 성능과 안정성이 악화되어 ARCHIVE | [보고서](reports/exp250_lineage_group_selection/README.md) |
+| EXP-253 | COMPLETED | 2heej | #253 | EXP-209 LightGBM + EXP-229 XGBoost 고정 0.5/0.5 확률 평균 | 0.4254998819 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 +0.0025113·Log Loss 개선·fold 안정성 기준 통과로 채택 후보 | [보고서](reports/exp253_lightgbm_xgboost_blend/README.md) |
 | EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
+| EXP-257 | COMPLETED | Kangho-Park | #257 | EXP-096 + functional_role_burden_extended(oncogene/TSG count raw/frac/resid/log1p, fold-train 게이팅, #176 확장) | 0.4118051266 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0063102·Log Loss 악화, 26개 중 19개 클래스 하락으로 ARCHIVE | [보고서](reports/exp257_functional_role_burden_extended/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -97,7 +106,7 @@
 | 2026-08-02T23:07:03+09:00 | EXP-135 | #135 | `submissions/exp135_fixed_probability_blend.csv` (제출 ID `1508856`) | `5eef332c50322a8f2be1fb64b15bef49d8f5c91ac6200a7dbc587cebaa75b70a` | 0.3166527939 | EXP-031 최고 대비 -0.0004275910<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">재현 가능한 제출 중 2위</span> | INFERENCE_VERIFIED |
 | 2026-08-02T23:52:30+09:00 | EXP-151 | #151 | `submissions/exp151_mutated_gene_burden.csv` (제출 ID `1508912`) | `dddaf57cf2c497b08264a2c883223afff0d347edcadb9585783f06e1294e4349` | 0.3125095748 | EXP-031 최고 점수<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span> | INFERENCE_VERIFIED |
 | 2026-08-02T23:53:56+09:00 | EXP-188 | #188 | `submissions/exp188_c1_phi_jaccard_pruning.csv` (제출 ID `1508914`) | `a36bffa5e4d055f99d5fc8584c795a08c9f1b608cc941716d61b5b94428a1d0a` | 0.3140052334 | EXP-031 최고 점수<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span> | INFERENCE_VERIFIED |
-| 2026-08-03T10:30:33+09:00 | EXP-223 | #223 | `submissions/exp223_pathway_macro_f1_checkpoint.csv` (제출 ID `1509283`) | `74a23b6337b17fc4ed70ae1e3639331065e0d74432bed6b8fcf9dc9344e6c48c` | 0.323243525 | 제출 확인 당시 참가 4팀 중 4위·팀 Public 최고 갱신 | INFERENCE_VERIFIED |
+| 2026-08-03T10:30:33+09:00 | EXP-223 | #223 | `submissions/exp223_pathway_macro_f1_checkpoint.csv` (제출 ID `1509283`) | `74a23b6337b17fc4ed70ae1e3639331065e0d74432bed6b8fcf9dc9344e6c48c` | 0.323243525 | 팀 Public 최고 갱신<span style="display:block">2026-08-03 19:13 KST 기준 참가 4팀 중 4위·팀 제출 17회</span> | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -131,7 +140,8 @@
 | 2026-08-01T14:26:44.634572+00:00 | EXP-127 | fabxoe | `03af58890c1cac9d90e61430e550b7ae6cc7060d` / [`exp-127-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-127-repro-v1) | 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp127_catboost_v1/comparison.json) |
 | 2026-08-02T09:15:19.096281+00:00 | EXP-179 | fabxoe | `704731a20520339e21f4c84eae93708d2e1dfd3e` / 태그 없음 | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp179_xgb_feature_spec_v1_smote/comparison.json) |
 | 2026-08-02T16:32:46.152425+00:00 | EXP-211 | 2heej | `38955bcb7f1a0e8d72e933fd9fa4d48bd1a7873a` / 태그 없음 | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 2.12e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp211_ovr_xgboost_v2_performance/comparison.json) |
-| 2026-08-02T14:26:22.219111+00:00 | EXP-209 | 2heej | `ec05d217aeed555e3beb18151920a07fe275dd6f` / 태그 없음 | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp209_lightgbm_v2_performance/comparison.json) |
+| 2026-08-02T14:26:22.219111+00:00 | EXP-209 | 2heej | `ec05d217aeed555e3beb18151920a07fe275dd6f` / [`exp-209-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-209-repro-v1) | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0; Issue #260에서 원본 Release 복구 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp209_lightgbm_v2_performance/comparison.json) |
+| 2026-08-03T09:41:48.286924+00:00 | EXP-257 | Kangho-Park | `56b1b1d3515b9ff09f36fc7ca691ccdeaf53d487` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp257_functional_role_burden_extended/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -165,6 +175,7 @@
 - Log Loss: 1.8208257360 (EXP-125 대비 `-0.0019725059`)
 - Public LB: 미제출
 - 재현 상태: `INFERENCE_VERIFIED`
+- Release: [`exp-209-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-209-repro-v1)
 
 #### 결론
 
@@ -176,12 +187,279 @@
   Experiment Issue에서 검증한다.
 | 2026-08-02T15:08:02+00:00 | EXP-151 | fabxoe | `17d433f81cf41fce54045739b0531915cc89b565` / [`exp-151-repro-v2`](https://github.com/fabxoe/open_cancer/releases/tag/exp-151-repro-v2) | SHA-256 일치 | 제출 SHA-256·test 라벨 100% 일치; GPU→CPU 확률 차이와 OOF 라벨 99.9839% 일치 기록 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp151_mutated_gene_burden/comparison.json) |
 | 2026-08-02T15:08:02+00:00 | EXP-188 | fabxoe | `1ff0663af2f682229d715136119e8e1db6bace62` / [`exp-188-repro-v2`](https://github.com/fabxoe/open_cancer/releases/tag/exp-188-repro-v2) | SHA-256 일치 | 제출 SHA-256·OOF/test 라벨·확률 100% 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp188_c1_phi_jaccard_pruning/comparison.json) |
-| 2026-08-02T15:58:51.992672+00:00 | EXP-219 | fabxoe | `41d07096e1c87eb55e7d7a73645629ea3d0952e3` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.45e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp219_macro_f1_checkpoint_selection/comparison.json) |
+| 2026-08-02T15:58:51.992672+00:00 | EXP-219 | fabxoe | `41d07096e1c87eb55e7d7a73645629ea3d0952e3` / [`exp-219-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-219-repro-v1) | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.45e-07; Issue #258에서 원본 Release 복구 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp219_macro_f1_checkpoint_selection/comparison.json) |
 | 2026-08-02T17:02:54.418077+00:00 | EXP-223 | 2heej | `41eaafc17f286ebc38568d076df5bf16fd0626ac` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.44e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp223_pathway_macro_f1_checkpoint/comparison.json) |
+| 2026-08-03T02:34:48.643447+00:00 | EXP-156 | Gomin-art | `5b1cff179ee68bc8f873f4f9dd4c73305aec3e65` / 태그 없음 | SHA-256 일치 | 제출 SHA-256·test 라벨 100% 일치, 확률 최대 차이 5.93e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp156_gene_variant_effect_compression/comparison.json) |
+| 2026-08-03T02:18:40.740535+00:00 | EXP-229 | 2heej | `75977326ab526f0b4c34ad5af90b29fb833c44c6` / [`exp-229-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-229-repro-v1) | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.72e-7; Issue #260에서 원본 Release 복구 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp229_pathway_mutation_types/comparison.json) |
+| 2026-08-03T03:06:15.409629+00:00 | EXP-232 | 2heej | `7a940bcaae6cd1bb36f3c9d5e5d3296c8ce1b88c` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.36e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp232_pathway_group_selection/comparison.json) |
+| 2026-08-03T05:00:25.503797+00:00 | EXP-237 | 2heej | `bbebdf139bee3002b542015097ce8b2bc46fbe71` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.47e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp237_pathway_mutation_fractions/comparison.json) |
+| 2026-08-03T05:39:49.632899+00:00 | EXP-240 | 2heej | `b78e45c959a5f937bae3f7c5a5bc71978c4152fd` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.34e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp240_molecular_constellations/comparison.json) |
+| 2026-08-03T06:09:06.168833+00:00 | EXP-245 | 2heej | `7c755756a19eb721cdfe58dfab0798dac3ba9957` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.27e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp245_lineage_mechanism_patterns/comparison.json) |
+| 2026-08-03T06:54:33.822207+00:00 | EXP-250 | 2heej | `7f93b2f8be49e3d01cdd6b2442da0a5b6787488c` / 태그 없음 | SHA-256 일치 | 데이터·제출 SHA-256과 test 라벨 일치, 확률 최대 차이 1.20e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp250_lineage_group_selection/comparison.json) |
+| 2026-08-03T08:18:31+00:00 | EXP-253 | 2heej | `b9d296ea164beb4b33e5797b7b1b08eee45f54f9` / [`exp-253-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-253-repro-v1) | SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 일치; 부모 원본 포함 Release 복구 | 미실행(결정론적 확률 평균) | INFERENCE_VERIFIED | [comparison](reproducibility/exp253_lightgbm_xgboost_blend/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-253] LightGBM·XGBoost 고정 확률 평균
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #253 / `issue-253-exp-lightgbm-xgboost-blend`
+- 소스 commit: `b9d296ea164beb4b33e5797b7b1b08eee45f54f9`
+- 시작/종료: 2026-08-03T08:18:30.617661+00:00 /
+  2026-08-03T08:18:31.143311+00:00
+
+#### 실행과 결과
+
+- 구성: EXP-209 LightGBM과 EXP-229 XGBoost OOF/test 확률의 고정 0.5/0.5 평균
+- 공용 split·클래스 순서 유지, 다른 가중치와 Public LB 미탐색
+- Fold Macro F1: 0.4204437403 / 0.4242324556 / 0.4163290146 /
+  0.4179312082 / 0.4484189232
+- OOF Macro F1: 0.4254998819 (EXP-229 대비 `+0.0025113074`)
+- Fold 표준편차: 0.0117799734 (EXP-229 대비 `+0.0019120085`)
+- Accuracy: 0.4136429608, Log Loss: 1.8103251656
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+- Release: [`exp-253-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-253-repro-v1)
+
+#### 산출물과 결론
+
+- Config: `configs/exp253_lightgbm_xgboost_blend.yaml`
+- Metrics: `reports/exp253_lightgbm_xgboost_blend/metrics.json`
+- Report: `reports/exp253_lightgbm_xgboost_blend/README.md`
+- Reproduction: `reproducibility/exp253_lightgbm_xgboost_blend/`
+- 결론: Macro F1 `+0.001`, fold 표준편차 악화 `<0.002`, Log Loss 비악화
+  기준을 모두 통과해 현재 Local 최고 채택 후보로 보존한다. 가중치 grid search는
+  이 실험에 소급 적용하지 않는다.
+
+### [EXP-250] 암종별 변이 패턴 그룹 선택
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #250 / `issue-250-exp-lineage-group-selection`
+- 소스 commit: `7f93b2f8be49e3d01cdd6b2442da0a5b6787488c`
+- 시작/종료: 2026-08-03T06:24:59.600090+00:00 /
+  2026-08-03T06:54:32.580654+00:00
+
+#### 실행과 결과
+
+- 부모: EXP-245, 성능 비교 기준: EXP-229
+- 각 outer-fold train에서만 3개 inner fold permutation importance로 암종 그룹 선택
+- Fold Macro F1: 0.4052276412 / 0.4162065321 / 0.4192499206 /
+  0.4252393163 / 0.4447121221
+- OOF Macro F1: 0.4209182565 (EXP-245 대비 `-0.0004806995`,
+  EXP-229 대비 `-0.0020703180`)
+- Fold 표준편차: 0.0130283698, Accuracy: 0.4117077891,
+  Log Loss: 2.0532255173
+- 선택 피처 수: fold별 27 / 27 / 31 / 31 / 27개
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 산출물과 결론
+
+- Config: `configs/exp250_lineage_group_selection.yaml`
+- Metrics: `reports/exp250_lineage_group_selection/metrics.json`
+- Report: `reports/exp250_lineage_group_selection/README.md`
+- Reproduction: `reproducibility/exp250_lineage_group_selection/`
+- 결론: 대부분의 그룹을 유지하면서 EXP-245·229 대비 Macro F1, 안정성,
+  Log Loss가 모두 악화돼 `ARCHIVE`. 동일 selector 조정은 중단한다.
+
+### [EXP-245] 암종별 핵심 변이 패턴 확장
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #245 / `issue-245-exp-lineage-mechanism-patterns`
+- 소스 commit: `7c755756a19eb721cdfe58dfab0798dac3ba9957`
+- 시작/종료: 2026-08-03T05:58:26.576286+00:00 /
+  2026-08-03T06:09:04.837755+00:00
+
+#### 실행과 결과
+
+- 부모: EXP-229
+- EXP-240 단순 조합 피처는 유지하지 않고, 8개 암종 문헌 고정 module의
+  missense/LoF/context/mixed mechanism proxy 32개만 추가
+- semantic equivalence 검사 후 모든 fold에서 31개 유지
+- Fold Macro F1: 0.4161807057 / 0.4129769610 / 0.4192499206 /
+  0.4252393163 / 0.4365823625
+- OOF Macro F1: 0.4213989560 (EXP-229 대비 `-0.0015896185`,
+  EXP-240 대비 `+0.0024345095`)
+- Fold 표준편차: 0.0083182968 (EXP-229 대비 `-0.0015496681`, 개선)
+- Accuracy: 0.4138042251 (EXP-229 대비 `+0.0012901145`)
+- Log Loss: 2.0266003609 (EXP-229 대비 `+0.1756390333`, 악화)
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 결론
+
+- EXP-240보다 개선됐지만 사전 채택 기준인 EXP-229 대비 Macro F1 `+0.001`을
+  충족하지 못하고 Log Loss가 크게 악화돼 **ARCHIVE**한다.
+- 클래스별 큰 양·음의 변화가 함께 나타났으며, canonical OOF를 보고 유리한
+  module만 고정 선택하지 않는다.
+- 문헌은 고정 그룹·계산 규칙에만 사용했고 외부 환자 데이터와 SUBCLASS는
+  사용하지 않았다.
+- 저장 checkpoint 재추론에서 test 라벨 100%, 확률 최대 절대 차이 `1.27e-7`,
+  제출 CSV SHA-256 일치를 확인했다.
+- Metrics/Report: `reports/exp245_lineage_mechanism_patterns/`
+
+### [EXP-240] 암종별 분자 변이조합 피처
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #240 / `issue-240-exp-molecular-constellations`
+- 소스 commit: `b78e45c959a5f937bae3f7c5a5bc71978c4152fd`
+- 시작/종료: 2026-08-03T05:30:43.978096+00:00 /
+  2026-08-03T05:39:48.243967+00:00
+
+#### 실행과 결과
+
+- 부모: EXP-229
+- 유일한 변경: 문헌 고정 암종 관련 유전자 모듈 7개에서 변이 유전자 수,
+  2개 이상 변이 indicator, core-partner 동시 변이 indicator 총 21개 추가
+- EXP-229 모델·seed·canonical fold·Macro-F1 checkpoint 정책 유지
+- Fold Macro F1: 0.4111364436 / 0.4158148112 / 0.4168731475 /
+  0.4211156347 / 0.4334184125
+- OOF Macro F1: 0.4189644465 (EXP-229 대비 `-0.0040241280`)
+- Fold 표준편차: 0.0075711973 (EXP-229 대비 `-0.0022967677`, 개선)
+- Accuracy: 0.4097726173 (EXP-229 대비 `-0.0027414933`)
+- Log Loss: 1.9418441057 (EXP-229 대비 `+0.0908827782`, 악화)
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 결론
+
+- Macro F1 채택 기준을 충족하지 못하고 Log Loss가 크게 악화돼 **ARCHIVE**한다.
+- 일부 클래스의 양의 변화는 관찰됐지만 모든 모듈을 동시에 추가했으므로 개별
+  모듈의 효과로 해석하거나 canonical OOF를 보고 고정 선택하지 않는다.
+- 외부 환자 데이터와 SUBCLASS는 사용하지 않았으며 문헌은 고정 그룹·관계 정의에만
+  사용했다.
+- 저장 checkpoint 재추론에서 test 라벨 100%, 확률 최대 절대 차이 `1.34e-7`,
+  제출 CSV SHA-256 일치를 확인했다.
+- Metrics/Report: `reports/exp240_molecular_constellations/`
+
+### [EXP-237] pathway별 변이 종류 fraction
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #237 / `issue-237-exp-pathway-mutation-fractions`
+- 소스 commit: `bbebdf139bee3002b542015097ce8b2bc46fbe71`
+- 시작/종료: 2026-08-03T04:50:45.588215+00:00 /
+  2026-08-03T05:00:23.952096+00:00
+
+#### 실행과 결과
+
+- 부모: EXP-229
+- 유일한 변경: 10개 pathway×5개 변이종류 affected-gene raw count를
+  pathway mutated-gene count로 나눈 fraction으로 교체
+- 기존 pathway mutated/LoF count 20개, 모델·seed·canonical fold·validation
+  Macro-F1-best checkpoint 정책 유지
+- semantic equivalence 검사 후 총 pathway 피처 수: 63 / 64 / 64 / 64 / 63개
+- Fold Macro F1: 0.4137518575 / 0.4216749790 / 0.4206987516 /
+  0.4165303883 / 0.4352217755
+- OOF Macro F1: 0.4204138300 (EXP-229 대비 `-0.0025747446`)
+- Fold 표준편차: 0.0073981342 (EXP-229 대비 `-0.0024698307`, 개선)
+- Accuracy: 0.4110627318 (EXP-229 대비 `-0.0014513788`)
+- Log Loss: 1.9345345497 (EXP-229 대비 `+0.0835732222`, 악화)
+- 클래스별 최대 개선: KIRC `+0.0673780757`, LGG `+0.0432729610`
+- 클래스별 최대 하락: DLBC `-0.0345260515`, STES `-0.0318418212`,
+  CESC `-0.0300404514`
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 결론
+
+- Macro F1 `+0.001` 채택 기준을 충족하지 못하고 Log Loss가 크게 악화돼
+  **ARCHIVE**한다.
+- fold 1과 3의 Macro-F1-best checkpoint가 각각 iteration 32와 59로 매우
+  이르게 선택되어 확률 품질이 불안정했다. fraction이 raw count보다 나은 신호를
+  제공했다고 해석하지 않는다.
+- EXP-232 선택 결과와 Public LB는 피처 정의나 판단에 사용하지 않았다.
+- 저장 checkpoint 재추론에서 test 라벨 100%, 확률 최대 절대 차이 `1.47e-7`,
+  제출 CSV SHA-256 일치를 확인했다.
+- Metrics/Report: `reports/exp237_pathway_mutation_fractions/`
+
+### [EXP-232] nested pathway group permutation 선택
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #232 / `issue-232-exp-pathway-group-selection`
+- 소스 commit: `7a940bcaae6cd1bb36f3c9d5e5d3296c8ce1b88c`
+- 시작/종료: 2026-08-03T02:38:47.392984+00:00 /
+  2026-08-03T03:06:13.825826+00:00
+
+#### 실행과 결과
+
+- 부모: EXP-229
+- 각 outer-fold 학습 행 안에서만 3-fold group permutation importance를 계산
+- pathway group이 inner fold 3개 중 2개 이상에서 양의 delta이고 평균 delta도
+  양수일 때만 해당 pathway의 변이종류 피처를 유지
+- 선택 pathway 수: 1 / 4 / 3 / 5 / 3개
+- 선택 후보 피처 수: 4 / 18 / 13 / 21 / 12개
+- Fold Macro F1: 0.4226803937 / 0.4209928029 / 0.4103250276 /
+  0.4141375814 / 0.4366236146
+- OOF Macro F1: 0.4214874085 (EXP-229 대비 `-0.0015011660`)
+- Fold 표준편차: 0.0090327997 (EXP-229 대비 `-0.0008351652`)
+- Accuracy: 0.4109014675 (EXP-229 대비 `-0.0016126431`)
+- Log Loss: 1.8429074287 (EXP-229 대비 `-0.0080538988`, 개선)
+- EXP-223 대비 OOF Macro F1: `+0.0001134609`(사실상 동률)
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 선택 진단과 결론
+
+- outer fold별 선택 빈도: cell_cycle 4회, notch 3회, nrf2·rtk_ras·tgf_beta
+  각 2회, hippo·pi3k·tp53 각 1회
+- 피처 압축과 fold 안정성·Log Loss 개선은 확인했지만, 사전 기준인 “EXP-229
+  Macro F1 비하락”을 충족하지 못해 **ARCHIVE**한다.
+- outer-fold 선택 빈도를 보고 같은 canonical split에서 고정 pathway를 다시
+  선택하면 validation 정보가 간접 재사용될 수 있으므로, 이 결과만으로 새 고정
+  피처를 채택하지 않는다.
+- 저장 checkpoint 재추론에서 test 라벨 100%, 확률 최대 절대 차이 `1.36e-7`,
+  제출 CSV SHA-256 일치를 확인했다.
+- Metrics/Report: `reports/exp232_pathway_group_selection/`
+
+### [EXP-229] pathway별 변이 종류 유전자 수
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #229 / `issue-229-exp-pathway-mutation-types`
+- 소스 commit: `75977326ab526f0b4c34ad5af90b29fb833c44c6`
+- 시작/종료: 2026-08-03T02:08:57.156965+00:00 /
+  2026-08-03T02:18:38.919954+00:00
+
+#### 실행과 결과
+
+- 부모: EXP-223
+- EXP-223의 피처·XGBoost·balanced sample weight·canonical fold·validation
+  Macro-F1-best checkpoint 정책 유지
+- 유일한 변경: 10개 고정 pathway 각각에 missense·synonymous·nonsense·
+  frameshift·complex 변이 유전자 수 50개 후보 추가
+- fold-train semantic equivalence 검사 후 총 pathway 피처 수는 fold별
+  62 / 63 / 63 / 63 / 62개(부모 20개 포함)
+- Fold Macro F1: 0.4125153614 / 0.4227302800 / 0.4172366349 /
+  0.4221575240 / 0.4415264445
+- OOF Macro F1: 0.4229885745 (EXP-223 대비 `+0.0016146270`)
+- Fold 표준편차: 0.0098679649 (EXP-223 대비 `+0.0006339596`)
+- Accuracy: 0.4125141106 (EXP-223 대비 `+0.0012901145`)
+- Log Loss: 1.8509613276 (EXP-223 대비 `+0.0067992210`, 악화)
+- 클래스별 최대 개선: DLBC `+0.0502645503`, LUAD `+0.0340388007`,
+  UCEC `+0.0239808153`
+- 클래스별 최대 하락: LAML `-0.0422523477`, PAAD `-0.0325077967`,
+  TGCT `-0.0196246430`
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+- Release: [`exp-229-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-229-repro-v1)
+
+#### 결론
+
+- Macro F1 `+0.001` 이상, fold 표준편차 악화 `<0.002`, 클래스별 최대 하락
+  `<0.05` 조건을 모두 통과해 **조건부 채택**한다.
+- 5개 fold 중 4개가 개선됐지만 fold 2는 약 `-0.000925` 하락했고 Log Loss도
+  악화됐다. 따라서 큰 개선으로 단정하지 않고 제출 전 후보로 보존한다.
+- 저장 checkpoint 재추론에서 test 라벨 100%, 확률 최대 절대 차이 `1.72e-7`,
+  제출 CSV SHA-256 일치를 확인했다.
+- Metrics/Report: `reports/exp229_pathway_mutation_types/`
 
 ### [EXP-223] pathway XGBoost Macro F1 checkpoint 선택
 
@@ -205,8 +483,10 @@
 - Log Loss: 1.8441621065 (보조 지표, EXP-096 대비 `+0.0072278976`)
 - 클래스별 최악 변화: THYM `-0.0152823920`
 - Public LB: `0.323243525` (제출 ID `1509283`, 2026-08-03 10:30:33
-  KST, 확인 당시 참가 4팀 중 4위). EXP-031 대비 `+0.0061631401`로 팀 최고
-  Public 점수를 갱신했다.
+  KST). EXP-031 대비 `+0.0061631401`로 팀 최고 Public 점수를 갱신했다.
+- 2026-08-03 19:13 KST 재확인: 팀 대표 제출은 계속 EXP-223이며 플랫폼의
+  반올림 표시 점수는 `0.32324`, 팀 제출 수는 17회, 공식 팀 순위는 참가
+  4팀 중 4위였다. 정확한 제출 점수 `0.323243525`는 변경되지 않았다.
 ### [EXP-211] One-vs-Rest XGBoost + v2-performance
 
 - 상태: COMPLETED
@@ -311,6 +591,12 @@
 - Public LB: 미제출
 - 저장 checkpoint 재추론으로 제출 SHA-256 일치, test 라벨 100%, 확률 최대
   차이 1.45e-07을 확인해 `INFERENCE_VERIFIED`다.
+- 원본 checkpoint·OOF·test 확률은 Task Issue #258에서 기존 manifest SHA-256과
+  다시 대조한 뒤 [`exp-219-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-219-repro-v1)에
+  보존했다. 번들 SHA-256은
+  `fa293ed92a21508e0752890ca407c6e55cbc8794688262bacff471fd6739bf25`다.
+- 다른 플랫폼의 재학습 결과는 원본과 일치하지 않아 이 번들에 포함하지 않았고,
+  플랫폼 간 재학습 차이는 Issue #238에서 별도로 추적한다.
 
 #### 결론
 
@@ -2284,6 +2570,51 @@ Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0
 악화됐다. 따라서 total variant burden을 Feature Spec이나 Public 제출 후보로
 채택하지 않는다. OOF·test 확률과 checkpoint는 후속 안정성·다양성 분석을 위해 보존한다.
 
+### [EXP-156] 유전자별 변이 효과 압축 XGBoost
+
+- 상태: COMPLETED
+- 실행자: Gomin-art
+- Issue/브랜치: #156 / `issue-156-exp-gene-variant-effect-compression`
+- 소스 commit: `5b1cff179ee68bc8f873f4f9dd4c73305aec3e65`
+- 시작/종료: 2026-08-03T02:02:48.601660+00:00 /
+  2026-08-03T02:34:46.087252+00:00
+
+#### 실행
+
+- 부모 실험: EXP-094 (Feature Spec v1)
+- 유일한 변경: 유전자별 변이유형 indicator 5종(21,920개)을 severity max,
+  variant count 1/2+, effect diversity, complex/unparsed의 compact descriptor
+  4종(17,536개)으로 교체했다.
+- 최종 특징 수: 30,735개 (EXP-094 대비 4,384개 감소)
+- canonical stratified 5-fold seed 42, 고정 클래스 순서, XGBoost 설정과
+  balanced sample weight는 유지했다.
+- Config: `configs/exp156_gene_variant_effect_compression.yaml`
+- Resolved config:
+  `reproducibility/exp156_gene_variant_effect_compression/config.resolved.yaml`
+- Metrics: `reports/exp156_gene_variant_effect_compression/metrics.json`
+- Report: `reports/exp156_gene_variant_effect_compression/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4167162891, 0.4245570144, 0.3968599918,
+  0.4040592976, 0.4307377819
+- OOF Macro F1: 0.4148494335 (EXP-094 대비 `-0.0020371404`)
+- Fold 표준편차: 0.0125687084 (EXP-094 대비 `+0.0046844563`)
+- Accuracy: 0.4063860668 (EXP-094 대비 `-0.0008063216`)
+- Log Loss: 1.8308399556 (EXP-094 대비 `-0.0090973737`)
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 산출물과 결론
+
+- checkpoint 재추론에서 제출 SHA-256과 test 라벨 100%가 일치했고,
+  test 확률 최대 절대 차이는 `5.93e-08`이었다.
+- 유전자별 효과 피처를 4,384개 줄이고 Log Loss를 개선했지만, 공식 Macro F1이
+  하락하고 fold 표준편차가 허용치보다 악화되어 `ARCHIVE`한다. compact effect
+  구성을 Feature Spec에 채택하거나 리더보드에 제출하지 않는다.
+- Reproduction:
+  `reproducibility/exp156_gene_variant_effect_compression/comparison.json`
+
 ### [EXP-158] EXP-094 + log1p(missense_count)
 
 - 상태: COMPLETED
@@ -2715,3 +3046,62 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   `ARCHIVE`다.
 - 이 판단은 threshold를 재조정하거나 Public LB를 본 뒤 내린 것이 아니다. C2와
   C3은 미리 고정된 별도 실험으로만 이어가며, C1 설정을 추가 튜닝하지 않는다.
+
+### [EXP-257] functional_role_burden_extended — oncogene/TSG count 세분화
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #257 / `issue-257-functional-role-burden-extended`
+- 소스 commit: `56b1b1d3515b9ff09f36fc7ca691ccdeaf53d487`
+- 시작/종료: 2026-08-03T09:13:49.069134+00:00 /
+  2026-08-03T09:41:42.994083+00:00 (1674.48초)
+
+#### 실행
+
+- 부모: EXP-096(Feature Spec v1 + fixed_pathway_burden 20개), #176(기본형
+  4-feature ablation, 3주 무착수)을 EXP-229 패턴(pathway 축 count 세분화
+  성공)과 같은 원리로 functional_role 축에 적용
+- 유일한 변경: `knowledge/abc_c_compact_groups_v1.json`의 functional_roles
+  (oncogene 29개, tumor_suppressor 39개)마다 mutated-gene count의 4가지
+  파생 view(`count_raw`, `count_frac`, `count_resid`, `count_log1p`, 최대
+  8개)를 fold-train 게이팅(포화 P(raw==0)<0.05, 희소 P(raw>0)<0.01, 독점성
+  dominance>=0.8) 후 추가
+  - `src/open_cancer/functional_role_extended_features.py`:
+    `FunctionalRoleBurdenExtendedFamily`(`fit_scope=fold_train`)
+  - `count_resid`는 fold-train만으로 `count_raw ~ 전체 mutated_gene_count`
+    선형회귀를 적합하고 validation/test에는 transform만 적용
+  - `semantic_equivalence_filter`로 v1 base + 기존 `fixed_pathway_burden`
+    20개와 fold-train 값이 완전히 같은 열 제거(5개 fold 전부 0개 제거)
+- Config: `configs/exp257_functional_role_burden_extended.yaml`
+- Metrics: `reports/exp257_functional_role_burden_extended/metrics.json`
+- Report: `reports/exp257_functional_role_burden_extended/README.md`
+- 게이팅 상세: `reports/exp257_functional_role_burden_extended/fold_gating.json`
+
+#### 결과
+
+- Fold Macro F1: 0.4171422593, 0.4104494955, 0.3974636031, 0.4070142779,
+  0.4241384592
+- OOF Macro F1: 0.4118051266 (EXP-096 대비 `-0.0063101814`)
+- Fold 표준편차: 0.0090496148 (EXP-096 대비 `-0.0004425028`)
+- Accuracy: 0.4015481374 (EXP-096 대비 `-0.0062893082`)
+- Log Loss: 1.8515084982 (EXP-096 대비 `+0.0145742893`)
+- 클래스별: 26개 중 19개 하락(최대 LAML `-0.0244`), 개선 6개(최대 DLBC
+  `+0.0582`), TGCT 변화 없음
+- 5개 fold 전부 게이트 미발동, 8개 candidate 전부 유지, v1/pathway burden과
+  완전 중복 0개
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — 저장 checkpoint 재추론으로 OOF·test
+  라벨 100%, 확률 최대 절대 차이 2.98e-08, 제출 CSV SHA-256 일치를 확인했다.
+
+#### 결론
+
+- Macro F1·Accuracy·Log Loss가 모두 뚜렷하게 악화돼 `ARCHIVE`다. fold
+  표준편차만 소폭 개선(-0.0004)됐으나 다른 지표 악화를 상쇄하지 못한다.
+- 게이팅이 전혀 발동하지 않았다는 건 8개 열 자체가 통계적으로 위험한
+  형태(포화·희소·독점)는 아니었다는 뜻이며, 그럼에도 성능이 하락한 건
+  functional role(oncogene/TSG) 그룹 정의 자체가 pathway 축만큼 암종
+  판별에 유용한 신호를 담고 있지 않을 가능성을 시사한다.
+- DLBC만 크게 개선(`+0.0582`)됐으나, 이번 세션에서 반복 확인한 DLBC의
+  구조적 config-민감성(`reports/analysis/sparse_binary_feature_dlbc_sensitivity.md`)을
+  고려해 단일 실험만으로 원인을 특정하지 않는다.
+- #176은 이 결과로 대체·종료하며, 추가 튜닝이나 제출 없이 마무리한다.

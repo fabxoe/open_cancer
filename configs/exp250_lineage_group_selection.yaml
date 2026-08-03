@@ -1,0 +1,92 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-250
+issue_number: 250
+slug: lineage_group_selection
+parent_experiment: EXP-245
+component_experiments: [EXP-094, EXP-096, EXP-219, EXP-223, EXP-229, EXP-245]
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mutation_type: {enabled: true}
+  robust_aggregates:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+  residue_position:
+    enabled: true
+    aggregates: [max]
+    missing_policy: zero
+    complex_tokens: include
+    transform: raw
+hotspots:
+  table: extended_34
+  evidence_scope: additions_15
+  minimum_matching_train_rows: 5
+external_knowledge:
+  pathway_file: knowledge/canonical_pathways_sanchez_vega_v1.json
+  pathway_organizer_approval_reference: https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180
+  lineage_mechanism_file: knowledge/cancer_lineage_mechanism_patterns_tcga_v1.json
+  lineage_mechanism_sha256: dcc92cfc8d845264d3dd5c74772b53cbf4415c13a1f05b88884a61b3e838a34c
+  lineage_mechanism_data_scope: fixed_rules_only_no_external_patient_data
+abc_families:
+  fixed_pathway_burden:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    output_dimension: 20
+  pathway_mutation_type_composition:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    candidate_output_dimension: 50
+  lineage_mechanism_patterns:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    modules: 8
+    candidate_output_dimension: 32
+  lineage_group_permutation_selector:
+    enabled: true
+    fit_scope: outer_fold_train_only
+    grouping: cancer_lineage
+    inner_folds: 3
+    permutation_repeats: 3
+    minimum_positive_inner_folds: 2
+    minimum_mean_macro_f1_delta: 0.0
+    seed: 250
+  functional_role_burden: {enabled: false}
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - feature_spec_v1
+    - fixed_pathway_mutated_and_lof_gene_counts
+    - fixed_pathway_mutation_type_gene_counts
+    - nested_selected_lineage_mechanism_patterns
+notes: >-
+  Issue #250. Each outer-fold training partition uses three inner folds to
+  estimate joint cancer-lineage group permutation importance. Groups are kept
+  only with positive mean delta in at least two inner folds and positive overall.
+  EXP-245 OOF class deltas, outer validation, test, and Public LB do not select
+  groups. EXP-229 remains the acceptance comparison.
+comparison_metrics_path: reports/exp229_pathway_mutation_types/metrics.json

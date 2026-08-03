@@ -1,0 +1,66 @@
+experiment_id: EXP-156
+run_mode: experiment
+record_role: official
+slug: gene_variant_effect_compression
+parent_experiment: EXP-094
+seed: 42
+
+feature_spec:
+  name: v1
+  ablation:
+    name: gene_variant_effect_compression
+    remove_gene_effect_columns:
+      - missense
+      - synonymous
+      - nonsense
+      - frameshift
+      - complex
+    add_gene_feature_columns:
+      - compressed_effect_severity_max
+      - compressed_variant_count_1_or_2plus
+      - compressed_effect_diversity
+      - compressed_complex_or_unparsed
+
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  expected_sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  n_splits: 5
+  seed: 42
+
+model:
+  name: xgboost
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+
+training:
+  balanced_sample_weight: true
+
+preflight:
+  unchanged:
+    - canonical split
+    - class order
+    - model family
+    - xgboost hyperparameters
+    - balanced sample weights
+    - all Feature Spec v1 columns outside the five per-gene effect columns
+  changed:
+    - replace five per-gene effect indicators with four compact per-gene descriptors
+
+notes:
+  - Mutation cells are parsed only by open_cancer.mutation_features.parse_mutation_cell.
+  - Feature generation is label-free; support filtering and model fitting occur inside each fold.
+  - Test features may be materialized before fitting but test labels do not exist and test rows are never used for training or feature selection.

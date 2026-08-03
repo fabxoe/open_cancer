@@ -1,0 +1,128 @@
+{
+  "experiment_id": "EXP-240",
+  "issue_number": 240,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "b78e45c959a5f937bae3f7c5a5bc71978c4152fd",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp240_molecular_constellations/data_manifest.json",
+  "environment": "reproducibility/exp240_molecular_constellations/environment.json",
+  "release_url": null,
+  "verifier": "2heej",
+  "verified_at": "2026-08-03T05:39:49.632899+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp240_molecular_constellations/fold_00.json",
+      "size_bytes": 9614449,
+      "sha256": "0229eec43aab708e559b95adaf8b0d874522e1182025df50067765617c483ad4",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp240_molecular_constellations/fold_01.json",
+      "size_bytes": 3584580,
+      "sha256": "d6d88fb94e7de90c8c4930db541c7995f6dc717ffa28771f6e0e07b96f76ffa2",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp240_molecular_constellations/fold_02.json",
+      "size_bytes": 2315909,
+      "sha256": "9122798785a7465f83fa846ed6c57d129adfb8917512779c86940ea8902612ec",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp240_molecular_constellations/fold_03.json",
+      "size_bytes": 6057182,
+      "sha256": "adea34c79af7172fed54d3ae3c1e803f6aa765557541ab7c9e11106a25d49db2",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp240_molecular_constellations/fold_04.json",
+      "size_bytes": 11956390,
+      "sha256": "ad3728de1c441a756a11343ec06129ffb951bbd692022e7001bc34aa9e42df31",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp240_molecular_constellations.csv",
+      "size_bytes": 38098,
+      "sha256": "536b0698b49b1b730eab5bdd9e2da3b7e7d5b101dc62688386a3ae4c58d99ae6",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp240_molecular_constellations.csv",
+      "size_bytes": 2084644,
+      "sha256": "81fdf6dc62de307edc2c311a4099a007d7886a426521979ba3e20bdf2da17d9f",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp240_molecular_constellations_test_proba.csv",
+      "size_bytes": 811385,
+      "sha256": "3d735c69e18d4f88c582a04ca279b837528a815224deb12ea44ebf8803614da6",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp240_molecular_constellations/metrics.json",
+      "size_bytes": 26200,
+      "sha256": "10d6d1dc9ed9c3883e3dcb1ce1692fb2a3e02fb408ef724f87035cb73b352c6c",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp240_molecular_constellations/config.resolved.yaml",
+      "size_bytes": 53069,
+      "sha256": "aa4484f0ef7bde6723f732990fdbb8577100f0995a8768b69f54bc82a03ad70b",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp240_molecular_constellations/fold_00_checkpoint_audit.json",
+      "size_bytes": 25859,
+      "sha256": "e6d420dcf919f2776288a3bdc1591cdc4c24ba54c2446c77ea7ce6c05bbee3ea",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp240_molecular_constellations/fold_01_checkpoint_audit.json",
+      "size_bytes": 26874,
+      "sha256": "eb1632f9c586c22dc9addd40eb150f8c52b98b06014e9759927c0054bc05c68d",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp240_molecular_constellations/fold_02_checkpoint_audit.json",
+      "size_bytes": 34924,
+      "sha256": "3f5d1de7ba610bb3b0cdd8c268bed0622cfc28425c8543a3e8c867f7fa92788b",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp240_molecular_constellations/fold_03_checkpoint_audit.json",
+      "size_bytes": 27440,
+      "sha256": "f21503d3ac67bffc904bbc84fdac6d33a9c7e94f3d6a9d3e036b6dcb2565c426",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp240_molecular_constellations/fold_04_checkpoint_audit.json",
+      "size_bytes": 27223,
+      "sha256": "f888d161eabb322e75d539eb140068e96c753b8a9210b3ada773c70b696ddfe6",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

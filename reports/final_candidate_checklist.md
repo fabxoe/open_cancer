@@ -2,33 +2,58 @@
 
 이 문서는 팀원 확인 전까지 가능한 최종 후보 준비를 모아 둔 운영 문서입니다.
 리더보드에 이미 제출한 파일을 다시 제출하지 않으며, 실제 점수의 원본은
-`EXPERIMENT_HISTORY.md`입니다.
+`EXPERIMENT_HISTORY.md`입니다. Public 결과를 보고 피처·checkpoint 기준이나 blend
+가중치를 역으로 조정하지 않습니다.
 
 ## 현재 후보
 
-| 항목 | EXP-125 LightGBM v1 |
-|---|---|
-| 실험·Issue | EXP-125 / #125 |
-| Public 제출 | 이미 제출 완료 |
-| Public 점수 | 0.3075810937 |
-| 제출 파일 | `submissions/exp125_lightgbm_v1.csv` |
-| 제출 SHA-256 | `e76cce6d911616930570bcf0c5c1adc8adb045fbd18e3226d5378bda026d5940` |
-| OOF Macro F1 | 0.4189078364 |
-| 재현 상태 | `INFERENCE_VERIFIED`; 사람 팀원 확인 전 `TRAINING_VERIFIED` 대기 |
-| Release | [`exp-125-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-125-repro-v1) |
+| 우선순위 | 후보 | Local OOF Macro F1 | Public | 재현 상태 | 현재 판단 |
+|---:|---|---:|---:|---|---|
+| 1 | EXP-253 LightGBM·XGBoost 고정 0.5/0.5 blend | 0.4254998819 | 미제출 | `INFERENCE_VERIFIED` | 현재 Local 최고·Release 복구 완료. 제출 파일 재검증 후 수동 제출 후보 |
+| 2 | EXP-229 pathway mutation-type XGBoost | 0.4229885745 | 미제출 | `INFERENCE_VERIFIED` | 가장 강한 단일 XGBoost 후보·Release 복구 완료 |
+| 3 | EXP-223 pathway Macro-F1 checkpoint XGBoost | 0.4213739476 | 0.323243525 | `INFERENCE_VERIFIED` | 현재 Public 최고 기준점 |
+| 4 | EXP-125 LightGBM v1 | 0.4189078364 | 0.3075810937 | `INFERENCE_VERIFIED` | EXP-253의 다양성 부모·기존 제출 기준점으로 보존 |
 
-## 보존 산출물
+EXP-253은 EXP-209 LightGBM과 EXP-229 XGBoost의 사전 고정 0.5/0.5 확률 평균이다.
+OOF를 본 뒤 다른 가중치를 탐색하지 않았고, EXP-229 대비 Macro F1
+`+0.0025113074`, fold 표준편차 `+0.0019120085`로 안정성 허용치 `0.002`를 매우
+근소하게 통과했다. 따라서 Local 개선은 인정하되 안정성이 크게 좋아졌다고
+해석하지 않는다.
 
-- OOF 확률: `oof/exp125_lightgbm_v1.csv`
-- Test 확률: `preds/exp125_lightgbm_v1_test_proba.csv`
-- Checkpoint: `models/exp125_lightgbm_v1/`
-- Resolved config·환경·데이터 manifest: `reproducibility/exp125_lightgbm_v1/`
-- 독립 실행 결과: `reports/analysis/g7_training_verification_issue162.*`
+## 완료된 보관
 
-## 사람 팀원 확인 후 할 일
+- EXP-219: [`exp-219-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-219-repro-v1), Issue #258·PR #259에서 복구 완료
+- EXP-223: Public 제출과 재현 증빙이 History에 기록됨
+- EXP-209: [`exp-209-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-209-repro-v1)
+- EXP-229: [`exp-229-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-229-repro-v1)
+- EXP-253: [`exp-253-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-253-repro-v1)
+- EXP-125: [`exp-125-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-125-repro-v1)
 
-1. Issue #162에 fresh clone 재현 결과 확인 댓글 작성
-2. `EXPERIMENT_HISTORY.md`의 EXP-125 재현 상태를 `TRAINING_VERIFIED`로 승격
-3. 최종 후보 확정 문서와 로드맵 상태 갱신
+EXP-209·229·253은 Issue #260·PR #263에서 정확한 source tag, manifest URL,
+bundle SHA-256, 원격 재다운로드와 History 연결을 검증했다. 이는
+`INFERENCE_VERIFIED` 증빙 복구이며 비작성자 재학습인 `TRAINING_VERIFIED`를
+뜻하지 않는다.
 
-그 전까지는 추가 리더보드 제출, 가중치 조정, EXP-131 재학습 확장을 하지 않습니다.
+## 제출 후보 확정 전 필수 순서
+
+1. EXP-253 submission의 ID·26개 클래스·행 수·SHA-256을 다시 검증한다.
+2. Issue #233의 decision offset 결과가 완료돼 있으면 사전 기준으로만 비교한다.
+   미완료라면 EXP-253 제출을 지연시키기 위한 가상 기대값으로 사용하지 않는다.
+3. PR #264의 계약에 따라 같은 플랫폼·교차 플랫폼 검증 범위를 manifest에
+   명시한다.
+4. 최종 수상 후보는 비작성자가 fresh clone에서 재학습하고
+   `TRAINING_VERIFIED` 조건을 통과한 뒤 지정한다.
+
+## 현재 중단한 방향
+
+- EXP-240·245·250의 연속 하락을 근거로 신규 문헌 조합 family 확장을 중단한다.
+- EXP-253의 blend 가중치를 Public 또는 test 분포로 다시 탐색하지 않는다.
+- PR #255의 seed별 원본 JSON·정확한 실행 명령이 보존되기 전 Issue #254의 DLBC
+  gate를 변경하지 않는다.
+
+## 다음 의사결정
+
+- EXP-253을 첫 미제출 후보로 검증하고 수동 제출 여부를 결정한다.
+- #233은 복구한 EXP-219 확률을 사용해 독립적으로 진행한다.
+- Public 확인 후: 점수는 즉시 History에 기록하되 가중치나 피처를 역최적화하지
+  않는다.

@@ -1,0 +1,67 @@
+experiment:
+  issue_number: 253
+  experiment_id: EXP-253
+  branch: issue-253-exp-lightgbm-xgboost-blend
+  owner: 2heej
+  source_commit: b9d296ea164beb4b33e5797b7b1b08eee45f54f9
+  dirty_worktree: false
+  started_at: '2026-08-03T08:18:30.617661+00:00'
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+class_order:
+- ACC
+- BLCA
+- BRCA
+- CESC
+- COAD
+- DLBC
+- GBMLGG
+- HNSC
+- KIPAN
+- KIRC
+- LAML
+- LGG
+- LIHC
+- LUAD
+- LUSC
+- OV
+- PAAD
+- PCPG
+- PRAD
+- SARC
+- SKCM
+- STES
+- TGCT
+- THCA
+- THYM
+- UCEC
+ensemble:
+  method: probability_mean
+  weights_fixed_before_evaluation: true
+  components:
+  - experiment_id: EXP-209
+    weight: 0.5
+    oof_probability_path: oof/exp209_lightgbm_v2_performance.csv
+    test_probability_path: preds/exp209_lightgbm_v2_performance_test_proba.csv
+    metrics_path: reports/exp209_lightgbm_v2_performance/metrics.json
+    resolved_config_path: reproducibility/exp209_lightgbm_v2_performance/config.resolved.yaml
+  - experiment_id: EXP-229
+    weight: 0.5
+    oof_probability_path: oof/exp229_pathway_mutation_types.csv
+    test_probability_path: preds/exp229_pathway_mutation_types_test_proba.csv
+    metrics_path: reports/exp229_pathway_mutation_types/metrics.json
+    resolved_config_path: reproducibility/exp229_pathway_mutation_types/config.resolved.yaml
+outputs:
+  oof: oof/exp253_lightgbm_xgboost_blend.csv
+  test_probability: preds/exp253_lightgbm_xgboost_blend_test_proba.csv
+  submission: submissions/exp253_lightgbm_xgboost_blend.csv
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 08:56:36) [Clang 18.1.8 ]
+  platform: macOS-26.5.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  uv_lock_sha256: 87876a7c41c030503ed1b95a2d1254c5ab395cfbb865c7538fa5de42bd28902a
+command: uv run python scripts/run_exp253_lightgbm_xgboost_blend.py

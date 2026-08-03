@@ -54,6 +54,9 @@ EXP-125 v1이 이미 포착한 정보를 추가로 강화하지 못했습니다.
 - 제출 SHA-256:
   `b4ef2c1339e3c5783dcaa5a7f0882b17e1740de526b7fbd810ae706865eba32f`
 - 재현 상태: `INFERENCE_VERIFIED`
+- Release: [`exp-209-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-209-repro-v1)
 
 저장 checkpoint로 OOF와 test를 다시 추론해 라벨 100%, 확률 최대 절대 차이 0,
-제출 CSV SHA-256 일치를 확인했습니다.
+제출 CSV SHA-256 일치를 확인했습니다. Issue #260에서 원본 checkpoint 5개,
+feature manifest, OOF/test 확률과 config를 deterministic bundle로 보존하고
+원격 재다운로드 SHA-256 일치를 확인했습니다.

@@ -1,0 +1,267 @@
+[
+  {
+    "fold": 0,
+    "gate_summary": {
+      "oncogene": {
+        "p_zero": 0.6776209677419355,
+        "p_nonzero": 0.3223790322580645,
+        "dominance_at_nonzero": 0.14634146341463414,
+        "dominant_class_index": 2,
+        "gate_triggered": null,
+        "allowed_kinds": [
+          "frac",
+          "log1p",
+          "raw",
+          "resid"
+        ]
+      },
+      "tumor_suppressor": {
+        "p_zero": 0.4901209677419355,
+        "p_nonzero": 0.5098790322580645,
+        "dominance_at_nonzero": 0.1103202846975089,
+        "dominant_class_index": 2,
+        "gate_triggered": null,
+        "allowed_kinds": [
+          "frac",
+          "log1p",
+          "raw",
+          "resid"
+        ]
+      }
+    },
+    "resid_coefficients": {
+      "oncogene": [
+        0.005955295732512485,
+        0.23897790853099019
+      ],
+      "tumor_suppressor": [
+        0.011404266243649203,
+        0.5119061700503997
+      ]
+    },
+    "pathway_burden_dropped_duplicates": {},
+    "role_dropped_duplicates": {},
+    "surviving_role_features": [
+      "sample__role_oncogene__count_raw",
+      "sample__role_oncogene__count_frac",
+      "sample__role_oncogene__count_resid",
+      "sample__role_oncogene__count_log1p",
+      "sample__role_tumor_suppressor__count_raw",
+      "sample__role_tumor_suppressor__count_frac",
+      "sample__role_tumor_suppressor__count_resid",
+      "sample__role_tumor_suppressor__count_log1p"
+    ]
+  },
+  {
+    "fold": 1,
+    "gate_summary": {
+      "oncogene": {
+        "p_zero": 0.6797016730497883,
+        "p_nonzero": 0.32029832695021165,
+        "dominance_at_nonzero": 0.16110761485210826,
+        "dominant_class_index": 2,
+        "gate_triggered": null,
+        "allowed_kinds": [
+          "frac",
+          "log1p",
+          "raw",
+          "resid"
+        ]
+      },
+      "tumor_suppressor": {
+        "p_zero": 0.5025196532957065,
+        "p_nonzero": 0.49748034670429353,
+        "dominance_at_nonzero": 0.10453808752025932,
+        "dominant_class_index": 2,
+        "gate_triggered": null,
+        "allowed_kinds": [
+          "frac",
+          "log1p",
+          "raw",
+          "resid"
+        ]
+      }
+    },
+    "resid_coefficients": {
+      "oncogene": [
+        0.006250141006876874,
+        0.22557082509245358
+      ],
+      "tumor_suppressor": [
+        0.011878287746252597,
+        0.485524242924581
+      ]
+    },
+    "pathway_burden_dropped_duplicates": {},
+    "role_dropped_duplicates": {},
+    "surviving_role_features": [
+      "sample__role_oncogene__count_raw",
+      "sample__role_oncogene__count_frac",
+      "sample__role_oncogene__count_resid",
+      "sample__role_oncogene__count_log1p",
+      "sample__role_tumor_suppressor__count_raw",
+      "sample__role_tumor_suppressor__count_frac",
+      "sample__role_tumor_suppressor__count_resid",
+      "sample__role_tumor_suppressor__count_log1p"
+    ]
+  },
+  {
+    "fold": 2,
+    "gate_summary": {
+      "oncogene": {
+        "p_zero": 0.6736545051400927,
+        "p_nonzero": 0.32634549485990727,
+        "dominance_at_nonzero": 0.1531809759110562,
+        "dominant_class_index": 2,
+        "gate_triggered": null,
+        "allowed_kinds": [
+          "frac",
+          "log1p",
+          "raw",
+          "resid"
+        ]
+      },
+      "tumor_suppressor": {
+        "p_zero": 0.49425519048578914,
+        "p_nonzero": 0.5057448095142109,
+        "dominance_at_nonzero": 0.10601833399760861,
+        "dominant_class_index": 2,
+        "gate_triggered": null,
+        "allowed_kinds": [
+          "frac",
+          "log1p",
+          "raw",
+          "resid"
+        ]
+      }
+    },
+    "resid_coefficients": {
+      "oncogene": [
+        0.006108031938614801,
+        0.2379000783342931
+      ],
+      "tumor_suppressor": [
+        0.011235501208185906,
+        0.5052963118044752
+      ]
+    },
+    "pathway_burden_dropped_duplicates": {},
+    "role_dropped_duplicates": {},
+    "surviving_role_features": [
+      "sample__role_oncogene__count_raw",
+      "sample__role_oncogene__count_frac",
+      "sample__role_oncogene__count_resid",
+      "sample__role_oncogene__count_log1p",
+      "sample__role_tumor_suppressor__count_raw",
+      "sample__role_tumor_suppressor__count_frac",
+      "sample__role_tumor_suppressor__count_resid",
+      "sample__role_tumor_suppressor__count_log1p"
+    ]
+  },
+  {
+    "fold": 3,
+    "gate_summary": {
+      "oncogene": {
+        "p_zero": 0.6819189679500101,
+        "p_nonzero": 0.31808103204998994,
+        "dominance_at_nonzero": 0.15399239543726237,
+        "dominant_class_index": 2,
+        "gate_triggered": null,
+        "allowed_kinds": [
+          "frac",
+          "log1p",
+          "raw",
+          "resid"
+        ]
+      },
+      "tumor_suppressor": {
+        "p_zero": 0.4916347510582544,
+        "p_nonzero": 0.5083652489417456,
+        "dominance_at_nonzero": 0.10507533703409992,
+        "dominant_class_index": 2,
+        "gate_triggered": null,
+        "allowed_kinds": [
+          "frac",
+          "log1p",
+          "raw",
+          "resid"
+        ]
+      }
+    },
+    "resid_coefficients": {
+      "oncogene": [
+        0.006162550311057109,
+        0.22240157542616226
+      ],
+      "tumor_suppressor": [
+        0.011206127210063553,
+        0.5214991932660142
+      ]
+    },
+    "pathway_burden_dropped_duplicates": {},
+    "role_dropped_duplicates": {},
+    "surviving_role_features": [
+      "sample__role_oncogene__count_raw",
+      "sample__role_oncogene__count_frac",
+      "sample__role_oncogene__count_resid",
+      "sample__role_oncogene__count_log1p",
+      "sample__role_tumor_suppressor__count_raw",
+      "sample__role_tumor_suppressor__count_frac",
+      "sample__role_tumor_suppressor__count_resid",
+      "sample__role_tumor_suppressor__count_log1p"
+    ]
+  },
+  {
+    "fold": 4,
+    "gate_summary": {
+      "oncogene": {
+        "p_zero": 0.6792985285224753,
+        "p_nonzero": 0.3207014714775247,
+        "dominance_at_nonzero": 0.1451917033312382,
+        "dominant_class_index": 2,
+        "gate_triggered": null,
+        "allowed_kinds": [
+          "frac",
+          "log1p",
+          "raw",
+          "resid"
+        ]
+      },
+      "tumor_suppressor": {
+        "p_zero": 0.4896190284216892,
+        "p_nonzero": 0.5103809715783107,
+        "dominance_at_nonzero": 0.10742496050552923,
+        "dominant_class_index": 2,
+        "gate_triggered": null,
+        "allowed_kinds": [
+          "frac",
+          "log1p",
+          "raw",
+          "resid"
+        ]
+      }
+    },
+    "resid_coefficients": {
+      "oncogene": [
+        0.006399562812240491,
+        0.22116537713241805
+      ],
+      "tumor_suppressor": [
+        0.011553262938492107,
+        0.5131614351386613
+      ]
+    },
+    "pathway_burden_dropped_duplicates": {},
+    "role_dropped_duplicates": {},
+    "surviving_role_features": [
+      "sample__role_oncogene__count_raw",
+      "sample__role_oncogene__count_frac",
+      "sample__role_oncogene__count_resid",
+      "sample__role_oncogene__count_log1p",
+      "sample__role_tumor_suppressor__count_raw",
+      "sample__role_tumor_suppressor__count_frac",
+      "sample__role_tumor_suppressor__count_resid",
+      "sample__role_tumor_suppressor__count_log1p"
+    ]
+  }
+]

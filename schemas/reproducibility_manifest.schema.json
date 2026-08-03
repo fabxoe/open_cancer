@@ -135,6 +135,32 @@
           "type": "boolean"
         }
       }
+    },
+    "verification_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation", "environment_relation", "claim"],
+      "properties": {
+        "operation": {
+          "enum": ["checkpoint_inference", "training_reproduction"]
+        },
+        "environment_relation": {
+          "enum": ["same_environment", "same_platform", "cross_platform", "unknown"]
+        },
+        "claim": {
+          "enum": ["byte_identical", "tolerance_verified", "label_verified", "not_claimed"]
+        },
+        "original_platform": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reproduction_platform": {
+          "type": ["string", "null"]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
     }
   },
   "allOf": [
@@ -169,7 +195,7 @@
         }
       },
       "then": {
-        "required": ["verifier", "verified_at", "verification"],
+        "required": ["verifier", "verified_at", "verification", "verification_scope"],
         "properties": {
           "verified_at": {
             "type": "string",
@@ -198,6 +224,19 @@
               },
               "oof_macro_f1_delta": {
                 "maximum": 0.000001
+              }
+            }
+          },
+          "verification_scope": {
+            "properties": {
+              "operation": {
+                "const": "training_reproduction"
+              },
+              "environment_relation": {
+                "enum": ["same_environment", "same_platform", "cross_platform"]
+              },
+              "claim": {
+                "const": "tolerance_verified"
               }
             }
           }

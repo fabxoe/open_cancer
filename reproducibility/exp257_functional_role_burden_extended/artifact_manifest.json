@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-257",
+  "issue_number": 257,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "56b1b1d3515b9ff09f36fc7ca691ccdeaf53d487",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp257_functional_role_burden_extended/data_manifest.json",
+  "environment": "reproducibility/exp257_functional_role_burden_extended/environment.json",
+  "release_url": null,
+  "verifier": "Kangho Park",
+  "verified_at": "2026-08-03T09:41:48.286924+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp257_functional_role_burden_extended/fold_00.json",
+      "size_bytes": 11881953,
+      "sha256": "de46fe57434277a8856163843dab2b3c35293c43b887c3e7e015c5655cfea766",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp257_functional_role_burden_extended/fold_01.json",
+      "size_bytes": 12590119,
+      "sha256": "648096f7582c01f064ca1fd586dcc9644a1aced2c97bed334e65a40ad86a4ef8",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp257_functional_role_burden_extended/fold_02.json",
+      "size_bytes": 13032132,
+      "sha256": "48906147bf22438766075ef24c1c6a3f0541d160eaa5f2080f847b13d3ae947f",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp257_functional_role_burden_extended/fold_03.json",
+      "size_bytes": 13079549,
+      "sha256": "d1a65c6f241d32d8970b3cbbaf497e940fc84ae10b7b205cc67b4793e6f0ff3e",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp257_functional_role_burden_extended/fold_04.json",
+      "size_bytes": 12474306,
+      "sha256": "63f060cf49fadc12b43a184819c16f63d739cef702517153ad885990e74b880e",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp257_functional_role_burden_extended.csv",
+      "size_bytes": 38196,
+      "sha256": "291d15dc9760a596b7a04b7a4a3d2a33c497b9d244f2f7fe5bbe7a3573666d68",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp257_functional_role_burden_extended.csv",
+      "size_bytes": 2130226,
+      "sha256": "656c021807ca73a9c7f6035f0229ae750c9c81b46fd16f639b8fa6f7a6a1ed43",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp257_functional_role_burden_extended_test_proba.csv",
+      "size_bytes": 836211,
+      "sha256": "7f5f046c3b08d6807e8656ce9b90d1f0ddc8a336cf1469fa85fa78f3b26dc987",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp257_functional_role_burden_extended/metrics.json",
+      "size_bytes": 12494,
+      "sha256": "88d4161671516b44013935ef8b4d354f1d01fda217d6137895726e381a6c0678",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp257_functional_role_burden_extended/config.resolved.yaml",
+      "size_bytes": 31723,
+      "sha256": "880b32f849d954ee2e45b09b490bcaf93dd536d99d8aa952880cf493fda11bf8",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

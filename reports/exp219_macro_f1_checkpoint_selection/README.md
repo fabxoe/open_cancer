@@ -48,4 +48,18 @@ byte-level로 일치했으며, test 라벨 일치율 100%, 확률 최대 차이
 - Test probability: `preds/exp219_macro_f1_checkpoint_selection_test_proba.csv`
 - Submission: `submissions/exp219_macro_f1_checkpoint_selection.csv`
 - Reproducibility: `reproducibility/exp219_macro_f1_checkpoint_selection/`
+- Original artifact Release:
+  [`exp-219-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-219-repro-v1)
+- Release bundle SHA-256:
+  `fa293ed92a21508e0752890ca407c6e55cbc8794688262bacff471fd6739bf25`
 
+## 원본 Release 복구
+
+Task Issue #258에서 실행 source Mac에 남아 있던 checkpoint 5개, OOF·test 확률,
+submission과 resolved config를 기존 artifact manifest의 SHA-256과 다시 대조했고
+모두 일치했다. 이 원본만 결정적 번들로 묶어 `exp-219-repro-v1` Release에
+보존했다.
+
+Windows에서 같은 config·seed·패키지 버전으로 수행한 재학습은 OOF Macro F1과
+파일 SHA-256이 원본과 달랐으므로 원본 대체물로 사용하지 않았다. 플랫폼 간
+XGBoost `hist` 재학습 차이는 Issue #238에서 별도로 추적한다.

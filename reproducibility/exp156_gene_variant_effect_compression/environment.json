@@ -1,0 +1,7 @@
+{
+  "python": "3.11.10",
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "numpy": "2.4.6",
+  "pandas": "3.0.5",
+  "xgboost": "3.2.0"
+}

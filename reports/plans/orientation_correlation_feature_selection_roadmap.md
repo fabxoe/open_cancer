@@ -5,6 +5,9 @@
 > 원본은 항상 `EXPERIMENT_HISTORY.md`와 각 실험의 `metrics.json`이며, 이 문서에는
 > 예상 점수나 실행하지 않은 결과를 기록하지 않는다.
 
+- 상위 Tracking Issue: [#186](https://github.com/fabxoe/open_cancer/issues/186)
+- 로드맵 상태: `COMPLETED` (2026-08-03)
+
 ## 기준과 원칙
 
 - 기준 모델: EXP-094 Feature Spec v1 XGBoost
@@ -18,7 +21,7 @@
 
 | 단계 | 작업 | Issue | EXP | PR | 상태 | OOF Macro F1 | 다음 행동 |
 |---|---|---:|---:|---:|---|---:|---|
-| T0 | fold-safe selector 공용 기반 | [#183](https://github.com/fabxoe/open_cancer/issues/183) | 해당 없음 | [#184](https://github.com/fabxoe/open_cancer/pull/184) | MERGED | N/A | C0 분석 기록 후 C1 Issue 발급 |
+| T0 | fold-safe selector 공용 기반 | [#183](https://github.com/fabxoe/open_cancer/issues/183) | 해당 없음 | [#184](https://github.com/fabxoe/open_cancer/pull/184) | COMPLETED | N/A | 완료 |
 | C0 | 극단 중복 진단 | [#187](https://github.com/fabxoe/open_cancer/issues/187) | explore | [#197](https://github.com/fabxoe/open_cancer/pull/197) | COMPLETED | N/A | 극단 후보 0개 확인, C1 완료 |
 | C1 | 보수적 Phi/Jaccard 삭제 | [#188](https://github.com/fabxoe/open_cancer/issues/188) | EXP-188 | [#198](https://github.com/fabxoe/open_cancer/pull/198) | COMPLETED | 0.4179737169 | ARCHIVE; 사전 등록 C2 실행 |
 | C2 | 중간 강도 Phi/Jaccard 삭제 | [#189](https://github.com/fabxoe/open_cancer/issues/189) | EXP-189 | [#199](https://github.com/fabxoe/open_cancer/pull/199) | COMPLETED | 0.4147096714 | ARCHIVE; 사전 등록 C3 실행 |
@@ -30,9 +33,21 @@
 | S3 | Boruta | [#207](https://github.com/fabxoe/open_cancer/issues/207) | EXP-207 | [#208](https://github.com/fabxoe/open_cancer/pull/208) | COMPLETED | 0.3484416378 | ARCHIVE; 15~18 confirmed genes로 과도하게 압축되어 Macro F1·DLBC F1 붕괴, 재튜닝 중단 |
 | M0 | Macro-F1 checkpoint 감사 기반 | [#217](https://github.com/fabxoe/open_cancer/issues/217) | 해당 없음 | [#218](https://github.com/fabxoe/open_cancer/pull/218) | COMPLETED | N/A | validation-only audit·결정적 tie-break·checkpoint 저장 계약 완료 |
 | M1 | Macro-F1 checkpoint 선택 통제 실험 | [#219](https://github.com/fabxoe/open_cancer/issues/219) | EXP-219 | [#220](https://github.com/fabxoe/open_cancer/pull/220) | COMPLETED | 0.4222321460 | EXP-094 대비 +0.0053455721, fold std 개선·INFERENCE_VERIFIED; 정책 채택 |
-| S4 | TruncatedSVD 비교 모델 | [#196](https://github.com/fabxoe/open_cancer/issues/196) | EXP-196 | PR 생성 예정 | COMPLETED | 0.3496748557 | Macro F1 -0.0672117·fold std와 DLBC 붕괴로 ARCHIVE; 차원 재탐색 중단 |
+| S4 | TruncatedSVD 비교 모델 | [#196](https://github.com/fabxoe/open_cancer/issues/196) | EXP-196 | [#221](https://github.com/fabxoe/open_cancer/pull/221) | COMPLETED | 0.3496748557 | Macro F1 -0.0672117·fold std와 DLBC 붕괴로 ARCHIVE; 차원 재탐색 중단 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`만 사용하며, 필요하면 `BLOCKED` 또는 `REJECTED`로 종료한다. 이는 실험 재현 상태와 별개다.
+
+## 종료 결론
+
+- C1~C3 상관 삭제, R1~R2 관계·빈도 요약, S1~S4 피처 선택·차원 축소는
+  모두 사전 판정 기준을 통과하지 못해 `ARCHIVE`했다.
+- 결과를 본 뒤 임계값, 선택 개수 또는 차원을 다시 탐색하지 않는다.
+- 이 로드맵에서 채택한 변화는 M1의 validation Macro-F1-best checkpoint
+  선택 정책뿐이다.
+- 성능 또는 간소화 gate를 통과한 selector가 없으므로 이 로드맵을 근거로 한
+  SHAP 삭제 규칙이나 Optuna 피처 정책 탐색은 실행하지 않는다.
+- 후속 multi-seed 안정성 검증과 모델 앙상블은 별도 Experiment Issue에서
+  관리한다.
 
 ## T0 — 공용 fold-safe selector 기반
 

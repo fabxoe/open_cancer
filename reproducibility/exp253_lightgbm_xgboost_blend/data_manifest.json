@@ -1,0 +1,60 @@
+{
+  "verified_at": "2026-08-03T08:18:31.247306+00:00",
+  "files": [
+    {
+      "path": "data/splits/stratified_5fold_seed42.csv",
+      "size_bytes": 80621,
+      "sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf"
+    },
+    {
+      "path": "data/raw/test.csv",
+      "size_bytes": 35068585,
+      "sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+    },
+    {
+      "path": "data/raw/sample_submission.csv",
+      "size_bytes": 35656,
+      "sha256": "1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84"
+    },
+    {
+      "path": "oof/exp209_lightgbm_v2_performance.csv",
+      "size_bytes": 3537207,
+      "sha256": "d30db0e9fb28b965fea4bc3246163f3f5cbba357da161909a4169c95aa31d1c4"
+    },
+    {
+      "path": "preds/exp209_lightgbm_v2_performance_test_proba.csv",
+      "size_bytes": 1410604,
+      "sha256": "b5a049cc98ab6aa7efb4d6278dff77498fff76080227defc60d3e06770ad721f"
+    },
+    {
+      "path": "reports/exp209_lightgbm_v2_performance/metrics.json",
+      "size_bytes": 11205,
+      "sha256": "99a70ef2ce9726e512062bae1130bf3913417537c84fe1ca6acae4ba88d7a3c2"
+    },
+    {
+      "path": "reproducibility/exp209_lightgbm_v2_performance/config.resolved.yaml",
+      "size_bytes": 4072,
+      "sha256": "47b1fcd150847dca0313fd5473cc66040f45557cd1ad855786e9bff582aa1872"
+    },
+    {
+      "path": "oof/exp229_pathway_mutation_types.csv",
+      "size_bytes": 2117507,
+      "sha256": "40350af4b76b11add34977ecac2187416516ad778768b7088da26ae8c31d0e17"
+    },
+    {
+      "path": "preds/exp229_pathway_mutation_types_test_proba.csv",
+      "size_bytes": 829579,
+      "sha256": "0aa4d05f79f43d4d1f526c2aa9ba29b66f6cc22daf99e39eefa2941e97426090"
+    },
+    {
+      "path": "reports/exp229_pathway_mutation_types/metrics.json",
+      "size_bytes": 26105,
+      "sha256": "f84c5af4054de2323a2d854d437e731633a586c92ef9997cd9e60b7521c7ddd0"
+    },
+    {
+      "path": "reproducibility/exp229_pathway_mutation_types/config.resolved.yaml",
+      "size_bytes": 43571,
+      "sha256": "dd2856e7d094c567339fb39730c904e8265e9dcd7da681d4783088c56dd6b82d"
+    }
+  ]
+}

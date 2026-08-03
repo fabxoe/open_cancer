@@ -69,6 +69,7 @@ reports/**/*.tar
 reports/**/*.gz
 
 # Reproducibility bundles are stored as GitHub Release assets.
+release-assets/
 reproducibility/**/*.pt
 reproducibility/**/*.pth
 reproducibility/**/*.ckpt
