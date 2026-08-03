@@ -1,0 +1,66 @@
+{
+  "experiment_id": "EXP-253",
+  "issue_number": 253,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "b9d296ea164beb4b33e5797b7b1b08eee45f54f9",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp253_lightgbm_xgboost_blend/data_manifest.json",
+  "environment": "reproducibility/exp253_lightgbm_xgboost_blend/environment.json",
+  "release_url": null,
+  "verifier": "2heej",
+  "verified_at": "2026-08-03T08:18:31.247306+00:00",
+  "artifacts": [
+    {
+      "kind": "submission",
+      "path": "submissions/exp253_lightgbm_xgboost_blend.csv",
+      "size_bytes": 38193,
+      "sha256": "c57c06bcfadae47741f9c5392ecf73fc3d16ed36ed410901b73acda81b320f48",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp253_lightgbm_xgboost_blend.csv",
+      "size_bytes": 3350774,
+      "sha256": "f4ac3cc45fdc933e392ceba7dc55af1118b05bad5e0c32160868f604066df752",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp253_lightgbm_xgboost_blend_test_proba.csv",
+      "size_bytes": 1341126,
+      "sha256": "8c7e0f48c222fe57cc1d67b6e952d9dd53daceaaf5b6d97f80bd4cf7b9f8d935",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp253_lightgbm_xgboost_blend/metrics.json",
+      "size_bytes": 11169,
+      "sha256": "736c7a19b1ab7edae1c514e0e6560b538fef7bb53122e990be56894b5eff566a",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp253_lightgbm_xgboost_blend/config.resolved.yaml",
+      "size_bytes": 1884,
+      "sha256": "dd00802826dc6541b445f83b978fe4d076af2e42dc2e6e998f200f63d783e716",
+      "storage_uri": null
+    },
+    {
+      "kind": "comparison",
+      "path": "reproducibility/exp253_lightgbm_xgboost_blend/comparison.json",
+      "size_bytes": 477,
+      "sha256": "9ae2591938dfe672d6825f81bcce6b2766313f4d79379823671e368ade801bb5",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
