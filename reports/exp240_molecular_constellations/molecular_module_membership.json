@@ -1,0 +1,224 @@
+{
+  "knowledge_file": "knowledge/cancer_lineage_modules_tcga_v1.json",
+  "knowledge_sha256": "188f5b9dbd5d4459fdf16fb0e77be512343df99f79b1d7ba7b25780635cd2aac",
+  "version": "1.0.0-2026-08-03",
+  "selection_policy": "Fixed before OOF; independent of competition labels, observed frequencies, validation, test, and leaderboard",
+  "competition_rule_basis": "Fixed literature-derived group and relation definitions only; every sample-level value is computed exclusively from the competition CSV; no external patient data, labels, frequencies, weights, embeddings, test distribution, or leaderboard information",
+  "rule_review_status": "NO_PROHIBITION_IDENTIFIED_USER_CONFIRMED_2026-08-03",
+  "sources": [
+    {
+      "module_names": [
+        "glioma_astrocytic",
+        "glioma_oligodendroglial"
+      ],
+      "citation": "TCGA Research Network, Comprehensive, Integrative Genomic Analysis of Diffuse Lower-Grade Gliomas, NEJM 2015",
+      "doi": "10.1056/NEJMoa1402121",
+      "url": "https://www.nejm.org/doi/full/10.1056/NEJMoa1402121"
+    },
+    {
+      "module_names": [
+        "colorectal"
+      ],
+      "citation": "TCGA Research Network, Comprehensive molecular characterization of human colon and rectal cancer, Nature 2012",
+      "doi": "10.1038/nature11252",
+      "url": "https://www.nature.com/articles/nature11252"
+    },
+    {
+      "module_names": [
+        "lung_adenocarcinoma"
+      ],
+      "citation": "TCGA Research Network, Comprehensive molecular profiling of lung adenocarcinoma, Nature 2014",
+      "doi": "10.1038/nature13385",
+      "url": "https://www.nature.com/articles/nature13385"
+    },
+    {
+      "module_names": [
+        "endometrial"
+      ],
+      "citation": "TCGA Research Network, Integrated genomic characterization of endometrial carcinoma, Nature 2013",
+      "doi": "10.1038/nature12113",
+      "url": "https://www.nature.com/articles/nature12113"
+    },
+    {
+      "module_names": [
+        "acute_myeloid_leukemia"
+      ],
+      "citation": "TCGA Research Network, Genomic and epigenomic landscapes of adult de novo acute myeloid leukemia, NEJM 2013",
+      "doi": "10.1056/NEJMoa1301689",
+      "url": "https://www.nejm.org/doi/full/10.1056/NEJMoa1301689"
+    },
+    {
+      "module_names": [
+        "cutaneous_melanoma"
+      ],
+      "citation": "TCGA Research Network, Genomic Classification of Cutaneous Melanoma, Cell 2015",
+      "doi": "10.1016/j.cell.2015.05.044",
+      "url": "https://doi.org/10.1016/j.cell.2015.05.044"
+    }
+  ],
+  "competition_gene_count": 4384,
+  "modules": {
+    "glioma_astrocytic": {
+      "source_core_genes": [
+        "IDH1",
+        "IDH2"
+      ],
+      "source_partner_genes": [
+        "TP53",
+        "ATRX"
+      ],
+      "panel_core_intersection": [
+        "IDH1",
+        "IDH2"
+      ],
+      "panel_partner_intersection": [
+        "TP53",
+        "ATRX"
+      ]
+    },
+    "glioma_oligodendroglial": {
+      "source_core_genes": [
+        "IDH1",
+        "IDH2"
+      ],
+      "source_partner_genes": [
+        "CIC",
+        "FUBP1",
+        "NOTCH1"
+      ],
+      "panel_core_intersection": [
+        "IDH1",
+        "IDH2"
+      ],
+      "panel_partner_intersection": [
+        "NOTCH1"
+      ]
+    },
+    "colorectal": {
+      "source_core_genes": [
+        "APC"
+      ],
+      "source_partner_genes": [
+        "KRAS",
+        "TP53",
+        "SMAD4",
+        "FBXW7"
+      ],
+      "panel_core_intersection": [
+        "APC"
+      ],
+      "panel_partner_intersection": [
+        "TP53",
+        "FBXW7"
+      ]
+    },
+    "lung_adenocarcinoma": {
+      "source_core_genes": [
+        "EGFR",
+        "KRAS"
+      ],
+      "source_partner_genes": [
+        "STK11",
+        "KEAP1",
+        "TP53",
+        "RBM10",
+        "NF1",
+        "BRAF"
+      ],
+      "panel_core_intersection": [
+        "EGFR"
+      ],
+      "panel_partner_intersection": [
+        "TP53",
+        "NF1",
+        "BRAF"
+      ]
+    },
+    "endometrial": {
+      "source_core_genes": [
+        "PTEN",
+        "PIK3CA",
+        "PIK3R1"
+      ],
+      "source_partner_genes": [
+        "ARID1A",
+        "CTNNB1",
+        "KRAS",
+        "POLE",
+        "TP53"
+      ],
+      "panel_core_intersection": [
+        "PTEN",
+        "PIK3CA"
+      ],
+      "panel_partner_intersection": [
+        "CTNNB1",
+        "POLE",
+        "TP53"
+      ]
+    },
+    "acute_myeloid_leukemia": {
+      "source_core_genes": [
+        "NPM1",
+        "FLT3"
+      ],
+      "source_partner_genes": [
+        "DNMT3A",
+        "IDH1",
+        "IDH2",
+        "TET2",
+        "RUNX1",
+        "CEBPA"
+      ],
+      "panel_core_intersection": [
+        "NPM1"
+      ],
+      "panel_partner_intersection": [
+        "IDH1",
+        "IDH2",
+        "RUNX1",
+        "CEBPA"
+      ]
+    },
+    "cutaneous_melanoma": {
+      "source_core_genes": [
+        "BRAF",
+        "NRAS",
+        "NF1"
+      ],
+      "source_partner_genes": [
+        "CDKN2A",
+        "TP53",
+        "RAC1",
+        "ARID2"
+      ],
+      "panel_core_intersection": [
+        "BRAF",
+        "NF1"
+      ],
+      "panel_partner_intersection": [
+        "CDKN2A",
+        "TP53",
+        "RAC1"
+      ]
+    }
+  },
+  "family_registry": {
+    "molecular_constellation": {
+      "definition_version": "1.0.0",
+      "enabled": true,
+      "output_dimension": 21,
+      "feature_names_sha256": "94431731014a28f8cd021215e4ff24e89a0123af73a2885269cef8a24a569559",
+      "fit_scope": "stateless",
+      "external_knowledge": [
+        {
+          "source": "TCGA primary studies listed in sources",
+          "version": "1.0.0-2026-08-03",
+          "license": "Citation-derived factual gene memberships; source article terms apply; no source text redistributed",
+          "sha256": "188f5b9dbd5d4459fdf16fb0e77be512343df99f79b1d7ba7b25780635cd2aac",
+          "uri": "https://www.cancer.gov/ccg/research/genome-sequencing/tcga"
+        }
+      ]
+    }
+  }
+}
