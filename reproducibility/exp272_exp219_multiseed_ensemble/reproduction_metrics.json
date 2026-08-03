@@ -1,0 +1,14 @@
+{
+  "experiment_id": "EXP-272",
+  "verification_type": "checkpoint_verified_seed_runs_plus_fixed_probability_mean",
+  "seed_manifests_passed": true,
+  "original_submission_sha256": "f6761de34a8e991c11fccc590fb448c3e48b2e1bf9abd45f4f4f2763cbdc3d89",
+  "reproduced_submission_sha256": "f6761de34a8e991c11fccc590fb448c3e48b2e1bf9abd45f4f4f2763cbdc3d89",
+  "submission_sha256_match": true,
+  "oof_label_agreement": 1.0,
+  "test_label_agreement": 1.0,
+  "probability_max_abs_difference": 0.0,
+  "probability_atol": 1e-06,
+  "probability_rtol": 1e-06,
+  "passed": true
+}
