@@ -82,6 +82,8 @@ def prepare_reproducibility_bundle(
         "component_oof_probability",
         "component_test_probability",
         "component_resolved_config",
+        "feature_spec_manifest",
+        "checkpoint_iteration_audit",
     )
     for kind in optional_component_kinds:
         selected.extend(_artifact_by_kind(artifacts, kind))
