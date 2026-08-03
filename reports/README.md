@@ -82,6 +82,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 - [외부 생물학 지식·아미노산 피처 확장 검토](analysis/external_biological_knowledge_feature_review.md)
 - [채택 XGBoost 모델 validation-only TreeSHAP 감사](analysis/adopted_model_tree_shap/README.md)
 - [고정 암종 표지 mutation-proxy 의미 감사](analysis/observable_marker_semantic_audit/README.md)
+- [Track B isoform·잔기 의미 QC](analysis/isoform_residue_semantics/README.md)
 
 ## 역할 구분
 
