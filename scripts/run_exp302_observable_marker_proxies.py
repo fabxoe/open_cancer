@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 from collections.abc import Callable
 
@@ -24,7 +25,7 @@ from open_cancer.feature_family import (
 from open_cancer.hashing import sha256_file, sha256_lines
 from open_cancer.observable_marker_features import observable_marker_family
 from run_exp096_fixed_pathway_burden import KNOWLEDGE_PATH as PATHWAY_KNOWLEDGE
-from run_hotspot_xgb import ROOT, TEST_PATH, TRAIN_PATH, main
+from run_hotspot_xgb import ROOT, TEST_PATH, TRAIN_PATH, finalize_saved_run, main
 
 
 CONFIG = ROOT / "configs" / "exp302_observable_marker_proxies.yaml"
@@ -182,8 +183,24 @@ class ObservableMarkerFoldBuilder:
 
 
 if __name__ == "__main__":
-    main(
-        CONFIG,
-        fold_feature_builder=ObservableMarkerFoldBuilder(),
-        runner_command="uv run python scripts/run_exp302_observable_marker_proxies.py",
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--finalize-existing",
+        action="store_true",
+        help="Verify and finalize artifacts from an already completed training run.",
     )
+    args = parser.parse_args()
+    command = "uv run python scripts/run_exp302_observable_marker_proxies.py"
+    builder = ObservableMarkerFoldBuilder()
+    if args.finalize_existing:
+        finalize_saved_run(
+            CONFIG,
+            runner_command=f"{command} --finalize-existing",
+            fold_feature_builder=builder,
+        )
+    else:
+        main(
+            CONFIG,
+            fold_feature_builder=builder,
+            runner_command=command,
+        )
