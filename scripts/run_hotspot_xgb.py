@@ -101,6 +101,7 @@ def main(
     config_override: Path | None = None,
     *,
     fold_feature_builder: Any | None = None,
+    fold_model_tuner: Any | None = None,
     runner_command: str | None = None,
     prevalidated_source_commit: str | None = None,
 ) -> None:
@@ -293,6 +294,8 @@ def main(
     fold_metrics: list[dict[str, Any]] = []
     fold_test_matrices: list[sparse.csr_matrix] = []
     fold_feature_records: list[dict[str, Any]] = []
+    fold_tuning_records: list[dict[str, Any]] = []
+    tuning_artifact_paths: list[Path] = []
     checkpoint_selection = config["training"].get(
         "checkpoint_selection", "training_metric"
     )
@@ -346,13 +349,26 @@ def main(
                     "registry": extra.registry,
                 }
             )
+        fold_model_params = dict(model_params)
+        tuning_record: dict[str, Any] | None = None
+        if fold_model_tuner is not None:
+            tuning = fold_model_tuner(
+                fold=fold,
+                features=x_train_fold,
+                target=y_train,
+                base_model_parameters=model_params,
+            )
+            fold_model_params.update(tuning.parameters)
+            tuning_record = tuning.record
+            fold_tuning_records.append(tuning.record)
+            tuning_artifact_paths.extend(tuning.artifact_paths)
         sample_weight = (
             compute_sample_weight(class_weight="balanced", y=y_train)
             if config["training"]["balanced_sample_weight"]
             else None
         )
         model = xgb.XGBClassifier(
-            **model_params,
+            **fold_model_params,
             random_state=config["seed"] + fold,
         )
         model.fit(
@@ -414,7 +430,26 @@ def main(
             "best_iteration": (
                 None if selected_iteration is None else int(selected_iteration)
             ),
+            "model_parameters": fold_model_params,
         }
+        if tuning_record is not None:
+            result["nested_tuning"] = {
+                key: tuning_record[key]
+                for key in (
+                    "fit_scope",
+                    "test_or_outer_validation_used_for_selection",
+                    "study_name",
+                    "sampler",
+                    "sampler_seed",
+                    "inner_n_splits",
+                    "requested_trials",
+                    "completed_trials",
+                    "best_trial",
+                    "best_value",
+                    "best_parameters",
+                    "database_path",
+                )
+            }
         if checkpoint_audit is not None:
             result["checkpoint_selection"] = {
                 "policy": checkpoint_selection,
@@ -435,6 +470,9 @@ def main(
         raise ValueError("OOF 확률에 채워지지 않은 값이 있습니다.")
     if fold_feature_builder is not None:
         resolved_config["fold_train_features"] = fold_feature_records
+    if fold_model_tuner is not None:
+        resolved_config["fold_model_tuning"] = fold_tuning_records
+    if fold_feature_builder is not None or fold_model_tuner is not None:
         resolved_config_path.write_text(
             yaml.safe_dump(resolved_config, allow_unicode=True, sort_keys=False),
             encoding="utf-8",
@@ -621,7 +659,8 @@ def main(
         extra_artifact_paths=[
             ("checkpoint_iteration_audit", path)
             for path in checkpoint_audit_paths
-        ],
+        ]
+        + [("nested_optuna", path) for path in tuning_artifact_paths],
     )
     print(
         json.dumps(
