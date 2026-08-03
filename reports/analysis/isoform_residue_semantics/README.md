@@ -97,9 +97,9 @@ frameshift, range change, deletion·insertion 등 복합 token은 reference sequ
   원 실험의 annotation 차이일 수 있다.
 - train/test 분포 차이는 QC로만 기록한다. 이 결과를 보고 범주 정의, mask 또는
   threshold를 조정하지 않는다.
-- 팀장 예외 허용 범위에서 첫 B2 후보인 불확실 위치 mask를 별도 Experiment
-  Issue로 검증한다. sample 범주 요약과 isoform-relative coarse bin은 이번
-  예외에 포함하지 않으며 별도 범위 검토 후에만 연다.
+- 첫 B2 후보인 불확실 위치 mask는 EXP-313에서 채택 gate를 통과했다. 이후 팀장
+  추가 승인에 따라 B2-2 sample 범주 요약은 별도 manifest revision과 Task #315로
+  진행한다. isoform-relative coarse bin은 여전히 별도 범위 검토 후에만 연다.
 - 외부 환자 자료나 암종별 빈도 annotation은 여전히 금지하며, test 분포를 보고
   범주·threshold를 변경하지 않는다.
 
