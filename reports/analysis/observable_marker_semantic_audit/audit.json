@@ -1,0 +1,68 @@
+{
+  "analysis_role": "target_independent_semantic_audit",
+  "issue": 299,
+  "train_rows": 6201,
+  "test_rows": 2546,
+  "candidate_dimension": 20,
+  "missing_catalog_genes": ["KRAS", "MSH6", "NRAS"],
+  "competition_intersections": {
+    "lung_point_mutation_proxy": ["EGFR", "BRAF"],
+    "breast_tumor_variant_proxy": ["BRCA1", "BRCA2", "ERBB2", "PIK3CA"],
+    "colorectal_tumor_variant_proxy": ["BRAF", "MLH1", "MSH2", "PMS2"],
+    "ovarian_brca_variant_proxy": ["BRCA1", "BRCA2"],
+    "bladder_fgfr3_variant_proxy": ["FGFR3"]
+  },
+  "train_positive_count": {
+    "lung_any_mutated": 639,
+    "lung_any_nonsynonymous": 598,
+    "lung_any_lof": 21,
+    "lung_multi_gene_mutated": 36,
+    "breast_any_mutated": 985,
+    "breast_any_nonsynonymous": 928,
+    "breast_any_lof": 68,
+    "breast_multi_gene_mutated": 116,
+    "colorectal_any_mutated": 588,
+    "colorectal_any_nonsynonymous": 547,
+    "colorectal_any_lof": 45,
+    "colorectal_multi_gene_mutated": 48,
+    "ovarian_any_mutated": 293,
+    "ovarian_any_nonsynonymous": 249,
+    "ovarian_any_lof": 59,
+    "ovarian_multi_gene_mutated": 29,
+    "bladder_any_mutated": 74,
+    "bladder_any_nonsynonymous": 56,
+    "bladder_any_lof": 10,
+    "bladder_multi_gene_mutated": 0
+  },
+  "test_positive_count": {
+    "lung_any_mutated": 396,
+    "lung_any_nonsynonymous": 338,
+    "lung_any_lof": 18,
+    "lung_multi_gene_mutated": 42,
+    "breast_any_mutated": 534,
+    "breast_any_nonsynonymous": 501,
+    "breast_any_lof": 44,
+    "breast_multi_gene_mutated": 100,
+    "colorectal_any_mutated": 329,
+    "colorectal_any_nonsynonymous": 297,
+    "colorectal_any_lof": 30,
+    "colorectal_multi_gene_mutated": 62,
+    "ovarian_any_mutated": 189,
+    "ovarian_any_nonsynonymous": 156,
+    "ovarian_any_lof": 38,
+    "ovarian_multi_gene_mutated": 40,
+    "bladder_any_mutated": 78,
+    "bladder_any_nonsynonymous": 61,
+    "bladder_any_lof": 8,
+    "bladder_multi_gene_mutated": 0
+  },
+  "constant_train_features": [
+    "sample__observable_marker_bladder_fgfr3_variant_proxy__multi_gene_mutated"
+  ],
+  "exact_equivalence_relevant_gene_block": {
+    "sample__observable_marker_bladder_fgfr3_variant_proxy__any_mutated": "gene__FGFR3__mutated"
+  },
+  "target_used": false,
+  "test_distribution_used_for_selection": false,
+  "public_leaderboard_used": false
+}

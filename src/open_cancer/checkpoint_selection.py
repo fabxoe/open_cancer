@@ -94,12 +94,100 @@ def select_macro_f1_iteration(records: Sequence[dict[str, float | int]]) -> dict
     )
 
 
+def rolling_median_macro_f1_candidates(
+    records: Sequence[dict[str, float | int]],
+    *,
+    window_size: int,
+    min_iteration: int,
+) -> list[dict[str, float | int]]:
+    """Build complete trailing validation Macro-F1 median candidates.
+
+    The selected checkpoint is the final iteration of the winning window.  A
+    complete, consecutive iteration curve is required so a sparse candidate
+    list cannot silently change the meaning of the rolling window.
+    """
+    _require(window_size > 0, "rolling window 크기는 1 이상이어야 합니다.")
+    _require(min_iteration >= 0, "최소 iteration은 0 이상이어야 합니다.")
+    _require(len(records) > 0, "iteration 감사 기록이 비어 있습니다.")
+    required = {"iteration", "macro_f1", "log_loss"}
+    ordered = sorted(records, key=lambda row: int(row["iteration"]))
+    iterations: list[int] = []
+    for record in ordered:
+        _require(required <= record.keys(), "iteration 감사 기록의 필수 필드가 없습니다.")
+        iteration = int(record["iteration"])
+        macro_f1 = float(record["macro_f1"])
+        loss = float(record["log_loss"])
+        _require(iteration >= 0, "iteration은 0 이상이어야 합니다.")
+        _require(
+            np.isfinite(macro_f1) and np.isfinite(loss),
+            "iteration 감사 지표는 유한해야 합니다.",
+        )
+        iterations.append(iteration)
+    _require(
+        len(set(iterations)) == len(iterations),
+        "rolling median iteration 감사 기록에 중복 iteration이 있습니다.",
+    )
+    _require(
+        iterations == list(range(iterations[0], iterations[-1] + 1)),
+        "rolling median은 연속된 전체 iteration 감사 기록이 필요합니다.",
+    )
+
+    candidates: list[dict[str, float | int]] = []
+    for index, record in enumerate(ordered):
+        iteration = int(record["iteration"])
+        if iteration < min_iteration or index + 1 < window_size:
+            continue
+        window = ordered[index + 1 - window_size : index + 1]
+        candidates.append(
+            {
+                **record,
+                "rolling_median_macro_f1": float(
+                    np.median([float(row["macro_f1"]) for row in window])
+                ),
+                "window_start_iteration": int(window[0]["iteration"]),
+                "window_end_iteration": iteration,
+                "window_size": window_size,
+            }
+        )
+    _require(
+        len(candidates) > 0,
+        "최소 iteration 이후 완성된 rolling median 후보가 없습니다.",
+    )
+    return candidates
+
+
+def select_rolling_median_macro_f1_iteration(
+    records: Sequence[dict[str, float | int]],
+    *,
+    window_size: int,
+    min_iteration: int,
+) -> dict[str, float | int]:
+    """Select the earliest peak of a trailing validation Macro-F1 median."""
+    candidates = rolling_median_macro_f1_candidates(
+        records,
+        window_size=window_size,
+        min_iteration=min_iteration,
+    )
+    return dict(
+        min(
+            candidates,
+            key=lambda row: (
+                -float(row["rolling_median_macro_f1"]),
+                int(row["iteration"]),
+            ),
+        )
+    )
+
+
 def audit_xgboost_validation_iterations(
     model: XGBoostIterationModel,
     validation_features: Any,
     validation_targets: np.ndarray,
     *,
     candidate_iterations: Iterable[int] | None = None,
+    selection_policy: str = "macro_f1_validation",
+    rolling_window_size: int | None = None,
+    minimum_iteration: int | None = None,
 ) -> dict[str, Any]:
     """Compare validation Macro-F1 and training-metric checkpoint choices.
 
@@ -151,6 +239,36 @@ def audit_xgboost_validation_iterations(
         )
 
     macro_best = select_macro_f1_iteration(records)
+    _require(
+        selection_policy
+        in {"macro_f1_validation", "macro_f1_rolling_median_validation"},
+        f"지원하지 않는 checkpoint selection policy: {selection_policy}",
+    )
+    rolling_median_best: dict[str, float | int] | None = None
+    if selection_policy == "macro_f1_rolling_median_validation":
+        _require(
+            rolling_window_size is not None and minimum_iteration is not None,
+            "rolling median 정책에는 window와 최소 iteration이 필요합니다.",
+        )
+        rolling_median_history = rolling_median_macro_f1_candidates(
+            records,
+            window_size=rolling_window_size,
+            min_iteration=minimum_iteration,
+        )
+        rolling_median_best = dict(
+            min(
+                rolling_median_history,
+                key=lambda row: (
+                    -float(row["rolling_median_macro_f1"]),
+                    int(row["iteration"]),
+                ),
+            )
+        )
+        selected_checkpoint = rolling_median_best
+        tie_break = ["rolling_median_macro_f1_desc", "iteration_asc"]
+    else:
+        selected_checkpoint = macro_best
+        tie_break = ["macro_f1_desc", "log_loss_asc", "iteration_asc"]
     training_best_iteration = int(model.best_iteration)
     _require(
         0 <= training_best_iteration < trained_rounds,
@@ -179,14 +297,28 @@ def audit_xgboost_validation_iterations(
     else:
         training_record = dict(by_iteration[training_best_iteration])
 
-    return {
+    result = {
         "selection_scope": "outer_fold_validation_only",
+        "selection_policy": selection_policy,
         "primary_metric": "macro_f1",
         "training_metric": "mlogloss",
         "trained_rounds": trained_rounds,
-        "tie_break": ["macro_f1_desc", "log_loss_asc", "iteration_asc"],
+        "tie_break": tie_break,
         "training_metric_best": training_record,
         "macro_f1_best": macro_best,
-        "macro_f1_delta": float(macro_best["macro_f1"]) - float(training_record["macro_f1"]),
+        "selected_checkpoint": selected_checkpoint,
+        "macro_f1_delta": float(selected_checkpoint["macro_f1"])
+        - float(training_record["macro_f1"]),
         "curve": records,
     }
+    if rolling_median_best is not None:
+        result["rolling_median_contract"] = {
+            "window_size": rolling_window_size,
+            "minimum_iteration": minimum_iteration,
+            "window_alignment": "trailing_inclusive",
+            "selected_iteration_is_window_end": True,
+            "fallback": "fail",
+        }
+        result["rolling_median_best"] = rolling_median_best
+        result["rolling_median_history"] = rolling_median_history
+    return result

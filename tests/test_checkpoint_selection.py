@@ -12,6 +12,7 @@ from open_cancer.checkpoint_selection import (
     predict_xgboost_at_iteration,
     save_xgboost_iteration_checkpoint,
     select_macro_f1_iteration,
+    select_rolling_median_macro_f1_iteration,
 )
 from open_cancer.constants import CLASS_LABELS
 
@@ -58,6 +59,52 @@ def test_macro_f1_selection_uses_deterministic_tie_break() -> None:
     assert selected["iteration"] == 1
 
 
+def test_rolling_median_selection_uses_window_end_and_earlier_tie() -> None:
+    records = [
+        {"iteration": iteration, "macro_f1": 0.1, "log_loss": 2.0}
+        for iteration in range(8)
+    ]
+    for iteration in (1, 2, 3, 5, 6, 7):
+        records[iteration]["macro_f1"] = 0.8
+
+    selected = select_rolling_median_macro_f1_iteration(
+        records,
+        window_size=3,
+        min_iteration=3,
+    )
+
+    assert selected["iteration"] == 3
+    assert selected["window_start_iteration"] == 1
+    assert selected["window_end_iteration"] == 3
+    assert selected["rolling_median_macro_f1"] == pytest.approx(0.8)
+
+
+def test_rolling_median_selection_rejects_missing_candidate_without_fallback() -> None:
+    records = [
+        {"iteration": iteration, "macro_f1": 0.2, "log_loss": 2.0}
+        for iteration in range(10)
+    ]
+    with pytest.raises(CheckpointSelectionError, match="후보가 없습니다"):
+        select_rolling_median_macro_f1_iteration(
+            records,
+            window_size=5,
+            min_iteration=100,
+        )
+
+
+def test_rolling_median_selection_requires_consecutive_curve() -> None:
+    records = [
+        {"iteration": 0, "macro_f1": 0.2, "log_loss": 2.0},
+        {"iteration": 2, "macro_f1": 0.3, "log_loss": 1.9},
+    ]
+    with pytest.raises(CheckpointSelectionError, match="연속된 전체"):
+        select_rolling_median_macro_f1_iteration(
+            records,
+            window_size=2,
+            min_iteration=0,
+        )
+
+
 def test_validation_audit_can_disagree_with_mlogloss_checkpoint() -> None:
     targets = np.arange(len(CLASS_LABELS), dtype=np.int64)
     wrong_predictions = np.roll(targets, 1)
@@ -84,6 +131,26 @@ def test_validation_audit_can_disagree_with_mlogloss_checkpoint() -> None:
     assert result["macro_f1_best"]["macro_f1"] == pytest.approx(1.0)
     assert result["macro_f1_delta"] > 0
     assert model.requested_ranges == [(0, 1), (0, 2), (0, 3)]
+
+
+def test_validation_audit_records_complete_rolling_median_history() -> None:
+    targets = np.arange(len(CLASS_LABELS), dtype=np.int64)
+    probabilities = probability_matrix(targets.tolist(), 0.7)
+    model = FakeXGBoostModel([probabilities] * 6, best_iteration=2)
+
+    result = audit_xgboost_validation_iterations(
+        model,
+        np.ones((len(targets), 1), dtype=np.float32),
+        targets,
+        selection_policy="macro_f1_rolling_median_validation",
+        rolling_window_size=3,
+        minimum_iteration=3,
+    )
+
+    assert result["selection_policy"] == "macro_f1_rolling_median_validation"
+    assert [row["iteration"] for row in result["rolling_median_history"]] == [3, 4, 5]
+    assert result["selected_checkpoint"]["iteration"] == 3
+    assert result["rolling_median_contract"]["fallback"] == "fail"
 
 
 def test_explicit_candidate_range_still_audits_training_best() -> None:
@@ -180,3 +247,47 @@ def test_exp223_changes_only_checkpoint_policy_from_exp096() -> None:
         assert candidate[key] == baseline[key]
     assert candidate["training"]["balanced_sample_weight"] is True
     assert candidate["training"]["checkpoint_selection"] == "macro_f1_validation"
+
+
+def test_exp279_changes_only_checkpoint_policy_from_exp219() -> None:
+    root = Path(__file__).resolve().parents[1]
+    baseline = yaml.safe_load(
+        (root / "configs/exp219_macro_f1_checkpoint_selection.yaml").read_text(
+            encoding="utf-8"
+        )
+    )
+    candidate = yaml.safe_load(
+        (root / "configs/exp279_checkpoint_rolling_median.yaml").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    for key in ("seed", "split", "features", "hotspots", "model"):
+        assert candidate[key] == baseline[key]
+    assert candidate["experiment_id"] == "EXP-279"
+    assert candidate["issue_number"] == 279
+    assert candidate["parent_experiment"] == "EXP-219"
+    assert candidate["training"]["checkpoint_selection"] == (
+        "macro_f1_rolling_median_validation"
+    )
+    assert candidate["training"]["checkpoint_rolling_window"] == 21
+    assert candidate["training"]["checkpoint_min_iteration"] == 100
+    assert candidate["training"]["checkpoint_no_candidate_policy"] == "fail"
+    for key in ("balanced_sample_weight", "missing_policy", "feature_types"):
+        assert candidate["training"][key] == baseline["training"][key]
+
+
+def test_exp279_runner_is_one_to_one() -> None:
+    root = Path(__file__).resolve().parents[1]
+    runner = (
+        root / "scripts" / "run_exp279_checkpoint_rolling_median.py"
+    ).read_text(encoding="utf-8")
+    assert "exp279_checkpoint_rolling_median.yaml" in runner
+    assert "run_exp279_checkpoint_rolling_median.py" in runner
+
+
+def test_common_runner_preserves_legacy_macro_f1_metrics_key() -> None:
+    root = Path(__file__).resolve().parents[1]
+    runner = (root / "scripts" / "run_hotspot_xgb.py").read_text(encoding="utf-8")
+    assert 'if checkpoint_selection == "macro_f1_validation":' in runner
+    assert '["checkpoint_comparison"]["macro_f1_best"] = metrics["oof"]' in runner

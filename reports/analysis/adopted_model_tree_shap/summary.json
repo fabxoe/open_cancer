@@ -1,0 +1,911 @@
+{
+  "analysis_role": "validation_only_explanation",
+  "selection_or_training_use": false,
+  "test_or_public_lb_use": false,
+  "method": "XGBoost exact TreeSHAP via pred_contribs",
+  "sampling": {
+    "seed": 42,
+    "max_per_class_per_fold": 3,
+    "chunk_size": 2
+  },
+  "data": {
+    "train_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+    "split_sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf",
+    "base_feature_names_sha256": "8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf"
+  },
+  "models": [
+    {
+      "slug": "exp219_macro_f1_checkpoint_selection",
+      "sampled_rows": 390,
+      "class_sample_counts": {
+        "ACC": 15,
+        "BLCA": 15,
+        "BRCA": 15,
+        "CESC": 15,
+        "COAD": 15,
+        "DLBC": 15,
+        "GBMLGG": 15,
+        "HNSC": 15,
+        "KIPAN": 15,
+        "KIRC": 15,
+        "LAML": 15,
+        "LGG": 15,
+        "LIHC": 15,
+        "LUAD": 15,
+        "LUSC": 15,
+        "OV": 15,
+        "PAAD": 15,
+        "PCPG": 15,
+        "PRAD": 15,
+        "SARC": 15,
+        "SKCM": 15,
+        "STES": 15,
+        "TGCT": 15,
+        "THCA": 15,
+        "THYM": 15,
+        "UCEC": 15
+      },
+      "folds": [
+        {
+          "fold": 0,
+          "validation_rows": 1241,
+          "sampled_rows": 78,
+          "sampled_class_counts": {
+            "ACC": 3,
+            "BLCA": 3,
+            "BRCA": 3,
+            "CESC": 3,
+            "COAD": 3,
+            "DLBC": 3,
+            "GBMLGG": 3,
+            "HNSC": 3,
+            "KIPAN": 3,
+            "KIRC": 3,
+            "LAML": 3,
+            "LGG": 3,
+            "LIHC": 3,
+            "LUAD": 3,
+            "LUSC": 3,
+            "OV": 3,
+            "PAAD": 3,
+            "PCPG": 3,
+            "PRAD": 3,
+            "SARC": 3,
+            "SKCM": 3,
+            "STES": 3,
+            "TGCT": 3,
+            "THCA": 3,
+            "THYM": 3,
+            "UCEC": 3
+          },
+          "sample_id_sha256": "6657fe35d12f55751a706245fd7d0d3968e67e00d5dc48d283175e2926cf5a57",
+          "feature_count": 35119,
+          "feature_names_sha256": "8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf",
+          "extra_feature_count": 0,
+          "checkpoint": "models/exp219_macro_f1_checkpoint_selection/fold_00.json",
+          "checkpoint_sha256": "3bf30c0db603647f43a6b3a38db296fb152376500e9df5e9745c6c18448e155d"
+        },
+        {
+          "fold": 1,
+          "validation_rows": 1240,
+          "sampled_rows": 78,
+          "sampled_class_counts": {
+            "ACC": 3,
+            "BLCA": 3,
+            "BRCA": 3,
+            "CESC": 3,
+            "COAD": 3,
+            "DLBC": 3,
+            "GBMLGG": 3,
+            "HNSC": 3,
+            "KIPAN": 3,
+            "KIRC": 3,
+            "LAML": 3,
+            "LGG": 3,
+            "LIHC": 3,
+            "LUAD": 3,
+            "LUSC": 3,
+            "OV": 3,
+            "PAAD": 3,
+            "PCPG": 3,
+            "PRAD": 3,
+            "SARC": 3,
+            "SKCM": 3,
+            "STES": 3,
+            "TGCT": 3,
+            "THCA": 3,
+            "THYM": 3,
+            "UCEC": 3
+          },
+          "sample_id_sha256": "d7086bc0e39ac287ccae57914be6890ed5187acc71a2bf0b9cf1342723897f57",
+          "feature_count": 35119,
+          "feature_names_sha256": "8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf",
+          "extra_feature_count": 0,
+          "checkpoint": "models/exp219_macro_f1_checkpoint_selection/fold_01.json",
+          "checkpoint_sha256": "2228208f42d4028b25e49ac27cb17471deb0b556600370548e636a7920621a8a"
+        },
+        {
+          "fold": 2,
+          "validation_rows": 1240,
+          "sampled_rows": 78,
+          "sampled_class_counts": {
+            "ACC": 3,
+            "BLCA": 3,
+            "BRCA": 3,
+            "CESC": 3,
+            "COAD": 3,
+            "DLBC": 3,
+            "GBMLGG": 3,
+            "HNSC": 3,
+            "KIPAN": 3,
+            "KIRC": 3,
+            "LAML": 3,
+            "LGG": 3,
+            "LIHC": 3,
+            "LUAD": 3,
+            "LUSC": 3,
+            "OV": 3,
+            "PAAD": 3,
+            "PCPG": 3,
+            "PRAD": 3,
+            "SARC": 3,
+            "SKCM": 3,
+            "STES": 3,
+            "TGCT": 3,
+            "THCA": 3,
+            "THYM": 3,
+            "UCEC": 3
+          },
+          "sample_id_sha256": "b3728e1425060c16b77412e34d133ea17b15de443c4c40defb892a85498d49b3",
+          "feature_count": 35119,
+          "feature_names_sha256": "8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf",
+          "extra_feature_count": 0,
+          "checkpoint": "models/exp219_macro_f1_checkpoint_selection/fold_02.json",
+          "checkpoint_sha256": "1ada3aa6d216dfb73843e2a9589fb1157f13b33dc1be4c87109b6dbbc98e96a5"
+        },
+        {
+          "fold": 3,
+          "validation_rows": 1240,
+          "sampled_rows": 78,
+          "sampled_class_counts": {
+            "ACC": 3,
+            "BLCA": 3,
+            "BRCA": 3,
+            "CESC": 3,
+            "COAD": 3,
+            "DLBC": 3,
+            "GBMLGG": 3,
+            "HNSC": 3,
+            "KIPAN": 3,
+            "KIRC": 3,
+            "LAML": 3,
+            "LGG": 3,
+            "LIHC": 3,
+            "LUAD": 3,
+            "LUSC": 3,
+            "OV": 3,
+            "PAAD": 3,
+            "PCPG": 3,
+            "PRAD": 3,
+            "SARC": 3,
+            "SKCM": 3,
+            "STES": 3,
+            "TGCT": 3,
+            "THCA": 3,
+            "THYM": 3,
+            "UCEC": 3
+          },
+          "sample_id_sha256": "2238734a5df6c6c1debac08a388b9618395c4998af8ef1f287f904baf17c1dc0",
+          "feature_count": 35119,
+          "feature_names_sha256": "8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf",
+          "extra_feature_count": 0,
+          "checkpoint": "models/exp219_macro_f1_checkpoint_selection/fold_03.json",
+          "checkpoint_sha256": "9292d5590af17ed331178161db27d3f2e4ee4e1eb508b456a64a979e0cffe4ab"
+        },
+        {
+          "fold": 4,
+          "validation_rows": 1240,
+          "sampled_rows": 78,
+          "sampled_class_counts": {
+            "ACC": 3,
+            "BLCA": 3,
+            "BRCA": 3,
+            "CESC": 3,
+            "COAD": 3,
+            "DLBC": 3,
+            "GBMLGG": 3,
+            "HNSC": 3,
+            "KIPAN": 3,
+            "KIRC": 3,
+            "LAML": 3,
+            "LGG": 3,
+            "LIHC": 3,
+            "LUAD": 3,
+            "LUSC": 3,
+            "OV": 3,
+            "PAAD": 3,
+            "PCPG": 3,
+            "PRAD": 3,
+            "SARC": 3,
+            "SKCM": 3,
+            "STES": 3,
+            "TGCT": 3,
+            "THCA": 3,
+            "THYM": 3,
+            "UCEC": 3
+          },
+          "sample_id_sha256": "05c3e5ab554001ece731144bf1c520b5bf7ed24da74d3331597ff75a96180275",
+          "feature_count": 35119,
+          "feature_names_sha256": "8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf",
+          "extra_feature_count": 0,
+          "checkpoint": "models/exp219_macro_f1_checkpoint_selection/fold_04.json",
+          "checkpoint_sha256": "818c6347e1fc14812b30536c283e56e95e6f429a5278fcf43b6f6cb68a0dae37"
+        }
+      ],
+      "global_top20": [
+        {
+          "feature": "sample__mutated_gene_count",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.37177453942748845,
+          "share": 0.1178277432016013,
+          "rank": 1
+        },
+        {
+          "feature": "sample__total_variant_count",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.2621601237028084,
+          "share": 0.08308728128860833,
+          "rank": 2
+        },
+        {
+          "feature": "sample__synonymous_count",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.19946883842718807,
+          "share": 0.06321832341481383,
+          "rank": 3
+        },
+        {
+          "feature": "sample__missense_count",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.18604185819263622,
+          "share": 0.05896286584236669,
+          "rank": 4
+        },
+        {
+          "feature": "TP53__max_residue_position",
+          "family": "gene_max_residue_position",
+          "mean_abs_shap": 0.17949091120947974,
+          "share": 0.056886652393088204,
+          "rank": 5
+        },
+        {
+          "feature": "hotspot__known_hotspot_total_count",
+          "family": "fixed_hotspot",
+          "mean_abs_shap": 0.0969540461622605,
+          "share": 0.03072796881452707,
+          "rank": 6
+        },
+        {
+          "feature": "sample__frameshift_count",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.09393082415235247,
+          "share": 0.029769808992250294,
+          "rank": 7
+        },
+        {
+          "feature": "sample__mutated_gene_count_log1p",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.07562433812535413,
+          "share": 0.023967873394846184,
+          "rank": 8
+        },
+        {
+          "feature": "sample__multi_variant_gene_count",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.07374499918868131,
+          "share": 0.023372248245366992,
+          "rank": 9
+        },
+        {
+          "feature": "TP53__mutated",
+          "family": "gene_mutated",
+          "mean_abs_shap": 0.06497320835669831,
+          "share": 0.020592175357210966,
+          "rank": 10
+        },
+        {
+          "feature": "hotspot__IDH1_132",
+          "family": "fixed_hotspot",
+          "mean_abs_shap": 0.05663420771423305,
+          "share": 0.017949268105489316,
+          "rank": 11
+        },
+        {
+          "feature": "sample__total_variant_count_log1p",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.05234234545372658,
+          "share": 0.0165890339026137,
+          "rank": 12
+        },
+        {
+          "feature": "sample__nonsense_count",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.05109172612295416,
+          "share": 0.01619267095216493,
+          "rank": 13
+        },
+        {
+          "feature": "PTEN__max_residue_position",
+          "family": "gene_max_residue_position",
+          "mean_abs_shap": 0.04025960563914915,
+          "share": 0.012759610924278006,
+          "rank": 14
+        },
+        {
+          "feature": "VHL__max_residue_position",
+          "family": "gene_max_residue_position",
+          "mean_abs_shap": 0.035078512051286294,
+          "share": 0.011117549674698444,
+          "rank": 15
+        },
+        {
+          "feature": "hotspot__BRAF_600",
+          "family": "fixed_hotspot",
+          "mean_abs_shap": 0.03185621341758947,
+          "share": 0.01009629583489871,
+          "rank": 16
+        },
+        {
+          "feature": "APC__max_residue_position",
+          "family": "gene_max_residue_position",
+          "mean_abs_shap": 0.03178474429083684,
+          "share": 0.010073644886485676,
+          "rank": 17
+        },
+        {
+          "feature": "PIK3CA__max_residue_position",
+          "family": "gene_max_residue_position",
+          "mean_abs_shap": 0.029450624498860035,
+          "share": 0.009333884525611208,
+          "rank": 18
+        },
+        {
+          "feature": "KMT2D__max_residue_position",
+          "family": "gene_max_residue_position",
+          "mean_abs_shap": 0.022351017537423187,
+          "share": 0.0070837824417711165,
+          "rank": 19
+        },
+        {
+          "feature": "BRAF__max_residue_position",
+          "family": "gene_max_residue_position",
+          "mean_abs_shap": 0.020746446065318887,
+          "share": 0.006575240260117508,
+          "rank": 20
+        }
+      ],
+      "family_importance": [
+        {
+          "family": "sample_aggregate",
+          "feature_count": 12,
+          "total_mean_abs_shap": 1.385630282995114,
+          "total_share": 0.43915242127266235,
+          "mean_per_feature": 0.11546919024959283
+        },
+        {
+          "family": "gene_max_residue_position",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 1.1462592529374644,
+          "total_share": 0.3632877633459283,
+          "mean_per_feature": 0.0002614642456517928
+        },
+        {
+          "family": "gene_mutated",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 0.20966471454203886,
+          "total_share": 0.06644973639544989,
+          "mean_per_feature": 4.782498050685198e-05
+        },
+        {
+          "family": "fixed_hotspot",
+          "feature_count": 35,
+          "total_mean_abs_shap": 0.2006543409884265,
+          "total_share": 0.06359404869058324,
+          "mean_per_feature": 0.005732981171097899
+        },
+        {
+          "family": "gene_missense",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 0.12589775667412062,
+          "total_share": 0.03990119540165356,
+          "mean_per_feature": 2.871755398588521e-05
+        },
+        {
+          "family": "gene_synonymous",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 0.04668551780788591,
+          "total_share": 0.01479619667331808,
+          "mean_per_feature": 1.0649068843039656e-05
+        },
+        {
+          "family": "gene_frameshift",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 0.0210502966411536,
+          "total_share": 0.0066715406352756456,
+          "mean_per_feature": 4.801618759387223e-06
+        },
+        {
+          "family": "gene_nonsense",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 0.019395554149047967,
+          "total_share": 0.006147097585127968,
+          "mean_per_feature": 4.4241683734142265e-06
+        },
+        {
+          "family": "gene_complex",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 0.0,
+          "total_share": 0.0,
+          "mean_per_feature": 0.0
+        },
+        {
+          "family": "gene_missing",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 0.0,
+          "total_share": 0.0,
+          "mean_per_feature": 0.0
+        }
+      ]
+    },
+    {
+      "slug": "exp229_pathway_mutation_types",
+      "sampled_rows": 390,
+      "class_sample_counts": {
+        "ACC": 15,
+        "BLCA": 15,
+        "BRCA": 15,
+        "CESC": 15,
+        "COAD": 15,
+        "DLBC": 15,
+        "GBMLGG": 15,
+        "HNSC": 15,
+        "KIPAN": 15,
+        "KIRC": 15,
+        "LAML": 15,
+        "LGG": 15,
+        "LIHC": 15,
+        "LUAD": 15,
+        "LUSC": 15,
+        "OV": 15,
+        "PAAD": 15,
+        "PCPG": 15,
+        "PRAD": 15,
+        "SARC": 15,
+        "SKCM": 15,
+        "STES": 15,
+        "TGCT": 15,
+        "THCA": 15,
+        "THYM": 15,
+        "UCEC": 15
+      },
+      "folds": [
+        {
+          "fold": 0,
+          "validation_rows": 1241,
+          "sampled_rows": 78,
+          "sampled_class_counts": {
+            "ACC": 3,
+            "BLCA": 3,
+            "BRCA": 3,
+            "CESC": 3,
+            "COAD": 3,
+            "DLBC": 3,
+            "GBMLGG": 3,
+            "HNSC": 3,
+            "KIPAN": 3,
+            "KIRC": 3,
+            "LAML": 3,
+            "LGG": 3,
+            "LIHC": 3,
+            "LUAD": 3,
+            "LUSC": 3,
+            "OV": 3,
+            "PAAD": 3,
+            "PCPG": 3,
+            "PRAD": 3,
+            "SARC": 3,
+            "SKCM": 3,
+            "STES": 3,
+            "TGCT": 3,
+            "THCA": 3,
+            "THYM": 3,
+            "UCEC": 3
+          },
+          "sample_id_sha256": "6657fe35d12f55751a706245fd7d0d3968e67e00d5dc48d283175e2926cf5a57",
+          "feature_count": 35181,
+          "feature_names_sha256": "cbaff2a00c82e74953a1bd94542e628d3d23c1bca6e66fd0556efd0bc85cbace",
+          "extra_feature_count": 62,
+          "checkpoint": "models/exp229_pathway_mutation_types/fold_00.json",
+          "checkpoint_sha256": "aa19f350bb9293c74b8eff795e96bf89f8fa3b25613d894bc5a222fb9f19516e"
+        },
+        {
+          "fold": 1,
+          "validation_rows": 1240,
+          "sampled_rows": 78,
+          "sampled_class_counts": {
+            "ACC": 3,
+            "BLCA": 3,
+            "BRCA": 3,
+            "CESC": 3,
+            "COAD": 3,
+            "DLBC": 3,
+            "GBMLGG": 3,
+            "HNSC": 3,
+            "KIPAN": 3,
+            "KIRC": 3,
+            "LAML": 3,
+            "LGG": 3,
+            "LIHC": 3,
+            "LUAD": 3,
+            "LUSC": 3,
+            "OV": 3,
+            "PAAD": 3,
+            "PCPG": 3,
+            "PRAD": 3,
+            "SARC": 3,
+            "SKCM": 3,
+            "STES": 3,
+            "TGCT": 3,
+            "THCA": 3,
+            "THYM": 3,
+            "UCEC": 3
+          },
+          "sample_id_sha256": "d7086bc0e39ac287ccae57914be6890ed5187acc71a2bf0b9cf1342723897f57",
+          "feature_count": 35182,
+          "feature_names_sha256": "00ef6777481480e41a63d8dbf1e03cb2a14c72627f0dbc08549dca8bc81e9b1d",
+          "extra_feature_count": 63,
+          "checkpoint": "models/exp229_pathway_mutation_types/fold_01.json",
+          "checkpoint_sha256": "b575f49734e23ca642aa520281f54c1d977a5d3543638ef61bfc57ca4f829f32"
+        },
+        {
+          "fold": 2,
+          "validation_rows": 1240,
+          "sampled_rows": 78,
+          "sampled_class_counts": {
+            "ACC": 3,
+            "BLCA": 3,
+            "BRCA": 3,
+            "CESC": 3,
+            "COAD": 3,
+            "DLBC": 3,
+            "GBMLGG": 3,
+            "HNSC": 3,
+            "KIPAN": 3,
+            "KIRC": 3,
+            "LAML": 3,
+            "LGG": 3,
+            "LIHC": 3,
+            "LUAD": 3,
+            "LUSC": 3,
+            "OV": 3,
+            "PAAD": 3,
+            "PCPG": 3,
+            "PRAD": 3,
+            "SARC": 3,
+            "SKCM": 3,
+            "STES": 3,
+            "TGCT": 3,
+            "THCA": 3,
+            "THYM": 3,
+            "UCEC": 3
+          },
+          "sample_id_sha256": "b3728e1425060c16b77412e34d133ea17b15de443c4c40defb892a85498d49b3",
+          "feature_count": 35182,
+          "feature_names_sha256": "6150528fe99b9d945dc0279c15fb420aab9363a091dda6c9c6d627116c1dbd2a",
+          "extra_feature_count": 63,
+          "checkpoint": "models/exp229_pathway_mutation_types/fold_02.json",
+          "checkpoint_sha256": "7671434ac5a19a1a0a37296c795fdf541fc21a8bc7516ee1407950ea26258a61"
+        },
+        {
+          "fold": 3,
+          "validation_rows": 1240,
+          "sampled_rows": 78,
+          "sampled_class_counts": {
+            "ACC": 3,
+            "BLCA": 3,
+            "BRCA": 3,
+            "CESC": 3,
+            "COAD": 3,
+            "DLBC": 3,
+            "GBMLGG": 3,
+            "HNSC": 3,
+            "KIPAN": 3,
+            "KIRC": 3,
+            "LAML": 3,
+            "LGG": 3,
+            "LIHC": 3,
+            "LUAD": 3,
+            "LUSC": 3,
+            "OV": 3,
+            "PAAD": 3,
+            "PCPG": 3,
+            "PRAD": 3,
+            "SARC": 3,
+            "SKCM": 3,
+            "STES": 3,
+            "TGCT": 3,
+            "THCA": 3,
+            "THYM": 3,
+            "UCEC": 3
+          },
+          "sample_id_sha256": "2238734a5df6c6c1debac08a388b9618395c4998af8ef1f287f904baf17c1dc0",
+          "feature_count": 35182,
+          "feature_names_sha256": "0b1f6b02a300ac5b905837b84f9ca5ba29259c865c558e5d3deb9900c73b69ae",
+          "extra_feature_count": 63,
+          "checkpoint": "models/exp229_pathway_mutation_types/fold_03.json",
+          "checkpoint_sha256": "88db6e18dc957ea43252d28ff8c2f282b2c345a2ea7d50d75f1d1cf7c87f6a4b"
+        },
+        {
+          "fold": 4,
+          "validation_rows": 1240,
+          "sampled_rows": 78,
+          "sampled_class_counts": {
+            "ACC": 3,
+            "BLCA": 3,
+            "BRCA": 3,
+            "CESC": 3,
+            "COAD": 3,
+            "DLBC": 3,
+            "GBMLGG": 3,
+            "HNSC": 3,
+            "KIPAN": 3,
+            "KIRC": 3,
+            "LAML": 3,
+            "LGG": 3,
+            "LIHC": 3,
+            "LUAD": 3,
+            "LUSC": 3,
+            "OV": 3,
+            "PAAD": 3,
+            "PCPG": 3,
+            "PRAD": 3,
+            "SARC": 3,
+            "SKCM": 3,
+            "STES": 3,
+            "TGCT": 3,
+            "THCA": 3,
+            "THYM": 3,
+            "UCEC": 3
+          },
+          "sample_id_sha256": "05c3e5ab554001ece731144bf1c520b5bf7ed24da74d3331597ff75a96180275",
+          "feature_count": 35181,
+          "feature_names_sha256": "a16904b0a1f31512c544c82a94c15fdc99f9b42c0f8a8328059541d749814dae",
+          "extra_feature_count": 62,
+          "checkpoint": "models/exp229_pathway_mutation_types/fold_04.json",
+          "checkpoint_sha256": "e383c7bf6338ae48dc82e61b112f4bd40991863b4d8a2e50d5cdaacc2e07ffae"
+        }
+      ],
+      "global_top20": [
+        {
+          "feature": "sample__mutated_gene_count",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.3553177878999416,
+          "share": 0.11258033112832272,
+          "rank": 1
+        },
+        {
+          "feature": "sample__total_variant_count",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.24668685563618134,
+          "share": 0.07816126531877073,
+          "rank": 2
+        },
+        {
+          "feature": "sample__synonymous_count",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.1877732400075397,
+          "share": 0.05949483605093194,
+          "rank": 3
+        },
+        {
+          "feature": "sample__missense_count",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.17854689321502448,
+          "share": 0.056571522858127186,
+          "rank": 4
+        },
+        {
+          "feature": "TP53__max_residue_position",
+          "family": "gene_max_residue_position",
+          "mean_abs_shap": 0.12302812864751567,
+          "share": 0.038980731989515675,
+          "rank": 5
+        },
+        {
+          "feature": "sample__frameshift_count",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.09137609392751693,
+          "share": 0.02895197274635027,
+          "rank": 6
+        },
+        {
+          "feature": "hotspot__known_hotspot_total_count",
+          "family": "fixed_hotspot",
+          "mean_abs_shap": 0.08890258039132089,
+          "share": 0.028168254670761676,
+          "rank": 7
+        },
+        {
+          "feature": "sample__mutated_gene_count_log1p",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.07301566180410336,
+          "share": 0.02313457885698194,
+          "rank": 8
+        },
+        {
+          "feature": "sample__multi_variant_gene_count",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.06895613568315064,
+          "share": 0.02184834211206099,
+          "rank": 9
+        },
+        {
+          "feature": "sample__pathway_cell_cycle__mutated_gene_count",
+          "family": "fixed_pathway",
+          "mean_abs_shap": 0.06223789371620016,
+          "share": 0.01971970703946939,
+          "rank": 10
+        },
+        {
+          "feature": "hotspot__IDH1_132",
+          "family": "fixed_hotspot",
+          "mean_abs_shap": 0.05798804720811276,
+          "share": 0.018373168410055884,
+          "rank": 11
+        },
+        {
+          "feature": "sample__total_variant_count_log1p",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.054377994104748466,
+          "share": 0.017229344521672255,
+          "rank": 12
+        },
+        {
+          "feature": "sample__nonsense_count",
+          "family": "sample_aggregate",
+          "mean_abs_shap": 0.047957945171508934,
+          "share": 0.015195190141065575,
+          "rank": 13
+        },
+        {
+          "feature": "sample__pathway_tp53__mutated_gene_count",
+          "family": "fixed_pathway",
+          "mean_abs_shap": 0.044716896281734364,
+          "share": 0.014168283046516583,
+          "rank": 14
+        },
+        {
+          "feature": "VHL__max_residue_position",
+          "family": "gene_max_residue_position",
+          "mean_abs_shap": 0.03366732628591733,
+          "share": 0.010667292408510684,
+          "rank": 15
+        },
+        {
+          "feature": "PTEN__max_residue_position",
+          "family": "gene_max_residue_position",
+          "mean_abs_shap": 0.03258672403713732,
+          "share": 0.01032491000287688,
+          "rank": 16
+        },
+        {
+          "feature": "hotspot__BRAF_600",
+          "family": "fixed_hotspot",
+          "mean_abs_shap": 0.031024377206620886,
+          "share": 0.009829889687242256,
+          "rank": 17
+        },
+        {
+          "feature": "sample__pathway_pi3k__mutated_gene_count",
+          "family": "fixed_pathway",
+          "mean_abs_shap": 0.03038565003057583,
+          "share": 0.009627512774437484,
+          "rank": 18
+        },
+        {
+          "feature": "TP53__mutated",
+          "family": "gene_mutated",
+          "mean_abs_shap": 0.02691737852071668,
+          "share": 0.008528611542020646,
+          "rank": 19
+        },
+        {
+          "feature": "sample__pathway_wnt__mutated_gene_count",
+          "family": "fixed_pathway",
+          "mean_abs_shap": 0.026441985070906972,
+          "share": 0.008377985950456161,
+          "rank": 20
+        }
+      ],
+      "family_importance": [
+        {
+          "family": "sample_aggregate",
+          "feature_count": 12,
+          "total_mean_abs_shap": 1.3231664104260186,
+          "total_share": 0.4192374198433982,
+          "mean_per_feature": 0.11026386753550155
+        },
+        {
+          "family": "gene_max_residue_position",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 1.0053693837856945,
+          "total_share": 0.31854531911232203,
+          "mean_per_feature": 0.00022932695798031348
+        },
+        {
+          "family": "fixed_pathway",
+          "feature_count": 64,
+          "total_mean_abs_shap": 0.3055824271142364,
+          "total_share": 0.09682197740464693,
+          "mean_per_feature": 0.004774725423659942
+        },
+        {
+          "family": "fixed_hotspot",
+          "feature_count": 35,
+          "total_mean_abs_shap": 0.19245691078623528,
+          "total_share": 0.060978829324328326,
+          "mean_per_feature": 0.005498768879606723
+        },
+        {
+          "family": "gene_mutated",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 0.15450618130704347,
+          "total_share": 0.04895436604997078,
+          "mean_per_feature": 3.524319829084015e-05
+        },
+        {
+          "family": "gene_missense",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 0.10527249052545551,
+          "total_share": 0.03335496348805493,
+          "mean_per_feature": 2.4012885612558284e-05
+        },
+        {
+          "family": "gene_synonymous",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 0.04378661388962831,
+          "total_share": 0.013873528594832221,
+          "mean_per_feature": 9.987822511320342e-06
+        },
+        {
+          "family": "gene_frameshift",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 0.015271823289667901,
+          "total_share": 0.004838786521344111,
+          "mean_per_feature": 3.4835363343220564e-06
+        },
+        {
+          "family": "gene_nonsense",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 0.010714449380587373,
+          "total_share": 0.0033948096611021846,
+          "mean_per_feature": 2.4439893660098933e-06
+        },
+        {
+          "family": "gene_complex",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 0.0,
+          "total_share": 0.0,
+          "mean_per_feature": 0.0
+        },
+        {
+          "family": "gene_missing",
+          "feature_count": 4384,
+          "total_mean_abs_shap": 0.0,
+          "total_share": 0.0,
+          "mean_per_feature": 0.0
+        }
+      ]
+    }
+  ]
+}
