@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 63
+- 실제 실험 수: 64
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4229885745 (`EXP-229`)
@@ -81,6 +81,7 @@
 | EXP-237 | COMPLETED | 2heej | #237 | EXP-229 pathway 변이종류 raw count를 pathway 내부 fraction으로 교체 | 0.4204138300 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 -0.0025747·Log Loss 크게 악화로 ARCHIVE | [보고서](reports/exp237_pathway_mutation_fractions/README.md) |
 | EXP-240 | COMPLETED | 2heej | #240 | EXP-229 + 문헌 고정 암종별 분자 변이조합 21개 | 0.4189644465 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 -0.0040241·Log Loss 악화로 ARCHIVE, 일부 클래스 신호만 후속 검토 | [보고서](reports/exp240_molecular_constellations/README.md) |
 | EXP-245 | COMPLETED | 2heej | #245 | EXP-229 + 8개 암종 문헌 고정 mutation-mechanism proxy | 0.4213989560 | 미제출 | INFERENCE_VERIFIED | EXP-240 대비 개선했지만 EXP-229 대비 -0.0015896·Log Loss 악화로 ARCHIVE | [보고서](reports/exp245_lineage_mechanism_patterns/README.md) |
+| EXP-250 | COMPLETED | 2heej | #250 | EXP-245 암종 모듈의 outer-train nested permutation 선택 | 0.4209182565 | 미제출 | INFERENCE_VERIFIED | 31개 중 fold별 27~31개를 유지하고 EXP-229·245 대비 성능과 안정성이 악화되어 ARCHIVE | [보고서](reports/exp250_lineage_group_selection/README.md) |
 | EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
 
 ## 리더보드 제출 이력
@@ -190,10 +191,43 @@
 | 2026-08-03T05:00:25.503797+00:00 | EXP-237 | 2heej | `bbebdf139bee3002b542015097ce8b2bc46fbe71` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.47e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp237_pathway_mutation_fractions/comparison.json) |
 | 2026-08-03T05:39:49.632899+00:00 | EXP-240 | 2heej | `b78e45c959a5f937bae3f7c5a5bc71978c4152fd` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.34e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp240_molecular_constellations/comparison.json) |
 | 2026-08-03T06:09:06.168833+00:00 | EXP-245 | 2heej | `7c755756a19eb721cdfe58dfab0798dac3ba9957` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.27e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp245_lineage_mechanism_patterns/comparison.json) |
+| 2026-08-03T06:54:33.822207+00:00 | EXP-250 | 2heej | `7f93b2f8be49e3d01cdd6b2442da0a5b6787488c` / 태그 없음 | SHA-256 일치 | 데이터·제출 SHA-256과 test 라벨 일치, 확률 최대 차이 1.20e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp250_lineage_group_selection/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-250] 암종별 변이 패턴 그룹 선택
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #250 / `issue-250-exp-lineage-group-selection`
+- 소스 commit: `7f93b2f8be49e3d01cdd6b2442da0a5b6787488c`
+- 시작/종료: 2026-08-03T06:24:59.600090+00:00 /
+  2026-08-03T06:54:32.580654+00:00
+
+#### 실행과 결과
+
+- 부모: EXP-245, 성능 비교 기준: EXP-229
+- 각 outer-fold train에서만 3개 inner fold permutation importance로 암종 그룹 선택
+- Fold Macro F1: 0.4052276412 / 0.4162065321 / 0.4192499206 /
+  0.4252393163 / 0.4447121221
+- OOF Macro F1: 0.4209182565 (EXP-245 대비 `-0.0004806995`,
+  EXP-229 대비 `-0.0020703180`)
+- Fold 표준편차: 0.0130283698, Accuracy: 0.4117077891,
+  Log Loss: 2.0532255173
+- 선택 피처 수: fold별 27 / 27 / 31 / 31 / 27개
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 산출물과 결론
+
+- Config: `configs/exp250_lineage_group_selection.yaml`
+- Metrics: `reports/exp250_lineage_group_selection/metrics.json`
+- Report: `reports/exp250_lineage_group_selection/README.md`
+- Reproduction: `reproducibility/exp250_lineage_group_selection/`
+- 결론: 대부분의 그룹을 유지하면서 EXP-245·229 대비 Macro F1, 안정성,
+  Log Loss가 모두 악화돼 `ARCHIVE`. 동일 selector 조정은 중단한다.
 
 ### [EXP-245] 암종별 핵심 변이 패턴 확장
 
