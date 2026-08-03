@@ -106,7 +106,7 @@
 | 2026-08-02T23:07:03+09:00 | EXP-135 | #135 | `submissions/exp135_fixed_probability_blend.csv` (제출 ID `1508856`) | `5eef332c50322a8f2be1fb64b15bef49d8f5c91ac6200a7dbc587cebaa75b70a` | 0.3166527939 | EXP-031 최고 대비 -0.0004275910<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">재현 가능한 제출 중 2위</span> | INFERENCE_VERIFIED |
 | 2026-08-02T23:52:30+09:00 | EXP-151 | #151 | `submissions/exp151_mutated_gene_burden.csv` (제출 ID `1508912`) | `dddaf57cf2c497b08264a2c883223afff0d347edcadb9585783f06e1294e4349` | 0.3125095748 | EXP-031 최고 점수<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span> | INFERENCE_VERIFIED |
 | 2026-08-02T23:53:56+09:00 | EXP-188 | #188 | `submissions/exp188_c1_phi_jaccard_pruning.csv` (제출 ID `1508914`) | `a36bffa5e4d055f99d5fc8584c795a08c9f1b608cc941716d61b5b94428a1d0a` | 0.3140052334 | EXP-031 최고 점수<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span> | INFERENCE_VERIFIED |
-| 2026-08-03T10:30:33+09:00 | EXP-223 | #223 | `submissions/exp223_pathway_macro_f1_checkpoint.csv` (제출 ID `1509283`) | `74a23b6337b17fc4ed70ae1e3639331065e0d74432bed6b8fcf9dc9344e6c48c` | 0.323243525 | 제출 확인 당시 참가 4팀 중 4위·팀 Public 최고 갱신 | INFERENCE_VERIFIED |
+| 2026-08-03T10:30:33+09:00 | EXP-223 | #223 | `submissions/exp223_pathway_macro_f1_checkpoint.csv` (제출 ID `1509283`) | `74a23b6337b17fc4ed70ae1e3639331065e0d74432bed6b8fcf9dc9344e6c48c` | 0.323243525 | 팀 Public 최고 갱신<span style="display:block">2026-08-03 19:13 KST 기준 참가 4팀 중 4위·팀 제출 17회</span> | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -483,8 +483,10 @@
 - Log Loss: 1.8441621065 (보조 지표, EXP-096 대비 `+0.0072278976`)
 - 클래스별 최악 변화: THYM `-0.0152823920`
 - Public LB: `0.323243525` (제출 ID `1509283`, 2026-08-03 10:30:33
-  KST, 확인 당시 참가 4팀 중 4위). EXP-031 대비 `+0.0061631401`로 팀 최고
-  Public 점수를 갱신했다.
+  KST). EXP-031 대비 `+0.0061631401`로 팀 최고 Public 점수를 갱신했다.
+- 2026-08-03 19:13 KST 재확인: 팀 대표 제출은 계속 EXP-223이며 플랫폼의
+  반올림 표시 점수는 `0.32324`, 팀 제출 수는 17회, 공식 팀 순위는 참가
+  4팀 중 4위였다. 정확한 제출 점수 `0.323243525`는 변경되지 않았다.
 ### [EXP-211] One-vs-Rest XGBoost + v2-performance
 
 - 상태: COMPLETED
