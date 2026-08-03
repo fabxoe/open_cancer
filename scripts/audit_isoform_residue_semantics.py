@@ -19,6 +19,7 @@ from open_cancer.isoform_semantics import (
     load_annotation_index,
     serialise_annotation_index,
 )
+from open_cancer.isoform_position_mask import APPROVAL_STATUS
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -131,10 +132,10 @@ def main() -> None:
             - train_audit["category_rates"][category]
             for category in ISOFORM_CATEGORIES
         },
-        "b2_blocked": permission != "CONFIRMED_ALLOWED",
+        "b2_blocked": permission != APPROVAL_STATUS,
         "b2_block_reason": (
             "대회 주최측의 외부 annotation 사용 허용이 확인되지 않아 분석 전용으로 제한"
-            if permission != "CONFIRMED_ALLOWED"
+            if permission != APPROVAL_STATUS
             else None
         ),
     }

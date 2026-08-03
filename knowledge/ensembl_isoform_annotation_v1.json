@@ -5,8 +5,12 @@
   "assembly": "GRCh38",
   "ensembl_release": 116,
   "retrieved_at": "2026-08-04T02:57:00+09:00",
-  "competition_external_annotation_permission": "UNCONFIRMED",
-  "analysis_scope": "target-independent semantic QC only",
+  "competition_external_annotation_permission": "CONFIRMED_ALLOWED_TRACK_B_B2_TEAM_LEAD_EXCEPTION",
+  "permission_scope": "Track B Task Issue #311 implementation and its first predeclared uncertain-position-mask Experiment only",
+  "permission_recorded_at": "2026-08-04",
+  "permission_authority": "team lead explicit instruction",
+  "team_lead_exception_reference": "https://github.com/fabxoe/open_cancer/issues/311#issuecomment-5170121279",
+  "analysis_scope": "target-independent semantic QC and the first predeclared B2 uncertain-position-mask ablation",
   "sources": [
     {
       "role": "gene_annotation_gtf",
@@ -37,6 +41,8 @@
     "Competition input does not contain transcript identifiers.",
     "A sequence match does not prove which transcript was expressed in a tumour.",
     "Mismatch or out-of-range tokens are not automatically data errors.",
-    "SUBCLASS, test distribution and Public leaderboard were not used to define this snapshot."
+    "SUBCLASS, test distribution and Public leaderboard were not used to define this snapshot.",
+    "This exception does not allow external patient records, cancer-specific frequencies, clinical labels, or risk scores.",
+    "Sample category summaries and isoform-relative bins require separate Issues and explicit scope review."
   ]
 }

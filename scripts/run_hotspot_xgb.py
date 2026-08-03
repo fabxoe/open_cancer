@@ -56,6 +56,9 @@ from open_cancer.mutation_features import (
     resolve_position_features_from_config,
     resolve_position_options_from_config,
 )
+from open_cancer.isoform_position_mask import (
+    resolve_isoform_position_mask_from_config,
+)
 from open_cancer.paths import relative_posix
 from open_cancer.hotspot_features import (
     build_hotspot_augmented_features,
@@ -155,6 +158,9 @@ def main(
     hotspots, evidence_hotspots, minimum_matching_rows = resolve_hotspot_config(hotspot_config)
     selected_position_features = resolve_position_features_from_config(config)
     position_options = resolve_position_options_from_config(config)
+    position_token_filter, position_semantic_contract = (
+        resolve_isoform_position_mask_from_config(config, root=ROOT)
+    )
     selected_robust_aggregates = tuple(
         config.get("features", {}).get("robust_aggregates", [])
     )
@@ -166,6 +172,8 @@ def main(
         base_feature_options={
             "selected_robust_aggregates": selected_robust_aggregates,
             "selected_position_features": selected_position_features,
+            "position_token_filter": position_token_filter,
+            "position_semantic_contract": position_semantic_contract,
             **position_options,
         },
     )

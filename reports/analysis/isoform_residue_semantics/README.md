@@ -16,10 +16,11 @@
   `4.1840% → 13.4351%`로 증가했다.
 - 현재 max residue-position을 만드는 변이 gene-cell 중 저신뢰 max token 비율도
   train `5.3565%`, test `12.9649%`로 차이가 컸다.
-- 이는 isoform 의미 QC가 필요했다는 강한 근거지만, 이 차이를 보고 mask나
-  threshold를 정하면 test 분포에 맞춘 transductive 최적화가 된다. 따라서 B1은
-  완료하되, 외부 annotation 사용 허용도 확인되지 않은 현재 B2 모델 실험은
-  `BLOCKED`로 둔다.
+- 이는 isoform 의미 QC가 필요했다는 강한 근거다. 이 차이를 보고 mask나
+  threshold를 정하면 test 분포에 맞춘 transductive 최적화가 되므로, B2 정의는
+  이 보고서 이전에 정한 세 후보만 유지한다. 2026-08-04 팀장이 Task #311과 그로부터
+  파생되는 첫 번째 불확실 위치 마스크 실험에 한해 외부 annotation 사용을
+  예외적으로 허용했다. 나머지 후보는 별도 Issue와 범위 확인 없이는 실행하지 않는다.
 
 ## 고정 annotation 계약
 
@@ -96,11 +97,11 @@ frameshift, range change, deletion·insertion 등 복합 token은 reference sequ
   원 실험의 annotation 차이일 수 있다.
 - train/test 분포 차이는 QC로만 기록한다. 이 결과를 보고 범주 정의, mask 또는
   threshold를 조정하지 않는다.
-- 주최측이 외부 annotation 사용을 명시적으로 허용하면, train만 보고 미리 고정한
-  세 B2 후보(불확실 위치 mask, sample 범주 요약, isoform-relative coarse bin)를
-  각각 별도 Experiment Issue로 검증한다.
-- 허용되지 않거나 불명확하면 이 보고서로 Track B를 종료하고 현재 Feature Spec의
-  residue-position을 유지한다.
+- 팀장 예외 허용 범위에서 첫 B2 후보인 불확실 위치 mask를 별도 Experiment
+  Issue로 검증한다. sample 범주 요약과 isoform-relative coarse bin은 이번
+  예외에 포함하지 않으며 별도 범위 검토 후에만 연다.
+- 외부 환자 자료나 암종별 빈도 annotation은 여전히 금지하며, test 분포를 보고
+  범주·threshold를 변경하지 않는다.
 
 ## 재현
 

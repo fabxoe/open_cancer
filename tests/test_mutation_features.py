@@ -281,6 +281,62 @@ def test_residue_position_max_span_indicator_and_complex_ablation(tmp_path: Path
     assert excluded_matrix[0, excluded_names.index("GENE1__max_residue_position")] == 10
 
 
+def test_residue_position_semantic_filter_masks_only_position_aggregates(
+    tmp_path: Path,
+) -> None:
+    train = tmp_path / "train.csv"
+    test = tmp_path / "test.csv"
+    output = tmp_path / "filtered"
+    train.write_text(
+        "ID,SUBCLASS,GENE1\nT1,A,\"R10H X90Y\"\nT2,B,X90Y\n",
+        encoding="utf-8",
+    )
+    test.write_text("ID,GENE1\nE1,R10H\n", encoding="utf-8")
+
+    def trusted_reference(_gene, token):
+        return token.reference_amino_acid == "R"
+
+    contract = {
+        "definition_version": "test",
+        "manifest_sha256": "manifest-test-sha",
+        "annotation_cache_sha256": "cache-test-sha",
+    }
+    report = build_mutation_features(
+        train,
+        test,
+        output,
+        selected_position_features=("max_residue_position",),
+        position_token_filter=trusted_reference,
+        position_semantic_contract=contract,
+    )
+    matrix = sparse.load_npz(output / "train_features.npz")
+    names = json.loads((output / "feature_names.json").read_text(encoding="utf-8"))
+
+    assert matrix[0, names.index("GENE1__max_residue_position")] == 10
+    assert matrix[1, names.index("GENE1__max_residue_position")] == 0
+    assert matrix[0, names.index("GENE1__missense")] == 1
+    assert report["parsing_qc"]["train"]["semantic_masked_position_tokens"] == 2
+    assert report["feature_contract"]["position_semantic_filter"] == contract
+
+
+def test_residue_position_semantic_filter_requires_reproducible_contract(
+    tmp_path: Path,
+) -> None:
+    train = tmp_path / "train.csv"
+    test = tmp_path / "test.csv"
+    train.write_text("ID,SUBCLASS,GENE1\nT1,A,R10H\n", encoding="utf-8")
+    test.write_text("ID,GENE1\nE1,R10H\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="semantic contract"):
+        build_mutation_features(
+            train,
+            test,
+            tmp_path / "missing_contract",
+            selected_position_features=("max_residue_position",),
+            position_token_filter=lambda _gene, _token: True,
+        )
+
+
 def test_residue_position_coarse_bin_is_fixed_for_train_and_test(tmp_path: Path) -> None:
     train = tmp_path / "train.csv"
     test = tmp_path / "test.csv"
