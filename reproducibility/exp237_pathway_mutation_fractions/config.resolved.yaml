@@ -1,0 +1,1294 @@
+experiment:
+  record_role: official
+  issue_number: 237
+  experiment_id: EXP-237
+  component_experiments:
+  - EXP-094
+  - EXP-096
+  - EXP-219
+  - EXP-223
+  - EXP-229
+  branch: issue-237-exp-pathway-mutation-fractions
+  owner: 2heej
+  source_commit: bbebdf139bee3002b542015097ce8b2bc46fbe71
+  dirty_worktree: false
+  started_at: '2026-08-03T04:50:45.588215+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features:
+  - sample__mutated_gene_count_log1p
+  - sample__total_variant_count_log1p
+  - sample__multi_variant_gene_count_log1p
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features:
+  - max_residue_position
+  position_missing_policy: zero
+  position_token_scope: include_complex
+  position_transform: raw
+  position_bin_width: null
+  position_semantics: protein residue indices explicitly written in source tokens;
+    no transcript, codon nucleotide, genomic coordinate, or protein-length inference
+  co_mutation_pairs: []
+  co_mutation_semantics: fixed, literature-curated gene pairs (mutual exclusivity
+    or co-occurrence); gene-level 'any mutation' presence, not restricted to a specific
+    hotspot codon; not fit from this dataset's target or frequency
+  feature_factory_version: 1.1.0
+  feature_spec_sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+  hotspot_features:
+  - hotspot__BRAF_600
+  - hotspot__CTNNB1_37
+  - hotspot__CTNNB1_45
+  - hotspot__EGFR_790
+  - hotspot__EGFR_858
+  - hotspot__GNAS_201
+  - hotspot__HRAS_12
+  - hotspot__HRAS_13
+  - hotspot__HRAS_61
+  - hotspot__IDH1_132
+  - hotspot__IDH2_140
+  - hotspot__IDH2_172
+  - hotspot__PIK3CA_545
+  - hotspot__PIK3CA_1047
+  - hotspot__TP53_175
+  - hotspot__TP53_245
+  - hotspot__TP53_248
+  - hotspot__TP53_273
+  - hotspot__TP53_282
+  - hotspot__PIK3CA_542
+  - hotspot__PIK3CA_546
+  - hotspot__PIK3CA_345
+  - hotspot__PTEN_130
+  - hotspot__PTEN_233
+  - hotspot__FBXW7_505
+  - hotspot__AKT1_17
+  - hotspot__U2AF1_34
+  - hotspot__APC_1450
+  - hotspot__APC_876
+  - hotspot__POLE_286
+  - hotspot__POLE_411
+  - hotspot__KIT_816
+  - hotspot__FGFR3_249
+  - hotspot__RAC1_29
+  - hotspot__known_hotspot_total_count
+  known_hotspots:
+  - gene: BRAF
+    position: 600
+    reference_aa: V
+  - gene: CTNNB1
+    position: 37
+    reference_aa: S
+  - gene: CTNNB1
+    position: 45
+    reference_aa: S
+  - gene: EGFR
+    position: 790
+    reference_aa: T
+  - gene: EGFR
+    position: 858
+    reference_aa: L
+  - gene: GNAS
+    position: 201
+    reference_aa: R
+  - gene: HRAS
+    position: 12
+    reference_aa: G
+  - gene: HRAS
+    position: 13
+    reference_aa: G
+  - gene: HRAS
+    position: 61
+    reference_aa: Q
+  - gene: IDH1
+    position: 132
+    reference_aa: R
+  - gene: IDH2
+    position: 140
+    reference_aa: R
+  - gene: IDH2
+    position: 172
+    reference_aa: R
+  - gene: PIK3CA
+    position: 545
+    reference_aa: E
+  - gene: PIK3CA
+    position: 1047
+    reference_aa: H
+  - gene: TP53
+    position: 175
+    reference_aa: R
+  - gene: TP53
+    position: 245
+    reference_aa: G
+  - gene: TP53
+    position: 248
+    reference_aa: R
+  - gene: TP53
+    position: 273
+    reference_aa: R
+  - gene: TP53
+    position: 282
+    reference_aa: R
+  - gene: PIK3CA
+    position: 542
+    reference_aa: E
+  - gene: PIK3CA
+    position: 546
+    reference_aa: Q
+  - gene: PIK3CA
+    position: 345
+    reference_aa: N
+  - gene: PTEN
+    position: 130
+    reference_aa: R
+  - gene: PTEN
+    position: 233
+    reference_aa: R
+  - gene: FBXW7
+    position: 505
+    reference_aa: R
+  - gene: AKT1
+    position: 17
+    reference_aa: E
+  - gene: U2AF1
+    position: 34
+    reference_aa: S
+  - gene: APC
+    position: 1450
+    reference_aa: R
+  - gene: APC
+    position: 876
+    reference_aa: R
+  - gene: POLE
+    position: 286
+    reference_aa: P
+  - gene: POLE
+    position: 411
+    reference_aa: V
+  - gene: KIT
+    position: 816
+    reference_aa: D
+  - gene: FGFR3
+    position: 249
+    reference_aa: S
+  - gene: RAC1
+    position: 29
+    reference_aa: P
+  hotspot_validation_note: The hotspot table is fixed before test transformation.
+    The original 19 and additional 15 positions are literature-defined; the config-driven
+    runner validates the additions using train rows only. Test data is not used to
+    select or filter the official list. A token counts only when both position and
+    reference AA match.
+  requested_families:
+    mutation_type:
+      enabled: true
+    robust_aggregates:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+    residue_position:
+      enabled: true
+      aggregates:
+      - max
+      missing_policy: zero
+      complex_tokens: include
+      transform: raw
+  hotspot_table: extended_34
+  hotspot_evidence_scope: additions_15
+  fold_train_hotspot_evidence:
+    '0':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 70
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 24
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 18
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 51
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 20
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 22
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 7
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 14
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 6
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 5
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 6
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 9
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 7
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 10
+      observed_reference_aas:
+      - P
+    '1':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 69
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 25
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 24
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 47
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 15
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 7
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 10
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 18
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 12
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 11
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 5
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 10
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 10
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 12
+      observed_reference_aas:
+      - P
+    '2':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 65
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 28
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 23
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 49
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 17
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 6
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 13
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 10
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 6
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 7
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 9
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 8
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 9
+      observed_reference_aas:
+      - P
+    '3':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 66
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 26
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 22
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 53
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 20
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 6
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 12
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 12
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 11
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 8
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 9
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 10
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 9
+      observed_reference_aas:
+      - P
+    '4':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 66
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 21
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 25
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 48
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 20
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 6
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 11
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 8
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 11
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 6
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 7
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 9
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 12
+      observed_reference_aas:
+      - P
+  minimum_matching_train_rows: 5
+  selection_uses_test_data: false
+feature_outputs:
+  train_features.npz:
+    path: data/processed/exp237_pathway_mutation_fractions_features/train_features.npz
+    sha256: dfb0b8fbade7d69c460411dfdbc5bb5fbd97eb9b5e1056dd82294135adac5c8a
+  test_features.npz:
+    path: data/processed/exp237_pathway_mutation_fractions_features/test_features.npz
+    sha256: 66f0471b230d25d688b1564d5adece0077d5deaaf52c8c987e3e719491127575
+  feature_names.json:
+    path: data/processed/exp237_pathway_mutation_fractions_features/feature_names.json
+    sha256: b7464c1fd0e985e722eabd2f8becb33051879d4b4cdfd25d99cd1e6b793b98c8
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+  - feature_spec_v1
+  - fixed_pathway_mutated_and_lof_gene_counts
+  - fixed_pathway_mutation_type_gene_fractions
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  command: uv run python scripts/run_exp237_pathway_mutation_fractions.py
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 08:56:36) [Clang 18.1.8 ]
+  platform: macOS-26.5.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: 87876a7c41c030503ed1b95a2d1254c5ab395cfbb865c7538fa5de42bd28902a
+fold_train_features:
+- fold: 0
+  feature_names:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__pathway_myc__lof_gene_count
+  - sample__pathway_notch__mutated_gene_count
+  - sample__pathway_notch__lof_gene_count
+  - sample__pathway_nrf2__mutated_gene_count
+  - sample__pathway_nrf2__lof_gene_count
+  - sample__pathway_pi3k__mutated_gene_count
+  - sample__pathway_pi3k__lof_gene_count
+  - sample__pathway_rtk_ras__mutated_gene_count
+  - sample__pathway_rtk_ras__lof_gene_count
+  - sample__pathway_tgf_beta__mutated_gene_count
+  - sample__pathway_tgf_beta__lof_gene_count
+  - sample__pathway_tp53__mutated_gene_count
+  - sample__pathway_tp53__lof_gene_count
+  - sample__pathway_wnt__mutated_gene_count
+  - sample__pathway_wnt__lof_gene_count
+  - sample__pathway_cell_cycle__missense_gene_fraction
+  - sample__pathway_cell_cycle__synonymous_gene_fraction
+  - sample__pathway_cell_cycle__nonsense_gene_fraction
+  - sample__pathway_cell_cycle__frameshift_gene_fraction
+  - sample__pathway_hippo__missense_gene_fraction
+  - sample__pathway_hippo__synonymous_gene_fraction
+  - sample__pathway_hippo__nonsense_gene_fraction
+  - sample__pathway_hippo__frameshift_gene_fraction
+  - sample__pathway_hippo__complex_gene_fraction
+  - sample__pathway_myc__missense_gene_fraction
+  - sample__pathway_myc__synonymous_gene_fraction
+  - sample__pathway_myc__nonsense_gene_fraction
+  - sample__pathway_myc__frameshift_gene_fraction
+  - sample__pathway_notch__missense_gene_fraction
+  - sample__pathway_notch__synonymous_gene_fraction
+  - sample__pathway_notch__nonsense_gene_fraction
+  - sample__pathway_notch__frameshift_gene_fraction
+  - sample__pathway_nrf2__missense_gene_fraction
+  - sample__pathway_nrf2__synonymous_gene_fraction
+  - sample__pathway_nrf2__nonsense_gene_fraction
+  - sample__pathway_nrf2__frameshift_gene_fraction
+  - sample__pathway_pi3k__missense_gene_fraction
+  - sample__pathway_pi3k__synonymous_gene_fraction
+  - sample__pathway_pi3k__nonsense_gene_fraction
+  - sample__pathway_pi3k__frameshift_gene_fraction
+  - sample__pathway_pi3k__complex_gene_fraction
+  - sample__pathway_rtk_ras__missense_gene_fraction
+  - sample__pathway_rtk_ras__synonymous_gene_fraction
+  - sample__pathway_rtk_ras__nonsense_gene_fraction
+  - sample__pathway_rtk_ras__frameshift_gene_fraction
+  - sample__pathway_tgf_beta__missense_gene_fraction
+  - sample__pathway_tgf_beta__synonymous_gene_fraction
+  - sample__pathway_tgf_beta__nonsense_gene_fraction
+  - sample__pathway_tgf_beta__frameshift_gene_fraction
+  - sample__pathway_tp53__missense_gene_fraction
+  - sample__pathway_tp53__synonymous_gene_fraction
+  - sample__pathway_tp53__nonsense_gene_fraction
+  - sample__pathway_tp53__frameshift_gene_fraction
+  - sample__pathway_wnt__missense_gene_fraction
+  - sample__pathway_wnt__synonymous_gene_fraction
+  - sample__pathway_wnt__nonsense_gene_fraction
+  - sample__pathway_wnt__frameshift_gene_fraction
+  - sample__pathway_wnt__complex_gene_fraction
+  registry:
+    fixed_pathway_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    pathway_mutation_type_fraction:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: 6fd63ef432341381f3d5d5a9a1b60d0d38a38b193062be6d24dbc63066affab5
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 63
+      feature_names_sha256: b946c7b9be02f616b8057b2d443cbcbda573fdf6004cb93495a7d90245f4a015
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_fraction: ADAMTS5__complex
+        sample__pathway_myc__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_notch__complex_gene_fraction: CREBBP__complex
+        sample__pathway_nrf2__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_rtk_ras__complex_gene_fraction: GNG2__nonsense
+        sample__pathway_tgf_beta__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_fraction: ADAMTS5__complex
+- fold: 1
+  feature_names:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__pathway_myc__lof_gene_count
+  - sample__pathway_notch__mutated_gene_count
+  - sample__pathway_notch__lof_gene_count
+  - sample__pathway_nrf2__mutated_gene_count
+  - sample__pathway_nrf2__lof_gene_count
+  - sample__pathway_pi3k__mutated_gene_count
+  - sample__pathway_pi3k__lof_gene_count
+  - sample__pathway_rtk_ras__mutated_gene_count
+  - sample__pathway_rtk_ras__lof_gene_count
+  - sample__pathway_tgf_beta__mutated_gene_count
+  - sample__pathway_tgf_beta__lof_gene_count
+  - sample__pathway_tp53__mutated_gene_count
+  - sample__pathway_tp53__lof_gene_count
+  - sample__pathway_wnt__mutated_gene_count
+  - sample__pathway_wnt__lof_gene_count
+  - sample__pathway_cell_cycle__missense_gene_fraction
+  - sample__pathway_cell_cycle__synonymous_gene_fraction
+  - sample__pathway_cell_cycle__nonsense_gene_fraction
+  - sample__pathway_cell_cycle__frameshift_gene_fraction
+  - sample__pathway_hippo__missense_gene_fraction
+  - sample__pathway_hippo__synonymous_gene_fraction
+  - sample__pathway_hippo__nonsense_gene_fraction
+  - sample__pathway_hippo__frameshift_gene_fraction
+  - sample__pathway_hippo__complex_gene_fraction
+  - sample__pathway_myc__missense_gene_fraction
+  - sample__pathway_myc__synonymous_gene_fraction
+  - sample__pathway_myc__nonsense_gene_fraction
+  - sample__pathway_myc__frameshift_gene_fraction
+  - sample__pathway_notch__missense_gene_fraction
+  - sample__pathway_notch__synonymous_gene_fraction
+  - sample__pathway_notch__nonsense_gene_fraction
+  - sample__pathway_notch__frameshift_gene_fraction
+  - sample__pathway_notch__complex_gene_fraction
+  - sample__pathway_nrf2__missense_gene_fraction
+  - sample__pathway_nrf2__synonymous_gene_fraction
+  - sample__pathway_nrf2__nonsense_gene_fraction
+  - sample__pathway_nrf2__frameshift_gene_fraction
+  - sample__pathway_pi3k__missense_gene_fraction
+  - sample__pathway_pi3k__synonymous_gene_fraction
+  - sample__pathway_pi3k__nonsense_gene_fraction
+  - sample__pathway_pi3k__frameshift_gene_fraction
+  - sample__pathway_rtk_ras__missense_gene_fraction
+  - sample__pathway_rtk_ras__synonymous_gene_fraction
+  - sample__pathway_rtk_ras__nonsense_gene_fraction
+  - sample__pathway_rtk_ras__frameshift_gene_fraction
+  - sample__pathway_rtk_ras__complex_gene_fraction
+  - sample__pathway_tgf_beta__missense_gene_fraction
+  - sample__pathway_tgf_beta__synonymous_gene_fraction
+  - sample__pathway_tgf_beta__nonsense_gene_fraction
+  - sample__pathway_tgf_beta__frameshift_gene_fraction
+  - sample__pathway_tp53__missense_gene_fraction
+  - sample__pathway_tp53__synonymous_gene_fraction
+  - sample__pathway_tp53__nonsense_gene_fraction
+  - sample__pathway_tp53__frameshift_gene_fraction
+  - sample__pathway_wnt__missense_gene_fraction
+  - sample__pathway_wnt__synonymous_gene_fraction
+  - sample__pathway_wnt__nonsense_gene_fraction
+  - sample__pathway_wnt__frameshift_gene_fraction
+  - sample__pathway_wnt__complex_gene_fraction
+  registry:
+    fixed_pathway_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    pathway_mutation_type_fraction:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: 6fd63ef432341381f3d5d5a9a1b60d0d38a38b193062be6d24dbc63066affab5
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 64
+      feature_names_sha256: d7de530bee1108067454fb57f016f4ee9d6f08d86fbb8b7ad7a22722e5c124bc
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_fraction: TP53__complex
+        sample__pathway_myc__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_nrf2__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_pi3k__complex_gene_fraction: CLDN11__nonsense
+        sample__pathway_tgf_beta__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_fraction: TP53__complex
+- fold: 2
+  feature_names:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__pathway_myc__lof_gene_count
+  - sample__pathway_notch__mutated_gene_count
+  - sample__pathway_notch__lof_gene_count
+  - sample__pathway_nrf2__mutated_gene_count
+  - sample__pathway_nrf2__lof_gene_count
+  - sample__pathway_pi3k__mutated_gene_count
+  - sample__pathway_pi3k__lof_gene_count
+  - sample__pathway_rtk_ras__mutated_gene_count
+  - sample__pathway_rtk_ras__lof_gene_count
+  - sample__pathway_tgf_beta__mutated_gene_count
+  - sample__pathway_tgf_beta__lof_gene_count
+  - sample__pathway_tp53__mutated_gene_count
+  - sample__pathway_tp53__lof_gene_count
+  - sample__pathway_wnt__mutated_gene_count
+  - sample__pathway_wnt__lof_gene_count
+  - sample__pathway_cell_cycle__missense_gene_fraction
+  - sample__pathway_cell_cycle__synonymous_gene_fraction
+  - sample__pathway_cell_cycle__nonsense_gene_fraction
+  - sample__pathway_cell_cycle__frameshift_gene_fraction
+  - sample__pathway_hippo__missense_gene_fraction
+  - sample__pathway_hippo__synonymous_gene_fraction
+  - sample__pathway_hippo__nonsense_gene_fraction
+  - sample__pathway_hippo__frameshift_gene_fraction
+  - sample__pathway_myc__missense_gene_fraction
+  - sample__pathway_myc__synonymous_gene_fraction
+  - sample__pathway_myc__nonsense_gene_fraction
+  - sample__pathway_myc__frameshift_gene_fraction
+  - sample__pathway_notch__missense_gene_fraction
+  - sample__pathway_notch__synonymous_gene_fraction
+  - sample__pathway_notch__nonsense_gene_fraction
+  - sample__pathway_notch__frameshift_gene_fraction
+  - sample__pathway_notch__complex_gene_fraction
+  - sample__pathway_nrf2__missense_gene_fraction
+  - sample__pathway_nrf2__synonymous_gene_fraction
+  - sample__pathway_nrf2__nonsense_gene_fraction
+  - sample__pathway_nrf2__frameshift_gene_fraction
+  - sample__pathway_pi3k__missense_gene_fraction
+  - sample__pathway_pi3k__synonymous_gene_fraction
+  - sample__pathway_pi3k__nonsense_gene_fraction
+  - sample__pathway_pi3k__frameshift_gene_fraction
+  - sample__pathway_pi3k__complex_gene_fraction
+  - sample__pathway_rtk_ras__missense_gene_fraction
+  - sample__pathway_rtk_ras__synonymous_gene_fraction
+  - sample__pathway_rtk_ras__nonsense_gene_fraction
+  - sample__pathway_rtk_ras__frameshift_gene_fraction
+  - sample__pathway_rtk_ras__complex_gene_fraction
+  - sample__pathway_tgf_beta__missense_gene_fraction
+  - sample__pathway_tgf_beta__synonymous_gene_fraction
+  - sample__pathway_tgf_beta__nonsense_gene_fraction
+  - sample__pathway_tgf_beta__frameshift_gene_fraction
+  - sample__pathway_tp53__missense_gene_fraction
+  - sample__pathway_tp53__synonymous_gene_fraction
+  - sample__pathway_tp53__nonsense_gene_fraction
+  - sample__pathway_tp53__frameshift_gene_fraction
+  - sample__pathway_wnt__missense_gene_fraction
+  - sample__pathway_wnt__synonymous_gene_fraction
+  - sample__pathway_wnt__nonsense_gene_fraction
+  - sample__pathway_wnt__frameshift_gene_fraction
+  - sample__pathway_wnt__complex_gene_fraction
+  registry:
+    fixed_pathway_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    pathway_mutation_type_fraction:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: 6fd63ef432341381f3d5d5a9a1b60d0d38a38b193062be6d24dbc63066affab5
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 64
+      feature_names_sha256: edf6f1770897178183aeff396c962b4811612a546ab970cc968f6712a8b13166
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_fraction: CD8A__nonsense
+        sample__pathway_hippo__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_myc__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_nrf2__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_tgf_beta__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_fraction: CD8A__nonsense
+- fold: 3
+  feature_names:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__pathway_myc__lof_gene_count
+  - sample__pathway_notch__mutated_gene_count
+  - sample__pathway_notch__lof_gene_count
+  - sample__pathway_nrf2__mutated_gene_count
+  - sample__pathway_nrf2__lof_gene_count
+  - sample__pathway_pi3k__mutated_gene_count
+  - sample__pathway_pi3k__lof_gene_count
+  - sample__pathway_rtk_ras__mutated_gene_count
+  - sample__pathway_rtk_ras__lof_gene_count
+  - sample__pathway_tgf_beta__mutated_gene_count
+  - sample__pathway_tgf_beta__lof_gene_count
+  - sample__pathway_tp53__mutated_gene_count
+  - sample__pathway_tp53__lof_gene_count
+  - sample__pathway_wnt__mutated_gene_count
+  - sample__pathway_wnt__lof_gene_count
+  - sample__pathway_cell_cycle__missense_gene_fraction
+  - sample__pathway_cell_cycle__synonymous_gene_fraction
+  - sample__pathway_cell_cycle__nonsense_gene_fraction
+  - sample__pathway_cell_cycle__frameshift_gene_fraction
+  - sample__pathway_hippo__missense_gene_fraction
+  - sample__pathway_hippo__synonymous_gene_fraction
+  - sample__pathway_hippo__nonsense_gene_fraction
+  - sample__pathway_hippo__frameshift_gene_fraction
+  - sample__pathway_hippo__complex_gene_fraction
+  - sample__pathway_myc__missense_gene_fraction
+  - sample__pathway_myc__synonymous_gene_fraction
+  - sample__pathway_myc__nonsense_gene_fraction
+  - sample__pathway_myc__frameshift_gene_fraction
+  - sample__pathway_notch__missense_gene_fraction
+  - sample__pathway_notch__synonymous_gene_fraction
+  - sample__pathway_notch__nonsense_gene_fraction
+  - sample__pathway_notch__frameshift_gene_fraction
+  - sample__pathway_notch__complex_gene_fraction
+  - sample__pathway_nrf2__missense_gene_fraction
+  - sample__pathway_nrf2__synonymous_gene_fraction
+  - sample__pathway_nrf2__nonsense_gene_fraction
+  - sample__pathway_nrf2__frameshift_gene_fraction
+  - sample__pathway_pi3k__missense_gene_fraction
+  - sample__pathway_pi3k__synonymous_gene_fraction
+  - sample__pathway_pi3k__nonsense_gene_fraction
+  - sample__pathway_pi3k__frameshift_gene_fraction
+  - sample__pathway_pi3k__complex_gene_fraction
+  - sample__pathway_rtk_ras__missense_gene_fraction
+  - sample__pathway_rtk_ras__synonymous_gene_fraction
+  - sample__pathway_rtk_ras__nonsense_gene_fraction
+  - sample__pathway_rtk_ras__frameshift_gene_fraction
+  - sample__pathway_tgf_beta__missense_gene_fraction
+  - sample__pathway_tgf_beta__synonymous_gene_fraction
+  - sample__pathway_tgf_beta__nonsense_gene_fraction
+  - sample__pathway_tgf_beta__frameshift_gene_fraction
+  - sample__pathway_tp53__missense_gene_fraction
+  - sample__pathway_tp53__synonymous_gene_fraction
+  - sample__pathway_tp53__nonsense_gene_fraction
+  - sample__pathway_tp53__frameshift_gene_fraction
+  - sample__pathway_wnt__missense_gene_fraction
+  - sample__pathway_wnt__synonymous_gene_fraction
+  - sample__pathway_wnt__nonsense_gene_fraction
+  - sample__pathway_wnt__frameshift_gene_fraction
+  - sample__pathway_wnt__complex_gene_fraction
+  registry:
+    fixed_pathway_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    pathway_mutation_type_fraction:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: 6fd63ef432341381f3d5d5a9a1b60d0d38a38b193062be6d24dbc63066affab5
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 64
+      feature_names_sha256: b387bbe95c8ea83f86dfc3a8c16ef4be171ebbcb70eb597dadab04332853660f
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_fraction: TP53__complex
+        sample__pathway_myc__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_nrf2__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_rtk_ras__complex_gene_fraction: PEX14__frameshift
+        sample__pathway_tgf_beta__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_fraction: TP53__complex
+- fold: 4
+  feature_names:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__pathway_myc__lof_gene_count
+  - sample__pathway_notch__mutated_gene_count
+  - sample__pathway_notch__lof_gene_count
+  - sample__pathway_nrf2__mutated_gene_count
+  - sample__pathway_nrf2__lof_gene_count
+  - sample__pathway_pi3k__mutated_gene_count
+  - sample__pathway_pi3k__lof_gene_count
+  - sample__pathway_rtk_ras__mutated_gene_count
+  - sample__pathway_rtk_ras__lof_gene_count
+  - sample__pathway_tgf_beta__mutated_gene_count
+  - sample__pathway_tgf_beta__lof_gene_count
+  - sample__pathway_tp53__mutated_gene_count
+  - sample__pathway_tp53__lof_gene_count
+  - sample__pathway_wnt__mutated_gene_count
+  - sample__pathway_wnt__lof_gene_count
+  - sample__pathway_cell_cycle__missense_gene_fraction
+  - sample__pathway_cell_cycle__synonymous_gene_fraction
+  - sample__pathway_cell_cycle__nonsense_gene_fraction
+  - sample__pathway_cell_cycle__frameshift_gene_fraction
+  - sample__pathway_hippo__missense_gene_fraction
+  - sample__pathway_hippo__synonymous_gene_fraction
+  - sample__pathway_hippo__nonsense_gene_fraction
+  - sample__pathway_hippo__frameshift_gene_fraction
+  - sample__pathway_hippo__complex_gene_fraction
+  - sample__pathway_myc__missense_gene_fraction
+  - sample__pathway_myc__synonymous_gene_fraction
+  - sample__pathway_myc__nonsense_gene_fraction
+  - sample__pathway_myc__frameshift_gene_fraction
+  - sample__pathway_notch__missense_gene_fraction
+  - sample__pathway_notch__synonymous_gene_fraction
+  - sample__pathway_notch__nonsense_gene_fraction
+  - sample__pathway_notch__frameshift_gene_fraction
+  - sample__pathway_nrf2__missense_gene_fraction
+  - sample__pathway_nrf2__synonymous_gene_fraction
+  - sample__pathway_nrf2__nonsense_gene_fraction
+  - sample__pathway_nrf2__frameshift_gene_fraction
+  - sample__pathway_pi3k__missense_gene_fraction
+  - sample__pathway_pi3k__synonymous_gene_fraction
+  - sample__pathway_pi3k__nonsense_gene_fraction
+  - sample__pathway_pi3k__frameshift_gene_fraction
+  - sample__pathway_pi3k__complex_gene_fraction
+  - sample__pathway_rtk_ras__missense_gene_fraction
+  - sample__pathway_rtk_ras__synonymous_gene_fraction
+  - sample__pathway_rtk_ras__nonsense_gene_fraction
+  - sample__pathway_rtk_ras__frameshift_gene_fraction
+  - sample__pathway_rtk_ras__complex_gene_fraction
+  - sample__pathway_tgf_beta__missense_gene_fraction
+  - sample__pathway_tgf_beta__synonymous_gene_fraction
+  - sample__pathway_tgf_beta__nonsense_gene_fraction
+  - sample__pathway_tgf_beta__frameshift_gene_fraction
+  - sample__pathway_tp53__missense_gene_fraction
+  - sample__pathway_tp53__synonymous_gene_fraction
+  - sample__pathway_tp53__nonsense_gene_fraction
+  - sample__pathway_tp53__frameshift_gene_fraction
+  - sample__pathway_wnt__missense_gene_fraction
+  - sample__pathway_wnt__synonymous_gene_fraction
+  - sample__pathway_wnt__nonsense_gene_fraction
+  - sample__pathway_wnt__frameshift_gene_fraction
+  registry:
+    fixed_pathway_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    pathway_mutation_type_fraction:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: 6fd63ef432341381f3d5d5a9a1b60d0d38a38b193062be6d24dbc63066affab5
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 63
+      feature_names_sha256: 1e362d68fe3e53fe77f989a19e7f332829ccbb9569d8324323c6274c65f1e580
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_fraction: TP53__complex
+        sample__pathway_myc__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_notch__complex_gene_fraction: NOTCH2__complex
+        sample__pathway_nrf2__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_tgf_beta__complex_gene_fraction: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_fraction: TP53__complex
+        sample__pathway_wnt__complex_gene_fraction: TLE4__complex
