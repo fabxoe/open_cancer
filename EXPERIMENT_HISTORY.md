@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 68
+- 실제 실험 수: 69
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4254998819 (`EXP-253`)
@@ -87,6 +87,7 @@
 | EXP-257 | COMPLETED | Kangho-Park | #257 | EXP-096 + functional_role_burden_extended(oncogene/TSG count raw/frac/resid/log1p, fold-train 게이팅, #176 확장) | 0.4118051266 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0063102·Log Loss 악화, 26개 중 19개 클래스 하락으로 ARCHIVE | [보고서](reports/exp257_functional_role_burden_extended/README.md) |
 | EXP-272 | COMPLETED | fabxoe | #272 | EXP-219 고정 5-seed(42·142·242·342·442) 확률 0.2 평균 | 0.4208578157 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0013743·fold 표준편차와 Log Loss 악화로 ARCHIVE | [보고서](reports/exp272_exp219_multiseed_ensemble/README.md) |
 | EXP-279 | COMPLETED | fabxoe | #279 | EXP-219 동일 조건 + trailing 21-iteration Macro F1 중앙값 checkpoint 선택 | 0.4206209582 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0016112로 사전 허용치 초과, Log Loss는 개선됐으나 ARCHIVE | [보고서](reports/exp279_checkpoint_rolling_median/README.md) |
+| EXP-296 | COMPLETED | Kangho-Park | #296 | EXP-094 + CTNNB1 D32/S33 hotspot 2개 컬럼(phosphodegron 모티프, hotspot-34 S37/S45와 별도 컬럼) | 0.4172413559 | 미제출 | NOT_STARTED | EXP-094 대비 Macro F1 +0.0003548로 gate 미달, fold 표준편차·클래스별 F1(LUAD -0.0472) gate도 실패로 ARCHIVE | [보고서](reports/exp296_ctnnb1_d32_s33_hotspot/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -151,6 +152,64 @@
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-296] CTNNB1 D32/S33 hotspot 확장 (phosphodegron 모티프 나머지 조각)
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #296 / `issue-296-ctnnb1-d32-s33-hotspot`
+- 소스 commit: `a5395390fe724cece6afffd09ae24039c03cc82d`
+- 시작/종료: 2026-08-03T15:24:07.542781+00:00 /
+  2026-08-03T16:39:06.419383+00:00
+
+#### 배경
+
+- DominoEffect 스타일 panel-wide 스크리닝(#292 백로그)에서 발굴한 CTNNB1
+  D32/S33은 기존 hotspot-34의 CTNNB1 S37/S45와 같은 β-catenin N-terminal
+  phosphodegron 모티프의 나머지 조각이다.
+- 사전검증(#296 논의): Vera 게이트 A/B/C 5개 fold 전부 통과, burden 교란
+  없음(S33은 UCEC 저-변이부담 분자아형과 일치하는 진짜 생물학), D32/S33/
+  S37/S45 4개 위치 표본 완전 배타적(교집합 0)·암종 분포 전부 상이(S45만
+  ACC 33% 집중) → EXP-058 정보 손실 패턴을 피하기 위해 4개를 합치지 않고
+  D32/S33을 별도 컬럼 2개로 추가.
+
+#### 실행과 결과
+
+- `src/open_cancer/ctnnb1_hotspot_features.py`의 `Ctnnb1Family`(position-level
+  매칭, hotspot_features.py의 기존 hotspot-34와 동일 규칙) 신규 구현.
+- 실행 전 `find_semantically_equivalent_features`로 신규 컬럼 2개가 frozen
+  v1(S37/S45 포함)과 byte-identical하지 않음을 확인(`matches: {}`).
+- train 양성: `hotspot__CTNNB1_32` 23건(fold `{0:3,1:2,2:4,3:8,4:6}`),
+  `hotspot__CTNNB1_33` 24건(fold `{0:5,1:5,2:4,3:7,4:3}`) — 5개 fold 전부
+  표본 존재(POLE hotspot5의 fold 3=1건 문제 재발 없음).
+- Fold Macro F1: 0.4157178019 / 0.4183811139 / 0.3981947711 /
+  0.4242935546 / 0.4263623735
+- OOF Macro F1: 0.4172413559 (EXP-094 대비 `+0.0003547820`)
+- Fold 표준편차: 0.0099719336 (`+0.0020876816`, 악화)
+- Log Loss: 1.8386958719 (`-0.0012414574`, 개선)
+- Watch class: UCEC `+0.0003878839`(사실상 무변화), LIHC `-0.0032803097`
+  (소폭 하락) — 목표했던 두 클래스 모두 유의미한 개선 없음
+- 최악 클래스 F1 변화: LUAD `-0.0472178289` (D32/S33과 직접 연관 없어
+  보이는 클래스, sparse feature 추가로 인한 collateral 하락으로 해석)
+- 3-seed(1001/1002/1003) 안정성 확인: 4-seed 평균 0.4169874553, 표준편차
+  0.0020643411 — 공식 seed 42는 이 분포의 중앙에 위치(EXP-181과 달리
+  이상치 아님)
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`(일반 Local 실험, 리더보드 미제출)
+
+#### 산출물과 결론
+
+- Config: `configs/exp296_ctnnb1_d32_s33_hotspot.yaml`
+- Metrics: `reports/exp296_ctnnb1_d32_s33_hotspot/metrics.json`
+- Report: `reports/exp296_ctnnb1_d32_s33_hotspot/README.md`
+- Verdict 상세: `reports/exp296_ctnnb1_d32_s33_hotspot/verdict.json`
+- Feature 모듈·테스트: `src/open_cancer/ctnnb1_hotspot_features.py`,
+  `tests/test_ctnnb1_hotspot_features.py`
+- Macro F1 gate(+0.001)·fold-std gate(<0.002 악화)·클래스별 F1 gate(무악화)
+  3개 중 3개 실패, Log Loss gate만 통과해 `ARCHIVE`한다. 사전검증(게이트·
+  burden·배타성)은 모두 통과했지만 실제 모델 투입 결과 목표 클래스는
+  거의 안 움직이고 무관한 클래스가 하락해, CTNNB1 phosphodegron 확장
+  트랙을 이걸로 종료한다.
 
 ### [EXP-279] rolling-median Macro F1 checkpoint 안정화
 
