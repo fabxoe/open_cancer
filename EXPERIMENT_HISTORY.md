@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 62
+- 실제 실험 수: 63
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4229885745 (`EXP-229`)
@@ -80,6 +80,7 @@
 | EXP-232 | COMPLETED | 2heej | #232 | EXP-229 pathway 변이 피처의 nested group permutation 선택 | 0.4214874085 | 미제출 | INFERENCE_VERIFIED | 피처 수는 감소했지만 EXP-229 대비 -0.0015012로 Macro F1 gate 실패, ARCHIVE | [보고서](reports/exp232_pathway_group_selection/README.md) |
 | EXP-237 | COMPLETED | 2heej | #237 | EXP-229 pathway 변이종류 raw count를 pathway 내부 fraction으로 교체 | 0.4204138300 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 -0.0025747·Log Loss 크게 악화로 ARCHIVE | [보고서](reports/exp237_pathway_mutation_fractions/README.md) |
 | EXP-240 | COMPLETED | 2heej | #240 | EXP-229 + 문헌 고정 암종별 분자 변이조합 21개 | 0.4189644465 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 -0.0040241·Log Loss 악화로 ARCHIVE, 일부 클래스 신호만 후속 검토 | [보고서](reports/exp240_molecular_constellations/README.md) |
+| EXP-245 | COMPLETED | 2heej | #245 | EXP-229 + 8개 암종 문헌 고정 mutation-mechanism proxy | 0.4213989560 | 미제출 | INFERENCE_VERIFIED | EXP-240 대비 개선했지만 EXP-229 대비 -0.0015896·Log Loss 악화로 ARCHIVE | [보고서](reports/exp245_lineage_mechanism_patterns/README.md) |
 | EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
 
 ## 리더보드 제출 이력
@@ -188,10 +189,48 @@
 | 2026-08-03T03:06:15.409629+00:00 | EXP-232 | 2heej | `7a940bcaae6cd1bb36f3c9d5e5d3296c8ce1b88c` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.36e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp232_pathway_group_selection/comparison.json) |
 | 2026-08-03T05:00:25.503797+00:00 | EXP-237 | 2heej | `bbebdf139bee3002b542015097ce8b2bc46fbe71` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.47e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp237_pathway_mutation_fractions/comparison.json) |
 | 2026-08-03T05:39:49.632899+00:00 | EXP-240 | 2heej | `b78e45c959a5f937bae3f7c5a5bc71978c4152fd` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.34e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp240_molecular_constellations/comparison.json) |
+| 2026-08-03T06:09:06.168833+00:00 | EXP-245 | 2heej | `7c755756a19eb721cdfe58dfab0798dac3ba9957` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.27e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp245_lineage_mechanism_patterns/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-245] 암종별 핵심 변이 패턴 확장
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #245 / `issue-245-exp-lineage-mechanism-patterns`
+- 소스 commit: `7c755756a19eb721cdfe58dfab0798dac3ba9957`
+- 시작/종료: 2026-08-03T05:58:26.576286+00:00 /
+  2026-08-03T06:09:04.837755+00:00
+
+#### 실행과 결과
+
+- 부모: EXP-229
+- EXP-240 단순 조합 피처는 유지하지 않고, 8개 암종 문헌 고정 module의
+  missense/LoF/context/mixed mechanism proxy 32개만 추가
+- semantic equivalence 검사 후 모든 fold에서 31개 유지
+- Fold Macro F1: 0.4161807057 / 0.4129769610 / 0.4192499206 /
+  0.4252393163 / 0.4365823625
+- OOF Macro F1: 0.4213989560 (EXP-229 대비 `-0.0015896185`,
+  EXP-240 대비 `+0.0024345095`)
+- Fold 표준편차: 0.0083182968 (EXP-229 대비 `-0.0015496681`, 개선)
+- Accuracy: 0.4138042251 (EXP-229 대비 `+0.0012901145`)
+- Log Loss: 2.0266003609 (EXP-229 대비 `+0.1756390333`, 악화)
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 결론
+
+- EXP-240보다 개선됐지만 사전 채택 기준인 EXP-229 대비 Macro F1 `+0.001`을
+  충족하지 못하고 Log Loss가 크게 악화돼 **ARCHIVE**한다.
+- 클래스별 큰 양·음의 변화가 함께 나타났으며, canonical OOF를 보고 유리한
+  module만 고정 선택하지 않는다.
+- 문헌은 고정 그룹·계산 규칙에만 사용했고 외부 환자 데이터와 SUBCLASS는
+  사용하지 않았다.
+- 저장 checkpoint 재추론에서 test 라벨 100%, 확률 최대 절대 차이 `1.27e-7`,
+  제출 CSV SHA-256 일치를 확인했다.
+- Metrics/Report: `reports/exp245_lineage_mechanism_patterns/`
 
 ### [EXP-240] 암종별 분자 변이조합 피처
 

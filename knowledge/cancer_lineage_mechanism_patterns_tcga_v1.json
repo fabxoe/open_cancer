@@ -1,0 +1,102 @@
+{
+  "name": "tcga_cancer_lineage_mechanism_patterns",
+  "version": "1.0.0-2026-08-03",
+  "license": "Citation-derived factual gene memberships; source article terms apply; no source text redistributed",
+  "source": "TCGA primary studies listed in sources",
+  "source_url": "https://www.cancer.gov/ccg/research/genome-sequencing/tcga",
+  "selection_policy": "Fixed before OOF; independent of competition labels, observed frequencies, validation, test, and leaderboard",
+  "competition_rule_basis": "Fixed literature-derived group and mutation-type calculation rules only; every sample-level value is computed exclusively from the competition CSV; no external patient data, labels, frequencies, weights, embeddings, test distribution, or leaderboard information",
+  "interpretation_limit": "Missense and nonsense/frameshift are mutation-type proxies only; they do not prove activation, biallelic loss, expression change, amplification, fusion, or pathogenicity",
+  "sources": [
+    {
+      "module_names": ["breast"],
+      "citation": "TCGA Network, Comprehensive molecular portraits of human breast tumours, Nature 2012",
+      "doi": "10.1038/nature11412",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3465532/"
+    },
+    {
+      "module_names": ["ovarian"],
+      "citation": "TCGA Research Network, Integrated genomic analyses of ovarian carcinoma, Nature 2011",
+      "doi": "10.1038/nature10166",
+      "url": "https://www.nature.com/articles/nature10166"
+    },
+    {
+      "module_names": ["prostate"],
+      "citation": "TCGA Research Network, The Molecular Taxonomy of Primary Prostate Cancer, Cell 2015",
+      "doi": "10.1016/j.cell.2015.10.025",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4695400/"
+    },
+    {
+      "module_names": ["thyroid"],
+      "citation": "TCGA Research Network, Integrated Genomic Characterization of Papillary Thyroid Carcinoma, Cell 2014",
+      "doi": "10.1016/j.cell.2014.09.050",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4243044/"
+    },
+    {
+      "module_names": ["bladder"],
+      "citation": "TCGA Research Network, Comprehensive Molecular Characterization of Muscle-Invasive Bladder Cancer, Cell 2017",
+      "doi": "10.1016/j.cell.2017.09.007",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5687509/"
+    },
+    {
+      "module_names": ["liver"],
+      "citation": "TCGA Research Network, Comprehensive and Integrative Genomic Characterization of Hepatocellular Carcinoma, Cell 2017",
+      "doi": "10.1016/j.cell.2017.05.046",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5680778/"
+    },
+    {
+      "module_names": ["cervical"],
+      "citation": "TCGA Research Network, Integrated genomic and molecular characterization of cervical cancer, Nature 2017",
+      "doi": "10.1038/nature21386",
+      "url": "https://www.nature.com/articles/nature21386"
+    },
+    {
+      "module_names": ["head_neck"],
+      "citation": "TCGA Network, Comprehensive genomic characterization of head and neck squamous cell carcinomas, Nature 2015",
+      "doi": "10.1038/nature14129",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/25631445/"
+    }
+  ],
+  "modules": {
+    "breast": {
+      "missense_signal_genes": ["PIK3CA", "TP53", "GATA3"],
+      "lof_signal_genes": ["TP53", "PTEN", "BRCA1", "BRCA2", "CDH1"],
+      "context_genes": ["MAP3K1", "AKT1", "ERBB2"]
+    },
+    "ovarian": {
+      "missense_signal_genes": ["TP53"],
+      "lof_signal_genes": ["TP53", "BRCA1", "BRCA2", "NF1", "RB1"],
+      "context_genes": ["BRCA1", "BRCA2", "NF1", "RB1"]
+    },
+    "prostate": {
+      "missense_signal_genes": ["SPOP", "IDH1", "BRAF", "HRAS", "AKT1", "CTNNB1"],
+      "lof_signal_genes": ["TP53", "PTEN", "ATM"],
+      "context_genes": ["SPOP", "TP53", "PTEN"]
+    },
+    "thyroid": {
+      "missense_signal_genes": ["BRAF", "HRAS", "EIF1AX"],
+      "lof_signal_genes": ["TP53"],
+      "context_genes": ["RET", "BRAF", "HRAS", "EIF1AX"]
+    },
+    "bladder": {
+      "missense_signal_genes": ["FGFR3", "PIK3CA", "HRAS"],
+      "lof_signal_genes": ["TP53", "RB1"],
+      "context_genes": ["FGFR3", "TP53", "RB1"]
+    },
+    "liver": {
+      "missense_signal_genes": ["CTNNB1", "TP53"],
+      "lof_signal_genes": ["TP53", "AXIN1"],
+      "context_genes": ["CTNNB1", "TP53", "AXIN1"]
+    },
+    "cervical": {
+      "missense_signal_genes": ["PIK3CA", "KRAS", "MAPK1", "NFE2L2"],
+      "lof_signal_genes": ["FBXW7", "PTEN", "EP300", "ARID1A", "TGFBR2"],
+      "context_genes": ["PIK3CA", "FBXW7", "PTEN", "EP300"]
+    },
+    "head_neck": {
+      "missense_signal_genes": ["PIK3CA", "HRAS", "NFE2L2"],
+      "lof_signal_genes": ["TP53", "CDKN2A", "CASP8", "NOTCH1", "FAT1"],
+      "context_genes": ["TP53", "CDKN2A", "PIK3CA", "NOTCH1", "HRAS"]
+    }
+  }
+}
