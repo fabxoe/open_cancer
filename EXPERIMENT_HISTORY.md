@@ -11,7 +11,7 @@
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
-- 최고 Public LB Macro F1: 0.3170803849 (`EXP-031`)
+- 최고 Public LB Macro F1: 0.323243525 (`EXP-223`)
 - 최고 재현 검증 모델: `EXP-131` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-03
 
@@ -74,7 +74,7 @@
 | EXP-207 | COMPLETED | fabxoe | #207 | EXP-094 + outer-train Boruta confirmed mutation-presence genes | 0.3484416378 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0684449·DLBC F1 0으로 붕괴, 재튜닝 없이 ARCHIVE | [보고서](reports/exp207_s3_boruta_feature_selection/README.md) |
 | EXP-219 | COMPLETED | fabxoe | #219 | EXP-094 동일 조건 + validation Macro-F1-best checkpoint 선택 | 0.4222321460 | 미제출 | INFERENCE_VERIFIED | 기존 mlogloss-best 대비 +0.0053456·fold std 개선, 향후 XGBoost 정책 채택 | [보고서](reports/exp219_macro_f1_checkpoint_selection/README.md) |
 | EXP-196 | COMPLETED | fabxoe | #196 | outer-train raw mutation-presence TruncatedSVD 256 + aggregate·hotspot | 0.3496748557 | 미제출 | MANIFEST_COMPLETE | Macro F1 -0.0672117·fold std와 DLBC F1 붕괴로 ARCHIVE | [보고서](reports/exp196_s4_truncated_svd/README.md) |
-| EXP-223 | COMPLETED | 2heej | #223 | EXP-096 pathway XGBoost + validation Macro-F1-best checkpoint | 0.4213739476 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 +0.0032586·fold std 개선으로 채택, 제출 후보 | [보고서](reports/exp223_pathway_macro_f1_checkpoint/README.md) |
+| EXP-223 | COMPLETED | 2heej | #223 | EXP-096 pathway XGBoost + validation Macro-F1-best checkpoint | 0.4213739476 | 0.323243525 | INFERENCE_VERIFIED | EXP-096 대비 +0.0032586·Public 팀 최고 갱신으로 채택 | [보고서](reports/exp223_pathway_macro_f1_checkpoint/README.md) |
 | EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
 
 ## 리더보드 제출 이력
@@ -97,6 +97,7 @@
 | 2026-08-02T23:07:03+09:00 | EXP-135 | #135 | `submissions/exp135_fixed_probability_blend.csv` (제출 ID `1508856`) | `5eef332c50322a8f2be1fb64b15bef49d8f5c91ac6200a7dbc587cebaa75b70a` | 0.3166527939 | EXP-031 최고 대비 -0.0004275910<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">재현 가능한 제출 중 2위</span> | INFERENCE_VERIFIED |
 | 2026-08-02T23:52:30+09:00 | EXP-151 | #151 | `submissions/exp151_mutated_gene_burden.csv` (제출 ID `1508912`) | `dddaf57cf2c497b08264a2c883223afff0d347edcadb9585783f06e1294e4349` | 0.3125095748 | EXP-031 최고 점수<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span> | INFERENCE_VERIFIED |
 | 2026-08-02T23:53:56+09:00 | EXP-188 | #188 | `submissions/exp188_c1_phi_jaccard_pruning.csv` (제출 ID `1508914`) | `a36bffa5e4d055f99d5fc8584c795a08c9f1b608cc941716d61b5b94428a1d0a` | 0.3140052334 | EXP-031 최고 점수<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span> | INFERENCE_VERIFIED |
+| 2026-08-03T10:30:33+09:00 | EXP-223 | #223 | `submissions/exp223_pathway_macro_f1_checkpoint.csv` (제출 ID `1509283`) | `74a23b6337b17fc4ed70ae1e3639331065e0d74432bed6b8fcf9dc9344e6c48c` | 0.323243525 | 제출 확인 당시 참가 4팀 중 4위·팀 Public 최고 갱신 | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -203,6 +204,9 @@
 - Accuracy: 0.4112239961 (EXP-096 대비 `+0.0033865506`)
 - Log Loss: 1.8441621065 (보조 지표, EXP-096 대비 `+0.0072278976`)
 - 클래스별 최악 변화: THYM `-0.0152823920`
+- Public LB: `0.323243525` (제출 ID `1509283`, 2026-08-03 10:30:33
+  KST, 확인 당시 참가 4팀 중 4위). EXP-031 대비 `+0.0061631401`로 팀 최고
+  Public 점수를 갱신했다.
 ### [EXP-211] One-vs-Rest XGBoost + v2-performance
 
 - 상태: COMPLETED
