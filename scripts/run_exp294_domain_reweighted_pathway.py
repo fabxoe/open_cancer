@@ -22,7 +22,11 @@ if __name__ == "__main__":
     parser.add_argument("--finalize-existing", action="store_true")
     args = parser.parse_args()
     if args.finalize_existing:
-        finalize_saved_run(CONFIG, runner_command=RUNNER_COMMAND)
+        finalize_saved_run(
+            CONFIG,
+            runner_command=RUNNER_COMMAND,
+            fold_feature_builder=FixedPathwayBurdenFoldBuilder(MEMBERSHIP),
+        )
     else:
         main(
             CONFIG,
