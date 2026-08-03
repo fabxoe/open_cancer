@@ -7,12 +7,12 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 66
+- 실제 실험 수: 67
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4254998819 (`EXP-253`)
+- 최고 Local OOF Macro F1: 0.4255728433 (`EXP-235`)
 - 최고 Public LB Macro F1: 0.323243525 (`EXP-223`)
-- 최고 재현 검증 모델: `EXP-253` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-235` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-03
 
 ## 실험 요약
@@ -85,6 +85,7 @@
 | EXP-253 | COMPLETED | 2heej | #253 | EXP-209 LightGBM + EXP-229 XGBoost 고정 0.5/0.5 확률 평균 | 0.4254998819 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 +0.0025113·Log Loss 개선·fold 안정성 기준 통과로 채택 후보 | [보고서](reports/exp253_lightgbm_xgboost_blend/README.md) |
 | EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
 | EXP-257 | COMPLETED | Kangho-Park | #257 | EXP-096 + functional_role_burden_extended(oncogene/TSG count raw/frac/resid/log1p, fold-train 게이팅, #176 확장) | 0.4118051266 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0063102·Log Loss 악화, 26개 중 19개 클래스 하락으로 ARCHIVE | [보고서](reports/exp257_functional_role_burden_extended/README.md) |
+| EXP-235 | COMPLETED | Gomin-art | #235 | Feature Spec v1 + outer-train 내부 nested-CV XGBoost·OOF pmax 신뢰도 분석 | 0.4255728433 | 미제출 | INFERENCE_VERIFIED | EXP-253 대비 +0.0000730으로 새 Local 최고·안정성 추가 확인 필요; pmax는 진단 전용 | [보고서](reports/exp235_onconpc_xgb_confidence/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -197,10 +198,53 @@
 | 2026-08-03T06:09:06.168833+00:00 | EXP-245 | 2heej | `7c755756a19eb721cdfe58dfab0798dac3ba9957` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.27e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp245_lineage_mechanism_patterns/comparison.json) |
 | 2026-08-03T06:54:33.822207+00:00 | EXP-250 | 2heej | `7f93b2f8be49e3d01cdd6b2442da0a5b6787488c` / 태그 없음 | SHA-256 일치 | 데이터·제출 SHA-256과 test 라벨 일치, 확률 최대 차이 1.20e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp250_lineage_group_selection/comparison.json) |
 | 2026-08-03T08:18:31+00:00 | EXP-253 | 2heej | `b9d296ea164beb4b33e5797b7b1b08eee45f54f9` / [`exp-253-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-253-repro-v1) | SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 일치; 부모 원본 포함 Release 복구 | 미실행(결정론적 확률 평균) | INFERENCE_VERIFIED | [comparison](reproducibility/exp253_lightgbm_xgboost_blend/comparison.json) |
+| 2026-08-03T11:44:41.876258+00:00 | EXP-235 | Gomin-art | `f3efedce60aafebf8831a4f4cbc4a04e413bc6c8` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 5.58e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp235_onconpc_xgb_confidence/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-235] OncoNPC 스타일 nested-CV XGBoost 및 pmax 신뢰도 분석
+
+- 상태: COMPLETED
+- 실행자: Gomin-art
+- Issue/브랜치: #235 / `issue-235-exp-onconpc-xgb-confidence`
+- 소스 commit: `f3efedce60aafebf8831a4f4cbc4a04e413bc6c8`
+- 시작/종료: 2026-08-03T10:13:00.992767+00:00 /
+  2026-08-03T11:44:37.831205+00:00
+
+#### 실행과 결과
+
+- 부모: EXP-094 / 동결 Feature Spec v1
+- 각 canonical outer-train fold 안에서 2-fold·2-trial randomized nested CV를
+  수행하고 inner Macro F1로 XGBoost 하이퍼파라미터를 선택했다.
+- Fold Macro F1: 0.4194400582 / 0.4311095113 / 0.4268554648 /
+  0.4082084479 / 0.4366031080
+- OOF Macro F1: 0.4255728433 (EXP-094 대비 `+0.0086862694`, 기존 최고
+  EXP-253 대비 `+0.0000729614`)
+- Fold 표준편차: 0.0098663133 (EXP-253 대비 `-0.0019136601`)
+- Accuracy: 0.4160619255 (EXP-253 대비 `+0.0024189647`)
+- Log Loss: 1.8073006993 (EXP-253 대비 `-0.0030244663`)
+- pmax 0.5 / 0.7 / 0.9 coverage: 0.3821964199 / 0.1999677471 /
+  0.0935333011; 해당 부분집합 Macro F1: 0.6535250009 / 0.6944774203 /
+  0.8896281940
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 산출물과 결론
+
+- Config: `configs/exp235_onconpc_xgb_confidence.yaml`
+- Metrics: `reports/exp235_onconpc_xgb_confidence/metrics.json`
+- Report: `reports/exp235_onconpc_xgb_confidence/README.md`
+- Reproduction: `reproducibility/exp235_onconpc_xgb_confidence/`
+- 결론: EXP-253을 근소하게 넘고 fold 변동성과 Log Loss도 개선해 새 Local 최고
+  후보로 보존한다. 개선폭이 `0.0001`보다 작고 Public LB는 미제출이므로 반복 seed,
+  독립 재학습 또는 실제 Public 결과로 안정성을 추가 확인한다.
+- pmax는 canonical OOF의 사후 진단에만 사용했다. 높은 임계값의 성능 상승은 낮은
+  coverage와 클래스 support 감소를 동반하므로 calibration·모델 선택·test 라벨
+  후처리나 제출 행 필터링에 사용하지 않는다.
+- 저장 checkpoint 재추론에서 제출 SHA-256과 test 라벨이 일치했고 확률 최대 절대
+  차이는 `5.58e-08`로 허용치 이내였다.
 
 ### [EXP-253] LightGBM·XGBoost 고정 확률 평균
 
