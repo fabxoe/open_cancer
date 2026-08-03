@@ -1,0 +1,95 @@
+run_mode: experiment
+record_role: official
+slug: functional_role_burden_extended
+parent_experiment: EXP-096
+component_experiments:
+  - EXP-094
+  - EXP-096
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mutation_type:
+    enabled: true
+  robust_aggregates:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+  residue_position:
+    enabled: true
+    aggregates:
+      - max
+    missing_policy: zero
+    complex_tokens: include
+    transform: raw
+hotspots:
+  table: extended_34
+  evidence_scope: additions_15
+  minimum_matching_train_rows: 5
+external_knowledge:
+  pathway_file: knowledge/canonical_pathways_sanchez_vega_v1.json
+  role_file: knowledge/abc_c_compact_groups_v1.json
+  organizer_approval_reference: https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180
+abc_families:
+  fixed_pathway_burden:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    groups: 10
+    values:
+      - mutated_gene_count
+      - lof_gene_count
+    output_dimension: 20
+  functional_role_burden_extended:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: fold_train
+    groups:
+      - oncogene
+      - tumor_suppressor
+    candidate_kinds:
+      - raw
+      - frac
+      - resid
+      - log1p
+    candidate_output_dimension: 8
+    gates:
+      saturation_max_zero_rate: 0.05
+      sparse_min_nonzero_rate: 0.01
+      dominance_max_share: 0.8
+    semantic_equivalence_filter: fold_train_against_v1_and_pathway_burden
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - feature_spec_v1
+    - fixed_pathway_mutated_and_lof_gene_counts
+    - functional_role_burden_extended_gated_candidates
+notes: >-
+  Issue #257. Baseline is EXP-096 (Feature Spec v1 + fixed_pathway_burden, 20
+  features), held fixed exactly as in EXP-096's own config. The sole addition
+  is up to 8 functional-role (oncogene/tumor_suppressor) mutated-gene-count
+  views (raw, fraction of role panel size, burden-residualized, log1p),
+  gated per fold using fold-train-only saturation/sparsity/dominance
+  thresholds fixed before execution, then filtered for semantic duplicates
+  against the frozen v1 base and the 20 fixed_pathway_burden columns. Target,
+  test distribution, and Public LB do not define or select features or
+  thresholds.
+comparison_metrics_path: reports/exp096_fixed_pathway_burden/metrics.json
