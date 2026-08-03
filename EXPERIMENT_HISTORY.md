@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 61
+- 실제 실험 수: 62
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4229885745 (`EXP-229`)
@@ -78,6 +78,7 @@
 | EXP-223 | COMPLETED | 2heej | #223 | EXP-096 pathway XGBoost + validation Macro-F1-best checkpoint | 0.4213739476 | 0.323243525 | INFERENCE_VERIFIED | EXP-096 대비 +0.0032586·Public 팀 최고 갱신으로 채택 | [보고서](reports/exp223_pathway_macro_f1_checkpoint/README.md) |
 | EXP-229 | COMPLETED | 2heej | #229 | EXP-223 + pathway별 변이 종류 유전자 수 50개 후보 | 0.4229885745 | 미제출 | INFERENCE_VERIFIED | EXP-223 대비 +0.0016146·안정성 및 클래스 gate 통과로 조건부 채택 | [보고서](reports/exp229_pathway_mutation_types/README.md) |
 | EXP-232 | COMPLETED | 2heej | #232 | EXP-229 pathway 변이 피처의 nested group permutation 선택 | 0.4214874085 | 미제출 | INFERENCE_VERIFIED | 피처 수는 감소했지만 EXP-229 대비 -0.0015012로 Macro F1 gate 실패, ARCHIVE | [보고서](reports/exp232_pathway_group_selection/README.md) |
+| EXP-237 | COMPLETED | 2heej | #237 | EXP-229 pathway 변이종류 raw count를 pathway 내부 fraction으로 교체 | 0.4204138300 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 -0.0025747·Log Loss 크게 악화로 ARCHIVE | [보고서](reports/exp237_pathway_mutation_fractions/README.md) |
 | EXP-240 | COMPLETED | 2heej | #240 | EXP-229 + 문헌 고정 암종별 분자 변이조합 21개 | 0.4189644465 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 -0.0040241·Log Loss 악화로 ARCHIVE, 일부 클래스 신호만 후속 검토 | [보고서](reports/exp240_molecular_constellations/README.md) |
 | EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
 
@@ -185,6 +186,7 @@
 | 2026-08-03T02:34:48.643447+00:00 | EXP-156 | Gomin-art | `5b1cff179ee68bc8f873f4f9dd4c73305aec3e65` / 태그 없음 | SHA-256 일치 | 제출 SHA-256·test 라벨 100% 일치, 확률 최대 차이 5.93e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp156_gene_variant_effect_compression/comparison.json) |
 | 2026-08-03T02:18:40.740535+00:00 | EXP-229 | 2heej | `75977326ab526f0b4c34ad5af90b29fb833c44c6` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.72e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp229_pathway_mutation_types/comparison.json) |
 | 2026-08-03T03:06:15.409629+00:00 | EXP-232 | 2heej | `7a940bcaae6cd1bb36f3c9d5e5d3296c8ce1b88c` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.36e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp232_pathway_group_selection/comparison.json) |
+| 2026-08-03T05:00:25.503797+00:00 | EXP-237 | 2heej | `bbebdf139bee3002b542015097ce8b2bc46fbe71` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.47e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp237_pathway_mutation_fractions/comparison.json) |
 | 2026-08-03T05:39:49.632899+00:00 | EXP-240 | 2heej | `b78e45c959a5f937bae3f7c5a5bc71978c4152fd` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.34e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp240_molecular_constellations/comparison.json) |
 
 ## 상세 실험 로그
@@ -225,6 +227,47 @@
 - 저장 checkpoint 재추론에서 test 라벨 100%, 확률 최대 절대 차이 `1.34e-7`,
   제출 CSV SHA-256 일치를 확인했다.
 - Metrics/Report: `reports/exp240_molecular_constellations/`
+
+### [EXP-237] pathway별 변이 종류 fraction
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #237 / `issue-237-exp-pathway-mutation-fractions`
+- 소스 commit: `bbebdf139bee3002b542015097ce8b2bc46fbe71`
+- 시작/종료: 2026-08-03T04:50:45.588215+00:00 /
+  2026-08-03T05:00:23.952096+00:00
+
+#### 실행과 결과
+
+- 부모: EXP-229
+- 유일한 변경: 10개 pathway×5개 변이종류 affected-gene raw count를
+  pathway mutated-gene count로 나눈 fraction으로 교체
+- 기존 pathway mutated/LoF count 20개, 모델·seed·canonical fold·validation
+  Macro-F1-best checkpoint 정책 유지
+- semantic equivalence 검사 후 총 pathway 피처 수: 63 / 64 / 64 / 64 / 63개
+- Fold Macro F1: 0.4137518575 / 0.4216749790 / 0.4206987516 /
+  0.4165303883 / 0.4352217755
+- OOF Macro F1: 0.4204138300 (EXP-229 대비 `-0.0025747446`)
+- Fold 표준편차: 0.0073981342 (EXP-229 대비 `-0.0024698307`, 개선)
+- Accuracy: 0.4110627318 (EXP-229 대비 `-0.0014513788`)
+- Log Loss: 1.9345345497 (EXP-229 대비 `+0.0835732222`, 악화)
+- 클래스별 최대 개선: KIRC `+0.0673780757`, LGG `+0.0432729610`
+- 클래스별 최대 하락: DLBC `-0.0345260515`, STES `-0.0318418212`,
+  CESC `-0.0300404514`
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 결론
+
+- Macro F1 `+0.001` 채택 기준을 충족하지 못하고 Log Loss가 크게 악화돼
+  **ARCHIVE**한다.
+- fold 1과 3의 Macro-F1-best checkpoint가 각각 iteration 32와 59로 매우
+  이르게 선택되어 확률 품질이 불안정했다. fraction이 raw count보다 나은 신호를
+  제공했다고 해석하지 않는다.
+- EXP-232 선택 결과와 Public LB는 피처 정의나 판단에 사용하지 않았다.
+- 저장 checkpoint 재추론에서 test 라벨 100%, 확률 최대 절대 차이 `1.47e-7`,
+  제출 CSV SHA-256 일치를 확인했다.
+- Metrics/Report: `reports/exp237_pathway_mutation_fractions/`
 
 ### [EXP-232] nested pathway group permutation 선택
 

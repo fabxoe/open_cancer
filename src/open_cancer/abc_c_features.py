@@ -91,6 +91,7 @@ class FittedPathwayMutationTypeFamily:
     gene_columns: tuple[str, ...]
     groups: dict[str, tuple[str, ...]]
     intersections: dict[str, tuple[str, ...]]
+    value_mode: Literal["count", "fraction"] = "count"
 
     def transform(self, frame: pd.DataFrame) -> sparse.csr_matrix:
         missing = [gene for gene in self.gene_columns if gene not in frame.columns]
@@ -107,13 +108,21 @@ class FittedPathwayMutationTypeFamily:
             for row_index, row in enumerate(
                 frame.loc[:, list(genes)].itertuples(index=False, name=None)
             ):
+                mutated_genes = 0
                 for cell in row:
+                    tokens = _tokens(cell)
+                    if not tokens:
+                        continue
+                    mutated_genes += 1
                     observed_types = {
-                        parse_mutation_token(token).mutation_type
-                        for token in _tokens(cell)
+                        parse_mutation_token(token).mutation_type for token in tokens
                     }
                     for mutation_type in observed_types:
                         output[row_index, offset + type_index[mutation_type]] += 1
+                if self.value_mode == "fraction" and mutated_genes:
+                    output[
+                        row_index, offset : offset + len(MUTATION_TYPES)
+                    ] /= mutated_genes
         return sparse.csr_matrix(output)
 
 
@@ -178,6 +187,7 @@ class PathwayMutationTypeFamily:
 
     gene_columns: tuple[str, ...]
     knowledge_path: Path
+    value_mode: Literal["count", "fraction"] = "count"
     version: str = "1.0.0"
 
     def fit(
@@ -196,8 +206,9 @@ class PathwayMutationTypeFamily:
         }
         empty = [name for name, genes in intersections.items() if not genes]
         _require(not empty, f"대회 유전자와 교집합이 없는 pathway입니다: {empty}")
+        suffix = "gene_count" if self.value_mode == "count" else "gene_fraction"
         feature_names = tuple(
-            f"sample__pathway_{name}__{mutation_type}_gene_count"
+            f"sample__pathway_{name}__{mutation_type}_{suffix}"
             for name in groups
             for mutation_type in MUTATION_TYPES
         )
@@ -210,7 +221,11 @@ class PathwayMutationTypeFamily:
         )
         return FittedPathwayMutationTypeFamily(
             descriptor=FeatureFamilyDescriptor(
-                name="pathway_mutation_type_composition",
+                name=(
+                    "pathway_mutation_type_composition"
+                    if self.value_mode == "count"
+                    else "pathway_mutation_type_fraction"
+                ),
                 version=self.version,
                 fit_scope="stateless",
                 feature_names=feature_names,
@@ -219,6 +234,7 @@ class PathwayMutationTypeFamily:
             gene_columns=self.gene_columns,
             groups=groups,
             intersections=intersections,
+            value_mode=self.value_mode,
         )
 
 
@@ -238,3 +254,11 @@ def pathway_mutation_type_family(
     gene_columns: tuple[str, ...], knowledge_path: Path
 ) -> PathwayMutationTypeFamily:
     return PathwayMutationTypeFamily(gene_columns, knowledge_path)
+
+
+def pathway_mutation_type_fraction_family(
+    gene_columns: tuple[str, ...], knowledge_path: Path
+) -> PathwayMutationTypeFamily:
+    return PathwayMutationTypeFamily(
+        gene_columns, knowledge_path, value_mode="fraction"
+    )
