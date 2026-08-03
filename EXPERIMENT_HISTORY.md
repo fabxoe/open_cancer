@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 66
+- 실제 실험 수: 67
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4254998819 (`EXP-253`)
@@ -85,6 +85,7 @@
 | EXP-253 | COMPLETED | 2heej | #253 | EXP-209 LightGBM + EXP-229 XGBoost 고정 0.5/0.5 확률 평균 | 0.4254998819 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 +0.0025113·Log Loss 개선·fold 안정성 기준 통과로 채택 후보 | [보고서](reports/exp253_lightgbm_xgboost_blend/README.md) |
 | EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
 | EXP-257 | COMPLETED | Kangho-Park | #257 | EXP-096 + functional_role_burden_extended(oncogene/TSG count raw/frac/resid/log1p, fold-train 게이팅, #176 확장) | 0.4118051266 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0063102·Log Loss 악화, 26개 중 19개 클래스 하락으로 ARCHIVE | [보고서](reports/exp257_functional_role_burden_extended/README.md) |
+| EXP-233 | COMPLETED | Kangho-Park | #233 | EXP-219 OOF + inner cross-fitting(K=3) 기반 class-wise logit offset(post-hoc, 재학습 없음) | 0.4241894920 | 미제출 | NOT_STARTED | EXP-219 대비 Macro F1 +0.0019573·Log Loss/fold-std 악화·DLBC F1 -0.1235 붕괴·5개 fold 중 2개 하락으로 ARCHIVE | [보고서](reports/exp233_nested_decision_offset/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -3105,3 +3106,70 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   구조적 config-민감성(`reports/analysis/sparse_binary_feature_dlbc_sensitivity.md`)을
   고려해 단일 실험만으로 원인을 특정하지 않는다.
 - #176은 이 결과로 대체·종료하며, 추가 튜닝이나 제출 없이 마무리한다.
+
+### [EXP-233] nested class-wise decision offset
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #233 / `issue-233-nested-decision-offset`
+- 소스 commit: `cfb2859`
+- 시작/종료: 실행시간 2651.81초(약 44분)
+
+#### 실행
+
+- 부모: EXP-219(macro-f1-checkpoint 정책 XGBoost). outer 모델 재학습 없음
+  — `exp-219-repro-v1` Release 번들(SHA-256 이중 검증)의 저장된 OOF
+  확률을 그대로 사용
+- `reports/analysis/external_biological_knowledge_feature_review.md`
+  (91~106행) nested decision rule 설계 그대로 구현:
+  - `src/open_cancer/nested_decision_offset.py`:
+    `fit_inner_cross_fitted_probabilities`(outer fold train 부분 안에서만
+    K=3 inner cross-fit, 총 15개 inner 모델 신규 학습),
+    `search_class_offsets`(26개 클래스 좌표하강 grid search,
+    `[-1.0,1.0]` step 0.1, L2 정규화 λ=0.001, 실행 전 config 고정),
+    `apply_class_offset`(확률 공간 곱셈+재정규화, transform-only)
+  - outer validation·test에는 fit하지 않고 transform만 적용
+  - test 확률 적용은 이번 완료 조건(OOF만)에 없어 스코프 밖으로 명시
+- Config: `configs/exp233_nested_decision_offset.yaml`
+- Metrics: `reports/exp233_nested_decision_offset/metrics.json`
+- Report: `reports/exp233_nested_decision_offset/README.md`
+- Fold별 offset 상세: `reports/exp233_nested_decision_offset/offset_search_detail.json`
+
+#### 결과
+
+- OOF Macro F1: 0.4241894920 (EXP-219 대비 `+0.0019573460`)
+- Fold 표준편차: 0.0081500315 (EXP-219 대비 `+0.0014296379`, 악화)
+- Log Loss: 1.8683398093 (EXP-219 대비 `+0.0207270628`, 악화)
+- Fold별 delta: fold0 `+0.0002605`, fold1 `+0.0015356`, fold2
+  `-0.0011613`, fold3 `-0.0031786`, fold4 `+0.0025379` — 5개 중 2개(fold
+  2, 3) 하락
+- 클래스별 최대 하락: **DLBC `-0.1235`**(0.4286→0.3051), BLCA
+  `-0.0381`, LIHC `-0.0284`, GBMLGG `-0.0222`. 최대 개선: TGCT
+  `+0.0796`, LGG `+0.0763`, HNSC `+0.0319`, KIRC `+0.0300`
+- DLBC(index 5) offset이 fold마다 `+0.3, -0.5, +0.8, -0.7, -0.0`로
+  부호·크기가 전혀 일관되지 않음 — outer fold당 DLBC 표본 7~8건으로는
+  inner-CV로도 안정적 신호를 얻기에 근본적으로 부족함을 시사
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`(일반 Local 실험, 재현 번들 불필요)
+
+#### 결론
+
+- OOF Macro F1은 순증가했지만 Log Loss·fold 표준편차가 모두 악화되고
+  5개 fold 중 2개가 오히려 하락했으며, 무엇보다 **DLBC F1이 이번
+  세션에서 관측된 어떤 DLBC 교란보다 큰 폭(-0.1235)으로 붕괴**해
+  `ARCHIVE`다. Macro F1 순증가 하나만으로 채택하지 않는다.
+- DLBC offset의 fold별 부호 불일치는 이번 세션에서 반복 확인한 DLBC의
+  구조적 config-민감성(seed·hyperparameter·feature 추가 어느 축으로
+  흔들어도 비슷한 크기·예측 불가능한 방향으로 움직임,
+  `reports/analysis/sparse_binary_feature_dlbc_sensitivity.md`)이
+  post-hoc calibration이라는 별개 메커니즘에서도 동일하게 나타난 것으로
+  해석한다.
+- PROJECT_CONTEXT.md의 낙관 편향 공개 정책에 따라, EXP-219(baseline)의
+  same-fold checkpoint 선택과 이 실험의 inner-fold early stopping(inner
+  holdout을 eval_set으로 동시 사용) 둘 다 경미한 낙관 편향을 포함할 수
+  있음을 명시한다. 다만 outer validation은 offset을 transform으로만
+  받았으므로 위 결과 자체는 이 편향의 직접 영향을 받지 않는다.
+- 다음 시도가 있다면 DLBC 같은 극소수 클래스는 offset 탐색에서 제외하거나
+  더 강한 정규화를 적용하는 방향을 검토할 수 있으나, 이번 라운드
+  완료조건(OOF만, 스코프 확장 없음)에 따라 이 실험에서는 추가 변형을
+  시도하지 않는다.
