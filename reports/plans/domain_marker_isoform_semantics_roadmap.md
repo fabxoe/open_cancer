@@ -25,13 +25,13 @@
 | 단계 | 작업 | Issue | EXP | PR | 상태 | OOF Macro F1 | 판단 | 다음 행동 |
 |---|---|---:|---|---:|---|---:|---|---|
 | A0 | 출처·관찰 가능성 계약 고정 | #299 | 해당 없음 | 미발급 | COMPLETED | N/A | panel에 KRAS·NRAS·MSH6 없음 | 교집합 고정 |
-| A1 | 고정 표지 패널 피처 구현 | #299 | 해당 없음 | 미발급 | IN_PROGRESS | N/A | - | PR·전체 테스트 |
-| A2 | Feature Spec v1/EXP-229 대비 의미 중복 감사 | #299 | explore | 미발급 | IN_PROGRESS | N/A | FGFR3 any·single-panel multi 중복/상수 | 전체 base 재검사 |
-| A3 | 고정 표지 패널 canonical 5-fold | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | A2 통과 대기 |
+| A1 | 고정 표지 패널 피처 구현 | #299 | 해당 없음 | #301 | COMPLETED | N/A | 20개 후보 구현·테스트 | A3 완료 |
+| A2 | Feature Spec v1/EXP-229 대비 의미 중복 감사 | #299 | explore | #301 | COMPLETED | N/A | FGFR3 any·single-panel multi 중복/상수 확인 | fold-local mask 적용 |
+| A3 | 고정 표지 패널 canonical 5-fold | #302 | EXP-302 | #305 | REJECTED | 0.4212799841 | EXP-229 대비 -0.0017085904 | [보고서](../exp302_observable_marker_proxies/README.md), Track A 종료 |
 | B0 | Ensembl annotation snapshot·허용 범위 확인 | 미발급 | 해당 없음 | 미발급 | PLANNED | N/A | - | A3 완료 후 시작 |
 | B1 | isoform token 의미 QC | 미발급 | explore | 미발급 | PLANNED | N/A | - | coverage 감사 |
 | B2 | isoform 신뢰도 피처 ablation | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | B1·허용 범위 통과 대기 |
-| C | Track A+B 조건부 조합 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | A3·B2 모두 채택 시만 실행 |
+| C | Track A+B 조건부 조합 | 미발급 | 미발급 | 미발급 | REJECTED | N/A | Track A gate 실패 | 조합 실험을 열지 않음 |
 
 작업 상태는 다음 값만 사용합니다.
 
