@@ -1,0 +1,37 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-253
+issue_number: 253
+slug: lightgbm_xgboost_blend
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+ensemble:
+  method: probability_mean
+  weights_fixed_before_evaluation: true
+  components:
+    - experiment_id: EXP-209
+      weight: 0.5
+      oof_probability_path: oof/exp209_lightgbm_v2_performance.csv
+      test_probability_path: preds/exp209_lightgbm_v2_performance_test_proba.csv
+      metrics_path: reports/exp209_lightgbm_v2_performance/metrics.json
+      resolved_config_path: reproducibility/exp209_lightgbm_v2_performance/config.resolved.yaml
+    - experiment_id: EXP-229
+      weight: 0.5
+      oof_probability_path: oof/exp229_pathway_mutation_types.csv
+      test_probability_path: preds/exp229_pathway_mutation_types_test_proba.csv
+      metrics_path: reports/exp229_pathway_mutation_types/metrics.json
+      resolved_config_path: reproducibility/exp229_pathway_mutation_types/config.resolved.yaml
+submission:
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
+acceptance:
+  comparison_experiment: EXP-229
+  minimum_macro_f1_delta: 0.001
+  maximum_fold_std_increase: 0.002
+  require_no_clear_log_loss_regression: true
+notes: >-
+  Issue #253. Fixed 0.5/0.5 arithmetic probability mean of EXP-209 and
+  EXP-229. No alternative weights, test distribution, or Public LB select
+  this blend.
