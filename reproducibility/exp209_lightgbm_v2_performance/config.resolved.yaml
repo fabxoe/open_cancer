@@ -1,0 +1,155 @@
+experiment:
+  record_role: official
+  issue_number: 209
+  experiment_id: EXP-209
+  branch: issue-209-exp-lightgbm-v2-performance
+  source_commit: ec05d217aeed555e3beb18151920a07fe275dd6f
+  dirty_worktree: false
+  started_at: '2026-08-02T14:21:59.123191+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+feature_spec:
+  name: v2-performance
+  base_experiment: EXP-094
+  evidence_experiment: EXP-096
+  base_feature_spec_sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+  families:
+  - fixed_pathway_burden
+  family_registry:
+    fixed_pathway_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+  semantic_duplicates_dropped: {}
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+  source_config: configs/exp096_fixed_pathway_burden.yaml
+  source_config_sha256: 37a42523d4b6ae4bec9ac468ed03c6dcdf3f14d9a4d2d13007e65b71b01fb2a1
+  train_input_sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test_input_sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  train_shape:
+  - 6201
+  - 35139
+  test_shape:
+  - 2546
+  - 35139
+  feature_names_sha256: dd1e8edcba869adafafaefef7c7c5dd34f5df56e1be4819d5caf365a419920b0
+  outputs:
+    train_features:
+      path: /Users/mac/Documents/Project/open_cancer/data/processed/exp209_lightgbm_v2_performance_features/train_features.npz
+      sha256: 1c2f01570546ce0d54b78ac1e2bb8cd9eaf674a6f4d0487fa517985ac0082d1f
+    test_features:
+      path: /Users/mac/Documents/Project/open_cancer/data/processed/exp209_lightgbm_v2_performance_features/test_features.npz
+      sha256: b07864b140e7e357109f35e5cdb303eb959316842e445a2198b7474b9c2e7fc8
+    feature_names:
+      path: /Users/mac/Documents/Project/open_cancer/data/processed/exp209_lightgbm_v2_performance_features/feature_names.json
+      sha256: 144ffb1ec2f71f06ebf85884826cf9f18ea252c9d5d693376b1a902f9afdc9f8
+model:
+  name: lightgbm
+  parameters:
+    objective: multiclass
+    num_class: 26
+    n_estimators: 1200
+    learning_rate: 0.03
+    num_leaves: 31
+    max_depth: -1
+    min_child_samples: 20
+    subsample: 0.8
+    subsample_freq: 1
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    early_stopping_rounds: 60
+    n_jobs: 8
+    verbosity: -1
+    deterministic: true
+    force_col_wise: true
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+training:
+  balanced_sample_weight: true
+preflight: null
+runtime:
+  command: uv run python scripts/run_exp209_lightgbm_v2_performance.py
+  pythonhashseed: null
+  deterministic: true
