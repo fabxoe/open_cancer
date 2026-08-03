@@ -152,6 +152,68 @@ def test_reproducibility_schema(tmp_path: Path) -> None:
     assert validate_experiment_record_identity(path)["issue_number"] == 12
 
 
+def _training_verified_manifest() -> dict[str, object]:
+    return {
+        "experiment_id": "EXP-012",
+        "issue_number": 12,
+        "reproducibility_status": "TRAINING_VERIFIED",
+        "source_commit": "0123456789abcdef",
+        "dirty_worktree": False,
+        "data_manifest": "reproducibility/exp012_test/data_manifest.json",
+        "environment": "reproducibility/exp012_test/environment.json",
+        "verifier": "non-author",
+        "verified_at": "2026-08-03T00:00:00Z",
+        "artifacts": [],
+        "verification": {
+            "data_hashes_match": True,
+            "submission_sha256_match": True,
+            "oof_label_agreement": 1.0,
+            "test_label_agreement": 1.0,
+            "probability_atol": 1e-6,
+            "probability_rtol": 1e-6,
+            "oof_macro_f1_delta": 0.0,
+            "passed": True,
+        },
+        "verification_scope": {
+            "operation": "training_reproduction",
+            "environment_relation": "cross_platform",
+            "claim": "tolerance_verified",
+            "original_platform": "macOS-arm64",
+            "reproduction_platform": "Windows-x86_64",
+        },
+    }
+
+
+def test_training_verified_requires_verification_scope(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[1]
+    document = _training_verified_manifest()
+    document.pop("verification_scope")
+    path = tmp_path / "artifact_manifest.json"
+    path.write_text(json.dumps(document), encoding="utf-8")
+
+    with pytest.raises(ValidationError, match="verification_scope"):
+        validate_json_document(path, root / "schemas/reproducibility_manifest.schema.json")
+
+
+def test_training_verified_accepts_explicit_cross_platform_scope(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[1]
+    path = tmp_path / "artifact_manifest.json"
+    path.write_text(json.dumps(_training_verified_manifest()), encoding="utf-8")
+
+    validate_json_document(path, root / "schemas/reproducibility_manifest.schema.json")
+
+
+def test_training_verified_rejects_unknown_platform_scope(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[1]
+    document = _training_verified_manifest()
+    document["verification_scope"]["environment_relation"] = "unknown"  # type: ignore[index]
+    path = tmp_path / "artifact_manifest.json"
+    path.write_text(json.dumps(document), encoding="utf-8")
+
+    with pytest.raises(ValidationError, match="verification_scope"):
+        validate_json_document(path, root / "schemas/reproducibility_manifest.schema.json")
+
+
 def test_experiment_record_rejects_mismatched_issue(tmp_path: Path) -> None:
     path = tmp_path / "metrics.json"
     path.write_text(

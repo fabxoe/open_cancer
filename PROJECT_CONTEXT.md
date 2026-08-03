@@ -590,6 +590,15 @@ manifest에 남긴다.
 교차 플랫폼 재학습을 `TRAINING_VERIFIED`로 승격하거나, 같은 플랫폼에서만 확인한
 결과를 교차 플랫폼 결정론으로 확대 해석하지 않는다.
 
+`TRAINING_VERIFIED` manifest에는 `verification_scope`를 필수로 저장한다. 검증
+operation은 `training_reproduction`, 환경 관계는 `same_environment`,
+`same_platform`, `cross_platform` 중 하나이며 claim은 기존 확률·라벨·Macro F1
+허용 조건을 통과한 `tolerance_verified`여야 한다. 환경 관계가 `unknown`이면
+승격하지 않는다. XGBoost `tree_method=hist`에서 실제로 관측한 플랫폼 차이와
+완화책은
+[`XGBoost hist 교차 플랫폼 재현성 감사`](reports/analysis/xgboost_hist_cross_platform_reproducibility.md)를
+따른다.
+
 리더보드 제출 전 최소 `INFERENCE_VERIFIED`가 필요하다. 현재 최고 모델과 최종 수상
 후보는 `TRAINING_VERIFIED`가 아니면 최종 모델로 지정할 수 없다.
 
