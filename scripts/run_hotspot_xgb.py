@@ -581,6 +581,10 @@ def main(
             ),
             "test_or_public_used_for_selection": False,
         }
+        if checkpoint_selection == "macro_f1_validation":
+            # Preserve the historical EXP-219 output contract for downstream
+            # reports while exposing the policy-neutral key above.
+            metrics["checkpoint_comparison"]["macro_f1_best"] = metrics["oof"]
     write_json(metrics_path, metrics)
     validate_json_document(metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json")
     local_dashboard_path = write_local_dashboard(

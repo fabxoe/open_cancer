@@ -284,3 +284,10 @@ def test_exp279_runner_is_one_to_one() -> None:
     ).read_text(encoding="utf-8")
     assert "exp279_checkpoint_rolling_median.yaml" in runner
     assert "run_exp279_checkpoint_rolling_median.py" in runner
+
+
+def test_common_runner_preserves_legacy_macro_f1_metrics_key() -> None:
+    root = Path(__file__).resolve().parents[1]
+    runner = (root / "scripts" / "run_hotspot_xgb.py").read_text(encoding="utf-8")
+    assert 'if checkpoint_selection == "macro_f1_validation":' in runner
+    assert '["checkpoint_comparison"]["macro_f1_best"] = metrics["oof"]' in runner
