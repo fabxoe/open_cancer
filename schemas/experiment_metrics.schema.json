@@ -104,6 +104,14 @@
           "checkpoint_selection": {
             "type": "object",
             "additionalProperties": true
+          },
+          "model_parameters": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "nested_tuning": {
+            "type": "object",
+            "additionalProperties": true
           }
         }
       }
