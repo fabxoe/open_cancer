@@ -68,4 +68,3 @@ Macro F1 손실을 완전히 피하지 못했다는 근거다. 제출하거나 E
 최대 차이 `1.43e-07`, submission SHA-256 일치를 확인했다. 따라서 재현 상태는
 `INFERENCE_VERIFIED`다. EXP-219와 test argmax 라벨이 동일해 submission
 SHA-256도 같지만, 확률과 OOF 결과는 서로 다른 실험 산출물이다.
-
