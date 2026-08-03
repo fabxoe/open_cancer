@@ -7,13 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 68
+- 실제 실험 수: 69
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4254998819 (`EXP-253`)
 - 최고 Public LB Macro F1: 0.323243525 (`EXP-223`)
 - 최고 재현 검증 모델: `EXP-253` (`INFERENCE_VERIFIED`)
-- 최종 갱신일: 2026-08-03
+- 최종 갱신일: 2026-08-04
 
 ## 실험 요약
 
@@ -87,6 +87,7 @@
 | EXP-257 | COMPLETED | Kangho-Park | #257 | EXP-096 + functional_role_burden_extended(oncogene/TSG count raw/frac/resid/log1p, fold-train 게이팅, #176 확장) | 0.4118051266 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0063102·Log Loss 악화, 26개 중 19개 클래스 하락으로 ARCHIVE | [보고서](reports/exp257_functional_role_burden_extended/README.md) |
 | EXP-272 | COMPLETED | fabxoe | #272 | EXP-219 고정 5-seed(42·142·242·342·442) 확률 0.2 평균 | 0.4208578157 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0013743·fold 표준편차와 Log Loss 악화로 ARCHIVE | [보고서](reports/exp272_exp219_multiseed_ensemble/README.md) |
 | EXP-279 | COMPLETED | fabxoe | #279 | EXP-219 동일 조건 + trailing 21-iteration Macro F1 중앙값 checkpoint 선택 | 0.4206209582 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0016112로 사전 허용치 초과, Log Loss는 개선됐으나 ARCHIVE | [보고서](reports/exp279_checkpoint_rolling_median/README.md) |
+| EXP-302 | COMPLETED | fabxoe | #302 | EXP-229 + 고정 관찰 가능 암종 표지 mutation proxy 17~18개 | 0.4212799841 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0017086로 gate 실패, Log Loss·fold 안정성은 개선했으나 ARCHIVE | [보고서](reports/exp302_observable_marker_proxies/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -147,10 +148,48 @@
 | 2026-08-03T09:41:48.286924+00:00 | EXP-257 | Kangho-Park | `56b1b1d3515b9ff09f36fc7ca691ccdeaf53d487` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp257_functional_role_burden_extended/comparison.json) |
 | 2026-08-03T13:17:22.042664+00:00 | EXP-272 | fabxoe | `5913bf49e920d5e1ff36e9ff56bf9f16aa90f40b` / 태그 없음 | SHA-256 일치 | 5개 seed checkpoint 검증 통과·고정 평균 제출 SHA-256 일치·라벨 100%·확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp272_exp219_multiseed_ensemble/comparison.json) |
 | 2026-08-03T13:53:13.072581+00:00 | EXP-279 | fabxoe | `e904bc0e9a3e409c5b7884dbe6bf512bf63be1b7` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.43e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp279_checkpoint_rolling_median/comparison.json) |
+| 2026-08-03T16:50:07.665158+00:00 | EXP-302 | fabxoe | `6f6094a28fe5f1f6ae0b710df5c3f6b8c8cc3db3` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.34e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp302_observable_marker_proxies/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-302] 고정 관찰 가능 암종 표지 mutation proxy
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #302 / `issue-302-observable-marker-proxy`
+- PR: #305
+- 실행 source commit: `6f6094a28fe5f1f6ae0b710df5c3f6b8c8cc3db3`
+- 시작/종료: 2026-08-03T16:28:51.727168+00:00 /
+  2026-08-03T16:41:48.426138+00:00
+
+#### 실행과 결과
+
+- 부모 EXP-229의 피처·모델·canonical fold·Macro-F1 checkpoint 정책을 유지하고
+  문헌에서 사전 고정한 5개 암종 표지 패널의 관찰 가능한 mutation proxy만 추가
+- fusion, amplification, MSI/dMMR, germline 상태와 Public LB는 피처 정의에 미사용
+- fold-local 의미 중복 제거 후 marker 피처 `18 / 18 / 17 / 18 / 18`개 유지
+- Fold Macro F1: 0.4127412855 / 0.4228720327 / 0.4153153863 /
+  0.4167496415 / 0.4389531503
+- OOF Macro F1: 0.4212799841 (EXP-229 대비 `-0.0017085904`)
+- Fold 표준편차: 0.0094220433 (EXP-229 대비 `-0.0004459216`, 개선)
+- Accuracy: 0.4089662958, Log Loss: 1.8409115076
+  (EXP-229 대비 `-0.0100498199`, 개선)
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 산출물과 결론
+
+- Config: `configs/exp302_observable_marker_proxies.yaml`
+- Runner: `scripts/run_exp302_observable_marker_proxies.py`
+- Metrics: `reports/exp302_observable_marker_proxies/metrics.json`
+- Report: `reports/exp302_observable_marker_proxies/README.md`
+- Reproduction: `reproducibility/exp302_observable_marker_proxies/`
+- 결론: 대회 공식 지표 Macro F1의 사전 gate를 통과하지 못해 `ARCHIVE`한다.
+  Log Loss와 fold 안정성 개선은 보조 관찰로만 남기고 패널을 Public에 맞춰
+  재조정하지 않는다. Track B isoform QC는 독립 분석으로 진행하지만 A+B 조합은
+  열지 않는다.
 
 ### [EXP-279] rolling-median Macro F1 checkpoint 안정화
 
