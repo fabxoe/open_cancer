@@ -1,0 +1,434 @@
+{
+  "outer_fold": 0,
+  "selection_scope": "outer_fold_train_only",
+  "inner_folds": 3,
+  "permutation_repeats": 3,
+  "selected_pathways": [
+    "cell_cycle"
+  ],
+  "selected_candidate_features": 4,
+  "summary": {
+    "cell_cycle": {
+      "inner_fold_deltas": [
+        5.164341144061243e-05,
+        0.0010477162360759313,
+        0.0011374224032639584
+      ],
+      "positive_inner_folds": 3,
+      "mean_delta": 0.000745594016926834
+    },
+    "hippo": {
+      "inner_fold_deltas": [
+        -0.0003661177409769086,
+        0.0,
+        -0.00030543129705581
+      ],
+      "positive_inner_folds": 0,
+      "mean_delta": -0.00022384967934423953
+    },
+    "myc": {
+      "inner_fold_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "positive_inner_folds": 0,
+      "mean_delta": 0.0
+    },
+    "notch": {
+      "inner_fold_deltas": [
+        -0.0005050562284723189,
+        0.0017143255563679682,
+        -0.0007952444305617442
+      ],
+      "positive_inner_folds": 1,
+      "mean_delta": 0.00013800829911130168
+    },
+    "nrf2": {
+      "inner_fold_deltas": [
+        0.0,
+        -0.00014379485371564712,
+        1.4336099962986015e-05
+      ],
+      "positive_inner_folds": 1,
+      "mean_delta": -4.31529179175537e-05
+    },
+    "pi3k": {
+      "inner_fold_deltas": [
+        -0.0025144665018277577,
+        -0.0022190460176525852,
+        0.0003141096188199651
+      ],
+      "positive_inner_folds": 1,
+      "mean_delta": -0.001473134300220126
+    },
+    "rtk_ras": {
+      "inner_fold_deltas": [
+        0.0035674721712343573,
+        -0.0001691577393763318,
+        -0.00012171454746978672
+      ],
+      "positive_inner_folds": 1,
+      "mean_delta": 0.0010921999614627463
+    },
+    "tgf_beta": {
+      "inner_fold_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "positive_inner_folds": 0,
+      "mean_delta": 0.0
+    },
+    "tp53": {
+      "inner_fold_deltas": [
+        0.00017163657617987513,
+        -0.0016019500976102903,
+        0.0006948635192241722
+      ],
+      "positive_inner_folds": 2,
+      "mean_delta": -0.00024515000073541436
+    },
+    "wnt": {
+      "inner_fold_deltas": [
+        -0.0011376338184388064,
+        0.0011178395370702865,
+        -0.00021796472456458993
+      ],
+      "positive_inner_folds": 1,
+      "mean_delta": -7.925300197770327e-05
+    }
+  },
+  "records": [
+    {
+      "inner_fold": 0,
+      "group": "cell_cycle",
+      "baseline_macro_f1": 0.4098803125462084,
+      "permutation_deltas": [
+        0.00028886005157008343,
+        -0.0010071484901722494,
+        0.0008732186729240032
+      ],
+      "mean_delta": 5.164341144061243e-05
+    },
+    {
+      "inner_fold": 0,
+      "group": "hippo",
+      "baseline_macro_f1": 0.4098803125462084,
+      "permutation_deltas": [
+        -0.0010983532229307258,
+        0.0,
+        0.0
+      ],
+      "mean_delta": -0.0003661177409769086
+    },
+    {
+      "inner_fold": 0,
+      "group": "myc",
+      "baseline_macro_f1": 0.4098803125462084,
+      "permutation_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_delta": 0.0
+    },
+    {
+      "inner_fold": 0,
+      "group": "notch",
+      "baseline_macro_f1": 0.4098803125462084,
+      "permutation_deltas": [
+        -0.0003172872718643638,
+        -0.000939842772092303,
+        -0.00025803864146028976
+      ],
+      "mean_delta": -0.0005050562284723189
+    },
+    {
+      "inner_fold": 0,
+      "group": "nrf2",
+      "baseline_macro_f1": 0.4098803125462084,
+      "permutation_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_delta": 0.0
+    },
+    {
+      "inner_fold": 0,
+      "group": "pi3k",
+      "baseline_macro_f1": 0.4098803125462084,
+      "permutation_deltas": [
+        -0.0006915283783053283,
+        -0.0034191613200775794,
+        -0.0034327098071003648
+      ],
+      "mean_delta": -0.0025144665018277577
+    },
+    {
+      "inner_fold": 0,
+      "group": "rtk_ras",
+      "baseline_macro_f1": 0.4098803125462084,
+      "permutation_deltas": [
+        0.008406605329959904,
+        0.001809406715590156,
+        0.0004864044681530122
+      ],
+      "mean_delta": 0.0035674721712343573
+    },
+    {
+      "inner_fold": 0,
+      "group": "tgf_beta",
+      "baseline_macro_f1": 0.4098803125462084,
+      "permutation_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_delta": 0.0
+    },
+    {
+      "inner_fold": 0,
+      "group": "tp53",
+      "baseline_macro_f1": 0.4098803125462084,
+      "permutation_deltas": [
+        0.0007410806115561996,
+        -0.0010247660992448449,
+        0.0007985952162282706
+      ],
+      "mean_delta": 0.00017163657617987513
+    },
+    {
+      "inner_fold": 0,
+      "group": "wnt",
+      "baseline_macro_f1": 0.4098803125462084,
+      "permutation_deltas": [
+        -0.001293507101195801,
+        -0.0019499055678146582,
+        -0.0001694887863059602
+      ],
+      "mean_delta": -0.0011376338184388064
+    },
+    {
+      "inner_fold": 1,
+      "group": "cell_cycle",
+      "baseline_macro_f1": 0.4144146977234243,
+      "permutation_deltas": [
+        0.0020999067699707386,
+        -0.0012506124408172004,
+        0.002293854379074256
+      ],
+      "mean_delta": 0.0010477162360759313
+    },
+    {
+      "inner_fold": 1,
+      "group": "hippo",
+      "baseline_macro_f1": 0.4144146977234243,
+      "permutation_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_delta": 0.0
+    },
+    {
+      "inner_fold": 1,
+      "group": "myc",
+      "baseline_macro_f1": 0.4144146977234243,
+      "permutation_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_delta": 0.0
+    },
+    {
+      "inner_fold": 1,
+      "group": "notch",
+      "baseline_macro_f1": 0.4144146977234243,
+      "permutation_deltas": [
+        0.0008928359757716109,
+        0.0018551090959679217,
+        0.002395031597364372
+      ],
+      "mean_delta": 0.0017143255563679682
+    },
+    {
+      "inner_fold": 1,
+      "group": "nrf2",
+      "baseline_macro_f1": 0.4144146977234243,
+      "permutation_deltas": [
+        1.8068770462620343e-05,
+        -0.0004494533316095617,
+        0.0
+      ],
+      "mean_delta": -0.00014379485371564712
+    },
+    {
+      "inner_fold": 1,
+      "group": "pi3k",
+      "baseline_macro_f1": 0.4144146977234243,
+      "permutation_deltas": [
+        -0.0014069976423427555,
+        -0.0030370051766360207,
+        -0.00221313523397898
+      ],
+      "mean_delta": -0.0022190460176525852
+    },
+    {
+      "inner_fold": 1,
+      "group": "rtk_ras",
+      "baseline_macro_f1": 0.4144146977234243,
+      "permutation_deltas": [
+        -0.002014166844798715,
+        0.0008621871461192421,
+        0.0006445064805504774
+      ],
+      "mean_delta": -0.0001691577393763318
+    },
+    {
+      "inner_fold": 1,
+      "group": "tgf_beta",
+      "baseline_macro_f1": 0.4144146977234243,
+      "permutation_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_delta": 0.0
+    },
+    {
+      "inner_fold": 1,
+      "group": "tp53",
+      "baseline_macro_f1": 0.4144146977234243,
+      "permutation_deltas": [
+        -0.0032377307870801175,
+        -0.00023252114767785548,
+        -0.001335598358072898
+      ],
+      "mean_delta": -0.0016019500976102903
+    },
+    {
+      "inner_fold": 1,
+      "group": "wnt",
+      "baseline_macro_f1": 0.4144146977234243,
+      "permutation_deltas": [
+        0.0005428890628143002,
+        0.0026521414064257787,
+        0.00015848814197078065
+      ],
+      "mean_delta": 0.0011178395370702865
+    },
+    {
+      "inner_fold": 2,
+      "group": "cell_cycle",
+      "baseline_macro_f1": 0.38628545736361874,
+      "permutation_deltas": [
+        -0.0001445009771822714,
+        0.0017326896430717165,
+        0.0018240785439024298
+      ],
+      "mean_delta": 0.0011374224032639584
+    },
+    {
+      "inner_fold": 2,
+      "group": "hippo",
+      "baseline_macro_f1": 0.38628545736361874,
+      "permutation_deltas": [
+        -0.00040996161861828195,
+        -6.439309665806636e-05,
+        -0.0004419391758910818
+      ],
+      "mean_delta": -0.00030543129705581
+    },
+    {
+      "inner_fold": 2,
+      "group": "myc",
+      "baseline_macro_f1": 0.38628545736361874,
+      "permutation_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_delta": 0.0
+    },
+    {
+      "inner_fold": 2,
+      "group": "notch",
+      "baseline_macro_f1": 0.38628545736361874,
+      "permutation_deltas": [
+        -0.0006834716601220037,
+        -0.0006674648298254926,
+        -0.0010347968017377362
+      ],
+      "mean_delta": -0.0007952444305617442
+    },
+    {
+      "inner_fold": 2,
+      "group": "nrf2",
+      "baseline_macro_f1": 0.38628545736361874,
+      "permutation_deltas": [
+        4.3008299888958046e-05,
+        0.0,
+        0.0
+      ],
+      "mean_delta": 1.4336099962986015e-05
+    },
+    {
+      "inner_fold": 2,
+      "group": "pi3k",
+      "baseline_macro_f1": 0.38628545736361874,
+      "permutation_deltas": [
+        0.0026156873717601004,
+        -7.738203871893168e-05,
+        -0.0015959764765812734
+      ],
+      "mean_delta": 0.0003141096188199651
+    },
+    {
+      "inner_fold": 2,
+      "group": "rtk_ras",
+      "baseline_macro_f1": 0.38628545736361874,
+      "permutation_deltas": [
+        -0.0006695575880406035,
+        0.0005665830684975504,
+        -0.000262169122866307
+      ],
+      "mean_delta": -0.00012171454746978672
+    },
+    {
+      "inner_fold": 2,
+      "group": "tgf_beta",
+      "baseline_macro_f1": 0.38628545736361874,
+      "permutation_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_delta": 0.0
+    },
+    {
+      "inner_fold": 2,
+      "group": "tp53",
+      "baseline_macro_f1": 0.38628545736361874,
+      "permutation_deltas": [
+        0.000655181408834582,
+        -0.0001524602679687792,
+        0.0015818694168067138
+      ],
+      "mean_delta": 0.0006948635192241722
+    },
+    {
+      "inner_fold": 2,
+      "group": "wnt",
+      "baseline_macro_f1": 0.38628545736361874,
+      "permutation_deltas": [
+        -0.0003357728177769137,
+        -0.0005154928465499475,
+        0.00019737149063309145
+      ],
+      "mean_delta": -0.00021796472456458993
+    }
+  ]
+}
