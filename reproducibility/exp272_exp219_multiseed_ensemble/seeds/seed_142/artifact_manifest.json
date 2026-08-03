@@ -1,0 +1,128 @@
+{
+  "experiment_id": "EXP-272",
+  "issue_number": 272,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "5913bf49e920d5e1ff36e9ff56bf9f16aa90f40b",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp272_exp219_multiseed_ensemble/seeds/seed_142/data_manifest.json",
+  "environment": "reproducibility/exp272_exp219_multiseed_ensemble/seeds/seed_142/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-03T12:41:13.222686+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp272_exp219_multiseed_ensemble/seeds/seed_142/fold_00.json",
+      "size_bytes": 11628449,
+      "sha256": "4e631efc3b97ae54ee3bc425ca90cd65b6cb59fb3b5f8ed459adc8f1ee8ec57c",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp272_exp219_multiseed_ensemble/seeds/seed_142/fold_01.json",
+      "size_bytes": 10426578,
+      "sha256": "dde2361ac761cafc9255af6e3b1b4e07abbbb211851cfad459b32a500fe32c91",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp272_exp219_multiseed_ensemble/seeds/seed_142/fold_02.json",
+      "size_bytes": 1690964,
+      "sha256": "57c21c88bcc3420233f864ad7c1f4b7cc49585918176879bb5a5f642eb184bb8",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp272_exp219_multiseed_ensemble/seeds/seed_142/fold_03.json",
+      "size_bytes": 6831057,
+      "sha256": "ee35ddfe0ed349b9edbadcc2d3c8826293f6f319fdabfe90b79bac322d83290f",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp272_exp219_multiseed_ensemble/seeds/seed_142/fold_04.json",
+      "size_bytes": 10617099,
+      "sha256": "61e60cf6da7a62aa5dcf810a01a01f83f51c6072aa4266e40cf375c1c7b0b0d5",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp272_exp219_multiseed_ensemble/seeds/seed_142.csv",
+      "size_bytes": 38113,
+      "sha256": "f20146c6a1784c0f8c40706b0f9286c50912129b254bf23111032e8606be971c",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp272_exp219_multiseed_ensemble/seeds/seed_142.csv",
+      "size_bytes": 2102004,
+      "sha256": "b3199222f0f64eecdb28914ba5b3f5dd6963ea32c6bef5794cda52fbf1ad056c",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp272_exp219_multiseed_ensemble/seeds/seed_142_test_proba.csv",
+      "size_bytes": 815208,
+      "sha256": "9817a478e8c3b3ecbf91608baaf846e345e325cadc700b92927bd4d465af5fd6",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp272_exp219_multiseed_ensemble/seeds/seed_142/metrics.json",
+      "size_bytes": 26151,
+      "sha256": "2ae3f47f1d4517fb5cab20408f00a09c0c98dad7892a57932dea9fd0d1da02c3",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp272_exp219_multiseed_ensemble/seeds/seed_142/config.resolved.yaml",
+      "size_bytes": 18058,
+      "sha256": "6308140f94fa3887655e0e46a5775fe3854eb53aa3c376a939bd07b7158b5b2d",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp272_exp219_multiseed_ensemble/seeds/seed_142/fold_00_checkpoint_audit.json",
+      "size_bytes": 27431,
+      "sha256": "512540d7d2fdff1929b2c864ab0ddc09d02dbdde677dd4cd6f22182b22ce1d28",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp272_exp219_multiseed_ensemble/seeds/seed_142/fold_01_checkpoint_audit.json",
+      "size_bytes": 28891,
+      "sha256": "a5a532f179183b4c6d232f22e31b1c4ae55101e91d1e19c9a234d6960575f0fe",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp272_exp219_multiseed_ensemble/seeds/seed_142/fold_02_checkpoint_audit.json",
+      "size_bytes": 29686,
+      "sha256": "e7dbc71061f0429755cf9f4566c413ba011a561c40c30aed5c2875440c7b2d65",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp272_exp219_multiseed_ensemble/seeds/seed_142/fold_03_checkpoint_audit.json",
+      "size_bytes": 27671,
+      "sha256": "950fea53691faa87ebcea6e0b032a95b0f4dfde9b6bfe83fc0cda0f236c21b4f",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp272_exp219_multiseed_ensemble/seeds/seed_142/fold_04_checkpoint_audit.json",
+      "size_bytes": 28989,
+      "sha256": "4df6814fefae8977b44d37c567f332869e9953b5ea6af770106fa15c39a1f4f3",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
