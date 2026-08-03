@@ -9,6 +9,7 @@ from open_cancer.abc_c_features import (
     functional_role_burden_family,
     load_fixed_groups,
     pathway_mutation_type_family,
+    pathway_mutation_type_fraction_family,
 )
 from open_cancer.feature_family import fit_transform_family_set, transform_checked
 
@@ -119,3 +120,32 @@ def test_pathway_mutation_types_keep_all_five_parser_categories() -> None:
         assert values[
             names.index(f"sample__pathway_tp53__{mutation_type}_gene_count")
         ] == 1
+
+
+def test_pathway_mutation_type_fractions_use_mutated_pathway_genes_as_denominator() -> None:
+    frame = fixture_frame()
+    frame.loc[0, "TP53"] = "R1H R2*"
+    fitted = pathway_mutation_type_fraction_family(
+        tuple(frame.columns[1:]), knowledge_path()
+    ).fit(frame)
+    values = transform_checked(fitted, frame).toarray()[0]
+    names = fitted.descriptor.feature_names
+
+    assert values[names.index("sample__pathway_tp53__missense_gene_fraction")] == 1
+    assert values[names.index("sample__pathway_tp53__nonsense_gene_fraction")] == 1
+    assert fitted.descriptor.name == "pathway_mutation_type_fraction"
+    assert fitted.descriptor.output_dimension == 50
+
+
+def test_pathway_mutation_type_fractions_return_zero_for_unmutated_pathway() -> None:
+    frame = fixture_frame()
+    frame.loc[0, "TP53"] = "WT"
+    fitted = pathway_mutation_type_fraction_family(
+        tuple(frame.columns[1:]), knowledge_path()
+    ).fit(frame)
+    values = transform_checked(fitted, frame).toarray()[0]
+    names = fitted.descriptor.feature_names
+    tp53_columns = [
+        index for index, name in enumerate(names) if name.startswith("sample__pathway_tp53__")
+    ]
+    assert values[tp53_columns].sum() == 0

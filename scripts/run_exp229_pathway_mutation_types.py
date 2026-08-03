@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 
 import pandas as pd
 from scipy import sparse
@@ -31,8 +32,13 @@ MEMBERSHIP = ROOT / "reports" / "exp229_pathway_mutation_types" / "pathway_membe
 class PathwayMutationTypeFoldBuilder:
     """Materialize the parent pathway family and the new 50-column candidate."""
 
-    def __init__(self, membership_path=MEMBERSHIP) -> None:
+    def __init__(
+        self,
+        membership_path=MEMBERSHIP,
+        composition_factory: Callable = pathway_mutation_type_family,
+    ) -> None:
         self.membership_path = membership_path
+        self.composition_factory = composition_factory
         self.train = pd.read_csv(TRAIN_PATH, dtype=str, keep_default_na=False)
         self.test = pd.read_csv(TEST_PATH, dtype=str, keep_default_na=False)
         self.gene_columns = tuple(
@@ -47,7 +53,7 @@ class PathwayMutationTypeFoldBuilder:
             return
         families = (
             fixed_pathway_burden_family(self.gene_columns, KNOWLEDGE_PATH),
-            pathway_mutation_type_family(self.gene_columns, KNOWLEDGE_PATH),
+            self.composition_factory(self.gene_columns, KNOWLEDGE_PATH),
         )
         self.fitted = tuple(family.fit(self.train.iloc[:1]) for family in families)
         self.train_matrix = sparse.hstack(
