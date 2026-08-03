@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 54
+- 실제 실험 수: 55
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4222392962 (`EXP-131`)
