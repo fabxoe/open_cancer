@@ -1,0 +1,80 @@
+{
+  "version": "1.0.0",
+  "created_at": "2026-08-04",
+  "license": "Curated factual gene-set summary; source terms apply",
+  "source": "Fixed observable cancer-marker proxy panel curated before model execution",
+  "source_url": "https://www.cap.org/cap-guidelines/molecular-testing-guideline-for-the-selection-of-patients-with-lung-cancer-for-treatment-with-tyrosine/",
+  "sources": [
+    {
+      "scope": "lung",
+      "organization": "College of American Pathologists",
+      "url": "https://www.cap.org/cap-guidelines/molecular-testing-guideline-for-the-selection-of-patients-with-lung-cancer-for-treatment-with-tyrosine/"
+    },
+    {
+      "scope": "colorectal",
+      "organization": "ASCP/CAP/AMP/ASCO",
+      "url": "https://ascopubs.org/doi/10.1200/JOP.2017.022152"
+    },
+    {
+      "scope": "breast",
+      "organization": "American Society of Clinical Oncology",
+      "url": "https://ascopubs.org/doi/10.1200/OP.22.00506"
+    },
+    {
+      "scope": "bladder",
+      "organization": "National Cancer Institute",
+      "url": "https://www.cancer.gov/types/bladder/research"
+    }
+  ],
+  "input_contract": {
+    "observable": "Per-gene protein mutation strings supplied by the competition",
+    "not_observable": [
+      "gene fusion or rearrangement",
+      "copy-number amplification",
+      "gene expression or immunohistochemistry",
+      "MSI or dMMR assay status",
+      "germline versus somatic origin",
+      "clinical treatment eligibility"
+    ]
+  },
+  "panels": {
+    "lung_point_mutation_proxy": {
+      "genes": ["EGFR", "KRAS", "BRAF"],
+      "interpretation": "Observed protein-variant proxy; excludes ALK/ROS1/NTRK fusion claims"
+    },
+    "breast_tumor_variant_proxy": {
+      "genes": ["BRCA1", "BRCA2", "ERBB2", "PIK3CA"],
+      "interpretation": "Observed tumor-variant proxy; not HER2 amplification or germline status"
+    },
+    "colorectal_tumor_variant_proxy": {
+      "genes": ["KRAS", "NRAS", "BRAF", "MLH1", "MSH2", "MSH6", "PMS2"],
+      "interpretation": "Observed RAS/BRAF/MMR-gene variant proxy; not MSI-H or dMMR status"
+    },
+    "ovarian_brca_variant_proxy": {
+      "genes": ["BRCA1", "BRCA2"],
+      "interpretation": "Observed BRCA variant proxy; not hereditary risk or treatment eligibility"
+    },
+    "bladder_fgfr3_variant_proxy": {
+      "genes": ["FGFR3"],
+      "interpretation": "Observed FGFR3 protein-variant proxy; not fusion or overexpression"
+    }
+  },
+  "deferred_capture_items": {
+    "fusion_dominant": ["ALK", "ROS1", "NTRK1", "NTRK2", "NTRK3"],
+    "germline_or_syndrome_context_missing": ["NF1", "NF2", "VHL", "MEN1", "RET", "TP53"],
+    "reason": "The competition input does not identify fusion, germline origin, syndrome phenotype, or transcript context"
+  },
+  "feature_policy": {
+    "fit_scope": "stateless",
+    "target_used": false,
+    "test_distribution_used": false,
+    "public_leaderboard_used": false,
+    "per_panel_outputs": [
+      "any_mutated",
+      "any_nonsynonymous",
+      "any_lof",
+      "multi_gene_mutated"
+    ]
+  },
+  "interpretation_limit": "These features are mutation proxies for a classification experiment. They do not reproduce clinical biomarker assays, establish cancer causality, diagnose hereditary cancer, or determine treatment eligibility."
+}
