@@ -139,7 +139,7 @@
 | 2026-08-01T14:26:44.634572+00:00 | EXP-127 | fabxoe | `03af58890c1cac9d90e61430e550b7ae6cc7060d` / [`exp-127-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-127-repro-v1) | 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp127_catboost_v1/comparison.json) |
 | 2026-08-02T09:15:19.096281+00:00 | EXP-179 | fabxoe | `704731a20520339e21f4c84eae93708d2e1dfd3e` / 태그 없음 | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp179_xgb_feature_spec_v1_smote/comparison.json) |
 | 2026-08-02T16:32:46.152425+00:00 | EXP-211 | 2heej | `38955bcb7f1a0e8d72e933fd9fa4d48bd1a7873a` / 태그 없음 | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 2.12e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp211_ovr_xgboost_v2_performance/comparison.json) |
-| 2026-08-02T14:26:22.219111+00:00 | EXP-209 | 2heej | `ec05d217aeed555e3beb18151920a07fe275dd6f` / 태그 없음 | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp209_lightgbm_v2_performance/comparison.json) |
+| 2026-08-02T14:26:22.219111+00:00 | EXP-209 | 2heej | `ec05d217aeed555e3beb18151920a07fe275dd6f` / [`exp-209-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-209-repro-v1) | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0; Issue #260에서 원본 Release 복구 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp209_lightgbm_v2_performance/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -173,6 +173,7 @@
 - Log Loss: 1.8208257360 (EXP-125 대비 `-0.0019725059`)
 - Public LB: 미제출
 - 재현 상태: `INFERENCE_VERIFIED`
+- Release: [`exp-209-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-209-repro-v1)
 
 #### 결론
 
@@ -187,13 +188,13 @@
 | 2026-08-02T15:58:51.992672+00:00 | EXP-219 | fabxoe | `41d07096e1c87eb55e7d7a73645629ea3d0952e3` / [`exp-219-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-219-repro-v1) | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.45e-07; Issue #258에서 원본 Release 복구 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp219_macro_f1_checkpoint_selection/comparison.json) |
 | 2026-08-02T17:02:54.418077+00:00 | EXP-223 | 2heej | `41eaafc17f286ebc38568d076df5bf16fd0626ac` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.44e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp223_pathway_macro_f1_checkpoint/comparison.json) |
 | 2026-08-03T02:34:48.643447+00:00 | EXP-156 | Gomin-art | `5b1cff179ee68bc8f873f4f9dd4c73305aec3e65` / 태그 없음 | SHA-256 일치 | 제출 SHA-256·test 라벨 100% 일치, 확률 최대 차이 5.93e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp156_gene_variant_effect_compression/comparison.json) |
-| 2026-08-03T02:18:40.740535+00:00 | EXP-229 | 2heej | `75977326ab526f0b4c34ad5af90b29fb833c44c6` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.72e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp229_pathway_mutation_types/comparison.json) |
+| 2026-08-03T02:18:40.740535+00:00 | EXP-229 | 2heej | `75977326ab526f0b4c34ad5af90b29fb833c44c6` / [`exp-229-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-229-repro-v1) | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.72e-7; Issue #260에서 원본 Release 복구 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp229_pathway_mutation_types/comparison.json) |
 | 2026-08-03T03:06:15.409629+00:00 | EXP-232 | 2heej | `7a940bcaae6cd1bb36f3c9d5e5d3296c8ce1b88c` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.36e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp232_pathway_group_selection/comparison.json) |
 | 2026-08-03T05:00:25.503797+00:00 | EXP-237 | 2heej | `bbebdf139bee3002b542015097ce8b2bc46fbe71` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.47e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp237_pathway_mutation_fractions/comparison.json) |
 | 2026-08-03T05:39:49.632899+00:00 | EXP-240 | 2heej | `b78e45c959a5f937bae3f7c5a5bc71978c4152fd` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.34e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp240_molecular_constellations/comparison.json) |
 | 2026-08-03T06:09:06.168833+00:00 | EXP-245 | 2heej | `7c755756a19eb721cdfe58dfab0798dac3ba9957` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.27e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp245_lineage_mechanism_patterns/comparison.json) |
 | 2026-08-03T06:54:33.822207+00:00 | EXP-250 | 2heej | `7f93b2f8be49e3d01cdd6b2442da0a5b6787488c` / 태그 없음 | SHA-256 일치 | 데이터·제출 SHA-256과 test 라벨 일치, 확률 최대 차이 1.20e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp250_lineage_group_selection/comparison.json) |
-| 2026-08-03T08:18:31+00:00 | EXP-253 | 2heej | `b9d296ea164beb4b33e5797b7b1b08eee45f54f9` / 태그 없음 | SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 일치 | 미실행(결정론적 확률 평균) | INFERENCE_VERIFIED | [comparison](reproducibility/exp253_lightgbm_xgboost_blend/comparison.json) |
+| 2026-08-03T08:18:31+00:00 | EXP-253 | 2heej | `b9d296ea164beb4b33e5797b7b1b08eee45f54f9` / [`exp-253-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-253-repro-v1) | SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 일치; 부모 원본 포함 Release 복구 | 미실행(결정론적 확률 평균) | INFERENCE_VERIFIED | [comparison](reproducibility/exp253_lightgbm_xgboost_blend/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -219,6 +220,7 @@
 - Accuracy: 0.4136429608, Log Loss: 1.8103251656
 - Public LB: 미제출
 - 재현 상태: `INFERENCE_VERIFIED`
+- Release: [`exp-253-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-253-repro-v1)
 
 #### 산출물과 결론
 
@@ -445,6 +447,7 @@
   TGCT `-0.0196246430`
 - Public LB: 미제출
 - 재현 상태: `INFERENCE_VERIFIED`
+- Release: [`exp-229-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-229-repro-v1)
 
 #### 결론
 
