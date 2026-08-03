@@ -34,7 +34,8 @@
 | M0 | Macro-F1 checkpoint 감사 기반 | [#217](https://github.com/fabxoe/open_cancer/issues/217) | 해당 없음 | [#218](https://github.com/fabxoe/open_cancer/pull/218) | COMPLETED | N/A | validation-only audit·결정적 tie-break·checkpoint 저장 계약 완료 |
 | M1 | Macro-F1 checkpoint 선택 통제 실험 | [#219](https://github.com/fabxoe/open_cancer/issues/219) | EXP-219 | [#220](https://github.com/fabxoe/open_cancer/pull/220) | COMPLETED | 0.4222321460 | EXP-094 대비 +0.0053455721, fold std 개선·INFERENCE_VERIFIED; 정책 채택 |
 | M2 | EXP-219 고정 5-seed 안정성 검증 | [#272](https://github.com/fabxoe/open_cancer/issues/272) | EXP-272 | 미발급 | COMPLETED | 0.4208578157 | EXP-219 대비 -0.0013743303·fold std와 Log Loss 악화로 ARCHIVE; seed·가중치 재탐색 중단 |
-| M3 | trailing rolling-median checkpoint 안정화 | [#279](https://github.com/fabxoe/open_cancer/issues/279) | EXP-279 | [#280](https://github.com/fabxoe/open_cancer/pull/280) | PR_OPEN | 0.4206209582 | fold std 허용 범위·Log Loss 개선·클래스 붕괴 없음, Macro F1 -0.0016111878로 gate 실패·ARCHIVE; 리뷰·병합 후 window·minimum iteration 재탐색 없이 종료 |
+| M3 | trailing rolling-median checkpoint 안정화 | [#279](https://github.com/fabxoe/open_cancer/issues/279) | EXP-279 | [#280](https://github.com/fabxoe/open_cancer/pull/280) | COMPLETED | 0.4206209582 | fold std 허용 범위·Log Loss 개선·클래스 붕괴 없음, Macro F1 -0.0016111878로 gate 실패·ARCHIVE; window·minimum iteration 재탐색 없이 종료 |
+| M4 | 채택 XGBoost validation-only TreeSHAP 설명 감사 | [#281](https://github.com/fabxoe/open_cancer/issues/281) | 해당 없음 | 미발급 | IN_PROGRESS | N/A | EXP-219·229의 기존·pathway 신호 사용을 설명하고 삭제·선택·점수 변경에는 사용하지 않음 |
 | S4 | TruncatedSVD 비교 모델 | [#196](https://github.com/fabxoe/open_cancer/issues/196) | EXP-196 | [#221](https://github.com/fabxoe/open_cancer/pull/221) | COMPLETED | 0.3496748557 | Macro F1 -0.0672117·fold std와 DLBC 붕괴로 ARCHIVE; 차원 재탐색 중단 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`만 사용하며, 필요하면 `BLOCKED` 또는 `REJECTED`로 종료한다. 이는 실험 재현 상태와 별개다.
@@ -48,6 +49,10 @@
   선택 정책뿐이다.
 - 성능 또는 간소화 gate를 통과한 selector가 없으므로 이 로드맵을 근거로 한
   SHAP 삭제 규칙이나 Optuna 피처 정책 탐색은 실행하지 않는다.
+- M4는 selector를 만들기 위한 SHAP 단계가 아니라, 별도 ABC 로드맵에서 채택된
+  EXP-219·229가 실제로 사용하는 신호를 validation 표본에서 설명하는 감사다.
+  결과는 [`채택 모델 TreeSHAP 보고서`](../analysis/adopted_model_tree_shap/README.md)에
+  기록하며 피처 삭제·추가·재튜닝에는 사용하지 않는다.
 - 후속 multi-seed 안정성 검증과 모델 앙상블은 별도 Experiment Issue에서
   관리한다. M2(EXP-272)의 사전 고정 5-seed 평균은 성능과 안정성이 모두
   악화되어 `ARCHIVE`했으며, 결과를 보고 seed를 제외하거나 가중치를 다시
