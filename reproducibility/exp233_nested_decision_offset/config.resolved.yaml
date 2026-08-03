@@ -1,0 +1,114 @@
+experiment:
+  record_role: official
+  issue_number: 233
+  experiment_id: EXP-233
+  component_experiments:
+  - EXP-094
+  - EXP-219
+  branch: issue-233-nested-decision-offset
+  owner: Kangho Park
+  source_commit: cfb2859962b62ca0599178d53be6173b035f4afb
+  dirty_worktree: false
+  started_at: '2026-08-03T10:52:47.107640+00:00'
+baseline:
+  experiment_id: EXP-219
+  oof_path: oof/exp219_macro_f1_checkpoint_selection.csv
+  release_tag: exp-219-repro-v1
+  release_bundle_sha256: fa293ed92a21508e0752890ca407c6e55cbc879468
+  oof_sha256: 64bf5b289d5af4c3204a59424e6322794e9620d79258a753d69da2d7f5b94e2b
+  oof_macro_f1: 0.42223214599395903
+base_feature_spec:
+  name: v1
+  base_feature_spec_sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+  feature_names_sha256: 8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf
+  train_shape:
+  - 6201
+  - 35119
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+inner_cross_fitting:
+  n_splits: 3
+  seed_base: 5000
+  note: seed for outer fold i is seed_base + i. Inner models are trained only on each
+    outer fold's train partition (never that outer fold's own validation rows), using
+    the same Feature Spec v1 matrix and the same XGBoost hyperparameters as EXP-219's
+    model block below, except checkpoint selection is plain training-metric best_iteration
+    (not the macro_f1_validation audit) to keep 15 inner fits cheap. Early stopping
+    uses each inner holdout fold as eval_set, matching the same convention already
+    used for outer-fold OOF generation throughout this project; this is a mild, disclosed
+    optimism source (see report), not a new leakage class.
+offset_search:
+  candidate_grid_min: -1.0
+  candidate_grid_max: 1.0
+  candidate_grid_step: 0.1
+  regularization_lambda: 0.001
+  max_coordinate_passes: 5
+  application: multiplicative_renormalized
+  application_formula: softmax(z + o) ∝ softmax(z) * exp(o), renormalized
+  fit_scope: outer_fold_train_inner_cross_fit_only
+  applied_to_outer_validation: transform_only
+  applied_to_test: not_in_scope_this_experiment
+  candidate_grid:
+  - -1.0
+  - -0.9
+  - -0.8
+  - -0.7
+  - -0.6
+  - -0.5
+  - -0.4
+  - -0.3
+  - -0.2
+  - -0.1
+  - -0.0
+  - 0.1
+  - 0.2
+  - 0.3
+  - 0.4
+  - 0.5
+  - 0.6
+  - 0.7
+  - 0.8
+  - 0.9
+  - 1.0
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+optimism_bias_disclosure: EXP-219 (this experiment's baseline) selected each outer
+  fold's checkpoint iteration by maximizing Macro F1 on that same fold's validation
+  rows, then reported that fold's score -- a same-fold selection optimism already
+  flagged in PROJECT_CONTEXT.md's checkpoint-selection policy. This experiment's inner-fold
+  early stopping uses the same established pattern (inner holdout doubles as eval_set),
+  so EXP-233's own results inherit a comparable, disclosed optimism source at the
+  inner-fitting level. Current best / final-candidate promotion of any macro-F1-checkpoint-selected
+  model requires additional stability confirmation (repeated seeds, independent retraining,
+  or Public LB) per the same policy; this experiment does not claim that confirmation
+  on its own.
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]
+  platform: Windows-10-10.0.26200-SP0
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: 87876a7c41c030503ed1b95a2d1254c5ab395cfbb865c7538fa5de42bd28902a
+command: uv run python scripts/run_exp233_nested_decision_offset.py

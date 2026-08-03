@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 69
+- 실제 실험 수: 70
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4254998819 (`EXP-253`)
@@ -85,6 +85,7 @@
 | EXP-253 | COMPLETED | 2heej | #253 | EXP-209 LightGBM + EXP-229 XGBoost 고정 0.5/0.5 확률 평균 | 0.4254998819 | 0.3054410279 | INFERENCE_VERIFIED | Local 최고였으나 EXP-223 Public 대비 -0.0178024971로 전이 실패·제출 후보 제외 | [보고서](reports/exp253_lightgbm_xgboost_blend/README.md) |
 | EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
 | EXP-257 | COMPLETED | Kangho-Park | #257 | EXP-096 + functional_role_burden_extended(oncogene/TSG count raw/frac/resid/log1p, fold-train 게이팅, #176 확장) | 0.4118051266 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0063102·Log Loss 악화, 26개 중 19개 클래스 하락으로 ARCHIVE | [보고서](reports/exp257_functional_role_burden_extended/README.md) |
+| EXP-233 | COMPLETED | Kangho-Park | #233 | EXP-219 OOF + inner cross-fitting(K=3) 기반 class-wise logit offset(post-hoc, 재학습 없음) | 0.4241894920 | 미제출 | NOT_STARTED | Macro F1 +0.0019573이나 DLBC F1 -0.1235·Log Loss/fold 안정성 악화로 ARCHIVE | [보고서](reports/exp233_nested_decision_offset/README.md) |
 | EXP-272 | COMPLETED | fabxoe | #272 | EXP-219 고정 5-seed(42·142·242·342·442) 확률 0.2 평균 | 0.4208578157 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0013743·fold 표준편차와 Log Loss 악화로 ARCHIVE | [보고서](reports/exp272_exp219_multiseed_ensemble/README.md) |
 | EXP-279 | COMPLETED | fabxoe | #279 | EXP-219 동일 조건 + trailing 21-iteration Macro F1 중앙값 checkpoint 선택 | 0.4206209582 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0016112로 사전 허용치 초과, Log Loss는 개선됐으나 ARCHIVE | [보고서](reports/exp279_checkpoint_rolling_median/README.md) |
 | EXP-302 | COMPLETED | fabxoe | #302 | EXP-229 + 고정 관찰 가능 암종 표지 mutation proxy 17~18개 | 0.4212799841 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0017086로 gate 실패, Log Loss·fold 안정성은 개선했으나 ARCHIVE | [보고서](reports/exp302_observable_marker_proxies/README.md) |
@@ -262,6 +263,40 @@
 - seed 42는 EXP-219 원본 OOF·test 확률과 byte-level로 일치했다.
 - 5-seed 고정 평균은 Macro F1, fold 안정성과 Log Loss가 모두 악화돼
   `ARCHIVE`한다. seed 제외·가중치 재탐색·리더보드 제출은 진행하지 않는다.
+
+### [EXP-233] nested class-wise decision offset
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #233 / `issue-233-nested-decision-offset`
+- 실행 source commit: `cfb2859962b62ca0599178d53be6173b035f4afb`
+- 시작/종료: 2026-08-03T10:52:47.107640+00:00 /
+  2026-08-03T11:36:58.896204+00:00
+
+#### 실행과 결과
+
+- 부모 EXP-219의 저장 OOF 확률에 outer-train 내부 3-fold cross-fitting으로
+  학습한 26개 class-wise logit offset만 적용했다. outer validation과 test는
+  offset 선택에 사용하지 않았다.
+- Fold Macro F1: 0.4214118590 / 0.4250889014 / 0.4102364970 /
+  0.4182223664 / 0.4350221884
+- OOF Macro F1: 0.4241894920 (EXP-219 대비 `+0.0019573460`)
+- Fold 표준편차: 0.0081500315 (EXP-219 대비 `+0.0014296379`, 악화)
+- Accuracy: 0.4141267537, Log Loss: 1.8683398093
+  (EXP-219 대비 `+0.0207270628`, 악화)
+- DLBC F1은 `-0.1235` 하락했고 5개 outer fold 중 2개가 악화했다.
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+
+#### 산출물과 결론
+
+- Config: `configs/exp233_nested_decision_offset.yaml`
+- Metrics: `reports/exp233_nested_decision_offset/metrics.json`
+- 탐색 상세: `reports/exp233_nested_decision_offset/offset_search_detail.json`
+- Report: `reports/exp233_nested_decision_offset/README.md`
+- 전체 Macro F1은 올랐지만 극소수 클래스와 fold 안정성이 무너져 `ARCHIVE`한다.
+  다만 DLBC를 제외한 25개 클래스는 모든 fold에서 개선되어, 후속 EXP-276에서
+  저표본 클래스에 offset을 적용하지 않는 사전 고정 정책을 별도로 검증한다.
 
 ### [EXP-209] LightGBM + 동결 v2-performance
 
