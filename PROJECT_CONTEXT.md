@@ -85,6 +85,12 @@ AI는 작업 전에 다음을 확인한다.
 - `mlogloss` objective/eval metric을 사용해 학습하더라도 그것이 공식 평가 지표를
   바꾸지는 않는다. checkpoint 선택 기준이 Macro F1과 다르면 validation fold
   안에서 두 기준을 통제 비교해 resolved config와 metrics에 기록한다.
+- checkpoint 선택 기준은 resolved config에 명시하고, 기준을 바꾸면 같은 모델의
+  단순 재실행이 아니라 별도 Experiment Issue로 통제 비교한다. validation fold의
+  Macro F1으로 checkpoint를 고른 뒤 같은 fold 점수를 보고하면 선택 과정에서 생긴
+  낙관 편향 가능성을 보고서에 명시한다. 이 결과는 공식 OOF 비교에는 사용할 수
+  있지만, 현재 최고·최종 후보는 반복 seed, 독립 재학습 또는 실제 Public 결과로
+  안정성을 추가 확인한다.
 - 대회 데이터 안내:
   <https://dacon.io/competitions/official/236355/data>
 
@@ -567,6 +573,22 @@ resolved config에는 실행에 실제 적용된 항목만 기록한다.
 - `INFERENCE_VERIFIED`: checkpoint로 제출 CSV를 동일하게 재생성
 - `TRAINING_VERIFIED`: 비작성자가 clean 환경에서 재학습까지 검증
 - `FAILED`: 재현 검증 실패
+
+재현 상태에는 검증 범위를 함께 기록한다. 저장 checkpoint를 다시 읽어 같은 제출을
+만드는 `INFERENCE_VERIFIED`와, 모델을 처음부터 다시 학습하는
+`TRAINING_VERIFIED`는 서로 대체하지 않는다. 특히 macOS·Windows·Linux,
+CPU·CUDA와 라이브러리 빌드가 달라진 재학습은 다음 항목을 comparison과 환경
+manifest에 남긴다.
+
+- 원 실행과 재현 실행의 OS, 아키텍처, CPU/GPU, 모델 라이브러리·compiler 빌드
+- thread 수, tree method, deterministic 옵션과 seed
+- OOF·test 라벨 일치율, 확률 오차, Macro F1 차이
+- 같은 플랫폼 검증인지 교차 플랫폼 검증인지와 통과하지 못한 조건
+
+플랫폼이 달라 checkpoint byte나 재학습 확률이 달라져도 저장 checkpoint 추론으로
+원 제출을 재생성한 사실은 삭제하지 않는다. 다만 사전 통과 조건을 만족하지 못한
+교차 플랫폼 재학습을 `TRAINING_VERIFIED`로 승격하거나, 같은 플랫폼에서만 확인한
+결과를 교차 플랫폼 결정론으로 확대 해석하지 않는다.
 
 리더보드 제출 전 최소 `INFERENCE_VERIFIED`가 필요하다. 현재 최고 모델과 최종 수상
 후보는 `TRAINING_VERIFIED`가 아니면 최종 모델로 지정할 수 없다.

@@ -12,15 +12,16 @@
 - 관리 PR: [PR #99](https://github.com/fabxoe/open_cancer/pull/99) (`MERGED`)
 - 기준 Feature Spec: EXP-094, SHA-256
   `1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3`
-- 기준 XGBoost OOF Macro F1: `0.4168865739`
-- 기준 재현 상태: `INFERENCE_VERIFIED`
-- Public LB: 미제출
+- 기준 XGBoost OOF Macro F1: EXP-229 `0.4229885745`
+- 현재 Local 최고: EXP-253 `0.4254998819` (`INFERENCE_VERIFIED`)
+- 현재 Public 최고: EXP-223 `0.323243525` (`INFERENCE_VERIFIED`)
 - 고정 평가: canonical 5-fold, 고정 26개 클래스 순서, Macro F1
 - 파생변수 탐색 동결: 2026-08-03 저녁
 - 모델·가중치 동결: 2026-08-06 저녁
 - 2026-08-07: 재현·Release·최종 제출 복구 버퍼
-- 다음 행동: G4 OOF 다양성·확률 품질 감사 결과를 반영하고 G5 고정 blend를
-  별도 Issue로 진행
+- 다음 행동: Issue #260의 EXP-209·229·253 원격 artifact 검증과 manifest PR을
+  완료한다. 그동안 Issue #233 decision offset과 Issue #238 플랫폼 재현성 계약을
+  독립적으로 진행하고, 신규 문헌 family 확장은 중단한다.
 
 ## 이름과 목표
 
@@ -55,9 +56,18 @@ EXP-094는 Feature Spec v1으로 보존합니다. 이후 family는 v2 후보로�
 | G5 | 고정 가중 확률 blend | #135 | EXP-135 | #136 | COMPLETED | Log Loss는 개선했지만 EXP-131 대비 Macro F1·fold gate 실패 | G6 결과 반영 |
 | G6 | cross-fitted stacking | #137 | EXP-137 | #138 | COMPLETED | 소수 클래스 F1 붕괴·최고 단일 대비 -0.0153766511로 기각 | G7 최종 후보 검증 |
 | G7 | 최종 후보 재현·제출 준비 | #143·#162·#164 | 해당 없음 | 미발급 | IN_PROGRESS | EXP-125는 fresh clone 결과 일치, EXP-131은 GPU 재학습 변동 | [최종 후보 체크리스트](../final_candidate_checklist.md) 확인 후 사람 팀원 댓글 대기 |
+| G8 | 공식 지표 checkpoint 통제 비교 | #217·#219 | EXP-219 | #218·#220 | COMPLETED | OOF 0.4222321460, Macro F1 checkpoint 정책 채택 | 같은 validation에서 선택·평가한 낙관 편향을 최종 후보 감사에서 확인 |
+| G9 | pathway checkpoint·변이종류 확장 | #223·#229 | EXP-223·229 | #224·#231 | COMPLETED | EXP-223 Public 0.323243525, EXP-229 OOF 0.4229885745 | EXP-229를 단일 XGBoost 후보로 보존 |
+| G10 | LightGBM·XGBoost 고정 0.5/0.5 blend | #253 | EXP-253 | #256 | COMPLETED | OOF 0.4254998819, Log Loss 개선, fold 안정성 gate 근소 통과 | #260 artifact 복구 완료 후 제출 후보 확정 |
+| G11 | 후보 artifact·Release 복구 | #258·#260 | 해당 없음 | #259·미발급 | IN_PROGRESS | EXP-219 복구 완료, EXP-209·229·253 asset 생성 확인 | manifest·remote-storage 검증과 PR 대기 |
+| G12 | nested class-wise decision offset | #233 | EXP-233 | 미발급 | IN_PROGRESS | train-only nested 정책과 기존 EXP-219 artifact 사용 | 결과가 없으면 점수·채택 판단을 기록하지 않음 |
+| G13 | 최종 후보 고정·비작성자 재학습 | #238·#254 | 해당 없음 | 미발급 | PLANNED | 플랫폼 범위·DLBC seed 변동성·TRAINING_VERIFIED 확인 | [최종 후보 체크리스트](../final_candidate_checklist.md)로 결정 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`를 사용하고,
 중단하면 `BLOCKED` 또는 `REJECTED`로 기록합니다.
+
+2026-08-03 17:52 KST 이전 병합·기록의 문서 동기화 근거는
+[`문서 동기화 감사`](../analysis/2026-08-03_documentation_sync_audit.md)에 보존합니다.
 
 ### M0 — 동결 Feature Spec·공통 모델 runner
 
