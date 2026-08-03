@@ -147,6 +147,15 @@ GRCh38 GTF·protein FASTA annotation을 사용할 수 있다.
 - 분리: sample 범주 요약과 isoform-relative bin은 #311 예외에 포함하지 않으며
   별도 Issue와 명시적 범위 검토가 필요하다.
 
+2026-08-04 추가 팀장 승인으로 Task Issue #315와 그 구현에서 파생되는 첫
+`sample 범주 요약` 공식 실험에도 같은 Ensembl release 116 snapshot을 사용할 수
+있다. EXP-313의 manifest SHA-256을 보존하기 위해 기존 manifest를 수정하지 않고
+`knowledge/ensembl_isoform_annotation_b2_summary_v1.json`을 별도 revision으로
+사용한다. 허용 피처는 여섯 상호 배타 의미 범주의 token `count`와 `any` indicator
+각 1개, 총 12개로 고정한다. ratio, 학습 threshold, 암종별 가중치와 test/Public
+기반 변경은 허용하지 않는다. isoform-relative bin은 여전히 별도 Issue 승인이
+필요하다.
+
 resolved config에는 Ensembl release, assembly, manifest·annotation cache 경로와
 SHA-256, 승인 근거 Issue comment URL을 저장한다. 이 예외는 프로젝트의 기본값인
 `외부 데이터 사용 안 함`을 일반적으로 변경하지 않는다.
