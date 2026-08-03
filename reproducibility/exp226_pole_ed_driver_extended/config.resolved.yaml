@@ -1,0 +1,98 @@
+experiment:
+  issue_number: 226
+  experiment_id: EXP-226
+  branch: issue-226-pole-ed-driver-extended
+  owner: Kangho Park
+  source_commit: 4a25c17ab138fe629d58c7b31f5d027a83d769ab
+  started_at: '2026-08-03T01:26:50.589786+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  n_splits: 5
+  seed: 42
+base_feature_spec:
+  name: v1
+  base_experiment: EXP-094
+  base_feature_spec_sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+  source_config: configs/exp094_feature_spec_v1.yaml
+  source_config_sha256: 4282727de03bd0f31989fdcce61d65530ba69e339e6dce1fe7f72fa85ebd57c4
+  train_shape:
+  - 6201
+  - 35119
+  test_shape:
+  - 2546
+  - 35119
+  feature_names_sha256: 8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf
+pole_family:
+  pole_ed_driver_extended:
+    definition_version: 1.0.0
+    enabled: true
+    output_dimension: 1
+    feature_names_sha256: a34009d95332ef6561376889f697dd5bb3bc7612a49114025997e4c6e27df988
+    fit_scope: stateless
+    external_knowledge: null
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  official_model_seed_base: 42
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]
+  platform: Windows-10-10.0.26200-SP0
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: 87876a7c41c030503ed1b95a2d1254c5ab395cfbb865c7538fa5de42bd28902a

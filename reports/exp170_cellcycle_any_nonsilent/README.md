@@ -114,6 +114,17 @@ Factory family로 감싼 뒤 실제 train/test 전체 데이터로 기존 직접
    (`df722435b7c069b9225c9e4bbef7ab812385bd5e8ab7c415837cde5f2838c640`)이
    기록되어 있다.
 
+## Update: Macro-F1-checkpoint 재평가 (POLE 트랙과 함께 완료)
+
+EXP-219/223이 checkpoint 선택 기준만 바꿔 feature 없이 OOF를 개선한 것을
+확인한 뒤, 이 실험을 포함한 4개 pathway feature 실험(EXP-170/173/181/226)을
+재학습 없이 macro-f1-checkpoint 정책으로 재평가했다. 올바른 비교 대상인
+EXP-219(같은 정책의 EXP-094) 기준으로도 이 실험은 `-0.0035`로 기각이
+유지된다 — checkpoint 정책이 기존 기각 판정을 왜곡한 게 아니었다. 전체
+결과는
+[`pole_cellcycle_macro_f1_checkpoint_reevaluation.md`](../analysis/pole_cellcycle_macro_f1_checkpoint_reevaluation.md)에
+정리했다.
+
 ## 재현과 관련 파일
 
 - Config: `configs/exp170_cellcycle_any_nonsilent.yaml`
