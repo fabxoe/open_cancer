@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 68
+- 실제 실험 수: 69
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4254998819 (`EXP-253`)
@@ -87,6 +87,7 @@
 | EXP-257 | COMPLETED | Kangho-Park | #257 | EXP-096 + functional_role_burden_extended(oncogene/TSG count raw/frac/resid/log1p, fold-train 게이팅, #176 확장) | 0.4118051266 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0063102·Log Loss 악화, 26개 중 19개 클래스 하락으로 ARCHIVE | [보고서](reports/exp257_functional_role_burden_extended/README.md) |
 | EXP-272 | COMPLETED | fabxoe | #272 | EXP-219 고정 5-seed(42·142·242·342·442) 확률 0.2 평균 | 0.4208578157 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0013743·fold 표준편차와 Log Loss 악화로 ARCHIVE | [보고서](reports/exp272_exp219_multiseed_ensemble/README.md) |
 | EXP-233 | COMPLETED | Kangho-Park | #233 | EXP-219 OOF + inner cross-fitting(K=3) 기반 class-wise logit offset(post-hoc, 재학습 없음) | 0.4241894920 | 미제출 | NOT_STARTED | EXP-219 대비 Macro F1 +0.0019573·Log Loss/fold-std 악화·DLBC F1 -0.1235 붕괴·5개 fold 중 2개 하락으로 ARCHIVE | [보고서](reports/exp233_nested_decision_offset/README.md) |
+| EXP-276 | COMPLETED | Kangho-Park | #276 | EXP-233 + 표본 게이트(inner fold당 최소 표본 threshold 15/20/25, 미달 클래스는 offset=0 고정) | 0.4262111346(threshold 20) | 미제출 | NOT_STARTED | EXP-219 대비 Macro F1 +0.0039790(EXP-233의 2배)이나 Log Loss 여전히 악화, 채택 규칙(Macro F1↑ AND Log Loss/fold-std 악화 없음) 세 threshold 전부 미충족으로 ARCHIVE. 게이트로 자기 offset=0 고정해도 DLBC F1은 여전히 하락(-0.0512~-0.0824)함을 확인 | [보고서](reports/exp276_nested_decision_offset_sample_gate/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -3221,3 +3222,67 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   더 강한 정규화를 적용하는 방향을 검토할 수 있으나, 이번 라운드
   완료조건(OOF만, 스코프 확장 없음)에 따라 이 실험에서는 추가 변형을
   시도하지 않는다.
+
+### [EXP-276] nested class-wise decision offset — 표본 게이트 적용
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #276 / `issue-276-nested-decision-offset-sample-gate`
+- 소스 commit: `4f0b37d`
+- 실행시간: 2899.32초(약 48분, inner 모델 15개는 1회만 학습해 3개
+  threshold가 공유)
+
+#### 실행
+
+- 부모: EXP-233(post-hoc class-wise logit offset, 기각). EXP-233과
+  동일한 inner cross-fitting(outer-train 안에서 K=3, seed_base=5000)을
+  그대로 재사용하고, 클래스별 inner fold당 최소 표본 수
+  (`min_class_count_per_inner_fold`, outer-train 원시 표본 수 아님 —
+  #233에서 DLBC 원시 수(30~31)가 ACC(57)와 크게 다르지 않아 어떤
+  threshold로도 안 걸러진다는 걸 확인해 이 통계량으로 전환)가
+  threshold 미만인 클래스는 offset=0으로 고정
+- threshold 후보 15/20/25는 inner cross-fit(비싼 부분, 15개 모델 학습)을
+  1회만 수행하고 그 결과를 재사용해 offset 탐색만 반복(저렴)
+- 채택 규칙(실행 전 고정): Macro F1 개선 AND Log Loss 악화 없음 AND
+  fold-std 악화 없음을 만족하는 가장 작은 threshold를 공식 결과로,
+  없으면 Macro F1 최고 threshold를 참고 대표값으로 보고
+- Config: `configs/exp276_nested_decision_offset_sample_gate.yaml`
+- Metrics: `reports/exp276_nested_decision_offset_sample_gate/metrics.json`
+- Threshold별 전체 비교: `reports/exp276_nested_decision_offset_sample_gate/threshold_comparison.json`
+
+#### 결과
+
+| threshold | 게이트 제외 | OOF Macro F1 | delta | Log Loss delta | fold-std delta |
+|---:|---|---:|---:|---:|---:|
+| 15 | DLBC | 0.4238680837 | +0.0016359 | +0.0243039 | +0.0005753 |
+| 20 | DLBC, ACC | 0.4262111346 | +0.0039790 | +0.0242183 | +0.0026239 |
+| 25 | DLBC, ACC(20과 동일) | 0.4262111346 | +0.0039790 | +0.0242183 | +0.0026239 |
+
+- 세 threshold 전부 채택 규칙 미충족(Log Loss가 EXP-233 원본보다도
+  더 악화, +0.0242~0.0243)
+- **핵심 발견**: DLBC는 세 threshold 전부 자기 offset이 0으로 고정돼
+  있는데도 F1이 보호되지 않음 — threshold 15(DLBC만 제외)는 DLBC
+  `-0.0512`, threshold 20/25(DLBC+ACC 제외)는 오히려 `-0.0824`로 더
+  악화(게이트 없는 EXP-233은 `-0.1235`). 게이트로 묶인 클래스가 늘수록
+  남은 클래스들의 offset이 더 크게 움직이며 DLBC의 argmax 경쟁에서
+  더 강하게 불리해짐
+- ACC는 게이트로 거의 무해(F1 델타 `+0.0000`~`+0.0025`)하면서 전체
+  Macro F1은 2배 개선에 기여 — ACC를 게이트에 포함하는 것 자체는
+  타당하나, 그 이득이 DLBC 추가 희생과 함께 옴
+- fold 안정성: threshold 20/25가 5개 중 1개만 하락(threshold 15는 2개)
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+
+#### 결론
+
+- threshold 20(=25)이 EXP-233 대비 Macro F1 개선폭을 2배로 늘리고 fold
+  안정성도 개선했지만, Log Loss가 여전히(오히려 더 크게) 악화돼 사전
+  고정 채택 규칙을 충족하지 못해 `ARCHIVE`다.
+- "게이트로 offset=0 고정 = 그 클래스 F1 보호"라는 가정이 성립하지
+  않음을 확인했다 — argmax는 26개 클래스 확률의 상대 경쟁이라 이웃
+  클래스의 offset 변화만으로도 게이트된 클래스의 F1이 흔들릴 수 있다.
+  목표(DLBC 보호 vs 전체 Macro F1)에 따라 threshold 15와 20/25 중
+  선택이 갈리는 트레이드오프이며, 어느 쪽도 완전한 해법은 아니다.
+- nested decision rule 트랙(#233→#276)은 이 결과로 마무리하며, 추가
+  threshold 탐색이나 정규화 강도 조정은 이번 라운드 스코프 밖으로
+  남겨둔다.
