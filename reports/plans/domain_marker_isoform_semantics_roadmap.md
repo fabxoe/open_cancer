@@ -28,9 +28,9 @@
 | A1 | 고정 표지 패널 피처 구현 | #299 | 해당 없음 | #301 | COMPLETED | N/A | 20개 후보 구현·테스트 | A3 완료 |
 | A2 | Feature Spec v1/EXP-229 대비 의미 중복 감사 | #299 | explore | #301 | COMPLETED | N/A | FGFR3 any·single-panel multi 중복/상수 확인 | fold-local mask 적용 |
 | A3 | 고정 표지 패널 canonical 5-fold | #302 | EXP-302 | #305 | REJECTED | 0.4212799841 | EXP-229 대비 -0.0017085904 | [보고서](../exp302_observable_marker_proxies/README.md), Track A 종료 |
-| B0 | Ensembl annotation snapshot·허용 범위 확인 | 미발급 | 해당 없음 | 미발급 | PLANNED | N/A | - | A3 완료 후 시작 |
-| B1 | isoform token 의미 QC | 미발급 | explore | 미발급 | PLANNED | N/A | - | coverage 감사 |
-| B2 | isoform 신뢰도 피처 ablation | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | B1·허용 범위 통과 대기 |
+| B0 | Ensembl annotation snapshot·허용 범위 확인 | #307 | 해당 없음 | #308 | PR_OPEN | N/A | release 116 동결·외부 annotation 허용 미확인 | [manifest](../../knowledge/ensembl_isoform_annotation_v1.json) |
+| B1 | isoform token 의미 QC | #307 | explore | #308 | PR_OPEN | N/A | coverage 충분·train/test 의미 분포 큰 차이 | [보고서](../analysis/isoform_residue_semantics/README.md) |
+| B2 | isoform 신뢰도 피처 ablation | 미발급 | 미발급 | 미발급 | BLOCKED | N/A | 주최측 외부 annotation 허용 확인 필요 | 허용 확인 전 실험 금지 |
 | C | Track A+B 조건부 조합 | 미발급 | 미발급 | 미발급 | REJECTED | N/A | Track A gate 실패 | 조합 실험을 열지 않음 |
 
 작업 상태는 다음 값만 사용합니다.
@@ -257,3 +257,4 @@ fold별 checkpoint, OOF/test 확률을 저장합니다. 리더보드 제출 후�
 | 2026-08-04 | fusion·amplification·MSI·germline 주장을 제외 | 입력에 해당 assay·event type·transcript 정보가 없음 |
 | 2026-08-04 | 두 트랙 독립 통과 후에만 조합 | 한 결과로 다른 가설을 조정하는 OOF 과적합 방지 |
 | 2026-08-04 | KRAS·NRAS·MSH6 누락을 명시하고 실제 panel 교집합만 사용 | 실제 4,384개 train 열 target-independent 감사 |
+| 2026-08-04 | Track B B0/B1 완료, B2는 BLOCKED | Ensembl 116 coverage는 충분하나 MANE 일치율이 train 88.50%·test 53.46%로 크게 다르고 외부 annotation 허용 미확인 |
