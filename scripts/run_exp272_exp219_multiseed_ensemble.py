@@ -28,7 +28,7 @@ from open_cancer.hashing import sha256_file
 from open_cancer.paths import relative_posix
 from open_cancer.probability_blend import blend_probability_frames
 from open_cancer.validation import validate_json_document, validate_submission
-from run_hotspot_xgb import main as run_single_seed
+from run_hotspot_xgb import finalize_saved_run, main as run_single_seed
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -77,6 +77,19 @@ def seed_paths(seed: int) -> dict[str, Path]:
         "submission": ROOT / "submissions" / f"{slug}.csv",
         "models": ROOT / "models" / slug,
     }
+
+
+def seed_training_outputs_complete(seed: int) -> bool:
+    paths = seed_paths(seed)
+    required = (
+        paths["metrics"],
+        paths["resolved_config"],
+        paths["oof"],
+        paths["test_probability"],
+        paths["submission"],
+        *[paths["models"] / f"fold_{fold:02d}.json" for fold in range(5)],
+    )
+    return all(path.is_file() for path in required)
 
 
 def read_and_blend(
@@ -196,11 +209,17 @@ def main() -> None:
                 yaml.safe_dump(child_config, allow_unicode=True, sort_keys=False),
                 encoding="utf-8",
             )
-            run_single_seed(
-                config_override=runtime_config,
-                runner_command=RUNNER_COMMAND,
-                prevalidated_source_commit=source_commit,
-            )
+            if seed_paths(seed)["manifest"].is_file():
+                print(json.dumps({"seed": seed, "action": "reuse_verified"}))
+            elif seed_training_outputs_complete(seed):
+                print(json.dumps({"seed": seed, "action": "finalize_existing"}))
+                finalize_saved_run(runtime_config, runner_command=RUNNER_COMMAND)
+            else:
+                run_single_seed(
+                    config_override=runtime_config,
+                    runner_command=RUNNER_COMMAND,
+                    prevalidated_source_commit=source_commit,
+                )
 
     out_report = ROOT / "reports" / SLUG
     out_repro = ROOT / "reproducibility" / SLUG

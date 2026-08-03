@@ -59,6 +59,15 @@ def test_exp272_seed_paths_do_not_collide() -> None:
     assert all("seeds/seed_" in item["oof"].as_posix() for item in paths)
 
 
+def test_nested_artifact_slug_is_sanitized_for_temp_directory() -> None:
+    root = Path(__file__).resolve().parents[1]
+    source = (root / "scripts/run_exp005_xgb_mutation_features.py").read_text(
+        encoding="utf-8"
+    )
+
+    assert 'artifact_slug.replace("/", "_").replace("\\\\", "_")' in source
+
+
 def test_exp272_probability_normalization_is_deterministic() -> None:
     root = Path(__file__).resolve().parents[1]
     runner = load_runner(root)
