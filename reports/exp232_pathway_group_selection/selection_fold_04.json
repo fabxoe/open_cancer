@@ -1,0 +1,436 @@
+{
+  "outer_fold": 4,
+  "selection_scope": "outer_fold_train_only",
+  "inner_folds": 3,
+  "permutation_repeats": 3,
+  "selected_pathways": [
+    "cell_cycle",
+    "hippo",
+    "tgf_beta"
+  ],
+  "selected_candidate_features": 12,
+  "summary": {
+    "cell_cycle": {
+      "inner_fold_deltas": [
+        -0.001089099532752121,
+        9.323464502429084e-05,
+        0.002419351659166624
+      ],
+      "positive_inner_folds": 2,
+      "mean_delta": 0.00047449559047959807
+    },
+    "hippo": {
+      "inner_fold_deltas": [
+        0.0,
+        0.0015701783987696432,
+        0.00026889124163046824
+      ],
+      "positive_inner_folds": 2,
+      "mean_delta": 0.0006130232134667038
+    },
+    "myc": {
+      "inner_fold_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "positive_inner_folds": 0,
+      "mean_delta": 0.0
+    },
+    "notch": {
+      "inner_fold_deltas": [
+        -1.7719499098678426e-05,
+        -0.0010550067634069553,
+        -0.002444697955129027
+      ],
+      "positive_inner_folds": 0,
+      "mean_delta": -0.0011724747392115537
+    },
+    "nrf2": {
+      "inner_fold_deltas": [
+        -0.00027633756592363817,
+        -2.443688960585e-05,
+        0.0
+      ],
+      "positive_inner_folds": 0,
+      "mean_delta": -0.00010025815184316272
+    },
+    "pi3k": {
+      "inner_fold_deltas": [
+        0.0003347718368162389,
+        -0.0018158280477726014,
+        0.00022280906359878339
+      ],
+      "positive_inner_folds": 2,
+      "mean_delta": -0.0004194157157858597
+    },
+    "rtk_ras": {
+      "inner_fold_deltas": [
+        -0.002475416015130516,
+        -0.004130100258434688,
+        -0.001270566541614689
+      ],
+      "positive_inner_folds": 0,
+      "mean_delta": -0.0026253609383932977
+    },
+    "tgf_beta": {
+      "inner_fold_deltas": [
+        -9.065593215005589e-05,
+        3.593746184897088e-07,
+        0.0004744167311801495
+      ],
+      "positive_inner_folds": 2,
+      "mean_delta": 0.0001280400578828611
+    },
+    "tp53": {
+      "inner_fold_deltas": [
+        -0.00038085320653519217,
+        -0.0024097790602436255,
+        0.0019377280813560234
+      ],
+      "positive_inner_folds": 1,
+      "mean_delta": -0.00028430139514093146
+    },
+    "wnt": {
+      "inner_fold_deltas": [
+        -0.0009676392561796346,
+        0.001800891392872613,
+        -0.0012853142541283298
+      ],
+      "positive_inner_folds": 1,
+      "mean_delta": -0.0001506873724784505
+    }
+  },
+  "records": [
+    {
+      "inner_fold": 0,
+      "group": "cell_cycle",
+      "baseline_macro_f1": 0.38166707397292704,
+      "permutation_deltas": [
+        -0.0005199021144626781,
+        -0.001445340881493673,
+        -0.0013020556023000118
+      ],
+      "mean_delta": -0.001089099532752121
+    },
+    {
+      "inner_fold": 0,
+      "group": "hippo",
+      "baseline_macro_f1": 0.38166707397292704,
+      "permutation_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_delta": 0.0
+    },
+    {
+      "inner_fold": 0,
+      "group": "myc",
+      "baseline_macro_f1": 0.38166707397292704,
+      "permutation_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_delta": 0.0
+    },
+    {
+      "inner_fold": 0,
+      "group": "notch",
+      "baseline_macro_f1": 0.38166707397292704,
+      "permutation_deltas": [
+        -0.00014404797989547857,
+        0.0001961638737245086,
+        -0.00010527439112506531
+      ],
+      "mean_delta": -1.7719499098678426e-05
+    },
+    {
+      "inner_fold": 0,
+      "group": "nrf2",
+      "baseline_macro_f1": 0.38166707397292704,
+      "permutation_deltas": [
+        -0.0002468179866359499,
+        -0.0003353662390712109,
+        -0.0002468284720637537
+      ],
+      "mean_delta": -0.00027633756592363817
+    },
+    {
+      "inner_fold": 0,
+      "group": "pi3k",
+      "baseline_macro_f1": 0.38166707397292704,
+      "permutation_deltas": [
+        0.0027006187795666214,
+        0.00013136811461539333,
+        -0.001827671383733298
+      ],
+      "mean_delta": 0.0003347718368162389
+    },
+    {
+      "inner_fold": 0,
+      "group": "rtk_ras",
+      "baseline_macro_f1": 0.38166707397292704,
+      "permutation_deltas": [
+        -0.003362477818037335,
+        -0.002244328369410853,
+        -0.0018194418579433602
+      ],
+      "mean_delta": -0.002475416015130516
+    },
+    {
+      "inner_fold": 0,
+      "group": "tgf_beta",
+      "baseline_macro_f1": 0.38166707397292704,
+      "permutation_deltas": [
+        0.0,
+        -0.00041480322964165817,
+        0.0001428354331914905
+      ],
+      "mean_delta": -9.065593215005589e-05
+    },
+    {
+      "inner_fold": 0,
+      "group": "tp53",
+      "baseline_macro_f1": 0.38166707397292704,
+      "permutation_deltas": [
+        -0.0021963557662447175,
+        -0.00040682073176889766,
+        0.0014606168784080387
+      ],
+      "mean_delta": -0.00038085320653519217
+    },
+    {
+      "inner_fold": 0,
+      "group": "wnt",
+      "baseline_macro_f1": 0.38166707397292704,
+      "permutation_deltas": [
+        -0.0014027880931054004,
+        -0.001224559397110192,
+        -0.0002755702783233116
+      ],
+      "mean_delta": -0.0009676392561796346
+    },
+    {
+      "inner_fold": 1,
+      "group": "cell_cycle",
+      "baseline_macro_f1": 0.3995320349721882,
+      "permutation_deltas": [
+        -0.00026802793632452193,
+        0.0011672895382388027,
+        -0.0006195576668414082
+      ],
+      "mean_delta": 9.323464502429084e-05
+    },
+    {
+      "inner_fold": 1,
+      "group": "hippo",
+      "baseline_macro_f1": 0.3995320349721882,
+      "permutation_deltas": [
+        0.0016757657197115083,
+        0.0015173847382987105,
+        0.0015173847382987105
+      ],
+      "mean_delta": 0.0015701783987696432
+    },
+    {
+      "inner_fold": 1,
+      "group": "myc",
+      "baseline_macro_f1": 0.3995320349721882,
+      "permutation_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_delta": 0.0
+    },
+    {
+      "inner_fold": 1,
+      "group": "notch",
+      "baseline_macro_f1": 0.3995320349721882,
+      "permutation_deltas": [
+        -0.0005718404066437088,
+        -0.0009092332043445506,
+        -0.0016839466792326063
+      ],
+      "mean_delta": -0.0010550067634069553
+    },
+    {
+      "inner_fold": 1,
+      "group": "nrf2",
+      "baseline_macro_f1": 0.3995320349721882,
+      "permutation_deltas": [
+        0.0,
+        -4.636502971683276e-05,
+        -2.6945639100717234e-05
+      ],
+      "mean_delta": -2.443688960585e-05
+    },
+    {
+      "inner_fold": 1,
+      "group": "pi3k",
+      "baseline_macro_f1": 0.3995320349721882,
+      "permutation_deltas": [
+        -0.0019419670461336414,
+        -0.0006404865168830876,
+        -0.0028650305803010756
+      ],
+      "mean_delta": -0.0018158280477726014
+    },
+    {
+      "inner_fold": 1,
+      "group": "rtk_ras",
+      "baseline_macro_f1": 0.3995320349721882,
+      "permutation_deltas": [
+        -0.0025723300467705434,
+        -0.005515554995275507,
+        -0.004302415733258014
+      ],
+      "mean_delta": -0.004130100258434688
+    },
+    {
+      "inner_fold": 1,
+      "group": "tgf_beta",
+      "baseline_macro_f1": 0.3995320349721882,
+      "permutation_deltas": [
+        6.346165571829987e-05,
+        -6.238353186283074e-05,
+        0.0
+      ],
+      "mean_delta": 3.593746184897088e-07
+    },
+    {
+      "inner_fold": 1,
+      "group": "tp53",
+      "baseline_macro_f1": 0.3995320349721882,
+      "permutation_deltas": [
+        -0.0008165655799065585,
+        -0.0018890131585545533,
+        -0.004523758442269765
+      ],
+      "mean_delta": -0.0024097790602436255
+    },
+    {
+      "inner_fold": 1,
+      "group": "wnt",
+      "baseline_macro_f1": 0.3995320349721882,
+      "permutation_deltas": [
+        0.0017170464667177199,
+        0.002046255153670573,
+        0.001639372558229546
+      ],
+      "mean_delta": 0.001800891392872613
+    },
+    {
+      "inner_fold": 2,
+      "group": "cell_cycle",
+      "baseline_macro_f1": 0.3976392889410082,
+      "permutation_deltas": [
+        0.00030195131066262926,
+        0.004113904679959424,
+        0.0028421989868778197
+      ],
+      "mean_delta": 0.002419351659166624
+    },
+    {
+      "inner_fold": 2,
+      "group": "hippo",
+      "baseline_macro_f1": 0.3976392889410082,
+      "permutation_deltas": [
+        0.0,
+        0.0008066737248914047,
+        0.0
+      ],
+      "mean_delta": 0.00026889124163046824
+    },
+    {
+      "inner_fold": 2,
+      "group": "myc",
+      "baseline_macro_f1": 0.3976392889410082,
+      "permutation_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_delta": 0.0
+    },
+    {
+      "inner_fold": 2,
+      "group": "notch",
+      "baseline_macro_f1": 0.3976392889410082,
+      "permutation_deltas": [
+        -0.0030569483858859936,
+        -0.0025075002423141646,
+        -0.0017696452371869231
+      ],
+      "mean_delta": -0.002444697955129027
+    },
+    {
+      "inner_fold": 2,
+      "group": "nrf2",
+      "baseline_macro_f1": 0.3976392889410082,
+      "permutation_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "mean_delta": 0.0
+    },
+    {
+      "inner_fold": 2,
+      "group": "pi3k",
+      "baseline_macro_f1": 0.3976392889410082,
+      "permutation_deltas": [
+        0.00317886831577896,
+        -0.0014202621635868717,
+        -0.001090178961395738
+      ],
+      "mean_delta": 0.00022280906359878339
+    },
+    {
+      "inner_fold": 2,
+      "group": "rtk_ras",
+      "baseline_macro_f1": 0.3976392889410082,
+      "permutation_deltas": [
+        -0.002195960101297245,
+        -0.002858283189770938,
+        0.0012425436662241163
+      ],
+      "mean_delta": -0.001270566541614689
+    },
+    {
+      "inner_fold": 2,
+      "group": "tgf_beta",
+      "baseline_macro_f1": 0.3976392889410082,
+      "permutation_deltas": [
+        0.0004744167311801495,
+        0.0004744167311801495,
+        0.0004744167311801495
+      ],
+      "mean_delta": 0.0004744167311801495
+    },
+    {
+      "inner_fold": 2,
+      "group": "tp53",
+      "baseline_macro_f1": 0.3976392889410082,
+      "permutation_deltas": [
+        0.0013068907641516359,
+        0.0018026662498439316,
+        0.002703627230072503
+      ],
+      "mean_delta": 0.0019377280813560234
+    },
+    {
+      "inner_fold": 2,
+      "group": "wnt",
+      "baseline_macro_f1": 0.3976392889410082,
+      "permutation_deltas": [
+        -0.0013092831853311337,
+        -0.0007077296224686225,
+        -0.0018389299545852333
+      ],
+      "mean_delta": -0.0012853142541283298
+    }
+  ]
+}
