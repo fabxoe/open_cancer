@@ -1,0 +1,397 @@
+{
+  "knowledge_file": "knowledge/cancer_lineage_mechanism_patterns_tcga_v1.json",
+  "knowledge_sha256": "dcc92cfc8d845264d3dd5c74772b53cbf4415c13a1f05b88884a61b3e838a34c",
+  "version": "1.0.0-2026-08-03",
+  "selection_policy": "Fixed before OOF; independent of competition labels, observed frequencies, validation, test, and leaderboard",
+  "competition_rule_basis": "Fixed literature-derived group and mutation-type calculation rules only; every sample-level value is computed exclusively from the competition CSV; no external patient data, labels, frequencies, weights, embeddings, test distribution, or leaderboard information",
+  "interpretation_limit": "Missense and nonsense/frameshift are mutation-type proxies only; they do not prove activation, biallelic loss, expression change, amplification, fusion, or pathogenicity",
+  "sources": [
+    {
+      "module_names": [
+        "breast"
+      ],
+      "citation": "TCGA Network, Comprehensive molecular portraits of human breast tumours, Nature 2012",
+      "doi": "10.1038/nature11412",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3465532/"
+    },
+    {
+      "module_names": [
+        "ovarian"
+      ],
+      "citation": "TCGA Research Network, Integrated genomic analyses of ovarian carcinoma, Nature 2011",
+      "doi": "10.1038/nature10166",
+      "url": "https://www.nature.com/articles/nature10166"
+    },
+    {
+      "module_names": [
+        "prostate"
+      ],
+      "citation": "TCGA Research Network, The Molecular Taxonomy of Primary Prostate Cancer, Cell 2015",
+      "doi": "10.1016/j.cell.2015.10.025",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4695400/"
+    },
+    {
+      "module_names": [
+        "thyroid"
+      ],
+      "citation": "TCGA Research Network, Integrated Genomic Characterization of Papillary Thyroid Carcinoma, Cell 2014",
+      "doi": "10.1016/j.cell.2014.09.050",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4243044/"
+    },
+    {
+      "module_names": [
+        "bladder"
+      ],
+      "citation": "TCGA Research Network, Comprehensive Molecular Characterization of Muscle-Invasive Bladder Cancer, Cell 2017",
+      "doi": "10.1016/j.cell.2017.09.007",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5687509/"
+    },
+    {
+      "module_names": [
+        "liver"
+      ],
+      "citation": "TCGA Research Network, Comprehensive and Integrative Genomic Characterization of Hepatocellular Carcinoma, Cell 2017",
+      "doi": "10.1016/j.cell.2017.05.046",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5680778/"
+    },
+    {
+      "module_names": [
+        "cervical"
+      ],
+      "citation": "TCGA Research Network, Integrated genomic and molecular characterization of cervical cancer, Nature 2017",
+      "doi": "10.1038/nature21386",
+      "url": "https://www.nature.com/articles/nature21386"
+    },
+    {
+      "module_names": [
+        "head_neck"
+      ],
+      "citation": "TCGA Network, Comprehensive genomic characterization of head and neck squamous cell carcinomas, Nature 2015",
+      "doi": "10.1038/nature14129",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/25631445/"
+    }
+  ],
+  "competition_gene_count": 4384,
+  "modules": {
+    "breast": {
+      "source": {
+        "missense_signal": [
+          "PIK3CA",
+          "TP53",
+          "GATA3"
+        ],
+        "lof_signal": [
+          "TP53",
+          "PTEN",
+          "BRCA1",
+          "BRCA2",
+          "CDH1"
+        ],
+        "context": [
+          "MAP3K1",
+          "AKT1",
+          "ERBB2"
+        ]
+      },
+      "panel_intersection": {
+        "missense_signal": [
+          "PIK3CA",
+          "TP53",
+          "GATA3"
+        ],
+        "lof_signal": [
+          "TP53",
+          "PTEN",
+          "BRCA1",
+          "BRCA2",
+          "CDH1"
+        ],
+        "context": [
+          "MAP3K1",
+          "AKT1",
+          "ERBB2"
+        ]
+      }
+    },
+    "ovarian": {
+      "source": {
+        "missense_signal": [
+          "TP53"
+        ],
+        "lof_signal": [
+          "TP53",
+          "BRCA1",
+          "BRCA2",
+          "NF1",
+          "RB1"
+        ],
+        "context": [
+          "BRCA1",
+          "BRCA2",
+          "NF1",
+          "RB1"
+        ]
+      },
+      "panel_intersection": {
+        "missense_signal": [
+          "TP53"
+        ],
+        "lof_signal": [
+          "TP53",
+          "BRCA1",
+          "BRCA2",
+          "NF1",
+          "RB1"
+        ],
+        "context": [
+          "BRCA1",
+          "BRCA2",
+          "NF1",
+          "RB1"
+        ]
+      }
+    },
+    "prostate": {
+      "source": {
+        "missense_signal": [
+          "SPOP",
+          "IDH1",
+          "BRAF",
+          "HRAS",
+          "AKT1",
+          "CTNNB1"
+        ],
+        "lof_signal": [
+          "TP53",
+          "PTEN",
+          "ATM"
+        ],
+        "context": [
+          "SPOP",
+          "TP53",
+          "PTEN"
+        ]
+      },
+      "panel_intersection": {
+        "missense_signal": [
+          "SPOP",
+          "IDH1",
+          "BRAF",
+          "HRAS",
+          "AKT1",
+          "CTNNB1"
+        ],
+        "lof_signal": [
+          "TP53",
+          "PTEN"
+        ],
+        "context": [
+          "SPOP",
+          "TP53",
+          "PTEN"
+        ]
+      }
+    },
+    "thyroid": {
+      "source": {
+        "missense_signal": [
+          "BRAF",
+          "HRAS",
+          "EIF1AX"
+        ],
+        "lof_signal": [
+          "TP53"
+        ],
+        "context": [
+          "RET",
+          "BRAF",
+          "HRAS",
+          "EIF1AX"
+        ]
+      },
+      "panel_intersection": {
+        "missense_signal": [
+          "BRAF",
+          "HRAS",
+          "EIF1AX"
+        ],
+        "lof_signal": [
+          "TP53"
+        ],
+        "context": [
+          "RET",
+          "BRAF",
+          "HRAS",
+          "EIF1AX"
+        ]
+      }
+    },
+    "bladder": {
+      "source": {
+        "missense_signal": [
+          "FGFR3",
+          "PIK3CA",
+          "HRAS"
+        ],
+        "lof_signal": [
+          "TP53",
+          "RB1"
+        ],
+        "context": [
+          "FGFR3",
+          "TP53",
+          "RB1"
+        ]
+      },
+      "panel_intersection": {
+        "missense_signal": [
+          "FGFR3",
+          "PIK3CA",
+          "HRAS"
+        ],
+        "lof_signal": [
+          "TP53",
+          "RB1"
+        ],
+        "context": [
+          "FGFR3",
+          "TP53",
+          "RB1"
+        ]
+      }
+    },
+    "liver": {
+      "source": {
+        "missense_signal": [
+          "CTNNB1",
+          "TP53"
+        ],
+        "lof_signal": [
+          "TP53",
+          "AXIN1"
+        ],
+        "context": [
+          "CTNNB1",
+          "TP53",
+          "AXIN1"
+        ]
+      },
+      "panel_intersection": {
+        "missense_signal": [
+          "CTNNB1",
+          "TP53"
+        ],
+        "lof_signal": [
+          "TP53",
+          "AXIN1"
+        ],
+        "context": [
+          "CTNNB1",
+          "TP53",
+          "AXIN1"
+        ]
+      }
+    },
+    "cervical": {
+      "source": {
+        "missense_signal": [
+          "PIK3CA",
+          "KRAS",
+          "MAPK1",
+          "NFE2L2"
+        ],
+        "lof_signal": [
+          "FBXW7",
+          "PTEN",
+          "EP300",
+          "ARID1A",
+          "TGFBR2"
+        ],
+        "context": [
+          "PIK3CA",
+          "FBXW7",
+          "PTEN",
+          "EP300"
+        ]
+      },
+      "panel_intersection": {
+        "missense_signal": [
+          "PIK3CA",
+          "MAPK1",
+          "NFE2L2"
+        ],
+        "lof_signal": [
+          "FBXW7",
+          "PTEN",
+          "TGFBR2"
+        ],
+        "context": [
+          "PIK3CA",
+          "FBXW7",
+          "PTEN"
+        ]
+      }
+    },
+    "head_neck": {
+      "source": {
+        "missense_signal": [
+          "PIK3CA",
+          "HRAS",
+          "NFE2L2"
+        ],
+        "lof_signal": [
+          "TP53",
+          "CDKN2A",
+          "CASP8",
+          "NOTCH1",
+          "FAT1"
+        ],
+        "context": [
+          "TP53",
+          "CDKN2A",
+          "PIK3CA",
+          "NOTCH1",
+          "HRAS"
+        ]
+      },
+      "panel_intersection": {
+        "missense_signal": [
+          "PIK3CA",
+          "HRAS",
+          "NFE2L2"
+        ],
+        "lof_signal": [
+          "TP53",
+          "CDKN2A",
+          "CASP8",
+          "NOTCH1"
+        ],
+        "context": [
+          "TP53",
+          "CDKN2A",
+          "PIK3CA",
+          "NOTCH1",
+          "HRAS"
+        ]
+      }
+    }
+  },
+  "family_registry": {
+    "lineage_mechanism_patterns": {
+      "definition_version": "1.0.0",
+      "enabled": true,
+      "output_dimension": 32,
+      "feature_names_sha256": "a7eb0a768cc2f890606fd74fef4383167d0303eac649a56b54427e118421ab76",
+      "fit_scope": "stateless",
+      "external_knowledge": [
+        {
+          "source": "TCGA primary studies listed in sources",
+          "version": "1.0.0-2026-08-03",
+          "license": "Citation-derived factual gene memberships; source article terms apply; no source text redistributed",
+          "sha256": "dcc92cfc8d845264d3dd5c74772b53cbf4415c13a1f05b88884a61b3e838a34c",
+          "uri": "https://www.cancer.gov/ccg/research/genome-sequencing/tcga"
+        }
+      ]
+    }
+  }
+}
