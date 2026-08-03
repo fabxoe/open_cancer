@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 65
+- 실제 실험 수: 66
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4254998819 (`EXP-253`)
@@ -84,6 +84,7 @@
 | EXP-250 | COMPLETED | 2heej | #250 | EXP-245 암종 모듈의 outer-train nested permutation 선택 | 0.4209182565 | 미제출 | INFERENCE_VERIFIED | 31개 중 fold별 27~31개를 유지하고 EXP-229·245 대비 성능과 안정성이 악화되어 ARCHIVE | [보고서](reports/exp250_lineage_group_selection/README.md) |
 | EXP-253 | COMPLETED | 2heej | #253 | EXP-209 LightGBM + EXP-229 XGBoost 고정 0.5/0.5 확률 평균 | 0.4254998819 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 +0.0025113·Log Loss 개선·fold 안정성 기준 통과로 채택 후보 | [보고서](reports/exp253_lightgbm_xgboost_blend/README.md) |
 | EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
+| EXP-257 | COMPLETED | Kangho-Park | #257 | EXP-096 + functional_role_burden_extended(oncogene/TSG count raw/frac/resid/log1p, fold-train 게이팅, #176 확장) | 0.4118051266 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0063102·Log Loss 악화, 26개 중 19개 클래스 하락으로 ARCHIVE | [보고서](reports/exp257_functional_role_burden_extended/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -140,6 +141,7 @@
 | 2026-08-02T09:15:19.096281+00:00 | EXP-179 | fabxoe | `704731a20520339e21f4c84eae93708d2e1dfd3e` / 태그 없음 | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp179_xgb_feature_spec_v1_smote/comparison.json) |
 | 2026-08-02T16:32:46.152425+00:00 | EXP-211 | 2heej | `38955bcb7f1a0e8d72e933fd9fa4d48bd1a7873a` / 태그 없음 | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 2.12e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp211_ovr_xgboost_v2_performance/comparison.json) |
 | 2026-08-02T14:26:22.219111+00:00 | EXP-209 | 2heej | `ec05d217aeed555e3beb18151920a07fe275dd6f` / [`exp-209-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-209-repro-v1) | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0; Issue #260에서 원본 Release 복구 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp209_lightgbm_v2_performance/comparison.json) |
+| 2026-08-03T09:41:48.286924+00:00 | EXP-257 | Kangho-Park | `56b1b1d3515b9ff09f36fc7ca691ccdeaf53d487` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp257_functional_role_burden_extended/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -3042,3 +3044,62 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   `ARCHIVE`다.
 - 이 판단은 threshold를 재조정하거나 Public LB를 본 뒤 내린 것이 아니다. C2와
   C3은 미리 고정된 별도 실험으로만 이어가며, C1 설정을 추가 튜닝하지 않는다.
+
+### [EXP-257] functional_role_burden_extended — oncogene/TSG count 세분화
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #257 / `issue-257-functional-role-burden-extended`
+- 소스 commit: `56b1b1d3515b9ff09f36fc7ca691ccdeaf53d487`
+- 시작/종료: 2026-08-03T09:13:49.069134+00:00 /
+  2026-08-03T09:41:42.994083+00:00 (1674.48초)
+
+#### 실행
+
+- 부모: EXP-096(Feature Spec v1 + fixed_pathway_burden 20개), #176(기본형
+  4-feature ablation, 3주 무착수)을 EXP-229 패턴(pathway 축 count 세분화
+  성공)과 같은 원리로 functional_role 축에 적용
+- 유일한 변경: `knowledge/abc_c_compact_groups_v1.json`의 functional_roles
+  (oncogene 29개, tumor_suppressor 39개)마다 mutated-gene count의 4가지
+  파생 view(`count_raw`, `count_frac`, `count_resid`, `count_log1p`, 최대
+  8개)를 fold-train 게이팅(포화 P(raw==0)<0.05, 희소 P(raw>0)<0.01, 독점성
+  dominance>=0.8) 후 추가
+  - `src/open_cancer/functional_role_extended_features.py`:
+    `FunctionalRoleBurdenExtendedFamily`(`fit_scope=fold_train`)
+  - `count_resid`는 fold-train만으로 `count_raw ~ 전체 mutated_gene_count`
+    선형회귀를 적합하고 validation/test에는 transform만 적용
+  - `semantic_equivalence_filter`로 v1 base + 기존 `fixed_pathway_burden`
+    20개와 fold-train 값이 완전히 같은 열 제거(5개 fold 전부 0개 제거)
+- Config: `configs/exp257_functional_role_burden_extended.yaml`
+- Metrics: `reports/exp257_functional_role_burden_extended/metrics.json`
+- Report: `reports/exp257_functional_role_burden_extended/README.md`
+- 게이팅 상세: `reports/exp257_functional_role_burden_extended/fold_gating.json`
+
+#### 결과
+
+- Fold Macro F1: 0.4171422593, 0.4104494955, 0.3974636031, 0.4070142779,
+  0.4241384592
+- OOF Macro F1: 0.4118051266 (EXP-096 대비 `-0.0063101814`)
+- Fold 표준편차: 0.0090496148 (EXP-096 대비 `-0.0004425028`)
+- Accuracy: 0.4015481374 (EXP-096 대비 `-0.0062893082`)
+- Log Loss: 1.8515084982 (EXP-096 대비 `+0.0145742893`)
+- 클래스별: 26개 중 19개 하락(최대 LAML `-0.0244`), 개선 6개(최대 DLBC
+  `+0.0582`), TGCT 변화 없음
+- 5개 fold 전부 게이트 미발동, 8개 candidate 전부 유지, v1/pathway burden과
+  완전 중복 0개
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — 저장 checkpoint 재추론으로 OOF·test
+  라벨 100%, 확률 최대 절대 차이 2.98e-08, 제출 CSV SHA-256 일치를 확인했다.
+
+#### 결론
+
+- Macro F1·Accuracy·Log Loss가 모두 뚜렷하게 악화돼 `ARCHIVE`다. fold
+  표준편차만 소폭 개선(-0.0004)됐으나 다른 지표 악화를 상쇄하지 못한다.
+- 게이팅이 전혀 발동하지 않았다는 건 8개 열 자체가 통계적으로 위험한
+  형태(포화·희소·독점)는 아니었다는 뜻이며, 그럼에도 성능이 하락한 건
+  functional role(oncogene/TSG) 그룹 정의 자체가 pathway 축만큼 암종
+  판별에 유용한 신호를 담고 있지 않을 가능성을 시사한다.
+- DLBC만 크게 개선(`+0.0582`)됐으나, 이번 세션에서 반복 확인한 DLBC의
+  구조적 config-민감성(`reports/analysis/sparse_binary_feature_dlbc_sensitivity.md`)을
+  고려해 단일 실험만으로 원인을 특정하지 않는다.
+- #176은 이 결과로 대체·종료하며, 추가 튜닝이나 제출 없이 마무리한다.
