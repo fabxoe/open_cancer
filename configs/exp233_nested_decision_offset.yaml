@@ -1,0 +1,86 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-233
+issue_number: 233
+slug: nested_decision_offset
+parent_experiment: EXP-219
+component_experiments:
+  - EXP-094
+  - EXP-219
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+baseline:
+  experiment_id: EXP-219
+  oof_path: oof/exp219_macro_f1_checkpoint_selection.csv
+  release_tag: exp-219-repro-v1
+  release_bundle_sha256: fa293ed92a21508e0752890ca407c6e55cbc879468
+inner_cross_fitting:
+  n_splits: 3
+  seed_base: 5000
+  note: >-
+    seed for outer fold i is seed_base + i. Inner models are trained only on
+    each outer fold's train partition (never that outer fold's own
+    validation rows), using the same Feature Spec v1 matrix and the same
+    XGBoost hyperparameters as EXP-219's model block below, except
+    checkpoint selection is plain training-metric best_iteration (not the
+    macro_f1_validation audit) to keep 15 inner fits cheap. Early stopping
+    uses each inner holdout fold as eval_set, matching the same convention
+    already used for outer-fold OOF generation throughout this project; this
+    is a mild, disclosed optimism source (see report), not a new leakage
+    class.
+offset_search:
+  candidate_grid_min: -1.0
+  candidate_grid_max: 1.0
+  candidate_grid_step: 0.1
+  regularization_lambda: 0.001
+  max_coordinate_passes: 5
+  application: multiplicative_renormalized
+  application_formula: "softmax(z + o) ∝ softmax(z) * exp(o), renormalized"
+  fit_scope: outer_fold_train_inner_cross_fit_only
+  applied_to_outer_validation: transform_only
+  applied_to_test: not_in_scope_this_experiment
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+notes: >-
+  Issue #233. Post-hoc class-wise logit offset for Macro F1, following
+  reports/analysis/external_biological_knowledge_feature_review.md
+  ("2. Macro F1용 nested decision rule", lines 91-106). Baseline is EXP-219's
+  already-trained, already-saved OOF probabilities (recovered via
+  exp-219-repro-v1 Release bundle, SHA-256 double-checked against
+  artifact_manifest.json). No outer model is retrained. For each outer fold,
+  an offset is fit only from that fold's train-partition inner cross-fit
+  (never the full-dataset OOF, never that fold's own validation/test rows)
+  and applied to EXP-219's existing validation-fold OOF probabilities by
+  transform only. Test-side offset application (reloading the 5 saved fold
+  checkpoints) is out of scope for this round; only OOF is evaluated per the
+  Issue #233 completion criteria.
+optimism_bias_disclosure: >-
+  EXP-219 (this experiment's baseline) selected each outer fold's checkpoint
+  iteration by maximizing Macro F1 on that same fold's validation rows, then
+  reported that fold's score -- a same-fold selection optimism already
+  flagged in PROJECT_CONTEXT.md's checkpoint-selection policy. This
+  experiment's inner-fold early stopping uses the same established pattern
+  (inner holdout doubles as eval_set), so EXP-233's own results inherit a
+  comparable, disclosed optimism source at the inner-fitting level. Current
+  best / final-candidate promotion of any macro-F1-checkpoint-selected model
+  requires additional stability confirmation (repeated seeds, independent
+  retraining, or Public LB) per the same policy; this experiment does not
+  claim that confirmation on its own.
