@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 59
+- 실제 실험 수: 60
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4229885745 (`EXP-229`)
@@ -56,6 +56,7 @@
 | EXP-137 | COMPLETED | fabxoe | #137 | EXP-094 + EXP-125 leakage-safe cross-fitted Logistic stacking | 0.4068626451 | 미제출 | INFERENCE_VERIFIED | 소수 클래스 F1 붕괴·최고 단일 대비 -0.0153766511로 stack 기각 | [보고서](reports/exp137_cross_fitted_stacking/README.md) |
 | EXP-151 | COMPLETED | fabxoe | #151 | EXP-094 + log1p(mutated_gene_count), Secure RTX 4090 실행 | 0.4188970451 | 0.3125095748 | INFERENCE_VERIFIED | Public은 EXP-094 대비 +0.0006564118이나 EXP-031 최고 미달·burden 피처 미채택 | [보고서](reports/exp151_mutated_gene_burden/README.md) |
 | EXP-154 | COMPLETED | fabxoe | #154 | EXP-094 + log1p(total_variant_count), Secure RTX 4090 실행 | 0.4183986443 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0056484로 기준 실패·미채택 | [보고서](reports/exp154_total_variant_burden/README.md) |
+| EXP-156 | COMPLETED | Gomin-art | #156 | EXP-094의 유전자별 변이유형 indicator 5종을 compact effect descriptor 4종으로 압축 | 0.4148494335 | 미제출 | INFERENCE_VERIFIED | 특징 4,384개 감소에도 Macro F1 -0.0020371·fold 표준편차 +0.0046845로 기준 실패, ARCHIVE | [보고서](reports/exp156_gene_variant_effect_compression/README.md) |
 | EXP-158 | COMPLETED | fabxoe | #158 | EXP-094 + log1p(missense_count), Secure RTX 4090 실행 | 0.4183327348 | 미제출 | NOT_STARTED | Macro F1·Log Loss 개선에도 fold 표준편차 +0.0032953으로 기준 실패·미채택 | [보고서](reports/exp158_missense_burden/README.md) |
 | EXP-160 | COMPLETED | Kangho-Park | #160 | EXP-069 max_residue_position fold-safe permutation negative control (Issue #80 후속) | 0.3987413040(permuted 평균, 원본 0.4131007993) | 미제출(진단 실험) | NOT_STARTED | 25개 (seed, fold) 중 24개에서 하락(delta -0.0143594953)으로 신호 확인, Feature Spec v1 유지·Issue #80 계약 종료 | [보고서](reports/exp160_residue_position_negative_control/README.md) |
 | EXP-170 | COMPLETED | Kangho-Park | #170 | EXP-094 + P_any_nonsilent_cellcycle (Cell Cycle pathway, #167 카탈로그 활용 파일럿 A) | 0.4137462167 | 미제출 | NOT_STARTED | Macro F1 -0.0031404, DLBC F1 -0.0500858 급락으로 기준 실패·미채택 | [보고서](reports/exp170_cellcycle_any_nonsilent/README.md) |
@@ -180,6 +181,7 @@
 | 2026-08-02T15:08:02+00:00 | EXP-188 | fabxoe | `1ff0663af2f682229d715136119e8e1db6bace62` / [`exp-188-repro-v2`](https://github.com/fabxoe/open_cancer/releases/tag/exp-188-repro-v2) | SHA-256 일치 | 제출 SHA-256·OOF/test 라벨·확률 100% 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp188_c1_phi_jaccard_pruning/comparison.json) |
 | 2026-08-02T15:58:51.992672+00:00 | EXP-219 | fabxoe | `41d07096e1c87eb55e7d7a73645629ea3d0952e3` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.45e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp219_macro_f1_checkpoint_selection/comparison.json) |
 | 2026-08-02T17:02:54.418077+00:00 | EXP-223 | 2heej | `41eaafc17f286ebc38568d076df5bf16fd0626ac` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.44e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp223_pathway_macro_f1_checkpoint/comparison.json) |
+| 2026-08-03T02:34:48.643447+00:00 | EXP-156 | Gomin-art | `5b1cff179ee68bc8f873f4f9dd4c73305aec3e65` / 태그 없음 | SHA-256 일치 | 제출 SHA-256·test 라벨 100% 일치, 확률 최대 차이 5.93e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp156_gene_variant_effect_compression/comparison.json) |
 | 2026-08-03T02:18:40.740535+00:00 | EXP-229 | 2heej | `75977326ab526f0b4c34ad5af90b29fb833c44c6` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.72e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp229_pathway_mutation_types/comparison.json) |
 | 2026-08-03T03:06:15.409629+00:00 | EXP-232 | 2heej | `7a940bcaae6cd1bb36f3c9d5e5d3296c8ce1b88c` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.36e-7 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp232_pathway_group_selection/comparison.json) |
 
@@ -2368,6 +2370,51 @@ Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0
 Macro F1과 Log Loss는 개선됐지만 fold 표준편차가 사전 기준인 `0.002`보다 크게
 악화됐다. 따라서 total variant burden을 Feature Spec이나 Public 제출 후보로
 채택하지 않는다. OOF·test 확률과 checkpoint는 후속 안정성·다양성 분석을 위해 보존한다.
+
+### [EXP-156] 유전자별 변이 효과 압축 XGBoost
+
+- 상태: COMPLETED
+- 실행자: Gomin-art
+- Issue/브랜치: #156 / `issue-156-exp-gene-variant-effect-compression`
+- 소스 commit: `5b1cff179ee68bc8f873f4f9dd4c73305aec3e65`
+- 시작/종료: 2026-08-03T02:02:48.601660+00:00 /
+  2026-08-03T02:34:46.087252+00:00
+
+#### 실행
+
+- 부모 실험: EXP-094 (Feature Spec v1)
+- 유일한 변경: 유전자별 변이유형 indicator 5종(21,920개)을 severity max,
+  variant count 1/2+, effect diversity, complex/unparsed의 compact descriptor
+  4종(17,536개)으로 교체했다.
+- 최종 특징 수: 30,735개 (EXP-094 대비 4,384개 감소)
+- canonical stratified 5-fold seed 42, 고정 클래스 순서, XGBoost 설정과
+  balanced sample weight는 유지했다.
+- Config: `configs/exp156_gene_variant_effect_compression.yaml`
+- Resolved config:
+  `reproducibility/exp156_gene_variant_effect_compression/config.resolved.yaml`
+- Metrics: `reports/exp156_gene_variant_effect_compression/metrics.json`
+- Report: `reports/exp156_gene_variant_effect_compression/README.md`
+
+#### 결과
+
+- Fold Macro F1: 0.4167162891, 0.4245570144, 0.3968599918,
+  0.4040592976, 0.4307377819
+- OOF Macro F1: 0.4148494335 (EXP-094 대비 `-0.0020371404`)
+- Fold 표준편차: 0.0125687084 (EXP-094 대비 `+0.0046844563`)
+- Accuracy: 0.4063860668 (EXP-094 대비 `-0.0008063216`)
+- Log Loss: 1.8308399556 (EXP-094 대비 `-0.0090973737`)
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 산출물과 결론
+
+- checkpoint 재추론에서 제출 SHA-256과 test 라벨 100%가 일치했고,
+  test 확률 최대 절대 차이는 `5.93e-08`이었다.
+- 유전자별 효과 피처를 4,384개 줄이고 Log Loss를 개선했지만, 공식 Macro F1이
+  하락하고 fold 표준편차가 허용치보다 악화되어 `ARCHIVE`한다. compact effect
+  구성을 Feature Spec에 채택하거나 리더보드에 제출하지 않는다.
+- Reproduction:
+  `reproducibility/exp156_gene_variant_effect_compression/comparison.json`
 
 ### [EXP-158] EXP-094 + log1p(missense_count)
 

@@ -1,0 +1,15 @@
+{
+  "experiment_id": "EXP-156",
+  "verification_type": "checkpoint_inference",
+  "verified_at": "2026-08-03T02:34:48.643447+00:00",
+  "verifier": "Gomin-art",
+  "source_commit": "5b1cff179ee68bc8f873f4f9dd4c73305aec3e65",
+  "data_hashes_match": true,
+  "submission_sha256_match": true,
+  "test_label_agreement": 1.0,
+  "test_probability_allclose": true,
+  "test_probability_max_abs_diff": 5.927011259565518e-08,
+  "probability_atol": 1e-06,
+  "probability_rtol": 1e-06,
+  "passed": true
+}
