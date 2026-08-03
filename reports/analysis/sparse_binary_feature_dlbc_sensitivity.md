@@ -40,6 +40,37 @@ bit-identical한 것은 아니고, **DLBC를 positive로 판단하는 결정 경
 EXP-063/078 semantics QC에서 확인된 "중복/약한 컬럼의 weighting
 perturbation" 메커니즘과 같은 계열로 해석했다.
 
+## 후속 진단: 원인이 특정 hyperparameter인지 확인 (colsample_bytree / n_jobs)
+
+EXP-170(Cell Cycle any-nonsilent)의 DLBC OOF 확률을 baseline(EXP-094)과
+대조해 delta 평균/표준편차를 구한 뒤, feature와 fold/split은 그대로 두고
+학습 설정 하나씩만 바꾼 진단용 ad-hoc 재학습(EXP-ID 없음, History 미기록)
+2건을 추가로 실행했다.
+
+| 설정 | delta 평균 | delta 표준편차 | argmax lost/gained |
+|---|---:|---:|---|
+| 원래 EXP-170 (`colsample_bytree=0.8`, `n_jobs=8`) | -0.002986 | 0.054009 | 2/1 |
+| 진단1 (`colsample_bytree=1.0`, `n_jobs=8`) | +0.003233 | 0.063833 | 3/2 |
+| 진단2 (`colsample_bytree=0.8`, `n_jobs=1`) | +0.002293 | 0.059927 | 2/0 |
+
+**결론: 특정 hyperparameter가 원인이 아니다.** `colsample_bytree=1.0`(컬럼
+서브샘플링 제거)과 `n_jobs=1`(스레딩 비결정성 제거) 둘 다 delta를 0으로
+수렴시키지 못했다 — 오히려 표준편차가 원래보다 커졌고, 부호는 두 진단
+모두 원래와 반대(+)로 나타났다. 세 설정이 공통으로 보여주는 건 "특정
+원인 하나"가 아니라 **DLBC(38건, 최소 클래스)가 학습 설정의 거의 어떤
+변화에도 비슷한 크기(표준편차 0.054~0.064)로, 하지만 방향은 예측 불가능하게
+흔들리는 구조적 민감성**이다.
+
+이는 [#238](https://github.com/fabxoe/open_cancer/issues/238)(플랫폼 간
+`tree_method=hist` 비결정성으로 EXP-219 재현이 SHA-256/Macro F1 단위로
+실패한 문제)과 **메커니즘이 다르다** — #238은 동일 코드·동일 seed에서
+플랫폼(OS/컴파일러)만 바꿔도 학습 결과 자체가 갈라지는 문제이고, 이번
+관찰은 같은 플랫폼(Windows) 안에서 seed·플랫폼을 전혀 안 바꿔도 학습
+설정 하나만 바꾸면 DLBC가 비슷한 크기로 흔들린다는 관찰이다. 두 현상이
+"모델 학습이 예민하다"는 상위 주제는 공유하지만, 원인 축(플랫폼/스레딩
+비결정성 vs 클래스 자체의 구조적 민감성)은 서로 다르므로 대책도 같이
+묶어 설계하지 않는다.
+
 ## 권장 사항
 
 향후 유사한 실험(EXP-094 v1에 양성 건수 50건 미만의 희소 이진 컬럼 1개를
