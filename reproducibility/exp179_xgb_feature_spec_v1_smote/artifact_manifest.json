@@ -1,0 +1,102 @@
+{
+  "experiment_id": "EXP-179",
+  "issue_number": 179,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "704731a20520339e21f4c84eae93708d2e1dfd3e",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp179_xgb_feature_spec_v1_smote/data_manifest.json",
+  "environment": "reproducibility/exp179_xgb_feature_spec_v1_smote/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint_fold_0",
+      "path": "models/exp179_xgb_feature_spec_v1_smote/fold_00.json",
+      "size_bytes": 15121024,
+      "sha256": "0b8ac851aa8080d9384a0b22d56c264f2090f9b0db3137f1be95e58e42e0e95d",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_1",
+      "path": "models/exp179_xgb_feature_spec_v1_smote/fold_01.json",
+      "size_bytes": 15078255,
+      "sha256": "213be1ab12b29659a26e27ad014a7ce7f58bd50708c9e883ef3d6f5568466a01",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_2",
+      "path": "models/exp179_xgb_feature_spec_v1_smote/fold_02.json",
+      "size_bytes": 15244410,
+      "sha256": "5d0014ac23733875538c2a2613bff69cd4968c4f3fdfc3b7e4975ad0ff42aba9",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_3",
+      "path": "models/exp179_xgb_feature_spec_v1_smote/fold_03.json",
+      "size_bytes": 14148933,
+      "sha256": "b29b027c3938ead5e7ba76ea0df6fe620f2f76b14a8cfab06fb4028e9f4436ca",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_4",
+      "path": "models/exp179_xgb_feature_spec_v1_smote/fold_04.json",
+      "size_bytes": 14589377,
+      "sha256": "1ddcd613e2b1fb18c738f11cfb52bbf5e0296a8faf9cb82109d15534a1cd40cc",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_spec_manifest",
+      "path": "data/processed/exp179_xgb_feature_spec_v1_smote_features/feature_spec_manifest.json",
+      "size_bytes": 1860,
+      "sha256": "fa67926f03556b9ef5a1278a020a6526bcfda2f0d2822eb8173e3538456b9f28",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probabilities",
+      "path": "oof/exp179_xgb_feature_spec_v1_smote.csv",
+      "size_bytes": 3539786,
+      "sha256": "a9131c3b2e471ab975c53c333e15ebe7c00f03181cf1d9b6e19cb50cdd0c1fc4",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp179_xgb_feature_spec_v1_smote.csv",
+      "size_bytes": 38334,
+      "sha256": "5d66941f876e067d39ea0ed3b62f4bb5039a01fd886bf330221f3fd82e21b7ac",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probabilities",
+      "path": "preds/exp179_xgb_feature_spec_v1_smote_test_proba.csv",
+      "size_bytes": 1412549,
+      "sha256": "9be24acc9020edec86537371051b004ede7db27b95aab66129a4fcf2554f8d8b",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp179_xgb_feature_spec_v1_smote/config.resolved.yaml",
+      "size_bytes": 3556,
+      "sha256": "d66e591fdf188ed3d85f97a6427db67a4b57fb190f64071445390908ab6f1d88",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp179_xgb_feature_spec_v1_smote/metrics.json",
+      "size_bytes": 12255,
+      "sha256": "dd62ced80230be796b85437db1a3747e60fe995c6089e25f838223a7248e3295",
+      "storage_uri": null
+    }
+  ],
+  "verifier": "scripts/run_exp179_xgb_feature_spec_v1_smote.py --replay-checkpoints",
+  "verified_at": "2026-08-02T09:15:19.096281+00:00",
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "oof_macro_f1_delta": 0.0,
+    "passed": true
+  }
+}

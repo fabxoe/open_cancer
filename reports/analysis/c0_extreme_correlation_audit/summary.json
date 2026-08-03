@@ -1,0 +1,27 @@
+{
+  "task_issue": 187,
+  "run_mode": "explore",
+  "record_role": "diagnostic_train_only",
+  "generated_at": "2026-08-02T09:32:41.813776+00:00",
+  "input": {
+    "path": "data/raw/train.csv",
+    "sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+    "rows": 6201,
+    "gene_count": 4384,
+    "gene_order_sha256": "fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff",
+    "mutation_presence_cells": 218893
+  },
+  "selection_policy": {
+    "phi_min": 0.5,
+    "jaccard_min": 0.9,
+    "min_joint_count": 20
+  },
+  "candidate_pair_count": 0,
+  "matched_pair_count": 0,
+  "dropped_feature_count": 0,
+  "candidate_pairs_path": "reports/analysis/c0_extreme_correlation_audit/candidate_pairs.csv",
+  "uses_subclass": false,
+  "uses_test_rows": false,
+  "fits_model": false,
+  "decision": "극단 중복 후보가 없어 C0는 제거 정책을 제안하지 않는다. C1~C3은 사전 고정된 각 임계값으로 outer-train에서 다시 계산한다."
+}

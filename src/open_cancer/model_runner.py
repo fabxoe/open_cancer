@@ -15,6 +15,11 @@ from sklearn.preprocessing import MaxAbsScaler
 from sklearn.utils.class_weight import compute_sample_weight
 
 from open_cancer.constants import CLASS_LABELS
+from open_cancer.fold_feature_selection import (
+    FoldFeatureSelection,
+    FoldFeatureSelector,
+    write_fold_feature_selection,
+)
 from open_cancer.model_artifacts import (
     build_oof_probability_frame,
     build_test_probability_frame,
@@ -218,6 +223,49 @@ class CrossValidationOutput:
     test_probabilities: np.ndarray
     fold_metrics: tuple[dict[str, Any], ...]
     model_paths: tuple[Path, ...]
+    feature_selection_paths: tuple[Path | None, ...]
+
+
+def _validated_fold_selection_indices(
+    selection: FoldFeatureSelection,
+    *,
+    feature_count: int,
+) -> np.ndarray:
+    """Validate one selector mask before it reaches model training."""
+    selected_indices = np.asarray(selection.selected_indices, dtype=np.int64)
+    _require(len(selected_indices) > 0, "fold feature selector가 빈 feature mask를 반환했습니다.")
+    _require(
+        np.array_equal(selected_indices, np.unique(selected_indices))
+        and np.array_equal(selected_indices, np.sort(selected_indices))
+        and selected_indices[0] >= 0
+        and selected_indices[-1] < feature_count,
+        "fold feature selector의 index 계약이 잘못되었습니다.",
+    )
+    return selected_indices
+
+
+def fit_fold_feature_selections(
+    *,
+    train_features: sparse.csr_matrix,
+    targets: np.ndarray,
+    folds: np.ndarray,
+    feature_names: Sequence[str],
+    fold_feature_selector: FoldFeatureSelector,
+) -> tuple[FoldFeatureSelection, ...]:
+    """Fit all fold-local masks before any model training begins."""
+    _require(train_features.shape[1] == len(feature_names), "feature 이름 수가 matrix와 다릅니다.")
+    _require(set(np.unique(folds)) == set(range(5)), "canonical fold는 0..4여야 합니다.")
+    selections: list[FoldFeatureSelection] = []
+    for fold in range(5):
+        selection = fold_feature_selector.select(
+            train_features[folds != fold],
+            targets[folds != fold],
+            feature_names,
+            fold,
+        )
+        _validated_fold_selection_indices(selection, feature_count=train_features.shape[1])
+        selections.append(selection)
+    return tuple(selections)
 
 
 @dataclass(frozen=True)
@@ -297,15 +345,39 @@ def run_canonical_cv(
     model_dir: Path,
     balanced_sample_weight: bool = True,
     fold_train_resampler: FoldTrainResampler | None = None,
+    feature_names: Sequence[str] | None = None,
+    fold_feature_selector: FoldFeatureSelector | None = None,
+    prepared_fold_feature_selections: Sequence[FoldFeatureSelection] | None = None,
 ) -> CrossValidationOutput:
     """Train five aligned folds and return canonical OOF/test probabilities.
 
-    `fold_train_resampler` receives only the selected training rows.  It must
-    not inspect validation or test data.  Resampling and class-balanced sample
-    weights are mutually exclusive so minority examples are not double-counted.
+    A feature selector fits on raw outer-training rows only, then the exact
+    selected mask is applied to train, validation, and test.  A resampler runs
+    afterwards and receives only selected outer-training rows.  Neither may
+    inspect validation or test rows during fitting. Resampling and
+    class-balanced sample weights are mutually exclusive so minority examples
+    are not double-counted.
     """
     _require(train_features.shape[0] == len(targets) == len(folds), "train 행 계약 불일치")
     _require(train_features.shape[1] == test_features.shape[1], "train/test feature 차원 불일치")
+    _require(
+        fold_feature_selector is None
+        or (feature_names is not None and len(feature_names) == train_features.shape[1]),
+        "fold feature selector에는 전체 feature 이름과 동일한 순서가 필요합니다.",
+    )
+    _require(
+        prepared_fold_feature_selections is None
+        or (feature_names is not None and len(feature_names) == train_features.shape[1]),
+        "사전 계산한 feature selection에는 전체 feature 이름과 동일한 순서가 필요합니다.",
+    )
+    _require(
+        not (fold_feature_selector is not None and prepared_fold_feature_selections is not None),
+        "selector를 실행하거나 사전 계산한 selection을 전달해야 합니다. 둘을 함께 전달할 수 없습니다.",
+    )
+    _require(
+        prepared_fold_feature_selections is None or len(prepared_fold_feature_selections) == 5,
+        "사전 계산한 feature selection은 canonical 5개 fold가 필요합니다.",
+    )
     _require(set(np.unique(folds)) == set(range(5)), "canonical fold는 0..4여야 합니다.")
     _require(set(np.unique(targets)) == set(range(len(CLASS_LABELS))), "고정 26개 class index가 필요합니다.")
     _require(
@@ -317,12 +389,39 @@ def run_canonical_cv(
     test = np.zeros((test_features.shape[0], len(CLASS_LABELS)), dtype=np.float64)
     fold_metrics = []
     paths = []
+    selection_paths: list[Path | None] = []
     for fold in range(5):
         valid = folds == fold
         train = ~valid
         adapter = adapter_factory(fold)
         fit_features = train_features[train]
         fit_targets = targets[train]
+        valid_features = train_features[valid]
+        selected_test_features = test_features
+        selection: FoldFeatureSelection | None = None
+        selection_path: Path | None = None
+        if prepared_fold_feature_selections is not None:
+            selection = prepared_fold_feature_selections[fold]
+        elif fold_feature_selector is not None:
+            selection = fold_feature_selector.select(
+                fit_features,
+                fit_targets,
+                feature_names or (),
+                fold,
+            )
+        if selection is not None:
+            selected_indices = _validated_fold_selection_indices(
+                selection,
+                feature_count=train_features.shape[1],
+            )
+            fit_features = fit_features[:, selected_indices]
+            valid_features = valid_features[:, selected_indices]
+            selected_test_features = test_features[:, selected_indices]
+            selection_path = write_fold_feature_selection(
+                selection=selection,
+                feature_names=feature_names or (),
+                path=model_dir / f"fold_{fold:02d}_feature_selection.json",
+            )
         resampling: dict[str, Any] | None = None
         if fold_train_resampler is not None:
             fit_features, fit_targets, resampling = fold_train_resampler(
@@ -335,7 +434,7 @@ def run_canonical_cv(
                 "resampling 결과 feature는 CSR sparse matrix여야 합니다.",
             )
             _require(
-                fit_features.shape[1] == train_features.shape[1]
+                fit_features.shape[1] == valid_features.shape[1]
                 and fit_features.shape[0] == len(fit_targets),
                 "resampling 결과 feature/target 계약 불일치",
             )
@@ -347,15 +446,17 @@ def run_canonical_cv(
         adapter.fit(
             fit_features,
             fit_targets,
-            train_features[valid],
+            valid_features,
             targets[valid],
             weights,
         )
         valid_probability = _validate_probabilities(
-            adapter.predict_proba(train_features[valid]),
+            adapter.predict_proba(valid_features),
             int(valid.sum()),
         )
-        test_probability = _validate_probabilities(adapter.predict_proba(test_features), test_features.shape[0])
+        test_probability = _validate_probabilities(
+            adapter.predict_proba(selected_test_features), test_features.shape[0]
+        )
         oof[valid] = valid_probability
         test += test_probability / 5
         prediction = valid_probability.argmax(axis=1)
@@ -374,9 +475,12 @@ def run_canonical_cv(
         }
         if resampling is not None:
             fold_metric["resampling"] = resampling
+        if selection is not None:
+            fold_metric["feature_selection"] = selection.metadata
         fold_metrics.append(fold_metric)
         path = model_dir / f"fold_{fold:02d}{adapter.file_suffix}"
         adapter.save(path)
         paths.append(path)
+        selection_paths.append(selection_path)
     _require(not np.isnan(oof).any(), "OOF 확률이 완성되지 않았습니다.")
-    return CrossValidationOutput(oof, test, tuple(fold_metrics), tuple(paths))
+    return CrossValidationOutput(oof, test, tuple(fold_metrics), tuple(paths), tuple(selection_paths))

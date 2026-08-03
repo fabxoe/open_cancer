@@ -1,0 +1,125 @@
+{
+  "experiment_id": "EXP-192",
+  "issue_number": 192,
+  "reproducibility_status": "MANIFEST_COMPLETE",
+  "source_commit": "e48fdcdc3ee445c2047f729f63c9e128439c48da",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp192_r2_rare_mutation_presence_filter/data_manifest.json",
+  "environment": "reproducibility/exp192_r2_rare_mutation_presence_filter/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint_fold_0",
+      "path": "models/exp192_r2_rare_mutation_presence_filter/fold_00.json",
+      "size_bytes": 11587856,
+      "sha256": "d149a22f061cb0fd9566c65ba6dd6d6a0ac542a333f61b6af4f31885a19be4d1",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_1",
+      "path": "models/exp192_r2_rare_mutation_presence_filter/fold_01.json",
+      "size_bytes": 12078099,
+      "sha256": "5ab951c758155e90e6bb6192a40f046dace970c0adf4324e2559abd94a7b9818",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_2",
+      "path": "models/exp192_r2_rare_mutation_presence_filter/fold_02.json",
+      "size_bytes": 13345030,
+      "sha256": "f490cba9b9134cb15e1c297da537687008647ef4573a6aa4426a2d647bd0534f",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_3",
+      "path": "models/exp192_r2_rare_mutation_presence_filter/fold_03.json",
+      "size_bytes": 12680176,
+      "sha256": "bb9886bd83f6680a92f66d19d0a2cdaad0c2019e49d1e74e396eac9a087343e9",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_fold_4",
+      "path": "models/exp192_r2_rare_mutation_presence_filter/fold_04.json",
+      "size_bytes": 12908913,
+      "sha256": "c42f3b2ab67a2e85f89a9cf64158d4a776ba2c5d1c23c91f0ba93cd682c20ed2",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_0",
+      "path": "models/exp192_r2_rare_mutation_presence_filter/fold_00_feature_selection.json",
+      "size_bytes": 387175,
+      "sha256": "98ac270286faa4f2989a97cda86291297a271338c70c21e3a928ec6d29a10cc8",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_1",
+      "path": "models/exp192_r2_rare_mutation_presence_filter/fold_01_feature_selection.json",
+      "size_bytes": 388303,
+      "sha256": "38f8bf38c7409941d3498fbddffd420a917be2d56054b26df74f111de1941231",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_2",
+      "path": "models/exp192_r2_rare_mutation_presence_filter/fold_02_feature_selection.json",
+      "size_bytes": 387408,
+      "sha256": "d15206338c6062ed9ae0e413b2faa79c402fa33b31827555a302d42d0a3cbd2e",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_3",
+      "path": "models/exp192_r2_rare_mutation_presence_filter/fold_03_feature_selection.json",
+      "size_bytes": 387123,
+      "sha256": "772c0c09a71916cde7c059505fba5d9fe5deb28cac7cbc0a201722f2b101b7f9",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_selection_fold_4",
+      "path": "models/exp192_r2_rare_mutation_presence_filter/fold_04_feature_selection.json",
+      "size_bytes": 387854,
+      "sha256": "26580f19c7536c9598991f5c15640e755a22c726d8659094a2cae39443bef519",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_spec_manifest",
+      "path": "data/processed/exp192_r2_rare_mutation_presence_filter_features/feature_spec_manifest.json",
+      "size_bytes": 1881,
+      "sha256": "0cdc4d3fe1e165fdd8515bf8878e49196e8cff63504b8534ab4365128281dd65",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probabilities",
+      "path": "oof/exp192_r2_rare_mutation_presence_filter.csv",
+      "size_bytes": 3537128,
+      "sha256": "0e76fd5820c47b5a9e0ee07f4197409f6d20226d3aefeeefacb83fd6670975f3",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp192_r2_rare_mutation_presence_filter.csv",
+      "size_bytes": 38164,
+      "sha256": "09bedde6dac969dccc953cb418855c60857a14fb698ee82ac5b068b3c56eef0b",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probabilities",
+      "path": "preds/exp192_r2_rare_mutation_presence_filter_test_proba.csv",
+      "size_bytes": 1413053,
+      "sha256": "5afd4d5c170ff84ca3cce481dc34415ebb0fab26f32be07c72236ac7880fb9f5",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp192_r2_rare_mutation_presence_filter/config.resolved.yaml",
+      "size_bytes": 3535,
+      "sha256": "e7265b7d7dfaa1434e2856dfb5b9525f24482b8bdc1c9a25cb59b82d3c5ac8c6",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp192_r2_rare_mutation_presence_filter/metrics.json",
+      "size_bytes": 14525,
+      "sha256": "7e15eb09a2d6ad4f5764ae6c4b625f0d91607d010c142837ebee704caaa1e769",
+      "storage_uri": null
+    }
+  ]
+}

@@ -79,6 +79,12 @@ AI는 작업 전에 다음을 확인한다.
 - 공식 지표: **Macro F1**
 - Local primary metric: 전체 OOF Macro F1
 - 보조 지표: fold별 Macro F1, 클래스별 F1, Accuracy, Log Loss, Confusion Matrix
+- 모델·피처·checkpoint의 채택 판단은 전체 OOF Macro F1을 최우선으로 하고,
+  클래스별 F1 붕괴와 fold 변동성을 안전성 지표로 확인한다. Log Loss는 확률
+  품질과 학습 상태를 설명하는 보조 지표이며 단독 기각 조건으로 사용하지 않는다.
+- `mlogloss` objective/eval metric을 사용해 학습하더라도 그것이 공식 평가 지표를
+  바꾸지는 않는다. checkpoint 선택 기준이 Macro F1과 다르면 validation fold
+  안에서 두 기준을 통제 비교해 resolved config와 metrics에 기록한다.
 - 대회 데이터 안내:
   <https://dacon.io/competitions/official/236355/data>
 
@@ -216,6 +222,13 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   OOF Macro F1이 `0.002` 이상 개선되지 않으면 채택하지 않는다.
 - Public LB 또는 test 분포를 보고 파서, 유전자 그룹, hotspot이나 feature 규칙을
   수정하지 않는다.
+- 상관·희소도 기반 feature selection은 각 outer fold의 **학습 행에서만** fit하고,
+  확정한 같은 mask를 validation·test에 적용한다. 상관을 `GENE__mutated`에서
+  계산했다면 해당 mutation-presence 열만 제거하며 mutation-type, missing,
+  residue-position, sample aggregate와 hotspot 열을 함께 삭제하지 않는다.
+- fold별 selector는 candidate pair·prevalence·Phi·Jaccard·공동 변이 수·선택 mask
+  및 feature-order hash를 checkpoint와 metrics에 저장한다. checkpoint 추론은 이를
+  다시 읽어 같은 입력 열 순서를 재현해야 한다.
 - train/test의 complex·위치 분포 차이는 OOD QC로만 기록하며 피처 선택,
   threshold, blend 가중치나 제출 후보를 정하는 근거로 사용하지 않는다.
 
@@ -296,6 +309,9 @@ GitHub는 폴더 안의 `README.md`를 자동으로 표시하므로 팀원이 re
 완료된 residue-position·hotspot 선행 과정은
 [`reports/plans/residue_position_hotspot_roadmap.md`](reports/plans/residue_position_hotspot_roadmap.md)에
 보존한다.
+오리엔테이션의 중복 제거·관계 요약·지도 피처 선택은
+[`오리엔테이션 기반 상관 삭제·피처 선택 로드맵`](reports/plans/orientation_correlation_feature_selection_roadmap.md)에서
+별도 관리한다.
 
 Issue #119의 canonical OOF 감사로 Feature Spec v2를 동결했다. 공식 명세는
 [`configs/abc_stack_feature_spec_v2.yaml`](configs/abc_stack_feature_spec_v2.yaml),

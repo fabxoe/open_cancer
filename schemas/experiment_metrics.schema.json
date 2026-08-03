@@ -92,6 +92,18 @@
           "best_iteration": {
             "type": ["integer", "null"],
             "minimum": 0
+          },
+          "resampling": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "feature_selection": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "checkpoint_selection": {
+            "type": "object",
+            "additionalProperties": true
           }
         }
       }
@@ -180,6 +192,19 @@
           "type": "string"
         }
       }
+    },
+    "baseline_delta": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "decision": {
+      "type": "string"
+    },
+    "checkpoint_comparison": {
+      "type": "object",
+      "additionalProperties": true
     },
     "artifacts": {
       "type": "object",
