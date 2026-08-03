@@ -117,6 +117,17 @@ provenance)와 동일한 패턴을 이 실험에도 선제적으로 적용했다
 완전히 동일한 값을 내는지 합성 데이터와 실제 train/test 전체 데이터로 각각
 확인했다(`tests/test_pathway_aggregation_features.py::test_cell_cycle_lof_in_tsg_family_matches_direct_compute_function`).
 
+## Update: Macro-F1-checkpoint 재평가 (POLE 트랙과 함께 완료)
+
+이 실험을 포함한 4개 pathway feature 실험(EXP-170/173/181/226)을 재학습
+없이 macro-f1-checkpoint 정책으로 재평가했다. 올바른 비교 대상인
+EXP-219(같은 정책의 EXP-094) 기준으로도 이 실험은 `-0.0031`로 기각이
+유지된다. DLBC/LAML의 seed 비일관 관찰과 마찬가지로, COAD는 여기서도
+`+0.0034`로 여전히 양의 방향이었다(Cell Cycle/POLE 두 gene-set 공통 관찰,
+판단 보류). 전체 결과는
+[`pole_cellcycle_macro_f1_checkpoint_reevaluation.md`](../analysis/pole_cellcycle_macro_f1_checkpoint_reevaluation.md)에
+정리했다.
+
 ## 재현과 관련 파일
 
 - Config: `configs/exp173_cellcycle_lof_tsg.yaml`
