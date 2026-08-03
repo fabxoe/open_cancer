@@ -679,6 +679,7 @@ def finalize_saved_run(
     config_path: Path,
     *,
     runner_command: str,
+    fold_feature_builder: Any | None = None,
 ) -> None:
     """Validate and verify a completed run after post-processing interruption."""
     config_path = config_path.resolve()
@@ -695,14 +696,21 @@ def finalize_saved_run(
     test_probability_path = ROOT / "preds" / f"{artifact_slug}_test_proba.csv"
     submission_path = ROOT / "submissions" / f"{artifact_slug}.csv"
 
-    required = (
+    required = [
         metrics_path,
         resolved_config_path,
         oof_path,
         test_probability_path,
         submission_path,
         feature_dir / "test_features.npz",
-    )
+    ]
+    if fold_feature_builder is not None:
+        required.extend(
+            [
+                feature_dir / "train_features.npz",
+                feature_dir / "feature_names.json",
+            ]
+        )
     missing = [str(path) for path in required if not path.is_file()]
     if missing:
         raise FileNotFoundError(f"finalize에 필요한 기존 산출물이 없습니다: {missing}")
@@ -716,6 +724,36 @@ def finalize_saved_run(
     )
     test_features = sparse.load_npz(feature_dir / "test_features.npz")
     test_ids = pd.read_csv(TEST_PATH, usecols=["ID"], dtype=str)["ID"]
+    fold_test_features: list[sparse.csr_matrix] | None = None
+    if fold_feature_builder is not None:
+        train_features = sparse.load_npz(feature_dir / "train_features.npz")
+        feature_names = tuple(
+            json.loads(
+                (feature_dir / "feature_names.json").read_text(encoding="utf-8")
+            )
+        )
+        train_meta = pd.read_csv(
+            TRAIN_PATH, usecols=["ID", "SUBCLASS"], dtype=str
+        )
+        folds = pd.read_csv(
+            ROOT / config["split"]["path"], dtype={"ID": str, "fold": int}
+        )
+        train = train_meta.merge(
+            folds, on="ID", how="left", validate="one_to_one", sort=False
+        )
+        if not train["ID"].equals(train_meta["ID"]) or train["fold"].isna().any():
+            raise ValueError("finalize fold 병합 결과가 원본 train과 일치하지 않습니다.")
+        label_encoder = LabelEncoder().fit(list(CLASS_LABELS))
+        target = label_encoder.transform(train["SUBCLASS"]).astype(np.int32)
+        fold_test_features = rebuild_fold_test_features(
+            fold_feature_builder=fold_feature_builder,
+            fold_assignments=train["fold"].to_numpy(dtype=np.int32),
+            target=target,
+            train_features=train_features,
+            test_features=test_features,
+            feature_names=feature_names,
+            n_splits=int(config["split"]["n_splits"]),
+        )
     audit_paths = [
         model_dir / f"fold_{fold:02d}_checkpoint_audit.json"
         for fold in range(config["split"]["n_splits"])
@@ -737,10 +775,55 @@ def finalize_saved_run(
         test_ids=test_ids,
         test_probability_path=test_probability_path,
         submission_path=submission_path,
+        fold_test_features=fold_test_features,
         extra_artifact_paths=[
             ("checkpoint_iteration_audit", path) for path in audit_paths
         ],
     )
+
+
+def rebuild_fold_test_features(
+    *,
+    fold_feature_builder: Any,
+    fold_assignments: np.ndarray,
+    target: np.ndarray,
+    train_features: sparse.spmatrix,
+    test_features: sparse.spmatrix,
+    feature_names: tuple[str, ...],
+    n_splits: int,
+) -> list[sparse.csr_matrix]:
+    """Recreate each fold's test matrix without fitting a model.
+
+    The builder receives the same outer-train indices, target slice and base
+    matrices as the original run. Validation and test remain transform-only.
+    """
+    if train_features.shape[0] != len(fold_assignments) or len(target) != len(
+        fold_assignments
+    ):
+        raise ValueError("finalize train feature/fold/target 행 수가 다릅니다.")
+    if train_features.shape[1] != len(feature_names):
+        raise ValueError("finalize base feature 이름 수와 열 수가 다릅니다.")
+    rebuilt: list[sparse.csr_matrix] = []
+    for fold in range(n_splits):
+        valid_mask = fold_assignments == fold
+        train_indices = np.flatnonzero(~valid_mask)
+        valid_indices = np.flatnonzero(valid_mask)
+        extra = fold_feature_builder(
+            fold=fold,
+            train_indices=train_indices,
+            valid_indices=valid_indices,
+            base_train=train_features[train_indices],
+            base_validation=train_features[valid_indices],
+            base_test=test_features,
+            base_feature_names=feature_names,
+            target=target[train_indices],
+        )
+        rebuilt.append(
+            sparse.hstack(
+                [test_features, extra.test], format="csr", dtype=np.float32
+            )
+        )
+    return rebuilt
 
 
 if __name__ == "__main__":
