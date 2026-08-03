@@ -9,6 +9,7 @@ from open_cancer.nested_decision_offset import (
     NestedDecisionOffsetError,
     apply_class_offset,
     fit_inner_cross_fitted_probabilities,
+    min_class_count_per_inner_fold,
     search_class_offsets,
 )
 
@@ -142,3 +143,52 @@ def test_fit_inner_cross_fitted_probabilities_rejects_bad_shape_from_train_fn() 
         fit_inner_cross_fitted_probabilities(
             features=features, targets=targets, train_fn=bad_train_fn, seed=42
         )
+
+
+def test_search_class_offsets_ineligible_classes_stay_at_zero() -> None:
+    # Same borderline-class-0-vs-5 setup as the earlier recovery test, but
+    # class 5 is marked ineligible -- its offset must stay exactly 0 even
+    # though the search would otherwise want to move it or move class 0.
+    rng = np.random.default_rng(6)
+    n_per_class = 60
+    targets = np.concatenate([np.zeros(n_per_class), np.full(n_per_class, 5)]).astype(np.int64)
+    base = np.full((2 * n_per_class, N_CLASSES), 0.01)
+    base[:n_per_class, 0] = 0.6
+    base[:n_per_class, 5] = 0.05
+    base[n_per_class:, 0] = 0.42
+    base[n_per_class:, 5] = 0.38
+    base = base / base.sum(axis=1, keepdims=True)
+
+    eligible = np.ones(N_CLASSES, dtype=bool)
+    eligible[5] = False
+    eligible[0] = False  # also block the symmetric escape route via class 0
+
+    result = search_class_offsets(base, targets, eligible_classes=eligible)
+    assert result["offset"][5] == 0.0
+    assert result["offset"][0] == 0.0
+    assert result["eligible_classes"][5] is False
+    assert result["eligible_classes"][0] is False
+
+
+def test_search_class_offsets_eligible_classes_rejects_wrong_length() -> None:
+    rng = np.random.default_rng(7)
+    n = 50
+    targets = rng.integers(0, N_CLASSES, size=n)
+    probabilities = rng.dirichlet(np.ones(N_CLASSES), size=n)
+    with pytest.raises(NestedDecisionOffsetError):
+        search_class_offsets(probabilities, targets, eligible_classes=np.ones(5, dtype=bool))
+
+
+def test_min_class_count_per_inner_fold_matches_manual_count() -> None:
+    # 3 inner folds, class 0 appears 5/3/1 times across them -> min is 1.
+    # Class 1 appears 2/2/2 times -> min is 2. Other classes never appear.
+    targets = np.array(
+        [0] * 5 + [0] * 3 + [0] * 1 + [1] * 2 + [1] * 2 + [1] * 2, dtype=np.int64
+    )
+    inner_fold_assignment = np.array(
+        [0] * 5 + [1] * 3 + [2] * 1 + [0] * 2 + [1] * 2 + [2] * 2, dtype=np.int32
+    )
+    counts = min_class_count_per_inner_fold(targets, inner_fold_assignment, n_inner_splits=3)
+    assert counts[0] == 1
+    assert counts[1] == 2
+    assert counts[2] == 0  # class 2 never appears in any inner fold

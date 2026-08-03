@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 70
+- 실제 실험 수: 71
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4254998819 (`EXP-253`)
@@ -87,6 +87,7 @@
 | EXP-257 | COMPLETED | Kangho-Park | #257 | EXP-096 + functional_role_burden_extended(oncogene/TSG count raw/frac/resid/log1p, fold-train 게이팅, #176 확장) | 0.4118051266 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0063102·Log Loss 악화, 26개 중 19개 클래스 하락으로 ARCHIVE | [보고서](reports/exp257_functional_role_burden_extended/README.md) |
 | EXP-233 | COMPLETED | Kangho-Park | #233 | EXP-219 OOF + inner cross-fitting(K=3) 기반 class-wise logit offset(post-hoc, 재학습 없음) | 0.4241894920 | 미제출 | NOT_STARTED | Macro F1 +0.0019573이나 DLBC F1 -0.1235·Log Loss/fold 안정성 악화로 ARCHIVE | [보고서](reports/exp233_nested_decision_offset/README.md) |
 | EXP-272 | COMPLETED | fabxoe | #272 | EXP-219 고정 5-seed(42·142·242·342·442) 확률 0.2 평균 | 0.4208578157 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0013743·fold 표준편차와 Log Loss 악화로 ARCHIVE | [보고서](reports/exp272_exp219_multiseed_ensemble/README.md) |
+| EXP-276 | COMPLETED | Kangho-Park | #276 | EXP-233 class-wise logit offset + inner-fold 최소 표본 게이트(15/20/25) | 0.4262111346 | 미제출 | NOT_STARTED | Macro F1 +0.0039790이나 Log Loss·fold 안정성 악화 및 DLBC argmax 경쟁 손실로 ARCHIVE | [보고서](reports/exp276_nested_decision_offset_sample_gate/README.md) |
 | EXP-279 | COMPLETED | fabxoe | #279 | EXP-219 동일 조건 + trailing 21-iteration Macro F1 중앙값 checkpoint 선택 | 0.4206209582 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0016112로 사전 허용치 초과, Log Loss는 개선됐으나 ARCHIVE | [보고서](reports/exp279_checkpoint_rolling_median/README.md) |
 | EXP-302 | COMPLETED | fabxoe | #302 | EXP-229 + 고정 관찰 가능 암종 표지 mutation proxy 17~18개 | 0.4212799841 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0017086로 gate 실패, Log Loss·fold 안정성은 개선했으나 ARCHIVE | [보고서](reports/exp302_observable_marker_proxies/README.md) |
 
@@ -192,6 +193,40 @@
   Log Loss와 fold 안정성 개선은 보조 관찰로만 남기고 패널을 Public에 맞춰
   재조정하지 않는다. Track B isoform QC는 독립 분석으로 진행하지만 A+B 조합은
   열지 않는다.
+
+### [EXP-276] nested decision offset 표본 게이트
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #276 / `issue-276-nested-decision-offset-sample-gate`
+- 실행 source commit: `4f0b37d4227297b17a1ca0fac7db25e4c1b7fa06`
+- 시작/종료: 2026-08-03T13:35:42.558759+00:00 /
+  2026-08-03T14:24:01.845355+00:00
+
+#### 실행과 결과
+
+- 부모 EXP-219와 EXP-233의 inner cross-fitting을 유지하고, inner fold별 최소
+  표본 수가 15/20/25 미만인 클래스의 offset을 0으로 고정했다.
+- 사전 규칙상 대표 threshold는 20이며 DLBC와 ACC를 게이트했다.
+- Fold Macro F1: 0.4184928039 / 0.4343256967 / 0.4116218011 /
+  0.4253587083 / 0.4363321189
+- OOF Macro F1: 0.4262111346 (EXP-219 대비 `+0.0039789886`)
+- Fold 표준편차: 0.0093442830 (EXP-219 대비 `+0.0026238894`, 악화)
+- Accuracy: 0.4146105467, Log Loss: 1.8718310623
+  (EXP-219 대비 `+0.0242183158`, 악화)
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+
+#### 산출물과 결론
+
+- Config: `configs/exp276_nested_decision_offset_sample_gate.yaml`
+- Metrics: `reports/exp276_nested_decision_offset_sample_gate/metrics.json`
+- Threshold 비교: `reports/exp276_nested_decision_offset_sample_gate/threshold_comparison.json`
+- Report: `reports/exp276_nested_decision_offset_sample_gate/README.md`
+- threshold 20/25는 5개 fold 중 4개를 개선했지만 Log Loss와 fold 안정성
+  gate를 통과하지 못해 `ARCHIVE`한다. 특정 클래스 offset을 0으로 고정해도
+  다른 클래스 offset과의 argmax 경쟁 때문에 그 클래스 F1이 보호되지 않는다는
+  한계를 확인했으며, 이 post-hoc offset 계열의 추가 탐색을 중단한다.
 
 ### [EXP-279] rolling-median Macro F1 checkpoint 안정화
 

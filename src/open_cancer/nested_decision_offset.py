@@ -94,6 +94,7 @@ def search_class_offsets(
     candidate_grid: tuple[float, ...] = CANDIDATE_OFFSET_GRID,
     regularization_lambda: float = REGULARIZATION_LAMBDA,
     max_passes: int = MAX_COORDINATE_PASSES,
+    eligible_classes: np.ndarray | None = None,
 ) -> dict[str, Any]:
     """Coordinate-descent grid search for a 26-dim class-wise offset.
 
@@ -102,11 +103,21 @@ def search_class_offsets(
     independently, holding the others fixed, maximizing L2-regularized
     Macro F1; repeated in fixed class order until a full pass makes no
     improvement or `max_passes` is reached.
+
+    `eligible_classes`, if given, is a boolean array (26,) marking which
+    classes may have a non-zero offset (Issue #276: classes below a sample-
+    size gate are left at offset=0 and never searched, since coordinate
+    descent on too few inner-fold samples fits noise rather than signal).
     """
     targets = np.asarray(targets, dtype=np.int64)
     n_classes = len(CLASS_LABELS)
     _require(probabilities.shape[0] == len(targets), "확률/target 행 수가 다릅니다.")
     _require(len(candidate_grid) > 0, "candidate_grid가 비어 있습니다.")
+    if eligible_classes is None:
+        eligible_classes = np.ones(n_classes, dtype=bool)
+    else:
+        eligible_classes = np.asarray(eligible_classes, dtype=bool)
+        _require(eligible_classes.shape == (n_classes,), "eligible_classes 길이가 26이 아닙니다.")
 
     offset = np.zeros(n_classes, dtype=np.float64)
     best_score = _regularized_macro_f1(
@@ -116,6 +127,8 @@ def search_class_offsets(
     for pass_index in range(max_passes):
         improved = False
         for class_index in range(n_classes):
+            if not eligible_classes[class_index]:
+                continue
             best_value = offset[class_index]
             best_local_score = best_score
             for candidate in candidate_grid:
@@ -146,6 +159,7 @@ def search_class_offsets(
         "final_regularized_score": best_score,
         "passes_run": len(trace),
         "trace": trace,
+        "eligible_classes": eligible_classes.tolist(),
     }
 
 
@@ -205,3 +219,23 @@ def fit_inner_cross_fitted_probabilities(
         inner_fold_assignment=inner_fold_assignment,
         n_inner_splits=n_splits,
     )
+
+
+def min_class_count_per_inner_fold(
+    targets: np.ndarray, inner_fold_assignment: np.ndarray, n_inner_splits: int
+) -> np.ndarray:
+    """Smallest per-inner-fold sample count for each of the 26 classes.
+
+    Issue #276's sample gate uses this (not the raw outer-train count) as
+    the eligibility statistic: it directly measures how few examples of a
+    class any single inner-fold evaluation actually saw, which is what
+    makes the coordinate-descent search unstable for that class.
+    """
+    targets = np.asarray(targets, dtype=np.int64)
+    n_classes = len(CLASS_LABELS)
+    counts = np.zeros((n_inner_splits, n_classes), dtype=np.int64)
+    for inner_fold in range(n_inner_splits):
+        mask = inner_fold_assignment == inner_fold
+        for class_index in range(n_classes):
+            counts[inner_fold, class_index] = int(np.sum(targets[mask] == class_index))
+    return counts.min(axis=0)
