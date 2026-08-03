@@ -418,6 +418,26 @@ git push -u origin issue-12-exp-xgb-baseline
 그다음 `main`을 대상으로 PR을 만들고 본문 첫 부분에 `Closes #12`를 적습니다.
 팀원 확인, 비작성자 승인, CI 통과 후에만 merge합니다.
 
+### 팀 상위 모델의 OOF·확률 받기
+
+팀 Local/Public 상위 모델이나 앙상블 부모의 OOF·test 확률이 필요하면 GitHub의
+**실험 산출물 공유 요청** Issue Form을 사용합니다. 메신저로 파일을 요청하거나
+브라우저에서 Release 파일을 골라 내려받지 않습니다. 게시 담당자가 검증된 Release
+bundle과 manifest를 PR로 반영하고 merge한 뒤 다음처럼 받습니다.
+
+```bash
+git switch main
+git pull --ff-only origin main
+uv run python scripts/fetch_experiment_artifacts.py \
+  --experiment EXP-253 \
+  --kinds oof_probability test_probability
+```
+
+파일은 manifest의 표준 경로에 복원되고 SHA-256까지 확인됩니다. `models/`, `oof/`,
+`preds/`는 Git 제외 경로이므로 받은 파일을 commit하지 않습니다. 전체 역할과 공개
+Release 주의사항은 `PROJECT_CONTEXT.md`의 **팀 상위 모델 산출물 요청·공유 규칙**을
+따릅니다.
+
 ## 10. 자주 생기는 문제
 
 ### `uv: command not found`
