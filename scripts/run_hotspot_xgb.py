@@ -296,11 +296,15 @@ def main(
     checkpoint_selection = config["training"].get(
         "checkpoint_selection", "training_metric"
     )
-    if checkpoint_selection not in {"training_metric", "macro_f1_validation"}:
+    validation_checkpoint_policies = {
+        "macro_f1_validation",
+        "macro_f1_rolling_median_validation",
+    }
+    if checkpoint_selection not in {"training_metric", *validation_checkpoint_policies}:
         raise ValueError(f"지원하지 않는 checkpoint selection: {checkpoint_selection}")
     training_metric_oof = (
         np.full((len(train), len(CLASS_LABELS)), np.nan, dtype=np.float32)
-        if checkpoint_selection == "macro_f1_validation"
+        if checkpoint_selection in validation_checkpoint_policies
         else None
     )
     checkpoint_audit_paths: list[Path] = []
@@ -359,11 +363,22 @@ def main(
             verbose=False,
         )
         checkpoint_audit: dict[str, Any] | None = None
-        if checkpoint_selection == "macro_f1_validation":
+        if checkpoint_selection in validation_checkpoint_policies:
             checkpoint_audit = audit_xgboost_validation_iterations(
-                model, x_valid_fold, y_valid
+                model,
+                x_valid_fold,
+                y_valid,
+                selection_policy=checkpoint_selection,
+                rolling_window_size=config["training"].get(
+                    "checkpoint_rolling_window"
+                ),
+                minimum_iteration=config["training"].get(
+                    "checkpoint_min_iteration"
+                ),
             )
-            selected_iteration = int(checkpoint_audit["macro_f1_best"]["iteration"])
+            selected_iteration = int(
+                checkpoint_audit["selected_checkpoint"]["iteration"]
+            )
             training_best_iteration = int(
                 checkpoint_audit["training_metric_best"]["iteration"]
             )
@@ -402,12 +417,17 @@ def main(
         }
         if checkpoint_audit is not None:
             result["checkpoint_selection"] = {
-                "policy": "macro_f1_validation",
+                "policy": checkpoint_selection,
                 "training_metric_best": checkpoint_audit["training_metric_best"],
                 "macro_f1_best": checkpoint_audit["macro_f1_best"],
+                "selected_checkpoint": checkpoint_audit["selected_checkpoint"],
                 "macro_f1_delta": checkpoint_audit["macro_f1_delta"],
                 "audit_path": relative_posix(checkpoint_audit_paths[-1], ROOT),
             }
+            if "rolling_median_best" in checkpoint_audit:
+                result["checkpoint_selection"]["rolling_median_best"] = (
+                    checkpoint_audit["rolling_median_best"]
+                )
         fold_metrics.append(result)
         print(json.dumps(result, ensure_ascii=False))
 
@@ -520,6 +540,7 @@ def main(
         )
         metrics["checkpoint_comparison"] = {
             "selection_scope": "outer_fold_validation_only",
+            "checkpoint_policy": checkpoint_selection,
             "training_metric": "mlogloss",
             "primary_metric": "macro_f1",
             "training_metric_best": {
@@ -547,7 +568,7 @@ def main(
                     for label in CLASS_LABELS
                 },
             },
-            "macro_f1_best": metrics["oof"],
+            "selected_checkpoint": metrics["oof"],
             "oof_macro_f1_delta": float(metrics["oof"]["macro_f1"])
             - float(
                 f1_score(
@@ -560,6 +581,10 @@ def main(
             ),
             "test_or_public_used_for_selection": False,
         }
+        if checkpoint_selection == "macro_f1_validation":
+            # Preserve the historical EXP-219 output contract for downstream
+            # reports while exposing the policy-neutral key above.
+            metrics["checkpoint_comparison"]["macro_f1_best"] = metrics["oof"]
     write_json(metrics_path, metrics)
     validate_json_document(metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json")
     local_dashboard_path = write_local_dashboard(

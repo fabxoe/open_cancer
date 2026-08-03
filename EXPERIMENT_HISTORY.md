@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 67
+- 실제 실험 수: 68
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4254998819 (`EXP-253`)
@@ -86,6 +86,7 @@
 | EXP-211 | COMPLETED | 2heej | #211 | 동결 v2-performance + 26개 One-vs-Rest binary XGBoost | 0.4112914798 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0068238·Log Loss 악화로 ARCHIVE | [보고서](reports/exp211_ovr_xgboost_v2_performance/README.md) |
 | EXP-257 | COMPLETED | Kangho-Park | #257 | EXP-096 + functional_role_burden_extended(oncogene/TSG count raw/frac/resid/log1p, fold-train 게이팅, #176 확장) | 0.4118051266 | 미제출 | INFERENCE_VERIFIED | EXP-096 대비 Macro F1 -0.0063102·Log Loss 악화, 26개 중 19개 클래스 하락으로 ARCHIVE | [보고서](reports/exp257_functional_role_burden_extended/README.md) |
 | EXP-272 | COMPLETED | fabxoe | #272 | EXP-219 고정 5-seed(42·142·242·342·442) 확률 0.2 평균 | 0.4208578157 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0013743·fold 표준편차와 Log Loss 악화로 ARCHIVE | [보고서](reports/exp272_exp219_multiseed_ensemble/README.md) |
+| EXP-279 | COMPLETED | fabxoe | #279 | EXP-219 동일 조건 + trailing 21-iteration Macro F1 중앙값 checkpoint 선택 | 0.4206209582 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0016112로 사전 허용치 초과, Log Loss는 개선됐으나 ARCHIVE | [보고서](reports/exp279_checkpoint_rolling_median/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -144,10 +145,47 @@
 | 2026-08-02T14:26:22.219111+00:00 | EXP-209 | 2heej | `ec05d217aeed555e3beb18151920a07fe275dd6f` / [`exp-209-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-209-repro-v1) | SHA-256 일치 | SHA-256 일치, OOF·test 라벨 100%, 확률 최대 차이 0; Issue #260에서 원본 Release 복구 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp209_lightgbm_v2_performance/comparison.json) |
 | 2026-08-03T09:41:48.286924+00:00 | EXP-257 | Kangho-Park | `56b1b1d3515b9ff09f36fc7ca691ccdeaf53d487` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 2.98e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp257_functional_role_burden_extended/comparison.json) |
 | 2026-08-03T13:17:22.042664+00:00 | EXP-272 | fabxoe | `5913bf49e920d5e1ff36e9ff56bf9f16aa90f40b` / 태그 없음 | SHA-256 일치 | 5개 seed checkpoint 검증 통과·고정 평균 제출 SHA-256 일치·라벨 100%·확률 최대 차이 0 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp272_exp219_multiseed_ensemble/comparison.json) |
+| 2026-08-03T13:53:13.072581+00:00 | EXP-279 | fabxoe | `e904bc0e9a3e409c5b7884dbe6bf512bf63be1b7` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.43e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp279_checkpoint_rolling_median/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-279] rolling-median Macro F1 checkpoint 안정화
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #279 / `issue-279-exp-checkpoint-rolling-median`
+- 소스 commit: `e904bc0e9a3e409c5b7884dbe6bf512bf63be1b7`
+- 시작/종료: 2026-08-03T13:40:16.833115+00:00 /
+  2026-08-03T13:53:10.427522+00:00
+
+#### 실행과 결과
+
+- EXP-219의 모델·피처·canonical 5-fold·balanced weight·seed를 유지했다.
+- 유일한 변경은 validation Macro F1의 trailing 21-iteration 중앙값이 가장 큰
+  window의 마지막 iteration을 고른 것이다. 후보는 iteration 100 이상이고 동률은
+  더 이른 iteration을 택하며 fallback은 없다.
+- 선택 iteration: 202 / 236 / 253 / 121 / 179
+- Fold Macro F1: 0.4185424302 / 0.4224270311 / 0.4093467651 /
+  0.4197500569 / 0.4319890962
+- OOF Macro F1: 0.4206209582 (EXP-219 대비 `-0.0016111878`)
+- Fold 표준편차: 0.0072727214 (`+0.0005523279`)
+- Accuracy: 0.4089662958, Log Loss: 1.8463063240 (`-0.0013064146`)
+- 최악 클래스 F1 변화: LUAD `-0.0156934520`; `-0.05` 이상 붕괴 없음
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 산출물과 결론
+
+- Config: `configs/exp279_checkpoint_rolling_median.yaml`
+- Metrics: `reports/exp279_checkpoint_rolling_median/metrics.json`
+- Report: `reports/exp279_checkpoint_rolling_median/README.md`
+- Reproduction: `reproducibility/exp279_checkpoint_rolling_median/`
+- 저장 checkpoint 재추론에서 submission SHA-256과 test 라벨이 일치했고 확률
+  최대 차이는 `1.43e-07`이었다.
+- Macro F1 하락이 사전 허용치 `0.001`을 넘어 `ARCHIVE`한다. window나 minimum
+  iteration을 같은 OOF에서 다시 탐색하지 않고 제출하지 않는다.
 
 ### [EXP-272] EXP-219 고정 5-seed 확률 평균
 
