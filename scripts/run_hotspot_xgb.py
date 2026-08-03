@@ -181,6 +181,19 @@ def main(
     if train["fold"].isna().any():
         raise ValueError("공용 split에 없는 train ID가 있습니다.")
 
+    domain_reweighting = config["training"].get("domain_reweighting", {"enabled": False})
+    domain_weight = np.ones(len(train), dtype=np.float64)
+    if domain_reweighting.get("enabled", False):
+        propensity = pd.read_csv(
+            ROOT / domain_reweighting["propensity_path"], dtype={"ID": str}
+        ).set_index("ID")
+        weight_column = domain_reweighting.get("weight_column", "suggested_importance_weight")
+        domain_weight = propensity.loc[train["ID"], weight_column].to_numpy(dtype=np.float64)
+        if not np.isfinite(domain_weight).all() or (domain_weight < 0).any():
+            raise ValueError("domain reweighting 가중치가 유효하지 않습니다.")
+        if domain_reweighting.get("normalize_to_mean_one", True):
+            domain_weight = domain_weight * (len(domain_weight) / domain_weight.sum())
+
     fold_hotspot_train_evidence: dict[str, list[dict[str, object]]] = {}
     for fold in range(config["split"]["n_splits"]):
         fold_train_indices = set(np.flatnonzero(~train["fold"].eq(fold).to_numpy()).tolist())
@@ -367,6 +380,13 @@ def main(
             if config["training"]["balanced_sample_weight"]
             else None
         )
+        if domain_reweighting.get("enabled", False):
+            fold_domain_weight = domain_weight[train_indices]
+            sample_weight = (
+                fold_domain_weight
+                if sample_weight is None
+                else sample_weight * fold_domain_weight
+            )
         model = xgb.XGBClassifier(
             **fold_model_params,
             random_state=config["seed"] + fold,
