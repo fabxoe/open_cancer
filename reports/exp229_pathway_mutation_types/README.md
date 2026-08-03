@@ -75,6 +75,9 @@ Public LB는 피처 정의나 채택 판단에 사용하지 않았고 아직 제
   `66f50d7fdd3c0ca65e586f83c4ee4d8cfb3a99d85d03c04ef9b8fbea7b1af61b`
 - 실행시간: 582.07초
 - 재현 상태: `INFERENCE_VERIFIED`
+- Release: [`exp-229-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-229-repro-v1)
 
 저장 checkpoint로 test를 다시 추론해 라벨 일치율 100%, 확률 최대 절대 차이
-`1.72e-7`, 제출 CSV byte-level SHA-256 일치를 확인했습니다.
+`1.72e-7`, 제출 CSV byte-level SHA-256 일치를 확인했습니다. Issue #260에서 원본
+checkpoint·iteration audit 각 5개와 OOF/test 확률을 deterministic bundle로
+보존하고 원격 재다운로드 SHA-256 일치를 확인했습니다.

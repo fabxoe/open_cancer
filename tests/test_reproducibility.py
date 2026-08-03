@@ -42,6 +42,29 @@ def test_prepare_reproducibility_bundle_is_deterministic(tmp_path: Path) -> None
             "storage_uri": None,
         }
     )
+    audit = tmp_path / "models" / "exp012_test" / "fold_00_checkpoint_audit.json"
+    audit.write_text("audit\n", encoding="utf-8")
+    artifacts.append(
+        {
+            "kind": "checkpoint_iteration_audit",
+            "path": "models/exp012_test/fold_00_checkpoint_audit.json",
+            "size_bytes": audit.stat().st_size,
+            "sha256": sha256_file(audit),
+            "storage_uri": None,
+        }
+    )
+    feature_manifest = tmp_path / "data" / "processed" / "exp012_test" / "feature_spec_manifest.json"
+    feature_manifest.parent.mkdir(parents=True, exist_ok=True)
+    feature_manifest.write_text("{}\n", encoding="utf-8")
+    artifacts.append(
+        {
+            "kind": "feature_spec_manifest",
+            "path": "data/processed/exp012_test/feature_spec_manifest.json",
+            "size_bytes": feature_manifest.stat().st_size,
+            "sha256": sha256_file(feature_manifest),
+            "storage_uri": None,
+        }
+    )
     manifest_path = tmp_path / "reproducibility" / slug / "artifact_manifest.json"
     manifest_path.write_text(
         json.dumps(
@@ -81,3 +104,5 @@ def test_prepare_reproducibility_bundle_is_deterministic(tmp_path: Path) -> None
     )
     with tarfile.open(first["archive"], mode="r:gz") as archive:
         assert "oof/exp010_component.csv" in archive.getnames()
+        assert "models/exp012_test/fold_00_checkpoint_audit.json" in archive.getnames()
+        assert "data/processed/exp012_test/feature_spec_manifest.json" in archive.getnames()

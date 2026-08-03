@@ -67,6 +67,9 @@ LIHC `+0.0149`, PCPG `+0.0144`, UCEC `+0.0140`입니다. 큰 하락은 ACC
 - Metrics: `reports/exp253_lightgbm_xgboost_blend/metrics.json`
 - 제출 후보: `submissions/exp253_lightgbm_xgboost_blend.csv` (DACON 미제출)
 - 재현 상태: `INFERENCE_VERIFIED`
+- Release: [`exp-253-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-253-repro-v1)
 
 저장된 부모 확률에서 OOF·test 라벨이 100% 일치하고 확률 최대 차이 0,
-제출 CSV SHA-256 일치를 확인했습니다.
+제출 CSV SHA-256 일치를 확인했습니다. Issue #260에서 EXP-209·229 부모 checkpoint
+10개와 component OOF/test/config를 함께 deterministic bundle로 보존하고 원격
+재다운로드 SHA-256 일치를 확인했습니다.
