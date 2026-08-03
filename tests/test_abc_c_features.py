@@ -8,6 +8,7 @@ from open_cancer.abc_c_features import (
     fixed_pathway_burden_family,
     functional_role_burden_family,
     load_fixed_groups,
+    pathway_mutation_type_family,
 )
 from open_cancer.feature_family import fit_transform_family_set, transform_checked
 
@@ -87,3 +88,34 @@ def test_functional_roles_are_independently_switchable() -> None:
     assert values[names.index("sample__role_tumor_suppressor__lof_gene_count")] == 2
     assert set(bundle.registry) == {"functional_role_burden"}
     assert bundle.fitted_families[0].descriptor.external_knowledge[0].uri.startswith("https://")
+
+
+def test_pathway_mutation_types_count_affected_genes_once_per_type() -> None:
+    frame = fixture_frame()
+    frame.loc[0, "TP53"] = "R1* R2* R3H"
+    fitted = pathway_mutation_type_family(
+        tuple(frame.columns[1:]), knowledge_path()
+    ).fit(frame)
+    values = transform_checked(fitted, frame).toarray()[0]
+    names = fitted.descriptor.feature_names
+
+    assert values[names.index("sample__pathway_tp53__nonsense_gene_count")] == 1
+    assert values[names.index("sample__pathway_tp53__missense_gene_count")] == 1
+    assert values[names.index("sample__pathway_tp53__frameshift_gene_count")] == 0
+    assert fitted.descriptor.output_dimension == 50
+    assert fitted.descriptor.fit_scope == "stateless"
+
+
+def test_pathway_mutation_types_keep_all_five_parser_categories() -> None:
+    frame = fixture_frame()
+    frame.loc[0, "TP53"] = "R1H R2R R3* R4fs 4_5AA>G*"
+    fitted = pathway_mutation_type_family(
+        tuple(frame.columns[1:]), canonical_pathway_path()
+    ).fit(frame)
+    values = transform_checked(fitted, frame).toarray()[0]
+    names = fitted.descriptor.feature_names
+
+    for mutation_type in ("missense", "synonymous", "nonsense", "frameshift", "complex"):
+        assert values[
+            names.index(f"sample__pathway_tp53__{mutation_type}_gene_count")
+        ] == 1

@@ -12,7 +12,7 @@ import pandas as pd
 from scipy import sparse
 
 from open_cancer.feature_family import FeatureFamilyDescriptor, KnowledgeProvenance
-from open_cancer.mutation_features import parse_mutation_token
+from open_cancer.mutation_features import MUTATION_TYPES, parse_mutation_token
 
 GroupKind = Literal["pathways", "functional_roles"]
 
@@ -84,6 +84,40 @@ class FittedFixedGroupBurdenFamily:
 
 
 @dataclass(frozen=True)
+class FittedPathwayMutationTypeFamily:
+    """Count affected genes by mutation type inside each fixed pathway."""
+
+    descriptor: FeatureFamilyDescriptor
+    gene_columns: tuple[str, ...]
+    groups: dict[str, tuple[str, ...]]
+    intersections: dict[str, tuple[str, ...]]
+
+    def transform(self, frame: pd.DataFrame) -> sparse.csr_matrix:
+        missing = [gene for gene in self.gene_columns if gene not in frame.columns]
+        _require(not missing, f"입력에 유전자 열이 없습니다: {missing[:5]}")
+        type_index = {
+            mutation_type: index for index, mutation_type in enumerate(MUTATION_TYPES)
+        }
+        output = np.zeros(
+            (len(frame), len(self.groups) * len(MUTATION_TYPES)), dtype=np.float32
+        )
+        for group_index, group_name in enumerate(self.groups):
+            genes = self.intersections[group_name]
+            offset = group_index * len(MUTATION_TYPES)
+            for row_index, row in enumerate(
+                frame.loc[:, list(genes)].itertuples(index=False, name=None)
+            ):
+                for cell in row:
+                    observed_types = {
+                        parse_mutation_token(token).mutation_type
+                        for token in _tokens(cell)
+                    }
+                    for mutation_type in observed_types:
+                        output[row_index, offset + type_index[mutation_type]] += 1
+        return sparse.csr_matrix(output)
+
+
+@dataclass(frozen=True)
 class FixedGroupBurdenFamily:
     """Base implementation for pathway or role mutated/LOF-gene counts."""
 
@@ -138,6 +172,56 @@ class FixedGroupBurdenFamily:
         )
 
 
+@dataclass(frozen=True)
+class PathwayMutationTypeFamily:
+    """Stateless fixed-pathway mutation-type affected-gene counts."""
+
+    gene_columns: tuple[str, ...]
+    knowledge_path: Path
+    version: str = "1.0.0"
+
+    def fit(
+        self,
+        train_frame: pd.DataFrame,
+        target: pd.Series | None = None,
+    ) -> FittedPathwayMutationTypeFamily:
+        del target
+        missing = [gene for gene in self.gene_columns if gene not in train_frame.columns]
+        _require(not missing and self.gene_columns, "유전자 열 계약이 올바르지 않습니다.")
+        groups, document = load_fixed_groups(self.knowledge_path, kind="pathways")
+        available = set(self.gene_columns)
+        intersections = {
+            name: tuple(gene for gene in genes if gene in available)
+            for name, genes in groups.items()
+        }
+        empty = [name for name, genes in intersections.items() if not genes]
+        _require(not empty, f"대회 유전자와 교집합이 없는 pathway입니다: {empty}")
+        feature_names = tuple(
+            f"sample__pathway_{name}__{mutation_type}_gene_count"
+            for name in groups
+            for mutation_type in MUTATION_TYPES
+        )
+        provenance = KnowledgeProvenance.from_file(
+            self.knowledge_path,
+            source=str(document["source"]),
+            version=str(document["version"]),
+            license=str(document["license"]),
+            uri=str(document["source_url"]),
+        )
+        return FittedPathwayMutationTypeFamily(
+            descriptor=FeatureFamilyDescriptor(
+                name="pathway_mutation_type_composition",
+                version=self.version,
+                fit_scope="stateless",
+                feature_names=feature_names,
+                external_knowledge=(provenance,),
+            ),
+            gene_columns=self.gene_columns,
+            groups=groups,
+            intersections=intersections,
+        )
+
+
 def fixed_pathway_burden_family(
     gene_columns: tuple[str, ...], knowledge_path: Path
 ) -> FixedGroupBurdenFamily:
@@ -148,3 +232,9 @@ def functional_role_burden_family(
     gene_columns: tuple[str, ...], knowledge_path: Path
 ) -> FixedGroupBurdenFamily:
     return FixedGroupBurdenFamily(gene_columns, knowledge_path, "functional_roles")
+
+
+def pathway_mutation_type_family(
+    gene_columns: tuple[str, ...], knowledge_path: Path
+) -> PathwayMutationTypeFamily:
+    return PathwayMutationTypeFamily(gene_columns, knowledge_path)
