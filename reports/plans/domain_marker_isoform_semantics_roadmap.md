@@ -28,8 +28,8 @@
 | A1 | 고정 표지 패널 피처 구현 | #299 | 해당 없음 | #301 | COMPLETED | N/A | 20개 후보 구현·테스트 | A3 완료 |
 | A2 | Feature Spec v1/EXP-229 대비 의미 중복 감사 | #299 | explore | #301 | COMPLETED | N/A | FGFR3 any·single-panel multi 중복/상수 확인 | fold-local mask 적용 |
 | A3 | 고정 표지 패널 canonical 5-fold | #302 | EXP-302 | #305 | REJECTED | 0.4212799841 | EXP-229 대비 -0.0017085904 | [보고서](../exp302_observable_marker_proxies/README.md), Track A 종료 |
-| B0 | Ensembl annotation snapshot·허용 범위 확인 | #307 | 해당 없음 | 작업 중 | COMPLETED | N/A | release 116 동결·외부 annotation 허용 미확인 | [manifest](../../knowledge/ensembl_isoform_annotation_v1.json) |
-| B1 | isoform token 의미 QC | #307 | explore | 작업 중 | COMPLETED | N/A | coverage 충분·train/test 의미 분포 큰 차이 | [보고서](../analysis/isoform_residue_semantics/README.md) |
+| B0 | Ensembl annotation snapshot·허용 범위 확인 | #307 | 해당 없음 | #308 | PR_OPEN | N/A | release 116 동결·외부 annotation 허용 미확인 | [manifest](../../knowledge/ensembl_isoform_annotation_v1.json) |
+| B1 | isoform token 의미 QC | #307 | explore | #308 | PR_OPEN | N/A | coverage 충분·train/test 의미 분포 큰 차이 | [보고서](../analysis/isoform_residue_semantics/README.md) |
 | B2 | isoform 신뢰도 피처 ablation | 미발급 | 미발급 | 미발급 | BLOCKED | N/A | 주최측 외부 annotation 허용 확인 필요 | 허용 확인 전 실험 금지 |
 | C | Track A+B 조건부 조합 | 미발급 | 미발급 | 미발급 | REJECTED | N/A | Track A gate 실패 | 조합 실험을 열지 않음 |
 
