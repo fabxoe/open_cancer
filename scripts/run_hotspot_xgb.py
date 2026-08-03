@@ -679,6 +679,7 @@ def finalize_saved_run(
     config_path: Path,
     *,
     runner_command: str,
+    fold_feature_builder: Any | None = None,
 ) -> None:
     """Validate and verify a completed run after post-processing interruption."""
     config_path = config_path.resolve()
@@ -703,6 +704,8 @@ def finalize_saved_run(
         submission_path,
         feature_dir / "test_features.npz",
     )
+    if fold_feature_builder is not None:
+        required = (*required, feature_dir / "train_features.npz")
     missing = [str(path) for path in required if not path.is_file()]
     if missing:
         raise FileNotFoundError(f"finalize에 필요한 기존 산출물이 없습니다: {missing}")
@@ -716,6 +719,40 @@ def finalize_saved_run(
     )
     test_features = sparse.load_npz(feature_dir / "test_features.npz")
     test_ids = pd.read_csv(TEST_PATH, usecols=["ID"], dtype=str)["ID"]
+    fold_test_features: list[sparse.csr_matrix] | None = None
+    if fold_feature_builder is not None:
+        split_path = ROOT / config["split"]["path"]
+        train_meta = pd.read_csv(TRAIN_PATH, usecols=["ID", "SUBCLASS"], dtype=str)
+        folds_frame = pd.read_csv(split_path, dtype={"ID": str, "fold": int})
+        train = train_meta.merge(
+            folds_frame, on="ID", how="left", validate="one_to_one", sort=False
+        )
+        if not train["ID"].equals(train_meta["ID"]) or train["fold"].isna().any():
+            raise ValueError("fold 재구성 과정에서 train 순서 또는 커버리지가 어긋났습니다.")
+        label_encoder = LabelEncoder().fit(list(CLASS_LABELS))
+        y = label_encoder.transform(train["SUBCLASS"]).astype(np.int32)
+        x_all = sparse.load_npz(feature_dir / "train_features.npz")
+        all_feature_names = tuple(
+            json.loads((feature_dir / "feature_names.json").read_text(encoding="utf-8"))
+        )
+        fold_test_features = []
+        for fold in range(config["split"]["n_splits"]):
+            valid_mask = train["fold"].eq(fold).to_numpy()
+            train_indices = np.flatnonzero(~valid_mask)
+            valid_indices = np.flatnonzero(valid_mask)
+            extra = fold_feature_builder(
+                fold=fold,
+                train_indices=train_indices,
+                valid_indices=valid_indices,
+                base_train=x_all[train_indices],
+                base_validation=x_all[valid_indices],
+                base_test=test_features,
+                base_feature_names=all_feature_names,
+                target=y[train_indices],
+            )
+            fold_test_features.append(
+                sparse.hstack([test_features, extra.test], format="csr", dtype=np.float32)
+            )
     audit_paths = [
         model_dir / f"fold_{fold:02d}_checkpoint_audit.json"
         for fold in range(config["split"]["n_splits"])
@@ -737,6 +774,7 @@ def finalize_saved_run(
         test_ids=test_ids,
         test_probability_path=test_probability_path,
         submission_path=submission_path,
+        fold_test_features=fold_test_features,
         extra_artifact_paths=[
             ("checkpoint_iteration_audit", path) for path in audit_paths
         ],
