@@ -221,6 +221,19 @@ def main() -> None:
                     prevalidated_source_commit=source_commit,
                 )
 
+    seed_source_commits = {
+        json.loads(seed_paths(seed)["manifest"].read_text(encoding="utf-8"))[
+            "source_commit"
+        ]
+        for seed in seeds
+    }
+    if len(seed_source_commits) != 1:
+        raise RuntimeError(
+            "모든 seed는 같은 학습 source commit이어야 합니다: "
+            f"{sorted(seed_source_commits)}"
+        )
+    training_source_commit = seed_source_commits.pop()
+
     out_report = ROOT / "reports" / SLUG
     out_repro = ROOT / "reproducibility" / SLUG
     out_models = ROOT / "models" / SLUG
@@ -312,6 +325,17 @@ def main() -> None:
     seed42_comparison = reference_comparison(
         seed_paths(42)["oof"], seed_paths(42)["test_probability"], config
     )
+    seed_summary_path = out_report / "seed_summary.json"
+    write_json(
+        seed_summary_path,
+        {
+            "experiment_id": EXP_ID,
+            "training_source_commit": training_source_commit,
+            "finalization_source_commit": source_commit,
+            "seeds": seed_metrics,
+            "seed42_reference_comparison": seed42_comparison,
+        },
+    )
     owner = git("config", "user.name") or os.environ.get("USER", "unknown")
     finished = datetime.now(timezone.utc)
     environment = {
@@ -331,7 +355,8 @@ def main() -> None:
             "parent_experiment": config["parent_experiment"],
             "branch": context.branch,
             "owner": owner,
-            "source_commit": source_commit,
+            "source_commit": training_source_commit,
+            "finalization_source_commit": source_commit,
             "dirty_worktree": False,
             "started_at": started.isoformat(),
         },
@@ -368,7 +393,7 @@ def main() -> None:
         "owner": owner,
         "issue_number": ISSUE,
         "parent_experiment": config["parent_experiment"],
-        "git_commit": source_commit,
+        "git_commit": training_source_commit,
         "started_at": started.isoformat(),
         "finished_at": finished.isoformat(),
         "primary_metric": "macro_f1",
@@ -387,14 +412,13 @@ def main() -> None:
             "submission": relative_posix(submission_path, ROOT),
             "models": relative_posix(out_models, ROOT),
             "submission_sha256": submission_check["sha256"],
+            "seed_summary": relative_posix(seed_summary_path, ROOT),
         },
         "notes": (
             "Five pre-fixed seeds with identical canonical folds and EXP-219 "
             "Macro-F1 checkpoint policy; fixed 0.2 probability mean. No seed or "
             "weight selection used OOF outcomes, test data, or Public LB."
         ),
-        "seed_runs": seed_metrics,
-        "seed42_reference_comparison": seed42_comparison,
     }
     write_json(metrics_path, metrics)
     validate_json_document(metrics_path, ROOT / "schemas/experiment_metrics.schema.json")
@@ -484,13 +508,14 @@ def main() -> None:
         ("metrics", metrics_path),
         ("resolved_config", resolved_path),
         ("comparison", comparison_path),
+        ("seed_summary", seed_summary_path),
         *[("seed_artifact_manifest", seed_paths(seed)["manifest"]) for seed in seeds],
     ]
     manifest = {
         "experiment_id": EXP_ID,
         "issue_number": ISSUE,
         "reproducibility_status": "INFERENCE_VERIFIED",
-        "source_commit": source_commit,
+        "source_commit": training_source_commit,
         "source_tag": None,
         "dirty_worktree": False,
         "data_manifest": relative_posix(data_manifest_path, ROOT),
