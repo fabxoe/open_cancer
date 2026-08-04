@@ -1,0 +1,185 @@
+{
+  "experiment_id": "EXP-253",
+  "issue_number": 253,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "b9d296ea164beb4b33e5797b7b1b08eee45f54f9",
+  "source_tag": "exp-253-repro-v1",
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp253_lightgbm_xgboost_blend/data_manifest.json",
+  "environment": "reproducibility/exp253_lightgbm_xgboost_blend/environment.json",
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-253-repro-v1",
+  "verifier": "2heej",
+  "verified_at": "2026-08-03T08:18:31.247306+00:00",
+  "artifacts": [
+    {
+      "kind": "submission",
+      "path": "submissions/exp253_lightgbm_xgboost_blend.csv",
+      "size_bytes": 38193,
+      "sha256": "c57c06bcfadae47741f9c5392ecf73fc3d16ed36ed410901b73acda81b320f48",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#submissions/exp253_lightgbm_xgboost_blend.csv"
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp253_lightgbm_xgboost_blend.csv",
+      "size_bytes": 3350774,
+      "sha256": "f4ac3cc45fdc933e392ceba7dc55af1118b05bad5e0c32160868f604066df752",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#oof/exp253_lightgbm_xgboost_blend.csv"
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp253_lightgbm_xgboost_blend_test_proba.csv",
+      "size_bytes": 1341126,
+      "sha256": "8c7e0f48c222fe57cc1d67b6e952d9dd53daceaaf5b6d97f80bd4cf7b9f8d935",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#preds/exp253_lightgbm_xgboost_blend_test_proba.csv"
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp253_lightgbm_xgboost_blend/metrics.json",
+      "size_bytes": 11169,
+      "sha256": "736c7a19b1ab7edae1c514e0e6560b538fef7bb53122e990be56894b5eff566a",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp253_lightgbm_xgboost_blend/config.resolved.yaml",
+      "size_bytes": 1884,
+      "sha256": "dd00802826dc6541b445f83b978fe4d076af2e42dc2e6e998f200f63d783e716",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#reproducibility/exp253_lightgbm_xgboost_blend/config.resolved.yaml"
+    },
+    {
+      "kind": "comparison",
+      "path": "reproducibility/exp253_lightgbm_xgboost_blend/comparison.json",
+      "size_bytes": 477,
+      "sha256": "9ae2591938dfe672d6825f81bcce6b2766313f4d79379823671e368ade801bb5",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp209_lightgbm_v2_performance/fold_00.txt",
+      "size_bytes": 12939308,
+      "sha256": "7e17a06b17b1a9e95d7ca6702236f1529ee5f2ce7b911536765efc47aff75c0e",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#models/exp209_lightgbm_v2_performance/fold_00.txt"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp209_lightgbm_v2_performance/fold_01.txt",
+      "size_bytes": 13466141,
+      "sha256": "a706d2dc838511fee86db88ce3801f8890b7197e7dbce0556edf33f3621de7d4",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#models/exp209_lightgbm_v2_performance/fold_01.txt"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp209_lightgbm_v2_performance/fold_02.txt",
+      "size_bytes": 12928482,
+      "sha256": "42a81f92c9498ac4f8e111e0f49455879836a288355da09244249b6c5b0b2a4c",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#models/exp209_lightgbm_v2_performance/fold_02.txt"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp209_lightgbm_v2_performance/fold_03.txt",
+      "size_bytes": 12771788,
+      "sha256": "70875ca133e6911bdb4c99d658722bd45c6accd6c2c6b8fd9f380535cd7300e4",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#models/exp209_lightgbm_v2_performance/fold_03.txt"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp209_lightgbm_v2_performance/fold_04.txt",
+      "size_bytes": 12122087,
+      "sha256": "68a174cb0806215061368cfa6ab409cd4baadafcb21ff2ad75fa38991079f592",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#models/exp209_lightgbm_v2_performance/fold_04.txt"
+    },
+    {
+      "kind": "component_oof_probability",
+      "path": "oof/exp209_lightgbm_v2_performance.csv",
+      "size_bytes": 3537207,
+      "sha256": "d30db0e9fb28b965fea4bc3246163f3f5cbba357da161909a4169c95aa31d1c4",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#oof/exp209_lightgbm_v2_performance.csv"
+    },
+    {
+      "kind": "component_test_probability",
+      "path": "preds/exp209_lightgbm_v2_performance_test_proba.csv",
+      "size_bytes": 1410604,
+      "sha256": "b5a049cc98ab6aa7efb4d6278dff77498fff76080227defc60d3e06770ad721f",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#preds/exp209_lightgbm_v2_performance_test_proba.csv"
+    },
+    {
+      "kind": "component_resolved_config",
+      "path": "reproducibility/exp209_lightgbm_v2_performance/config.resolved.yaml",
+      "size_bytes": 4072,
+      "sha256": "47b1fcd150847dca0313fd5473cc66040f45557cd1ad855786e9bff582aa1872",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#reproducibility/exp209_lightgbm_v2_performance/config.resolved.yaml"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp229_pathway_mutation_types/fold_00.json",
+      "size_bytes": 10926305,
+      "sha256": "aa19f350bb9293c74b8eff795e96bf89f8fa3b25613d894bc5a222fb9f19516e",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#models/exp229_pathway_mutation_types/fold_00.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp229_pathway_mutation_types/fold_01.json",
+      "size_bytes": 10294318,
+      "sha256": "b575f49734e23ca642aa520281f54c1d977a5d3543638ef61bfc57ca4f829f32",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#models/exp229_pathway_mutation_types/fold_01.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp229_pathway_mutation_types/fold_02.json",
+      "size_bytes": 13186355,
+      "sha256": "7671434ac5a19a1a0a37296c795fdf541fc21a8bc7516ee1407950ea26258a61",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#models/exp229_pathway_mutation_types/fold_02.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp229_pathway_mutation_types/fold_03.json",
+      "size_bytes": 5650928,
+      "sha256": "88db6e18dc957ea43252d28ff8c2f282b2c345a2ea7d50d75f1d1cf7c87f6a4b",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#models/exp229_pathway_mutation_types/fold_03.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp229_pathway_mutation_types/fold_04.json",
+      "size_bytes": 8822846,
+      "sha256": "e383c7bf6338ae48dc82e61b112f4bd40991863b4d8a2e50d5cdaacc2e07ffae",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#models/exp229_pathway_mutation_types/fold_04.json"
+    },
+    {
+      "kind": "component_oof_probability",
+      "path": "oof/exp229_pathway_mutation_types.csv",
+      "size_bytes": 2117507,
+      "sha256": "40350af4b76b11add34977ecac2187416516ad778768b7088da26ae8c31d0e17",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#oof/exp229_pathway_mutation_types.csv"
+    },
+    {
+      "kind": "component_test_probability",
+      "path": "preds/exp229_pathway_mutation_types_test_proba.csv",
+      "size_bytes": 829579,
+      "sha256": "0aa4d05f79f43d4d1f526c2aa9ba29b66f6cc22daf99e39eefa2941e97426090",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#preds/exp229_pathway_mutation_types_test_proba.csv"
+    },
+    {
+      "kind": "component_resolved_config",
+      "path": "reproducibility/exp229_pathway_mutation_types/config.resolved.yaml",
+      "size_bytes": 43571,
+      "sha256": "dd2856e7d094c567339fb39730c904e8265e9dcd7da681d4783088c56dd6b82d",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz#reproducibility/exp229_pathway_mutation_types/config.resolved.yaml"
+    },
+    {
+      "kind": "release_bundle",
+      "path": "release-assets/exp253_lightgbm_xgboost_blend_repro.tar.gz",
+      "size_bytes": 41780655,
+      "sha256": "4a3ed42be870a7477333a0b60691980e7bd2d3d1694a4fa8b2729d36c50ff5d6",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-253-repro-v1/exp253_lightgbm_xgboost_blend_repro.tar.gz"
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

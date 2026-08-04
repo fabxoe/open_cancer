@@ -85,6 +85,12 @@ AI는 작업 전에 다음을 확인한다.
 - `mlogloss` objective/eval metric을 사용해 학습하더라도 그것이 공식 평가 지표를
   바꾸지는 않는다. checkpoint 선택 기준이 Macro F1과 다르면 validation fold
   안에서 두 기준을 통제 비교해 resolved config와 metrics에 기록한다.
+- checkpoint 선택 기준은 resolved config에 명시하고, 기준을 바꾸면 같은 모델의
+  단순 재실행이 아니라 별도 Experiment Issue로 통제 비교한다. validation fold의
+  Macro F1으로 checkpoint를 고른 뒤 같은 fold 점수를 보고하면 선택 과정에서 생긴
+  낙관 편향 가능성을 보고서에 명시한다. 이 결과는 공식 OOF 비교에는 사용할 수
+  있지만, 현재 최고·최종 후보는 반복 seed, 독립 재학습 또는 실제 Public 결과로
+  안정성을 추가 확인한다.
 - 대회 데이터 안내:
   <https://dacon.io/competitions/official/236355/data>
 
@@ -125,6 +131,45 @@ SKCM, STES, TGCT, THCA, THYM, UCEC
 - train과 test의 유전자 컬럼명과 순서가 완전히 같아야 한다.
 - 외부 데이터를 사용할 경우 출처, 버전, 라이선스, 다운로드 일시와 파일 해시를
   반드시 기록한다.
+
+### Track B Ensembl annotation 한정 예외
+
+2026-08-04 팀장 승인에 따라 Task Issue #311과 그 구현에서 파생되는 첫 번째
+불확실 residue-position mask 공식 실험에만 Ensembl release 116의 정적
+GRCh38 GTF·protein FASTA annotation을 사용할 수 있다.
+
+- 허용: MANE Select, Ensembl canonical, 알려진 protein isoform sequence에 대한
+  입력 변이 token의 위치·reference amino-acid 일치 범주
+- 허용 목적: `POSITION_VALID_REF_MISMATCH`, `OUTSIDE_ALL_KNOWN_ISOFORMS`,
+  `COMPLEX_OR_UNMAPPABLE` token을 residue-position 집계에서 제외하는 사전 고정 mask
+- 금지: 외부 환자 자료, 암종별 변이 빈도, 임상 label·위험도·치료 정보, test 분포나
+  Public LB를 본 규칙·threshold 조정
+- 분리: sample 범주 요약과 isoform-relative bin은 #311 예외에 포함하지 않으며
+  별도 Issue와 명시적 범위 검토가 필요하다.
+
+2026-08-04 추가 팀장 승인으로 Task Issue #315와 그 구현에서 파생되는 첫
+`sample 범주 요약` 공식 실험에도 같은 Ensembl release 116 snapshot을 사용할 수
+있다. EXP-313의 manifest SHA-256을 보존하기 위해 기존 manifest를 수정하지 않고
+`knowledge/ensembl_isoform_annotation_b2_summary_v1.json`을 별도 revision으로
+사용한다. 허용 피처는 여섯 상호 배타 의미 범주의 token `count`와 `any` indicator
+각 1개, 총 12개로 고정한다. ratio, 학습 threshold, 암종별 가중치와 test/Public
+기반 변경은 허용하지 않는다. isoform-relative bin은 여전히 별도 Issue 승인이
+필요하다.
+
+2026-08-04 Task Issue #307의 팀장 승인 범위를 B2-3까지 명시적으로 확장하고,
+구현은 별도 Task Issue #325에서 관리한다. 과거 EXP-313·317 manifest의 해시를
+보존하기 위해 `knowledge/ensembl_isoform_relative_bin_v1.json`을 별도 revision으로
+사용한다. simple substitution이 일치하는 sequence는 MANE Select → Ensembl
+canonical → other protein-coding isoform 순으로 선택하고, 같은 우선순위에서는
+transcript ID·protein ID 사전순으로 대표 sequence를 고정한다. 잔기 위치를 대표
+protein 길이로 나눈 값은 사전 고정 5개 구간으로 변환한다. 일치하지 않거나 복잡한
+token은 값 0과 observed indicator로 구분한다. 이 값은 실제 발현 transcript나
+임상적 isoform의 정답으로 해석하지 않는다. SUBCLASS·test 분포·Public LB로
+우선순위, bin 경계나 대표 sequence를 변경하지 않는다.
+
+resolved config에는 Ensembl release, assembly, manifest·annotation cache 경로와
+SHA-256, 승인 근거 Issue comment URL을 저장한다. 이 예외는 프로젝트의 기본값인
+`외부 데이터 사용 안 함`을 일반적으로 변경하지 않는다.
 
 대회 원본 CSV와 여기서 직접 생성한 데이터 리포트는 주최측 정책에 따라 GitHub에
 올리지 않는다. 팀원은 주최측 공식 다운로드 또는 팀에서 승인한 비공개 전달
@@ -568,6 +613,31 @@ resolved config에는 실행에 실제 적용된 항목만 기록한다.
 - `TRAINING_VERIFIED`: 비작성자가 clean 환경에서 재학습까지 검증
 - `FAILED`: 재현 검증 실패
 
+재현 상태에는 검증 범위를 함께 기록한다. 저장 checkpoint를 다시 읽어 같은 제출을
+만드는 `INFERENCE_VERIFIED`와, 모델을 처음부터 다시 학습하는
+`TRAINING_VERIFIED`는 서로 대체하지 않는다. 특히 macOS·Windows·Linux,
+CPU·CUDA와 라이브러리 빌드가 달라진 재학습은 다음 항목을 comparison과 환경
+manifest에 남긴다.
+
+- 원 실행과 재현 실행의 OS, 아키텍처, CPU/GPU, 모델 라이브러리·compiler 빌드
+- thread 수, tree method, deterministic 옵션과 seed
+- OOF·test 라벨 일치율, 확률 오차, Macro F1 차이
+- 같은 플랫폼 검증인지 교차 플랫폼 검증인지와 통과하지 못한 조건
+
+플랫폼이 달라 checkpoint byte나 재학습 확률이 달라져도 저장 checkpoint 추론으로
+원 제출을 재생성한 사실은 삭제하지 않는다. 다만 사전 통과 조건을 만족하지 못한
+교차 플랫폼 재학습을 `TRAINING_VERIFIED`로 승격하거나, 같은 플랫폼에서만 확인한
+결과를 교차 플랫폼 결정론으로 확대 해석하지 않는다.
+
+`TRAINING_VERIFIED` manifest에는 `verification_scope`를 필수로 저장한다. 검증
+operation은 `training_reproduction`, 환경 관계는 `same_environment`,
+`same_platform`, `cross_platform` 중 하나이며 claim은 기존 확률·라벨·Macro F1
+허용 조건을 통과한 `tolerance_verified`여야 한다. 환경 관계가 `unknown`이면
+승격하지 않는다. XGBoost `tree_method=hist`에서 실제로 관측한 플랫폼 차이와
+완화책은
+[`XGBoost hist 교차 플랫폼 재현성 감사`](reports/analysis/xgboost_hist_cross_platform_reproducibility.md)를
+따른다.
+
 리더보드 제출 전 최소 `INFERENCE_VERIFIED`가 필요하다. 현재 최고 모델과 최종 수상
 후보는 `TRAINING_VERIFIED`가 아니면 최종 모델로 지정할 수 없다.
 
@@ -591,11 +661,12 @@ checkpoint와 제출 파일을 생성하는 공식 실험 runner는 실행 전�
 | 탐색 실행 | EXP-ID 없음 | 필요 없음 |
 | 공식 Local 실험 | `NOT_STARTED` 허용 | resolved config, metrics, History |
 | 리더보드 제출 | `INFERENCE_VERIFIED` 이상 | manifest, checkpoint 추론, 제출 SHA-256 |
+| 팀 상위·앙상블 부모 | `INFERENCE_VERIFIED` 권장 | Release bundle, OOF·test 확률, SHA-256 |
 | 현재 최고·최종 후보 | `TRAINING_VERIFIED` | 비작성자의 독립 재학습 검증 |
 
 따라서 일반 Local 실험을 시작할 때 manifest 경로, Release, 검증자 등을 미리
-작성하지 않는다. 모델이 실제로 제출 또는 최종 후보가 되었을 때 해당 증빙을
-추가한다.
+작성하지 않는다. 모델이 실제로 제출되거나 팀 상위·앙상블 부모·최종 후보가 되어
+다른 팀원이 산출물을 사용해야 할 때 해당 증빙을 추가한다.
 
 ### 실험별 증빙 구조
 
@@ -639,7 +710,8 @@ reproducibility/exp012_<slug>/
 
 - raw data는 Git commit, 재현 번들과 Release asset에 포함하지 않는다. 재현 시
   주최측 공식 경로로 별도 확보하며, 실험 manifest에는 파일 SHA-256만 기록한다.
-- 리더보드 제출 모델의 checkpoint와 재현 번들은 GitHub Release asset으로 보관한다.
+- 리더보드 제출 모델뿐 아니라 팀 Local/Public 상위 모델과 앙상블 부모 모델의
+  checkpoint·OOF·test 확률·재현 번들은 GitHub Release asset으로 보관한다.
 - 재현 번들에는 최소한 fold checkpoint, OOF 확률, test 확률, 제출 CSV와
   `config.resolved.yaml`을 포함한다. 원본 데이터와 가공 데이터 원본은 포함하지
   않는다.
@@ -709,6 +781,51 @@ CI는 History의 리더보드 제출 이력을 기준으로 새 제출 모델에
 후속 작업을 함께 기록한다. 새 실험을 편의상 예외 목록에 추가해서는 안 된다.
 현재 예외도 해당 실험의 재현성 복구가 끝나면 즉시 삭제한다.
 
+### 팀 상위 모델 산출물 요청·공유 규칙
+
+이 절은 리더보드 제출 여부와 무관하게 팀 상위 모델, 최종 후보와 앙상블 부모의
+OOF·test 확률·checkpoint를 팀원이 안전하게 재사용하기 위한 공통 절차다. 모든
+Codex와 Claude Code는 작업 시작 시 이 절을 읽고, 브라우저·메신저로 파일을
+개별 전달하는 대신 아래 절차를 사용한다.
+
+1. 산출물이 아직 Release에 없으면 GitHub의 **실험 산출물 공유 요청** Issue Form을
+   사용한다. 요청자는 EXP-ID와 필요한 artifact kind만 선택하고, 담당자는 오른쪽
+   Assignees에서 지정한다. 별도 EXP-ID는 만들지 않는다.
+2. 게시 담당자는 원 실험의 정확한 checkpoint, OOF, test 확률, submission과
+   resolved config의 경로·크기·SHA-256을 manifest에 기록한다. 위의
+   `prepare_reproducibility_bundle.py`로 새 버전 Release bundle을 만들고, asset을
+   업로드한 뒤 manifest와 Release URL을 같은 Task PR에 반영한다.
+3. 기존 Release asset을 덮어쓰지 않는다. 내용이 바뀌면 `v2`, `v3`처럼 새 tag와
+   asset을 만들고, 원 실험의 점수·재현 상태를 임의로 변경하지 않는다.
+4. 수신자는 manifest 반영 PR이 `main`에 병합된 뒤 최신 `main`에서 다음 명령을
+   실행한다. 기본값은 checkpoint, OOF 확률, test 확률과 resolved config다.
+
+   ```bash
+   uv run python scripts/fetch_experiment_artifacts.py --experiment EXP-253
+
+   # 앙상블에 필요한 확률만 받을 때
+   uv run python scripts/fetch_experiment_artifacts.py \
+     --experiment EXP-253 \
+     --kinds oof_probability test_probability
+   ```
+
+5. 수신 스크립트는 EXP-ID로 manifest를 하나만 찾고 Release bundle의 크기와
+   SHA-256, 각 파일의 크기·SHA-256, archive 경로 안전성을 검증한다. 해시가 같은
+   기존 파일은 재사용하고, 다른 파일은 `--overwrite` 없이는 덮어쓰지 않는다.
+6. 복원 위치는 manifest의 표준 상대경로인 `models/`, `oof/`, `preds/`와
+   `reproducibility/`이다. `models/`, `oof/`, `preds/`와 다운로드 archive는 Git
+   제외 대상이며 commit, PR, Issue 첨부물로 올리지 않는다.
+7. raw data와 외부 라이선스 데이터는 어떤 팀 공유 bundle에도 포함하지 않는다.
+   공개 저장소의 GitHub Release asset은 외부에서도 다운로드할 수 있다. 대회 규정
+   또는 라이선스상 공개할 수 없는 산출물은 public Release에 올리지 말고, 팀이
+   승인한 비공개 저장소에 보관하되 동일 SHA-256과 접근 URI를 manifest에 기록한다.
+8. 현재 Local/Public 최고가 갱신되거나 새 앙상블이 특정 실험을 부모로 채택하면,
+   담당자는 수동 요청을 기다리지 않고 해당 모델의 manifest·Release bundle 상태를
+   확인한다. 누락됐다면 즉시 일반 Task Issue로 보강한다.
+
+Issue는 책임과 완료 상태를 추적하고, Release는 대형 immutable 파일을 보관하며,
+manifest는 파일의 정체성과 해시를 증명한다. 이 세 역할을 하나로 섞지 않는다.
+
 ---
 
 ## 9. `EXPERIMENT_HISTORY.md` 갱신 규칙
@@ -754,7 +871,8 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
 - 제출 CSV마다 제출 이력 행을 별도로 추가한다.
 - 재현 검증마다 비작성자와 증빙 경로를 재현성 검증 이력에 추가한다.
 - 일반 Local 실험 완료에는 resolved config, metrics와 History만 필요하다.
-- report는 분석이 필요할 때, 재현 manifest는 리더보드에 제출할 때 추가한다.
+- report는 분석이 필요할 때 추가한다. 재현 manifest는 리더보드 제출 또는 팀
+  상위·앙상블 부모 산출물 공유가 필요할 때 추가한다.
 - 보고서가 있으면 History에 내용을 복사하지 않고 상대경로 링크만 추가한다.
 - 가설, 부모 실험과 변경 변수 설명은 필수가 아니다. 파라미터 전체를 History에
   복사하지 말고 resolved config를 연결한다.

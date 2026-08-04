@@ -1,0 +1,10 @@
+{
+  "verified_at": "2026-08-03T09:41:48.286924+00:00",
+  "python": "3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "numpy": "2.4.6",
+  "pandas": "3.0.5",
+  "scikit_learn": "1.9.0",
+  "xgboost": "3.2.0",
+  "uv_lock_sha256": "87876a7c41c030503ed1b95a2d1254c5ab395cfbb865c7538fa5de42bd28902a"
+}

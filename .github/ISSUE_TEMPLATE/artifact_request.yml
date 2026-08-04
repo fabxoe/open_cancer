@@ -1,0 +1,49 @@
+name: 실험 산출물 공유 요청
+description: 팀 상위·앙상블 부모 모델의 OOF, test 확률 또는 checkpoint 요청
+title: "[ARTIFACT] EXP-"
+labels:
+  - task
+body:
+  - type: markdown
+    attributes:
+      value: |
+        담당자는 오른쪽 **Assignees**에서 선택합니다. EXPERIMENT_HISTORY와 manifest를 먼저 확인하고, 브라우저에서 파일을 개별 전달하지 않습니다.
+
+        게시자는 검증된 GitHub Release 번들과 manifest를 PR로 반영하고, 요청자는 병합 후 `fetch_experiment_artifacts.py`로 받습니다.
+  - type: input
+    id: experiment_id
+    attributes:
+      label: 실험 ID
+      description: 산출물을 요청할 공식 실험 ID
+      placeholder: EXP-253
+    validations:
+      required: true
+  - type: checkboxes
+    id: artifact_kinds
+    attributes:
+      label: 필요한 산출물
+      description: 필요한 항목만 선택하세요. OOF 앙상블에는 보통 OOF와 test 확률이 필요합니다.
+      options:
+        - label: OOF probability
+        - label: Test probability
+        - label: Checkpoint
+        - label: Resolved config
+        - label: Submission
+  - type: textarea
+    id: purpose
+    attributes:
+      label: 사용 목적
+      description: 앙상블, 독립 검증, 오류 상관 분석 등 필요한 경우만 적습니다.
+    validations:
+      required: false
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: 공개·보안 확인
+      options:
+        - label: 원본 데이터와 외부 라이선스 데이터는 요청하지 않습니다.
+          required: true
+        - label: 이 저장소가 공개 저장소이면 GitHub Release asset도 공개 다운로드된다는 점을 확인했습니다.
+          required: true
+        - label: 받은 models, OOF, preds 파일은 Git에 commit하지 않습니다.
+          required: true

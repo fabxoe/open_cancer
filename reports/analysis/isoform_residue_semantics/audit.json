@@ -1,0 +1,2534 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-08-03T18:24:30.422778+00:00",
+  "analysis_only": true,
+  "target_used": false,
+  "public_leaderboard_used": false,
+  "external_annotation_permission": "CONFIRMED_ALLOWED_TRACK_B_B2_TEAM_LEAD_EXCEPTION",
+  "annotation_manifest_path": "knowledge/ensembl_isoform_annotation_v1.json",
+  "annotation_manifest_sha256": "568ea31f5b7fc7ff47d181fe552d39f3b9185f8d0a76cbb2a49d06be022d5bc0",
+  "annotation_release": 116,
+  "annotation_cache_sha256": "b9565339f1755d5b07e782c39064207310fa6c254b2e915a15492f4f38903daa",
+  "gene_columns": 4384,
+  "gtf_mapped_gene_symbols": 4375,
+  "gtf_gene_symbol_coverage": 0.9979470802919708,
+  "protein_sequence_mapped_gene_symbols": 4370,
+  "protein_sequence_gene_coverage": 0.9968065693430657,
+  "non_protein_coding_mapped_genes": [
+    "CAST",
+    "CROCCP2",
+    "HBBP1",
+    "MALL",
+    "PTTG3P",
+    "PVT1",
+    "XIST"
+  ],
+  "unmapped_gene_symbols": [
+    "CENPJ",
+    "CIR1",
+    "GPR182",
+    "ILVBL",
+    "METTL7B",
+    "NDUFA4",
+    "PRPF4B",
+    "SLC22A18",
+    "THEG"
+  ],
+  "transcript_count": 111778,
+  "mane_gene_count": 4364,
+  "canonical_gene_count": 4370,
+  "train": {
+    "dataset": "train",
+    "rows": 6201,
+    "gene_columns": 4384,
+    "mutated_gene_cells": 218893,
+    "mapped_gene_cells": 218505,
+    "mapped_gene_cell_rate": 0.998227444459165,
+    "non_protein_coding_gene_cells": 62,
+    "tokens_total": 255164,
+    "simple_substitution_tokens": 244912,
+    "simple_substitution_rate": 0.9598219184524462,
+    "category_counts": {
+      "MANE_MATCH": 225829,
+      "CANONICAL_MATCH": 192,
+      "OTHER_ISOFORM_MATCH": 16135,
+      "POSITION_VALID_REF_MISMATCH": 2250,
+      "OUTSIDE_ALL_KNOWN_ISOFORMS": 82,
+      "COMPLEX_OR_UNMAPPABLE": 10676
+    },
+    "category_rates": {
+      "MANE_MATCH": 0.8850347227665345,
+      "CANONICAL_MATCH": 0.0007524572431847753,
+      "OTHER_ISOFORM_MATCH": 0.06323384176451223,
+      "POSITION_VALID_REF_MISMATCH": 0.008817858318571585,
+      "OUTSIDE_ALL_KNOWN_ISOFORMS": 0.0003213619476101644,
+      "COMPLEX_OR_UNMAPPABLE": 0.041839757959586776
+    },
+    "other_isoform_match_beyond_mane_or_canonical_length": 488,
+    "other_isoform_match_beyond_mane_or_canonical_length_rate": 0.0019124954930946371,
+    "sample_category_presence_counts": {
+      "MANE_MATCH": 6073,
+      "CANONICAL_MATCH": 146,
+      "OTHER_ISOFORM_MATCH": 3460,
+      "POSITION_VALID_REF_MISMATCH": 1123,
+      "OUTSIDE_ALL_KNOWN_ISOFORMS": 77,
+      "COMPLEX_OR_UNMAPPABLE": 3451
+    },
+    "max_position_low_confidence_cells": 11725,
+    "max_position_low_confidence_rate": 0.0535649838048727,
+    "top_genes_by_token_count": [
+      {
+        "gene": "TP53",
+        "token_count": 1963,
+        "category_counts": {
+          "MANE_MATCH": 1700,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 263
+        }
+      },
+      {
+        "gene": "PCLO",
+        "token_count": 1111,
+        "category_counts": {
+          "MANE_MATCH": 1072,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 1,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 38
+        }
+      },
+      {
+        "gene": "SYNE1",
+        "token_count": 1093,
+        "category_counts": {
+          "MANE_MATCH": 1074,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 19
+        }
+      },
+      {
+        "gene": "RYR2",
+        "token_count": 1045,
+        "category_counts": {
+          "MANE_MATCH": 1025,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 20
+        }
+      },
+      {
+        "gene": "PIK3CA",
+        "token_count": 801,
+        "category_counts": {
+          "MANE_MATCH": 799,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 2
+        }
+      },
+      {
+        "gene": "RYR1",
+        "token_count": 710,
+        "category_counts": {
+          "MANE_MATCH": 700,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 10
+        }
+      },
+      {
+        "gene": "SPTA1",
+        "token_count": 671,
+        "category_counts": {
+          "MANE_MATCH": 657,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 14
+        }
+      },
+      {
+        "gene": "DST",
+        "token_count": 655,
+        "category_counts": {
+          "MANE_MATCH": 62,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 574,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 19
+        }
+      },
+      {
+        "gene": "KMT2D",
+        "token_count": 572,
+        "category_counts": {
+          "MANE_MATCH": 487,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 85
+        }
+      },
+      {
+        "gene": "DMD",
+        "token_count": 558,
+        "category_counts": {
+          "MANE_MATCH": 534,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 4,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 20
+        }
+      },
+      {
+        "gene": "RELN",
+        "token_count": 547,
+        "category_counts": {
+          "MANE_MATCH": 536,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 11
+        }
+      },
+      {
+        "gene": "PLEC",
+        "token_count": 540,
+        "category_counts": {
+          "MANE_MATCH": 42,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 484,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 14
+        }
+      },
+      {
+        "gene": "AHNAK",
+        "token_count": 534,
+        "category_counts": {
+          "MANE_MATCH": 517,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 2,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 15
+        }
+      },
+      {
+        "gene": "APC",
+        "token_count": 529,
+        "category_counts": {
+          "MANE_MATCH": 451,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 78
+        }
+      },
+      {
+        "gene": "PKHD1",
+        "token_count": 515,
+        "category_counts": {
+          "MANE_MATCH": 508,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 7
+        }
+      },
+      {
+        "gene": "MXRA5",
+        "token_count": 496,
+        "category_counts": {
+          "MANE_MATCH": 488,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 8
+        }
+      },
+      {
+        "gene": "COL6A3",
+        "token_count": 489,
+        "category_counts": {
+          "MANE_MATCH": 483,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 6
+        }
+      },
+      {
+        "gene": "ATRX",
+        "token_count": 479,
+        "category_counts": {
+          "MANE_MATCH": 339,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 1,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 139
+        }
+      },
+      {
+        "gene": "BRAF",
+        "token_count": 470,
+        "category_counts": {
+          "MANE_MATCH": 467,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 3
+        }
+      },
+      {
+        "gene": "PTEN",
+        "token_count": 458,
+        "category_counts": {
+          "MANE_MATCH": 322,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 136
+        }
+      },
+      {
+        "gene": "SCN10A",
+        "token_count": 450,
+        "category_counts": {
+          "MANE_MATCH": 443,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 7
+        }
+      },
+      {
+        "gene": "VCAN",
+        "token_count": 445,
+        "category_counts": {
+          "MANE_MATCH": 436,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 9
+        }
+      },
+      {
+        "gene": "IDH1",
+        "token_count": 444,
+        "category_counts": {
+          "MANE_MATCH": 444,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 0
+        }
+      },
+      {
+        "gene": "PEG3",
+        "token_count": 419,
+        "category_counts": {
+          "MANE_MATCH": 412,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 7
+        }
+      },
+      {
+        "gene": "LRP1",
+        "token_count": 415,
+        "category_counts": {
+          "MANE_MATCH": 390,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 25
+        }
+      },
+      {
+        "gene": "MYH2",
+        "token_count": 411,
+        "category_counts": {
+          "MANE_MATCH": 403,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 8
+        }
+      },
+      {
+        "gene": "TG",
+        "token_count": 411,
+        "category_counts": {
+          "MANE_MATCH": 397,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 14
+        }
+      },
+      {
+        "gene": "LAMA2",
+        "token_count": 407,
+        "category_counts": {
+          "MANE_MATCH": 396,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 11
+        }
+      },
+      {
+        "gene": "NF1",
+        "token_count": 403,
+        "category_counts": {
+          "MANE_MATCH": 327,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 76
+        }
+      },
+      {
+        "gene": "HUWE1",
+        "token_count": 402,
+        "category_counts": {
+          "MANE_MATCH": 397,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 5
+        }
+      },
+      {
+        "gene": "FBN2",
+        "token_count": 399,
+        "category_counts": {
+          "MANE_MATCH": 386,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 13
+        }
+      },
+      {
+        "gene": "KALRN",
+        "token_count": 398,
+        "category_counts": {
+          "MANE_MATCH": 20,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 358,
+          "POSITION_VALID_REF_MISMATCH": 14,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 6
+        }
+      },
+      {
+        "gene": "LAMA1",
+        "token_count": 398,
+        "category_counts": {
+          "MANE_MATCH": 394,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 4
+        }
+      },
+      {
+        "gene": "MYH1",
+        "token_count": 398,
+        "category_counts": {
+          "MANE_MATCH": 396,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 2
+        }
+      },
+      {
+        "gene": "MYH4",
+        "token_count": 395,
+        "category_counts": {
+          "MANE_MATCH": 386,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 9
+        }
+      },
+      {
+        "gene": "PTPRD",
+        "token_count": 390,
+        "category_counts": {
+          "MANE_MATCH": 386,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 4
+        }
+      },
+      {
+        "gene": "COL11A1",
+        "token_count": 387,
+        "category_counts": {
+          "MANE_MATCH": 376,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 11
+        }
+      },
+      {
+        "gene": "PDE4DIP",
+        "token_count": 387,
+        "category_counts": {
+          "MANE_MATCH": 39,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 337,
+          "POSITION_VALID_REF_MISMATCH": 2,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 9
+        }
+      },
+      {
+        "gene": "RNF213",
+        "token_count": 372,
+        "category_counts": {
+          "MANE_MATCH": 360,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 12
+        }
+      },
+      {
+        "gene": "MKI67",
+        "token_count": 368,
+        "category_counts": {
+          "MANE_MATCH": 346,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 22
+        }
+      },
+      {
+        "gene": "ALMS1",
+        "token_count": 367,
+        "category_counts": {
+          "MANE_MATCH": 63,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 70,
+          "POSITION_VALID_REF_MISMATCH": 220,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 14
+        }
+      },
+      {
+        "gene": "COL12A1",
+        "token_count": 367,
+        "category_counts": {
+          "MANE_MATCH": 353,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 14
+        }
+      },
+      {
+        "gene": "DYNC1H1",
+        "token_count": 362,
+        "category_counts": {
+          "MANE_MATCH": 356,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 6
+        }
+      },
+      {
+        "gene": "DCC",
+        "token_count": 354,
+        "category_counts": {
+          "MANE_MATCH": 352,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 2
+        }
+      },
+      {
+        "gene": "FBN1",
+        "token_count": 353,
+        "category_counts": {
+          "MANE_MATCH": 346,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 7
+        }
+      },
+      {
+        "gene": "FLNC",
+        "token_count": 350,
+        "category_counts": {
+          "MANE_MATCH": 340,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 10
+        }
+      },
+      {
+        "gene": "VHL",
+        "token_count": 346,
+        "category_counts": {
+          "MANE_MATCH": 236,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 110
+        }
+      },
+      {
+        "gene": "PRKDC",
+        "token_count": 342,
+        "category_counts": {
+          "MANE_MATCH": 112,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 25,
+          "POSITION_VALID_REF_MISMATCH": 182,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 23
+        }
+      },
+      {
+        "gene": "TENM2",
+        "token_count": 340,
+        "category_counts": {
+          "MANE_MATCH": 332,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 8
+        }
+      },
+      {
+        "gene": "TEX15",
+        "token_count": 339,
+        "category_counts": {
+          "MANE_MATCH": 11,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 320,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 8
+        }
+      },
+      {
+        "gene": "MYH8",
+        "token_count": 335,
+        "category_counts": {
+          "MANE_MATCH": 333,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 2
+        }
+      },
+      {
+        "gene": "SCN9A",
+        "token_count": 335,
+        "category_counts": {
+          "MANE_MATCH": 321,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 14
+        }
+      },
+      {
+        "gene": "VWF",
+        "token_count": 334,
+        "category_counts": {
+          "MANE_MATCH": 327,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 7
+        }
+      },
+      {
+        "gene": "DOCK2",
+        "token_count": 327,
+        "category_counts": {
+          "MANE_MATCH": 322,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 5
+        }
+      },
+      {
+        "gene": "COL5A1",
+        "token_count": 325,
+        "category_counts": {
+          "MANE_MATCH": 311,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 14
+        }
+      },
+      {
+        "gene": "LAMA3",
+        "token_count": 325,
+        "category_counts": {
+          "MANE_MATCH": 310,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 1,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 14
+        }
+      },
+      {
+        "gene": "MYH7",
+        "token_count": 321,
+        "category_counts": {
+          "MANE_MATCH": 314,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 7
+        }
+      },
+      {
+        "gene": "MYO15A",
+        "token_count": 318,
+        "category_counts": {
+          "MANE_MATCH": 309,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 9
+        }
+      },
+      {
+        "gene": "CACNA1A",
+        "token_count": 316,
+        "category_counts": {
+          "MANE_MATCH": 304,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 2,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 10
+        }
+      },
+      {
+        "gene": "NOS1",
+        "token_count": 313,
+        "category_counts": {
+          "MANE_MATCH": 187,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 119,
+          "POSITION_VALID_REF_MISMATCH": 4,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 3
+        }
+      },
+      {
+        "gene": "SPEG",
+        "token_count": 313,
+        "category_counts": {
+          "MANE_MATCH": 291,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 22
+        }
+      },
+      {
+        "gene": "ANK1",
+        "token_count": 307,
+        "category_counts": {
+          "MANE_MATCH": 290,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 9,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 8
+        }
+      },
+      {
+        "gene": "F5",
+        "token_count": 307,
+        "category_counts": {
+          "MANE_MATCH": 298,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 4,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 5
+        }
+      },
+      {
+        "gene": "LCT",
+        "token_count": 306,
+        "category_counts": {
+          "MANE_MATCH": 300,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 6
+        }
+      },
+      {
+        "gene": "EGFR",
+        "token_count": 304,
+        "category_counts": {
+          "MANE_MATCH": 300,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 4
+        }
+      },
+      {
+        "gene": "ROS1",
+        "token_count": 303,
+        "category_counts": {
+          "MANE_MATCH": 24,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 272,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 7
+        }
+      },
+      {
+        "gene": "SLIT2",
+        "token_count": 299,
+        "category_counts": {
+          "MANE_MATCH": 291,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 8
+        }
+      },
+      {
+        "gene": "CREBBP",
+        "token_count": 290,
+        "category_counts": {
+          "MANE_MATCH": 275,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 15
+        }
+      },
+      {
+        "gene": "F8",
+        "token_count": 290,
+        "category_counts": {
+          "MANE_MATCH": 275,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 15
+        }
+      },
+      {
+        "gene": "PCNT",
+        "token_count": 289,
+        "category_counts": {
+          "MANE_MATCH": 279,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 10
+        }
+      },
+      {
+        "gene": "COL7A1",
+        "token_count": 284,
+        "category_counts": {
+          "MANE_MATCH": 276,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 8
+        }
+      },
+      {
+        "gene": "MAP1B",
+        "token_count": 282,
+        "category_counts": {
+          "MANE_MATCH": 273,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 9
+        }
+      },
+      {
+        "gene": "ABCA4",
+        "token_count": 281,
+        "category_counts": {
+          "MANE_MATCH": 279,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 2
+        }
+      },
+      {
+        "gene": "NOTCH1",
+        "token_count": 281,
+        "category_counts": {
+          "MANE_MATCH": 247,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 34
+        }
+      },
+      {
+        "gene": "CENPF",
+        "token_count": 279,
+        "category_counts": {
+          "MANE_MATCH": 274,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 5
+        }
+      },
+      {
+        "gene": "C3",
+        "token_count": 275,
+        "category_counts": {
+          "MANE_MATCH": 265,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 10
+        }
+      },
+      {
+        "gene": "MYH11",
+        "token_count": 275,
+        "category_counts": {
+          "MANE_MATCH": 273,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 2
+        }
+      },
+      {
+        "gene": "CACNA1B",
+        "token_count": 274,
+        "category_counts": {
+          "MANE_MATCH": 268,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 6
+        }
+      },
+      {
+        "gene": "CELSR1",
+        "token_count": 274,
+        "category_counts": {
+          "MANE_MATCH": 255,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 19
+        }
+      },
+      {
+        "gene": "SPTB",
+        "token_count": 274,
+        "category_counts": {
+          "MANE_MATCH": 266,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 3,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 5
+        }
+      },
+      {
+        "gene": "ZFPM2",
+        "token_count": 272,
+        "category_counts": {
+          "MANE_MATCH": 269,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 3
+        }
+      },
+      {
+        "gene": "BRCA2",
+        "token_count": 270,
+        "category_counts": {
+          "MANE_MATCH": 254,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 16
+        }
+      },
+      {
+        "gene": "NOTCH2",
+        "token_count": 270,
+        "category_counts": {
+          "MANE_MATCH": 238,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 32
+        }
+      },
+      {
+        "gene": "TCHH",
+        "token_count": 269,
+        "category_counts": {
+          "MANE_MATCH": 263,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 6
+        }
+      },
+      {
+        "gene": "MTOR",
+        "token_count": 268,
+        "category_counts": {
+          "MANE_MATCH": 266,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 2
+        }
+      },
+      {
+        "gene": "SLIT3",
+        "token_count": 267,
+        "category_counts": {
+          "MANE_MATCH": 265,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 2
+        }
+      },
+      {
+        "gene": "NLRP3",
+        "token_count": 262,
+        "category_counts": {
+          "MANE_MATCH": 12,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 14,
+          "POSITION_VALID_REF_MISMATCH": 231,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 5
+        }
+      },
+      {
+        "gene": "PKD1",
+        "token_count": 261,
+        "category_counts": {
+          "MANE_MATCH": 259,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 2
+        }
+      },
+      {
+        "gene": "FN1",
+        "token_count": 260,
+        "category_counts": {
+          "MANE_MATCH": 153,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 101,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 6
+        }
+      },
+      {
+        "gene": "ITPR2",
+        "token_count": 260,
+        "category_counts": {
+          "MANE_MATCH": 244,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 16
+        }
+      },
+      {
+        "gene": "TRIO",
+        "token_count": 260,
+        "category_counts": {
+          "MANE_MATCH": 251,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 9
+        }
+      },
+      {
+        "gene": "ABCB1",
+        "token_count": 257,
+        "category_counts": {
+          "MANE_MATCH": 251,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 6
+        }
+      },
+      {
+        "gene": "SAMD9L",
+        "token_count": 256,
+        "category_counts": {
+          "MANE_MATCH": 249,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 7
+        }
+      },
+      {
+        "gene": "SAMD9",
+        "token_count": 255,
+        "category_counts": {
+          "MANE_MATCH": 249,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 6
+        }
+      },
+      {
+        "gene": "TNC",
+        "token_count": 255,
+        "category_counts": {
+          "MANE_MATCH": 248,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 7
+        }
+      },
+      {
+        "gene": "FLNB",
+        "token_count": 251,
+        "category_counts": {
+          "MANE_MATCH": 238,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 13
+        }
+      },
+      {
+        "gene": "NIPBL",
+        "token_count": 251,
+        "category_counts": {
+          "MANE_MATCH": 231,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 20
+        }
+      },
+      {
+        "gene": "MYOM2",
+        "token_count": 247,
+        "category_counts": {
+          "MANE_MATCH": 243,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 4
+        }
+      },
+      {
+        "gene": "COL5A3",
+        "token_count": 244,
+        "category_counts": {
+          "MANE_MATCH": 239,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 5
+        }
+      },
+      {
+        "gene": "FLNA",
+        "token_count": 244,
+        "category_counts": {
+          "MANE_MATCH": 227,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 17
+        }
+      }
+    ]
+  },
+  "test": {
+    "dataset": "test",
+    "rows": 2546,
+    "gene_columns": 4384,
+    "mutated_gene_cells": 198930,
+    "mapped_gene_cells": 198546,
+    "mapped_gene_cell_rate": 0.9980696727492082,
+    "non_protein_coding_gene_cells": 127,
+    "tokens_total": 337512,
+    "simple_substitution_tokens": 292610,
+    "simple_substitution_rate": 0.8669617672853114,
+    "category_counts": {
+      "MANE_MATCH": 180431,
+      "CANONICAL_MATCH": 440,
+      "OTHER_ISOFORM_MATCH": 90069,
+      "POSITION_VALID_REF_MISMATCH": 20811,
+      "OUTSIDE_ALL_KNOWN_ISOFORMS": 416,
+      "COMPLEX_OR_UNMAPPABLE": 45345
+    },
+    "category_rates": {
+      "MANE_MATCH": 0.5345913626774752,
+      "CANONICAL_MATCH": 0.001303657351442319,
+      "OTHER_ISOFORM_MATCH": 0.2668616226978596,
+      "POSITION_VALID_REF_MISMATCH": 0.06166002986560478,
+      "OUTSIDE_ALL_KNOWN_ISOFORMS": 0.0012325487686363744,
+      "COMPLEX_OR_UNMAPPABLE": 0.13435077863898173
+    },
+    "other_isoform_match_beyond_mane_or_canonical_length": 1414,
+    "other_isoform_match_beyond_mane_or_canonical_length_rate": 0.004189480670316908,
+    "sample_category_presence_counts": {
+      "MANE_MATCH": 2505,
+      "CANONICAL_MATCH": 332,
+      "OTHER_ISOFORM_MATCH": 1833,
+      "POSITION_VALID_REF_MISMATCH": 1270,
+      "OUTSIDE_ALL_KNOWN_ISOFORMS": 307,
+      "COMPLEX_OR_UNMAPPABLE": 1817
+    },
+    "max_position_low_confidence_cells": 25791,
+    "max_position_low_confidence_rate": 0.12964862011762932,
+    "top_genes_by_token_count": [
+      {
+        "gene": "APC",
+        "token_count": 8196,
+        "category_counts": {
+          "MANE_MATCH": 148,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 305,
+          "POSITION_VALID_REF_MISMATCH": 339,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 7404
+        }
+      },
+      {
+        "gene": "TP53",
+        "token_count": 2889,
+        "category_counts": {
+          "MANE_MATCH": 893,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 1247,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 749
+        }
+      },
+      {
+        "gene": "PLEC",
+        "token_count": 1506,
+        "category_counts": {
+          "MANE_MATCH": 325,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 1126,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 55
+        }
+      },
+      {
+        "gene": "MADD",
+        "token_count": 1303,
+        "category_counts": {
+          "MANE_MATCH": 145,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 947,
+          "POSITION_VALID_REF_MISMATCH": 92,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 119
+        }
+      },
+      {
+        "gene": "TCF7L2",
+        "token_count": 1288,
+        "category_counts": {
+          "MANE_MATCH": 124,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 388,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 776
+        }
+      },
+      {
+        "gene": "ERBB2",
+        "token_count": 1071,
+        "category_counts": {
+          "MANE_MATCH": 156,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 591,
+          "POSITION_VALID_REF_MISMATCH": 162,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 162
+        }
+      },
+      {
+        "gene": "DMD",
+        "token_count": 980,
+        "category_counts": {
+          "MANE_MATCH": 253,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 388,
+          "POSITION_VALID_REF_MISMATCH": 222,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 117
+        }
+      },
+      {
+        "gene": "PTK2",
+        "token_count": 947,
+        "category_counts": {
+          "MANE_MATCH": 99,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 500,
+          "POSITION_VALID_REF_MISMATCH": 268,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 80
+        }
+      },
+      {
+        "gene": "DST",
+        "token_count": 928,
+        "category_counts": {
+          "MANE_MATCH": 156,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 512,
+          "POSITION_VALID_REF_MISMATCH": 94,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 166
+        }
+      },
+      {
+        "gene": "SORBS1",
+        "token_count": 895,
+        "category_counts": {
+          "MANE_MATCH": 111,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 640,
+          "POSITION_VALID_REF_MISMATCH": 30,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 114
+        }
+      },
+      {
+        "gene": "SYNE1",
+        "token_count": 845,
+        "category_counts": {
+          "MANE_MATCH": 478,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 307,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 60
+        }
+      },
+      {
+        "gene": "CACNA1A",
+        "token_count": 810,
+        "category_counts": {
+          "MANE_MATCH": 577,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 174,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 59
+        }
+      },
+      {
+        "gene": "TLE4",
+        "token_count": 808,
+        "category_counts": {
+          "MANE_MATCH": 125,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 389,
+          "POSITION_VALID_REF_MISMATCH": 231,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 63
+        }
+      },
+      {
+        "gene": "BRAF",
+        "token_count": 807,
+        "category_counts": {
+          "MANE_MATCH": 229,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 323,
+          "POSITION_VALID_REF_MISMATCH": 200,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 55
+        }
+      },
+      {
+        "gene": "ARPP21",
+        "token_count": 805,
+        "category_counts": {
+          "MANE_MATCH": 144,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 313,
+          "POSITION_VALID_REF_MISMATCH": 281,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 67
+        }
+      },
+      {
+        "gene": "AHNAK",
+        "token_count": 793,
+        "category_counts": {
+          "MANE_MATCH": 781,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 12
+        }
+      },
+      {
+        "gene": "TCHH",
+        "token_count": 742,
+        "category_counts": {
+          "MANE_MATCH": 687,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 55
+        }
+      },
+      {
+        "gene": "PDE4DIP",
+        "token_count": 683,
+        "category_counts": {
+          "MANE_MATCH": 100,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 452,
+          "POSITION_VALID_REF_MISMATCH": 40,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 91
+        }
+      },
+      {
+        "gene": "TSC2",
+        "token_count": 677,
+        "category_counts": {
+          "MANE_MATCH": 139,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 434,
+          "POSITION_VALID_REF_MISMATCH": 25,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 79
+        }
+      },
+      {
+        "gene": "PAX6",
+        "token_count": 657,
+        "category_counts": {
+          "MANE_MATCH": 50,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 128,
+          "POSITION_VALID_REF_MISMATCH": 86,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 393
+        }
+      },
+      {
+        "gene": "MUC1",
+        "token_count": 638,
+        "category_counts": {
+          "MANE_MATCH": 0,
+          "CANONICAL_MATCH": 204,
+          "OTHER_ISOFORM_MATCH": 92,
+          "POSITION_VALID_REF_MISMATCH": 153,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 168,
+          "COMPLEX_OR_UNMAPPABLE": 21
+        }
+      },
+      {
+        "gene": "NRXN2",
+        "token_count": 637,
+        "category_counts": {
+          "MANE_MATCH": 205,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 281,
+          "POSITION_VALID_REF_MISMATCH": 101,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 50
+        }
+      },
+      {
+        "gene": "COL6A3",
+        "token_count": 630,
+        "category_counts": {
+          "MANE_MATCH": 276,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 323,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 31
+        }
+      },
+      {
+        "gene": "PEG3",
+        "token_count": 614,
+        "category_counts": {
+          "MANE_MATCH": 197,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 264,
+          "POSITION_VALID_REF_MISMATCH": 119,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 34
+        }
+      },
+      {
+        "gene": "EGFR",
+        "token_count": 612,
+        "category_counts": {
+          "MANE_MATCH": 175,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 189,
+          "POSITION_VALID_REF_MISMATCH": 79,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 169
+        }
+      },
+      {
+        "gene": "HDAC9",
+        "token_count": 591,
+        "category_counts": {
+          "MANE_MATCH": 111,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 376,
+          "POSITION_VALID_REF_MISMATCH": 68,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 36
+        }
+      },
+      {
+        "gene": "NRCAM",
+        "token_count": 590,
+        "category_counts": {
+          "MANE_MATCH": 114,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 254,
+          "POSITION_VALID_REF_MISMATCH": 194,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 28
+        }
+      },
+      {
+        "gene": "SVIL",
+        "token_count": 575,
+        "category_counts": {
+          "MANE_MATCH": 196,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 303,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 76
+        }
+      },
+      {
+        "gene": "FBXW7",
+        "token_count": 565,
+        "category_counts": {
+          "MANE_MATCH": 174,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 218,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 173
+        }
+      },
+      {
+        "gene": "MTCH2",
+        "token_count": 560,
+        "category_counts": {
+          "MANE_MATCH": 264,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 181,
+          "POSITION_VALID_REF_MISMATCH": 96,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 19
+        }
+      },
+      {
+        "gene": "ZEB1",
+        "token_count": 553,
+        "category_counts": {
+          "MANE_MATCH": 79,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 247,
+          "POSITION_VALID_REF_MISMATCH": 143,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 84
+        }
+      },
+      {
+        "gene": "MAST4",
+        "token_count": 547,
+        "category_counts": {
+          "MANE_MATCH": 206,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 200,
+          "POSITION_VALID_REF_MISMATCH": 106,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 35
+        }
+      },
+      {
+        "gene": "KMT2D",
+        "token_count": 527,
+        "category_counts": {
+          "MANE_MATCH": 477,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 50
+        }
+      },
+      {
+        "gene": "CPEB2",
+        "token_count": 525,
+        "category_counts": {
+          "MANE_MATCH": 349,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 62,
+          "POSITION_VALID_REF_MISMATCH": 7,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 107
+        }
+      },
+      {
+        "gene": "KALRN",
+        "token_count": 518,
+        "category_counts": {
+          "MANE_MATCH": 61,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 317,
+          "POSITION_VALID_REF_MISMATCH": 116,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 24
+        }
+      },
+      {
+        "gene": "NLRC5",
+        "token_count": 514,
+        "category_counts": {
+          "MANE_MATCH": 145,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 93,
+          "POSITION_VALID_REF_MISMATCH": 175,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 101
+        }
+      },
+      {
+        "gene": "IL32",
+        "token_count": 507,
+        "category_counts": {
+          "MANE_MATCH": 79,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 341,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 87
+        }
+      },
+      {
+        "gene": "PCM1",
+        "token_count": 499,
+        "category_counts": {
+          "MANE_MATCH": 102,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 321,
+          "POSITION_VALID_REF_MISMATCH": 6,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 70
+        }
+      },
+      {
+        "gene": "EPB41L3",
+        "token_count": 491,
+        "category_counts": {
+          "MANE_MATCH": 124,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 285,
+          "POSITION_VALID_REF_MISMATCH": 48,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 34
+        }
+      },
+      {
+        "gene": "APLP2",
+        "token_count": 481,
+        "category_counts": {
+          "MANE_MATCH": 64,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 275,
+          "POSITION_VALID_REF_MISMATCH": 112,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 30
+        }
+      },
+      {
+        "gene": "EIF4G1",
+        "token_count": 481,
+        "category_counts": {
+          "MANE_MATCH": 102,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 315,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 64
+        }
+      },
+      {
+        "gene": "TENM2",
+        "token_count": 476,
+        "category_counts": {
+          "MANE_MATCH": 131,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 212,
+          "POSITION_VALID_REF_MISMATCH": 121,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 12
+        }
+      },
+      {
+        "gene": "SNAP91",
+        "token_count": 461,
+        "category_counts": {
+          "MANE_MATCH": 107,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 212,
+          "POSITION_VALID_REF_MISMATCH": 98,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 44
+        }
+      },
+      {
+        "gene": "SORBS2",
+        "token_count": 452,
+        "category_counts": {
+          "MANE_MATCH": 30,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 300,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 122
+        }
+      },
+      {
+        "gene": "CIITA",
+        "token_count": 448,
+        "category_counts": {
+          "MANE_MATCH": 126,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 187,
+          "POSITION_VALID_REF_MISMATCH": 102,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 33
+        }
+      },
+      {
+        "gene": "CAST",
+        "token_count": 445,
+        "category_counts": {
+          "MANE_MATCH": 63,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 337,
+          "POSITION_VALID_REF_MISMATCH": 17,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 28
+        }
+      },
+      {
+        "gene": "GNAS",
+        "token_count": 443,
+        "category_counts": {
+          "MANE_MATCH": 74,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 317,
+          "POSITION_VALID_REF_MISMATCH": 35,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 17
+        }
+      },
+      {
+        "gene": "KCNMA1",
+        "token_count": 441,
+        "category_counts": {
+          "MANE_MATCH": 105,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 213,
+          "POSITION_VALID_REF_MISMATCH": 13,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 110
+        }
+      },
+      {
+        "gene": "CYFIP1",
+        "token_count": 438,
+        "category_counts": {
+          "MANE_MATCH": 116,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 162,
+          "POSITION_VALID_REF_MISMATCH": 142,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 2,
+          "COMPLEX_OR_UNMAPPABLE": 16
+        }
+      },
+      {
+        "gene": "IKZF1",
+        "token_count": 437,
+        "category_counts": {
+          "MANE_MATCH": 92,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 256,
+          "POSITION_VALID_REF_MISMATCH": 68,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 21
+        }
+      },
+      {
+        "gene": "RYR1",
+        "token_count": 436,
+        "category_counts": {
+          "MANE_MATCH": 341,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 73,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 22
+        }
+      },
+      {
+        "gene": "PTCH1",
+        "token_count": 434,
+        "category_counts": {
+          "MANE_MATCH": 117,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 186,
+          "POSITION_VALID_REF_MISMATCH": 46,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 85
+        }
+      },
+      {
+        "gene": "ABI3BP",
+        "token_count": 428,
+        "category_counts": {
+          "MANE_MATCH": 138,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 205,
+          "POSITION_VALID_REF_MISMATCH": 52,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 33
+        }
+      },
+      {
+        "gene": "SMTN",
+        "token_count": 422,
+        "category_counts": {
+          "MANE_MATCH": 77,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 205,
+          "POSITION_VALID_REF_MISMATCH": 45,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 95
+        }
+      },
+      {
+        "gene": "PCLO",
+        "token_count": 416,
+        "category_counts": {
+          "MANE_MATCH": 371,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 45
+        }
+      },
+      {
+        "gene": "CBLB",
+        "token_count": 413,
+        "category_counts": {
+          "MANE_MATCH": 100,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 172,
+          "POSITION_VALID_REF_MISMATCH": 124,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 17
+        }
+      },
+      {
+        "gene": "COL11A1",
+        "token_count": 412,
+        "category_counts": {
+          "MANE_MATCH": 199,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 151,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 62
+        }
+      },
+      {
+        "gene": "NAV2",
+        "token_count": 412,
+        "category_counts": {
+          "MANE_MATCH": 113,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 266,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 33
+        }
+      },
+      {
+        "gene": "SPTAN1",
+        "token_count": 411,
+        "category_counts": {
+          "MANE_MATCH": 118,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 252,
+          "POSITION_VALID_REF_MISMATCH": 15,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 26
+        }
+      },
+      {
+        "gene": "RYR2",
+        "token_count": 409,
+        "category_counts": {
+          "MANE_MATCH": 374,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 35
+        }
+      },
+      {
+        "gene": "ATP6V0A1",
+        "token_count": 406,
+        "category_counts": {
+          "MANE_MATCH": 63,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 250,
+          "POSITION_VALID_REF_MISMATCH": 36,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 1,
+          "COMPLEX_OR_UNMAPPABLE": 56
+        }
+      },
+      {
+        "gene": "ODF2",
+        "token_count": 401,
+        "category_counts": {
+          "MANE_MATCH": 63,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 225,
+          "POSITION_VALID_REF_MISMATCH": 85,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 28
+        }
+      },
+      {
+        "gene": "NCOR2",
+        "token_count": 399,
+        "category_counts": {
+          "MANE_MATCH": 206,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 115,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 78
+        }
+      },
+      {
+        "gene": "PFKP",
+        "token_count": 397,
+        "category_counts": {
+          "MANE_MATCH": 75,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 182,
+          "POSITION_VALID_REF_MISMATCH": 98,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 42
+        }
+      },
+      {
+        "gene": "MAGEE1",
+        "token_count": 396,
+        "category_counts": {
+          "MANE_MATCH": 388,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 8
+        }
+      },
+      {
+        "gene": "GSN",
+        "token_count": 393,
+        "category_counts": {
+          "MANE_MATCH": 74,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 305,
+          "POSITION_VALID_REF_MISMATCH": 14,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 0
+        }
+      },
+      {
+        "gene": "VCAN",
+        "token_count": 393,
+        "category_counts": {
+          "MANE_MATCH": 205,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 153,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 35
+        }
+      },
+      {
+        "gene": "OPA1",
+        "token_count": 388,
+        "category_counts": {
+          "MANE_MATCH": 60,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 265,
+          "POSITION_VALID_REF_MISMATCH": 21,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 42
+        }
+      },
+      {
+        "gene": "SNX14",
+        "token_count": 385,
+        "category_counts": {
+          "MANE_MATCH": 59,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 302,
+          "POSITION_VALID_REF_MISMATCH": 22,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 2
+        }
+      },
+      {
+        "gene": "PTPRD",
+        "token_count": 384,
+        "category_counts": {
+          "MANE_MATCH": 165,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 155,
+          "POSITION_VALID_REF_MISMATCH": 34,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 30
+        }
+      },
+      {
+        "gene": "ZC3H14",
+        "token_count": 381,
+        "category_counts": {
+          "MANE_MATCH": 57,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 161,
+          "POSITION_VALID_REF_MISMATCH": 48,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 115
+        }
+      },
+      {
+        "gene": "DIAPH3",
+        "token_count": 380,
+        "category_counts": {
+          "MANE_MATCH": 106,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 213,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 61
+        }
+      },
+      {
+        "gene": "RUNX1",
+        "token_count": 379,
+        "category_counts": {
+          "MANE_MATCH": 203,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 165,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 11
+        }
+      },
+      {
+        "gene": "RHOT2",
+        "token_count": 376,
+        "category_counts": {
+          "MANE_MATCH": 62,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 140,
+          "POSITION_VALID_REF_MISMATCH": 172,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 2
+        }
+      },
+      {
+        "gene": "PIK3CA",
+        "token_count": 372,
+        "category_counts": {
+          "MANE_MATCH": 366,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 6
+        }
+      },
+      {
+        "gene": "TAF1C",
+        "token_count": 361,
+        "category_counts": {
+          "MANE_MATCH": 82,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 141,
+          "POSITION_VALID_REF_MISMATCH": 30,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 108
+        }
+      },
+      {
+        "gene": "FN1",
+        "token_count": 359,
+        "category_counts": {
+          "MANE_MATCH": 138,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 185,
+          "POSITION_VALID_REF_MISMATCH": 24,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 12
+        }
+      },
+      {
+        "gene": "RXRA",
+        "token_count": 359,
+        "category_counts": {
+          "MANE_MATCH": 178,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 155,
+          "POSITION_VALID_REF_MISMATCH": 17,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 9
+        }
+      },
+      {
+        "gene": "KDM6B",
+        "token_count": 358,
+        "category_counts": {
+          "MANE_MATCH": 321,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 2,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 35
+        }
+      },
+      {
+        "gene": "HLA-A",
+        "token_count": 355,
+        "category_counts": {
+          "MANE_MATCH": 280,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 75
+        }
+      },
+      {
+        "gene": "TUBGCP6",
+        "token_count": 355,
+        "category_counts": {
+          "MANE_MATCH": 342,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 13
+        }
+      },
+      {
+        "gene": "CREBBP",
+        "token_count": 353,
+        "category_counts": {
+          "MANE_MATCH": 208,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 109,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 36
+        }
+      },
+      {
+        "gene": "CDC25B",
+        "token_count": 350,
+        "category_counts": {
+          "MANE_MATCH": 70,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 129,
+          "POSITION_VALID_REF_MISMATCH": 89,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 62
+        }
+      },
+      {
+        "gene": "ARHGEF7",
+        "token_count": 344,
+        "category_counts": {
+          "MANE_MATCH": 67,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 217,
+          "POSITION_VALID_REF_MISMATCH": 52,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 8
+        }
+      },
+      {
+        "gene": "CELF2",
+        "token_count": 343,
+        "category_counts": {
+          "MANE_MATCH": 69,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 202,
+          "POSITION_VALID_REF_MISMATCH": 71,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 1
+        }
+      },
+      {
+        "gene": "ACLY",
+        "token_count": 340,
+        "category_counts": {
+          "MANE_MATCH": 65,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 43,
+          "POSITION_VALID_REF_MISMATCH": 22,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 2,
+          "COMPLEX_OR_UNMAPPABLE": 208
+        }
+      },
+      {
+        "gene": "EFS",
+        "token_count": 340,
+        "category_counts": {
+          "MANE_MATCH": 150,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 187,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 3
+        }
+      },
+      {
+        "gene": "MKI67",
+        "token_count": 339,
+        "category_counts": {
+          "MANE_MATCH": 197,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 96,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 46
+        }
+      },
+      {
+        "gene": "PFKM",
+        "token_count": 339,
+        "category_counts": {
+          "MANE_MATCH": 62,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 195,
+          "POSITION_VALID_REF_MISMATCH": 63,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 19
+        }
+      },
+      {
+        "gene": "PMS2",
+        "token_count": 336,
+        "category_counts": {
+          "MANE_MATCH": 71,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 154,
+          "POSITION_VALID_REF_MISMATCH": 40,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 71
+        }
+      },
+      {
+        "gene": "HK1",
+        "token_count": 335,
+        "category_counts": {
+          "MANE_MATCH": 79,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 216,
+          "POSITION_VALID_REF_MISMATCH": 26,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 14
+        }
+      },
+      {
+        "gene": "ABLIM1",
+        "token_count": 334,
+        "category_counts": {
+          "MANE_MATCH": 72,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 168,
+          "POSITION_VALID_REF_MISMATCH": 68,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 26
+        }
+      },
+      {
+        "gene": "CEBPA",
+        "token_count": 330,
+        "category_counts": {
+          "MANE_MATCH": 83,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 0,
+          "POSITION_VALID_REF_MISMATCH": 184,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 3,
+          "COMPLEX_OR_UNMAPPABLE": 60
+        }
+      },
+      {
+        "gene": "FGD4",
+        "token_count": 330,
+        "category_counts": {
+          "MANE_MATCH": 42,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 127,
+          "POSITION_VALID_REF_MISMATCH": 89,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 72
+        }
+      },
+      {
+        "gene": "CDH4",
+        "token_count": 328,
+        "category_counts": {
+          "MANE_MATCH": 143,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 93,
+          "POSITION_VALID_REF_MISMATCH": 79,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 13
+        }
+      },
+      {
+        "gene": "ELN",
+        "token_count": 325,
+        "category_counts": {
+          "MANE_MATCH": 120,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 204,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 1
+        }
+      },
+      {
+        "gene": "MYH10",
+        "token_count": 324,
+        "category_counts": {
+          "MANE_MATCH": 106,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 199,
+          "POSITION_VALID_REF_MISMATCH": 0,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 19
+        }
+      },
+      {
+        "gene": "BAIAP2",
+        "token_count": 323,
+        "category_counts": {
+          "MANE_MATCH": 63,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 139,
+          "POSITION_VALID_REF_MISMATCH": 83,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 3,
+          "COMPLEX_OR_UNMAPPABLE": 35
+        }
+      },
+      {
+        "gene": "MAST2",
+        "token_count": 323,
+        "category_counts": {
+          "MANE_MATCH": 142,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 98,
+          "POSITION_VALID_REF_MISMATCH": 35,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 0,
+          "COMPLEX_OR_UNMAPPABLE": 48
+        }
+      },
+      {
+        "gene": "NFASC",
+        "token_count": 323,
+        "category_counts": {
+          "MANE_MATCH": 111,
+          "CANONICAL_MATCH": 0,
+          "OTHER_ISOFORM_MATCH": 138,
+          "POSITION_VALID_REF_MISMATCH": 37,
+          "OUTSIDE_ALL_KNOWN_ISOFORMS": 5,
+          "COMPLEX_OR_UNMAPPABLE": 32
+        }
+      }
+    ]
+  },
+  "train_test_category_rate_delta": {
+    "MANE_MATCH": -0.3504433600890593,
+    "CANONICAL_MATCH": 0.0005512001082575437,
+    "OTHER_ISOFORM_MATCH": 0.20362778093334738,
+    "POSITION_VALID_REF_MISMATCH": 0.0528421715470332,
+    "OUTSIDE_ALL_KNOWN_ISOFORMS": 0.0009111868210262099,
+    "COMPLEX_OR_UNMAPPABLE": 0.09251102067939496
+  },
+  "b2_blocked": false,
+  "b2_block_reason": null
+}

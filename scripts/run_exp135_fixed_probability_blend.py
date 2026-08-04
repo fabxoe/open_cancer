@@ -32,6 +32,14 @@ CONFIG_PATH = ROOT / "configs/exp135_fixed_probability_blend.yaml"
 ISSUE = 135
 EXP_ID = "EXP-135"
 SLUG = "exp135_fixed_probability_blend"
+EXPECTED_COMPONENTS = ("EXP-094", "EXP-125")
+EXPECTED_WEIGHTS = (0.5, 0.5)
+PARENT_EXPERIMENT = "EXP-094"
+RUNNER_COMMAND = "uv run python scripts/run_exp135_fixed_probability_blend.py"
+RUNNER_NOTES = (
+    "Inference-only fixed 0.5/0.5 probability mean of EXP-094 and EXP-125. "
+    "Weight was fixed before evaluation."
+)
 
 
 def git(*args: str) -> str:
@@ -67,8 +75,10 @@ def main() -> None:
     if git("status", "--porcelain"):
         raise RuntimeError("공식 실험은 clean worktree에서 실행해야 합니다.")
     components = config["ensemble"]["components"]
-    if [item["experiment_id"] for item in components] != ["EXP-094", "EXP-125"] or [item["weight"] for item in components] != [0.5, 0.5]:
-        raise ValueError("EXP-094·EXP-125의 0.5/0.5 가중치를 고정해야 합니다.")
+    if tuple(item["experiment_id"] for item in components) != EXPECTED_COMPONENTS or tuple(
+        item["weight"] for item in components
+    ) != EXPECTED_WEIGHTS:
+        raise ValueError(f"{EXPECTED_COMPONENTS}의 {EXPECTED_WEIGHTS} 가중치를 고정해야 합니다.")
     required = [ROOT / item[key] for item in components for key in ("oof_probability_path", "test_probability_path", "metrics_path", "resolved_config_path")]
     missing = [str(path) for path in required if not path.is_file()]
     if missing:
@@ -125,10 +135,10 @@ def main() -> None:
         "ensemble": config["ensemble"],
         "outputs": {"oof": relative_posix(oof_path, ROOT), "test_probability": relative_posix(test_proba_path, ROOT), "submission": relative_posix(submission_path, ROOT)},
         "environment": {"python": sys.version, "platform": platform.platform(), "numpy": np.__version__, "pandas": pd.__version__, "scikit_learn": sklearn.__version__, "uv_lock_sha256": sha256_file(ROOT / "uv.lock")},
-        "command": "uv run python scripts/run_exp135_fixed_probability_blend.py",
+        "command": RUNNER_COMMAND,
     }
     resolved_path.write_text(yaml.safe_dump(resolved, allow_unicode=True, sort_keys=False), encoding="utf-8")
-    metrics = {"experiment_id": EXP_ID, "record_role": "official", "status": "COMPLETED", "owner": resolved["experiment"]["owner"], "issue_number": ISSUE, "parent_experiment": "EXP-094", "git_commit": source_commit, "started_at": started.isoformat(), "finished_at": finished.isoformat(), "primary_metric": "macro_f1", "split_id": config["split"]["path"], "folds": fold_metrics, "oof": oof_metrics, "leaderboard": None, "runtime": {"seconds": time.perf_counter() - timer, "hardware": platform.platform()}, "artifacts": {"resolved_config": relative_posix(resolved_path, ROOT), "oof": relative_posix(oof_path, ROOT), "test_probability": relative_posix(test_proba_path, ROOT), "submission": relative_posix(submission_path, ROOT), "models": None, "submission_sha256": submission_check["sha256"]}, "notes": "Inference-only fixed 0.5/0.5 probability mean of EXP-094 and EXP-125. Weight was fixed before evaluation."}
+    metrics = {"experiment_id": EXP_ID, "record_role": "official", "status": "COMPLETED", "owner": resolved["experiment"]["owner"], "issue_number": ISSUE, "parent_experiment": PARENT_EXPERIMENT, "git_commit": source_commit, "started_at": started.isoformat(), "finished_at": finished.isoformat(), "primary_metric": "macro_f1", "split_id": config["split"]["path"], "folds": fold_metrics, "oof": oof_metrics, "leaderboard": None, "runtime": {"seconds": time.perf_counter() - timer, "hardware": platform.platform()}, "artifacts": {"resolved_config": relative_posix(resolved_path, ROOT), "oof": relative_posix(oof_path, ROOT), "test_probability": relative_posix(test_proba_path, ROOT), "submission": relative_posix(submission_path, ROOT), "models": None, "submission_sha256": submission_check["sha256"]}, "notes": RUNNER_NOTES}
     write_json(metrics_path, metrics)
     validate_json_document(metrics_path, ROOT / "schemas/experiment_metrics.schema.json")
 
@@ -151,7 +161,7 @@ def main() -> None:
     write_json(env_path, {"verified_at": verified, **resolved["environment"]}); write_json(original_path, metrics); write_json(reproduction_path, {"verification_type": "deterministic_probability_blend", **comparison}); write_json(comparison_path, comparison)
     data_files = [ROOT / config["split"]["path"], ROOT / config["submission"]["test_path"], ROOT / config["submission"]["sample_submission_path"], *required]
     write_json(data_path, {"verified_at": verified, "files": [record(path) for path in data_files]})
-    reproduce_path.write_text("# EXP-135 재현 절차\n\n`uv sync --frozen` 후 부모 OOF·test 확률을 원래 경로에 배치하고 다음을 실행합니다.\n\n```bash\nuv run python scripts/run_exp135_fixed_probability_blend.py\nuv run python scripts/validate_experiment.py\n```\n", encoding="utf-8")
+    reproduce_path.write_text(f"# {EXP_ID} 재현 절차\n\n`uv sync --frozen` 후 부모 OOF·test 확률을 원래 경로에 배치하고 다음을 실행합니다.\n\n```bash\n{RUNNER_COMMAND}\nuv run python scripts/validate_experiment.py\n```\n", encoding="utf-8")
     artifacts = [{"kind": kind, **record(path), "storage_uri": None} for kind, path in [("submission", submission_path), ("oof_probability", oof_path), ("test_probability", test_proba_path), ("metrics", metrics_path), ("resolved_config", resolved_path), ("comparison", comparison_path)]]
     manifest = {"experiment_id": EXP_ID, "issue_number": ISSUE, "reproducibility_status": "INFERENCE_VERIFIED", "source_commit": source_commit, "source_tag": None, "dirty_worktree": False, "data_manifest": relative_posix(data_path, ROOT), "environment": relative_posix(env_path, ROOT), "release_url": None, "verifier": resolved["experiment"]["owner"], "verified_at": verified, "artifacts": artifacts, "verification": {"data_hashes_match": True, "submission_sha256_match": True, "oof_label_agreement": 1.0, "test_label_agreement": 1.0, "probability_atol": 1e-6, "probability_rtol": 1e-6, "passed": True}}
     write_json(manifest_path, manifest); validate_json_document(manifest_path, ROOT / "schemas/reproducibility_manifest.schema.json")

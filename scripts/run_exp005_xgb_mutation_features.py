@@ -292,8 +292,9 @@ def verify_saved_inference(
     reproduced_submission["SUBCLASS"] = np.asarray(CLASS_LABELS)[
         reproduced_proba.argmax(axis=1)
     ]
+    temporary_prefix = artifact_slug.replace("/", "_").replace("\\", "_")
     with tempfile.TemporaryDirectory(
-        prefix=f"{artifact_slug}_inference_"
+        prefix=f"{temporary_prefix}_inference_"
     ) as temporary:
         reproduced_path = Path(temporary) / submission_path.name
         reproduced_submission.to_csv(

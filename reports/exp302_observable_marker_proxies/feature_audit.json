@@ -1,0 +1,285 @@
+{
+  "marker_knowledge_file": "knowledge/fixed_observable_cancer_markers_v1.json",
+  "marker_knowledge_sha256": "3bab1912996fc37dcfb43c222b32f5aefd4f0d62e808135e2ad0e62fa2017104",
+  "catalog_panels": {
+    "lung_point_mutation_proxy": [
+      "EGFR",
+      "KRAS",
+      "BRAF"
+    ],
+    "breast_tumor_variant_proxy": [
+      "BRCA1",
+      "BRCA2",
+      "ERBB2",
+      "PIK3CA"
+    ],
+    "colorectal_tumor_variant_proxy": [
+      "KRAS",
+      "NRAS",
+      "BRAF",
+      "MLH1",
+      "MSH2",
+      "MSH6",
+      "PMS2"
+    ],
+    "ovarian_brca_variant_proxy": [
+      "BRCA1",
+      "BRCA2"
+    ],
+    "bladder_fgfr3_variant_proxy": [
+      "FGFR3"
+    ]
+  },
+  "competition_intersections": {
+    "lung_point_mutation_proxy": [
+      "EGFR",
+      "BRAF"
+    ],
+    "breast_tumor_variant_proxy": [
+      "BRCA1",
+      "BRCA2",
+      "ERBB2",
+      "PIK3CA"
+    ],
+    "colorectal_tumor_variant_proxy": [
+      "BRAF",
+      "MLH1",
+      "MSH2",
+      "PMS2"
+    ],
+    "ovarian_brca_variant_proxy": [
+      "BRCA1",
+      "BRCA2"
+    ],
+    "bladder_fgfr3_variant_proxy": [
+      "FGFR3"
+    ]
+  },
+  "missing_catalog_genes": [
+    "KRAS",
+    "MSH6",
+    "NRAS"
+  ],
+  "candidate_feature_names": [
+    "sample__observable_marker_lung_point_mutation_proxy__any_mutated",
+    "sample__observable_marker_lung_point_mutation_proxy__any_nonsynonymous",
+    "sample__observable_marker_lung_point_mutation_proxy__any_lof",
+    "sample__observable_marker_lung_point_mutation_proxy__multi_gene_mutated",
+    "sample__observable_marker_breast_tumor_variant_proxy__any_mutated",
+    "sample__observable_marker_breast_tumor_variant_proxy__any_nonsynonymous",
+    "sample__observable_marker_breast_tumor_variant_proxy__any_lof",
+    "sample__observable_marker_breast_tumor_variant_proxy__multi_gene_mutated",
+    "sample__observable_marker_colorectal_tumor_variant_proxy__any_mutated",
+    "sample__observable_marker_colorectal_tumor_variant_proxy__any_nonsynonymous",
+    "sample__observable_marker_colorectal_tumor_variant_proxy__any_lof",
+    "sample__observable_marker_colorectal_tumor_variant_proxy__multi_gene_mutated",
+    "sample__observable_marker_ovarian_brca_variant_proxy__any_mutated",
+    "sample__observable_marker_ovarian_brca_variant_proxy__any_nonsynonymous",
+    "sample__observable_marker_ovarian_brca_variant_proxy__any_lof",
+    "sample__observable_marker_ovarian_brca_variant_proxy__multi_gene_mutated",
+    "sample__observable_marker_bladder_fgfr3_variant_proxy__any_mutated",
+    "sample__observable_marker_bladder_fgfr3_variant_proxy__any_nonsynonymous",
+    "sample__observable_marker_bladder_fgfr3_variant_proxy__any_lof",
+    "sample__observable_marker_bladder_fgfr3_variant_proxy__multi_gene_mutated"
+  ],
+  "candidate_feature_names_sha256": "cde25c49d3858b2f2128ff2607544299813b1fe4cb6be4e242ebcfd9f8b401ea",
+  "pathway_knowledge_file": "knowledge/canonical_pathways_sanchez_vega_v1.json",
+  "pathway_knowledge_sha256": "fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f",
+  "pathway_source_commit": "7d29965de6ac8d0c6ec18c383f6dff8a48d562e7",
+  "pathway_names": [
+    "cell_cycle",
+    "hippo",
+    "myc",
+    "notch",
+    "nrf2",
+    "pi3k",
+    "rtk_ras",
+    "tgf_beta",
+    "tp53",
+    "wnt"
+  ],
+  "folds": {
+    "0": {
+      "semantic_equivalents": {
+        "sample__pathway_cell_cycle__complex_gene_count": "ADAMTS5__complex",
+        "sample__pathway_hippo__complex_gene_count": "TAOK2__complex",
+        "sample__pathway_myc__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_notch__complex_gene_count": "CREBBP__complex",
+        "sample__pathway_nrf2__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_rtk_ras__complex_gene_count": "GNG2__nonsense",
+        "sample__pathway_tgf_beta__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_tp53__complex_gene_count": "ADAMTS5__complex",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__any_mutated": "FGFR3__mutated",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__multi_gene_mutated": "sample__missing_gene_count"
+      },
+      "dropped_low_support": {},
+      "retained_marker_features": [
+        "sample__observable_marker_lung_point_mutation_proxy__any_mutated",
+        "sample__observable_marker_lung_point_mutation_proxy__any_nonsynonymous",
+        "sample__observable_marker_lung_point_mutation_proxy__any_lof",
+        "sample__observable_marker_lung_point_mutation_proxy__multi_gene_mutated",
+        "sample__observable_marker_breast_tumor_variant_proxy__any_mutated",
+        "sample__observable_marker_breast_tumor_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_breast_tumor_variant_proxy__any_lof",
+        "sample__observable_marker_breast_tumor_variant_proxy__multi_gene_mutated",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__any_mutated",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__any_lof",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__multi_gene_mutated",
+        "sample__observable_marker_ovarian_brca_variant_proxy__any_mutated",
+        "sample__observable_marker_ovarian_brca_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_ovarian_brca_variant_proxy__any_lof",
+        "sample__observable_marker_ovarian_brca_variant_proxy__multi_gene_mutated",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__any_lof"
+      ],
+      "retained_marker_feature_count": 18,
+      "final_feature_names_sha256": "895de429131d57fd95425510ba4aabdd98afe7c91567755eb867115505aeecee"
+    },
+    "1": {
+      "semantic_equivalents": {
+        "sample__pathway_cell_cycle__complex_gene_count": "TP53__complex",
+        "sample__pathway_hippo__complex_gene_count": "LCK__nonsense",
+        "sample__pathway_myc__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_nrf2__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_pi3k__complex_gene_count": "CLDN11__nonsense",
+        "sample__pathway_tgf_beta__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_tp53__complex_gene_count": "TP53__complex",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__any_mutated": "FGFR3__mutated",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__multi_gene_mutated": "sample__missing_gene_count"
+      },
+      "dropped_low_support": {},
+      "retained_marker_features": [
+        "sample__observable_marker_lung_point_mutation_proxy__any_mutated",
+        "sample__observable_marker_lung_point_mutation_proxy__any_nonsynonymous",
+        "sample__observable_marker_lung_point_mutation_proxy__any_lof",
+        "sample__observable_marker_lung_point_mutation_proxy__multi_gene_mutated",
+        "sample__observable_marker_breast_tumor_variant_proxy__any_mutated",
+        "sample__observable_marker_breast_tumor_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_breast_tumor_variant_proxy__any_lof",
+        "sample__observable_marker_breast_tumor_variant_proxy__multi_gene_mutated",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__any_mutated",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__any_lof",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__multi_gene_mutated",
+        "sample__observable_marker_ovarian_brca_variant_proxy__any_mutated",
+        "sample__observable_marker_ovarian_brca_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_ovarian_brca_variant_proxy__any_lof",
+        "sample__observable_marker_ovarian_brca_variant_proxy__multi_gene_mutated",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__any_lof"
+      ],
+      "retained_marker_feature_count": 18,
+      "final_feature_names_sha256": "98f124327f5c192bf2a5253660d8a6f32ae726da2b13391fbfeffb07e4082116"
+    },
+    "2": {
+      "semantic_equivalents": {
+        "sample__pathway_cell_cycle__complex_gene_count": "CD8A__nonsense",
+        "sample__pathway_hippo__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_myc__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_nrf2__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_tgf_beta__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_tp53__complex_gene_count": "CD8A__nonsense",
+        "sample__pathway_wnt__complex_gene_count": "LUC7L3__synonymous",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__any_mutated": "FGFR3__mutated",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__any_lof": "FGFR3__frameshift",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__multi_gene_mutated": "sample__missing_gene_count"
+      },
+      "dropped_low_support": {},
+      "retained_marker_features": [
+        "sample__observable_marker_lung_point_mutation_proxy__any_mutated",
+        "sample__observable_marker_lung_point_mutation_proxy__any_nonsynonymous",
+        "sample__observable_marker_lung_point_mutation_proxy__any_lof",
+        "sample__observable_marker_lung_point_mutation_proxy__multi_gene_mutated",
+        "sample__observable_marker_breast_tumor_variant_proxy__any_mutated",
+        "sample__observable_marker_breast_tumor_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_breast_tumor_variant_proxy__any_lof",
+        "sample__observable_marker_breast_tumor_variant_proxy__multi_gene_mutated",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__any_mutated",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__any_lof",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__multi_gene_mutated",
+        "sample__observable_marker_ovarian_brca_variant_proxy__any_mutated",
+        "sample__observable_marker_ovarian_brca_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_ovarian_brca_variant_proxy__any_lof",
+        "sample__observable_marker_ovarian_brca_variant_proxy__multi_gene_mutated",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__any_nonsynonymous"
+      ],
+      "retained_marker_feature_count": 17,
+      "final_feature_names_sha256": "5c0a572866b5af8b0d67a82a7ea02ab45b48bcd9a5df83922b4c43c25cd8a993"
+    },
+    "3": {
+      "semantic_equivalents": {
+        "sample__pathway_cell_cycle__complex_gene_count": "TP53__complex",
+        "sample__pathway_hippo__complex_gene_count": "TAOK2__complex",
+        "sample__pathway_myc__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_nrf2__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_rtk_ras__complex_gene_count": "PEX14__frameshift",
+        "sample__pathway_tgf_beta__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_tp53__complex_gene_count": "TP53__complex",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__any_mutated": "FGFR3__mutated",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__multi_gene_mutated": "sample__missing_gene_count"
+      },
+      "dropped_low_support": {},
+      "retained_marker_features": [
+        "sample__observable_marker_lung_point_mutation_proxy__any_mutated",
+        "sample__observable_marker_lung_point_mutation_proxy__any_nonsynonymous",
+        "sample__observable_marker_lung_point_mutation_proxy__any_lof",
+        "sample__observable_marker_lung_point_mutation_proxy__multi_gene_mutated",
+        "sample__observable_marker_breast_tumor_variant_proxy__any_mutated",
+        "sample__observable_marker_breast_tumor_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_breast_tumor_variant_proxy__any_lof",
+        "sample__observable_marker_breast_tumor_variant_proxy__multi_gene_mutated",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__any_mutated",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__any_lof",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__multi_gene_mutated",
+        "sample__observable_marker_ovarian_brca_variant_proxy__any_mutated",
+        "sample__observable_marker_ovarian_brca_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_ovarian_brca_variant_proxy__any_lof",
+        "sample__observable_marker_ovarian_brca_variant_proxy__multi_gene_mutated",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__any_lof"
+      ],
+      "retained_marker_feature_count": 18,
+      "final_feature_names_sha256": "c3d4d661f819f9c289eab0545823e0f0346c3284bb69e37e72ff9c894577dc7f"
+    },
+    "4": {
+      "semantic_equivalents": {
+        "sample__pathway_cell_cycle__complex_gene_count": "TP53__complex",
+        "sample__pathway_hippo__complex_gene_count": "GLRX2__nonsense",
+        "sample__pathway_myc__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_notch__complex_gene_count": "NOTCH2__complex",
+        "sample__pathway_nrf2__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_tgf_beta__complex_gene_count": "sample__missing_gene_count",
+        "sample__pathway_tp53__complex_gene_count": "TP53__complex",
+        "sample__pathway_wnt__complex_gene_count": "TLE4__complex",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__any_mutated": "FGFR3__mutated",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__multi_gene_mutated": "sample__missing_gene_count"
+      },
+      "dropped_low_support": {},
+      "retained_marker_features": [
+        "sample__observable_marker_lung_point_mutation_proxy__any_mutated",
+        "sample__observable_marker_lung_point_mutation_proxy__any_nonsynonymous",
+        "sample__observable_marker_lung_point_mutation_proxy__any_lof",
+        "sample__observable_marker_lung_point_mutation_proxy__multi_gene_mutated",
+        "sample__observable_marker_breast_tumor_variant_proxy__any_mutated",
+        "sample__observable_marker_breast_tumor_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_breast_tumor_variant_proxy__any_lof",
+        "sample__observable_marker_breast_tumor_variant_proxy__multi_gene_mutated",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__any_mutated",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__any_lof",
+        "sample__observable_marker_colorectal_tumor_variant_proxy__multi_gene_mutated",
+        "sample__observable_marker_ovarian_brca_variant_proxy__any_mutated",
+        "sample__observable_marker_ovarian_brca_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_ovarian_brca_variant_proxy__any_lof",
+        "sample__observable_marker_ovarian_brca_variant_proxy__multi_gene_mutated",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__any_nonsynonymous",
+        "sample__observable_marker_bladder_fgfr3_variant_proxy__any_lof"
+      ],
+      "retained_marker_feature_count": 18,
+      "final_feature_names_sha256": "69312735e7126e108d5274a50b1ba339ae151fc5c8dc5dbf0b60839efc885032"
+    }
+  }
+}

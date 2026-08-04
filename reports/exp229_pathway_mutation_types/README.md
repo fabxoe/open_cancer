@@ -60,7 +60,11 @@
 변이 종류가 원인이라고 단정할 수는 없습니다. 50개 후보를 묶어서 추가한 ablation이며,
 개별 피처 중요도는 별도 fold-safe 분석이 필요합니다.
 
-Public LB는 피처 정의나 채택 판단에 사용하지 않았고 아직 제출하지 않았습니다.
+Public LB는 피처 정의나 채택 판단에 사용하지 않았습니다. 2026-08-03
+23:45:30 KST에 제출한 결과는 `0.3203598833`으로, EXP-223의 `0.323243525`보다
+`-0.0028836417` 낮았습니다. 따라서 Local 개선은 Public에서 재현되지 않았고 팀
+대표 제출은 EXP-223으로 유지합니다. 이 결과를 보고 피처·가중치를 역조정하지
+않습니다.
 
 ## 재현성과 산출물
 
@@ -70,11 +74,15 @@ Public LB는 피처 정의나 채택 판단에 사용하지 않았고 아직 제
 - Resolved config: `reproducibility/exp229_pathway_mutation_types/config.resolved.yaml`
 - Metrics: `reports/exp229_pathway_mutation_types/metrics.json`
 - pathway membership: `reports/exp229_pathway_mutation_types/pathway_membership.json`
-- 제출 후보: `submissions/exp229_pathway_mutation_types.csv` (DACON 미제출)
+- 제출: `submissions/exp229_pathway_mutation_types.csv` (제출 ID `1509990`)
+- Public Macro F1: `0.3203598833`
 - 제출 SHA-256:
   `66f50d7fdd3c0ca65e586f83c4ee4d8cfb3a99d85d03c04ef9b8fbea7b1af61b`
 - 실행시간: 582.07초
 - 재현 상태: `INFERENCE_VERIFIED`
+- Release: [`exp-229-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-229-repro-v1)
 
 저장 checkpoint로 test를 다시 추론해 라벨 일치율 100%, 확률 최대 절대 차이
-`1.72e-7`, 제출 CSV byte-level SHA-256 일치를 확인했습니다.
+`1.72e-7`, 제출 CSV byte-level SHA-256 일치를 확인했습니다. Issue #260에서 원본
+checkpoint·iteration audit 각 5개와 OOF/test 확률을 deterministic bundle로
+보존하고 원격 재다운로드 SHA-256 일치를 확인했습니다.
