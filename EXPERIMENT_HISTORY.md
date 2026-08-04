@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 82
+- 실제 실험 수: 83
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -100,6 +100,7 @@
 | EXP-355 | COMPLETED | fabxoe | #355 | EXP-229 raw complex token count를 normalized non-simple unique-gene count로 교체 | 0.4176342820 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0053543·Log Loss +0.0263959·DLBC -0.06258로 R1 기각, R2는 독립 실행 | [보고서](reports/exp355_robust_complex_gene_count/README.md) |
 | EXP-359 | COMPLETED | fabxoe | #359 | EXP-229 generic gene complex를 normalized non-simple event-family indicator 6종으로 교체 | 0.4187813830 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0042072·Log Loss +0.0103444로 R2 기각, robust representation 공식 탐색 종료 | [보고서](reports/exp359_robust_event_gene_indicators/README.md) |
 | EXP-369 | COMPLETED | fabxoe | #369 | EXP-229의 simple stop 표기 `*`·`X`·`Ter`를 모든 피처 경로에서 동일한 nonsense로 정규화 | 0.4229885745 | 0.3407944343 | INFERENCE_VERIFIED | OOF 동일 통제에서 EXP-229 Public 대비 +0.0204345510·팀 최고 갱신, stop parser 결함이 핵심 Public 병목이었음을 확인 | [보고서](reports/exp369_stop_notation_normalization/README.md) |
+| EXP-374 | COMPLETED | fabxoe | #374 | EXP-369 stop 정규화 + Ensembl 116 residue-position semantic mask | 0.4267909268 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0038024·fold std·Log Loss·클래스 안정성 모두 통과, ADOPT·신규 제출 후보 | [보고서](reports/exp374_stop_isoform_residue_mask/README.md) |
 | EXP-409 | COMPLETED | fabxoe | #409 | EXP-369 + fold-train ordinary range-replacement gene indicator | 0.4249303829 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0019418이나 fold std +0.0023141·Log Loss +0.1327703으로 gate 실패, ARCHIVE | [보고서](reports/exp409_ordinary_range_replacement_indicator/README.md) |
 
 ## 리더보드 제출 이력
@@ -174,6 +175,7 @@
 | 2026-08-04T07:07:59.587191+00:00 | EXP-355 | fabxoe | `b03b9163955a9978736f19925a05d356a3f7a82e` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp355_robust_complex_gene_count/comparison.json) |
 | 2026-08-04T07:36:26.479110+00:00 | EXP-359 | fabxoe | `4fbd1e267664949b515867c452ffa770405d4884` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.46e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp359_robust_event_gene_indicators/comparison.json) |
 | 2026-08-04T08:39:18.352925+00:00 | EXP-369 | fabxoe | `f49bf2209b22492d11bc5c31ab76de9af3946b59` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.40e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp369_stop_notation_normalization/comparison.json) |
+| 2026-08-04T22:04:37.570398+00:00 | EXP-374 | fabxoe | `4a2dfb685859277bd78746e8ab9578ade51a64a7` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.83e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp374_stop_isoform_residue_mask/comparison.json) |
 | 2026-08-04T21:45:04.915445+00:00 | EXP-409 | fabxoe | `7519b8e0dfa8e6b2c2e49d1b1ee4e7f54bc0c412` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp409_ordinary_range_replacement_indicator/comparison.json) |
 
 ## 상세 실험 로그
@@ -220,6 +222,42 @@
   증거다. 이를 모든 실패 원인의 유일한 설명으로 확대하지는 않지만, 이후 모델은
   stop 정규화 parser를 새 기준으로 사용한다. Public을 본 뒤 parser 규칙을
   역조정하지 않으며 위치 sanitation·synonymous 처리는 별도 실험으로 분리한다.
+
+### [EXP-374] Stop 정규화 + Ensembl isoform residue mask
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #374 / `issue-374-exp-stop-isoform-mask`
+- 소스 commit: `4a2dfb685859277bd78746e8ab9578ade51a64a7`
+- 시작/종료: 2026-08-04T21:54:19.262336+00:00 /
+  2026-08-04T22:04:35.686141+00:00 (616.75초)
+
+#### 실행
+
+- Config: `configs/exp374_stop_isoform_residue_mask.yaml`
+- Runner: `scripts/run_exp374_stop_isoform_residue_mask.py`
+- Metrics: `reports/exp374_stop_isoform_residue_mask/metrics.json`
+- Report: `reports/exp374_stop_isoform_residue_mask/README.md`
+- 부모 EXP-369의 stop 정규화·기본 모델을 고정하고 EXP-313의 Ensembl release
+  116 semantic mask만 residue-position 경로에 추가했다. EXP-285 Optuna
+  파라미터는 사용하지 않았다.
+
+#### 결과와 판단
+
+- Fold Macro F1: 0.4243902236, 0.4214466890, 0.4201172029,
+  0.4239068711, 0.4433574970
+- OOF Macro F1: 0.4267909268 (EXP-369 대비 `+0.0038023523`)
+- Fold 표준편차: 0.0085032169 (EXP-369 대비 `-0.0013647481`)
+- Accuracy: 0.4128366393 (EXP-369 대비 `+0.0003225286`)
+- Log Loss: 1.8440648317 (EXP-369 대비 `-0.0068964958`)
+- 클래스별 최대 하락 CESC `-0.01556`; `-0.05` 붕괴 없음
+- EXP-369 대비 test argmax 변경 228/2,546행
+- EXP-313과 OOF 확률은 완전 동일, test argmax는 stop 정규화로 371행 변경
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — checkpoint 재추론 submission SHA-256
+  byte-level 일치, test 라벨 100%, 확률 최대 차이 1.83e-7
+- 결론: 모든 Local gate를 통과했다. stop 정규화와 isoform mask 효과를 분리해
+  확인한 `ADOPT` 후보이며 사용자가 제출 횟수·팀 후보를 확인한 뒤 수동 제출한다.
 
 ### [EXP-409] Ordinary range-replacement gene indicator
 

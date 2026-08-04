@@ -20,7 +20,8 @@ mutation presence는 보존하고 raw token multiplicity·불확실 위치가 �
 | R2 | generic complex gene signal → normalized event-family indicator | #359 | EXP-359 | #363 | REJECTED | 0.4187813830 | EXP-229 대비 -0.0042072·Log Loss 악화 | 공식 탐색 종료 |
 | R3 | 채택 robust representation + EXP-313 mask | 미발급 | 미발급 | 미발급 | REJECTED | N/A | R1·R2 모두 실패해 중단 조건 적용 | 실행하지 않음 |
 | P4 | parser v4 family train-support gate | #407 | 해당 없음 | #408 | COMPLETED | N/A | #410 정정 후 ordinary 101 samples만 eligible | P5 실행 |
-| P5 | ordinary range-replacement gene indicator | #409 | EXP-409 | 미발급 | COMPLETED | 0.4249303829 | F1 +0.00194이나 fold std·Log Loss gate 실패 | ARCHIVE·추가 튜닝 중단 |
+| P5 | ordinary range-replacement gene indicator | #409 | EXP-409 | #412 | COMPLETED | 0.4249303829 | F1 +0.00194이나 fold std·Log Loss gate 실패 | ARCHIVE·추가 튜닝 중단 |
+| P6 | stop 정규화 + Ensembl isoform residue mask | #374 | EXP-374 | #413 | PR_OPEN | 0.4267909268 | EXP-369 대비 F1·fold std·Log Loss·클래스 안정성 gate 모두 통과 | ADOPT·수동 제출 후보 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`를 사용하며
 실험 재현 상태와 구분한다.
@@ -97,6 +98,12 @@ Public 결과를 보고 event family나 교체 범위를 수정하지 않는다.
   향후 QC와 annotation audit에 재사용하되 현재 모델의 base 표현을 바꾸지 않는다.
 - 상세 R2 결과는
   [`reports/exp359_robust_event_gene_indicators/README.md`](../exp359_robust_event_gene_indicators/README.md)에 기록한다.
+- P5 EXP-409는 ordinary range 의미를 모델에 추가했지만 fold 안정성과 Log Loss가
+  악화되어 보존만 하고 추가 threshold·유전자 탐색은 중단한다.
+- P6 EXP-374는 EXP-369의 stop 정규화와 EXP-313의 고정 Ensembl release 116
+  residue-position semantic mask를 결합해 모든 Local gate를 통과했다. 세부 결과는
+  [`reports/exp374_stop_isoform_residue_mask/README.md`](../exp374_stop_isoform_residue_mask/README.md)에 기록하며,
+  Public 결과를 이용한 mask 범주·모델 파라미터 역조정은 하지 않는다.
 
 ## 실제 QC에서 새로 확인한 점
 
