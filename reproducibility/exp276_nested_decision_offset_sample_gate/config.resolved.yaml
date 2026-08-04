@@ -1,0 +1,137 @@
+experiment:
+  record_role: official
+  issue_number: 276
+  experiment_id: EXP-276
+  component_experiments:
+  - EXP-094
+  - EXP-219
+  - EXP-233
+  branch: issue-276-nested-decision-offset-sample-gate
+  owner: Kangho Park
+  source_commit: 4f0b37d4227297b17a1ca0fac7db25e4c1b7fa06
+  dirty_worktree: false
+  started_at: '2026-08-03T13:35:42.558759+00:00'
+baseline:
+  experiment_id: EXP-219
+  oof_path: oof/exp219_macro_f1_checkpoint_selection.csv
+  release_tag: exp-219-repro-v1
+  release_bundle_sha256: fa293ed92a21508e0752890ca407c6e55cbc879468
+  oof_sha256: 64bf5b289d5af4c3204a59424e6322794e9620d79258a753d69da2d7f5b94e2b
+  oof_macro_f1: 0.42223214599395903
+  log_loss: 1.8476127465371908
+  fold_std: 0.006720393572959509
+base_feature_spec:
+  name: v1
+  base_feature_spec_sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+  feature_names_sha256: 8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf
+  train_shape:
+  - 6201
+  - 35119
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+inner_cross_fitting:
+  n_splits: 3
+  seed_base: 5000
+  note: 'Identical to EXP-233: seed for outer fold i is seed_base + i, inner models
+    trained only on that outer fold''s train partition (never its own validation rows),
+    same Feature Spec v1 matrix and XGBoost hyperparameters as EXP-219''s model block.
+    Training runs exactly once; the 3 sample-gate thresholds below only change which
+    classes the already-computed inner-cross-fit probabilities are allowed to search
+    an offset for (cheap, no retraining per threshold).'
+sample_gate:
+  statistic: min_class_count_per_inner_fold
+  statistic_definition: 'For each class, the minimum count of that class across the
+    n_splits inner-fold holdouts within one outer fold''s train partition (computed
+    by open_cancer.nested_decision_offset.min_class_count_per_inner_fold). NOT the
+    raw outer-train count -- Issue #233 found DLBC''s outer-train count (30-31) is
+    already close to other small classes (ACC: 57) and would not be excluded by any
+    threshold in the range below; the per-inner-fold minimum (DLBC: 10.0, ACC: 19.0)
+    is the quantity that actually determines offset-search stability and is what these
+    thresholds are calibrated against.'
+  threshold_candidates:
+  - 15
+  - 20
+  - 25
+  below_threshold_action: offset_fixed_at_zero
+offset_search:
+  candidate_grid_min: -1.0
+  candidate_grid_max: 1.0
+  candidate_grid_step: 0.1
+  regularization_lambda: 0.001
+  max_coordinate_passes: 5
+  application: multiplicative_renormalized
+  application_formula: softmax(z + o) ∝ softmax(z) * exp(o), renormalized
+  fit_scope: outer_fold_train_inner_cross_fit_only
+  applied_to_outer_validation: transform_only
+  applied_to_test: not_in_scope_this_experiment
+  candidate_grid:
+  - -1.0
+  - -0.9
+  - -0.8
+  - -0.7
+  - -0.6
+  - -0.5
+  - -0.4
+  - -0.3
+  - -0.2
+  - -0.1
+  - -0.0
+  - 0.1
+  - 0.2
+  - 0.3
+  - 0.4
+  - 0.5
+  - 0.6
+  - 0.7
+  - 0.8
+  - 0.9
+  - 1.0
+official_threshold_selection:
+  rule: 'Among the 3 threshold candidates, the official (record_role: official) result
+    is the smallest threshold whose 26-class OOF Macro F1 improves over EXP-219 AND
+    whose Log Loss and fold-std do not regress versus EXP-219. If none qualifies,
+    the experiment is ARCHIVEd like EXP-233 and no threshold is preferred over another.
+    This rule is fixed here, before seeing any threshold''s results.'
+official_threshold_chosen: 20
+qualifying_thresholds: []
+verdict: ARCHIVE
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+optimism_bias_disclosure: 'Same as EXP-233: EXP-219 (baseline) selected each outer
+  fold''s checkpoint iteration by maximizing Macro F1 on that same fold''s validation
+  rows. This experiment''s inner-fold early stopping reuses the inner holdout as eval_set,
+  the same established pattern used throughout this project for outer-fold OOF generation.
+  Current best / final-candidate promotion of any macro-F1-checkpoint-selected model
+  requires additional stability confirmation (repeated seeds, independent retraining,
+  or Public LB) per PROJECT_CONTEXT.md''s checkpoint-selection policy; this experiment
+  does not claim that confirmation on its own.'
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]
+  platform: Windows-10-10.0.26200-SP0
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: 87876a7c41c030503ed1b95a2d1254c5ab395cfbb865c7538fa5de42bd28902a
+command: uv run python scripts/run_exp276_nested_decision_offset_sample_gate.py

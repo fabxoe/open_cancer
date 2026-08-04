@@ -1,0 +1,28 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-323
+issue_number: 323
+slug: exp285_exp313_fixed_blend
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+ensemble:
+  method: probability_mean
+  weights_fixed_before_evaluation: true
+  components:
+    - experiment_id: EXP-285
+      weight: 0.5
+      oof_probability_path: oof/exp285_exp229_nested_optuna_xgb.csv
+      test_probability_path: preds/exp285_exp229_nested_optuna_xgb_test_proba.csv
+      metrics_path: reports/exp285_exp229_nested_optuna_xgb/metrics.json
+      resolved_config_path: reproducibility/exp285_exp229_nested_optuna_xgb/config.resolved.yaml
+    - experiment_id: EXP-313
+      weight: 0.5
+      oof_probability_path: oof/exp313_isoform_residue_mask.csv
+      test_probability_path: preds/exp313_isoform_residue_mask_test_proba.csv
+      metrics_path: reports/exp313_isoform_residue_mask/metrics.json
+      resolved_config_path: reproducibility/exp313_isoform_residue_mask/config.resolved.yaml
+submission:
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
