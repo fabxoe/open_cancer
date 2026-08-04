@@ -336,6 +336,12 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   않는다. 상세 계약과 전수 감사는
   [`reports/analysis/protein_duplication_semantics/README.md`](reports/analysis/protein_duplication_semantics/README.md)를
   따른다.
+- `-762fs`형 signed frameshift와 `*261*`형 bilateral-stop 부분 표기는 원문 숫자와
+  marker를 보존하되 protein residue-position에서 제외한다. protein 간이표기만으로
+  전자를 5′ UTR/extension, 후자를 nonsense/stop-loss/extension으로 강제 분류하지
+  않으며 기존 feature adapter에서는 `other_unmappable`을 유지한다. 상세 감사는
+  [`reports/analysis/partial_terminal_semantics/README.md`](reports/analysis/partial_terminal_semantics/README.md)를
+  따른다.
 - protein single-position substitution은 표준 amino acid 1개에서 다른 표준
   amino acid 1개로 바뀌는 ordinary missense, same-AA/no-change, immediate
   nonsense, `M1` start-site 영향과 unresolved reference 표기를 서로 구분한다.
