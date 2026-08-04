@@ -307,6 +307,15 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   않는다. 상세 계약과 전수 감사는
   [`reports/analysis/protein_duplication_semantics/README.md`](reports/analysis/protein_duplication_semantics/README.md)를
   따른다.
+- protein single-position substitution은 표준 amino acid 1개에서 다른 표준
+  amino acid 1개로 바뀌는 ordinary missense, same-AA/no-change, immediate
+  nonsense, `M1` start-site 영향과 unresolved reference 표기를 서로 구분한다.
+  alternate `*`, `X`, `Ter`는 같은 stop 의미로 canonicalize하지만 leading `X`나
+  leading `*`는 stop-loss·extension으로 추정하지 않는다. physicochemical delta는
+  exact ordinary missense에만 허용하고 range·indel·frameshift는 전용 parser로
+  전달한다. 실제 전수 감사와 v4 계약은
+  [`reports/analysis/protein_substitution_semantics/README.md`](reports/analysis/protein_substitution_semantics/README.md)를
+  따른다.
 - 상관·희소도 기반 feature selection은 각 outer fold의 **학습 행에서만** fit하고,
   확정한 같은 mask를 validation·test에 적용한다. 상관을 `GENE__mutated`에서
   계산했다면 해당 mutation-presence 열만 제거하며 mutation-type, missing,

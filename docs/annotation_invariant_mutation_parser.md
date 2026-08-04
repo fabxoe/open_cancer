@@ -138,3 +138,23 @@ duplication, 265건이 일반 insertion, 121건이 isoform unresolved, 3건이 a
 없는 단일 left-copy 후보였다. 상세 계약과 결과는
 [`reports/analysis/protein_duplication_semantics/README.md`](../reports/analysis/protein_duplication_semantics/README.md)에
 기록한다.
+
+## Parser v4: protein substitution semantic adapter
+
+Issue #393은 단일 위치 substitution의 문법·의미를 별도 v4 adapter로 고정한다.
+
+- 표준 amino acid 1개가 다른 표준 amino acid 1개로 바뀔 때만 ordinary
+  missense이며 physicochemical delta도 이 경우에만 허용한다.
+- `D623D`형 same-AA는 protein no-change annotation으로 보존하고 `WT`와
+  동일시하지 않는다.
+- alternate `*`, `X`, `Ter`는 immediate nonsense의 동일 표기로 canonical `*`를
+  사용한다.
+- `M1<AA>`는 translation-initiation-site 영향으로 분리하고 ordinary missense로
+  세지 않는다.
+- leading `X`는 unknown reference, leading `*`는 nonstandard unresolved로
+  보존하며 stop-loss·extension을 추정하지 않는다.
+- range·indel·frameshift grammar는 substitution parser가 소비하지 않는다.
+
+train/test 전수 수치와 해석 제한은
+[`reports/analysis/protein_substitution_semantics/README.md`](../reports/analysis/protein_substitution_semantics/README.md)에
+기록한다.
