@@ -316,6 +316,14 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   전달한다. 실제 전수 감사와 v4 계약은
   [`reports/analysis/protein_substitution_semantics/README.md`](reports/analysis/protein_substitution_semantics/README.md)를
   따른다.
+- protein deletion은 complete anchored grammar로 single/range와
+  residue-aware/position-only를 구분한다. Range length는 inclusive하며 endpoint가
+  인접할 필요는 없다. equal-position range는 raw를 보존한 semantic single로만
+  정규화하고 reversed range는 자동 교환하지 않는다. `delins`, complete
+  frameshift와 nonsense는 deletion보다 우선하며, fixed reference 없이 중간
+  sequence나 HGVS 3′ 위치를 만들지 않는다. 실제 전수 감사와 v4 계약은
+  [`reports/analysis/protein_deletion_semantics/README.md`](reports/analysis/protein_deletion_semantics/README.md)를
+  따른다.
 - 상관·희소도 기반 feature selection은 각 outer fold의 **학습 행에서만** fit하고,
   확정한 같은 mask를 validation·test에 적용한다. 상관을 `GENE__mutated`에서
   계산했다면 해당 mutation-presence 열만 제거하며 mutation-type, missing,
