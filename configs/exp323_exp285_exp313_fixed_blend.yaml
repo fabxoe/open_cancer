@@ -1,4 +1,7 @@
 run_mode: experiment
+record_role: official
+experiment_id: EXP-323
+issue_number: 323
 slug: exp285_exp313_fixed_blend
 seed: 42
 split:
