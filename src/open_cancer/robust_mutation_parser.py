@@ -251,6 +251,19 @@ STOP_NOTATION_PARSER_CONTRACT: dict[str, Any] = {
 }
 
 
+def normalize_stop_notation_token(raw: str) -> str:
+    """Return v1-compatible text with only simple stop notation normalized."""
+
+    robust = parse_robust_mutation_token(raw)
+    return robust.normalized if robust.event_family == "stop_gain" else raw
+
+
+def parse_stop_notation_invariant_token(raw: str) -> ParsedMutationToken:
+    """Parse one token with the isolated stop-notation normalization rule."""
+
+    return parse_mutation_token(normalize_stop_notation_token(raw))
+
+
 def _assemble_feature_factory_cell(
     parsed: tuple[ParsedMutationToken, ...],
 ) -> ParsedMutationCell:
@@ -277,9 +290,7 @@ def parse_stop_notation_invariant_cell(cell: str) -> ParsedMutationCell:
     for raw in cell.split():
         if not raw or raw.upper() == "WT":
             continue
-        robust = parse_robust_mutation_token(raw)
-        serialized = robust.normalized if robust.event_family == "stop_gain" else raw
-        tokens.append(parse_mutation_token(serialized))
+        tokens.append(parse_stop_notation_invariant_token(raw))
     return _assemble_feature_factory_cell(tuple(tokens))
 
 

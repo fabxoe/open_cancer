@@ -111,6 +111,9 @@ def main(
     fold_model_tuner: Any | None = None,
     runner_command: str | None = None,
     prevalidated_source_commit: str | None = None,
+    mutation_cell_parser: Any | None = None,
+    mutation_parser_contract: dict[str, Any] | None = None,
+    hotspot_token_normalizer: Any | None = None,
 ) -> None:
     args = parse_args() if config_override is None else None
     started_at = datetime.now(timezone.utc)
@@ -176,6 +179,12 @@ def main(
     selected_robust_aggregates = tuple(
         config.get("features", {}).get("robust_aggregates", [])
     )
+    parser_options: dict[str, Any] = {}
+    if mutation_cell_parser is not None:
+        parser_options = {
+            "mutation_cell_parser": mutation_cell_parser,
+            "mutation_parser_contract": mutation_parser_contract,
+        }
     feature_report = build_hotspot_augmented_features(
         TRAIN_PATH,
         TEST_PATH,
@@ -187,8 +196,10 @@ def main(
             "position_token_filter": position_token_filter,
             "position_token_transformer": position_token_transformer,
             "position_semantic_contract": position_semantic_contract,
+            **parser_options,
             **position_options,
         },
+        hotspot_token_normalizer=hotspot_token_normalizer,
     )
     base_dir = Path(feature_report["base_dir"])
 

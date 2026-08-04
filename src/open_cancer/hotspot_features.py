@@ -22,7 +22,7 @@ import csv
 import json
 import re
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 import numpy as np
 from scipy import sparse
@@ -32,6 +32,7 @@ from open_cancer.hashing import sha256_file, sha256_lines
 SUBSTITUTION = re.compile(r"^([ACDEFGHIKLMNPQRSTVWY])([1-9][0-9]*)([ACDEFGHIKLMNPQRSTVWY*])$")
 
 HotspotTable = tuple[tuple[str, int, str], ...]
+TokenNormalizer = Callable[[str], str]
 
 KNOWN_HOTSPOTS: HotspotTable = (
     ("BRAF", 600, "V"),
@@ -136,6 +137,7 @@ def build_hotspot_matrix(
     path: Path,
     gene_start_column: int,
     hotspots: HotspotTable = KNOWN_HOTSPOTS,
+    token_normalizer: TokenNormalizer | None = None,
 ) -> sparse.csr_matrix:
     """Build a (n_rows, len(hotspots) + 1) matrix: per-hotspot hit + total."""
 
@@ -161,7 +163,8 @@ def build_hotspot_matrix(
                 for token in cell.split():
                     if token == "WT":
                         continue
-                    match = SUBSTITUTION.fullmatch(token)
+                    normalized = token_normalizer(token) if token_normalizer else token
+                    match = SUBSTITUTION.fullmatch(normalized)
                     if match is None:
                         continue
                     reference, position_str, _alternate = match.groups()
@@ -275,6 +278,7 @@ def build_hotspot_augmented_features(
     position_token_scope: str = "include_complex",
     position_transform: str = "raw",
     position_bin_width: int = 100,
+    hotspot_token_normalizer: TokenNormalizer | None = None,
 ) -> dict[str, object]:
     """Build configurable mutation features plus fixed hotspot indicators."""
 
@@ -301,8 +305,18 @@ def build_hotspot_augmented_features(
     train_base = sparse.load_npz(base_dir / "train_features.npz")
     test_base = sparse.load_npz(base_dir / "test_features.npz")
 
-    train_hotspot = build_hotspot_matrix(train_path, gene_start_column=2, hotspots=hotspots)
-    test_hotspot = build_hotspot_matrix(test_path, gene_start_column=1, hotspots=hotspots)
+    train_hotspot = build_hotspot_matrix(
+        train_path,
+        gene_start_column=2,
+        hotspots=hotspots,
+        token_normalizer=hotspot_token_normalizer,
+    )
+    test_hotspot = build_hotspot_matrix(
+        test_path,
+        gene_start_column=1,
+        hotspots=hotspots,
+        token_normalizer=hotspot_token_normalizer,
+    )
 
     train_matrix = sparse.hstack([train_base, train_hotspot], format="csr").astype(np.float32)
     test_matrix = sparse.hstack([test_base, test_hotspot], format="csr").astype(np.float32)
