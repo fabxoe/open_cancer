@@ -1,0 +1,323 @@
+{
+  "analysis_only": true,
+  "input_artifacts": {
+    "train_features_sha256": "dfb0b8fbade7d69c460411dfdbc5bb5fbd97eb9b5e1056dd82294135adac5c8a",
+    "test_features_sha256": "66f0471b230d25d688b1564d5adece0077d5deaaf52c8c987e3e719491127575",
+    "feature_names_sha256": "b7464c1fd0e985e722eabd2f8becb33051879d4b4cdfd25d99cd1e6b793b98c8",
+    "ordered_feature_names_sha256": "8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf",
+    "train_csv_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+    "test_csv_sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+  },
+  "model_configuration": {
+    "objective": "binary:logistic",
+    "eval_metric": "auc",
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_lambda": 1.0,
+    "tree_method": "hist",
+    "device": "cpu",
+    "n_jobs": 8,
+    "verbosity": 0,
+    "n_estimators": 300,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "early_stopping_rounds": 30
+  },
+  "domain_split": {
+    "method": "StratifiedKFold",
+    "target": "train=0,test=1",
+    "shuffle": true,
+    "n_splits": 5,
+    "seed": 42,
+    "subclass_used": false,
+    "public_score_used": false
+  },
+  "n_train": 6201,
+  "n_test": 2546,
+  "n_features": 35119,
+  "n_splits": 5,
+  "seed": 42,
+  "fold_auc": [
+    0.7209725346660989,
+    0.7340915559772297,
+    0.7424187210849864,
+    0.7428805691108435,
+    0.7417128778756573
+  ],
+  "overall_auc": 0.7210227159722483,
+  "total_gain": 2150.1389559686163,
+  "top_features": [
+    {
+      "feature": "sample__complex_count",
+      "mean_gain": 245.36897888183594
+    },
+    {
+      "feature": "sample__multi_variant_gene_count_log1p",
+      "mean_gain": 61.81961078643799
+    },
+    {
+      "feature": "sample__multi_variant_gene_count",
+      "mean_gain": 55.915245056152344
+    },
+    {
+      "feature": "sample__nonsense_count",
+      "mean_gain": 27.34305610656738
+    },
+    {
+      "feature": "CACNA1A__max_residue_position",
+      "mean_gain": 25.997636604309083
+    },
+    {
+      "feature": "sample__mutated_gene_count_log1p",
+      "mean_gain": 23.904943466186523
+    },
+    {
+      "feature": "TCHH__max_residue_position",
+      "mean_gain": 21.683523750305177
+    },
+    {
+      "feature": "MAGEE1__max_residue_position",
+      "mean_gain": 20.69155921936035
+    },
+    {
+      "feature": "CPEB2__max_residue_position",
+      "mean_gain": 20.52144889831543
+    },
+    {
+      "feature": "CPEB2__missense",
+      "mean_gain": 19.935694313049318
+    },
+    {
+      "feature": "AHNAK__max_residue_position",
+      "mean_gain": 17.372828865051268
+    },
+    {
+      "feature": "KDM6B__max_residue_position",
+      "mean_gain": 17.14102897644043
+    },
+    {
+      "feature": "RXRA__max_residue_position",
+      "mean_gain": 17.077259826660157
+    },
+    {
+      "feature": "APC__nonsense",
+      "mean_gain": 11.668008804321289
+    },
+    {
+      "feature": "WASL__max_residue_position",
+      "mean_gain": 11.24634428024292
+    },
+    {
+      "feature": "VWF__max_residue_position",
+      "mean_gain": 10.844026565551758
+    },
+    {
+      "feature": "sample__mutated_gene_count",
+      "mean_gain": 10.75469512939453
+    },
+    {
+      "feature": "POLD1__max_residue_position",
+      "mean_gain": 10.593775749206543
+    },
+    {
+      "feature": "KDM6B__synonymous",
+      "mean_gain": 10.401697158813477
+    },
+    {
+      "feature": "APC__max_residue_position",
+      "mean_gain": 10.292716026306152
+    },
+    {
+      "feature": "ALOX12B__max_residue_position",
+      "mean_gain": 10.168420028686523
+    },
+    {
+      "feature": "XPO1__max_residue_position",
+      "mean_gain": 9.729133701324463
+    },
+    {
+      "feature": "sample__total_variant_count",
+      "mean_gain": 9.630681610107422
+    },
+    {
+      "feature": "SLC2A1__max_residue_position",
+      "mean_gain": 9.624725341796875
+    },
+    {
+      "feature": "sample__total_variant_count_log1p",
+      "mean_gain": 9.524545288085937
+    },
+    {
+      "feature": "NPY4R__max_residue_position",
+      "mean_gain": 9.315176391601563
+    },
+    {
+      "feature": "LY75__mutated",
+      "mean_gain": 8.934164428710938
+    },
+    {
+      "feature": "MUC1__max_residue_position",
+      "mean_gain": 8.779946899414062
+    },
+    {
+      "feature": "EXO1__max_residue_position",
+      "mean_gain": 8.670386695861817
+    },
+    {
+      "feature": "ZMIZ1__max_residue_position",
+      "mean_gain": 8.500905609130859
+    },
+    {
+      "feature": "HMOX2__max_residue_position",
+      "mean_gain": 8.408044624328614
+    },
+    {
+      "feature": "TCHH__mutated",
+      "mean_gain": 8.263425076007843
+    },
+    {
+      "feature": "FURIN__missense",
+      "mean_gain": 8.10122013092041
+    },
+    {
+      "feature": "HSPA1L__max_residue_position",
+      "mean_gain": 8.03569736480713
+    },
+    {
+      "feature": "DST__max_residue_position",
+      "mean_gain": 7.477030944824219
+    },
+    {
+      "feature": "ERBB2__max_residue_position",
+      "mean_gain": 7.422453880310059
+    },
+    {
+      "feature": "PTPRR__max_residue_position",
+      "mean_gain": 7.421848106384277
+    },
+    {
+      "feature": "DMD__max_residue_position",
+      "mean_gain": 7.387750434875488
+    },
+    {
+      "feature": "EGFR__max_residue_position",
+      "mean_gain": 7.1731383323669435
+    },
+    {
+      "feature": "sample__missense_count",
+      "mean_gain": 7.165682792663574
+    },
+    {
+      "feature": "OLR1__max_residue_position",
+      "mean_gain": 7.00731086730957
+    },
+    {
+      "feature": "CYP4A11__max_residue_position",
+      "mean_gain": 6.805129814147949
+    },
+    {
+      "feature": "BCL6__max_residue_position",
+      "mean_gain": 6.740757179260254
+    },
+    {
+      "feature": "KIF23__max_residue_position",
+      "mean_gain": 6.609726524353027
+    },
+    {
+      "feature": "LY75__max_residue_position",
+      "mean_gain": 6.601588439941406
+    },
+    {
+      "feature": "CDKN2AIP__mutated",
+      "mean_gain": 6.564370727539062
+    },
+    {
+      "feature": "WASL__missense",
+      "mean_gain": 6.5618791580200195
+    },
+    {
+      "feature": "ARHGAP5__max_residue_position",
+      "mean_gain": 6.515732288360596
+    },
+    {
+      "feature": "PTEN__max_residue_position",
+      "mean_gain": 6.484222793579102
+    },
+    {
+      "feature": "ZFPM2__max_residue_position",
+      "mean_gain": 6.453952693939209
+    }
+  ],
+  "family_shift": [
+    {
+      "family": "max_residue_position",
+      "n_features": 4384,
+      "total_gain": 1291.4944818794716,
+      "mean_gain_per_feature": 0.29459271940681375,
+      "share_of_total_gain": 0.6006562870247919
+    },
+    {
+      "family": "sample_burden_aggregate",
+      "n_features": 12,
+      "total_gain": 459.9624354839325,
+      "mean_gain_per_feature": 38.33020295699438,
+      "share_of_total_gain": 0.2139221905668529
+    },
+    {
+      "family": "mutated",
+      "n_features": 4384,
+      "total_gain": 182.1222414493561,
+      "mean_gain_per_feature": 0.04154248208242612,
+      "share_of_total_gain": 0.0847025448954353
+    },
+    {
+      "family": "missense",
+      "n_features": 4384,
+      "total_gain": 138.29680583477017,
+      "mean_gain_per_feature": 0.03154580425063188,
+      "share_of_total_gain": 0.06431993869552902
+    },
+    {
+      "family": "synonymous",
+      "n_features": 4384,
+      "total_gain": 52.72484674453735,
+      "mean_gain_per_feature": 0.012026652998297754,
+      "share_of_total_gain": 0.02452159968460519
+    },
+    {
+      "family": "nonsense",
+      "n_features": 4384,
+      "total_gain": 16.44985008239746,
+      "mean_gain_per_feature": 0.0037522468253643844,
+      "share_of_total_gain": 0.007650598598166864
+    },
+    {
+      "family": "frameshift",
+      "n_features": 4384,
+      "total_gain": 4.924444389343262,
+      "mean_gain_per_feature": 0.0011232765486640652,
+      "share_of_total_gain": 0.002290291227770834
+    },
+    {
+      "family": "hotspot",
+      "n_features": 35,
+      "total_gain": 4.009492194652557,
+      "mean_gain_per_feature": 0.11455691984721592,
+      "share_of_total_gain": 0.0018647595698512984
+    },
+    {
+      "family": "complex",
+      "n_features": 4384,
+      "total_gain": 0.15435791015625,
+      "mean_gain_per_feature": 3.520937731666287e-05,
+      "share_of_total_gain": 7.17897369971204e-05
+    },
+    {
+      "family": "missing",
+      "n_features": 4384,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    }
+  ]
+}
