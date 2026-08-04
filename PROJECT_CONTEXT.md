@@ -324,6 +324,14 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   sequence나 HGVS 3′ 위치를 만들지 않는다. 실제 전수 감사와 v4 계약은
   [`reports/analysis/protein_deletion_semantics/README.md`](reports/analysis/protein_deletion_semantics/README.md)를
   따른다.
+- protein delins는 deletion·insertion과 중복 집계하지 않고 raw source structure와
+  immediate/later stop consequence를 함께 보존한다. Alternate의 first stop 이후
+  sequence는 provenance에만 남기며 DNA frame을 추정하지 않는다. Multi-letter
+  one-letter peptide 내부 upper-case `TER`는 Thr-Glu-Arg일 수 있으므로 전역 stop
+  치환하지 않고 explicit `Ter` suffix와 `X/*`만 canonicalize한다. 실제 감사와
+  v4 계약은
+  [`reports/analysis/protein_delins_semantics/README.md`](reports/analysis/protein_delins_semantics/README.md)를
+  따른다.
 - 상관·희소도 기반 feature selection은 각 outer fold의 **학습 행에서만** fit하고,
   확정한 같은 mask를 validation·test에 적용한다. 상관을 `GENE__mutated`에서
   계산했다면 해당 mutation-presence 열만 제거하며 mutation-type, missing,

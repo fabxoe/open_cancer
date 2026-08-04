@@ -176,3 +176,15 @@ Issue #394는 complete anchored deletion grammar를 별도 v4 adapter로 구현�
 train `SDEL133fs` 1건은 모두 별도로 유지됐다. 상세 결과는
 [`reports/analysis/protein_deletion_semantics/README.md`](../reports/analysis/protein_deletion_semantics/README.md)에
 기록한다.
+
+## Parser v4: protein delins semantic adapter
+
+Issue #399는 raw delins source structure와 protein consequence를 직교적으로
+보존한다. single/range span, alternate raw/canonical/translated sequence,
+immediate/later stop, post-stop provenance, unknown reference와 net protein length
+change를 구조화한다. Upper-case `TER`가 multi-letter one-letter peptide 안에 있으면
+Thr-Glu-Arg로 보존하고 explicit `Ter` suffix 및 `X/*`만 stop으로 처리한다.
+train 0건·test 545건이므로 모델 실험은 강행하지 않고 OOD semantic QC로 종료한다.
+상세 결과는
+[`reports/analysis/protein_delins_semantics/README.md`](../reports/analysis/protein_delins_semantics/README.md)에
+기록한다.
