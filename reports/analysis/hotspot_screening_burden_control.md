@@ -1,8 +1,11 @@
 # Hotspot 스크리닝 방법론 개선 — 샘플 변이부담(burden) 통제 단계 추가
 
-> 새 모델 실험이나 점수를 만들지 않는 target-independent 방법론 점검
-> 기록입니다. 실행 전 기각이므로 Experiment Issue와 EXP-ID를 만들지
-> 않습니다. 실제 실험 결과의 단일 원본은
+> **target-informed exploratory QC** 기록입니다. 새 모델 실험이나
+> 점수를 만들지 않고 Experiment Issue·EXP-ID도 만들지 않지만,
+> `SUBCLASS`를 읽어 후보별 dominant 암종과 그 안의 carrier/non-carrier
+> burden을 비교하므로 target-independent 분석은 아닙니다(후보 생성
+> 단계인 `screen_domino_effect_hotspots.py`만 target-independent).
+> 실제 실험 결과의 단일 원본은
 > [`EXPERIMENT_HISTORY.md`](../../EXPERIMENT_HISTORY.md)입니다.
 
 ## 배경
@@ -10,7 +13,7 @@
 DominoEffect 스타일 panel-wide 스크리닝(hotspot-34 제외 잔여 4,384개
 유전자 재발 빈도 조사, 240개 후보 발굴)에서 ACC 6개 유전자(LRIG1×2,
 SOWAHC, CMPK2, PEX6, NFKB2, TM7SF2)가 100% ACC 집중으로 나왔다. ID
-클러스터링(배치 아티팩트)은 아니었지만, carrier 57건의 평균
+클러스터링(배치 문제)은 아니었지만, carrier 57건의 평균
 `mutated_gene_count`(변이 유전자 수, burden 프록시)가 non-carrier
 15건보다 약 2배 높았다 — recurrence만 보고 "recurrence가 고변이
 샘플에 쏠려있는지"를 검증하지 않은 스크리닝 방법론 자체의 맹점으로
@@ -37,7 +40,24 @@ SOWAHC, CMPK2, PEX6, NFKB2, TM7SF2)가 100% ACC 집중으로 나왔다. ID
    4개 유전자와 공유한다는 사실은 이 클러스터 체크에서만 드러났다.
 
 두 체크 중 하나라도 걸리면 "제외 권고" 후보로 분류한다(reliable
-artifact_suspect ∪ cluster 멤버).
+`burden_confounded_candidate` ∪ cluster 멤버).
+
+**burden ratio가 높다는 게 해당 변이 콜이 가짜라는 증명은 아니다** — 실제
+hypermutator 아형(예: UCEC POLE/MSI)이 넓게 재발성을 만드는 것도 알려진
+진짜 생물학이지 데이터 손상이 아니다. 그래서 이 문서와 스크립트 전체는
+"artifact"라는 단정적 표현 대신 **"burden-confounded candidate"**(이
+패널의 recurrence 신호가 burden에 의해 교란됐을 수 있는 후보)라는
+표현을 쓴다.
+
+## 임계값 출처 — 사전 정의 아닌 exploratory threshold
+
+`BURDEN_MILD_CONCERN_RATIO=1.4`, `BURDEN_CONFOUND_RATIO=1.8`,
+`CLUSTER_JACCARD_THRESHOLD=0.3`은 **결과를 보기 전에 정한 사전 등록
+threshold가 아니다.** `1.8`은 ACC 클러스터 자체의 실제 관측 ratio
+(43.9/23.75 ≈ 1.85)에 맞춰 사후에 정했고, `0.3`도 관측된 pair jaccard
+분포를 보고 정했다. 따라서 이 문서의 "제외 권고" 목록은 이 특정
+임계값에 민감한 **탐색적 결과**로 취급해야 하며, 프로젝트의 공식 EXP
+채택 게이트(사전 고정 threshold)와 같은 신뢰도로 보면 안 된다.
 
 ## 결과 1 — 240개 후보 전체 burden ratio 분포
 
@@ -45,11 +65,12 @@ artifact_suspect ∪ cluster 멤버).
 |---|---|---:|
 | `clean` | ratio < 1.4 | 97 |
 | `mild_concern` | 1.4 ≤ ratio < 1.8 | 18 |
-| `artifact_suspect` | ratio >= 1.8 | 125 |
+| `burden_confounded_candidate` | ratio >= 1.8 | 125 |
 
-`artifact_suspect` 중 `n_in_dominant_class >= 5`(reliable)인 경우는
-51건이다. 나머지는 dominant 암종 내 carrier가 1~4건뿐이라 단일/소수
-초고변이 샘플에 의한 왜곡일 가능성이 커 참고용으로만 남긴다.
+`burden_confounded_candidate` 중 `n_in_dominant_class >= 5`(reliable)인
+경우는 51건이다. 나머지는 dominant 암종 내 carrier가 1~4건뿐이라
+단일/소수 초고변이 샘플에 의한 왜곡일 가능성이 커 참고용으로만
+남긴다.
 
 ## 결과 2 — 공유 ID 클러스터
 
@@ -91,31 +112,38 @@ UCEC/STES/SKCM/COAD의 hypermutator 아형이 넓게 재발성을 만드는 건 
 | EGFR 289 | GBMLGG | 19 | 1.368 | clean |
 | EGFR 598 | GBMLGG | 13 | 1.345 | clean |
 | NFE2L2 79 | HNSC | 4 | 1.118 | clean |
-| **PIK3CA 88** | **UCEC** | **10** | **3.218** | **artifact_suspect (reliable)** |
+| **PIK3CA 88** | **UCEC** | **10** | **3.218** | **burden_confounded_candidate (reliable)** |
 
 NPM1/EGFR×2/NFE2L2 4개는 모두 clean — 각각 잘 알려진 문헌 생물학(NPM1↔
-AML, EGFR↔교모세포종)과 일치해 burden 아티팩트가 아니라는 심증이
-강해졌다. **PIK3CA 88은 제외 권고 목록에 포함된다** — UCEC 내
-carrier 평균 burden이 non-carrier의 3.2배로, 대기열에서 실제 착수
-전 재확인이 필요하다는 신호다. (참고로 CTNNB1 D32/S33은 이미
-[EXP-296](../exp296_ctnnb1_d32_s33_hotspot/README.md)에서 별도로
-Vera 게이트·burden·배타성 검증을 마치고 실험까지 완료했다 — 이번 sweep
-결과와 무관하게 D32/S33 자체는 이 목록에 없다.)
+AML, EGFR↔교모세포종)과 일치해 burden 교란이 아니라는 심증이
+강해졌다(NPM1 288은 이후 [#329](npm1_288_hotspot_precheck.md)에서
+5단계 전체 재검증까지 마쳤다). **PIK3CA 88은 제외 권고 목록에
+포함된다** — UCEC 내 carrier 평균 burden이 non-carrier의 3.2배로,
+대기열에서 실제 착수 전 재확인이 필요하다는 신호다. (참고로 CTNNB1
+D32/S33은 이미 [EXP-296](../exp296_ctnnb1_d32_s33_hotspot/README.md)에서
+별도로 Vera 게이트·burden·배타성 검증을 마치고 실험까지 완료했다 —
+이번 sweep 결과와 무관하게 D32/S33 자체는 이 목록에 없다.)
 
-## 한계
+## 한계와 공식 사용 경계
 
 - **인과관계 미확정**: burden ratio가 높다는 것은 "이 패널의
   recurrence 신호가 hypermutator 아형에 의해 부풀려졌을 가능성"을
   뜻할 뿐, 해당 위치가 실제 driver가 아니라고 증명하지는 않는다.
   문헌 근거가 강한 후보(PIK3CA 등)는 이 체크만으로 자동 배제하지
   말고 추가 검증(fold별 안정성, 문헌 대조)을 거쳐야 한다.
-- **`n_in_dominant_class` 작은 경우의 노이즈**: `artifact_suspect`
+- **`n_in_dominant_class` 작은 경우의 노이즈**: `burden_confounded_candidate`
   125건 중 51건만 `n>=5`로 reliable하다. 나머지 74건은 단일/소수
   샘플에 의한 극단치일 수 있어 참고용으로만 CSV에 남긴다.
 - **원인 메커니즘이 burden만은 아님**: SOWAHC/NFKB2 사례처럼, 공유
   ID 클러스터에 속하면서도 개별 burden ratio는 낮은 경우가 있다 —
   "왜" 같은 샘플들이 여러 무관한 유전자에서 함께 재발하는지는 burden
   하나로 완전히 설명되지 않는다(다른 데이터 특성 가능성 배제 못함).
+- **이 문서의 제외 목록은 가설 생성용이다**: 전체 train 라벨로 계산한
+  것이라 공식 OOF feature 선택에 그대로 배선하면 안 된다. 향후 공식
+  (EXP-ID) 실험에서 이 필터를 쓰려면 각 outer-train fold 안에서만
+  dominant class와 제외 목록을 독립적으로 다시 계산하고, 그렇게 고정한
+  mask만 그 fold의 validation/test에 적용해야 한다 — validation/test
+  행 자체로 dominant class나 임계값을 fit하지 않는다.
 
 ## 결론 — 표준 절차 추가
 
@@ -131,11 +159,20 @@ Vera 게이트·burden·배타성 검증을 마치고 실험까지 완료했다 
 ## 재현과 관련 파일
 
 - Issue: [#295](https://github.com/fabxoe/open_cancer/issues/295)
-- 표준 절차 스크립트: `scripts/screen_hotspot_burden_confound.py`
-- 원본 스크리닝(240개 후보 생성): `dominoeffect_screening.py`(RUN_MODE=explore,
-  scratchpad 보관, 이번 문서의 입력)
+- 후보 생성 스크립트(target-independent, `SUBCLASS` 미사용):
+  `scripts/screen_domino_effect_hotspots.py`
+- 고정 입력(240개 후보, 재현 가능한 경로로 커밋됨):
+  `reports/analysis/dominoeffect_screening_candidates.csv`
+  - 생성 명령: `uv run python scripts/screen_domino_effect_hotspots.py`
+  - 입력 `data/raw/train.csv` SHA-256:
+    `92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab`
+  - 출력 candidates CSV SHA-256:
+    `e94589f9c5f1f392763228a468106cd61a2c08988c662f440fdebb7e56b8d937`
+- burden 교란 체크 스크립트(target-informed, `SUBCLASS` 사용):
+  `scripts/screen_hotspot_burden_confound.py`
 - 전체 240건 결과: `reports/analysis/hotspot_screening_burden_control_results.csv`
 - 공유 ID 클러스터 쌍: `reports/analysis/hotspot_screening_burden_control_clusters.csv`
 - 관련: [EXP-296](../exp296_ctnnb1_d32_s33_hotspot/README.md) — 이번
   burden 체크 방법론이 처음 적용된 CTNNB1 D32/S33 사전검증(둘 다
-  clean~mild, 제외 목록에 없음)
+  clean~mild, 제외 목록에 없음), [#329 NPM1 288 사전검증](npm1_288_hotspot_precheck.md)
+  — 같은 방법론의 두 번째 적용 사례
