@@ -17,6 +17,7 @@ from open_cancer.feature_family import (
     KnowledgeProvenance,
     assert_feature_spec_identity,
     build_feature_spec,
+    drop_named_base_features,
     fit_transform_family_set,
     find_semantically_equivalent_features,
     remove_semantically_equivalent_features,
@@ -173,3 +174,30 @@ def test_remove_semantically_equivalent_features_keeps_only_new_columns() -> Non
     assert dropped == {"duplicate": "base"}
     assert filtered.feature_names == ("new",)
     assert filtered.train.shape == (2, 1)
+
+
+def test_drop_named_base_features_applies_one_mask_to_all_partitions() -> None:
+    train = sparse.csr_matrix([[1, 2, 3], [4, 5, 6]], dtype=np.float32)
+    validation = sparse.csr_matrix([[7, 8, 9]], dtype=np.float32)
+    test = sparse.csr_matrix([[10, 11, 12]], dtype=np.float32)
+
+    train_out, validation_out, test_out, names = drop_named_base_features(
+        train,
+        validation,
+        test,
+        ("a", "b", "c"),
+        ("b",),
+    )
+
+    assert names == ("a", "c")
+    np.testing.assert_array_equal(train_out.toarray(), [[1, 3], [4, 6]])
+    np.testing.assert_array_equal(validation_out.toarray(), [[7, 9]])
+    np.testing.assert_array_equal(test_out.toarray(), [[10, 12]])
+
+
+def test_drop_named_base_features_rejects_missing_or_duplicate_names() -> None:
+    matrix = sparse.csr_matrix([[1, 2]], dtype=np.float32)
+    with pytest.raises(FeatureContractError, match="없습니다"):
+        drop_named_base_features(matrix, matrix, matrix, ("a", "b"), ("missing",))
+    with pytest.raises(FeatureContractError, match="중복"):
+        drop_named_base_features(matrix, matrix, matrix, ("a", "b"), ("a", "a"))

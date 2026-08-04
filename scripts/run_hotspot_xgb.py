@@ -51,7 +51,8 @@ from open_cancer.checkpoint_selection import (
     save_xgboost_iteration_checkpoint,
 )
 from open_cancer.experiment import resolve_experiment_context
-from open_cancer.hashing import sha256_file
+from open_cancer.hashing import sha256_file, sha256_lines
+from open_cancer.feature_family import drop_named_base_features
 from open_cancer.mutation_features import (
     resolve_position_features_from_config,
     resolve_position_options_from_config,
@@ -352,6 +353,18 @@ def main(
                 base_feature_names=all_feature_names,
                 target=y_train,
             )
+            (
+                x_train_fold,
+                x_valid_fold,
+                x_test_fold,
+                kept_base_feature_names,
+            ) = drop_named_base_features(
+                x_train_fold,
+                x_valid_fold,
+                x_test_fold,
+                all_feature_names,
+                extra.base_feature_names_to_drop,
+            )
             x_train_fold = sparse.hstack(
                 [x_train_fold, extra.train], format="csr", dtype=np.float32
             )
@@ -367,6 +380,12 @@ def main(
                     "fold": fold,
                     "feature_names": list(extra.feature_names),
                     "registry": extra.registry,
+                    "base_feature_names_to_drop": list(
+                        extra.base_feature_names_to_drop
+                    ),
+                    "base_feature_names_after_drop_sha256": sha256_lines(
+                        kept_base_feature_names
+                    ),
                 }
             )
         fold_model_params = dict(model_params)
@@ -838,9 +857,16 @@ def rebuild_fold_test_features(
             base_feature_names=feature_names,
             target=target[train_indices],
         )
+        _, _, filtered_test, _ = drop_named_base_features(
+            train_features[train_indices],
+            train_features[valid_indices],
+            test_features,
+            feature_names,
+            extra.base_feature_names_to_drop,
+        )
         rebuilt.append(
             sparse.hstack(
-                [test_features, extra.test], format="csr", dtype=np.float32
+                [filtered_test, extra.test], format="csr", dtype=np.float32
             )
         )
     return rebuilt

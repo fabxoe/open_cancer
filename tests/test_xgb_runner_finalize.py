@@ -76,3 +76,34 @@ def test_finalize_rejects_misaligned_base_features() -> None:
             feature_names=("only_one",),
             n_splits=2,
         )
+
+
+def test_finalize_reapplies_base_feature_drop_before_extra_columns() -> None:
+    runner = _load_runner_module()
+    train = sparse.csr_matrix(np.arange(18, dtype=np.float32).reshape(6, 3))
+    test = sparse.csr_matrix([[10, 20, 30]], dtype=np.float32)
+    folds = np.asarray([0, 1, 2, 0, 1, 2], dtype=np.int32)
+    target = np.asarray([0, 1, 2, 1, 2, 0], dtype=np.int32)
+
+    def builder(**kwargs):
+        return FoldFeatureBundle(
+            train=sparse.csr_matrix((len(kwargs["train_indices"]), 1)),
+            validation=sparse.csr_matrix((len(kwargs["valid_indices"]), 1)),
+            test=sparse.csr_matrix([[99]], dtype=np.float32),
+            fitted_families=(),
+            feature_names=("replacement",),
+            registry={},
+            base_feature_names_to_drop=("b",),
+        )
+
+    rebuilt = runner.rebuild_fold_test_features(
+        fold_feature_builder=builder,
+        fold_assignments=folds,
+        target=target,
+        train_features=train,
+        test_features=test,
+        feature_names=("a", "b", "c"),
+        n_splits=3,
+    )
+    for matrix in rebuilt:
+        np.testing.assert_array_equal(matrix.toarray(), [[10, 30, 99]])

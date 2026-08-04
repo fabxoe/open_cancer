@@ -151,6 +151,45 @@ class FoldFeatureBundle:
     fitted_families: tuple[FittedFeatureFamily, ...]
     feature_names: tuple[str, ...]
     registry: dict[str, dict[str, Any]]
+    base_feature_names_to_drop: tuple[str, ...] = ()
+
+
+def drop_named_base_features(
+    train: sparse.spmatrix,
+    validation: sparse.spmatrix,
+    test: sparse.spmatrix,
+    feature_names: tuple[str, ...] | list[str],
+    names_to_drop: tuple[str, ...] | list[str],
+) -> tuple[sparse.csr_matrix, sparse.csr_matrix, sparse.csr_matrix, tuple[str, ...]]:
+    """Apply one deterministic base-column mask to all three partitions."""
+
+    names = tuple(feature_names)
+    dropped = tuple(names_to_drop)
+    _require(train.shape[1] == len(names), "train 열 수와 base feature 이름 수가 다릅니다.")
+    _require(
+        validation.shape[1] == len(names) and test.shape[1] == len(names),
+        "train/validation/test base feature 차원이 다릅니다.",
+    )
+    _require(len(dropped) == len(set(dropped)), "제거할 base feature 이름이 중복됩니다.")
+    missing = [name for name in dropped if name not in names]
+    _require(not missing, f"제거할 base feature가 없습니다: {missing}")
+    if not dropped:
+        return (
+            sparse.csr_matrix(train),
+            sparse.csr_matrix(validation),
+            sparse.csr_matrix(test),
+            names,
+        )
+    dropped_set = set(dropped)
+    keep = [index for index, name in enumerate(names) if name not in dropped_set]
+    _require(bool(keep), "모든 base feature를 제거할 수 없습니다.")
+    kept_names = tuple(names[index] for index in keep)
+    return (
+        sparse.csr_matrix(train[:, keep]),
+        sparse.csr_matrix(validation[:, keep]),
+        sparse.csr_matrix(test[:, keep]),
+        kept_names,
+    )
 
 
 def remove_semantically_equivalent_features(
@@ -194,6 +233,7 @@ def remove_semantically_equivalent_features(
             fitted_families=bundle.fitted_families,
             feature_names=filtered_names,
             registry=filtered_registry,
+            base_feature_names_to_drop=bundle.base_feature_names_to_drop,
         ),
         equivalents,
     )
