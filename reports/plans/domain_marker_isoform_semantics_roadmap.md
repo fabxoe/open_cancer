@@ -33,6 +33,7 @@
 | B2-1 | 불확실 residue-position mask | #311(구현), #313(실험) | EXP-313 | #314 | COMPLETED | 0.4267909268 | EXP-229 대비 +0.0038023523·fold std·Log Loss 개선, INFERENCE_VERIFIED | 채택 후보 유지·B2-2는 별도 Issue |
 | B2-2 | sample 범주 요약 | #315(구현), #317(실험) | EXP-317 | #321 | REJECTED | 0.4170163022 | EXP-229 대비 -0.0059723·fold std·Log Loss·DLBC 악화, INFERENCE_VERIFIED | ARCHIVE·추가 튜닝 중단 |
 | B2-3 | isoform-relative coarse bin | #325(구현), #327(실험) | EXP-327 | #326, 미발급 | COMPLETED | 0.4266361381 | EXP-229 대비 개선했으나 EXP-313보다 F1·안정성·Log Loss 열세로 ARCHIVE | [보고서](../exp327_isoform_relative_position_bin/README.md), Track B 종료 |
+| B2-4 | EXP-285 고정 fold 파라미터 + semantic mask | #334 | EXP-334 | 미발급 | COMPLETED | 0.4351340093 | EXP-285 대비 +0.0036631·fold std 감소·Accuracy 개선으로 Local 최고, INFERENCE_VERIFIED | [보고서](../exp334_exp285_isoform_residue_mask/README.md), 제출 후보 |
 | C | Track A+B 조건부 조합 | 미발급 | 미발급 | 미발급 | REJECTED | N/A | Track A gate 실패 | 조합 실험을 열지 않음 |
 
 작업 상태는 다음 값만 사용합니다.
@@ -260,6 +261,7 @@ fold별 checkpoint, OOF/test 확률을 저장합니다. 리더보드 제출 후�
 | 2026-08-04 | 두 트랙 독립 통과 후에만 조합 | 한 결과로 다른 가설을 조정하는 OOF 과적합 방지 |
 | 2026-08-04 | B2-3 Ensembl 116 예외 승인·Issue #325 구현 착수 | #307의 사전 고정 세 번째 ablation을 독립 검증하며 과거 manifest 해시는 보존 |
 | 2026-08-04 | EXP-327 ARCHIVE·Track B 종료 | relative bin은 EXP-229보다 개선했으나 EXP-313 mask를 대체하지 못해 추가 bin 탐색 중단 |
+| 2026-08-04 | EXP-334 M1 채택·Track B 제출 후보 재개 | EXP-285의 fold별 파라미터를 고정하고 EXP-313 semantic mask만 적용해 OOF +0.0036631, fold std·Accuracy 동시 개선; Public·독립 재학습 전 최종 확정 보류 |
 | 2026-08-04 | KRAS·NRAS·MSH6 누락을 명시하고 실제 panel 교집합만 사용 | 실제 4,384개 train 열 target-independent 감사 |
 | 2026-08-04 | Track B B0/B1 완료, B2는 BLOCKED | Ensembl 116 coverage는 충분하나 MANE 일치율이 train 88.50%·test 53.46%로 크게 다르고 외부 annotation 허용 미확인 |
 | 2026-08-04 | Task #311과 첫 B2 불확실 위치 mask에 외부 annotation 예외 허용 | 팀장 명시 지시; 고정 Ensembl 116의 정적 sequence 일치 범주만 허용, 외부 환자 데이터·암종 빈도·test 기반 조정은 계속 금지 |
