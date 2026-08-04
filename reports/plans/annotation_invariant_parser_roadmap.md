@@ -22,7 +22,7 @@ mutation presence는 보존하고 raw token multiplicity·불확실 위치가 �
 | P4 | parser v4 family train-support gate | #407 | 해당 없음 | #408 | COMPLETED | N/A | #410 정정 후 ordinary 101 samples만 eligible | P5 실행 |
 | P5 | ordinary range-replacement gene indicator | #409 | EXP-409 | #412 | COMPLETED | 0.4249303829 | F1 +0.00194이나 fold std·Log Loss gate 실패 | ARCHIVE·추가 튜닝 중단 |
 | P6 | stop 정규화 + Ensembl isoform residue mask | #374 | EXP-374 | #413 | MERGED | 0.4267909268 | EXP-369 대비 F1·fold std·Log Loss·클래스 안정성 gate 모두 통과 | ADOPT·수동 제출 후보 |
-| P7 | range stop/no-change 직교 gene indicator | #392 | EXP-392 | #414 | PR_OPEN | 0.4290431888 | F1·fold·클래스 gate 통과, Log Loss 소폭 악화 | ADOPT_WITH_CAUTION·추가 튜닝 중단 |
+| P7 | range stop/no-change 직교 gene indicator | #392 | EXP-392 | #414 | MERGED | 0.4290431888 | F1·fold·클래스 gate 통과, Log Loss 소폭 악화 | ADOPT_WITH_CAUTION·추가 튜닝 중단 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`를 사용하며
 실험 재현 상태와 구분한다.
