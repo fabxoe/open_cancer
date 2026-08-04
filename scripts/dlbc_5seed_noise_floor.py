@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 """Recompute the Issue #251 5-seed DLBC noise-floor summary from raw data.
 
-Reads the 5 raw per-seed OOF CSVs restored under the Git-excluded
-`oof/analysis/issue251_dlbc_noise_floor/` plus the official EXP-094 baseline
+Reads the 5 approved shared per-seed OOF CSVs under
+`reports/shared_oof/issue251_dlbc_noise_floor/` (falling back to the local,
+Git-excluded `oof/analysis/issue251_dlbc_noise_floor/`) plus the EXP-094 baseline
 OOF (fetch first via `scripts/fetch_experiment_artifacts.py --experiment
 EXP-094` if `oof/exp094_feature_spec_v1.csv` is not already present locally)
 and reproduces every number quoted in
@@ -24,7 +25,8 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "reports" / "analysis" / "dlbc_noise_floor_data"
-OOF_DIR = ROOT / "oof" / "analysis" / "issue251_dlbc_noise_floor"
+SHARED_OOF_DIR = ROOT / "reports" / "shared_oof" / "issue251_dlbc_noise_floor"
+LOCAL_OOF_DIR = ROOT / "oof" / "analysis" / "issue251_dlbc_noise_floor"
 SUMMARY_PATH = DATA_DIR / "summary.json"
 BASELINE_PATH = ROOT / "oof" / "exp094_feature_spec_v1.csv"
 
@@ -59,7 +61,10 @@ def main() -> None:
 
     noise_floor = {}
     for seed in SEEDS:
-        diag_path = OOF_DIR / f"diag_exp094_seed{seed}_oof.csv"
+        filename = f"diag_exp094_seed{seed}_oof.csv"
+        diag_path = SHARED_OOF_DIR / filename
+        if not diag_path.is_file():
+            diag_path = LOCAL_OOF_DIR / filename
         if not diag_path.is_file():
             raise SystemExit(
                 f"{diag_path} 없음 -- Issue #251 Release asset을 내려받아 "
