@@ -1,0 +1,355 @@
+{
+  "issue": 407,
+  "parser_contract": "semantic-router-4.0.0",
+  "split_path": "data/splits/stratified_5fold_seed42.csv",
+  "split_sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf",
+  "gate": {
+    "minimum_total_train_samples": 50,
+    "minimum_samples_per_canonical_fold": 5,
+    "purpose": "execution feasibility only, not feature selection or adoption"
+  },
+  "families": [
+    {
+      "route": "deletion",
+      "event_type": "deletion",
+      "train_occurrences": 3,
+      "train_unique_tokens": 3,
+      "train_gene_cells": 3,
+      "train_samples": 3,
+      "train_fold_samples": [
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "test_occurrences": 2583,
+      "test_unique_tokens": 1606,
+      "test_gene_cells": 1485,
+      "test_samples": 520,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "canonical fold support is below 5 samples"
+    },
+    {
+      "route": "delins",
+      "event_type": "delins",
+      "train_occurrences": 0,
+      "train_unique_tokens": 0,
+      "train_gene_cells": 0,
+      "train_samples": 0,
+      "train_fold_samples": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "test_occurrences": 511,
+      "test_unique_tokens": 231,
+      "test_gene_cells": 224,
+      "test_samples": 195,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "family has zero train samples"
+    },
+    {
+      "route": "delins",
+      "event_type": "nonsense",
+      "train_occurrences": 0,
+      "train_unique_tokens": 0,
+      "train_gene_cells": 0,
+      "train_samples": 0,
+      "train_fold_samples": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "test_occurrences": 30,
+      "test_unique_tokens": 5,
+      "test_gene_cells": 29,
+      "test_samples": 28,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "family has zero train samples"
+    },
+    {
+      "route": "delins",
+      "event_type": "unresolved",
+      "train_occurrences": 0,
+      "train_unique_tokens": 0,
+      "train_gene_cells": 0,
+      "train_samples": 0,
+      "train_fold_samples": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "test_occurrences": 3,
+      "test_unique_tokens": 1,
+      "test_gene_cells": 3,
+      "test_samples": 3,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "family has zero train samples"
+    },
+    {
+      "route": "frameshift",
+      "event_type": "frameshift",
+      "train_occurrences": 9833,
+      "train_unique_tokens": 6546,
+      "train_gene_cells": 9463,
+      "train_samples": 3274,
+      "train_fold_samples": [
+        644,
+        651,
+        666,
+        647,
+        666
+      ],
+      "test_occurrences": 25813,
+      "test_unique_tokens": 15035,
+      "test_gene_cells": 13335,
+      "test_samples": 1642,
+      "decision": "EXPERIMENT_ELIGIBLE",
+      "reason": "mechanical train/fold support gate passed; performance is untested"
+    },
+    {
+      "route": "insertion",
+      "event_type": "insertion",
+      "train_occurrences": 0,
+      "train_unique_tokens": 0,
+      "train_gene_cells": 0,
+      "train_samples": 0,
+      "train_fold_samples": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "test_occurrences": 1142,
+      "test_unique_tokens": 595,
+      "test_gene_cells": 686,
+      "test_samples": 345,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "family has zero train samples"
+    },
+    {
+      "route": "range_replacement",
+      "event_type": "range_replacement",
+      "train_occurrences": 148,
+      "train_unique_tokens": 139,
+      "train_gene_cells": 146,
+      "train_samples": 129,
+      "train_fold_samples": [
+        18,
+        29,
+        29,
+        25,
+        28
+      ],
+      "test_occurrences": 29,
+      "test_unique_tokens": 29,
+      "test_gene_cells": 29,
+      "test_samples": 24,
+      "decision": "EXPERIMENT_ELIGIBLE",
+      "reason": "mechanical train/fold support gate passed; performance is untested"
+    },
+    {
+      "route": "range_replacement",
+      "event_type": "stop_gain",
+      "train_occurrences": 24,
+      "train_unique_tokens": 23,
+      "train_gene_cells": 23,
+      "train_samples": 23,
+      "train_fold_samples": [
+        3,
+        6,
+        7,
+        3,
+        4
+      ],
+      "test_occurrences": 2,
+      "test_unique_tokens": 2,
+      "test_gene_cells": 2,
+      "test_samples": 2,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "canonical fold support is below 5 samples"
+    },
+    {
+      "route": "range_replacement",
+      "event_type": "synonymous",
+      "train_occurrences": 67,
+      "train_unique_tokens": 60,
+      "train_gene_cells": 63,
+      "train_samples": 47,
+      "train_fold_samples": [
+        5,
+        9,
+        15,
+        6,
+        12
+      ],
+      "test_occurrences": 9,
+      "test_unique_tokens": 9,
+      "test_gene_cells": 9,
+      "test_samples": 9,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "train support is below 50 samples"
+    },
+    {
+      "route": "substitution",
+      "event_type": "missense",
+      "train_occurrences": 164740,
+      "train_unique_tokens": 80439,
+      "train_gene_cells": 146359,
+      "train_samples": 6017,
+      "train_fold_samples": [
+        1210,
+        1208,
+        1200,
+        1201,
+        1198
+      ],
+      "test_occurrences": 201353,
+      "test_unique_tokens": 87039,
+      "test_gene_cells": 121860,
+      "test_samples": 2485,
+      "decision": "EXPERIMENT_ELIGIBLE",
+      "reason": "mechanical train/fold support gate passed; performance is untested"
+    },
+    {
+      "route": "substitution",
+      "event_type": "no_change",
+      "train_occurrences": 66883,
+      "train_unique_tokens": 21609,
+      "train_gene_cells": 61493,
+      "train_samples": 5251,
+      "train_fold_samples": [
+        1049,
+        1044,
+        1034,
+        1057,
+        1067
+      ],
+      "test_occurrences": 88724,
+      "test_unique_tokens": 22079,
+      "test_gene_cells": 54495,
+      "test_samples": 2304,
+      "decision": "EXPERIMENT_ELIGIBLE",
+      "reason": "mechanical train/fold support gate passed; performance is untested"
+    },
+    {
+      "route": "substitution",
+      "event_type": "nonsense",
+      "train_occurrences": 13289,
+      "train_unique_tokens": 6245,
+      "train_gene_cells": 12765,
+      "train_samples": 3266,
+      "train_fold_samples": [
+        684,
+        662,
+        632,
+        634,
+        654
+      ],
+      "test_occurrences": 16316,
+      "test_unique_tokens": 7232,
+      "test_gene_cells": 7533,
+      "test_samples": 1559,
+      "decision": "EXPERIMENT_ELIGIBLE",
+      "reason": "mechanical train/fold support gate passed; performance is untested"
+    },
+    {
+      "route": "substitution",
+      "event_type": "start_codon_affected",
+      "train_occurrences": 0,
+      "train_unique_tokens": 0,
+      "train_gene_cells": 0,
+      "train_samples": 0,
+      "train_fold_samples": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "test_occurrences": 572,
+      "test_unique_tokens": 6,
+      "test_gene_cells": 572,
+      "test_samples": 371,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "family has zero train samples"
+    },
+    {
+      "route": "substitution",
+      "event_type": "unknown_reference_substitution",
+      "train_occurrences": 0,
+      "train_unique_tokens": 0,
+      "train_gene_cells": 0,
+      "train_samples": 0,
+      "train_fold_samples": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "test_occurrences": 390,
+      "test_unique_tokens": 323,
+      "test_gene_cells": 220,
+      "test_samples": 138,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "family has zero train samples"
+    },
+    {
+      "route": "unresolved",
+      "event_type": "frameshift",
+      "train_occurrences": 3,
+      "train_unique_tokens": 3,
+      "train_gene_cells": 3,
+      "train_samples": 3,
+      "train_fold_samples": [
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      "test_occurrences": 1,
+      "test_unique_tokens": 1,
+      "test_gene_cells": 1,
+      "test_samples": 1,
+      "decision": "UNRESOLVED_ONLY",
+      "reason": "semantic route is unresolved and remains provenance/QC only"
+    },
+    {
+      "route": "unresolved",
+      "event_type": "other_unmappable",
+      "train_occurrences": 174,
+      "train_unique_tokens": 133,
+      "train_gene_cells": 164,
+      "train_samples": 149,
+      "train_fold_samples": [
+        31,
+        33,
+        25,
+        33,
+        27
+      ],
+      "test_occurrences": 34,
+      "test_unique_tokens": 31,
+      "test_gene_cells": 33,
+      "test_samples": 31,
+      "decision": "UNRESOLVED_ONLY",
+      "reason": "semantic route is unresolved and remains provenance/QC only"
+    }
+  ],
+  "constraints": {
+    "subclass_used": false,
+    "public_lb_used": false,
+    "test_prevalence_used_for_decision": false,
+    "existing_feature_spec_changed": false
+  }
+}
