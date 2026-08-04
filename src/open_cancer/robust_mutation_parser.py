@@ -25,7 +25,7 @@ from open_cancer.mutation_features import (
 )
 
 
-ROBUST_PARSER_VERSION = "2.0.0"
+ROBUST_PARSER_VERSION = "3.0.0"
 
 EventFamily = Literal[
     "missense",
@@ -40,6 +40,21 @@ EventFamily = Literal[
     "other_unmappable",
 ]
 ParseConfidence = Literal["high", "medium", "low"]
+SourceStructure = Literal[
+    "simple_substitution",
+    "range_replacement",
+    "frameshift",
+    "inframe_deletion",
+    "inframe_insertion",
+    "delins",
+    "duplication",
+    "other",
+]
+FrameshiftPrefixSemantics = Literal[
+    "not_applicable",
+    "single_reference_candidate",
+    "unresolved_multiletter_prefix",
+]
 
 EVENT_FAMILIES: tuple[EventFamily, ...] = (
     "missense",
@@ -76,7 +91,19 @@ _NON_PROTEIN_NEGATIVE_POSITION = re.compile(r"^-[1-9][0-9]*", re.IGNORECASE)
 _AMBIGUOUS_DOUBLE_STOP = re.compile(r"^\*[1-9][0-9]*\*$", re.IGNORECASE)
 _RESIDUE_POSITION = re.compile(r"[1-9][0-9]*")
 _LEADING_AMINO_ACIDS = re.compile(rf"^([{_AMINO_ACIDS}*]+)", re.IGNORECASE)
-_TRAILING_AMINO_ACIDS = re.compile(rf"([{_AMINO_ACIDS}*]+)$", re.IGNORECASE)
+_RANGE_REPLACEMENT = re.compile(
+    rf"^(?P<start>[1-9][0-9]*)_(?P<end>[1-9][0-9]*)"
+    rf"(?P<reference>[{_AMINO_ACIDS}]+)>(?P<alternate>[{_AMINO_ACIDS}*X]+)$",
+    re.IGNORECASE,
+)
+_FRAMESHIFT = re.compile(
+    rf"^(?P<prefix>[{_AMINO_ACIDS}*]+)(?P<position>[1-9][0-9]*)FS$",
+    re.IGNORECASE,
+)
+_DELIN = re.compile(r"^.+[0-9]DELINS[A-Z*]+$", re.IGNORECASE)
+_DELETION = re.compile(r"^.+[0-9]DEL$", re.IGNORECASE)
+_INSERTION = re.compile(r"^.+[0-9]INS[A-Z*]+$", re.IGNORECASE)
+_DUPLICATION = re.compile(r"^.+[0-9]DUP$", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -91,6 +118,18 @@ class NormalizedMutationToken:
     alternate_amino_acid: str | None
     confidence: ParseConfidence
     position_eligible: bool
+    source_structure: SourceStructure = "other"
+    reference_sequence: str | None = None
+    alternate_sequence: str | None = None
+    translated_alternate_sequence: str | None = None
+    contains_stop: bool = False
+    first_stop_offset: int | None = None
+    first_stop_position: int | None = None
+    post_stop_sequence: str | None = None
+    protein_no_change: bool = False
+    protein_truncating: bool = False
+    range_reference_span_valid: bool | None = None
+    frameshift_prefix_semantics: FrameshiftPrefixSemantics = "not_applicable"
 
 
 @dataclass(frozen=True)
@@ -102,14 +141,16 @@ class CanonicalMutationCell:
     exact_duplicate_count: int
 
 
-def _amino_acids_at_edges(raw: str) -> tuple[str | None, str | None]:
-    left, separator, right = raw.partition(">")
-    reference_match = _TRAILING_AMINO_ACIDS.search(left)
-    alternate_match = _LEADING_AMINO_ACIDS.match(right) if separator else None
-    return (
-        reference_match.group(1).upper() if reference_match else None,
-        alternate_match.group(1).upper() if alternate_match else None,
-    )
+def _normalize_alternate_stop_notation(sequence: str) -> str:
+    """Normalize project stop spellings inside an explicit alternate sequence.
+
+    The competition source uses ``X``, ``*`` and ``Ter`` for termination.  The
+    raw token is retained separately, so canonicalization never destroys
+    provenance.  This helper is used only after a complete range grammar has
+    matched; it is not applied to arbitrary amino-acid text.
+    """
+
+    return sequence.upper().replace("TER", "*").replace("X", "*")
 
 
 def parse_robust_mutation_token(token: str) -> NormalizedMutationToken:
@@ -135,6 +176,7 @@ def parse_robust_mutation_token(token: str) -> NormalizedMutationToken:
             alternate_amino_acid=None,
             confidence="low",
             position_eligible=False,
+            source_structure="other",
         )
     positions = tuple(int(value) for value in _RESIDUE_POSITION.findall(normalized))
     reference: str | None = None
@@ -166,37 +208,119 @@ def parse_robust_mutation_token(token: str) -> NormalizedMutationToken:
             alternate_amino_acid=alternate,
             confidence=confidence,
             position_eligible=position_eligible,
+            source_structure="simple_substitution",
+            reference_sequence=reference,
+            alternate_sequence=alternate,
+            translated_alternate_sequence=(
+                "" if family == "stop_gain" else alternate
+            ),
+            contains_stop=family == "stop_gain",
+            first_stop_offset=0 if family == "stop_gain" else None,
+            first_stop_position=positions[0] if family == "stop_gain" else None,
+            post_stop_sequence="" if family == "stop_gain" else None,
+            protein_no_change=family == "synonymous",
+            protein_truncating=family == "stop_gain",
         )
 
-    lowered = normalized.lower()
-    if "delins" in lowered:
+    range_match = _RANGE_REPLACEMENT.fullmatch(normalized)
+    if range_match is not None:
+        start = int(range_match.group("start"))
+        end = int(range_match.group("end"))
+        reference = range_match.group("reference").upper()
+        alternate = _normalize_alternate_stop_notation(
+            range_match.group("alternate")
+        )
+        normalized = f"{start}_{end}{reference}>{alternate}"
+        positions = (start, end)
+        span_valid = end >= start and len(reference) == end - start + 1
+        first_stop_offset = alternate.find("*")
+        contains_stop = first_stop_offset >= 0
+        translated_alternate = (
+            alternate[:first_stop_offset] if contains_stop else alternate
+        )
+        post_stop = alternate[first_stop_offset + 1 :] if contains_stop else None
+        first_stop_position = (
+            start + first_stop_offset if contains_stop else None
+        )
+        no_change = not contains_stop and reference == alternate
+        immediate_stop = first_stop_offset == 0
+        if no_change:
+            family = "synonymous"
+        elif immediate_stop:
+            family = "stop_gain"
+        else:
+            family = "range_replacement"
+        return NormalizedMutationToken(
+            raw=raw,
+            normalized=normalized,
+            event_family=family,
+            residue_positions=positions,
+            reference_amino_acid=reference,
+            alternate_amino_acid=alternate,
+            confidence="high" if span_valid else "low",
+            position_eligible=False,
+            source_structure="range_replacement",
+            reference_sequence=reference,
+            alternate_sequence=alternate,
+            translated_alternate_sequence=translated_alternate,
+            contains_stop=contains_stop,
+            first_stop_offset=first_stop_offset if contains_stop else None,
+            first_stop_position=first_stop_position,
+            post_stop_sequence=post_stop,
+            protein_no_change=no_change,
+            protein_truncating=contains_stop,
+            range_reference_span_valid=span_valid,
+        )
+
+    frameshift_match = _FRAMESHIFT.fullmatch(normalized)
+    if frameshift_match is not None:
+        prefix = frameshift_match.group("prefix").upper()
+        position = int(frameshift_match.group("position"))
+        single_prefix = len(prefix) == 1
+        return NormalizedMutationToken(
+            raw=raw,
+            normalized=f"{prefix}{position}FS",
+            event_family="frameshift",
+            residue_positions=(position,),
+            reference_amino_acid=prefix if single_prefix else None,
+            alternate_amino_acid=None,
+            confidence="medium",
+            position_eligible=True,
+            source_structure="frameshift",
+            reference_sequence=prefix,
+            alternate_sequence=None,
+            translated_alternate_sequence=None,
+            protein_truncating=True,
+            frameshift_prefix_semantics=(
+                "single_reference_candidate"
+                if single_prefix
+                else "unresolved_multiletter_prefix"
+            ),
+        )
+
+    source_structure: SourceStructure = "other"
+    if _DELIN.fullmatch(normalized):
         family = "delins"
+        source_structure = "delins"
         confidence = "medium"
-    elif "del" in lowered:
+    elif _DELETION.fullmatch(normalized):
         family = "inframe_deletion"
+        source_structure = "inframe_deletion"
         confidence = "medium"
-    elif "ins" in lowered:
+    elif _INSERTION.fullmatch(normalized):
         family = "inframe_insertion"
+        source_structure = "inframe_insertion"
         confidence = "medium"
-    elif "dup" in lowered:
+    elif _DUPLICATION.fullmatch(normalized):
         family = "duplication"
-        confidence = "medium"
-    elif "fs" in lowered:
-        family = "frameshift"
-        confidence = "medium"
-        position_eligible = bool(positions)
-    elif ">" in normalized:
-        family = "range_replacement"
+        source_structure = "duplication"
         confidence = "medium"
     else:
         family = "other_unmappable"
 
-    if ">" in normalized:
-        reference, alternate = _amino_acids_at_edges(normalized)
-    else:
-        reference_match = _LEADING_AMINO_ACIDS.match(normalized)
-        reference = reference_match.group(1).upper() if reference_match else None
-        alternate = None
+    reference_match = _LEADING_AMINO_ACIDS.match(normalized)
+    reference = reference_match.group(1).upper() if reference_match else None
+    alternate = None
     return NormalizedMutationToken(
         raw=raw,
         normalized=normalized,
@@ -206,6 +330,9 @@ def parse_robust_mutation_token(token: str) -> NormalizedMutationToken:
         alternate_amino_acid=alternate,
         confidence=confidence,
         position_eligible=position_eligible,
+        source_structure=source_structure,
+        reference_sequence=reference,
+        alternate_sequence=alternate,
     )
 
 
@@ -255,7 +382,12 @@ def normalize_stop_notation_token(raw: str) -> str:
     """Return v1-compatible text with only simple stop notation normalized."""
 
     robust = parse_robust_mutation_token(raw)
-    return robust.normalized if robust.event_family == "stop_gain" else raw
+    return (
+        robust.normalized
+        if robust.source_structure == "simple_substitution"
+        and robust.event_family == "stop_gain"
+        else raw
+    )
 
 
 def parse_stop_notation_invariant_token(raw: str) -> ParsedMutationToken:
@@ -556,6 +688,13 @@ def audit_robust_mutation_parser(
     canonical_tokens = 0
     exact_duplicates = 0
     position_eligible = 0
+    source_structure_counts: Counter[SourceStructure] = Counter()
+    tokens_with_stop = 0
+    protein_truncating_tokens = 0
+    protein_no_change_tokens = 0
+    immediate_stop_tokens = 0
+    multiletter_frameshift_tokens = 0
+    invalid_range_span_tokens = 0
     for row in frame.loc[:, genes].itertuples(index=False, name=None):
         for cell in row:
             canonical = canonicalize_mutation_cell(cell)
@@ -565,10 +704,25 @@ def audit_robust_mutation_parser(
             for token in canonical.tokens:
                 family_counts[token.event_family] += 1
                 confidence_counts[token.confidence] += 1
+                source_structure_counts[token.source_structure] += 1
                 position_eligible += int(token.position_eligible)
+                tokens_with_stop += int(token.contains_stop)
+                protein_truncating_tokens += int(token.protein_truncating)
+                protein_no_change_tokens += int(token.protein_no_change)
+                immediate_stop_tokens += int(token.first_stop_offset == 0)
+                multiletter_frameshift_tokens += int(
+                    token.frameshift_prefix_semantics
+                    == "unresolved_multiletter_prefix"
+                )
+                invalid_range_span_tokens += int(
+                    token.range_reference_span_valid is False
+                )
     contract_lines = (
         f"parser_version={ROBUST_PARSER_VERSION}",
         *(f"event_family={family}" for family in EVENT_FAMILIES),
+        "range_stop_policy=first_stop_terminates_translation",
+        "range_no_change_policy=reference_equals_alternate",
+        "multiletter_frameshift_prefix=unresolved_without_annotation",
     )
     return {
         "parser_version": ROBUST_PARSER_VERSION,
@@ -578,6 +732,27 @@ def audit_robust_mutation_parser(
         "canonical_tokens": canonical_tokens,
         "exact_duplicates_removed": exact_duplicates,
         "position_eligible_tokens": position_eligible,
+        "source_structure_counts": {
+            structure: source_structure_counts[structure]
+            for structure in (
+                "simple_substitution",
+                "range_replacement",
+                "frameshift",
+                "inframe_deletion",
+                "inframe_insertion",
+                "delins",
+                "duplication",
+                "other",
+            )
+        },
+        "semantic_counts": {
+            "tokens_with_stop": tokens_with_stop,
+            "protein_truncating_tokens": protein_truncating_tokens,
+            "protein_no_change_tokens": protein_no_change_tokens,
+            "immediate_stop_tokens": immediate_stop_tokens,
+            "multiletter_frameshift_tokens": multiletter_frameshift_tokens,
+            "invalid_range_span_tokens": invalid_range_span_tokens,
+        },
         "event_family_counts": {
             family: family_counts[family] for family in EVENT_FAMILIES
         },

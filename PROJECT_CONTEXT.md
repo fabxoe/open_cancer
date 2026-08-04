@@ -286,6 +286,16 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
 - 같은 생물학적 사건의 표기만 `*`/`X`/`Ter`로 바꾼 metamorphic fixture에서
   canonical feature matrix가 완전히 같아야 한다. 음수 부분 표기와 `*숫자*`는
   mutation presence/type을 임의 삭제하지 않되 residue-position에는 넣지 않는다.
+- multi-letter frameshift와 range replacement는 substring이 아니라 complete anchored
+  grammar로 판정한다. `SDEL133fs`의 residue `DEL`을 deletion keyword로 보거나,
+  `721_722LA>FS`의 alternate Phe-Ser를 frameshift suffix로 보지 않는다. range의
+  source structure와 stop/no-change/truncating protein consequence는 직교 속성으로
+  보존하고, 첫 stop 뒤 source 문자는 provenance에는 남기되 번역된 alternate
+  sequence와 모델 잔기에는 넣지 않는다. multi-letter frameshift prefix는 근거 없이
+  reference·alternate peptide로 분해하지 않는다. 상세 계약과 실제 감사는
+  [`docs/annotation_invariant_mutation_parser.md`](docs/annotation_invariant_mutation_parser.md)와
+  [`reports/analysis/multiletter_frameshift_range_parser/README.md`](reports/analysis/multiletter_frameshift_range_parser/README.md)를
+  따른다.
 - 상관·희소도 기반 feature selection은 각 outer fold의 **학습 행에서만** fit하고,
   확정한 같은 mask를 validation·test에 적용한다. 상관을 `GENE__mutated`에서
   계산했다면 해당 mutation-presence 열만 제거하며 mutation-type, missing,
