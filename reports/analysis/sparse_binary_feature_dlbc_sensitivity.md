@@ -111,6 +111,50 @@ formal 통계 검정(t-test 등)을 신뢰할 수 없고, 5/5 완전 분리라�
 이 문서(#251)는 조사 스레드 기록이고, 게이팅 기준 변경 여부의 실제
 논의와 결정은 #254에서 진행한다.
 
+### 재현성 (PR #255 리뷰 보완)
+
+fabxoe 리뷰(2026-08-03, `CHANGES_REQUESTED`)가 요구한 4개 항목을 모두
+추가했다.
+
+1. **Source commit**: 5개 seed 진단은 `08400ad02579d7ffc8745ba139b64d8eaf480b8b`
+   (`docs(#251): finalize 5-seed noise-floor observation, open #254 for
+   gating policy`, 이 문서를 처음 완성한 커밋)가 HEAD였던 시점에 이
+   브랜치에서 실행했다. 입력(`configs/exp094_feature_spec_v1.yaml`,
+   canonical train/test/split)은 2026-08-01 이후 변경되지 않아, 그
+   사이 다른 브랜치의 무관한 커밋들은 이 결과에 영향을 주지 않는다 —
+   아래 SHA-256이 이를 커밋 해시보다 더 직접적으로 보증한다.
+2. **재실행 가능한 스크립트**: `scripts/diag_exp094_seed_variant.py
+   <seed_base>`(seed별 OOF 생성, EXP-094와 동일 하이퍼파라미터·frozen
+   Feature Spec v1) + `scripts/dlbc_5seed_noise_floor.py`(위 표 전체를
+   원본에서 재계산). 후자를 그대로 실행하면 이 섹션의 모든 수치가
+   재현된다(직접 확인함 — 아래 SHA-256과 함께 실행 로그 재현 완료).
+3. **seed별 원본 결과**: `reports/analysis/dlbc_noise_floor_data/`에
+   5개 seed의 `diag_exp094_seed{1001,1002,2001,2002,2003}_oof.csv`(전체
+   26클래스 OOF 확률)와 `_meta.json`(모델 파라미터)을 그대로 커밋했다.
+   비교 대상인 EXP-094 공식 baseline OOF는 git에 커밋하지 않고(용량,
+   기존 관례) `scripts/fetch_experiment_artifacts.py --experiment
+   EXP-094`로 Release 번들에서 받는다.
+4. **재계산 설명**: `dlbc_5seed_noise_floor.py`가 baseline과 5개 seed
+   OOF의 DLBC 컬럼만 대조해 delta mean/std, 5-seed 분포, pairwise
+   correlation, feature-added 3건과의 백분위 비교를 전부 계산한다 —
+   위 표의 모든 숫자가 이 스크립트 출력과 정확히 일치함을 확인했다.
+
+**Feature Spec v1 입력 identity(SHA-256, 커밋 해시보다 강한 보증)**:
+
+| 항목 | SHA-256 |
+|---|---|
+| `base_feature_spec_sha256` | `1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3` |
+| `source_config_sha256` | `4282727de03bd0f31989fdcce61d65530ba69e339e6dce1fe7f72fa85ebd57c4` |
+| `train_input_sha256` | `92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab` |
+| `test_input_sha256` | `e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0` |
+
+이 4개 해시가 일치하면 어느 커밋에서 돌리든 동일한 Feature Spec v1
+입력(모델 학습 전 단계)임이 보장된다. 5개 raw OOF 파일에는 이 identity가
+기록되지 않았지만(진단 스크립트의 이후 버전에서 추가), 위 표는 지금
+저장소의 `configs/exp094_feature_spec_v1.yaml`·canonical 데이터로
+`materialize_frozen_feature_spec`을 다시 돌려 확인한 현재 값이며, 해당
+파일들이 2026-08-01 이후 변경되지 않았으므로 실행 시점과 동일하다.
+
 ## 권장 사항
 
 향후 유사한 실험(EXP-094 v1에 양성 건수 50건 미만의 희소 이진 컬럼 1개를
