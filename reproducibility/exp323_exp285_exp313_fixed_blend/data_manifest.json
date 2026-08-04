@@ -1,0 +1,60 @@
+{
+  "verified_at": "2026-08-04T01:01:11.163958+00:00",
+  "files": [
+    {
+      "path": "data/splits/stratified_5fold_seed42.csv",
+      "size_bytes": 80621,
+      "sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf"
+    },
+    {
+      "path": "data/raw/test.csv",
+      "size_bytes": 35068585,
+      "sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+    },
+    {
+      "path": "data/raw/sample_submission.csv",
+      "size_bytes": 35656,
+      "sha256": "1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84"
+    },
+    {
+      "path": "oof/exp285_exp229_nested_optuna_xgb.csv",
+      "size_bytes": 2112719,
+      "sha256": "b6794f5e102335a4aa755ac1ef9d37ae961b441ce9f21e5a6a49ba9c76d2ddaa"
+    },
+    {
+      "path": "preds/exp285_exp229_nested_optuna_xgb_test_proba.csv",
+      "size_bytes": 827962,
+      "sha256": "f76ae1679cb49b6aa295b3d39e3e9f6a129eb4d824cf43753c32ced7012f7215"
+    },
+    {
+      "path": "reports/exp285_exp229_nested_optuna_xgb/metrics.json",
+      "size_bytes": 45058,
+      "sha256": "6961f703cc6fcbcf3a1bb9ff42fdbd07a66356cb76ebcc31376e5d330cd8a7ad"
+    },
+    {
+      "path": "reproducibility/exp285_exp229_nested_optuna_xgb/config.resolved.yaml",
+      "size_bytes": 134019,
+      "sha256": "19ec292ed75d996dd9172fc6ee24ce7ac01f041f25813b52f92dcdaf52197358"
+    },
+    {
+      "path": "oof/exp313_isoform_residue_mask.csv",
+      "size_bytes": 2122619,
+      "sha256": "4d4f9182fca8e6023d775b77ace463cad3a80144206f82f9653d98b11345da9a"
+    },
+    {
+      "path": "preds/exp313_isoform_residue_mask_test_proba.csv",
+      "size_bytes": 830921,
+      "sha256": "41e24813ab75d02423c9fe57f9d2b4cc7fc7c35ec370b8debca8d52ccae126d1"
+    },
+    {
+      "path": "reports/exp313_isoform_residue_mask/metrics.json",
+      "size_bytes": 40214,
+      "sha256": "5be3137b6e29338dbc1812cdbee00ccbc18d41ebc85b0fe48d2a38c97990b6f4"
+    },
+    {
+      "path": "reproducibility/exp313_isoform_residue_mask/config.resolved.yaml",
+      "size_bytes": 45245,
+      "sha256": "d3999431c472126e4934a4289c0f88648c3583fdb41dcef010b29a771f5b298c"
+    }
+  ]
+}

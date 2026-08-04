@@ -85,6 +85,9 @@ LoF, UCEC의 PI3K mutation/missense, OV·PAAD의 cell-cycle/TP53 요약처럼 �
 
 ## 산출물과 재실행
 
+- [실행 완료 시각화 노트북](../../../notebooks/issue332_adopted_model_tree_shap_visualization.ipynb):
+  family 총비중·피처당 평균, 모델 top-k 중복, pathway 전역·클래스별 heatmap,
+  COAD/UCEC/OV/PAAD true-class 상위 피처를 그래프로 확인
 - [`summary.json`](summary.json): sampling·checkpoint·feature 해시와 핵심 요약
 - `*_global_top500.csv`: 모델별 전역 상위 500개
 - `*_class_top20.csv`: 실제 클래스 logit 기준 클래스별 상위 20개
