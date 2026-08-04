@@ -167,11 +167,17 @@ D32/S33은 이미 [EXP-296](../exp296_ctnnb1_d32_s33_hotspot/README.md)에서
   - 입력 `data/raw/train.csv` SHA-256:
     `92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab`
   - 출력 candidates CSV SHA-256:
-    `e94589f9c5f1f392763228a468106cd61a2c08988c662f440fdebb7e56b8d937`
+    `c3c512ad316cebeaa528ebeb7f22ed0cea7a319fcb10ecf85d374653b3aa41ce`
 - burden 교란 체크 스크립트(target-informed, `SUBCLASS` 사용):
   `scripts/screen_hotspot_burden_confound.py`
+- burden 교란 결과 재생성 명령:
+  `uv run python scripts/screen_hotspot_burden_confound.py reports/analysis/dominoeffect_screening_candidates.csv`
 - 전체 240건 결과: `reports/analysis/hotspot_screening_burden_control_results.csv`
+  - SHA-256:
+    `e89c3a5a4cadc165dd27b6e1f826cdcdbba8915e25a279db1fa8e0e8f42a17fe`
 - 공유 ID 클러스터 쌍: `reports/analysis/hotspot_screening_burden_control_clusters.csv`
+  - SHA-256:
+    `99280dabe8a204bb858afb0bde77479757e1d59f9a1f120f031593f8faa44075`
 - 관련: [EXP-296](../exp296_ctnnb1_d32_s33_hotspot/README.md) — 이번
   burden 체크 방법론이 처음 적용된 CTNNB1 D32/S33 사전검증(둘 다
   clean~mild, 제외 목록에 없음), [#329 NPM1 288 사전검증](npm1_288_hotspot_precheck.md)

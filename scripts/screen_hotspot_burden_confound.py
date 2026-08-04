@@ -69,10 +69,13 @@ from pathlib import Path
 
 import pandas as pd
 
+from open_cancer.hashing import sha256_file
 from open_cancer.mutation_features import parse_mutation_token
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 TRAIN_PATH = REPO_ROOT / "data" / "raw" / "train.csv"
+RESULTS_PATH = REPO_ROOT / "reports" / "analysis" / "hotspot_screening_burden_control_results.csv"
+CLUSTERS_PATH = REPO_ROOT / "reports" / "analysis" / "hotspot_screening_burden_control_clusters.csv"
 
 # Exploratory thresholds -- see docstring boundary (d) above.
 BURDEN_MILD_CONCERN_RATIO = 1.4
@@ -226,5 +229,15 @@ if __name__ == "__main__":
     candidates_table = pd.read_csv(candidates_path)
     results, clusters = screen_burden_confound(candidates_table)
     exclusions = recommended_exclusions(results, clusters)
-    print(f"후보 {len(candidates_table)}건 중 {len(exclusions)}건 제외 권고(가설 생성용, 공식 feature 선택 직접 사용 금지)")
+    RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    results.to_csv(RESULTS_PATH, index=False)
+    clusters.to_csv(CLUSTERS_PATH, index=False)
+    print(
+        f"후보 {len(candidates_table)}건 중 {len(exclusions)}건 제외 권고"
+        "(가설 생성용, 공식 feature 선택 직접 사용 금지)"
+    )
     print(sorted(exclusions))
+    print(f"저장: {RESULTS_PATH}")
+    print(f"SHA-256: {sha256_file(RESULTS_PATH)}")
+    print(f"저장: {CLUSTERS_PATH}")
+    print(f"SHA-256: {sha256_file(CLUSTERS_PATH)}")
