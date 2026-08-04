@@ -841,7 +841,7 @@ artifact manifest를 없애는 정책이 아니라 협업 접근성을 위한 �
   `SUBCLASS`, `SUBCLASS_TRUE`, target/label, fold, 원본 변이값, test 확률,
   개인정보와 외부 비공개 데이터는 포함하지 않는다.
 - 프로젝트 자체의 파일당 별도 한도는 두지 않는다. 대신 한 승인 Issue/manifest의
-  전체 CSV 합계는 25 MiB, 저장소의 tracked shared OOF 누적 합계는 100 MiB 이하로
+  전체 CSV 합계는 25 MiB, 저장소의 tracked shared OOF 누적 합계는 300 MiB 이하로
   유지한다. 이를 넘으면 Release만 사용한다. GitHub 플랫폼의 단일 파일 제한은
   별도로 적용된다.
 - 각 디렉터리의 `manifest.json`에는 승인 Issue URL, 원 실행 source commit,
