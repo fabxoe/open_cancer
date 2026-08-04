@@ -18,7 +18,9 @@ autoencoder:
   max_epochs: 40
   early_stopping_patience: 6
   internal_holdout_fraction: 0.10
-  device: auto
+  # PyTorch MPS produced a native exit-139 before any artifact was written.
+  # Keep the Mac smoke deterministic on CPU; a later official GPU run must use CUDA.
+  device: cpu
 gate:
   maximum_fold0_macro_f1_drop: 0.01
   maximum_near_constant_dimensions: 16
