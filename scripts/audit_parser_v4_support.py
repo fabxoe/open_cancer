@@ -11,7 +11,7 @@ from typing import Any
 
 from open_cancer.hashing import sha256_file
 from open_cancer.mutation_parser_contract import route_protein_mutation
-from open_cancer.parser_support_gate import decide_support_gate
+from open_cancer.parser_support_gate import decide_support_gate, support_family_key
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,7 +23,11 @@ OUTPUT = ROOT / "reports/analysis/parser_v4_support_gate/support_matrix.json"
 
 def _family(token: str) -> tuple[str, str]:
     routed = route_protein_mutation(token)
-    return routed.route, routed.event_type
+    return support_family_key(
+        route=routed.route,
+        event_type=routed.event_type,
+        payload=routed.payload,
+    )
 
 
 def _audit(
@@ -107,6 +111,7 @@ def main() -> None:
         )
     payload = {
         "issue": 407,
+        "correction_issue": 410,
         "parser_contract": "semantic-router-4.0.0",
         "split_path": str(SPLIT.relative_to(ROOT)),
         "split_sha256": sha256_file(SPLIT),
@@ -121,6 +126,7 @@ def main() -> None:
             "public_lb_used": False,
             "test_prevalence_used_for_decision": False,
             "existing_feature_spec_changed": False,
+            "stop_containing_range_collapsed_into_ordinary": False,
         },
     }
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
@@ -133,4 +139,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -1,5 +1,6 @@
 {
   "issue": 407,
+  "correction_issue": 410,
   "parser_contract": "semantic-router-4.0.0",
   "split_path": "data/splits/stratified_5fold_seed42.csv",
   "split_sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf",
@@ -138,23 +139,44 @@
     {
       "route": "range_replacement",
       "event_type": "range_replacement",
-      "train_occurrences": 148,
-      "train_unique_tokens": 139,
-      "train_gene_cells": 146,
-      "train_samples": 129,
+      "train_occurrences": 109,
+      "train_unique_tokens": 103,
+      "train_gene_cells": 108,
+      "train_samples": 101,
       "train_fold_samples": [
-        18,
-        29,
-        29,
-        25,
-        28
+        11,
+        22,
+        23,
+        24,
+        21
       ],
-      "test_occurrences": 29,
-      "test_unique_tokens": 29,
-      "test_gene_cells": 29,
-      "test_samples": 24,
+      "test_occurrences": 20,
+      "test_unique_tokens": 20,
+      "test_gene_cells": 20,
+      "test_samples": 16,
       "decision": "EXPERIMENT_ELIGIBLE",
       "reason": "mechanical train/fold support gate passed; performance is untested"
+    },
+    {
+      "route": "range_replacement",
+      "event_type": "stop_containing",
+      "train_occurrences": 39,
+      "train_unique_tokens": 36,
+      "train_gene_cells": 39,
+      "train_samples": 34,
+      "train_fold_samples": [
+        9,
+        7,
+        8,
+        2,
+        8
+      ],
+      "test_occurrences": 9,
+      "test_unique_tokens": 9,
+      "test_gene_cells": 9,
+      "test_samples": 9,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "canonical fold support is below 5 samples"
     },
     {
       "route": "range_replacement",
@@ -350,6 +372,7 @@
     "subclass_used": false,
     "public_lb_used": false,
     "test_prevalence_used_for_decision": false,
-    "existing_feature_spec_changed": false
+    "existing_feature_spec_changed": false,
+    "stop_containing_range_collapsed_into_ordinary": false
   }
 }
