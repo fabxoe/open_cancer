@@ -1,0 +1,34 @@
+task_id: TASK-306
+parent_experiment: EXP-229
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  outer_fold: 0
+autoencoder:
+  input_dim: 4384
+  hidden_dim: 128
+  latent_dim: 64
+  positive_mask_rate: 0.20
+  positive_weight_cap: 50.0
+  dropout: 0.10
+  weight_decay: 0.0001
+  gradient_clip_norm: 5.0
+  learning_rate: 0.001
+  batch_size: 128
+  max_epochs: 40
+  early_stopping_patience: 6
+  internal_holdout_fraction: 0.10
+  # PyTorch MPS produced a native exit-139 before any artifact was written.
+  # Keep the Mac smoke deterministic on CPU; a later official GPU run must use CUDA.
+  device: cpu
+gate:
+  maximum_fold0_macro_f1_drop: 0.01
+  maximum_near_constant_dimensions: 16
+  maximum_abs_burden_correlation: 0.95
+  maximum_runtime_seconds: 1800
+  maximum_peak_memory_gib: 8.0
+notes: >-
+  Issue #306 fold-0 smoke test. The autoencoder is fit only on the outer-fold-0
+  training partition, with a label-free internal holdout. Validation and test
+  rows are transform-only. The downstream XGBoost feature and model contract is
+  frozen to EXP-229, with 64 latent columns appended and no raw feature removal.
