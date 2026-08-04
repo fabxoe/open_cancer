@@ -132,6 +132,34 @@ SKCM, STES, TGCT, THCA, THYM, UCEC
 - 외부 데이터를 사용할 경우 출처, 버전, 라이선스, 다운로드 일시와 파일 해시를
   반드시 기록한다.
 
+### Track B Ensembl annotation 한정 예외
+
+2026-08-04 팀장 승인에 따라 Task Issue #311과 그 구현에서 파생되는 첫 번째
+불확실 residue-position mask 공식 실험에만 Ensembl release 116의 정적
+GRCh38 GTF·protein FASTA annotation을 사용할 수 있다.
+
+- 허용: MANE Select, Ensembl canonical, 알려진 protein isoform sequence에 대한
+  입력 변이 token의 위치·reference amino-acid 일치 범주
+- 허용 목적: `POSITION_VALID_REF_MISMATCH`, `OUTSIDE_ALL_KNOWN_ISOFORMS`,
+  `COMPLEX_OR_UNMAPPABLE` token을 residue-position 집계에서 제외하는 사전 고정 mask
+- 금지: 외부 환자 자료, 암종별 변이 빈도, 임상 label·위험도·치료 정보, test 분포나
+  Public LB를 본 규칙·threshold 조정
+- 분리: sample 범주 요약과 isoform-relative bin은 #311 예외에 포함하지 않으며
+  별도 Issue와 명시적 범위 검토가 필요하다.
+
+2026-08-04 추가 팀장 승인으로 Task Issue #315와 그 구현에서 파생되는 첫
+`sample 범주 요약` 공식 실험에도 같은 Ensembl release 116 snapshot을 사용할 수
+있다. EXP-313의 manifest SHA-256을 보존하기 위해 기존 manifest를 수정하지 않고
+`knowledge/ensembl_isoform_annotation_b2_summary_v1.json`을 별도 revision으로
+사용한다. 허용 피처는 여섯 상호 배타 의미 범주의 token `count`와 `any` indicator
+각 1개, 총 12개로 고정한다. ratio, 학습 threshold, 암종별 가중치와 test/Public
+기반 변경은 허용하지 않는다. isoform-relative bin은 여전히 별도 Issue 승인이
+필요하다.
+
+resolved config에는 Ensembl release, assembly, manifest·annotation cache 경로와
+SHA-256, 승인 근거 Issue comment URL을 저장한다. 이 예외는 프로젝트의 기본값인
+`외부 데이터 사용 안 함`을 일반적으로 변경하지 않는다.
+
 대회 원본 CSV와 여기서 직접 생성한 데이터 리포트는 주최측 정책에 따라 GitHub에
 올리지 않는다. 팀원은 주최측 공식 다운로드 또는 팀에서 승인한 비공개 전달
 방법으로 원본 CSV 3개를 받은 뒤 로컬 `data/raw/`에 배치한다. `data/raw/*`는

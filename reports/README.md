@@ -53,6 +53,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 
 현재 장기 계획:
 
+- [고정 암종 표지 패널·isoform 의미 검증 로드맵](plans/domain_marker_isoform_semantics_roadmap.md)
 - [Residue-position·Hotspot 개발 로드맵](plans/residue_position_hotspot_roadmap.md)
 - [ABC 신호 포트폴리오·스태킹 로드맵](plans/abc_signal_portfolio_stacking_roadmap.md)
 - [오리엔테이션 기반 상관 삭제·피처 선택 로드맵](plans/orientation_correlation_feature_selection_roadmap.md)
@@ -80,6 +81,8 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 - [ABC-Stack OOF 포트폴리오 감사](analysis/abc_oof_portfolio_audit.md)
 - [외부 생물학 지식·아미노산 피처 확장 검토](analysis/external_biological_knowledge_feature_review.md)
 - [채택 XGBoost 모델 validation-only TreeSHAP 감사](analysis/adopted_model_tree_shap/README.md)
+- [고정 암종 표지 mutation-proxy 의미 감사](analysis/observable_marker_semantic_audit/README.md)
+- [Track B isoform·잔기 의미 QC](analysis/isoform_residue_semantics/README.md)
 
 ## 역할 구분
 

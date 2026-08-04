@@ -1,0 +1,4665 @@
+experiment:
+  record_role: official
+  issue_number: 285
+  experiment_id: EXP-285
+  component_experiments:
+  - EXP-094
+  - EXP-096
+  - EXP-219
+  - EXP-223
+  - EXP-229
+  branch: issue-285-exp229-nested-optuna
+  owner: fabxoe
+  source_commit: 893f0be9c82442bf5e3940848578dc7a73677af4
+  dirty_worktree: false
+  started_at: '2026-08-04T00:25:41.635305+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features:
+  - sample__mutated_gene_count_log1p
+  - sample__total_variant_count_log1p
+  - sample__multi_variant_gene_count_log1p
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features:
+  - max_residue_position
+  position_missing_policy: zero
+  position_token_scope: include_complex
+  position_transform: raw
+  position_bin_width: null
+  position_semantics: protein residue indices explicitly written in source tokens;
+    no transcript, codon nucleotide, genomic coordinate, or protein-length inference
+  co_mutation_pairs: []
+  co_mutation_semantics: fixed, literature-curated gene pairs (mutual exclusivity
+    or co-occurrence); gene-level 'any mutation' presence, not restricted to a specific
+    hotspot codon; not fit from this dataset's target or frequency
+  feature_factory_version: 1.1.0
+  feature_spec_sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+  hotspot_features:
+  - hotspot__BRAF_600
+  - hotspot__CTNNB1_37
+  - hotspot__CTNNB1_45
+  - hotspot__EGFR_790
+  - hotspot__EGFR_858
+  - hotspot__GNAS_201
+  - hotspot__HRAS_12
+  - hotspot__HRAS_13
+  - hotspot__HRAS_61
+  - hotspot__IDH1_132
+  - hotspot__IDH2_140
+  - hotspot__IDH2_172
+  - hotspot__PIK3CA_545
+  - hotspot__PIK3CA_1047
+  - hotspot__TP53_175
+  - hotspot__TP53_245
+  - hotspot__TP53_248
+  - hotspot__TP53_273
+  - hotspot__TP53_282
+  - hotspot__PIK3CA_542
+  - hotspot__PIK3CA_546
+  - hotspot__PIK3CA_345
+  - hotspot__PTEN_130
+  - hotspot__PTEN_233
+  - hotspot__FBXW7_505
+  - hotspot__AKT1_17
+  - hotspot__U2AF1_34
+  - hotspot__APC_1450
+  - hotspot__APC_876
+  - hotspot__POLE_286
+  - hotspot__POLE_411
+  - hotspot__KIT_816
+  - hotspot__FGFR3_249
+  - hotspot__RAC1_29
+  - hotspot__known_hotspot_total_count
+  known_hotspots:
+  - gene: BRAF
+    position: 600
+    reference_aa: V
+  - gene: CTNNB1
+    position: 37
+    reference_aa: S
+  - gene: CTNNB1
+    position: 45
+    reference_aa: S
+  - gene: EGFR
+    position: 790
+    reference_aa: T
+  - gene: EGFR
+    position: 858
+    reference_aa: L
+  - gene: GNAS
+    position: 201
+    reference_aa: R
+  - gene: HRAS
+    position: 12
+    reference_aa: G
+  - gene: HRAS
+    position: 13
+    reference_aa: G
+  - gene: HRAS
+    position: 61
+    reference_aa: Q
+  - gene: IDH1
+    position: 132
+    reference_aa: R
+  - gene: IDH2
+    position: 140
+    reference_aa: R
+  - gene: IDH2
+    position: 172
+    reference_aa: R
+  - gene: PIK3CA
+    position: 545
+    reference_aa: E
+  - gene: PIK3CA
+    position: 1047
+    reference_aa: H
+  - gene: TP53
+    position: 175
+    reference_aa: R
+  - gene: TP53
+    position: 245
+    reference_aa: G
+  - gene: TP53
+    position: 248
+    reference_aa: R
+  - gene: TP53
+    position: 273
+    reference_aa: R
+  - gene: TP53
+    position: 282
+    reference_aa: R
+  - gene: PIK3CA
+    position: 542
+    reference_aa: E
+  - gene: PIK3CA
+    position: 546
+    reference_aa: Q
+  - gene: PIK3CA
+    position: 345
+    reference_aa: N
+  - gene: PTEN
+    position: 130
+    reference_aa: R
+  - gene: PTEN
+    position: 233
+    reference_aa: R
+  - gene: FBXW7
+    position: 505
+    reference_aa: R
+  - gene: AKT1
+    position: 17
+    reference_aa: E
+  - gene: U2AF1
+    position: 34
+    reference_aa: S
+  - gene: APC
+    position: 1450
+    reference_aa: R
+  - gene: APC
+    position: 876
+    reference_aa: R
+  - gene: POLE
+    position: 286
+    reference_aa: P
+  - gene: POLE
+    position: 411
+    reference_aa: V
+  - gene: KIT
+    position: 816
+    reference_aa: D
+  - gene: FGFR3
+    position: 249
+    reference_aa: S
+  - gene: RAC1
+    position: 29
+    reference_aa: P
+  hotspot_validation_note: The hotspot table is fixed before test transformation.
+    The original 19 and additional 15 positions are literature-defined; the config-driven
+    runner validates the additions using train rows only. Test data is not used to
+    select or filter the official list. A token counts only when both position and
+    reference AA match.
+  requested_families:
+    mutation_type:
+      enabled: true
+    robust_aggregates:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+    residue_position:
+      enabled: true
+      aggregates:
+      - max
+      missing_policy: zero
+      complex_tokens: include
+      transform: raw
+  hotspot_table: extended_34
+  hotspot_evidence_scope: additions_15
+  fold_train_hotspot_evidence:
+    '0':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 70
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 24
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 18
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 51
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 20
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 22
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 7
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 14
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 6
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 5
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 6
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 9
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 7
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 10
+      observed_reference_aas:
+      - P
+    '1':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 69
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 25
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 24
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 47
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 15
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 7
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 10
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 18
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 12
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 11
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 5
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 10
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 10
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 12
+      observed_reference_aas:
+      - P
+    '2':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 65
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 28
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 23
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 49
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 17
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 6
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 13
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 10
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 6
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 7
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 9
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 8
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 9
+      observed_reference_aas:
+      - P
+    '3':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 66
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 26
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 22
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 53
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 20
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 6
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 12
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 12
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 11
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 8
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 9
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 10
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 9
+      observed_reference_aas:
+      - P
+    '4':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 66
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 21
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 25
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 48
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 20
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 6
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 11
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 8
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 11
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 6
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 7
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 9
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 12
+      observed_reference_aas:
+      - P
+  minimum_matching_train_rows: 5
+  selection_uses_test_data: false
+feature_outputs:
+  train_features.npz:
+    path: data/processed/exp285_exp229_nested_optuna_xgb_features/train_features.npz
+    sha256: dfb0b8fbade7d69c460411dfdbc5bb5fbd97eb9b5e1056dd82294135adac5c8a
+  test_features.npz:
+    path: data/processed/exp285_exp229_nested_optuna_xgb_features/test_features.npz
+    sha256: 66f0471b230d25d688b1564d5adece0077d5deaaf52c8c987e3e719491127575
+  feature_names.json:
+    path: data/processed/exp285_exp229_nested_optuna_xgb_features/feature_names.json
+    sha256: b7464c1fd0e985e722eabd2f8becb33051879d4b4cdfd25d99cd1e6b793b98c8
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cuda
+    n_jobs: 12
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+  - feature_spec_v1
+  - fixed_pathway_mutated_and_lof_gene_counts
+  - fixed_pathway_mutation_type_gene_counts
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  command: uv run --group experiment python scripts/run_exp285_exp229_nested_optuna_xgb.py
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 04:38:48) [Clang 18.1.8 ]
+  platform: Linux-6.8.0-117-generic-x86_64-with-glibc2.39
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: 87876a7c41c030503ed1b95a2d1254c5ab395cfbb865c7538fa5de42bd28902a
+fold_train_features:
+- fold: 0
+  feature_names:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__pathway_myc__lof_gene_count
+  - sample__pathway_notch__mutated_gene_count
+  - sample__pathway_notch__lof_gene_count
+  - sample__pathway_nrf2__mutated_gene_count
+  - sample__pathway_nrf2__lof_gene_count
+  - sample__pathway_pi3k__mutated_gene_count
+  - sample__pathway_pi3k__lof_gene_count
+  - sample__pathway_rtk_ras__mutated_gene_count
+  - sample__pathway_rtk_ras__lof_gene_count
+  - sample__pathway_tgf_beta__mutated_gene_count
+  - sample__pathway_tgf_beta__lof_gene_count
+  - sample__pathway_tp53__mutated_gene_count
+  - sample__pathway_tp53__lof_gene_count
+  - sample__pathway_wnt__mutated_gene_count
+  - sample__pathway_wnt__lof_gene_count
+  - sample__pathway_cell_cycle__missense_gene_count
+  - sample__pathway_cell_cycle__synonymous_gene_count
+  - sample__pathway_cell_cycle__nonsense_gene_count
+  - sample__pathway_cell_cycle__frameshift_gene_count
+  - sample__pathway_hippo__missense_gene_count
+  - sample__pathway_hippo__synonymous_gene_count
+  - sample__pathway_hippo__nonsense_gene_count
+  - sample__pathway_hippo__frameshift_gene_count
+  - sample__pathway_myc__missense_gene_count
+  - sample__pathway_myc__synonymous_gene_count
+  - sample__pathway_myc__nonsense_gene_count
+  - sample__pathway_myc__frameshift_gene_count
+  - sample__pathway_notch__missense_gene_count
+  - sample__pathway_notch__synonymous_gene_count
+  - sample__pathway_notch__nonsense_gene_count
+  - sample__pathway_notch__frameshift_gene_count
+  - sample__pathway_nrf2__missense_gene_count
+  - sample__pathway_nrf2__synonymous_gene_count
+  - sample__pathway_nrf2__nonsense_gene_count
+  - sample__pathway_nrf2__frameshift_gene_count
+  - sample__pathway_pi3k__missense_gene_count
+  - sample__pathway_pi3k__synonymous_gene_count
+  - sample__pathway_pi3k__nonsense_gene_count
+  - sample__pathway_pi3k__frameshift_gene_count
+  - sample__pathway_pi3k__complex_gene_count
+  - sample__pathway_rtk_ras__missense_gene_count
+  - sample__pathway_rtk_ras__synonymous_gene_count
+  - sample__pathway_rtk_ras__nonsense_gene_count
+  - sample__pathway_rtk_ras__frameshift_gene_count
+  - sample__pathway_tgf_beta__missense_gene_count
+  - sample__pathway_tgf_beta__synonymous_gene_count
+  - sample__pathway_tgf_beta__nonsense_gene_count
+  - sample__pathway_tgf_beta__frameshift_gene_count
+  - sample__pathway_tp53__missense_gene_count
+  - sample__pathway_tp53__synonymous_gene_count
+  - sample__pathway_tp53__nonsense_gene_count
+  - sample__pathway_tp53__frameshift_gene_count
+  - sample__pathway_wnt__missense_gene_count
+  - sample__pathway_wnt__synonymous_gene_count
+  - sample__pathway_wnt__nonsense_gene_count
+  - sample__pathway_wnt__frameshift_gene_count
+  - sample__pathway_wnt__complex_gene_count
+  registry:
+    fixed_pathway_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    pathway_mutation_type_composition:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 62
+      feature_names_sha256: 8e3d36fa136a0e8ae16654974565891578c4e3bcc58a87857b7913f98e60cfc7
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_count: ADAMTS5__complex
+        sample__pathway_hippo__complex_gene_count: TAOK2__complex
+        sample__pathway_myc__complex_gene_count: sample__missing_gene_count
+        sample__pathway_notch__complex_gene_count: CREBBP__complex
+        sample__pathway_nrf2__complex_gene_count: sample__missing_gene_count
+        sample__pathway_rtk_ras__complex_gene_count: GNG2__nonsense
+        sample__pathway_tgf_beta__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_count: ADAMTS5__complex
+- fold: 1
+  feature_names:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__pathway_myc__lof_gene_count
+  - sample__pathway_notch__mutated_gene_count
+  - sample__pathway_notch__lof_gene_count
+  - sample__pathway_nrf2__mutated_gene_count
+  - sample__pathway_nrf2__lof_gene_count
+  - sample__pathway_pi3k__mutated_gene_count
+  - sample__pathway_pi3k__lof_gene_count
+  - sample__pathway_rtk_ras__mutated_gene_count
+  - sample__pathway_rtk_ras__lof_gene_count
+  - sample__pathway_tgf_beta__mutated_gene_count
+  - sample__pathway_tgf_beta__lof_gene_count
+  - sample__pathway_tp53__mutated_gene_count
+  - sample__pathway_tp53__lof_gene_count
+  - sample__pathway_wnt__mutated_gene_count
+  - sample__pathway_wnt__lof_gene_count
+  - sample__pathway_cell_cycle__missense_gene_count
+  - sample__pathway_cell_cycle__synonymous_gene_count
+  - sample__pathway_cell_cycle__nonsense_gene_count
+  - sample__pathway_cell_cycle__frameshift_gene_count
+  - sample__pathway_hippo__missense_gene_count
+  - sample__pathway_hippo__synonymous_gene_count
+  - sample__pathway_hippo__nonsense_gene_count
+  - sample__pathway_hippo__frameshift_gene_count
+  - sample__pathway_myc__missense_gene_count
+  - sample__pathway_myc__synonymous_gene_count
+  - sample__pathway_myc__nonsense_gene_count
+  - sample__pathway_myc__frameshift_gene_count
+  - sample__pathway_notch__missense_gene_count
+  - sample__pathway_notch__synonymous_gene_count
+  - sample__pathway_notch__nonsense_gene_count
+  - sample__pathway_notch__frameshift_gene_count
+  - sample__pathway_notch__complex_gene_count
+  - sample__pathway_nrf2__missense_gene_count
+  - sample__pathway_nrf2__synonymous_gene_count
+  - sample__pathway_nrf2__nonsense_gene_count
+  - sample__pathway_nrf2__frameshift_gene_count
+  - sample__pathway_pi3k__missense_gene_count
+  - sample__pathway_pi3k__synonymous_gene_count
+  - sample__pathway_pi3k__nonsense_gene_count
+  - sample__pathway_pi3k__frameshift_gene_count
+  - sample__pathway_rtk_ras__missense_gene_count
+  - sample__pathway_rtk_ras__synonymous_gene_count
+  - sample__pathway_rtk_ras__nonsense_gene_count
+  - sample__pathway_rtk_ras__frameshift_gene_count
+  - sample__pathway_rtk_ras__complex_gene_count
+  - sample__pathway_tgf_beta__missense_gene_count
+  - sample__pathway_tgf_beta__synonymous_gene_count
+  - sample__pathway_tgf_beta__nonsense_gene_count
+  - sample__pathway_tgf_beta__frameshift_gene_count
+  - sample__pathway_tp53__missense_gene_count
+  - sample__pathway_tp53__synonymous_gene_count
+  - sample__pathway_tp53__nonsense_gene_count
+  - sample__pathway_tp53__frameshift_gene_count
+  - sample__pathway_wnt__missense_gene_count
+  - sample__pathway_wnt__synonymous_gene_count
+  - sample__pathway_wnt__nonsense_gene_count
+  - sample__pathway_wnt__frameshift_gene_count
+  - sample__pathway_wnt__complex_gene_count
+  registry:
+    fixed_pathway_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    pathway_mutation_type_composition:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 63
+      feature_names_sha256: deb41bedd295c9323f60959e4096814a72bafd90f6a31a45719fac991e95b84f
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_count: TP53__complex
+        sample__pathway_hippo__complex_gene_count: LCK__nonsense
+        sample__pathway_myc__complex_gene_count: sample__missing_gene_count
+        sample__pathway_nrf2__complex_gene_count: sample__missing_gene_count
+        sample__pathway_pi3k__complex_gene_count: CLDN11__nonsense
+        sample__pathway_tgf_beta__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_count: TP53__complex
+- fold: 2
+  feature_names:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__pathway_myc__lof_gene_count
+  - sample__pathway_notch__mutated_gene_count
+  - sample__pathway_notch__lof_gene_count
+  - sample__pathway_nrf2__mutated_gene_count
+  - sample__pathway_nrf2__lof_gene_count
+  - sample__pathway_pi3k__mutated_gene_count
+  - sample__pathway_pi3k__lof_gene_count
+  - sample__pathway_rtk_ras__mutated_gene_count
+  - sample__pathway_rtk_ras__lof_gene_count
+  - sample__pathway_tgf_beta__mutated_gene_count
+  - sample__pathway_tgf_beta__lof_gene_count
+  - sample__pathway_tp53__mutated_gene_count
+  - sample__pathway_tp53__lof_gene_count
+  - sample__pathway_wnt__mutated_gene_count
+  - sample__pathway_wnt__lof_gene_count
+  - sample__pathway_cell_cycle__missense_gene_count
+  - sample__pathway_cell_cycle__synonymous_gene_count
+  - sample__pathway_cell_cycle__nonsense_gene_count
+  - sample__pathway_cell_cycle__frameshift_gene_count
+  - sample__pathway_hippo__missense_gene_count
+  - sample__pathway_hippo__synonymous_gene_count
+  - sample__pathway_hippo__nonsense_gene_count
+  - sample__pathway_hippo__frameshift_gene_count
+  - sample__pathway_myc__missense_gene_count
+  - sample__pathway_myc__synonymous_gene_count
+  - sample__pathway_myc__nonsense_gene_count
+  - sample__pathway_myc__frameshift_gene_count
+  - sample__pathway_notch__missense_gene_count
+  - sample__pathway_notch__synonymous_gene_count
+  - sample__pathway_notch__nonsense_gene_count
+  - sample__pathway_notch__frameshift_gene_count
+  - sample__pathway_notch__complex_gene_count
+  - sample__pathway_nrf2__missense_gene_count
+  - sample__pathway_nrf2__synonymous_gene_count
+  - sample__pathway_nrf2__nonsense_gene_count
+  - sample__pathway_nrf2__frameshift_gene_count
+  - sample__pathway_pi3k__missense_gene_count
+  - sample__pathway_pi3k__synonymous_gene_count
+  - sample__pathway_pi3k__nonsense_gene_count
+  - sample__pathway_pi3k__frameshift_gene_count
+  - sample__pathway_pi3k__complex_gene_count
+  - sample__pathway_rtk_ras__missense_gene_count
+  - sample__pathway_rtk_ras__synonymous_gene_count
+  - sample__pathway_rtk_ras__nonsense_gene_count
+  - sample__pathway_rtk_ras__frameshift_gene_count
+  - sample__pathway_rtk_ras__complex_gene_count
+  - sample__pathway_tgf_beta__missense_gene_count
+  - sample__pathway_tgf_beta__synonymous_gene_count
+  - sample__pathway_tgf_beta__nonsense_gene_count
+  - sample__pathway_tgf_beta__frameshift_gene_count
+  - sample__pathway_tp53__missense_gene_count
+  - sample__pathway_tp53__synonymous_gene_count
+  - sample__pathway_tp53__nonsense_gene_count
+  - sample__pathway_tp53__frameshift_gene_count
+  - sample__pathway_wnt__missense_gene_count
+  - sample__pathway_wnt__synonymous_gene_count
+  - sample__pathway_wnt__nonsense_gene_count
+  - sample__pathway_wnt__frameshift_gene_count
+  registry:
+    fixed_pathway_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    pathway_mutation_type_composition:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 63
+      feature_names_sha256: c2484d90c3f81d2d6b29994ad1bd07056a8dd8b6403ff5ff7cc5660bf2780796
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_count: CD8A__nonsense
+        sample__pathway_hippo__complex_gene_count: sample__missing_gene_count
+        sample__pathway_myc__complex_gene_count: sample__missing_gene_count
+        sample__pathway_nrf2__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tgf_beta__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_count: CD8A__nonsense
+        sample__pathway_wnt__complex_gene_count: LUC7L3__synonymous
+- fold: 3
+  feature_names:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__pathway_myc__lof_gene_count
+  - sample__pathway_notch__mutated_gene_count
+  - sample__pathway_notch__lof_gene_count
+  - sample__pathway_nrf2__mutated_gene_count
+  - sample__pathway_nrf2__lof_gene_count
+  - sample__pathway_pi3k__mutated_gene_count
+  - sample__pathway_pi3k__lof_gene_count
+  - sample__pathway_rtk_ras__mutated_gene_count
+  - sample__pathway_rtk_ras__lof_gene_count
+  - sample__pathway_tgf_beta__mutated_gene_count
+  - sample__pathway_tgf_beta__lof_gene_count
+  - sample__pathway_tp53__mutated_gene_count
+  - sample__pathway_tp53__lof_gene_count
+  - sample__pathway_wnt__mutated_gene_count
+  - sample__pathway_wnt__lof_gene_count
+  - sample__pathway_cell_cycle__missense_gene_count
+  - sample__pathway_cell_cycle__synonymous_gene_count
+  - sample__pathway_cell_cycle__nonsense_gene_count
+  - sample__pathway_cell_cycle__frameshift_gene_count
+  - sample__pathway_hippo__missense_gene_count
+  - sample__pathway_hippo__synonymous_gene_count
+  - sample__pathway_hippo__nonsense_gene_count
+  - sample__pathway_hippo__frameshift_gene_count
+  - sample__pathway_myc__missense_gene_count
+  - sample__pathway_myc__synonymous_gene_count
+  - sample__pathway_myc__nonsense_gene_count
+  - sample__pathway_myc__frameshift_gene_count
+  - sample__pathway_notch__missense_gene_count
+  - sample__pathway_notch__synonymous_gene_count
+  - sample__pathway_notch__nonsense_gene_count
+  - sample__pathway_notch__frameshift_gene_count
+  - sample__pathway_notch__complex_gene_count
+  - sample__pathway_nrf2__missense_gene_count
+  - sample__pathway_nrf2__synonymous_gene_count
+  - sample__pathway_nrf2__nonsense_gene_count
+  - sample__pathway_nrf2__frameshift_gene_count
+  - sample__pathway_pi3k__missense_gene_count
+  - sample__pathway_pi3k__synonymous_gene_count
+  - sample__pathway_pi3k__nonsense_gene_count
+  - sample__pathway_pi3k__frameshift_gene_count
+  - sample__pathway_pi3k__complex_gene_count
+  - sample__pathway_rtk_ras__missense_gene_count
+  - sample__pathway_rtk_ras__synonymous_gene_count
+  - sample__pathway_rtk_ras__nonsense_gene_count
+  - sample__pathway_rtk_ras__frameshift_gene_count
+  - sample__pathway_tgf_beta__missense_gene_count
+  - sample__pathway_tgf_beta__synonymous_gene_count
+  - sample__pathway_tgf_beta__nonsense_gene_count
+  - sample__pathway_tgf_beta__frameshift_gene_count
+  - sample__pathway_tp53__missense_gene_count
+  - sample__pathway_tp53__synonymous_gene_count
+  - sample__pathway_tp53__nonsense_gene_count
+  - sample__pathway_tp53__frameshift_gene_count
+  - sample__pathway_wnt__missense_gene_count
+  - sample__pathway_wnt__synonymous_gene_count
+  - sample__pathway_wnt__nonsense_gene_count
+  - sample__pathway_wnt__frameshift_gene_count
+  - sample__pathway_wnt__complex_gene_count
+  registry:
+    fixed_pathway_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    pathway_mutation_type_composition:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 63
+      feature_names_sha256: 2f8cc4c2843177494427f4e47067b0e00e6eb3fcf5a8fc6737163b5de36ca34d
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_count: TP53__complex
+        sample__pathway_hippo__complex_gene_count: TAOK2__complex
+        sample__pathway_myc__complex_gene_count: sample__missing_gene_count
+        sample__pathway_nrf2__complex_gene_count: sample__missing_gene_count
+        sample__pathway_rtk_ras__complex_gene_count: PEX14__frameshift
+        sample__pathway_tgf_beta__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_count: TP53__complex
+- fold: 4
+  feature_names:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__pathway_myc__lof_gene_count
+  - sample__pathway_notch__mutated_gene_count
+  - sample__pathway_notch__lof_gene_count
+  - sample__pathway_nrf2__mutated_gene_count
+  - sample__pathway_nrf2__lof_gene_count
+  - sample__pathway_pi3k__mutated_gene_count
+  - sample__pathway_pi3k__lof_gene_count
+  - sample__pathway_rtk_ras__mutated_gene_count
+  - sample__pathway_rtk_ras__lof_gene_count
+  - sample__pathway_tgf_beta__mutated_gene_count
+  - sample__pathway_tgf_beta__lof_gene_count
+  - sample__pathway_tp53__mutated_gene_count
+  - sample__pathway_tp53__lof_gene_count
+  - sample__pathway_wnt__mutated_gene_count
+  - sample__pathway_wnt__lof_gene_count
+  - sample__pathway_cell_cycle__missense_gene_count
+  - sample__pathway_cell_cycle__synonymous_gene_count
+  - sample__pathway_cell_cycle__nonsense_gene_count
+  - sample__pathway_cell_cycle__frameshift_gene_count
+  - sample__pathway_hippo__missense_gene_count
+  - sample__pathway_hippo__synonymous_gene_count
+  - sample__pathway_hippo__nonsense_gene_count
+  - sample__pathway_hippo__frameshift_gene_count
+  - sample__pathway_myc__missense_gene_count
+  - sample__pathway_myc__synonymous_gene_count
+  - sample__pathway_myc__nonsense_gene_count
+  - sample__pathway_myc__frameshift_gene_count
+  - sample__pathway_notch__missense_gene_count
+  - sample__pathway_notch__synonymous_gene_count
+  - sample__pathway_notch__nonsense_gene_count
+  - sample__pathway_notch__frameshift_gene_count
+  - sample__pathway_nrf2__missense_gene_count
+  - sample__pathway_nrf2__synonymous_gene_count
+  - sample__pathway_nrf2__nonsense_gene_count
+  - sample__pathway_nrf2__frameshift_gene_count
+  - sample__pathway_pi3k__missense_gene_count
+  - sample__pathway_pi3k__synonymous_gene_count
+  - sample__pathway_pi3k__nonsense_gene_count
+  - sample__pathway_pi3k__frameshift_gene_count
+  - sample__pathway_pi3k__complex_gene_count
+  - sample__pathway_rtk_ras__missense_gene_count
+  - sample__pathway_rtk_ras__synonymous_gene_count
+  - sample__pathway_rtk_ras__nonsense_gene_count
+  - sample__pathway_rtk_ras__frameshift_gene_count
+  - sample__pathway_rtk_ras__complex_gene_count
+  - sample__pathway_tgf_beta__missense_gene_count
+  - sample__pathway_tgf_beta__synonymous_gene_count
+  - sample__pathway_tgf_beta__nonsense_gene_count
+  - sample__pathway_tgf_beta__frameshift_gene_count
+  - sample__pathway_tp53__missense_gene_count
+  - sample__pathway_tp53__synonymous_gene_count
+  - sample__pathway_tp53__nonsense_gene_count
+  - sample__pathway_tp53__frameshift_gene_count
+  - sample__pathway_wnt__missense_gene_count
+  - sample__pathway_wnt__synonymous_gene_count
+  - sample__pathway_wnt__nonsense_gene_count
+  - sample__pathway_wnt__frameshift_gene_count
+  registry:
+    fixed_pathway_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    pathway_mutation_type_composition:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 62
+      feature_names_sha256: cb4d9ce6876469b9e6c8441f933ecfdd82c24cf062802272886be2f1c44e3f5e
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_count: TP53__complex
+        sample__pathway_hippo__complex_gene_count: GLRX2__nonsense
+        sample__pathway_myc__complex_gene_count: sample__missing_gene_count
+        sample__pathway_notch__complex_gene_count: NOTCH2__complex
+        sample__pathway_nrf2__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tgf_beta__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_count: TP53__complex
+        sample__pathway_wnt__complex_gene_count: TLE4__complex
+fold_model_tuning:
+- outer_fold: 0
+  fit_scope: outer_train_inner_cv_only
+  test_or_outer_validation_used_for_selection: false
+  study_name: exp285_exp229_nested_optuna_xgb_outer_00
+  sampler: TPESampler
+  sampler_seed: 42
+  inner_n_splits: 3
+  requested_trials: 30
+  completed_trials: 30
+  best_trial: 4
+  best_value: 0.41253669550316746
+  best_parameters:
+    max_depth: 6
+    min_child_weight: 1.4180537144799796
+    subsample: 0.7430179407605754
+    colsample_bytree: 0.5682096494749166
+    reg_alpha: 0.06505159298527952
+    reg_lambda: 4.7699849176399995
+    learning_rate: 0.07627784399074539
+  search_space:
+    max_depth:
+    - 4
+    - 8
+    min_child_weight:
+    - 1.0
+    - 10.0
+    subsample:
+    - 0.5
+    - 0.9
+    colsample_bytree:
+    - 0.5
+    - 0.9
+    reg_alpha:
+    - 0.0
+    - 1.0
+    reg_lambda:
+    - 0.5
+    - 5.0
+    learning_rate:
+    - 0.02
+    - 0.08
+    - log
+  database_path: models/exp285_exp229_nested_optuna_xgb/optuna/outer_00.sqlite3
+  trials:
+  - number: 0
+    state: COMPLETE
+    value: 0.3795255878287171
+    parameters:
+      max_depth: 5
+      min_child_weight: 9.556428757689245
+      subsample: 0.7927975767245621
+      colsample_bytree: 0.7394633936788146
+      reg_alpha: 0.15601864044243652
+      reg_lambda: 1.201975341512912
+      learning_rate: 0.021677031799390116
+    user_attributes:
+      inner_macro_f1:
+      - 0.3731266020436548
+      - 0.38610770801504124
+      - 0.37934245342745526
+      inner_macro_f1_std: 0.005301096221021049
+      selected_iterations:
+      - 405
+      - 246
+      - 475
+  - number: 1
+    state: COMPLETE
+    value: 0.39501288199190004
+    parameters:
+      max_depth: 8
+      min_child_weight: 6.41003510568888
+      subsample: 0.7832290311184182
+      colsample_bytree: 0.508233797718321
+      reg_alpha: 0.9699098521619943
+      reg_lambda: 4.2459918836018975
+      learning_rate: 0.026845461777110672
+    user_attributes:
+      inner_macro_f1:
+      - 0.3936908232550426
+      - 0.39851102247739184
+      - 0.3928368002432656
+      inner_macro_f1_std: 0.002498009736882391
+      selected_iterations:
+      - 336
+      - 275
+      - 490
+  - number: 2
+    state: COMPLETE
+    value: 0.41031674183851613
+    parameters:
+      max_depth: 4
+      min_child_weight: 2.650640588680904
+      subsample: 0.621696897183815
+      colsample_bytree: 0.7099025726528951
+      reg_alpha: 0.43194501864211576
+      reg_lambda: 1.8105311308911887
+      learning_rate: 0.046709169355444585
+    user_attributes:
+      inner_macro_f1:
+      - 0.40234607226661784
+      - 0.41659149144654817
+      - 0.4120126618023824
+      inner_macro_f1_std: 0.0059380187658770395
+      selected_iterations:
+      - 108
+      - 167
+      - 293
+  - number: 3
+    state: COMPLETE
+    value: 0.4074120373026276
+    parameters:
+      max_depth: 4
+      min_child_weight: 3.629301836816963
+      subsample: 0.6465447373174766
+      colsample_bytree: 0.6824279936868144
+      reg_alpha: 0.7851759613930136
+      reg_lambda: 1.3985320197126188
+      learning_rate: 0.040797164270491654
+    user_attributes:
+      inner_macro_f1:
+      - 0.3997167724746199
+      - 0.41458452748460817
+      - 0.4079348119486548
+      inner_macro_f1_std: 0.006080981541229148
+      selected_iterations:
+      - 245
+      - 237
+      - 387
+  - number: 4
+    state: COMPLETE
+    value: 0.41253669550316746
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.4180537144799796
+      subsample: 0.7430179407605754
+      colsample_bytree: 0.5682096494749166
+      reg_alpha: 0.06505159298527952
+      reg_lambda: 4.7699849176399995
+      learning_rate: 0.07627784399074539
+    user_attributes:
+      inner_macro_f1:
+      - 0.41040782393831904
+      - 0.41526123068080817
+      - 0.41194103189037523
+      inner_macro_f1_std: 0.002025668713735997
+      selected_iterations:
+      - 87
+      - 144
+      - 200
+  - number: 5
+    state: COMPLETE
+    value: 0.3971950639567892
+    parameters:
+      max_depth: 8
+      min_child_weight: 3.741523922560336
+      subsample: 0.5390688456025535
+      colsample_bytree: 0.7736932106048628
+      reg_alpha: 0.4401524937396013
+      reg_lambda: 1.0491720568015048
+      learning_rate: 0.03973344322932438
+    user_attributes:
+      inner_macro_f1:
+      - 0.393626306308425
+      - 0.4030771348774741
+      - 0.39488175068446857
+      inner_macro_f1_std: 0.004190712261045041
+      selected_iterations:
+      - 175
+      - 212
+      - 186
+  - number: 6
+    state: COMPLETE
+    value: 0.3679679128188003
+    parameters:
+      max_depth: 4
+      min_child_weight: 9.18388361870904
+      subsample: 0.6035119926400068
+      colsample_bytree: 0.7650089137415927
+      reg_alpha: 0.31171107608941095
+      reg_lambda: 2.8403060953001487
+      learning_rate: 0.04267586982323341
+    user_attributes:
+      inner_macro_f1:
+      - 0.371703094268064
+      - 0.3650217827861693
+      - 0.3671788614021676
+      inner_macro_f1_std: 0.002784113549299801
+      selected_iterations:
+      - 275
+      - 437
+      - 406
+  - number: 7
+    state: COMPLETE
+    value: 0.3771351192754658
+    parameters:
+      max_depth: 4
+      min_child_weight: 9.726261649881026
+      subsample: 0.8100531293444458
+      colsample_bytree: 0.8757995766256756
+      reg_alpha: 0.8948273504276488
+      reg_lambda: 3.1905499046498833
+      learning_rate: 0.07178828686981605
+    user_attributes:
+      inner_macro_f1:
+      - 0.37430572228760217
+      - 0.3779514789439605
+      - 0.3791481565948347
+      inner_macro_f1_std: 0.0020594699700366608
+      selected_iterations:
+      - 143
+      - 190
+      - 155
+  - number: 8
+    state: COMPLETE
+    value: 0.40781142083662275
+    parameters:
+      max_depth: 4
+      min_child_weight: 2.763845761772307
+      subsample: 0.5180909155642153
+      colsample_bytree: 0.6301321323053057
+      reg_alpha: 0.388677289689482
+      reg_lambda: 1.7210706429825315
+      learning_rate: 0.06309278428352182
+    user_attributes:
+      inner_macro_f1:
+      - 0.4026283838801572
+      - 0.41984920982166496
+      - 0.40095666880804604
+      inner_macro_f1_std: 0.008539318105363522
+      selected_iterations:
+      - 91
+      - 151
+      - 257
+  - number: 9
+    state: COMPLETE
+    value: 0.40463510671408703
+    parameters:
+      max_depth: 5
+      min_child_weight: 3.5284105871864266
+      subsample: 0.7170784332632993
+      colsample_bytree: 0.5563696899899051
+      reg_alpha: 0.8021969807540397
+      reg_lambda: 0.8354778965589686
+      learning_rate: 0.07855885340788109
+    user_attributes:
+      inner_macro_f1:
+      - 0.3957763242352209
+      - 0.41073084852101205
+      - 0.4073981473860282
+      inner_macro_f1_std: 0.006410160916840282
+      selected_iterations:
+      - 136
+      - 100
+      - 151
+  - number: 10
+    state: COMPLETE
+    value: 0.40512816028382953
+    parameters:
+      max_depth: 7
+      min_child_weight: 1.053974646602354
+      subsample: 0.8878148443151465
+      colsample_bytree: 0.872916136764715
+      reg_alpha: 0.02106866183582308
+      reg_lambda: 4.584491578771329
+      learning_rate: 0.028596803719651797
+    user_attributes:
+      inner_macro_f1:
+      - 0.4033800087370416
+      - 0.41022460729300836
+      - 0.4017798648214387
+      inner_macro_f1_std: 0.003662462216022257
+      selected_iterations:
+      - 285
+      - 203
+      - 335
+  - number: 11
+    state: COMPLETE
+    value: 0.4111609253373085
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.3109909319304602
+      subsample: 0.6700923888178456
+      colsample_bytree: 0.6123043816958816
+      reg_alpha: 0.5728525868879636
+      reg_lambda: 2.5805506388974044
+      learning_rate: 0.05648527121149967
+    user_attributes:
+      inner_macro_f1:
+      - 0.407363442645519
+      - 0.4183261184870547
+      - 0.407793214879352
+      inner_macro_f1_std: 0.005069593717983075
+      selected_iterations:
+      - 109
+      - 199
+      - 152
+  - number: 12
+    state: COMPLETE
+    value: 0.4104847238342299
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.1056472268265447
+      subsample: 0.7000331446723536
+      colsample_bytree: 0.5942083945390682
+      reg_alpha: 0.6050456525635312
+      reg_lambda: 3.4063539831645855
+      learning_rate: 0.05637517317004441
+    user_attributes:
+      inner_macro_f1:
+      - 0.40213458174610967
+      - 0.41991368855401223
+      - 0.40940590120256765
+      inner_macro_f1_std: 0.0072982670739768435
+      selected_iterations:
+      - 123
+      - 246
+      - 198
+  - number: 13
+    state: COMPLETE
+    value: 0.3978462483362975
+    parameters:
+      max_depth: 6
+      min_child_weight: 5.21834696999058
+      subsample: 0.6984165248678857
+      colsample_bytree: 0.6390533721986331
+      reg_alpha: 0.6577760223529409
+      reg_lambda: 4.962034713606141
+      learning_rate: 0.053664037584356415
+    user_attributes:
+      inner_macro_f1:
+      - 0.396809176175562
+      - 0.4003164121768662
+      - 0.39641315665646437
+      inner_macro_f1_std: 0.0017541360483756337
+      selected_iterations:
+      - 200
+      - 160
+      - 270
+  - number: 14
+    state: COMPLETE
+    value: 0.4101590606931547
+    parameters:
+      max_depth: 6
+      min_child_weight: 2.001112943742096
+      subsample: 0.7470851867111202
+      colsample_bytree: 0.5030370341862825
+      reg_alpha: 0.21785264337790272
+      reg_lambda: 2.491320055918012
+      learning_rate: 0.0659756992937603
+    user_attributes:
+      inner_macro_f1:
+      - 0.4076263789789837
+      - 0.41282524585611685
+      - 0.41002555724436357
+      inner_macro_f1_std: 0.00212452686178475
+      selected_iterations:
+      - 143
+      - 166
+      - 105
+  - number: 15
+    state: COMPLETE
+    value: 0.40605572713082844
+    parameters:
+      max_depth: 7
+      min_child_weight: 1.7588007421641407
+      subsample: 0.8812890319065437
+      colsample_bytree: 0.5736302240096562
+      reg_alpha: 0.008352393048607909
+      reg_lambda: 3.999702215781234
+      learning_rate: 0.053329666215861334
+    user_attributes:
+      inner_macro_f1:
+      - 0.4025117506165285
+      - 0.41465846651842647
+      - 0.4009969642575302
+      inner_macro_f1_std: 0.006114408565377932
+      selected_iterations:
+      - 154
+      - 146
+      - 110
+  - number: 16
+    state: COMPLETE
+    value: 0.39411149820501173
+    parameters:
+      max_depth: 7
+      min_child_weight: 5.145956771333573
+      subsample: 0.6696730316060455
+      colsample_bytree: 0.6537967599110172
+      reg_alpha: 0.5795660494660647
+      reg_lambda: 2.328861460953519
+      learning_rate: 0.07671505101887045
+    user_attributes:
+      inner_macro_f1:
+      - 0.3868026262377127
+      - 0.40586988184066175
+      - 0.38966198653666057
+      inner_macro_f1_std: 0.008395978188876796
+      selected_iterations:
+      - 98
+      - 92
+      - 79
+  - number: 17
+    state: COMPLETE
+    value: 0.41005657029332726
+    parameters:
+      max_depth: 5
+      min_child_weight: 2.28331959485348
+      subsample: 0.5738487384928042
+      colsample_bytree: 0.5462963218645719
+      reg_alpha: 0.16690684145457146
+      reg_lambda: 3.6767246106372133
+      learning_rate: 0.033205839372946085
+    user_attributes:
+      inner_macro_f1:
+      - 0.4027653517010376
+      - 0.4134896240147417
+      - 0.41391473516420246
+      inner_macro_f1_std: 0.0051585903302331
+      selected_iterations:
+      - 353
+      - 349
+      - 407
+  - number: 18
+    state: COMPLETE
+    value: 0.39960657980514486
+    parameters:
+      max_depth: 6
+      min_child_weight: 4.919217852986104
+      subsample: 0.8362148766913249
+      colsample_bytree: 0.6109230641643677
+      reg_alpha: 0.5265776695936556
+      reg_lambda: 4.938901227795923
+      learning_rate: 0.0626549146107997
+    user_attributes:
+      inner_macro_f1:
+      - 0.3963701204475077
+      - 0.40356525019330464
+      - 0.3988843687746221
+      inner_macro_f1_std: 0.002981461005857087
+      selected_iterations:
+      - 118
+      - 171
+      - 213
+  - number: 19
+    state: COMPLETE
+    value: 0.40474835700276124
+    parameters:
+      max_depth: 7
+      min_child_weight: 1.0262677556163928
+      subsample: 0.7501381218103034
+      colsample_bytree: 0.6845467516407459
+      reg_alpha: 0.7161514994992274
+      reg_lambda: 2.2108222687374983
+      learning_rate: 0.047728124735990266
+    user_attributes:
+      inner_macro_f1:
+      - 0.3950495824688853
+      - 0.4119633200668712
+      - 0.4072321684725273
+      inner_macro_f1_std: 0.007124868160014689
+      selected_iterations:
+      - 163
+      - 123
+      - 118
+  - number: 20
+    state: COMPLETE
+    value: 0.38570648169998095
+    parameters:
+      max_depth: 5
+      min_child_weight: 7.71258176459537
+      subsample: 0.6705386664376376
+      colsample_bytree: 0.8183471047574293
+      reg_alpha: 0.27426050898361176
+      reg_lambda: 0.5123313399734686
+      learning_rate: 0.05819765323690775
+    user_attributes:
+      inner_macro_f1:
+      - 0.3809486345655623
+      - 0.398311043685011
+      - 0.3778597668493695
+      inner_macro_f1_std: 0.009001537389723435
+      selected_iterations:
+      - 185
+      - 87
+      - 190
+  - number: 21
+    state: COMPLETE
+    value: 0.4117028747176264
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.0281151229473224
+      subsample: 0.7176915296220014
+      colsample_bytree: 0.591346484168823
+      reg_alpha: 0.56762620250485
+      reg_lambda: 3.3830941038027778
+      learning_rate: 0.055601669206920216
+    user_attributes:
+      inner_macro_f1:
+      - 0.3993090806053103
+      - 0.4216154886031359
+      - 0.41418405494443317
+      inner_macro_f1_std: 0.009274019298728653
+      selected_iterations:
+      - 255
+      - 258
+      - 229
+  - number: 22
+    state: COMPLETE
+    value: 0.40813484277699646
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.7896894479523169
+      subsample: 0.7535146914044353
+      colsample_bytree: 0.5389383849764425
+      reg_alpha: 0.5080486883619959
+      reg_lambda: 2.9983007972495166
+      learning_rate: 0.06932928781742267
+    user_attributes:
+      inner_macro_f1:
+      - 0.40189204096233094
+      - 0.41190757748341866
+      - 0.41060490988523984
+      inner_macro_f1_std: 0.004446246851051628
+      selected_iterations:
+      - 161
+      - 114
+      - 101
+  - number: 23
+    state: COMPLETE
+    value: 0.40469209785744154
+    parameters:
+      max_depth: 6
+      min_child_weight: 2.9925820819611717
+      subsample: 0.725892161012452
+      colsample_bytree: 0.5991062338554787
+      reg_alpha: 0.34443268098148305
+      reg_lambda: 3.804759799651941
+      learning_rate: 0.048519552946653874
+    user_attributes:
+      inner_macro_f1:
+      - 0.3964178647911636
+      - 0.4113270499860561
+      - 0.4063313787951049
+      inner_macro_f1_std: 0.006196040794375096
+      selected_iterations:
+      - 115
+      - 122
+      - 252
+  - number: 24
+    state: COMPLETE
+    value: 0.4088709799492545
+    parameters:
+      max_depth: 7
+      min_child_weight: 1.7197314142540394
+      subsample: 0.6648926864244491
+      colsample_bytree: 0.579936222081692
+      reg_alpha: 0.6932508505177211
+      reg_lambda: 4.330598505208345
+      learning_rate: 0.06192369114357479
+    user_attributes:
+      inner_macro_f1:
+      - 0.40313369744223937
+      - 0.4162832499598513
+      - 0.4071959924456726
+      inner_macro_f1_std: 0.005497385451662442
+      selected_iterations:
+      - 140
+      - 199
+      - 223
+  - number: 25
+    state: COMPLETE
+    value: 0.3972623620691211
+    parameters:
+      max_depth: 5
+      min_child_weight: 4.279068484638935
+      subsample: 0.6344510180762718
+      colsample_bytree: 0.6729032878984148
+      reg_alpha: 0.09952794630539114
+      reg_lambda: 2.667422742113149
+      learning_rate: 0.0702087081331391
+    user_attributes:
+      inner_macro_f1:
+      - 0.39081185198144774
+      - 0.4053834903493644
+      - 0.3955917438765511
+      inner_macro_f1_std: 0.006065002612824081
+      selected_iterations:
+      - 109
+      - 162
+      - 165
+  - number: 26
+    state: COMPLETE
+    value: 0.40651958404371147
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.584627299048915
+      subsample: 0.5888716350388259
+      colsample_bytree: 0.6266296850371076
+      reg_alpha: 0.5260998657209877
+      reg_lambda: 3.5953474614420005
+      learning_rate: 0.052038329739795885
+    user_attributes:
+      inner_macro_f1:
+      - 0.3936051982103892
+      - 0.41206104435682833
+      - 0.41389250956391693
+      inner_macro_f1_std: 0.009162408245657202
+      selected_iterations:
+      - 83
+      - 132
+      - 145
+  - number: 27
+    state: COMPLETE
+    value: 0.40675631692005254
+    parameters:
+      max_depth: 6
+      min_child_weight: 2.935996354599358
+      subsample: 0.8466338697710561
+      colsample_bytree: 0.5397387066612138
+      reg_alpha: 0.8128739531304057
+      reg_lambda: 1.9315668893276294
+      learning_rate: 0.03781704871959984
+    user_attributes:
+      inner_macro_f1:
+      - 0.4099146554552027
+      - 0.4043491025783057
+      - 0.40600519272664926
+      inner_macro_f1_std: 0.0023333788621969103
+      selected_iterations:
+      - 214
+      - 204
+      - 193
+  - number: 28
+    state: COMPLETE
+    value: 0.4086438532979964
+    parameters:
+      max_depth: 7
+      min_child_weight: 2.3667286807899552
+      subsample: 0.6968182017733083
+      colsample_bytree: 0.5664910282744888
+      reg_alpha: 0.4668132145271296
+      reg_lambda: 3.3178042252951307
+      learning_rate: 0.06011986800493344
+    user_attributes:
+      inner_macro_f1:
+      - 0.40128943790340854
+      - 0.4107164304521203
+      - 0.41392569153846037
+      inner_macro_f1_std: 0.005362860463545389
+      selected_iterations:
+      - 157
+      - 140
+      - 133
+  - number: 29
+    state: COMPLETE
+    value: 0.4103440831333975
+    parameters:
+      max_depth: 5
+      min_child_weight: 1.3978525130785142
+      subsample: 0.7823930116701191
+      colsample_bytree: 0.7106984325202125
+      reg_alpha: 0.12342092511977304
+      reg_lambda: 4.49226444511142
+      learning_rate: 0.04441724550331699
+    user_attributes:
+      inner_macro_f1:
+      - 0.40455036089531293
+      - 0.42021623750286763
+      - 0.4062656510020118
+      inner_macro_f1_std: 0.007015702813856053
+      selected_iterations:
+      - 241
+      - 336
+      - 261
+- outer_fold: 1
+  fit_scope: outer_train_inner_cv_only
+  test_or_outer_validation_used_for_selection: false
+  study_name: exp285_exp229_nested_optuna_xgb_outer_01
+  sampler: TPESampler
+  sampler_seed: 43
+  inner_n_splits: 3
+  requested_trials: 30
+  completed_trials: 30
+  best_trial: 24
+  best_value: 0.4113670011080303
+  best_parameters:
+    max_depth: 6
+    min_child_weight: 1.856404291679414
+    subsample: 0.6251903957465799
+    colsample_bytree: 0.5069108445301507
+    reg_alpha: 0.4901206867968746
+    reg_lambda: 1.678451299037102
+    learning_rate: 0.023436930877205706
+  search_space:
+    max_depth:
+    - 4
+    - 8
+    min_child_weight:
+    - 1.0
+    - 10.0
+    subsample:
+    - 0.5
+    - 0.9
+    colsample_bytree:
+    - 0.5
+    - 0.9
+    reg_alpha:
+    - 0.0
+    - 1.0
+    reg_lambda:
+    - 0.5
+    - 5.0
+    learning_rate:
+    - 0.02
+    - 0.08
+    - log
+  database_path: models/exp285_exp229_nested_optuna_xgb/optuna/outer_01.sqlite3
+  trials:
+  - number: 0
+    state: COMPLETE
+    value: 0.3743703877994662
+    parameters:
+      max_depth: 4
+      min_child_weight: 6.481598853515333
+      subsample: 0.5533563856743953
+      colsample_bytree: 0.5962358479861395
+      reg_alpha: 0.3271390558111398
+      reg_lambda: 4.36611870926869
+      learning_rate: 0.05035658423697015
+    user_attributes:
+      inner_macro_f1:
+      - 0.36587155523699144
+      - 0.3817562475849038
+      - 0.37548336057650344
+      inner_macro_f1_std: 0.006532477531471792
+      selected_iterations:
+      - 276
+      - 232
+      - 275
+  - number: 1
+    state: COMPLETE
+    value: 0.4102129207336131
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.2611244198192435
+      subsample: 0.7934993185121132
+      colsample_bytree: 0.6579800073724024
+      reg_alpha: 0.8020471186286665
+      reg_lambda: 1.6448950663694568
+      learning_rate: 0.021641040616616977
+    user_attributes:
+      inner_macro_f1:
+      - 0.4041682267427694
+      - 0.40655260618973144
+      - 0.4199179292683385
+      inner_macro_f1_std: 0.006931171585963081
+      selected_iterations:
+      - 281
+      - 432
+      - 498
+  - number: 2
+    state: COMPLETE
+    value: 0.3985376968893999
+    parameters:
+      max_depth: 8
+      min_child_weight: 2.989260962959342
+      subsample: 0.6619957792189038
+      colsample_bytree: 0.6264385884072835
+      reg_alpha: 0.07666269999644726
+      reg_lambda: 4.29451112403367
+      learning_rate: 0.06488469859802859
+    user_attributes:
+      inner_macro_f1:
+      - 0.4011367074517489
+      - 0.3982053465283198
+      - 0.396271036688131
+      inner_macro_f1_std: 0.0020002550782111115
+      selected_iterations:
+      - 78
+      - 121
+      - 164
+  - number: 3
+    state: COMPLETE
+    value: 0.3972560373955132
+    parameters:
+      max_depth: 8
+      min_child_weight: 4.468392229556243
+      subsample: 0.881795250043466
+      colsample_bytree: 0.6783033443358876
+      reg_alpha: 0.6697246517218077
+      reg_lambda: 0.8712502236371993
+      learning_rate: 0.06936448384435626
+    user_attributes:
+      inner_macro_f1:
+      - 0.3915922466192684
+      - 0.4030678930820616
+      - 0.39710797248520957
+      inner_macro_f1_std: 0.0046860827882857494
+      selected_iterations:
+      - 70
+      - 109
+      - 111
+  - number: 4
+    state: COMPLETE
+    value: 0.38869206262609596
+    parameters:
+      max_depth: 5
+      min_child_weight: 3.360743403367433
+      subsample: 0.5020518196257828
+      colsample_bytree: 0.7172810061121624
+      reg_alpha: 0.47559636700725316
+      reg_lambda: 3.3636815490718517
+      learning_rate: 0.07761891509074216
+    user_attributes:
+      inner_macro_f1:
+      - 0.3722609308350069
+      - 0.3965030662651878
+      - 0.3973121907780931
+      inner_macro_f1_std: 0.011623259427299172
+      selected_iterations:
+      - 75
+      - 182
+      - 124
+  - number: 5
+    state: COMPLETE
+    value: 0.3625133675971453
+    parameters:
+      max_depth: 8
+      min_child_weight: 9.19137768202141
+      subsample: 0.7101022684428582
+      colsample_bytree: 0.5416075799419051
+      reg_alpha: 0.180914595257901
+      reg_lambda: 4.7886809944403375
+      learning_rate: 0.03540384292563034
+    user_attributes:
+      inner_macro_f1:
+      - 0.3501776315947445
+      - 0.3721649242217958
+      - 0.36519754697489554
+      inner_macro_f1_std: 0.009174743355751185
+      selected_iterations:
+      - 213
+      - 226
+      - 232
+  - number: 6
+    state: COMPLETE
+    value: 0.38244011837419684
+    parameters:
+      max_depth: 8
+      min_child_weight: 7.049595515285585
+      subsample: 0.7515143183528645
+      colsample_bytree: 0.6102235106595808
+      reg_alpha: 0.8967472697408626
+      reg_lambda: 1.4310111710451434
+      learning_rate: 0.03503533002474664
+    user_attributes:
+      inner_macro_f1:
+      - 0.37604242174865826
+      - 0.38463174540201595
+      - 0.3866461879719163
+      inner_macro_f1_std: 0.004597998571927966
+      selected_iterations:
+      - 130
+      - 323
+      - 175
+  - number: 7
+    state: COMPLETE
+    value: 0.37400069923193763
+    parameters:
+      max_depth: 8
+      min_child_weight: 7.621543733564087
+      subsample: 0.678024564995873
+      colsample_bytree: 0.724265267777494
+      reg_alpha: 0.41125548908663523
+      reg_lambda: 3.771445963855948
+      learning_rate: 0.034783274918403
+    user_attributes:
+      inner_macro_f1:
+      - 0.3681836374186265
+      - 0.3736895434922344
+      - 0.380128916784952
+      inner_macro_f1_std: 0.004881600707804298
+      selected_iterations:
+      - 196
+      - 384
+      - 276
+  - number: 8
+    state: COMPLETE
+    value: 0.3832514258484174
+    parameters:
+      max_depth: 7
+      min_child_weight: 7.342440470924873
+      subsample: 0.7438239485036183
+      colsample_bytree: 0.7160137856726624
+      reg_alpha: 0.20608185091330178
+      reg_lambda: 1.3962266448021585
+      learning_rate: 0.060271573506152594
+    user_attributes:
+      inner_macro_f1:
+      - 0.37379259178174834
+      - 0.38291106718453477
+      - 0.39305061857896906
+      inner_macro_f1_std: 0.007865739297556112
+      selected_iterations:
+      - 103
+      - 80
+      - 120
+  - number: 9
+    state: COMPLETE
+    value: 0.3816361481981616
+    parameters:
+      max_depth: 5
+      min_child_weight: 6.903665450414684
+      subsample: 0.6198467103228099
+      colsample_bytree: 0.5577913513691315
+      reg_alpha: 0.4039566669804695
+      reg_lambda: 1.8962128708006538
+      learning_rate: 0.028026586318013184
+    user_attributes:
+      inner_macro_f1:
+      - 0.3757355575405139
+      - 0.3847481005365124
+      - 0.38442478651745843
+      inner_macro_f1_std: 0.0041744349374550896
+      selected_iterations:
+      - 370
+      - 256
+      - 306
+  - number: 10
+    state: COMPLETE
+    value: 0.4002492180573367
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.0496912508289666
+      subsample: 0.8884123620432078
+      colsample_bytree: 0.87907660674715
+      reg_alpha: 0.8902118510586415
+      reg_lambda: 2.660241485819638
+      learning_rate: 0.021337562792691733
+    user_attributes:
+      inner_macro_f1:
+      - 0.39664503449266114
+      - 0.39335235248491685
+      - 0.41075026719443214
+      inner_macro_f1_std: 0.007546056958694841
+      selected_iterations:
+      - 170
+      - 472
+      - 472
+  - number: 11
+    state: COMPLETE
+    value: 0.4009162347683028
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.2893438797835588
+      subsample: 0.8849076912690607
+      colsample_bytree: 0.8956624095669251
+      reg_alpha: 0.9907102787441291
+      reg_lambda: 2.669302892707857
+      learning_rate: 0.02060987594343953
+    user_attributes:
+      inner_macro_f1:
+      - 0.3999793794459557
+      - 0.392368058457443
+      - 0.41040126640150976
+      inner_macro_f1_std: 0.007391771127848669
+      selected_iterations:
+      - 318
+      - 491
+      - 345
+  - number: 12
+    state: COMPLETE
+    value: 0.4037701392616855
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.0812951353117035
+      subsample: 0.8121819565006633
+      colsample_bytree: 0.8914195465222966
+      reg_alpha: 0.9895036058307488
+      reg_lambda: 2.463933805767661
+      learning_rate: 0.020329637881537185
+    user_attributes:
+      inner_macro_f1:
+      - 0.3969663580689989
+      - 0.40020600030620207
+      - 0.41413805940985554
+      inner_macro_f1_std: 0.007449570305522795
+      selected_iterations:
+      - 241
+      - 480
+      - 393
+  - number: 13
+    state: COMPLETE
+    value: 0.40172369801657215
+    parameters:
+      max_depth: 6
+      min_child_weight: 2.3494947054571815
+      subsample: 0.807427134266864
+      colsample_bytree: 0.8034833666733174
+      reg_alpha: 0.680068610604962
+      reg_lambda: 2.362800248023919
+      learning_rate: 0.025297008061883782
+    user_attributes:
+      inner_macro_f1:
+      - 0.3922768613203633
+      - 0.3980379237354834
+      - 0.41485630899386966
+      inner_macro_f1_std: 0.009579372399362565
+      selected_iterations:
+      - 221
+      - 489
+      - 254
+  - number: 14
+    state: COMPLETE
+    value: 0.4034431188765522
+    parameters:
+      max_depth: 5
+      min_child_weight: 2.0731675230660995
+      subsample: 0.814191734230891
+      colsample_bytree: 0.8015697997689417
+      reg_alpha: 0.7333312233333376
+      reg_lambda: 3.1628279186928463
+      learning_rate: 0.025778955437137627
+    user_attributes:
+      inner_macro_f1:
+      - 0.393355613259058
+      - 0.3962120478935611
+      - 0.42076169547703746
+      inner_macro_f1_std: 0.012301480298605099
+      selected_iterations:
+      - 352
+      - 430
+      - 251
+  - number: 15
+    state: COMPLETE
+    value: 0.398644780995816
+    parameters:
+      max_depth: 7
+      min_child_weight: 4.285822265171092
+      subsample: 0.8080075669107336
+      colsample_bytree: 0.8072722937934543
+      reg_alpha: 0.8233220196953795
+      reg_lambda: 0.6647904104645521
+      learning_rate: 0.0201299840192502
+    user_attributes:
+      inner_macro_f1:
+      - 0.3906436368488099
+      - 0.4040399362808336
+      - 0.4012507698578045
+      inner_macro_f1_std: 0.005771111567090903
+      selected_iterations:
+      - 345
+      - 446
+      - 224
+  - number: 16
+    state: COMPLETE
+    value: 0.39349865228207687
+    parameters:
+      max_depth: 7
+      min_child_weight: 4.1572663700452495
+      subsample: 0.7723598319470337
+      colsample_bytree: 0.8496869224100694
+      reg_alpha: 0.993755125156022
+      reg_lambda: 1.9009350513484942
+      learning_rate: 0.028346116589601796
+    user_attributes:
+      inner_macro_f1:
+      - 0.3811613142142123
+      - 0.39635346131931964
+      - 0.4029811813126987
+      inner_macro_f1_std: 0.009133787130876396
+      selected_iterations:
+      - 196
+      - 335
+      - 354
+  - number: 17
+    state: COMPLETE
+    value: 0.40940504141002343
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.936884531929777
+      subsample: 0.8396178831583916
+      colsample_bytree: 0.6659453569877839
+      reg_alpha: 0.5682168705751652
+      reg_lambda: 1.8524437607266755
+      learning_rate: 0.023710813521204435
+    user_attributes:
+      inner_macro_f1:
+      - 0.40012022948522535
+      - 0.40778049599019744
+      - 0.42031439875464743
+      inner_macro_f1_std: 0.008323880464716198
+      selected_iterations:
+      - 293
+      - 382
+      - 374
+  - number: 18
+    state: COMPLETE
+    value: 0.40590691986221134
+    parameters:
+      max_depth: 5
+      min_child_weight: 2.376628864259741
+      subsample: 0.8411761436091415
+      colsample_bytree: 0.6662467833629772
+      reg_alpha: 0.5674061785510548
+      reg_lambda: 1.2345194592444024
+      learning_rate: 0.04476990599026309
+    user_attributes:
+      inner_macro_f1:
+      - 0.4022327586928073
+      - 0.40163105432414786
+      - 0.4138569465696789
+      inner_macro_f1_std: 0.0056268822346483395
+      selected_iterations:
+      - 144
+      - 165
+      - 120
+  - number: 19
+    state: COMPLETE
+    value: 0.3991070648275401
+    parameters:
+      max_depth: 4
+      min_child_weight: 5.301041648373301
+      subsample: 0.8508534748237724
+      colsample_bytree: 0.6622227922767101
+      reg_alpha: 0.7665660295854118
+      reg_lambda: 1.896861706146339
+      learning_rate: 0.023452748333002527
+    user_attributes:
+      inner_macro_f1:
+      - 0.3942764293795247
+      - 0.39926005594980885
+      - 0.40378470915328685
+      inner_macro_f1_std: 0.0038832461314947573
+      selected_iterations:
+      - 357
+      - 423
+      - 337
+  - number: 20
+    state: COMPLETE
+    value: 0.40767911069171503
+    parameters:
+      max_depth: 7
+      min_child_weight: 3.336309548617078
+      subsample: 0.7695022044454801
+      colsample_bytree: 0.7635540272211438
+      reg_alpha: 0.5611413006115332
+      reg_lambda: 0.5123220940225346
+      learning_rate: 0.031195483851881207
+    user_attributes:
+      inner_macro_f1:
+      - 0.4052487481749949
+      - 0.4095849058300427
+      - 0.40820367807010755
+      inner_macro_f1_std: 0.0018086724419147124
+      selected_iterations:
+      - 157
+      - 220
+      - 192
+  - number: 21
+    state: COMPLETE
+    value: 0.40350345586734165
+    parameters:
+      max_depth: 7
+      min_child_weight: 2.9622376488834976
+      subsample: 0.7778057920679421
+      colsample_bytree: 0.7603078113991167
+      reg_alpha: 0.584462933694082
+      reg_lambda: 0.5028046125033405
+      learning_rate: 0.031137473794959018
+    user_attributes:
+      inner_macro_f1:
+      - 0.39662717157111005
+      - 0.40697552821411176
+      - 0.4069076678168032
+      inner_macro_f1_std: 0.004862346179252148
+      selected_iterations:
+      - 182
+      - 208
+      - 212
+  - number: 22
+    state: COMPLETE
+    value: 0.41025416115666474
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.7088303345152922
+      subsample: 0.7215915858506503
+      colsample_bytree: 0.755864858940313
+      reg_alpha: 0.5732115485328971
+      reg_lambda: 1.050475189029372
+      learning_rate: 0.02375868560982809
+    user_attributes:
+      inner_macro_f1:
+      - 0.40421578176768175
+      - 0.40718943437783267
+      - 0.41935726732447975
+      inner_macro_f1_std: 0.006550346499147882
+      selected_iterations:
+      - 388
+      - 376
+      - 258
+  - number: 23
+    state: COMPLETE
+    value: 0.4084799564942702
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.843878143291752
+      subsample: 0.7053463296312887
+      colsample_bytree: 0.6340744175493293
+      reg_alpha: 0.6382278862610122
+      reg_lambda: 1.1058814970909392
+      learning_rate: 0.023511937517986428
+    user_attributes:
+      inner_macro_f1:
+      - 0.40246803524064934
+      - 0.40666947269993214
+      - 0.4163023615422291
+      inner_macro_f1_std: 0.005791115881636629
+      selected_iterations:
+      - 276
+      - 317
+      - 326
+  - number: 24
+    state: COMPLETE
+    value: 0.4113670011080303
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.856404291679414
+      subsample: 0.6251903957465799
+      colsample_bytree: 0.5069108445301507
+      reg_alpha: 0.4901206867968746
+      reg_lambda: 1.678451299037102
+      learning_rate: 0.023436930877205706
+    user_attributes:
+      inner_macro_f1:
+      - 0.40532529180041865
+      - 0.4105515503354565
+      - 0.4182241611882158
+      inner_macro_f1_std: 0.00529741621564898
+      selected_iterations:
+      - 331
+      - 359
+      - 404
+  - number: 25
+    state: COMPLETE
+    value: 0.40942730603405536
+    parameters:
+      max_depth: 5
+      min_child_weight: 1.7828684996923558
+      subsample: 0.6104066617018075
+      colsample_bytree: 0.5758099434491564
+      reg_alpha: 0.4581655272290294
+      reg_lambda: 1.6274067417124303
+      learning_rate: 0.027837385786340048
+    user_attributes:
+      inner_macro_f1:
+      - 0.4063077495428712
+      - 0.4050988312813828
+      - 0.4168753372779121
+      inner_macro_f1_std: 0.005289628083828427
+      selected_iterations:
+      - 294
+      - 480
+      - 194
+  - number: 26
+    state: COMPLETE
+    value: 0.40775708681249423
+    parameters:
+      max_depth: 6
+      min_child_weight: 2.6270130122262874
+      subsample: 0.6325026118074818
+      colsample_bytree: 0.5092819598403783
+      reg_alpha: 0.32159476925882324
+      reg_lambda: 2.1595347400036475
+      learning_rate: 0.023214860358735292
+    user_attributes:
+      inner_macro_f1:
+      - 0.40037386185599944
+      - 0.40980224165460843
+      - 0.41309515692687493
+      inner_macro_f1_std: 0.005391031491668211
+      selected_iterations:
+      - 229
+      - 425
+      - 322
+  - number: 27
+    state: COMPLETE
+    value: 0.39632920908413793
+    parameters:
+      max_depth: 6
+      min_child_weight: 3.836045905002432
+      subsample: 0.5706850623906846
+      colsample_bytree: 0.5011321525817475
+      reg_alpha: 0.7835871030469113
+      reg_lambda: 0.9792028745707833
+      learning_rate: 0.030957817253240906
+    user_attributes:
+      inner_macro_f1:
+      - 0.39153055960562166
+      - 0.4027836913184232
+      - 0.3946733763283689
+      inner_macro_f1_std: 0.0047409267675369805
+      selected_iterations:
+      - 267
+      - 242
+      - 163
+  - number: 28
+    state: COMPLETE
+    value: 0.398076896271677
+    parameters:
+      max_depth: 5
+      min_child_weight: 4.953202286256329
+      subsample: 0.7130980017626544
+      colsample_bytree: 0.537109810697318
+      reg_alpha: 0.5031861588132238
+      reg_lambda: 1.5289910164168379
+      learning_rate: 0.039745271496622055
+    user_attributes:
+      inner_macro_f1:
+      - 0.3841193169699587
+      - 0.40483952186784883
+      - 0.40527184997722365
+      inner_macro_f1_std: 0.009871077005452387
+      selected_iterations:
+      - 188
+      - 270
+      - 198
+  - number: 29
+    state: COMPLETE
+    value: 0.4074068513729676
+    parameters:
+      max_depth: 4
+      min_child_weight: 1.4949697195262828
+      subsample: 0.593331458199605
+      colsample_bytree: 0.5812859260253863
+      reg_alpha: 0.31028691013509774
+      reg_lambda: 2.9618091009499516
+      learning_rate: 0.02668286604871414
+    user_attributes:
+      inner_macro_f1:
+      - 0.40372772853567784
+      - 0.40386362297200074
+      - 0.41462920261122427
+      inner_macro_f1_std: 0.005107274868982899
+      selected_iterations:
+      - 366
+      - 253
+      - 470
+- outer_fold: 2
+  fit_scope: outer_train_inner_cv_only
+  test_or_outer_validation_used_for_selection: false
+  study_name: exp285_exp229_nested_optuna_xgb_outer_02
+  sampler: TPESampler
+  sampler_seed: 44
+  inner_n_splits: 3
+  requested_trials: 30
+  completed_trials: 30
+  best_trial: 20
+  best_value: 0.40614491949075376
+  best_parameters:
+    max_depth: 6
+    min_child_weight: 1.0408963729188383
+    subsample: 0.6060930150802755
+    colsample_bytree: 0.6924814695300121
+    reg_alpha: 0.7848115557826797
+    reg_lambda: 1.5928337204070822
+    learning_rate: 0.028046149053031457
+  search_space:
+    max_depth:
+    - 4
+    - 8
+    min_child_weight:
+    - 1.0
+    - 10.0
+    subsample:
+    - 0.5
+    - 0.9
+    colsample_bytree:
+    - 0.5
+    - 0.9
+    reg_alpha:
+    - 0.0
+    - 1.0
+    reg_lambda:
+    - 0.5
+    - 5.0
+    learning_rate:
+    - 0.02
+    - 0.08
+    - log
+  database_path: models/exp285_exp229_nested_optuna_xgb/optuna/outer_02.sqlite3
+  trials:
+  - number: 0
+    state: COMPLETE
+    value: 0.39876372329785253
+    parameters:
+      max_depth: 8
+      min_child_weight: 1.9431649393288277
+      subsample: 0.7978561926718071
+      colsample_bytree: 0.6442003345025142
+      reg_alpha: 0.35931083780807194
+      reg_lambda: 3.2415727127816827
+      learning_rate: 0.0345230302480813
+    user_attributes:
+      inner_macro_f1:
+      - 0.39519372648274503
+      - 0.41241145570265314
+      - 0.38868598770815943
+      inner_macro_f1_std: 0.010009432745643636
+      selected_iterations:
+      - 346
+      - 246
+      - 209
+  - number: 1
+    state: COMPLETE
+    value: 0.38026830681962237
+    parameters:
+      max_depth: 6
+      min_child_weight: 5.5891216863064574
+      subsample: 0.7840591973308294
+      colsample_bytree: 0.8842104900822669
+      reg_alpha: 0.45662110893893726
+      reg_lambda: 2.4244318447772404
+      learning_rate: 0.023406794948102702
+    user_attributes:
+      inner_macro_f1:
+      - 0.3752488243580792
+      - 0.3905997625513489
+      - 0.3749563335494391
+      inner_macro_f1_std: 0.007306418222848218
+      selected_iterations:
+      - 310
+      - 286
+      - 196
+  - number: 2
+    state: COMPLETE
+    value: 0.3677130085591562
+    parameters:
+      max_depth: 5
+      min_child_weight: 9.617248621611257
+      subsample: 0.877340288161758
+      colsample_bytree: 0.8527297124625991
+      reg_alpha: 0.6464105624033935
+      reg_lambda: 1.4622116545877386
+      learning_rate: 0.04835496489941368
+    user_attributes:
+      inner_macro_f1:
+      - 0.36674748293597054
+      - 0.3794581089024873
+      - 0.3569334338390106
+      inner_macro_f1_std: 0.009220969814344313
+      selected_iterations:
+      - 155
+      - 234
+      - 156
+  - number: 3
+    state: COMPLETE
+    value: 0.38690117998744444
+    parameters:
+      max_depth: 4
+      min_child_weight: 5.128336632748263
+      subsample: 0.8495452740625273
+      colsample_bytree: 0.6033801223468295
+      reg_alpha: 0.6648510977625316
+      reg_lambda: 4.382034512166317
+      learning_rate: 0.02458359877242279
+    user_attributes:
+      inner_macro_f1:
+      - 0.38331545651504684
+      - 0.39125998156398006
+      - 0.3861281018833064
+      inner_macro_f1_std: 0.0032890836494485947
+      selected_iterations:
+      - 498
+      - 338
+      - 327
+  - number: 4
+    state: COMPLETE
+    value: 0.3981454634493777
+    parameters:
+      max_depth: 6
+      min_child_weight: 2.432397374318329
+      subsample: 0.5691579706329196
+      colsample_bytree: 0.5416091843960924
+      reg_alpha: 0.20293759300016712
+      reg_lambda: 2.5483518352529955
+      learning_rate: 0.06017439920011416
+    user_attributes:
+      inner_macro_f1:
+      - 0.3937508659442632
+      - 0.413326874936456
+      - 0.38735864946741394
+      inner_macro_f1_std: 0.011047520051327357
+      selected_iterations:
+      - 158
+      - 138
+      - 107
+  - number: 5
+    state: COMPLETE
+    value: 0.3587022360324466
+    parameters:
+      max_depth: 8
+      min_child_weight: 8.24515480522407
+      subsample: 0.650966162286569
+      colsample_bytree: 0.7062949702487358
+      reg_alpha: 0.05889892137207742
+      reg_lambda: 3.699930587913629
+      learning_rate: 0.022114852605873342
+    user_attributes:
+      inner_macro_f1:
+      - 0.36342848114714144
+      - 0.36431117745355646
+      - 0.348367049496642
+      inner_macro_f1_std: 0.0073169596937411
+      selected_iterations:
+      - 354
+      - 499
+      - 497
+  - number: 6
+    state: COMPLETE
+    value: 0.3725826219442303
+    parameters:
+      max_depth: 8
+      min_child_weight: 7.534520367099027
+      subsample: 0.8333464849767024
+      colsample_bytree: 0.784092273531847
+      reg_alpha: 0.6974299182041918
+      reg_lambda: 4.685462615336776
+      learning_rate: 0.06789689018897035
+    user_attributes:
+      inner_macro_f1:
+      - 0.3710826690145335
+      - 0.37976335252457183
+      - 0.3669018442935857
+      inner_macro_f1_std: 0.005356739841073152
+      selected_iterations:
+      - 159
+      - 146
+      - 79
+  - number: 7
+    state: COMPLETE
+    value: 0.38540905973277634
+    parameters:
+      max_depth: 4
+      min_child_weight: 5.108467755136622
+      subsample: 0.6970893967426577
+      colsample_bytree: 0.5435894015743329
+      reg_alpha: 0.1537344608617497
+      reg_lambda: 4.929278149879301
+      learning_rate: 0.029142412384308963
+    user_attributes:
+      inner_macro_f1:
+      - 0.385067040739616
+      - 0.39794719595355493
+      - 0.373212942505158
+      inner_macro_f1_std: 0.010100612395828466
+      selected_iterations:
+      - 351
+      - 365
+      - 399
+  - number: 8
+    state: COMPLETE
+    value: 0.39721139777224934
+    parameters:
+      max_depth: 8
+      min_child_weight: 2.4781118097167627
+      subsample: 0.5529433178954122
+      colsample_bytree: 0.6269413610677277
+      reg_alpha: 0.3074225588256224
+      reg_lambda: 2.399248340394803
+      learning_rate: 0.03164533371236217
+    user_attributes:
+      inner_macro_f1:
+      - 0.3933534330196448
+      - 0.4090815106533089
+      - 0.38919924964379427
+      inner_macro_f1_std: 0.008563059995775281
+      selected_iterations:
+      - 286
+      - 260
+      - 251
+  - number: 9
+    state: COMPLETE
+    value: 0.4014455780457296
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.857561954050336
+      subsample: 0.8191909939404753
+      colsample_bytree: 0.6074625481911713
+      reg_alpha: 0.911414912922362
+      reg_lambda: 4.557847908496361
+      learning_rate: 0.020444539971087868
+    user_attributes:
+      inner_macro_f1:
+      - 0.39737161193923465
+      - 0.41759279058827076
+      - 0.38937233160968343
+      inner_macro_f1_std: 0.011875646680446075
+      selected_iterations:
+      - 496
+      - 287
+      - 459
+  - number: 10
+    state: COMPLETE
+    value: 0.40033027838080076
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.1434753794302621
+      subsample: 0.7064389749714772
+      colsample_bytree: 0.7626006827342746
+      reg_alpha: 0.988539842340873
+      reg_lambda: 1.0876288545271633
+      learning_rate: 0.043424853660416894
+    user_attributes:
+      inner_macro_f1:
+      - 0.3958523284818697
+      - 0.4138414544810857
+      - 0.3912970521794469
+      inner_macro_f1_std: 0.009733157941029462
+      selected_iterations:
+      - 204
+      - 254
+      - 114
+  - number: 11
+    state: COMPLETE
+    value: 0.4052222121720039
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.0395628197185207
+      subsample: 0.7219322176104156
+      colsample_bytree: 0.7459471400036356
+      reg_alpha: 0.9948345371216989
+      reg_lambda: 0.6815912612197019
+      learning_rate: 0.04347090150505332
+    user_attributes:
+      inner_macro_f1:
+      - 0.40150934323119825
+      - 0.42379916026416403
+      - 0.39035813302064926
+      inner_macro_f1_std: 0.013902388826003333
+      selected_iterations:
+      - 150
+      - 214
+      - 263
+  - number: 12
+    state: COMPLETE
+    value: 0.3923215933627828
+    parameters:
+      max_depth: 7
+      min_child_weight: 3.543815996896803
+      subsample: 0.7533018676922263
+      colsample_bytree: 0.7066879263482893
+      reg_alpha: 0.98995532838477
+      reg_lambda: 0.6934248742138467
+      learning_rate: 0.041203666873790595
+    user_attributes:
+      inner_macro_f1:
+      - 0.38871074080814877
+      - 0.40398188161995274
+      - 0.38427215766024686
+      inner_macro_f1_std: 0.00844184011419435
+      selected_iterations:
+      - 265
+      - 170
+      - 149
+  - number: 13
+    state: COMPLETE
+    value: 0.39156944595465165
+    parameters:
+      max_depth: 5
+      min_child_weight: 3.6027231884683975
+      subsample: 0.6380635434352864
+      colsample_bytree: 0.7978422304470008
+      reg_alpha: 0.8384028717300525
+      reg_lambda: 1.9377881534468402
+      learning_rate: 0.05548595885470939
+    user_attributes:
+      inner_macro_f1:
+      - 0.3927194767078654
+      - 0.39972989491235145
+      - 0.382258966243738
+      inner_macro_f1_std: 0.007178684428498387
+      selected_iterations:
+      - 189
+      - 170
+      - 97
+  - number: 14
+    state: COMPLETE
+    value: 0.3998433847549439
+    parameters:
+      max_depth: 7
+      min_child_weight: 1.2233103208654235
+      subsample: 0.7377539646965363
+      colsample_bytree: 0.7049561532259715
+      reg_alpha: 0.8327221977918342
+      reg_lambda: 3.994959592093941
+      learning_rate: 0.036526606560949255
+    user_attributes:
+      inner_macro_f1:
+      - 0.3942144645106166
+      - 0.4171461129991706
+      - 0.38816957675504465
+      inner_macro_f1_std: 0.012481278527312678
+      selected_iterations:
+      - 384
+      - 212
+      - 307
+  - number: 15
+    state: COMPLETE
+    value: 0.39555216419339995
+    parameters:
+      max_depth: 5
+      min_child_weight: 3.3281079129133406
+      subsample: 0.8978827407845775
+      colsample_bytree: 0.5040430967502703
+      reg_alpha: 0.8492358506161808
+      reg_lambda: 3.11493686202919
+      learning_rate: 0.07821859128807339
+    user_attributes:
+      inner_macro_f1:
+      - 0.39329702688329077
+      - 0.4043888253668389
+      - 0.3889706403300701
+      inner_macro_f1_std: 0.006493296064536869
+      selected_iterations:
+      - 200
+      - 100
+      - 156
+  - number: 16
+    state: COMPLETE
+    value: 0.4035054655785364
+    parameters:
+      max_depth: 7
+      min_child_weight: 1.006348250925693
+      subsample: 0.6451616825313258
+      colsample_bytree: 0.6685791170709671
+      reg_alpha: 0.8979978577453379
+      reg_lambda: 1.4385954404935277
+      learning_rate: 0.027083395918639716
+    user_attributes:
+      inner_macro_f1:
+      - 0.39803160215862265
+      - 0.41856587726051353
+      - 0.39391891731647305
+      inner_macro_f1_std: 0.01078086404006922
+      selected_iterations:
+      - 346
+      - 229
+      - 344
+  - number: 17
+    state: COMPLETE
+    value: 0.4021812213263129
+    parameters:
+      max_depth: 7
+      min_child_weight: 1.2328718009946353
+      subsample: 0.619064116465501
+      colsample_bytree: 0.7415204211458031
+      reg_alpha: 0.7449565103844205
+      reg_lambda: 0.6945289411841067
+      learning_rate: 0.027052277944358535
+    user_attributes:
+      inner_macro_f1:
+      - 0.3993670983789444
+      - 0.41724679147575205
+      - 0.38992977412424223
+      inner_macro_f1_std: 0.011328263333151928
+      selected_iterations:
+      - 267
+      - 349
+      - 191
+  - number: 18
+    state: COMPLETE
+    value: 0.39077901857143443
+    parameters:
+      max_depth: 7
+      min_child_weight: 2.9244259269036386
+      subsample: 0.5162213185688251
+      colsample_bytree: 0.8243539818951634
+      reg_alpha: 0.5115238863373042
+      reg_lambda: 1.422103584553147
+      learning_rate: 0.03910139329643179
+    user_attributes:
+      inner_macro_f1:
+      - 0.3874735622801062
+      - 0.3993996484849843
+      - 0.38546384494921276
+      inner_macro_f1_std: 0.006150674001945738
+      selected_iterations:
+      - 169
+      - 179
+      - 200
+  - number: 19
+    state: COMPLETE
+    value: 0.38870960347458966
+    parameters:
+      max_depth: 7
+      min_child_weight: 4.2711645248405015
+      subsample: 0.6805946972597863
+      colsample_bytree: 0.6636922908923627
+      reg_alpha: 0.560440668671542
+      reg_lambda: 0.5179137722579937
+      learning_rate: 0.04892983418399614
+    user_attributes:
+      inner_macro_f1:
+      - 0.38723319374468146
+      - 0.39702593744004033
+      - 0.3818696792390473
+      inner_macro_f1_std: 0.00627497038142906
+      selected_iterations:
+      - 141
+      - 221
+      - 100
+  - number: 20
+    state: COMPLETE
+    value: 0.40614491949075376
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.0408963729188383
+      subsample: 0.6060930150802755
+      colsample_bytree: 0.6924814695300121
+      reg_alpha: 0.7848115557826797
+      reg_lambda: 1.5928337204070822
+      learning_rate: 0.028046149053031457
+    user_attributes:
+      inner_macro_f1:
+      - 0.4036882163696977
+      - 0.4206590405641836
+      - 0.3940875015383799
+      inner_macro_f1_std: 0.010985997579303897
+      selected_iterations:
+      - 394
+      - 312
+      - 383
+  - number: 21
+    state: COMPLETE
+    value: 0.40428939165323685
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.1011413848840643
+      subsample: 0.588701470058714
+      colsample_bytree: 0.6734783067712888
+      reg_alpha: 0.7814531811818964
+      reg_lambda: 1.7083333029328336
+      learning_rate: 0.02648308970917146
+    user_attributes:
+      inner_macro_f1:
+      - 0.4013810382311208
+      - 0.42400387324162075
+      - 0.3874832634869688
+      inner_macro_f1_std: 0.015050639497683475
+      selected_iterations:
+      - 386
+      - 236
+      - 91
+  - number: 22
+    state: COMPLETE
+    value: 0.4005519789271543
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.9698429308408785
+      subsample: 0.590168151514264
+      colsample_bytree: 0.7422336165059754
+      reg_alpha: 0.7685724962579775
+      reg_lambda: 1.8049911995477295
+      learning_rate: 0.03140432276369684
+    user_attributes:
+      inner_macro_f1:
+      - 0.4003521068032976
+      - 0.4115893000528288
+      - 0.38971452992533645
+      inner_macro_f1_std: 0.00893145578585705
+      selected_iterations:
+      - 298
+      - 264
+      - 276
+  - number: 23
+    state: COMPLETE
+    value: 0.4061361953904603
+    parameters:
+      max_depth: 5
+      min_child_weight: 1.9201631981077196
+      subsample: 0.5392752241450375
+      colsample_bytree: 0.690681082912302
+      reg_alpha: 0.5979354609057175
+      reg_lambda: 1.042713102424894
+      learning_rate: 0.026157541918619315
+    user_attributes:
+      inner_macro_f1:
+      - 0.40597728532099914
+      - 0.4219407713760001
+      - 0.3904905294743818
+      inner_macro_f1_std: 0.012839999175109251
+      selected_iterations:
+      - 446
+      - 428
+      - 269
+  - number: 24
+    state: COMPLETE
+    value: 0.4004907060630944
+    parameters:
+      max_depth: 5
+      min_child_weight: 2.53277665192166
+      subsample: 0.5098219871178999
+      colsample_bytree: 0.7294523966019362
+      reg_alpha: 0.6137880291395392
+      reg_lambda: 1.051611924519212
+      learning_rate: 0.03346808865179153
+    user_attributes:
+      inner_macro_f1:
+      - 0.39789242502656297
+      - 0.4143122442060478
+      - 0.3892674489566722
+      inner_macro_f1_std: 0.010388254281619708
+      selected_iterations:
+      - 239
+      - 290
+      - 301
+  - number: 25
+    state: COMPLETE
+    value: 0.40478836230481363
+    parameters:
+      max_depth: 5
+      min_child_weight: 1.8752809072212626
+      subsample: 0.549771393889558
+      colsample_bytree: 0.7962323576677899
+      reg_alpha: 0.4257040954205641
+      reg_lambda: 1.098331036731662
+      learning_rate: 0.02144074148655606
+    user_attributes:
+      inner_macro_f1:
+      - 0.4052249057468512
+      - 0.4154362744929695
+      - 0.3937039066746202
+      inner_macro_f1_std: 0.008877570252443165
+      selected_iterations:
+      - 400
+      - 462
+      - 266
+  - number: 26
+    state: COMPLETE
+    value: 0.3856088004470684
+    parameters:
+      max_depth: 4
+      min_child_weight: 4.347490433380273
+      subsample: 0.6097252528534896
+      colsample_bytree: 0.690031342889399
+      reg_alpha: 0.9386421510127124
+      reg_lambda: 2.1715988317975716
+      learning_rate: 0.029337737720315706
+    user_attributes:
+      inner_macro_f1:
+      - 0.38924269785054655
+      - 0.39140777242526215
+      - 0.3761759310653965
+      inner_macro_f1_std: 0.00672835569597221
+      selected_iterations:
+      - 428
+      - 405
+      - 314
+  - number: 27
+    state: COMPLETE
+    value: 0.3971340454218957
+    parameters:
+      max_depth: 5
+      min_child_weight: 2.9599735566123444
+      subsample: 0.5339784718606558
+      colsample_bytree: 0.7603746302823059
+      reg_alpha: 0.541429967320291
+      reg_lambda: 0.94493054138972
+      learning_rate: 0.04533318285748444
+    user_attributes:
+      inner_macro_f1:
+      - 0.39347399570066044
+      - 0.40338558964859494
+      - 0.3945425509164317
+      inner_macro_f1_std: 0.0044419820257831245
+      selected_iterations:
+      - 246
+      - 180
+      - 195
+  - number: 28
+    state: COMPLETE
+    value: 0.40373203090988663
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.791604359815428
+      subsample: 0.6749122077735387
+      colsample_bytree: 0.5785233538839519
+      reg_alpha: 0.6118164861684335
+      reg_lambda: 1.3947707711785888
+      learning_rate: 0.03734687941591577
+    user_attributes:
+      inner_macro_f1:
+      - 0.39983575549181705
+      - 0.41689559617297955
+      - 0.3944647410648633
+      inner_macro_f1_std: 0.009562828619901693
+      selected_iterations:
+      - 209
+      - 194
+      - 243
+  - number: 29
+    state: COMPLETE
+    value: 0.40055256447640425
+    parameters:
+      max_depth: 5
+      min_child_weight: 1.8423848305646506
+      subsample: 0.7737905310769575
+      colsample_bytree: 0.6571435609446382
+      reg_alpha: 0.7216168314181461
+      reg_lambda: 2.6999119687771023
+      learning_rate: 0.024572752447891855
+    user_attributes:
+      inner_macro_f1:
+      - 0.40048027612225784
+      - 0.4114982159803822
+      - 0.3896792013265725
+      inner_macro_f1_std: 0.00890772209267141
+      selected_iterations:
+      - 408
+      - 290
+      - 476
+- outer_fold: 3
+  fit_scope: outer_train_inner_cv_only
+  test_or_outer_validation_used_for_selection: false
+  study_name: exp285_exp229_nested_optuna_xgb_outer_03
+  sampler: TPESampler
+  sampler_seed: 45
+  inner_n_splits: 3
+  requested_trials: 30
+  completed_trials: 30
+  best_trial: 24
+  best_value: 0.4182224705321779
+  best_parameters:
+    max_depth: 4
+    min_child_weight: 1.677197213584505
+    subsample: 0.8505510447108267
+    colsample_bytree: 0.7569531624808717
+    reg_alpha: 0.31764392589513357
+    reg_lambda: 0.6341089067232432
+    learning_rate: 0.02019947619962994
+  search_space:
+    max_depth:
+    - 4
+    - 8
+    min_child_weight:
+    - 1.0
+    - 10.0
+    subsample:
+    - 0.5
+    - 0.9
+    colsample_bytree:
+    - 0.5
+    - 0.9
+    reg_alpha:
+    - 0.0
+    - 1.0
+    reg_lambda:
+    - 0.5
+    - 5.0
+    learning_rate:
+    - 0.02
+    - 0.08
+    - log
+  database_path: models/exp285_exp229_nested_optuna_xgb/optuna/outer_03.sqlite3
+  trials:
+  - number: 0
+    state: COMPLETE
+    value: 0.3866428520942715
+    parameters:
+      max_depth: 8
+      min_child_weight: 5.945902541602529
+      subsample: 0.6125789207820251
+      colsample_bytree: 0.5309158264316691
+      reg_alpha: 0.4444694959718031
+      reg_lambda: 2.627635863899684
+      learning_rate: 0.02139159418565679
+    user_attributes:
+      inner_macro_f1:
+      - 0.3845818908637375
+      - 0.3827689204390321
+      - 0.3925777449800449
+      inner_macro_f1_std: 0.004261371501791162
+      selected_iterations:
+      - 448
+      - 437
+      - 321
+  - number: 1
+    state: COMPLETE
+    value: 0.4121037880226351
+    parameters:
+      max_depth: 4
+      min_child_weight: 2.0435564034815
+      subsample: 0.7509566730817705
+      colsample_bytree: 0.8424728194382498
+      reg_alpha: 0.6501024210875526
+      reg_lambda: 4.958247581410101
+      learning_rate: 0.038389226633637565
+    user_attributes:
+      inner_macro_f1:
+      - 0.4099032434964324
+      - 0.4081046016858259
+      - 0.4183035188856471
+      inner_macro_f1_std: 0.004444942832107269
+      selected_iterations:
+      - 460
+      - 403
+      - 371
+  - number: 2
+    state: COMPLETE
+    value: 0.4020275233668242
+    parameters:
+      max_depth: 7
+      min_child_weight: 3.5440048587805064
+      subsample: 0.8904013263270167
+      colsample_bytree: 0.7692271996526701
+      reg_alpha: 0.4405308887745445
+      reg_lambda: 1.8035930311344268
+      learning_rate: 0.040541497185627016
+    user_attributes:
+      inner_macro_f1:
+      - 0.39951883412741335
+      - 0.4083504717228858
+      - 0.3982132642501733
+      inner_macro_f1_std: 0.004502657371756984
+      selected_iterations:
+      - 163
+      - 192
+      - 177
+  - number: 3
+    state: COMPLETE
+    value: 0.4080532700227933
+    parameters:
+      max_depth: 4
+      min_child_weight: 3.0425931040805727
+      subsample: 0.6914209218646779
+      colsample_bytree: 0.5971032627120452
+      reg_alpha: 0.38798251760716695
+      reg_lambda: 4.184930424044195
+      learning_rate: 0.02217726674458645
+    user_attributes:
+      inner_macro_f1:
+      - 0.4063182062481427
+      - 0.4067267726927473
+      - 0.41111483112749
+      inner_macro_f1_std: 0.0021712667475090423
+      selected_iterations:
+      - 495
+      - 492
+      - 494
+  - number: 4
+    state: COMPLETE
+    value: 0.405489114491699
+    parameters:
+      max_depth: 8
+      min_child_weight: 3.024064738085121
+      subsample: 0.7825485938431984
+      colsample_bytree: 0.5442261827090045
+      reg_alpha: 0.6010041235231863
+      reg_lambda: 2.3305664213973216
+      learning_rate: 0.0638045319742443
+    user_attributes:
+      inner_macro_f1:
+      - 0.4005930397599963
+      - 0.405698570391837
+      - 0.41017573332326374
+      inner_macro_f1_std: 0.003914920843171554
+      selected_iterations:
+      - 99
+      - 175
+      - 120
+  - number: 5
+    state: COMPLETE
+    value: 0.39254710587263303
+    parameters:
+      max_depth: 5
+      min_child_weight: 5.119641923145819
+      subsample: 0.7229730810728303
+      colsample_bytree: 0.6007800799166221
+      reg_alpha: 0.11024132226573247
+      reg_lambda: 3.7698673833861087
+      learning_rate: 0.030740654355588978
+    user_attributes:
+      inner_macro_f1:
+      - 0.3903100840142798
+      - 0.38982609910648947
+      - 0.3975051344971299
+      inner_macro_f1_std: 0.003511419108066294
+      selected_iterations:
+      - 390
+      - 279
+      - 311
+  - number: 6
+    state: COMPLETE
+    value: 0.38587372601908215
+    parameters:
+      max_depth: 8
+      min_child_weight: 5.064998739818982
+      subsample: 0.537655571640197
+      colsample_bytree: 0.8548812950439446
+      reg_alpha: 0.7417541279606096
+      reg_lambda: 1.0486952394565956
+      learning_rate: 0.06551104415531858
+    user_attributes:
+      inner_macro_f1:
+      - 0.3796119331176787
+      - 0.3808825928905139
+      - 0.39712665204905384
+      inner_macro_f1_std: 0.007973911722677737
+      selected_iterations:
+      - 89
+      - 132
+      - 141
+  - number: 7
+    state: COMPLETE
+    value: 0.40913188028782455
+    parameters:
+      max_depth: 4
+      min_child_weight: 2.6555678727177723
+      subsample: 0.5688667269225726
+      colsample_bytree: 0.8689111909831062
+      reg_alpha: 0.6663324712234675
+      reg_lambda: 1.6477553990156149
+      learning_rate: 0.028335929066024817
+    user_attributes:
+      inner_macro_f1:
+      - 0.4044600350373693
+      - 0.4090655168355764
+      - 0.41387008899052796
+      inner_macro_f1_std: 0.003841925032340328
+      selected_iterations:
+      - 378
+      - 339
+      - 478
+  - number: 8
+    state: COMPLETE
+    value: 0.3858975321304973
+    parameters:
+      max_depth: 8
+      min_child_weight: 7.1091583689907365
+      subsample: 0.6609485135822739
+      colsample_bytree: 0.5256689183864369
+      reg_alpha: 0.44387412608342647
+      reg_lambda: 1.4319123272357066
+      learning_rate: 0.03127868600716745
+    user_attributes:
+      inner_macro_f1:
+      - 0.3812792539826958
+      - 0.37800448646379703
+      - 0.39840885594499914
+      inner_macro_f1_std: 0.008947287979017211
+      selected_iterations:
+      - 291
+      - 329
+      - 207
+  - number: 9
+    state: COMPLETE
+    value: 0.38328040249096534
+    parameters:
+      max_depth: 7
+      min_child_weight: 7.516111337828615
+      subsample: 0.6873329989344348
+      colsample_bytree: 0.5750982912603718
+      reg_alpha: 0.296387440681542
+      reg_lambda: 1.1308631694247744
+      learning_rate: 0.022807990070507874
+    user_attributes:
+      inner_macro_f1:
+      - 0.37538334686324065
+      - 0.3760683069950183
+      - 0.398389553614637
+      inner_macro_f1_std: 0.01068744211224848
+      selected_iterations:
+      - 245
+      - 275
+      - 305
+  - number: 10
+    state: COMPLETE
+    value: 0.3751331655731333
+    parameters:
+      max_depth: 6
+      min_child_weight: 9.892503478641204
+      subsample: 0.884827769341453
+      colsample_bytree: 0.7041088469387731
+      reg_alpha: 0.997279373383564
+      reg_lambda: 4.821248521817847
+      learning_rate: 0.0426221285036937
+    user_attributes:
+      inner_macro_f1:
+      - 0.3688993544072259
+      - 0.37640571437847387
+      - 0.38009442793370013
+      inner_macro_f1_std: 0.004658107853500994
+      selected_iterations:
+      - 228
+      - 186
+      - 303
+  - number: 11
+    state: COMPLETE
+    value: 0.41613278898849426
+    parameters:
+      max_depth: 4
+      min_child_weight: 1.0624888160420307
+      subsample: 0.5369355076676949
+      colsample_bytree: 0.8865872614053227
+      reg_alpha: 0.7568990998965321
+      reg_lambda: 3.2153614380471254
+      learning_rate: 0.034111013218303045
+    user_attributes:
+      inner_macro_f1:
+      - 0.41584653170967106
+      - 0.40894474538483183
+      - 0.4236070898709797
+      inner_macro_f1_std: 0.005989298449728332
+      selected_iterations:
+      - 493
+      - 259
+      - 475
+  - number: 12
+    state: COMPLETE
+    value: 0.4095516032574471
+    parameters:
+      max_depth: 5
+      min_child_weight: 1.0358161076065024
+      subsample: 0.7937728893716491
+      colsample_bytree: 0.7992536165399117
+      reg_alpha: 0.9074078181158498
+      reg_lambda: 3.312362814708173
+      learning_rate: 0.04424832970477972
+    user_attributes:
+      inner_macro_f1:
+      - 0.40399281974812473
+      - 0.40397924106966554
+      - 0.42068274895455116
+      inner_macro_f1_std: 0.007870910556928174
+      selected_iterations:
+      - 259
+      - 137
+      - 199
+  - number: 13
+    state: COMPLETE
+    value: 0.40991489765090305
+    parameters:
+      max_depth: 4
+      min_child_weight: 1.2245991678922483
+      subsample: 0.5244899315144288
+      colsample_bytree: 0.8967939382460285
+      reg_alpha: 0.7903808221171973
+      reg_lambda: 4.881207068575906
+      learning_rate: 0.05079395474069956
+    user_attributes:
+      inner_macro_f1:
+      - 0.4123259093489903
+      - 0.40844523875597855
+      - 0.4089735448477402
+      inner_macro_f1_std: 0.0017184314335818977
+      selected_iterations:
+      - 330
+      - 148
+      - 300
+  - number: 14
+    state: COMPLETE
+    value: 0.4103498260042586
+    parameters:
+      max_depth: 5
+      min_child_weight: 1.945620333200878
+      subsample: 0.6131509890339134
+      colsample_bytree: 0.8054002076787352
+      reg_alpha: 0.5886715008522684
+      reg_lambda: 3.108067642168686
+      learning_rate: 0.03661863737360805
+    user_attributes:
+      inner_macro_f1:
+      - 0.4081380839800595
+      - 0.4068459449241621
+      - 0.4160654491085542
+      inner_macro_f1_std: 0.004075836637036382
+      selected_iterations:
+      - 320
+      - 250
+      - 332
+  - number: 15
+    state: COMPLETE
+    value: 0.40049847516292214
+    parameters:
+      max_depth: 4
+      min_child_weight: 4.088576888803332
+      subsample: 0.8034014900374672
+      colsample_bytree: 0.7223310636442215
+      reg_alpha: 0.8305438384100873
+      reg_lambda: 4.153068209704446
+      learning_rate: 0.05337190707881697
+    user_attributes:
+      inner_macro_f1:
+      - 0.39434528310637695
+      - 0.39786186427483383
+      - 0.4092882781075555
+      inner_macro_f1_std: 0.006378979157237265
+      selected_iterations:
+      - 310
+      - 106
+      - 302
+  - number: 16
+    state: COMPLETE
+    value: 0.41548086231967735
+    parameters:
+      max_depth: 5
+      min_child_weight: 1.9565780369131969
+      subsample: 0.7380424584018686
+      colsample_bytree: 0.8385741132224757
+      reg_alpha: 0.645658216990329
+      reg_lambda: 0.516411664813686
+      learning_rate: 0.03522232045726159
+    user_attributes:
+      inner_macro_f1:
+      - 0.4124272155026122
+      - 0.4111772110827945
+      - 0.4228381603736253
+      inner_macro_f1_std: 0.005227364138413743
+      selected_iterations:
+      - 191
+      - 251
+      - 285
+  - number: 17
+    state: COMPLETE
+    value: 0.41275261032042615
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.8933576257251454
+      subsample: 0.836130887975992
+      colsample_bytree: 0.7368588656991866
+      reg_alpha: 0.2024902775348134
+      reg_lambda: 0.7443082878340537
+      learning_rate: 0.07952090692038875
+    user_attributes:
+      inner_macro_f1:
+      - 0.4004134570456988
+      - 0.4051775373361887
+      - 0.4326668365793909
+      inner_macro_f1_std: 0.014215166099943872
+      selected_iterations:
+      - 140
+      - 141
+      - 66
+  - number: 18
+    state: COMPLETE
+    value: 0.4002417980153168
+    parameters:
+      max_depth: 5
+      min_child_weight: 4.1186237409938915
+      subsample: 0.6293221350071246
+      colsample_bytree: 0.6720573813718824
+      reg_alpha: 0.9048177522006492
+      reg_lambda: 2.3414316448643864
+      learning_rate: 0.026307292357331938
+    user_attributes:
+      inner_macro_f1:
+      - 0.39783043296664705
+      - 0.39652493538028766
+      - 0.4063700256990158
+      inner_macro_f1_std: 0.004365963955755812
+      selected_iterations:
+      - 377
+      - 313
+      - 324
+  - number: 19
+    state: COMPLETE
+    value: 0.4126899736371046
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.0004554575354998
+      subsample: 0.5803999387327009
+      colsample_bytree: 0.899506176122963
+      reg_alpha: 0.0027056382832691406
+      reg_lambda: 3.0942641339352503
+      learning_rate: 0.03420980708952295
+    user_attributes:
+      inner_macro_f1:
+      - 0.4081883969422782
+      - 0.40551192456879875
+      - 0.4243695994002369
+      inner_macro_f1_std: 0.008330711036744981
+      selected_iterations:
+      - 385
+      - 222
+      - 367
+  - number: 20
+    state: COMPLETE
+    value: 0.41607678515807994
+    parameters:
+      max_depth: 5
+      min_child_weight: 2.3054130625785922
+      subsample: 0.8432634829377805
+      colsample_bytree: 0.8197394848619365
+      reg_alpha: 0.5229543340030814
+      reg_lambda: 0.541986275215975
+      learning_rate: 0.025409089800479963
+    user_attributes:
+      inner_macro_f1:
+      - 0.4112963581338815
+      - 0.41435299078200755
+      - 0.4225810065583507
+      inner_macro_f1_std: 0.004765460649591165
+      selected_iterations:
+      - 338
+      - 398
+      - 370
+  - number: 21
+    state: COMPLETE
+    value: 0.41649571497725285
+    parameters:
+      max_depth: 5
+      min_child_weight: 2.1924923279274036
+      subsample: 0.8463158134224157
+      colsample_bytree: 0.814635181767845
+      reg_alpha: 0.5169793939186027
+      reg_lambda: 0.6746471967756553
+      learning_rate: 0.025785065283032465
+    user_attributes:
+      inner_macro_f1:
+      - 0.4097614865028069
+      - 0.4116390710358849
+      - 0.42808658739306676
+      inner_macro_f1_std: 0.00823175045942924
+      selected_iterations:
+      - 185
+      - 284
+      - 445
+  - number: 22
+    state: COMPLETE
+    value: 0.4104448548149093
+    parameters:
+      max_depth: 5
+      min_child_weight: 2.5819033483897673
+      subsample: 0.8455560340648284
+      colsample_bytree: 0.7913386290576685
+      reg_alpha: 0.5453176919959787
+      reg_lambda: 1.9764337523612694
+      learning_rate: 0.026449680634292365
+    user_attributes:
+      inner_macro_f1:
+      - 0.4056007476889328
+      - 0.4072061910835498
+      - 0.4185276256722451
+      inner_macro_f1_std: 0.005752839917378694
+      selected_iterations:
+      - 439
+      - 396
+      - 309
+  - number: 23
+    state: COMPLETE
+    value: 0.4008050930941564
+    parameters:
+      max_depth: 6
+      min_child_weight: 3.7223037763278857
+      subsample: 0.5003671945835849
+      colsample_bytree: 0.8170867803212318
+      reg_alpha: 0.5257274838746665
+      reg_lambda: 1.01158738279987
+      learning_rate: 0.02492812219284851
+    user_attributes:
+      inner_macro_f1:
+      - 0.38945152409467876
+      - 0.4005375614548636
+      - 0.41242619373292677
+      inner_macro_f1_std: 0.009381277138718934
+      selected_iterations:
+      - 247
+      - 350
+      - 323
+  - number: 24
+    state: COMPLETE
+    value: 0.4182224705321779
+    parameters:
+      max_depth: 4
+      min_child_weight: 1.677197213584505
+      subsample: 0.8505510447108267
+      colsample_bytree: 0.7569531624808717
+      reg_alpha: 0.31764392589513357
+      reg_lambda: 0.6341089067232432
+      learning_rate: 0.02019947619962994
+    user_attributes:
+      inner_macro_f1:
+      - 0.41288213526025347
+      - 0.41471544080290845
+      - 0.4270698355333718
+      inner_macro_f1_std: 0.006300642977847331
+      selected_iterations:
+      - 410
+      - 473
+      - 379
+  - number: 25
+    state: COMPLETE
+    value: 0.4144975708173135
+    parameters:
+      max_depth: 4
+      min_child_weight: 1.5043074665292846
+      subsample: 0.8568841162126688
+      colsample_bytree: 0.7652615548486931
+      reg_alpha: 0.2902358164824863
+      reg_lambda: 1.4521290284841664
+      learning_rate: 0.020885432374196846
+    user_attributes:
+      inner_macro_f1:
+      - 0.40909999289262533
+      - 0.40996577809735163
+      - 0.4244269414619634
+      inner_macro_f1_std: 0.007030016455851198
+      selected_iterations:
+      - 414
+      - 492
+      - 450
+  - number: 26
+    state: COMPLETE
+    value: 0.4097804801601104
+    parameters:
+      max_depth: 4
+      min_child_weight: 3.2198245330207484
+      subsample: 0.8058295434060735
+      colsample_bytree: 0.6769942037468749
+      reg_alpha: 0.24889963386473218
+      reg_lambda: 1.3187931278824743
+      learning_rate: 0.030704980255759094
+    user_attributes:
+      inner_macro_f1:
+      - 0.40166796295551827
+      - 0.4128945106110943
+      - 0.41477896691371874
+      inner_macro_f1_std: 0.005787774208636002
+      selected_iterations:
+      - 347
+      - 391
+      - 421
+  - number: 27
+    state: COMPLETE
+    value: 0.3961821609590624
+    parameters:
+      max_depth: 4
+      min_child_weight: 4.778297022154544
+      subsample: 0.7729916570549571
+      colsample_bytree: 0.7657789766453252
+      reg_alpha: 0.37509166703939845
+      reg_lambda: 2.200550044959757
+      learning_rate: 0.020157270753406207
+    user_attributes:
+      inner_macro_f1:
+      - 0.3863659788319567
+      - 0.39557199202209714
+      - 0.4066085120231334
+      inner_macro_f1_std: 0.008275234824370063
+      selected_iterations:
+      - 499
+      - 333
+      - 479
+  - number: 28
+    state: COMPLETE
+    value: 0.4096701744991273
+    parameters:
+      max_depth: 5
+      min_child_weight: 2.453332503027279
+      subsample: 0.8764382700241481
+      colsample_bytree: 0.871850473013251
+      reg_alpha: 0.11905516713457948
+      reg_lambda: 2.808752529421451
+      learning_rate: 0.023759641612140843
+    user_attributes:
+      inner_macro_f1:
+      - 0.4033697478179563
+      - 0.40781940603519906
+      - 0.4178213696442264
+      inner_macro_f1_std: 0.006043252506318364
+      selected_iterations:
+      - 452
+      - 401
+      - 229
+  - number: 29
+    state: COMPLETE
+    value: 0.3909966335700568
+    parameters:
+      max_depth: 4
+      min_child_weight: 6.453830783013739
+      subsample: 0.6484833651027927
+      colsample_bytree: 0.6604861280886138
+      reg_alpha: 0.3621333360218836
+      reg_lambda: 2.6525310539656712
+      learning_rate: 0.028909697756598938
+    user_attributes:
+      inner_macro_f1:
+      - 0.3840053374488099
+      - 0.38724097561382104
+      - 0.40174358764753954
+      inner_macro_f1_std: 0.007713196701816138
+      selected_iterations:
+      - 281
+      - 341
+      - 317
+- outer_fold: 4
+  fit_scope: outer_train_inner_cv_only
+  test_or_outer_validation_used_for_selection: false
+  study_name: exp285_exp229_nested_optuna_xgb_outer_04
+  sampler: TPESampler
+  sampler_seed: 46
+  inner_n_splits: 3
+  requested_trials: 30
+  completed_trials: 30
+  best_trial: 26
+  best_value: 0.39521400880854346
+  best_parameters:
+    max_depth: 5
+    min_child_weight: 1.9471036597551619
+    subsample: 0.7253142563002447
+    colsample_bytree: 0.5851415064009555
+    reg_alpha: 0.23175223226754962
+    reg_lambda: 2.83621456413986
+    learning_rate: 0.03238197252483872
+  search_space:
+    max_depth:
+    - 4
+    - 8
+    min_child_weight:
+    - 1.0
+    - 10.0
+    subsample:
+    - 0.5
+    - 0.9
+    colsample_bytree:
+    - 0.5
+    - 0.9
+    reg_alpha:
+    - 0.0
+    - 1.0
+    reg_lambda:
+    - 0.5
+    - 5.0
+    learning_rate:
+    - 0.02
+    - 0.08
+    - log
+  database_path: models/exp285_exp229_nested_optuna_xgb/optuna/outer_04.sqlite3
+  trials:
+  - number: 0
+    state: COMPLETE
+    value: 0.357788410514448
+    parameters:
+      max_depth: 7
+      min_child_weight: 6.713503354474572
+      subsample: 0.5996172366062995
+      colsample_bytree: 0.803230345859927
+      reg_alpha: 0.3130769356316798
+      reg_lambda: 4.7175681086977885
+      learning_rate: 0.021224504841260258
+    user_attributes:
+      inner_macro_f1:
+      - 0.3617576901434057
+      - 0.35117799113920994
+      - 0.3604295502607283
+      inner_macro_f1_std: 0.004705615236033183
+      selected_iterations:
+      - 434
+      - 308
+      - 474
+  - number: 1
+    state: COMPLETE
+    value: 0.3501558832239687
+    parameters:
+      max_depth: 6
+      min_child_weight: 9.21450060941678
+      subsample: 0.6820015675707115
+      colsample_bytree: 0.7031737362815167
+      reg_alpha: 0.08490795479470015
+      reg_lambda: 2.4185740597949197
+      learning_rate: 0.056233658862590095
+    user_attributes:
+      inner_macro_f1:
+      - 0.3546009970880937
+      - 0.35123936551107227
+      - 0.3446272870727402
+      inner_macro_f1_std: 0.004143201118896745
+      selected_iterations:
+      - 151
+      - 138
+      - 174
+  - number: 2
+    state: COMPLETE
+    value: 0.37660725783087345
+    parameters:
+      max_depth: 8
+      min_child_weight: 3.9129924421060354
+      subsample: 0.5416297589253153
+      colsample_bytree: 0.8208432187413788
+      reg_alpha: 0.39483194918011777
+      reg_lambda: 3.3249563970538536
+      learning_rate: 0.02102312429103824
+    user_attributes:
+      inner_macro_f1:
+      - 0.37665851293990354
+      - 0.3763140497771368
+      - 0.37684921077558015
+      inner_macro_f1_std: 0.00022146427584749973
+      selected_iterations:
+      - 292
+      - 432
+      - 429
+  - number: 3
+    state: COMPLETE
+    value: 0.3911150686531985
+    parameters:
+      max_depth: 5
+      min_child_weight: 1.428878976436299
+      subsample: 0.6488844311224501
+      colsample_bytree: 0.6049660785712788
+      reg_alpha: 0.9905262064126861
+      reg_lambda: 2.2781540664637716
+      learning_rate: 0.030632827226585134
+    user_attributes:
+      inner_macro_f1:
+      - 0.38759350770290213
+      - 0.3971017739252108
+      - 0.3886499243314824
+      inner_macro_f1_std: 0.0042551524871807375
+      selected_iterations:
+      - 464
+      - 193
+      - 465
+  - number: 4
+    state: COMPLETE
+    value: 0.3676891077227468
+    parameters:
+      max_depth: 5
+      min_child_weight: 5.446225224877486
+      subsample: 0.5231500758491765
+      colsample_bytree: 0.615880016291142
+      reg_alpha: 0.23495039062527756
+      reg_lambda: 4.83543686729133
+      learning_rate: 0.04695724430700029
+    user_attributes:
+      inner_macro_f1:
+      - 0.36447473744772524
+      - 0.364683557630073
+      - 0.3739090280904422
+      inner_macro_f1_std: 0.004398974009356639
+      selected_iterations:
+      - 203
+      - 230
+      - 327
+  - number: 5
+    state: COMPLETE
+    value: 0.3903834093374938
+    parameters:
+      max_depth: 8
+      min_child_weight: 1.8107673058003875
+      subsample: 0.559595560631962
+      colsample_bytree: 0.7690299854741132
+      reg_alpha: 0.9789919248124339
+      reg_lambda: 0.6045057730323263
+      learning_rate: 0.07039297123241825
+    user_attributes:
+      inner_macro_f1:
+      - 0.3888897279038315
+      - 0.38869882984212445
+      - 0.3935616702665255
+      inner_macro_f1_std: 0.0022487207351807705
+      selected_iterations:
+      - 115
+      - 135
+      - 56
+  - number: 6
+    state: COMPLETE
+    value: 0.35421515186690183
+    parameters:
+      max_depth: 4
+      min_child_weight: 7.800988908537356
+      subsample: 0.5258411512359302
+      colsample_bytree: 0.602293369523341
+      reg_alpha: 0.1696077644664009
+      reg_lambda: 1.3780728353519198
+      learning_rate: 0.023183746131509086
+    user_attributes:
+      inner_macro_f1:
+      - 0.3589506693816938
+      - 0.35476511205773653
+      - 0.34892967416127507
+      inner_macro_f1_std: 0.004109495383502368
+      selected_iterations:
+      - 380
+      - 411
+      - 495
+  - number: 7
+    state: COMPLETE
+    value: 0.39304176098001564
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.0562164870180932
+      subsample: 0.81624203857664
+      colsample_bytree: 0.5554843696052484
+      reg_alpha: 0.10714519514849807
+      reg_lambda: 2.433205236211358
+      learning_rate: 0.02709348081725843
+    user_attributes:
+      inner_macro_f1:
+      - 0.39771375955141514
+      - 0.39983644859510326
+      - 0.3815750747935284
+      inner_macro_f1_std: 0.008154349402561406
+      selected_iterations:
+      - 467
+      - 277
+      - 319
+  - number: 8
+    state: COMPLETE
+    value: 0.3856899781465189
+    parameters:
+      max_depth: 8
+      min_child_weight: 1.0528724804521543
+      subsample: 0.5593291580573558
+      colsample_bytree: 0.779337537015941
+      reg_alpha: 0.14760990474687974
+      reg_lambda: 4.418530412929968
+      learning_rate: 0.04078312805014483
+    user_attributes:
+      inner_macro_f1:
+      - 0.3896621785531011
+      - 0.38986825389094737
+      - 0.3775395019955083
+      inner_macro_f1_std: 0.005763870972264033
+      selected_iterations:
+      - 288
+      - 137
+      - 272
+  - number: 9
+    state: COMPLETE
+    value: 0.3846570615744311
+    parameters:
+      max_depth: 6
+      min_child_weight: 1.1707154044637258
+      subsample: 0.6977303704588724
+      colsample_bytree: 0.8786496515430677
+      reg_alpha: 0.3458034276780333
+      reg_lambda: 2.332980018265988
+      learning_rate: 0.0631093105122395
+    user_attributes:
+      inner_macro_f1:
+      - 0.37852981114449924
+      - 0.3958981366892911
+      - 0.3795432368895029
+      inner_macro_f1_std: 0.007959400531807348
+      selected_iterations:
+      - 170
+      - 164
+      - 130
+  - number: 10
+    state: COMPLETE
+    value: 0.3890861140232431
+    parameters:
+      max_depth: 4
+      min_child_weight: 4.0445948770950295
+      subsample: 0.8993907904074387
+      colsample_bytree: 0.5031520756012423
+      reg_alpha: 0.6053405694694991
+      reg_lambda: 3.5790387624588975
+      learning_rate: 0.034078379040026675
+    user_attributes:
+      inner_macro_f1:
+      - 0.3803829114930381
+      - 0.3956066220057556
+      - 0.39126880857093566
+      inner_macro_f1_std: 0.0064038247456839545
+      selected_iterations:
+      - 444
+      - 219
+      - 346
+  - number: 11
+    state: COMPLETE
+    value: 0.3895511447041781
+    parameters:
+      max_depth: 5
+      min_child_weight: 2.884202194006078
+      subsample: 0.8349578912042454
+      colsample_bytree: 0.5449225453178445
+      reg_alpha: 0.9538712794532963
+      reg_lambda: 2.140679335285751
+      learning_rate: 0.031037100914807877
+    user_attributes:
+      inner_macro_f1:
+      - 0.38949059470725406
+      - 0.3945476866497376
+      - 0.3846151527555427
+      inner_macro_f1_std: 0.00405516601521469
+      selected_iterations:
+      - 432
+      - 239
+      - 307
+  - number: 12
+    state: COMPLETE
+    value: 0.3896091805528609
+    parameters:
+      max_depth: 6
+      min_child_weight: 2.6953109097476506
+      subsample: 0.7515458019165288
+      colsample_bytree: 0.6499335137056019
+      reg_alpha: 0.6708913729224101
+      reg_lambda: 3.109360636050228
+      learning_rate: 0.02802671626646352
+    user_attributes:
+      inner_macro_f1:
+      - 0.38957055366072263
+      - 0.3930183108059127
+      - 0.3862386771919474
+      inner_macro_f1_std: 0.002767908598262034
+      selected_iterations:
+      - 423
+      - 224
+      - 433
+  - number: 13
+    state: COMPLETE
+    value: 0.3932285147523487
+    parameters:
+      max_depth: 5
+      min_child_weight: 2.7074757304440453
+      subsample: 0.7669935716173001
+      colsample_bytree: 0.5567397068663946
+      reg_alpha: 0.7475726434192842
+      reg_lambda: 1.6705976972172931
+      learning_rate: 0.027047265129282457
+    user_attributes:
+      inner_macro_f1:
+      - 0.38710523812048664
+      - 0.4012150599069541
+      - 0.3913652462296054
+      inner_macro_f1_std: 0.0059090661925751894
+      selected_iterations:
+      - 481
+      - 330
+      - 373
+  - number: 14
+    state: COMPLETE
+    value: 0.3918579517777456
+    parameters:
+      max_depth: 7
+      min_child_weight: 3.6166134215346846
+      subsample: 0.7935862412926816
+      colsample_bytree: 0.5426699603820725
+      reg_alpha: 0.5694608136544066
+      reg_lambda: 1.3974230919155688
+      learning_rate: 0.0264821196227563
+    user_attributes:
+      inner_macro_f1:
+      - 0.39016357664230783
+      - 0.3919129040046418
+      - 0.39349737468628704
+      inner_macro_f1_std: 0.001361571924882056
+      selected_iterations:
+      - 307
+      - 146
+      - 320
+  - number: 15
+    state: COMPLETE
+    value: 0.3872549262148263
+    parameters:
+      max_depth: 5
+      min_child_weight: 5.289961846075958
+      subsample: 0.8523649735016788
+      colsample_bytree: 0.5001385565480637
+      reg_alpha: 0.7930720153590334
+      reg_lambda: 1.4614081113906827
+      learning_rate: 0.03714550685289215
+    user_attributes:
+      inner_macro_f1:
+      - 0.3780459956547375
+      - 0.39207427809965617
+      - 0.39164450489008507
+      inner_macro_f1_std: 0.006514060576850586
+      selected_iterations:
+      - 278
+      - 134
+      - 250
+  - number: 16
+    state: COMPLETE
+    value: 0.38941325456580506
+    parameters:
+      max_depth: 7
+      min_child_weight: 2.412281989930469
+      subsample: 0.760364461908867
+      colsample_bytree: 0.6811849956870834
+      reg_alpha: 0.4696123348969383
+      reg_lambda: 0.5046202009070675
+      learning_rate: 0.02625435168218444
+    user_attributes:
+      inner_macro_f1:
+      - 0.38724158431152633
+      - 0.39584998635668184
+      - 0.38514819302920694
+      inner_macro_f1_std: 0.004630997651765456
+      selected_iterations:
+      - 265
+      - 296
+      - 251
+  - number: 17
+    state: COMPLETE
+    value: 0.3787761447869469
+    parameters:
+      max_depth: 6
+      min_child_weight: 5.528166198033398
+      subsample: 0.7399182144392835
+      colsample_bytree: 0.552829338537837
+      reg_alpha: 0.7804514225463509
+      reg_lambda: 2.8736010338807474
+      learning_rate: 0.04767833172290098
+    user_attributes:
+      inner_macro_f1:
+      - 0.3738424283027644
+      - 0.3821734373197029
+      - 0.38031256873837344
+      inner_macro_f1_std: 0.003570422638751658
+      selected_iterations:
+      - 170
+      - 137
+      - 158
+  - number: 18
+    state: COMPLETE
+    value: 0.39361184531751875
+    parameters:
+      max_depth: 4
+      min_child_weight: 3.067570809885462
+      subsample: 0.8138081294561084
+      colsample_bytree: 0.5663772065493976
+      reg_alpha: 0.005425434403720036
+      reg_lambda: 1.8117068136153966
+      learning_rate: 0.023445002324387197
+    user_attributes:
+      inner_macro_f1:
+      - 0.39415427212067544
+      - 0.3975789575235684
+      - 0.3891023063083122
+      inner_macro_f1_std: 0.003481769098591812
+      selected_iterations:
+      - 403
+      - 499
+      - 468
+  - number: 19
+    state: COMPLETE
+    value: 0.3854158874951931
+    parameters:
+      max_depth: 4
+      min_child_weight: 4.63458582205703
+      subsample: 0.8957725466234816
+      colsample_bytree: 0.7170308629606019
+      reg_alpha: 0.008072576195360448
+      reg_lambda: 1.743162540796551
+      learning_rate: 0.023473902670861732
+    user_attributes:
+      inner_macro_f1:
+      - 0.37951093975474665
+      - 0.38722688650531756
+      - 0.38950983622551516
+      inner_macro_f1_std: 0.0042781826920076345
+      selected_iterations:
+      - 485
+      - 437
+      - 428
+  - number: 20
+    state: COMPLETE
+    value: 0.3926165084261524
+    parameters:
+      max_depth: 4
+      min_child_weight: 3.212220827618552
+      subsample: 0.7878345091882972
+      colsample_bytree: 0.6417637864516577
+      reg_alpha: 0.8269513518055793
+      reg_lambda: 1.063898930118189
+      learning_rate: 0.02031788637476159
+    user_attributes:
+      inner_macro_f1:
+      - 0.38659913066413765
+      - 0.39856291625240553
+      - 0.39268747836191403
+      inner_macro_f1_std: 0.004884452814754729
+      selected_iterations:
+      - 360
+      - 470
+      - 463
+  - number: 21
+    state: COMPLETE
+    value: 0.39511564391814985
+    parameters:
+      max_depth: 5
+      min_child_weight: 2.3399364263183524
+      subsample: 0.832987313609748
+      colsample_bytree: 0.5756100449530775
+      reg_alpha: 0.07886973169505168
+      reg_lambda: 1.8728954581448332
+      learning_rate: 0.024679136752507026
+    user_attributes:
+      inner_macro_f1:
+      - 0.39502609616519624
+      - 0.4008414014231585
+      - 0.38947943416609476
+      inner_macro_f1_std: 0.004638935875657359
+      selected_iterations:
+      - 371
+      - 368
+      - 346
+  - number: 22
+    state: COMPLETE
+    value: 0.39485511898076914
+    parameters:
+      max_depth: 5
+      min_child_weight: 2.434706257228089
+      subsample: 0.867437556044305
+      colsample_bytree: 0.5800499828044584
+      reg_alpha: 0.0020266042864789603
+      reg_lambda: 1.740054661877221
+      learning_rate: 0.023659847477502584
+    user_attributes:
+      inner_macro_f1:
+      - 0.3943219776560826
+      - 0.3983357817492493
+      - 0.39190759753697557
+      inner_macro_f1_std: 0.002651234658393155
+      selected_iterations:
+      - 349
+      - 378
+      - 381
+  - number: 23
+    state: COMPLETE
+    value: 0.3882933979851148
+    parameters:
+      max_depth: 4
+      min_child_weight: 4.353387841952079
+      subsample: 0.8593945499676208
+      colsample_bytree: 0.5993585901322156
+      reg_alpha: 0.0028522805827884187
+      reg_lambda: 1.9950105862346748
+      learning_rate: 0.023592073628540558
+    user_attributes:
+      inner_macro_f1:
+      - 0.3779115921216952
+      - 0.3905025239871452
+      - 0.396466077846504
+      inner_macro_f1_std: 0.0077342275372816564
+      selected_iterations:
+      - 467
+      - 392
+      - 453
+  - number: 24
+    state: COMPLETE
+    value: 0.3902470467886972
+    parameters:
+      max_depth: 5
+      min_child_weight: 2.314445897464976
+      subsample: 0.8651969026125443
+      colsample_bytree: 0.6426356781778668
+      reg_alpha: 0.23504397999161317
+      reg_lambda: 1.031626056576175
+      learning_rate: 0.023626211110318245
+    user_attributes:
+      inner_macro_f1:
+      - 0.391778549506911
+      - 0.3958654588849857
+      - 0.383097131974195
+      inner_macro_f1_std: 0.005323950191172448
+      selected_iterations:
+      - 298
+      - 446
+      - 463
+  - number: 25
+    state: COMPLETE
+    value: 0.39466913817494925
+    parameters:
+      max_depth: 4
+      min_child_weight: 1.9050154538298631
+      subsample: 0.8126859126994657
+      colsample_bytree: 0.5849620321211677
+      reg_alpha: 0.06052424635892922
+      reg_lambda: 1.8927174762787793
+      learning_rate: 0.030890457350307782
+    user_attributes:
+      inner_macro_f1:
+      - 0.3929206094879829
+      - 0.4030790288638384
+      - 0.38800777617302656
+      inner_macro_f1_std: 0.006275809580945659
+      selected_iterations:
+      - 264
+      - 326
+      - 459
+  - number: 26
+    state: COMPLETE
+    value: 0.39521400880854346
+    parameters:
+      max_depth: 5
+      min_child_weight: 1.9471036597551619
+      subsample: 0.7253142563002447
+      colsample_bytree: 0.5851415064009555
+      reg_alpha: 0.23175223226754962
+      reg_lambda: 2.83621456413986
+      learning_rate: 0.03238197252483872
+    user_attributes:
+      inner_macro_f1:
+      - 0.39412677316605865
+      - 0.3958771601699826
+      - 0.3956380930895892
+      inner_macro_f1_std: 0.0007749620523823514
+      selected_iterations:
+      - 303
+      - 268
+      - 337
+  - number: 27
+    state: COMPLETE
+    value: 0.38890160503336607
+    parameters:
+      max_depth: 5
+      min_child_weight: 2.0038232280943507
+      subsample: 0.7124677396018196
+      colsample_bytree: 0.6711436752502117
+      reg_alpha: 0.2164090385200659
+      reg_lambda: 2.71493305324899
+      learning_rate: 0.03787901212754996
+    user_attributes:
+      inner_macro_f1:
+      - 0.38692835196474973
+      - 0.3931876937343656
+      - 0.38658876940098286
+      inner_macro_f1_std: 0.0030338914882847997
+      selected_iterations:
+      - 120
+      - 238
+      - 287
+  - number: 28
+    state: COMPLETE
+    value: 0.3866075680324295
+    parameters:
+      max_depth: 5
+      min_child_weight: 3.432468154721356
+      subsample: 0.6376948337860252
+      colsample_bytree: 0.520830968221285
+      reg_alpha: 0.294326256782215
+      reg_lambda: 4.041521503178318
+      learning_rate: 0.033424810125637465
+    user_attributes:
+      inner_macro_f1:
+      - 0.3767496853130806
+      - 0.3912217706860686
+      - 0.39185124809813937
+      inner_macro_f1_std: 0.006975311187056117
+      selected_iterations:
+      - 356
+      - 211
+      - 414
+  - number: 29
+    state: COMPLETE
+    value: 0.3782512421510156
+    parameters:
+      max_depth: 6
+      min_child_weight: 6.6466261606493315
+      subsample: 0.7244385140957166
+      colsample_bytree: 0.624309943497625
+      reg_alpha: 0.4429571927896762
+      reg_lambda: 3.798320437985426
+      learning_rate: 0.0447079392102297
+    user_attributes:
+      inner_macro_f1:
+      - 0.37797396692665336
+      - 0.37832490774711913
+      - 0.37845485177927435
+      inner_macro_f1_std: 0.0002031133105880271
+      selected_iterations:
+      - 162
+      - 116
+      - 291

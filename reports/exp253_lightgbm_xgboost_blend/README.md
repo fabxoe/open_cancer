@@ -6,8 +6,10 @@ EXP-209 LightGBM과 EXP-229 XGBoost의 예측 확률을 `0.5/0.5`로 평균한 �
 OOF Macro F1은 **0.4254998819**로 현재 Local 최고를 갱신했습니다. EXP-229보다
 `+0.0025113074` 높고 Log Loss도 `-0.0406361619` 개선됐습니다.
 
-Fold 표준편차는 `+0.0019120085` 증가했지만 사전 허용 기준 `0.002` 이내입니다.
-따라서 Public 미제출 상태의 **채택 후보**로 보존합니다.
+Fold 표준편차는 `+0.0019120085` 증가했지만 사전 허용 기준 `0.002` 이내였습니다.
+그러나 Public Macro F1은 **0.3054410279**로 EXP-223의 `0.323243525`보다
+`-0.0178024971` 낮았습니다. Local 개선이 Public으로 전이되지 않아 최종 제출
+후보에서는 제외합니다.
 
 ## 무엇을 결합했나
 
@@ -29,6 +31,15 @@ Fold 표준편차는 `+0.0019120085` 증가했지만 사전 허용 기준 `0.002
 | Accuracy | 0.4136429608 | 0.4125141106 | +0.0011288502 |
 | Log Loss | 1.8103251656 | 1.8509613276 | -0.0406361619 |
 
+### Public 제출
+
+- 제출 ID: `1509964`
+- 제출 시각: 2026-08-03 23:32:05 KST
+- Public Macro F1: `0.3054410279`
+- EXP-223 Public 대비: `-0.0178024971`
+- 확인 당시: 참가 4팀 중 4위, 팀 제출 18회
+- 팀 선택 제출: EXP-223 유지
+
 | Fold | Macro F1 |
 |---:|---:|
 | 0 | 0.4204437403 |
@@ -48,14 +59,16 @@ LIHC `+0.0149`, PCPG `+0.0144`, UCEC `+0.0140`입니다. 큰 하락은 ACC
 확률 평균이 일부 과신과 오류를 상쇄한 것으로 해석할 수 있습니다. Log Loss의 큰
 개선도 평균 확률이 단일 모델보다 안정적이라는 설명과 일치합니다.
 
-다만 fold 안정성 기준을 `0.000088` 차이로 근소하게 통과했고 Public 점수는 아직
-확인하지 않았습니다. 같은 OOF 결과를 본 뒤 세밀한 가중치 grid search를 수행하면
-검증 과적합 위험이 있으므로 EXP-253에는 추가하지 않습니다.
+Fold 안정성 기준을 `0.000088` 차이로 근소하게 통과했지만 Public에서는 큰 폭으로
+하락했습니다. 원인은 test 정답이 없어 확인할 수 없으며 LightGBM 성분, 데이터
+분포 차이 또는 Public 표본 변동 중 무엇이 원인인지는 단정하지 않습니다. 같은
+OOF와 Public 결과를 본 뒤 세밀한 가중치 grid search를 수행하면 역튜닝 위험이
+있으므로 EXP-253에는 추가하지 않습니다.
 
 ## 다음 단계
 
-- Public 제출 전 현재 고정 가중치와 재현 산출물을 팀과 검토합니다.
-- 가중치 변화가 필요한 경우 별도 Experiment Issue에서 nested coarse selection으로 검증합니다.
+- EXP-253은 Local 분석 자산으로 보존하되 추가 Public 제출 후보에서는 제외합니다.
+- Local–Public 괴리는 별도 분석 Task에서 기존 제출 전체를 대상으로 검토합니다.
 - Issue #233의 class-wise decision offset과 구현·결과를 섞지 않습니다.
 
 ## 재현과 관련 파일
@@ -65,7 +78,7 @@ LIHC `+0.0149`, PCPG `+0.0144`, UCEC `+0.0140`입니다. 큰 하락은 ACC
 - Config: `configs/exp253_lightgbm_xgboost_blend.yaml`
 - Resolved config: `reproducibility/exp253_lightgbm_xgboost_blend/config.resolved.yaml`
 - Metrics: `reports/exp253_lightgbm_xgboost_blend/metrics.json`
-- 제출 후보: `submissions/exp253_lightgbm_xgboost_blend.csv` (DACON 미제출)
+- 제출 파일: `submissions/exp253_lightgbm_xgboost_blend.csv` (제출 ID `1509964`)
 - 재현 상태: `INFERENCE_VERIFIED`
 - Release: [`exp-253-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-253-repro-v1)
 
