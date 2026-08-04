@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "snapshot_date": "2026-08-05",
+  "scope": "Target-independent canonical protein-event equivalence audit for Task Issue #390; not a comprehensive cancer-driver database",
+  "selection_policy": "The first event was fixed by Issue #390 before analysis. No SUBCLASS, test prevalence, or Public leaderboard result selected the event.",
+  "events": [
+    {
+      "event_id": "EGFR_EXON19_IPVAIK_DUP",
+      "gene_symbol": "EGFR",
+      "gene_id": "ENSG00000146648.23",
+      "reference_transcript": "ENST00000275493.7",
+      "reference_protein": "ENSP00000275493.2",
+      "canonical_protein_event": "I740_K745dup",
+      "semantic_family": "EGFR_exon19_IPVAIK_inframe_duplication",
+      "inserted_sequence": "IPVAIK",
+      "source_start": 740,
+      "source_end": 745,
+      "pathway_memberships": ["RTK_RAS"],
+      "hotspot_positions": [],
+      "equivalent_notations_supported_by_literature": [
+        "K745_E746insIPVAIK",
+        "I744_K745insKIPVAI"
+      ],
+      "clinical_interpretation_limit": "This catalog records an oncogenic EGFR exon-19 insertion/duplication family for semantic preservation only. It does not infer tumour lineage, treatment response, or patient actionability.",
+      "sources": [
+        {
+          "type": "primary_peer_reviewed_article",
+          "title": "Oncogenic mutations within the beta3-alphaC loop of EGFR/ERBB2/BRAF/MAP2K1 predict response to therapies",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7549570/",
+          "assertion": "I740_K745dup is also referred to as K745_E746insIPVAIK and is an oncogenic EGFR beta3-alphaC insertion."
+        },
+        {
+          "type": "primary_peer_reviewed_article",
+          "title": "EGFR exon 19 insertion EGFR-K745_E746insIPVAIK and others with rare XPVAIK amino-acid insertions",
+          "doi": "10.1016/j.lungcan.2023.107250",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10330422/",
+          "assertion": "The IPVAIK insertion follows the reference I740-K745 IPVAIK stack."
+        },
+        {
+          "type": "fixed_reference_snapshot",
+          "name": "Ensembl GRCh38 release 116",
+          "manifest": "knowledge/ensembl_protein_duplication_semantics_v1.json",
+          "gtf_sha256": "ed992f0eac7197d9627bda618f8f831ba355c95bd5d0796af785387d462828b6",
+          "peptide_fasta_sha256": "9b43da92651b35814597af6a8b18f500b768679a49fa4678224f384917ce7668"
+        }
+      ]
+    }
+  ],
+  "license": {
+    "literature": "Citation metadata and semantic assertions only; article copyright remains with its publisher/authors.",
+    "ensembl": "See knowledge/ensembl_protein_duplication_semantics_v1.json"
+  }
+}

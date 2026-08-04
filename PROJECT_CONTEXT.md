@@ -317,6 +317,14 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   count로 기존 feature를 대체하지 않는다. 상세 감사는
   [`reports/analysis/isoform_annotation_multiplicity/README.md`](reports/analysis/isoform_annotation_multiplicity/README.md)를
   따른다.
+- known driver annotation을 isoform 간에 접을 때는 raw annotation multiplicity,
+  independent canonical event count와 driver presence를 직교 보존한다. exact
+  canonical coordinate, fixed-reference isoform projection과 gene+event family-level
+  일치를 구분하며 family-level 일치를 exact equivalence로 승격하지 않는다. catalog는
+  사전 고정 출처·reference transcript/version·snapshot hash·라이선스를 가져야 하고,
+  암종 label·test prevalence·Public LB로 선택하지 않는다. 상세 감사는
+  [`reports/analysis/driver_event_signature/README.md`](reports/analysis/driver_event_signature/README.md)를
+  따른다.
 - protein insertion과 tandem duplication은 원문 syntax와 reference-aware 의미를
   분리한다. literal `dup`가 없더라도 `ins` 서열이 삽입 경계 바로 N-terminal의
   reference 서열과 완전히 같고 flanking residue·isoform이 검증된 경우에만
