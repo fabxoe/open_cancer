@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-08-04T09:09:06.391481+00:00",
+  "analysis_only": true,
+  "target_used": false,
+  "public_leaderboard_used_for_rule": false,
+  "normalization_contract": {
+    "scope": "simple stop alternate notation only",
+    "equivalent_inputs": [
+      "*",
+      "X",
+      "Ter"
+    ],
+    "canonical_output": "*"
+  },
+  "annotation_cache": "data/external/ensembl_release_116/competition_gene_isoform_index.json",
+  "annotation_cache_sha256": "b9565339f1755d5b07e782c39064207310fa6c254b2e915a15492f4f38903daa",
+  "token_tables": {
+    "train": "data/processed/isoform_residue_semantics/train_token_semantics.csv",
+    "test": "data/processed/isoform_residue_semantics/test_token_semantics.csv"
+  },
+  "train": {
+    "tokens_total": 255164,
+    "normalized_token_count": 0,
+    "before": {
+      "MANE_MATCH": {
+        "count": 225829,
+        "rate": 0.8850347227665345
+      },
+      "CANONICAL_MATCH": {
+        "count": 192,
+        "rate": 0.0007524572431847753
+      },
+      "OTHER_ISOFORM_MATCH": {
+        "count": 16135,
+        "rate": 0.06323384176451223
+      },
+      "POSITION_VALID_REF_MISMATCH": {
+        "count": 2250,
+        "rate": 0.008817858318571585
+      },
+      "OUTSIDE_ALL_KNOWN_ISOFORMS": {
+        "count": 82,
+        "rate": 0.0003213619476101644
+      },
+      "COMPLEX_OR_UNMAPPABLE": {
+        "count": 10676,
+        "rate": 0.041839757959586776
+      }
+    },
+    "after": {
+      "MANE_MATCH": {
+        "count": 225829,
+        "rate": 0.8850347227665345
+      },
+      "CANONICAL_MATCH": {
+        "count": 192,
+        "rate": 0.0007524572431847753
+      },
+      "OTHER_ISOFORM_MATCH": {
+        "count": 16135,
+        "rate": 0.06323384176451223
+      },
+      "POSITION_VALID_REF_MISMATCH": {
+        "count": 2250,
+        "rate": 0.008817858318571585
+      },
+      "OUTSIDE_ALL_KNOWN_ISOFORMS": {
+        "count": 82,
+        "rate": 0.0003213619476101644
+      },
+      "COMPLEX_OR_UNMAPPABLE": {
+        "count": 10676,
+        "rate": 0.041839757959586776
+      }
+    },
+    "changed_transitions": []
+  },
+  "test": {
+    "tokens_total": 337512,
+    "normalized_token_count": 14355,
+    "before": {
+      "MANE_MATCH": {
+        "count": 180431,
+        "rate": 0.5345913626774752
+      },
+      "CANONICAL_MATCH": {
+        "count": 440,
+        "rate": 0.001303657351442319
+      },
+      "OTHER_ISOFORM_MATCH": {
+        "count": 90069,
+        "rate": 0.2668616226978596
+      },
+      "POSITION_VALID_REF_MISMATCH": {
+        "count": 20811,
+        "rate": 0.06166002986560478
+      },
+      "OUTSIDE_ALL_KNOWN_ISOFORMS": {
+        "count": 416,
+        "rate": 0.0012325487686363744
+      },
+      "COMPLEX_OR_UNMAPPABLE": {
+        "count": 45345,
+        "rate": 0.13435077863898173
+      }
+    },
+    "after": {
+      "MANE_MATCH": {
+        "count": 186482,
+        "rate": 0.552519614117424
+      },
+      "CANONICAL_MATCH": {
+        "count": 450,
+        "rate": 0.0013332859276114627
+      },
+      "OTHER_ISOFORM_MATCH": {
+        "count": 95742,
+        "rate": 0.2836699139586148
+      },
+      "POSITION_VALID_REF_MISMATCH": {
+        "count": 23395,
+        "rate": 0.0693160539477115
+      },
+      "OUTSIDE_ALL_KNOWN_ISOFORMS": {
+        "count": 430,
+        "rate": 0.0012740287752731755
+      },
+      "COMPLEX_OR_UNMAPPABLE": {
+        "count": 31013,
+        "rate": 0.09188710327336509
+      }
+    },
+    "changed_transitions": [
+      {
+        "from": "COMPLEX_OR_UNMAPPABLE",
+        "to": "MANE_MATCH",
+        "count": 6051
+      },
+      {
+        "from": "COMPLEX_OR_UNMAPPABLE",
+        "to": "OTHER_ISOFORM_MATCH",
+        "count": 5673
+      },
+      {
+        "from": "COMPLEX_OR_UNMAPPABLE",
+        "to": "POSITION_VALID_REF_MISMATCH",
+        "count": 2584
+      },
+      {
+        "from": "COMPLEX_OR_UNMAPPABLE",
+        "to": "OUTSIDE_ALL_KNOWN_ISOFORMS",
+        "count": 14
+      },
+      {
+        "from": "COMPLEX_OR_UNMAPPABLE",
+        "to": "CANONICAL_MATCH",
+        "count": 10
+      }
+    ]
+  },
+  "mane_gap": {
+    "before": 0.3504433600890593,
+    "after": 0.3325151086491105,
+    "absolute_reduction": 0.017928251439948806
+  }
+}
