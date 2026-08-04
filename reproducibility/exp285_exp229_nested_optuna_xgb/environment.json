@@ -1,0 +1,10 @@
+{
+  "verified_at": "2026-08-04T00:33:48.973528+00:00",
+  "python": "3.11.10 (main, Oct 16 2024, 04:38:48) [Clang 18.1.8 ]",
+  "platform": "Linux-6.8.0-117-generic-x86_64-with-glibc2.39",
+  "numpy": "2.4.6",
+  "pandas": "3.0.5",
+  "scikit_learn": "1.9.0",
+  "xgboost": "3.2.0",
+  "uv_lock_sha256": "87876a7c41c030503ed1b95a2d1254c5ab395cfbb865c7538fa5de42bd28902a"
+}

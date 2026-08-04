@@ -434,9 +434,11 @@ uv run python scripts/fetch_experiment_artifacts.py \
 ```
 
 파일은 manifest의 표준 경로에 복원되고 SHA-256까지 확인됩니다. `models/`, `oof/`,
-`preds/`는 Git 제외 경로이므로 받은 파일을 commit하지 않습니다. 전체 역할과 공개
-Release 주의사항은 `PROJECT_CONTEXT.md`의 **팀 상위 모델 산출물 요청·공유 규칙**을
-따릅니다.
+`preds/`는 Git 제외 경로이므로 받은 파일을 그대로 commit하지 않습니다. 다만 팀장이
+일반 Task Issue에서 승인한 소형 OOF 확률은 정답 라벨·원본 변이값을 제거하고
+`reports/shared_oof/` manifest·용량·해시 검증을 통과한 경우에만 Git 편의 복제본을
+둘 수 있습니다. 전체 역할과 공개 Release 주의사항은 `PROJECT_CONTEXT.md`의
+**팀 상위 모델 산출물 요청·공유 규칙**을 따릅니다.
 
 ## 10. 자주 생기는 문제
 

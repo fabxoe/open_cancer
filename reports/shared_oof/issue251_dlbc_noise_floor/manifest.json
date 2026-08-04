@@ -1,0 +1,72 @@
+{
+  "policy_version": 1,
+  "issue_number": 341,
+  "approval_url": "https://github.com/fabxoe/open_cancer/issues/341",
+  "analysis_issue_url": "https://github.com/fabxoe/open_cancer/issues/251",
+  "source_commit": "08400ad02579d7ffc8745ba139b64d8eaf480b8b",
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/issue-251-dlbc-noise-floor-v1",
+  "generation_command": "for seed in 1001 1002 2001 2002 2003; do uv run python scripts/diag_exp094_seed_variant.py $seed; done",
+  "class_order": [
+    "ACC",
+    "BLCA",
+    "BRCA",
+    "CESC",
+    "COAD",
+    "DLBC",
+    "GBMLGG",
+    "HNSC",
+    "KIPAN",
+    "KIRC",
+    "LAML",
+    "LGG",
+    "LIHC",
+    "LUAD",
+    "LUSC",
+    "OV",
+    "PAAD",
+    "PCPG",
+    "PRAD",
+    "SARC",
+    "SKCM",
+    "STES",
+    "TGCT",
+    "THCA",
+    "THYM",
+    "UCEC"
+  ],
+  "contains_true_labels": false,
+  "contains_raw_features": false,
+  "contains_test_probabilities": false,
+  "artifacts": [
+    {
+      "path": "reports/shared_oof/issue251_dlbc_noise_floor/diag_exp094_seed1001_oof.csv",
+      "size_bytes": 3465310,
+      "sha256": "7807086ab61f7aa4f1d913cd36d7660c163dc3560f17282b5725a8180f5bf4c0",
+      "rows": 6201
+    },
+    {
+      "path": "reports/shared_oof/issue251_dlbc_noise_floor/diag_exp094_seed1002_oof.csv",
+      "size_bytes": 3462482,
+      "sha256": "6dbf7dbc16713fb7f02030e2278c2523248c6e180e4aad30abb4f07b3f61adfd",
+      "rows": 6201
+    },
+    {
+      "path": "reports/shared_oof/issue251_dlbc_noise_floor/diag_exp094_seed2001_oof.csv",
+      "size_bytes": 3463459,
+      "sha256": "3394132bbf34e81a1ab2f2b4f69148c927de8292f5df02e201f0096a5255c417",
+      "rows": 6201
+    },
+    {
+      "path": "reports/shared_oof/issue251_dlbc_noise_floor/diag_exp094_seed2002_oof.csv",
+      "size_bytes": 3462275,
+      "sha256": "c4ee1dbf4750ec33bd7290d480e03949e0f740c954a73b4f22fefc968f2cd0bc",
+      "rows": 6201
+    },
+    {
+      "path": "reports/shared_oof/issue251_dlbc_noise_floor/diag_exp094_seed2003_oof.csv",
+      "size_bytes": 3462363,
+      "sha256": "4ede4cd879c870ab6762564b0628c2419864c8b1792037eaba610054bccb665a",
+      "rows": 6201
+    }
+  ]
+}

@@ -45,5 +45,5 @@ body:
           required: true
         - label: 이 저장소가 공개 저장소이면 GitHub Release asset도 공개 다운로드된다는 점을 확인했습니다.
           required: true
-        - label: 받은 models, OOF, preds 파일은 Git에 commit하지 않습니다.
+        - label: 받은 models·preds와 승인되지 않은 OOF는 Git에 commit하지 않습니다. 팀장 승인 소형 OOF 예외는 reports/shared_oof/ 정책을 따릅니다.
           required: true

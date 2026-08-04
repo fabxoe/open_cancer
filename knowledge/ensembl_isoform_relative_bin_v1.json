@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "snapshot_name": "ensembl_grch38_release_116_isoform_relative_bin_v1",
+  "species": "Homo sapiens",
+  "assembly": "GRCh38",
+  "ensembl_release": 116,
+  "retrieved_at": "2026-08-04T02:57:00+09:00",
+  "competition_external_annotation_permission": "CONFIRMED_ALLOWED_TRACK_B_B2_RELATIVE_BIN_TEAM_LEAD_EXCEPTION",
+  "permission_scope": "Track B Issue #307 predeclared B2-3 isoform-relative coarse-bin implementation and first canonical Experiment",
+  "permission_recorded_at": "2026-08-04",
+  "permission_authority": "team lead explicit instruction",
+  "team_lead_exception_reference": "https://github.com/fabxoe/open_cancer/issues/307#issuecomment-5170091157",
+  "sources": [
+    {
+      "role": "gene_annotation_gtf",
+      "filename": "Homo_sapiens.GRCh38.116.gtf.gz",
+      "url": "https://ftp.ensembl.org/pub/release-116/gtf/homo_sapiens/Homo_sapiens.GRCh38.116.gtf.gz",
+      "sha256": "ed992f0eac7197d9627bda618f8f831ba355c95bd5d0796af785387d462828b6"
+    },
+    {
+      "role": "protein_fasta",
+      "filename": "Homo_sapiens.GRCh38.pep.all.fa.gz",
+      "url": "https://ftp.ensembl.org/pub/release-116/fasta/homo_sapiens/pep/Homo_sapiens.GRCh38.pep.all.fa.gz",
+      "sha256": "9b43da92651b35814597af6a8b18f500b768679a49fa4678224f384917ce7668"
+    }
+  ],
+  "feature_contract": {
+    "priority": ["MANE_MATCH", "CANONICAL_MATCH", "OTHER_ISOFORM_MATCH"],
+    "tie_break": ["transcript_id", "protein_id"],
+    "bin_edges": [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
+    "unmapped_value": 0,
+    "observed_indicator": true
+  },
+  "interpretation_limits": [
+    "Competition input does not contain transcript identifiers.",
+    "The deterministic representative sequence is not claimed to be the expressed tumour isoform.",
+    "SUBCLASS, test distribution and Public leaderboard do not define the transform.",
+    "No external patient records, cancer frequencies, clinical labels or learned thresholds are used."
+  ]
+}

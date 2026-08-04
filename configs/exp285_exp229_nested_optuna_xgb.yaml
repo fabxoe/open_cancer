@@ -1,0 +1,117 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-285
+issue_number: 285
+slug: exp229_nested_optuna_xgb
+parent_experiment: EXP-229
+component_experiments:
+  - EXP-094
+  - EXP-096
+  - EXP-219
+  - EXP-223
+  - EXP-229
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mutation_type:
+    enabled: true
+  robust_aggregates:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+  residue_position:
+    enabled: true
+    aggregates:
+      - max
+    missing_policy: zero
+    complex_tokens: include
+    transform: raw
+hotspots:
+  table: extended_34
+  evidence_scope: additions_15
+  minimum_matching_train_rows: 5
+external_knowledge:
+  file: knowledge/canonical_pathways_sanchez_vega_v1.json
+  organizer_approval_reference: https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180
+  source_commit: 7d29965de6ac8d0c6ec18c383f6dff8a48d562e7
+  source_sha256: a625675d03fa314eb27f3ab731524de13621a35aecd8edb7c67878f2d89ae07a
+abc_families:
+  fixed_pathway_burden:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    groups: 10
+    values:
+      - mutated_gene_count
+      - lof_gene_count
+    output_dimension: 20
+  pathway_mutation_type_composition:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    groups: 10
+    values:
+      - missense_gene_count
+      - synonymous_gene_count
+      - nonsense_gene_count
+      - frameshift_gene_count
+      - complex_gene_count
+    candidate_output_dimension: 50
+    semantic_equivalence_filter: fold_train_against_feature_spec_v1
+  functional_role_burden:
+    enabled: false
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cuda
+  n_jobs: 12
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - feature_spec_v1
+    - fixed_pathway_mutated_and_lof_gene_counts
+    - fixed_pathway_mutation_type_gene_counts
+nested_optuna:
+  enabled: true
+  fit_scope: outer_train_inner_cv_only
+  inner_n_splits: 3
+  n_trials_per_outer_fold: 30
+  sampler: TPE
+  sampler_seed_policy: 42_plus_outer_fold
+  objective: inner_oof_macro_f1
+  search_space:
+    max_depth: [4, 8]
+    min_child_weight: [1.0, 10.0]
+    subsample: [0.5, 0.9]
+    colsample_bytree: [0.5, 0.9]
+    reg_alpha: [0.0, 1.0]
+    reg_lambda: [0.5, 5.0]
+    learning_rate: [0.02, 0.08, log]
+  forbidden_selection_inputs:
+    - outer_validation
+    - test
+    - public_leaderboard
+notes: >-
+  Issue #285. EXP-229 feature definitions, canonical folds, class weighting,
+  and validation Macro-F1 checkpoint policy are held fixed. Each outer fold's
+  XGBoost hyperparameters are selected exclusively by 3-fold CV within that
+  outer fold's training partition. TPE uses seed 42 + outer fold and exactly
+  30 completed trials. Outer validation, test distribution, and Public LB do
+  not select trials or parameters. The official run uses a Secure Cloud RTX
+  4090 and results are recovered before the Pod is deleted.
+comparison_metrics_path: reports/exp229_pathway_mutation_types/metrics.json

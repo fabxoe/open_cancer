@@ -1,0 +1,108 @@
+{
+  "experiment_id": "EXP-272",
+  "issue_number": 272,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "5913bf49e920d5e1ff36e9ff56bf9f16aa90f40b",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp272_exp219_multiseed_ensemble/data_manifest.json",
+  "environment": "reproducibility/exp272_exp219_multiseed_ensemble/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-03T13:17:22.234823+00:00",
+  "artifacts": [
+    {
+      "kind": "submission",
+      "path": "submissions/exp272_exp219_multiseed_ensemble.csv",
+      "size_bytes": 38146,
+      "sha256": "f6761de34a8e991c11fccc590fb448c3e48b2e1bf9abd45f4f4f2763cbdc3d89",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp272_exp219_multiseed_ensemble.csv",
+      "size_bytes": 2871468,
+      "sha256": "8dfd29e1d0046752a4b3aad651b2d0d0f2040fe62250621bdcffeab96d283193",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp272_exp219_multiseed_ensemble_test_proba.csv",
+      "size_bytes": 1136904,
+      "sha256": "209c32b31d133a897c9e804a71d976fc1615706e91ecc9af792cf6cd60f7854d",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp272_exp219_multiseed_ensemble/metrics.json",
+      "size_bytes": 11269,
+      "sha256": "db3daa613014797c6324e27ff29d9f7e963cf0f36bc4fd3648abea90117b56a6",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp272_exp219_multiseed_ensemble/config.resolved.yaml",
+      "size_bytes": 66829,
+      "sha256": "cc864c56dd7cbed51a6ff91419971f8a519a5573cdc764bb4e749ff0c8f5e2ea",
+      "storage_uri": null
+    },
+    {
+      "kind": "comparison",
+      "path": "reproducibility/exp272_exp219_multiseed_ensemble/comparison.json",
+      "size_bytes": 565,
+      "sha256": "71d38b786c212e16ff95e3952b47b28564321c7fe0cbd57aa1f31fb2a70c807c",
+      "storage_uri": null
+    },
+    {
+      "kind": "seed_summary",
+      "path": "reports/exp272_exp219_multiseed_ensemble/seed_summary.json",
+      "size_bytes": 83392,
+      "sha256": "5d8f59e9f2fc35a5c8427e0196e65b8fb8c2a1d8dbb76c15bbc07f0f29b4e3f7",
+      "storage_uri": null
+    },
+    {
+      "kind": "seed_artifact_manifest",
+      "path": "reproducibility/exp272_exp219_multiseed_ensemble/seeds/seed_042/artifact_manifest.json",
+      "size_bytes": 4894,
+      "sha256": "73d2106f21c556759b9a27a970166ca6446a557314a987529617d6f8e7f44776",
+      "storage_uri": null
+    },
+    {
+      "kind": "seed_artifact_manifest",
+      "path": "reproducibility/exp272_exp219_multiseed_ensemble/seeds/seed_142/artifact_manifest.json",
+      "size_bytes": 4894,
+      "sha256": "03612964904604e0b4965da5eba7ec159ae36b261af3a5ad6e5f9c598b565911",
+      "storage_uri": null
+    },
+    {
+      "kind": "seed_artifact_manifest",
+      "path": "reproducibility/exp272_exp219_multiseed_ensemble/seeds/seed_242/artifact_manifest.json",
+      "size_bytes": 4895,
+      "sha256": "b904de629e5355e9523fc037978256a00da8d0f8ba83126263716ae9a164c48f",
+      "storage_uri": null
+    },
+    {
+      "kind": "seed_artifact_manifest",
+      "path": "reproducibility/exp272_exp219_multiseed_ensemble/seeds/seed_342/artifact_manifest.json",
+      "size_bytes": 4895,
+      "sha256": "06cea0c26af402e39a42eda324457e3a75c7a7ad19f1879ca333a2f1faa40cec",
+      "storage_uri": null
+    },
+    {
+      "kind": "seed_artifact_manifest",
+      "path": "reproducibility/exp272_exp219_multiseed_ensemble/seeds/seed_442/artifact_manifest.json",
+      "size_bytes": 4895,
+      "sha256": "03cf819d42b97b92c81af5454133b8bb18e9713a0ba5ffb1682dccfbc0610c43",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

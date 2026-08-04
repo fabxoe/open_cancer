@@ -1,0 +1,54 @@
+{
+  "note": "Ad-hoc post-hoc analysis (not part of the official runner): recomputes OOF Macro F1 excluding DLBC, reusing the saved per-fold offsets from offset_search_detail.json applied to the EXP-219 baseline OOF.",
+  "excluded_class": "DLBC",
+  "oof_macro_f1_25cls_before": 0.42197857469086025,
+  "oof_macro_f1_25cls_after": 0.42895368184100646,
+  "oof_macro_f1_25cls_delta": 0.006975107150146209,
+  "fold_breakdown": [
+    {
+      "outer_fold": 0,
+      "macro_f1_25cls_before": 0.42345192888772415,
+      "macro_f1_25cls_after": 0.4249349999889303,
+      "macro_f1_25cls_delta": 0.001483071101206157,
+      "macro_f1_26cls_before": 0.4211513302242103,
+      "macro_f1_26cls_after": 0.42141185896371497,
+      "macro_f1_26cls_delta": 0.0002605287395046618
+    },
+    {
+      "outer_fold": 1,
+      "macro_f1_25cls_before": 0.4186772514721099,
+      "macro_f1_25cls_after": 0.42609245750566976,
+      "macro_f1_25cls_delta": 0.007415206033559885,
+      "macro_f1_26cls_before": 0.42355330124066504,
+      "macro_f1_26cls_after": 0.42508890144775957,
+      "macro_f1_26cls_delta": 0.001535600207094534
+    },
+    {
+      "outer_fold": 2,
+      "macro_f1_25cls_before": 0.4060355484580731,
+      "macro_f1_25cls_after": 0.4125283097778598,
+      "macro_f1_25cls_delta": 0.006492761319786711,
+      "macro_f1_26cls_before": 0.41139781757332206,
+      "macro_f1_26cls_after": 0.41023649695834935,
+      "macro_f1_26cls_delta": -0.0011613206149727051
+    },
+    {
+      "outer_fold": 3,
+      "macro_f1_25cls_before": 0.425949280099727,
+      "macro_f1_25cls_after": 0.4349512610140578,
+      "macro_f1_25cls_delta": 0.009001980914330798,
+      "macro_f1_26cls_before": 0.42140093500713394,
+      "macro_f1_26cls_after": 0.41822236635967097,
+      "macro_f1_26cls_delta": -0.003178568647462965
+    },
+    {
+      "outer_fold": 4,
+      "macro_f1_25cls_before": 0.43378366191002793,
+      "macro_f1_25cls_after": 0.4364230759341154,
+      "macro_f1_25cls_delta": 0.002639414024087461,
+      "macro_f1_26cls_before": 0.43248429029810376,
+      "macro_f1_26cls_after": 0.43502218839818785,
+      "macro_f1_26cls_delta": 0.0025378981000840906
+    }
+  ]
+}

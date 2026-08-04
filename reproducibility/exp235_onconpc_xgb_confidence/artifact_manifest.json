@@ -3,74 +3,74 @@
   "issue_number": 235,
   "reproducibility_status": "INFERENCE_VERIFIED",
   "source_commit": "f3efedce60aafebf8831a4f4cbc4a04e413bc6c8",
-  "source_tag": null,
+  "source_tag": "exp-235-repro-v1",
   "dirty_worktree": false,
   "data_manifest": "reproducibility/exp235_onconpc_xgb_confidence/data_manifest.json",
   "environment": "reproducibility/exp235_onconpc_xgb_confidence/environment.json",
-  "release_url": null,
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-235-repro-v1",
   "artifacts": [
     {
       "kind": "checkpoint",
       "path": "models/exp235_onconpc_xgb_confidence/fold_00.json",
       "size_bytes": 25818359,
       "sha256": "b0a70feef73e6169a8ee618680cb590d552e7d70aba210cf82a3d76b47128614",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-235-repro-v1/exp235_onconpc_xgb_confidence_repro.tar.gz#models/exp235_onconpc_xgb_confidence/fold_00.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp235_onconpc_xgb_confidence/fold_01.json",
       "size_bytes": 24639162,
       "sha256": "4113bb0a8883c71164bf2eed41ab913c2ccbac53a195944de5fc5a18afe27a7f",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-235-repro-v1/exp235_onconpc_xgb_confidence_repro.tar.gz#models/exp235_onconpc_xgb_confidence/fold_01.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp235_onconpc_xgb_confidence/fold_02.json",
       "size_bytes": 24336268,
       "sha256": "89d385f43b8dee082af18b8db5349ac7a9048b60a8bc2e89db2bad52cf7287cf",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-235-repro-v1/exp235_onconpc_xgb_confidence_repro.tar.gz#models/exp235_onconpc_xgb_confidence/fold_02.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp235_onconpc_xgb_confidence/fold_03.json",
       "size_bytes": 24674638,
       "sha256": "866acd51bd7461f88acb6a7ed2a11289086897bb75baaa1efe7fdf152b68f0aa",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-235-repro-v1/exp235_onconpc_xgb_confidence_repro.tar.gz#models/exp235_onconpc_xgb_confidence/fold_03.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp235_onconpc_xgb_confidence/fold_04.json",
       "size_bytes": 25904965,
       "sha256": "485b6cf793c8231e685d8982f30e9fa76c2e3cf37ae36646acd0c1b5e302e3ad",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-235-repro-v1/exp235_onconpc_xgb_confidence_repro.tar.gz#models/exp235_onconpc_xgb_confidence/fold_04.json"
     },
     {
       "kind": "oof_probability",
       "path": "oof/exp235_onconpc_xgb_confidence.csv",
       "size_bytes": 3540756,
       "sha256": "5c85f5e886041bdfd0d8819c3eb5faac4311fc4b3bb31dec1378d837ec8d4601",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-235-repro-v1/exp235_onconpc_xgb_confidence_repro.tar.gz#oof/exp235_onconpc_xgb_confidence.csv"
     },
     {
       "kind": "submission",
       "path": "submissions/exp235_onconpc_xgb_confidence.csv",
       "size_bytes": 38127,
       "sha256": "5df26dfb604094254074e3ba38c5455d721c6d64973a9cde56a098a17e1b3b48",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-235-repro-v1/exp235_onconpc_xgb_confidence_repro.tar.gz#submissions/exp235_onconpc_xgb_confidence.csv"
     },
     {
       "kind": "test_probability",
       "path": "preds/exp235_onconpc_xgb_confidence_test_proba.csv",
       "size_bytes": 1414567,
       "sha256": "aaedcf8b5da4274fb504b559870100da6649192bd4a2fc7b98484943dc89b686",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-235-repro-v1/exp235_onconpc_xgb_confidence_repro.tar.gz#preds/exp235_onconpc_xgb_confidence_test_proba.csv"
     },
     {
       "kind": "resolved_config",
       "path": "reproducibility/exp235_onconpc_xgb_confidence/config.resolved.yaml",
       "size_bytes": 5067,
       "sha256": "e9b4c6b585a2e37cb757fb840fcc7c7bbecc86f1154a36f6308d97c9821d376b",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-235-repro-v1/exp235_onconpc_xgb_confidence_repro.tar.gz#reproducibility/exp235_onconpc_xgb_confidence/config.resolved.yaml"
     },
     {
       "kind": "metrics",
@@ -78,10 +78,17 @@
       "size_bytes": 11100,
       "sha256": "74e90ba285ae589fd02024fa11364a50a8de337bd1e4f4f51477cd432dbacd1e",
       "storage_uri": null
+    },
+    {
+      "kind": "release_bundle",
+      "path": "release-assets/exp235_onconpc_xgb_confidence_repro.tar.gz",
+      "size_bytes": 32262478,
+      "sha256": "673d4b49c0adc8c527b6e1ae68ccbb458945cfb5dcf19176a6ba24c43afa4de0",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-235-repro-v1/exp235_onconpc_xgb_confidence_repro.tar.gz"
     }
   ],
   "verifier": "Gomin-art",
-  "verified_at": "2026-08-03T11:44:41.876258+00:00",
+  "verified_at": "2026-08-04T06:07:52.821402+00:00",
   "verification": {
     "data_hashes_match": true,
     "submission_sha256_match": true,

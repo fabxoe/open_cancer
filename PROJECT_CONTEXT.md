@@ -45,8 +45,9 @@ AI는 작업 전에 다음을 확인한다.
 1. 현재 브랜치가 해당 Issue 번호를 포함하는가.
 2. `main`에서 분기했으며 최신 `origin/main`이 반영되었는가.
 3. 현재 브랜치에서 연결된 Issue 번호를 정확히 추출할 수 있는가.
-4. 로컬 원본 데이터 해시가 기준과 일치하며, 원본·가공 데이터·모델·OOF·비밀
-   파일이 Git에 포함되지 않는가.
+4. 로컬 원본 데이터 해시가 기준과 일치하며, 원본·가공 데이터·모델·비밀 파일과
+   승인되지 않은 OOF가 Git에 포함되지 않는가. 팀장 승인 소형 확률 OOF 예외는
+   `reports/shared_oof/` manifest와 CI 검증을 반드시 갖춘다.
 5. 공식 실험이라면 실행 코드가 기본값까지 포함한 resolved config를 저장하는가.
 
 ---
@@ -132,6 +133,45 @@ SKCM, STES, TGCT, THCA, THYM, UCEC
 - 외부 데이터를 사용할 경우 출처, 버전, 라이선스, 다운로드 일시와 파일 해시를
   반드시 기록한다.
 
+### Track B Ensembl annotation 한정 예외
+
+2026-08-04 팀장 승인에 따라 Task Issue #311과 그 구현에서 파생되는 첫 번째
+불확실 residue-position mask 공식 실험에만 Ensembl release 116의 정적
+GRCh38 GTF·protein FASTA annotation을 사용할 수 있다.
+
+- 허용: MANE Select, Ensembl canonical, 알려진 protein isoform sequence에 대한
+  입력 변이 token의 위치·reference amino-acid 일치 범주
+- 허용 목적: `POSITION_VALID_REF_MISMATCH`, `OUTSIDE_ALL_KNOWN_ISOFORMS`,
+  `COMPLEX_OR_UNMAPPABLE` token을 residue-position 집계에서 제외하는 사전 고정 mask
+- 금지: 외부 환자 자료, 암종별 변이 빈도, 임상 label·위험도·치료 정보, test 분포나
+  Public LB를 본 규칙·threshold 조정
+- 분리: sample 범주 요약과 isoform-relative bin은 #311 예외에 포함하지 않으며
+  별도 Issue와 명시적 범위 검토가 필요하다.
+
+2026-08-04 추가 팀장 승인으로 Task Issue #315와 그 구현에서 파생되는 첫
+`sample 범주 요약` 공식 실험에도 같은 Ensembl release 116 snapshot을 사용할 수
+있다. EXP-313의 manifest SHA-256을 보존하기 위해 기존 manifest를 수정하지 않고
+`knowledge/ensembl_isoform_annotation_b2_summary_v1.json`을 별도 revision으로
+사용한다. 허용 피처는 여섯 상호 배타 의미 범주의 token `count`와 `any` indicator
+각 1개, 총 12개로 고정한다. ratio, 학습 threshold, 암종별 가중치와 test/Public
+기반 변경은 허용하지 않는다. isoform-relative bin은 여전히 별도 Issue 승인이
+필요하다.
+
+2026-08-04 Task Issue #307의 팀장 승인 범위를 B2-3까지 명시적으로 확장하고,
+구현은 별도 Task Issue #325에서 관리한다. 과거 EXP-313·317 manifest의 해시를
+보존하기 위해 `knowledge/ensembl_isoform_relative_bin_v1.json`을 별도 revision으로
+사용한다. simple substitution이 일치하는 sequence는 MANE Select → Ensembl
+canonical → other protein-coding isoform 순으로 선택하고, 같은 우선순위에서는
+transcript ID·protein ID 사전순으로 대표 sequence를 고정한다. 잔기 위치를 대표
+protein 길이로 나눈 값은 사전 고정 5개 구간으로 변환한다. 일치하지 않거나 복잡한
+token은 값 0과 observed indicator로 구분한다. 이 값은 실제 발현 transcript나
+임상적 isoform의 정답으로 해석하지 않는다. SUBCLASS·test 분포·Public LB로
+우선순위, bin 경계나 대표 sequence를 변경하지 않는다.
+
+resolved config에는 Ensembl release, assembly, manifest·annotation cache 경로와
+SHA-256, 승인 근거 Issue comment URL을 저장한다. 이 예외는 프로젝트의 기본값인
+`외부 데이터 사용 안 함`을 일반적으로 변경하지 않는다.
+
 대회 원본 CSV와 여기서 직접 생성한 데이터 리포트는 주최측 정책에 따라 GitHub에
 올리지 않는다. 팀원은 주최측 공식 다운로드 또는 팀에서 승인한 비공개 전달
 방법으로 원본 CSV 3개를 받은 뒤 로컬 `data/raw/`에 배치한다. `data/raw/*`는
@@ -162,6 +202,7 @@ models/            fold별 checkpoint, Git 제외
 oof/               학습 데이터 OOF 확률, Git 제외
 preds/             테스트 확률, Git 제외
 reports/           실험별 README, 지표 JSON, 경량 CSV와 분석 자료
+reports/shared_oof/ 팀장 승인 소형 OOF 확률의 Git 편의 복제본과 manifest
 reports/plans/     여러 Issue에 걸친 장기 실행 계획과 단계별 진행 상태
 reproducibility/   재현성 manifest와 비교 증빙; 대형 번들은 Release에 저장
 submissions/       검증을 통과한 제출 CSV
@@ -774,8 +815,9 @@ Codex와 Claude Code는 작업 시작 시 이 절을 읽고, 브라우저·메�
    SHA-256, 각 파일의 크기·SHA-256, archive 경로 안전성을 검증한다. 해시가 같은
    기존 파일은 재사용하고, 다른 파일은 `--overwrite` 없이는 덮어쓰지 않는다.
 6. 복원 위치는 manifest의 표준 상대경로인 `models/`, `oof/`, `preds/`와
-   `reproducibility/`이다. `models/`, `oof/`, `preds/`와 다운로드 archive는 Git
-   제외 대상이며 commit, PR, Issue 첨부물로 올리지 않는다.
+   `reproducibility/`이다. `models/`, `oof/`, `preds/`와 다운로드 archive는 기본적으로
+   Git 제외 대상이다. 아래의 팀장 승인 소형 OOF 확률 예외만
+   `reports/shared_oof/`에 별도 편의 복제본을 둘 수 있다.
 7. raw data와 외부 라이선스 데이터는 어떤 팀 공유 bundle에도 포함하지 않는다.
    공개 저장소의 GitHub Release asset은 외부에서도 다운로드할 수 있다. 대회 규정
    또는 라이선스상 공개할 수 없는 산출물은 public Release에 올리지 말고, 팀이
@@ -786,6 +828,33 @@ Codex와 Claude Code는 작업 시작 시 이 절을 읽고, 브라우저·메�
 
 Issue는 책임과 완료 상태를 추적하고, Release는 대형 immutable 파일을 보관하며,
 manifest는 파일의 정체성과 해시를 증명한다. 이 세 역할을 하나로 섞지 않는다.
+
+#### 팀장 승인 소형 OOF 확률의 Git 공유 예외
+
+팀원이 자주 비교·검산하는 소형 OOF 확률은 매번 Release를 내려받지 않아도 되도록
+일반 Task Issue에서 팀장 승인을 받은 경우에만 Git 편의 복제본을 허용한다. Release와
+artifact manifest를 없애는 정책이 아니라 협업 접근성을 위한 제한적 추가 경로다.
+
+- 허용 경로는 `reports/shared_oof/<issue-or-analysis-slug>/`뿐이다. 일반 `oof/`는
+  계속 Git 제외 경로로 유지한다.
+- CSV에는 `ID`와 위에 고정한 순서의 26개 클래스 OOF 예측 확률만 포함한다.
+  `SUBCLASS`, `SUBCLASS_TRUE`, target/label, fold, 원본 변이값, test 확률,
+  개인정보와 외부 비공개 데이터는 포함하지 않는다.
+- 프로젝트 자체의 파일당 별도 한도는 두지 않는다. 대신 한 승인 Issue/manifest의
+  전체 CSV 합계는 25 MiB, 저장소의 tracked shared OOF 누적 합계는 300 MiB 이하로
+  유지한다. 이를 넘으면 Release만 사용한다. GitHub 플랫폼의 단일 파일 제한은
+  별도로 적용된다.
+- 각 디렉터리의 `manifest.json`에는 승인 Issue URL, 원 실행 source commit,
+  생성 명령, 고정 클래스 순서, immutable Release URL, 파일 상대경로·크기·행 수·
+  SHA-256을 기록한다.
+- shared OOF는 immutable Release 원본의 편의 복제본이다. 공식 재현 상태,
+  checkpoint, test 확률, submission과 resolved config는 계속 실험별
+  artifact manifest·Release bundle로 관리한다.
+- 새 shared OOF 추가 PR은 `uv run python scripts/validate_shared_oof.py`를 통과해야
+  하며 CI가 schema, ID 고유성, 26개 클래스 순서, 확률 범위·행 합, 크기와 해시를
+  검사한다.
+- 기존 공유본을 조용히 덮어쓰지 않는다. 내용이 바뀌면 새 Issue 또는 명시적인
+  revision 디렉터리를 만들고 Release version과 SHA-256도 함께 갱신한다.
 
 ---
 
@@ -960,7 +1029,8 @@ push를 허용한다. 실제 프로젝트 파일은 프로젝트 초기화 Issue
 - [ ] PR 본문에 `Closes #번호`가 있다.
 - [ ] 로컬 `data/raw/` 원본의 크기와 해시가 기준과 일치하고 Git에 추적·staged되지
   않았다.
-- [ ] 가공 데이터, 모델, OOF, 비밀 파일이 Git에 없다.
+- [ ] 가공 데이터, 모델, 비밀 파일과 승인되지 않은 OOF가 Git에 없다. 승인된 소형
+      OOF는 `reports/shared_oof/` manifest와 CI 검증을 갖춘다.
 - [ ] CI `quality`가 통과했다.
 - [ ] 팀원들이 최신 변경을 확인했다.
 - [ ] 현재 최고/최종 후보는 비작성자의 재학습 검증을 통과했다.

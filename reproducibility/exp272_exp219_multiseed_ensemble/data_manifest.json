@@ -1,0 +1,70 @@
+{
+  "verified_at": "2026-08-03T13:17:22.234823+00:00",
+  "files": [
+    {
+      "path": "data/splits/stratified_5fold_seed42.csv",
+      "size_bytes": 80621,
+      "sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf"
+    },
+    {
+      "path": "data/raw/test.csv",
+      "size_bytes": 35068585,
+      "sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+    },
+    {
+      "path": "data/raw/sample_submission.csv",
+      "size_bytes": 35656,
+      "sha256": "1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84"
+    },
+    {
+      "path": "oof/exp272_exp219_multiseed_ensemble/seeds/seed_042.csv",
+      "size_bytes": 2119871,
+      "sha256": "64bf5b289d5af4c3204a59424e6322794e9620d79258a753d69da2d7f5b94e2b"
+    },
+    {
+      "path": "oof/exp272_exp219_multiseed_ensemble/seeds/seed_142.csv",
+      "size_bytes": 2102004,
+      "sha256": "b3199222f0f64eecdb28914ba5b3f5dd6963ea32c6bef5794cda52fbf1ad056c"
+    },
+    {
+      "path": "oof/exp272_exp219_multiseed_ensemble/seeds/seed_242.csv",
+      "size_bytes": 2112763,
+      "sha256": "1c19e5b79062fa8b13c6786f755cfa6136109e99d797b3a7b2efe016ddc92318"
+    },
+    {
+      "path": "oof/exp272_exp219_multiseed_ensemble/seeds/seed_342.csv",
+      "size_bytes": 2137134,
+      "sha256": "ddd159dc2fffcf203be54193ab5b1e8841ef0660ff7b0243bb3c5170f4753af0"
+    },
+    {
+      "path": "oof/exp272_exp219_multiseed_ensemble/seeds/seed_442.csv",
+      "size_bytes": 2115499,
+      "sha256": "b11652409f837cfbf5d0880621ea7f82dd4b7d6d98e7206a75f535aec109deef"
+    },
+    {
+      "path": "preds/exp272_exp219_multiseed_ensemble/seeds/seed_042_test_proba.csv",
+      "size_bytes": 830609,
+      "sha256": "b78cae6e19ccbe263f1a54bc14762e4593089a073eb26c720a8db01fa2752bc3"
+    },
+    {
+      "path": "preds/exp272_exp219_multiseed_ensemble/seeds/seed_142_test_proba.csv",
+      "size_bytes": 815208,
+      "sha256": "9817a478e8c3b3ecbf91608baaf846e345e325cadc700b92927bd4d465af5fd6"
+    },
+    {
+      "path": "preds/exp272_exp219_multiseed_ensemble/seeds/seed_242_test_proba.csv",
+      "size_bytes": 821228,
+      "sha256": "553fef80dd821f4c844a1a57d5e91210ebddbae45d23c2cf22f26d3556ab89ef"
+    },
+    {
+      "path": "preds/exp272_exp219_multiseed_ensemble/seeds/seed_342_test_proba.csv",
+      "size_bytes": 837184,
+      "sha256": "39de64da34909ab6ee5dacb8bacf301cf65b2e10a4c3f334383b930d19f48e9f"
+    },
+    {
+      "path": "preds/exp272_exp219_multiseed_ensemble/seeds/seed_442_test_proba.csv",
+      "size_bytes": 824377,
+      "sha256": "567923e405b647ae51562b4a719e510e6509b889b84a6ab4ec8823bf95d93289"
+    }
+  ]
+}

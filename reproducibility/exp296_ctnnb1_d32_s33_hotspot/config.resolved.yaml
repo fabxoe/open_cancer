@@ -1,0 +1,114 @@
+experiment:
+  issue_number: 296
+  experiment_id: EXP-296
+  branch: issue-296-ctnnb1-d32-s33-hotspot
+  owner: Kangho Park
+  source_commit: a5395390fe724cece6afffd09ae24039c03cc82d
+  started_at: '2026-08-03T15:24:07.542781+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  n_splits: 5
+  seed: 42
+base_feature_spec:
+  name: v1
+  base_experiment: EXP-094
+  base_feature_spec_sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+  source_config: configs/exp094_feature_spec_v1.yaml
+  source_config_sha256: 4282727de03bd0f31989fdcce61d65530ba69e339e6dce1fe7f72fa85ebd57c4
+  train_shape:
+  - 6201
+  - 35119
+  test_shape:
+  - 2546
+  - 35119
+  feature_names_sha256: 8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf
+ctnnb1_family:
+  ctnnb1_d32:
+    definition_version: 1.0.0
+    enabled: true
+    output_dimension: 1
+    feature_names_sha256: 1442b9e029b3ba0ea423bd37dd0af09132f4f9be7bb5901232a348c1769d5161
+    fit_scope: stateless
+    external_knowledge: null
+  ctnnb1_s33:
+    definition_version: 1.0.0
+    enabled: true
+    output_dimension: 1
+    feature_names_sha256: bf4fd39b2e59f7ea4bf2f9267f9cbb8037f06f333d28199429aefd57fb05de2e
+    fit_scope: stateless
+    external_knowledge: null
+semantic_equivalence_check:
+  reference: frozen Feature Spec v1 (includes hotspot__CTNNB1_37/45)
+  matches: {}
+  note: empty dict means neither hotspot__CTNNB1_32 nor hotspot__CTNNB1_33 is byte-identical
+    to any existing v1 column on train rows
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  official_model_seed_base: 42
+  stability_check_model_seeds:
+  - 1001
+  - 1002
+  - 1003
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]
+  platform: Windows-10-10.0.26200-SP0
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: 87876a7c41c030503ed1b95a2d1254c5ab395cfbb865c7538fa5de42bd28902a
