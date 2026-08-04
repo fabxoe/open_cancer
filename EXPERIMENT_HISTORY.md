@@ -7,13 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 81
+- 실제 실험 수: 82
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
 - 최고 Public LB Macro F1: 0.3407944343 (`EXP-369`)
 - 최고 재현 검증 모델: `EXP-334` (`INFERENCE_VERIFIED`)
-- 최종 갱신일: 2026-08-04
+- 최종 갱신일: 2026-08-05
 
 ## 실험 요약
 
@@ -100,6 +100,7 @@
 | EXP-355 | COMPLETED | fabxoe | #355 | EXP-229 raw complex token count를 normalized non-simple unique-gene count로 교체 | 0.4176342820 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0053543·Log Loss +0.0263959·DLBC -0.06258로 R1 기각, R2는 독립 실행 | [보고서](reports/exp355_robust_complex_gene_count/README.md) |
 | EXP-359 | COMPLETED | fabxoe | #359 | EXP-229 generic gene complex를 normalized non-simple event-family indicator 6종으로 교체 | 0.4187813830 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0042072·Log Loss +0.0103444로 R2 기각, robust representation 공식 탐색 종료 | [보고서](reports/exp359_robust_event_gene_indicators/README.md) |
 | EXP-369 | COMPLETED | fabxoe | #369 | EXP-229의 simple stop 표기 `*`·`X`·`Ter`를 모든 피처 경로에서 동일한 nonsense로 정규화 | 0.4229885745 | 0.3407944343 | INFERENCE_VERIFIED | OOF 동일 통제에서 EXP-229 Public 대비 +0.0204345510·팀 최고 갱신, stop parser 결함이 핵심 Public 병목이었음을 확인 | [보고서](reports/exp369_stop_notation_normalization/README.md) |
+| EXP-409 | COMPLETED | fabxoe | #409 | EXP-369 + fold-train ordinary range-replacement gene indicator | 0.4249303829 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0019418이나 fold std +0.0023141·Log Loss +0.1327703으로 gate 실패, ARCHIVE | [보고서](reports/exp409_ordinary_range_replacement_indicator/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -173,6 +174,7 @@
 | 2026-08-04T07:07:59.587191+00:00 | EXP-355 | fabxoe | `b03b9163955a9978736f19925a05d356a3f7a82e` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp355_robust_complex_gene_count/comparison.json) |
 | 2026-08-04T07:36:26.479110+00:00 | EXP-359 | fabxoe | `4fbd1e267664949b515867c452ffa770405d4884` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.46e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp359_robust_event_gene_indicators/comparison.json) |
 | 2026-08-04T08:39:18.352925+00:00 | EXP-369 | fabxoe | `f49bf2209b22492d11bc5c31ab76de9af3946b59` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.40e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp369_stop_notation_normalization/comparison.json) |
+| 2026-08-04T21:45:04.915445+00:00 | EXP-409 | fabxoe | `7519b8e0dfa8e6b2c2e49d1b1ee4e7f54bc0c412` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp409_ordinary_range_replacement_indicator/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -218,6 +220,45 @@
   증거다. 이를 모든 실패 원인의 유일한 설명으로 확대하지는 않지만, 이후 모델은
   stop 정규화 parser를 새 기준으로 사용한다. Public을 본 뒤 parser 규칙을
   역조정하지 않으며 위치 sanitation·synonymous 처리는 별도 실험으로 분리한다.
+
+### [EXP-409] Ordinary range-replacement gene indicator
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #409 / `issue-409-exp-range-replacement`
+- 소스 commit: `7519b8e0dfa8e6b2c2e49d1b1ee4e7f54bc0c412`
+- 시작/종료: 2026-08-04T21:32:22.562046+00:00 /
+  2026-08-04T21:45:03.401326+00:00 (761.13초)
+
+#### 실행
+
+- Config: `configs/exp409_ordinary_range_replacement_indicator.yaml`
+- Runner: `scripts/run_exp409_ordinary_range_replacement_indicator.py`
+- Metrics: `reports/exp409_ordinary_range_replacement_indicator/metrics.json`
+- Report: `reports/exp409_ordinary_range_replacement_indicator/README.md`
+- 부모 EXP-369의 모든 조건을 고정하고 #407·#410에서 지원도가 확인된
+  ordinary range replacement의 유전자별 존재 indicator만 추가했다.
+- synonymous·stop-containing·unresolved range는 제외했고, 기존 generic
+  complex와 fold-train에서 완전히 같은 후보 열은 제거했다.
+
+#### 결과와 판단
+
+- Fold Macro F1: 0.4254628614, 0.4196702179, 0.4140080706,
+  0.4219639125, 0.4492721777
+- OOF Macro F1: 0.4249303829 (EXP-369 대비 `+0.0019418083`)
+- Fold 표준편차: 0.0121820920 (EXP-369 대비 `+0.0023141270`)
+- Accuracy: 0.4141267537 (EXP-369 대비 `+0.0016126431`)
+- Log Loss: 1.9837316275 (EXP-369 대비 `+0.1327702999`)
+- 실제 신규 피처 수: fold별 2 / 1 / 3 / 3 / 3개. 기존 피처와 동일해
+  제거된 후보는 85 / 80 / 72 / 72 / 76개였다.
+- 클래스별 최대 개선: KIRC `+0.08284`, LGG `+0.07096`; 최대 하락:
+  STES `-0.04125`, SARC `-0.03238`.
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — checkpoint 재추론 submission SHA-256
+  byte-level 일치, test 라벨 100%, 확률 최대 차이 1.48e-7
+- 결론: Macro F1 성능 하한은 통과했지만 fold 안정성과 Log Loss gate에
+  실패했다. 희소한 fold별 잔여 열 효과로 판단해 `ARCHIVE`하며 Public 제출과
+  추가 threshold·gene 탐색은 중단한다.
 
 ### [EXP-359] Normalized non-simple event-family gene indicator 교체
 
