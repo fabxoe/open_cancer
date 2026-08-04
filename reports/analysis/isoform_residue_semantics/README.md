@@ -21,6 +21,11 @@
   이 보고서 이전에 정한 세 후보만 유지한다. 2026-08-04 팀장이 Task #311과 그로부터
   파생되는 첫 번째 불확실 위치 마스크 실험에 한해 외부 annotation 사용을
   예외적으로 허용했다. 나머지 후보는 별도 Issue와 범위 확인 없이는 실행하지 않는다.
+- 후속 Issue #375에서 EXP-369 stop 표기 정규화만 적용해 동일 denominator로
+  재감사했다. test MANE_MATCH는 `53.4591% → 55.2520%`,
+  `COMPLEX_OR_UNMAPPABLE`은 `13.4351% → 9.1887%`로 개선됐다. 상세 결과는
+  [stop 표기 정규화 영향 보고서](../isoform_stop_normalization_impact/README.md)에
+  둔다.
 
 ## 고정 annotation 계약
 

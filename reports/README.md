@@ -84,6 +84,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 - [채택 XGBoost 모델 validation-only TreeSHAP 감사·시각화 노트북](analysis/adopted_model_tree_shap/README.md)
 - [고정 암종 표지 mutation-proxy 의미 감사](analysis/observable_marker_semantic_audit/README.md)
 - [Track B isoform·잔기 의미 QC](analysis/isoform_residue_semantics/README.md)
+- [Stop 표기 정규화 전후 MANE·isoform 의미 분포 재감사](analysis/isoform_stop_normalization_impact/README.md)
 - [Annotation-invariant mutation parser v2 감사](analysis/robust_mutation_parser_v2/README.md)
 - [변이 표기 정규화·의미 동등성 계약 감사](analysis/mutation_notation_semantic_contract/README.md)
 - [Stop 표기 교란 parser·feature 불변성 감사](analysis/stop_notation_invariance/README.md)

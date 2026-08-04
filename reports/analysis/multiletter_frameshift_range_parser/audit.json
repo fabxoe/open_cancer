@@ -1,0 +1,577 @@
+{
+  "record_role": "explore",
+  "issue": 378,
+  "parser_version": "3.0.0",
+  "target_used": false,
+  "patient_level_output_retained": false,
+  "public_lb_used": false,
+  "train_test_prevalence_used_to_define_grammar": false,
+  "external_annotation_used": false,
+  "multiletter_prefix_interpretation": "unresolved_without_source-format or transcript evidence",
+  "train": {
+    "source_path": "data/raw/train.csv",
+    "source_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+    "rows": 6201,
+    "gene_columns": 4384,
+    "raw_non_wt_tokens": 255164,
+    "team_examples": {
+      "1436_1437SI>RF": {
+        "occurrences": 1,
+        "genes": [
+          "CREBBP"
+        ]
+      },
+      "59_60HY>QH": {
+        "occurrences": 1,
+        "genes": [
+          "CRLF2"
+        ]
+      },
+      "300_301LE>F*": {
+        "occurrences": 1,
+        "genes": [
+          "HGF"
+        ]
+      },
+      "2126_2127WE>*K": {
+        "occurrences": 1,
+        "genes": [
+          "SPTB"
+        ]
+      },
+      "236_237LL>LL": {
+        "occurrences": 1,
+        "genes": [
+          "SLAMF7"
+        ]
+      },
+      "197_198YQ>**": {
+        "occurrences": 1,
+        "genes": [
+          "CTCF"
+        ]
+      },
+      "SDEL133fs": {
+        "occurrences": 1,
+        "genes": [
+          "ELF3"
+        ]
+      }
+    },
+    "multiletter_frameshift": {
+      "occurrences": 1218,
+      "unique_tokens": 999,
+      "affected_genes": 664,
+      "prefix_length_occurrences": {
+        "2": 837,
+        "3": 120,
+        "4": 75,
+        "5": 65,
+        "6": 36,
+        "7": 32,
+        "8": 21,
+        "9": 15,
+        "10": 5,
+        "11": 4,
+        "12": 3,
+        "13": 4,
+        "14": 1
+      },
+      "v1_event_family_occurrences": {
+        "frameshift": 1218
+      },
+      "v3_event_family_occurrences": {
+        "frameshift": 1218
+      },
+      "top_tokens": [
+        {
+          "token": "WQ288FS",
+          "occurrences": 21
+        },
+        {
+          "token": "DK218FS",
+          "occurrences": 12
+        },
+        {
+          "token": "VL317FS",
+          "occurrences": 11
+        },
+        {
+          "token": "LF1246FS",
+          "occurrences": 7
+        },
+        {
+          "token": "FI2113FS",
+          "occurrences": 7
+        },
+        {
+          "token": "MG38FS",
+          "occurrences": 5
+        },
+        {
+          "token": "ET886FS",
+          "occurrences": 5
+        },
+        {
+          "token": "SP268FS",
+          "occurrences": 5
+        },
+        {
+          "token": "EE572FS",
+          "occurrences": 4
+        },
+        {
+          "token": "RK964FS",
+          "occurrences": 4
+        },
+        {
+          "token": "RK173FS",
+          "occurrences": 4
+        },
+        {
+          "token": "RP819FS",
+          "occurrences": 4
+        },
+        {
+          "token": "AG992FS",
+          "occurrences": 4
+        },
+        {
+          "token": "QG157FS",
+          "occurrences": 4
+        },
+        {
+          "token": "FL1658FS",
+          "occurrences": 4
+        },
+        {
+          "token": "AAV85FS",
+          "occurrences": 4
+        },
+        {
+          "token": "ID761FS",
+          "occurrences": 3
+        },
+        {
+          "token": "WG529FS",
+          "occurrences": 3
+        },
+        {
+          "token": "RG898FS",
+          "occurrences": 3
+        },
+        {
+          "token": "LG286FS",
+          "occurrences": 3
+        },
+        {
+          "token": "YP948FS",
+          "occurrences": 3
+        },
+        {
+          "token": "KR41FS",
+          "occurrences": 3
+        },
+        {
+          "token": "AP199FS",
+          "occurrences": 3
+        },
+        {
+          "token": "CP389FS",
+          "occurrences": 3
+        },
+        {
+          "token": "QG294FS",
+          "occurrences": 3
+        }
+      ]
+    },
+    "range_replacement": {
+      "occurrences": 239,
+      "unique_canonical_tokens": 222,
+      "semantic_occurrences": {
+        "amino_acid_range_replacement": 109,
+        "protein_no_change": 67,
+        "translated_prefix_then_stop": 39,
+        "immediate_stop": 24,
+        "invalid_reference_span": 0
+      },
+      "top_canonical_tokens": [
+        {
+          "token": "468_469LG>F*",
+          "occurrences": 2
+        },
+        {
+          "token": "312_313QY>HH",
+          "occurrences": 2
+        },
+        {
+          "token": "82_83DA>EI",
+          "occurrences": 2
+        },
+        {
+          "token": "139_140MG>I*",
+          "occurrences": 2
+        },
+        {
+          "token": "292_293DP>ES",
+          "occurrences": 2
+        },
+        {
+          "token": "127_128KL>KL",
+          "occurrences": 2
+        },
+        {
+          "token": "929_930LL>LL",
+          "occurrences": 2
+        },
+        {
+          "token": "435_436EA>DS",
+          "occurrences": 2
+        },
+        {
+          "token": "711_712FL>FL",
+          "occurrences": 2
+        },
+        {
+          "token": "594_595ME>IK",
+          "occurrences": 2
+        },
+        {
+          "token": "1105_1106PL>PL",
+          "occurrences": 2
+        },
+        {
+          "token": "187_188PL>PL",
+          "occurrences": 2
+        },
+        {
+          "token": "1441_1442AL>AL",
+          "occurrences": 2
+        },
+        {
+          "token": "2069_2070WA>*T",
+          "occurrences": 2
+        },
+        {
+          "token": "264_265MG>I*",
+          "occurrences": 2
+        },
+        {
+          "token": "203_204LL>LL",
+          "occurrences": 2
+        },
+        {
+          "token": "483_484MP>IA",
+          "occurrences": 2
+        },
+        {
+          "token": "1529_1530AL>AL",
+          "occurrences": 1
+        },
+        {
+          "token": "142_143RL>RL",
+          "occurrences": 1
+        },
+        {
+          "token": "4510_4511AL>AL",
+          "occurrences": 1
+        },
+        {
+          "token": "355_356QG>H*",
+          "occurrences": 1
+        },
+        {
+          "token": "348_349LE>F*",
+          "occurrences": 1
+        },
+        {
+          "token": "91_92NH>KY",
+          "occurrences": 1
+        },
+        {
+          "token": "116_117LG>F*",
+          "occurrences": 1
+        },
+        {
+          "token": "123_124MP>IA",
+          "occurrences": 1
+        }
+      ]
+    }
+  },
+  "test": {
+    "source_path": "data/raw/test.csv",
+    "source_sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0",
+    "rows": 2546,
+    "gene_columns": 4384,
+    "raw_non_wt_tokens": 337512,
+    "team_examples": {
+      "1436_1437SI>RF": {
+        "occurrences": 0,
+        "genes": []
+      },
+      "59_60HY>QH": {
+        "occurrences": 0,
+        "genes": []
+      },
+      "300_301LE>F*": {
+        "occurrences": 0,
+        "genes": []
+      },
+      "2126_2127WE>*K": {
+        "occurrences": 0,
+        "genes": []
+      },
+      "236_237LL>LL": {
+        "occurrences": 0,
+        "genes": []
+      },
+      "197_198YQ>**": {
+        "occurrences": 0,
+        "genes": []
+      },
+      "SDEL133fs": {
+        "occurrences": 0,
+        "genes": []
+      }
+    },
+    "multiletter_frameshift": {
+      "occurrences": 254,
+      "unique_tokens": 239,
+      "affected_genes": 201,
+      "prefix_length_occurrences": {
+        "2": 185,
+        "3": 18,
+        "4": 21,
+        "5": 7,
+        "6": 10,
+        "7": 2,
+        "8": 9,
+        "10": 1,
+        "12": 1
+      },
+      "v1_event_family_occurrences": {
+        "frameshift": 254
+      },
+      "v3_event_family_occurrences": {
+        "frameshift": 254
+      },
+      "top_tokens": [
+        {
+          "token": "WQ288FS",
+          "occurrences": 6
+        },
+        {
+          "token": "VL317FS",
+          "occurrences": 5
+        },
+        {
+          "token": "CD621FS",
+          "occurrences": 2
+        },
+        {
+          "token": "SP224FS",
+          "occurrences": 2
+        },
+        {
+          "token": "RG559FS",
+          "occurrences": 2
+        },
+        {
+          "token": "IP993FS",
+          "occurrences": 2
+        },
+        {
+          "token": "TP676FS",
+          "occurrences": 2
+        },
+        {
+          "token": "SP1965FS",
+          "occurrences": 2
+        },
+        {
+          "token": "LGKSSSVTRLYK1755FS",
+          "occurrences": 1
+        },
+        {
+          "token": "SS522FS",
+          "occurrences": 1
+        },
+        {
+          "token": "VS2909FS",
+          "occurrences": 1
+        },
+        {
+          "token": "RE120FS",
+          "occurrences": 1
+        },
+        {
+          "token": "SAAVPSHR41FS",
+          "occurrences": 1
+        },
+        {
+          "token": "DL1836FS",
+          "occurrences": 1
+        },
+        {
+          "token": "RRQ277FS",
+          "occurrences": 1
+        },
+        {
+          "token": "VRRCPH173FS",
+          "occurrences": 1
+        },
+        {
+          "token": "HM32FS",
+          "occurrences": 1
+        },
+        {
+          "token": "DFST1618FS",
+          "occurrences": 1
+        },
+        {
+          "token": "RSEL271FS",
+          "occurrences": 1
+        },
+        {
+          "token": "QENGPT234FS",
+          "occurrences": 1
+        },
+        {
+          "token": "EIVG339FS",
+          "occurrences": 1
+        },
+        {
+          "token": "HK2633FS",
+          "occurrences": 1
+        },
+        {
+          "token": "IE1634FS",
+          "occurrences": 1
+        },
+        {
+          "token": "QI25FS",
+          "occurrences": 1
+        },
+        {
+          "token": "GD693FS",
+          "occurrences": 1
+        }
+      ]
+    },
+    "range_replacement": {
+      "occurrences": 40,
+      "unique_canonical_tokens": 40,
+      "semantic_occurrences": {
+        "amino_acid_range_replacement": 20,
+        "protein_no_change": 9,
+        "translated_prefix_then_stop": 9,
+        "immediate_stop": 2,
+        "invalid_reference_span": 0
+      },
+      "top_canonical_tokens": [
+        {
+          "token": "447_448MD>IN",
+          "occurrences": 1
+        },
+        {
+          "token": "311_312PL>PL",
+          "occurrences": 1
+        },
+        {
+          "token": "22_23CM>*L",
+          "occurrences": 1
+        },
+        {
+          "token": "87_88EV>DL",
+          "occurrences": 1
+        },
+        {
+          "token": "226_227DL>DL",
+          "occurrences": 1
+        },
+        {
+          "token": "499_500SQ>R*",
+          "occurrences": 1
+        },
+        {
+          "token": "134_135MG>IC",
+          "occurrences": 1
+        },
+        {
+          "token": "693_694KG>NC",
+          "occurrences": 1
+        },
+        {
+          "token": "77_78NT>KS",
+          "occurrences": 1
+        },
+        {
+          "token": "179_180QI>HV",
+          "occurrences": 1
+        },
+        {
+          "token": "49_50YK>**",
+          "occurrences": 1
+        },
+        {
+          "token": "205_206QE>H*",
+          "occurrences": 1
+        },
+        {
+          "token": "1656_1657QG>HW",
+          "occurrences": 1
+        },
+        {
+          "token": "120_121AL>AL",
+          "occurrences": 1
+        },
+        {
+          "token": "656_657HL>HL",
+          "occurrences": 1
+        },
+        {
+          "token": "874_875LQ>F*",
+          "occurrences": 1
+        },
+        {
+          "token": "88_89GL>GL",
+          "occurrences": 1
+        },
+        {
+          "token": "46_47MQ>I*",
+          "occurrences": 1
+        },
+        {
+          "token": "149_150WD>CY",
+          "occurrences": 1
+        },
+        {
+          "token": "70_71MG>IW",
+          "occurrences": 1
+        },
+        {
+          "token": "706_707NL>NL",
+          "occurrences": 1
+        },
+        {
+          "token": "713_714MG>IR",
+          "occurrences": 1
+        },
+        {
+          "token": "466_467GR>GR",
+          "occurrences": 1
+        },
+        {
+          "token": "178_179MR>I*",
+          "occurrences": 1
+        },
+        {
+          "token": "46_47LR>LR",
+          "occurrences": 1
+        }
+      ]
+    }
+  }
+}
