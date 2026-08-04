@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 76
+- 실제 실험 수: 77
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4314709544 (`EXP-285`)
@@ -95,6 +95,7 @@
 | EXP-313 | COMPLETED | fabxoe | #313 | EXP-229 + Ensembl 116 신뢰도 기반 residue-position mask | 0.4267909268 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0038024·fold std·Log Loss 동시 개선으로 채택 후보 | [보고서](reports/exp313_isoform_residue_mask/README.md) |
 | EXP-317 | COMPLETED | fabxoe | #317 | EXP-229 + Ensembl 의미 범주 sample count/any 12개 | 0.4170163022 | 미제출 | INFERENCE_VERIFIED | Macro F1·fold std·Log Loss·DLBC 모두 악화로 ARCHIVE | [보고서](reports/exp317_isoform_semantic_summary/README.md) |
 | EXP-323 | COMPLETED | fabxoe | #323 | EXP-285·EXP-313 고정 0.5/0.5 확률 평균 | 0.4260586706 | 미제출 | INFERENCE_VERIFIED | 오류 다양성은 확인했지만 최고 부모 대비 -0.0054123·fold std 악화로 ARCHIVE, 가중치 추가 탐색 중단 | [보고서](reports/exp323_exp285_exp313_fixed_blend/README.md) |
+| EXP-327 | COMPLETED | fabxoe | #327 | EXP-229의 raw max residue-position을 Ensembl 116 isoform-relative 5-bin+observed로 교체 | 0.4266361381 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 +0.0036476이나 EXP-313보다 F1·fold 안정성·Log Loss 열세로 ARCHIVE | [보고서](reports/exp327_isoform_relative_position_bin/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -161,10 +162,37 @@
 | 2026-08-03T23:57:10.879539+00:00 | EXP-317 | fabxoe | `8be79a94fb0b5f77f0c97a87ffcc4a6bcbe17196` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.49e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp317_isoform_semantic_summary/comparison.json) |
 | 2026-08-04T00:33:48.973528+00:00 | EXP-285 | fabxoe | `893f0be9c82442bf5e3940848578dc7a73677af4` / [`exp-285-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-285-repro-v1) | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 2.01e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp285_exp229_nested_optuna_xgb/comparison.json) |
 | 2026-08-04T01:01:11.073002+00:00 | EXP-323 | fabxoe | `4f0776175fd935acc4edb435f9e21e426909b23e` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp323_exp285_exp313_fixed_blend/comparison.json) |
+| 2026-08-04T01:42:37.063988+00:00 | EXP-327 | fabxoe | `f3b309170206163aa4adc138fec7513e4bfcd2d7` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp327_isoform_relative_position_bin/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-327] Ensembl isoform-relative residue-position 5-bin
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #327 / `issue-327-isoform-relative-position-bin`
+- 소스 commit: `f3b309170206163aa4adc138fec7513e4bfcd2d7`
+- 시작/종료: 2026-08-04T01:34:19.623302+00:00 /
+  2026-08-04T01:42:35.266530+00:00
+- 부모: EXP-229
+- 유일한 변경: raw max residue-position을 frozen Ensembl 116 sequence 기반
+  relative 5-bin으로 교체하고 observed indicator를 추가했다.
+- OOF Macro F1: 0.4266361381 (EXP-229 대비 `+0.0036475635`)
+- Fold Macro F1: 0.4155225548 / 0.4250140277 / 0.4213012888 /
+  0.4215258721 / 0.4485677567
+- Fold 표준편차: 0.0115013235 (EXP-229 대비 `+0.0016333586`)
+- Log Loss: 1.8585858345 (EXP-229 대비 `+0.0076245070`)
+- EXP-313 대비 Macro F1 `-0.0001547888`, fold std `+0.0029981066`,
+  Log Loss `+0.0145210028`로 열세다.
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`; test label 100%, 확률 최대 차이
+  `1.4829636e-07`, submission SHA-256 일치
+- 결론: isoform 의미 기반 위치 정규화 방향은 재확인했지만 EXP-313을 대체하지
+  못해 `ARCHIVE`하고 bin·isoform 우선순위 추가 탐색을 중단한다.
+- Report: `reports/exp327_isoform_relative_position_bin/README.md`
+- Metrics: `reports/exp327_isoform_relative_position_bin/metrics.json`
 
 ### [EXP-296] CTNNB1 D32/S33 hotspot 확장 (phosphodegron 모티프 나머지 조각)
 
