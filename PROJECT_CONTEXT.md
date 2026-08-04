@@ -296,6 +296,17 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   [`docs/annotation_invariant_mutation_parser.md`](docs/annotation_invariant_mutation_parser.md)와
   [`reports/analysis/multiletter_frameshift_range_parser/README.md`](reports/analysis/multiletter_frameshift_range_parser/README.md)를
   따른다.
+- protein insertion과 tandem duplication은 원문 syntax와 reference-aware 의미를
+  분리한다. literal `dup`가 없더라도 `ins` 서열이 삽입 경계 바로 N-terminal의
+  reference 서열과 완전히 같고 flanking residue·isoform이 검증된 경우에만
+  duplication으로 추가 해석한다. 근처에 같은 서열이 있다는 이유만으로 승격하지
+  않으며, 반복 구간은 HGVS 3' rule의 가장 C-terminal인 동등 표현을 사용한다.
+  오른쪽 residue가 생략된 부분 경계 표기는 raw를 보존하고 reference 확인 전에는
+  확정하지 않는다. stop·frameshift·extension·delins precedence, isoform 불일치와
+  reference 누락 상태를 보존하며 DNA/exon 원인·repeat total copy number를 발명하지
+  않는다. 상세 계약과 전수 감사는
+  [`reports/analysis/protein_duplication_semantics/README.md`](reports/analysis/protein_duplication_semantics/README.md)를
+  따른다.
 - 상관·희소도 기반 feature selection은 각 outer fold의 **학습 행에서만** fit하고,
   확정한 같은 mask를 validation·test에 적용한다. 상관을 `GENE__mutated`에서
   계산했다면 해당 mutation-presence 열만 제거하며 mutation-type, missing,

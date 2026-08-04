@@ -1,4 +1,4 @@
-# Annotation-invariant mutation parser v2/v3
+# Annotation-invariant mutation parser v2/v3/v4
 
 이 문서는 Issue #352에서 구현한 선택형 parser·feature contract를 설명한다. 기존
 공식 실험은 `mutation_features.py`의 parser v1을 그대로 사용하며 결과를 다시
@@ -110,4 +110,31 @@ Issue #378에서 robust parser definition을 `3.0.0`으로 올렸다. parser v1�
 
 실제 compact 감사와 팀장 제공 fixture의 해석은
 [`reports/analysis/multiletter_frameshift_range_parser/README.md`](../reports/analysis/multiletter_frameshift_range_parser/README.md)에
+기록한다.
+
+## Parser v4: protein tandem duplication semantic adapter
+
+Issue #395는 기존 parser를 덮어쓰지 않고 insertion 원문과 reference-aware
+duplication 의미를 분리하는 `protein_duplication_semantics_v4`를 추가한다.
+
+- 대회 원문에는 literal `dup`가 없고, 순수 `ins`는 train 0건·test 1,142건이다.
+- `A숫자_B숫자insSEQ`의 양쪽 경계와 inserted sequence를 손실 없이 파싱한다.
+- `A숫자_숫자insSEQ`처럼 오른쪽 residue가 생략된 실제 부분 문법도
+  `parse_status=partial`로 보존하고 reference 확인 전에는 완전 표기로 취급하지 않는다.
+- inserted sequence가 삽입 경계 바로 N-terminal의 reference sequence와 완전히
+  같을 때만 tandem duplication으로 확정한다. 근처 다른 위치에 같은 서열이 있는
+  경우는 insertion이다.
+- fixed Ensembl release 116에서 MANE Select, canonical, other isoform 순으로
+  판정하며 같은 우선순위 isoform이 서로 다른 해석을 만들면 unresolved로 남긴다.
+- 반복 서열은 최종 protein sequence가 같은 모든 표현을 재생성하고 가장
+  C-terminal인 source range를 선택해 HGVS 3' rule을 적용한다.
+- raw syntax, semantic event, evidence status와 raw/canonical source range를
+  동시에 보존한다.
+- stop·frameshift·extension·delins를 duplication으로 승격하지 않으며 DNA/exon
+  원인, total repeat copy number, allele·mosaic 상태를 역추론하지 않는다.
+
+전수 감사에서 test insertion 1,142건 중 753건이 reference-confirmed tandem
+duplication, 265건이 일반 insertion, 121건이 isoform unresolved, 3건이 annotation
+없는 단일 left-copy 후보였다. 상세 계약과 결과는
+[`reports/analysis/protein_duplication_semantics/README.md`](../reports/analysis/protein_duplication_semantics/README.md)에
 기록한다.
