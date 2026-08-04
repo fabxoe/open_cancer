@@ -35,6 +35,11 @@ other_unmappable
 `-287fs`처럼 음수로 시작하는 부분 표기와 `*261*`처럼 양쪽 별표로 둘러싸인
 표기는 정상 단백질 잔기 좌표로 해석하지 않는다. 이들은
 `other_unmappable`, `position_eligible=false`, 빈 residue-position으로 격리한다.
+이때 `-<숫자>fs`는 signed source position을 보존하지만 5′ UTR이라고 확정하지
+않고, `*<숫자>*`도 bilateral-stop marker를 보존하지만 nonsense·stop-loss·extension
+중 하나로 승격하지 않는다. 구조화 계약은
+[`reports/analysis/partial_terminal_semantics/README.md`](../reports/analysis/partial_terminal_semantics/README.md)를
+따른다.
 사건 의미를 추측해 정상 frameshift나 stop-gain으로 강제 변환하지 않는다.
 
 ## Robust representation 계약
