@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import resource
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -30,16 +31,7 @@ from open_cancer.mutation_features import (
     resolve_position_features_from_config,
     resolve_position_options_from_config,
 )
-from open_cancer.sparse_denoising_autoencoder import (
-    AutoencoderConfig,
-    deterministic_holdout,
-    latent_audit,
-    load_gene_presence_csv,
-    prevalence_baseline_bce,
-    train_autoencoder,
-    transform_autoencoder,
-    write_json,
-)
+from open_cancer.sparse_denoising_autoencoder import load_gene_presence_csv, write_json
 from run_exp229_pathway_mutation_types import PathwayMutationTypeFoldBuilder
 
 
@@ -62,6 +54,22 @@ def main() -> None:
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
 
+    # PyTorch 2.13 and XGBoost 3.2 crash through a native OpenMP conflict when
+    # loaded in one macOS process. Keep representation learning in an isolated
+    # process, then load only its deterministic artifacts here.
+    subprocess.run(
+        [
+            "uv",
+            "run",
+            "--group",
+            "experiment",
+            "python",
+            "scripts/run_task306_autoencoder_encode.py",
+        ],
+        cwd=ROOT,
+        check=True,
+    )
+
     presence_train, train_ids, genes, labels = load_gene_presence_csv(
         TRAIN_PATH, has_labels=True
     )
@@ -78,47 +86,21 @@ def main() -> None:
     valid_mask = merged["fold"].eq(fold).to_numpy()
     outer_train = np.flatnonzero(~valid_mask)
     outer_valid = np.flatnonzero(valid_mask)
-    ae_train, ae_holdout = deterministic_holdout(
-        outer_train,
-        fraction=float(task["autoencoder"].pop("internal_holdout_fraction")),
-        seed=seed,
+    stage = json.loads(
+        (ARTIFACT_DIR / "fold_00_autoencoder_stage.json").read_text(encoding="utf-8")
     )
-    ae_config = AutoencoderConfig(seed=seed, **task["autoencoder"])
-    checkpoint = ARTIFACT_DIR / "fold_00_autoencoder.pt"
-    training = train_autoencoder(
-        presence_train,
-        ae_train,
-        ae_holdout,
-        config=ae_config,
-        checkpoint_path=checkpoint,
-    )
-    baseline_bce = prevalence_baseline_bce(presence_train, ae_train, ae_holdout)
-
-    latent_outer_train = transform_autoencoder(
-        presence_train, outer_train, checkpoint_path=checkpoint
-    )
-    latent_valid = transform_autoencoder(
-        presence_train, outer_valid, checkpoint_path=checkpoint
-    )
-    latent_test = transform_autoencoder(
-        presence_test, np.arange(presence_test.shape[0]), checkpoint_path=checkpoint
-    )
-    latent_valid_repeated = transform_autoencoder(
-        presence_train, outer_valid, checkpoint_path=checkpoint
-    )
-    inference_equal = bool(np.array_equal(latent_valid, latent_valid_repeated))
-    latent_statistics = latent_audit(
-        latent_outer_train,
-        np.asarray(presence_train[outer_train].sum(axis=1)).ravel(),
-    )
-    np.savez_compressed(
-        ARTIFACT_DIR / "fold_00_latent.npz",
-        train_indices=outer_train,
-        valid_indices=outer_valid,
-        train=latent_outer_train,
-        validation=latent_valid,
-        test=latent_test,
-    )
+    latent_payload = np.load(ARTIFACT_DIR / "fold_00_latent.npz")
+    if not np.array_equal(latent_payload["train_indices"], outer_train):
+        raise ValueError("autoencoder stage outer-train indices mismatch")
+    if not np.array_equal(latent_payload["valid_indices"], outer_valid):
+        raise ValueError("autoencoder stage outer-validation indices mismatch")
+    latent_outer_train = latent_payload["train"]
+    latent_valid = latent_payload["validation"]
+    latent_test = latent_payload["test"]
+    training = stage["training"]
+    baseline_bce = float(stage["prevalence_baseline_unweighted_bce"])
+    inference_equal = bool(stage["checkpoint_inference_exact"])
+    latent_statistics = stage["latent_audit"]
 
     hotspots, _, _ = resolve_hotspot_config(parent.get("hotspots", {}))
     feature_report = build_hotspot_augmented_features(
@@ -222,6 +204,7 @@ def main() -> None:
         raw_peak_memory / 1024**3 if sys.platform == "darwin" else raw_peak_memory / 1024**2
     )
     gate_config = task["gate"]
+    combined_runtime_seconds = runtime_seconds + float(stage["runtime_seconds"])
     checks = {
         "reconstruction_beats_prevalence_baseline": bool(
             training["validation_audit"]["unweighted_bce"] < baseline_bce
@@ -241,7 +224,8 @@ def main() -> None:
         ),
         "autoencoder_checkpoint_inference_exact": inference_equal,
         "downstream_inference_exact": downstream_equal,
-        "runtime_limit": runtime_seconds <= float(gate_config["maximum_runtime_seconds"]),
+        "runtime_limit": combined_runtime_seconds
+        <= float(gate_config["maximum_runtime_seconds"]),
         "peak_memory_limit": peak_memory_gib <= float(gate_config["maximum_peak_memory_gib"]),
     }
     result = {
@@ -278,7 +262,8 @@ def main() -> None:
             "checkpoint_audit": checkpoint_audit,
         },
         "resources": {
-            "runtime_seconds": runtime_seconds,
+            "runtime_seconds": combined_runtime_seconds,
+            "autoencoder_stage_seconds": float(stage["runtime_seconds"]),
             "peak_memory_gib": peak_memory_gib,
         },
         "gate_checks": checks,
