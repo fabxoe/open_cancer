@@ -342,6 +342,12 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   않으며 기존 feature adapter에서는 `other_unmappable`을 유지한다. 상세 감사는
   [`reports/analysis/partial_terminal_semantics/README.md`](reports/analysis/partial_terminal_semantics/README.md)를
   따른다.
+- parser 의미 family를 모델에 연결하기 전 train sample과 canonical 5-fold support를
+  감사한다. `EXPERIMENT_ELIGIBLE`은 실행 가능성일 뿐 성능 채택이 아니며,
+  unresolved·train-zero family는 분석/QC로만 유지한다. test prevalence·SUBCLASS·
+  Public LB는 이 gate에 사용하지 않는다. 상세 matrix는
+  [`reports/analysis/parser_v4_support_gate/README.md`](reports/analysis/parser_v4_support_gate/README.md)를
+  따른다.
 - protein single-position substitution은 표준 amino acid 1개에서 다른 표준
   amino acid 1개로 바뀌는 ordinary missense, same-AA/no-change, immediate
   nonsense, `M1` start-site 영향과 unresolved reference 표기를 서로 구분한다.
