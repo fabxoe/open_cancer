@@ -1,4 +1,4 @@
-# Annotation-invariant mutation parser v2
+# Annotation-invariant mutation parser v2/v3
 
 이 문서는 Issue #352에서 구현한 선택형 parser·feature contract를 설명한다. 기존
 공식 실험은 `mutation_features.py`의 parser v1을 그대로 사용하며 결과를 다시
@@ -86,4 +86,28 @@ Issue #366에서 기본 v1 동작을 바꾸지 않는 선택형 parser hook을 �
 metamorphic audit에서 canonical equivalence 실패는 0건이었다. v1에서는 같은
 13,289건이 `nonsense`에서 `complex`로 달라졌다. 상세 결과는
 [`reports/analysis/stop_notation_invariance/README.md`](../reports/analysis/stop_notation_invariance/README.md)에
+기록한다.
+
+## Parser v3: anchored multi-letter frameshift·range grammar
+
+Issue #378에서 robust parser definition을 `3.0.0`으로 올렸다. parser v1과 기존
+공식 실험은 변경하지 않으며 v3를 사용하는 후속 실험만 명시적으로 opt-in한다.
+
+- `SDEL133fs`처럼 residue prefix 안에 `DEL`이 있어도 complete token이
+  `prefix+position+fs` grammar와 일치하면 frameshift다.
+- `721_722LA>FS`의 `FS`는 range alternate의 Phe-Ser이므로 frameshift가 아니다.
+- multi-letter frameshift prefix는 source-format 또는 transcript 근거 없이
+  reference/alternate peptide로 분해하지 않고 `unresolved_multiletter_prefix`로
+  보존한다.
+- range token은 reference·alternate sequence와 coordinate span을 검증한다.
+- range alternate에서 project stop 표기 `*`, `X`, `Ter`를 canonical `*`로
+  정규화한다.
+- reference와 alternate가 같으면 protein no-change로, 첫 alternate가 stop이면
+  immediate stop-gain으로, 앞선 peptide 뒤 stop이면 truncating range replacement로
+  기록한다.
+- stop 이후 source 문자는 provenance에는 남지만 translated alternate에는 넣지
+  않는다.
+
+실제 compact 감사와 팀장 제공 fixture의 해석은
+[`reports/analysis/multiletter_frameshift_range_parser/README.md`](../reports/analysis/multiletter_frameshift_range_parser/README.md)에
 기록한다.

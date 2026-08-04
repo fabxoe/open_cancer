@@ -60,6 +60,99 @@ def test_stop_x_and_star_share_one_semantic_token() -> None:
     assert cell.tokens[0].event_family == "stop_gain"
 
 
+@pytest.mark.parametrize(
+    (
+        "token",
+        "family",
+        "reference",
+        "alternate",
+        "translated",
+        "stop_offset",
+        "stop_position",
+        "post_stop",
+        "no_change",
+    ),
+    [
+        ("1436_1437SI>RF", "range_replacement", "SI", "RF", "RF", None, None, None, False),
+        ("59_60HY>QH", "range_replacement", "HY", "QH", "QH", None, None, None, False),
+        ("300_301LE>F*", "range_replacement", "LE", "F*", "F", 1, 301, "", False),
+        ("2126_2127WE>*K", "stop_gain", "WE", "*K", "", 0, 2126, "K", False),
+        ("236_237LL>LL", "synonymous", "LL", "LL", "LL", None, None, None, True),
+        ("197_198YQ>**", "stop_gain", "YQ", "**", "", 0, 197, "*", False),
+    ],
+)
+def test_team_lead_range_examples_have_explicit_protein_semantics(
+    token: str,
+    family: str,
+    reference: str,
+    alternate: str,
+    translated: str,
+    stop_offset: int | None,
+    stop_position: int | None,
+    post_stop: str | None,
+    no_change: bool,
+) -> None:
+    parsed = parse_robust_mutation_token(token)
+    assert parsed.source_structure == "range_replacement"
+    assert parsed.event_family == family
+    assert parsed.reference_sequence == reference
+    assert parsed.alternate_sequence == alternate
+    assert parsed.translated_alternate_sequence == translated
+    assert parsed.first_stop_offset == stop_offset
+    assert parsed.first_stop_position == stop_position
+    assert parsed.post_stop_sequence == post_stop
+    assert parsed.contains_stop is (stop_offset is not None)
+    assert parsed.protein_truncating is (stop_offset is not None)
+    assert parsed.protein_no_change is no_change
+    assert parsed.range_reference_span_valid is True
+
+
+def test_multiletter_frameshift_does_not_treat_residue_del_as_keyword() -> None:
+    parsed = parse_robust_mutation_token("SDEL133fs")
+    assert parsed.event_family == "frameshift"
+    assert parsed.source_structure == "frameshift"
+    assert parsed.residue_positions == (133,)
+    assert parsed.reference_sequence == "SDEL"
+    assert parsed.reference_amino_acid is None
+    assert parsed.frameshift_prefix_semantics == "unresolved_multiletter_prefix"
+    assert parsed.position_eligible is True
+    assert parsed.protein_truncating is True
+
+    ambiguous_stop_prefix = parse_robust_mutation_token("IW*44fs")
+    assert ambiguous_stop_prefix.event_family == "frameshift"
+    assert ambiguous_stop_prefix.reference_sequence == "IW*"
+    assert (
+        ambiguous_stop_prefix.frameshift_prefix_semantics
+        == "unresolved_multiletter_prefix"
+    )
+
+
+def test_range_alternate_fs_is_phenylalanine_serine_not_frameshift() -> None:
+    parsed = parse_robust_mutation_token("721_722LA>FS")
+    assert parsed.event_family == "range_replacement"
+    assert parsed.source_structure == "range_replacement"
+    assert parsed.alternate_sequence == "FS"
+    assert parsed.contains_stop is False
+    assert parsed.protein_truncating is False
+
+
+def test_range_stop_spellings_share_one_canonical_semantic_token() -> None:
+    cell = canonicalize_mutation_cell(
+        "300_301LE>F* 300_301LE>FX 300_301LE>FTer"
+    )
+    assert cell.source_token_count == 3
+    assert cell.exact_duplicate_count == 2
+    assert len(cell.tokens) == 1
+    assert cell.tokens[0].normalized == "300_301LE>F*"
+
+
+def test_range_reference_length_must_match_coordinate_span() -> None:
+    parsed = parse_robust_mutation_token("10_11ACD>RF")
+    assert parsed.source_structure == "range_replacement"
+    assert parsed.range_reference_span_valid is False
+    assert parsed.confidence == "low"
+
+
 def test_ambiguous_non_protein_positions_are_never_exposed_as_residues() -> None:
     for token in ("-287fs", "*261*"):
         parsed = parse_robust_mutation_token(token)
