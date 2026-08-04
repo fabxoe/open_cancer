@@ -35,9 +35,11 @@ class PathwayMutationTypeFoldBuilder:
     def __init__(
         self,
         membership_path=MEMBERSHIP,
+        burden_factory: Callable = fixed_pathway_burden_family,
         composition_factory: Callable = pathway_mutation_type_family,
     ) -> None:
         self.membership_path = membership_path
+        self.burden_factory = burden_factory
         self.composition_factory = composition_factory
         self.train = pd.read_csv(TRAIN_PATH, dtype=str, keep_default_na=False)
         self.test = pd.read_csv(TEST_PATH, dtype=str, keep_default_na=False)
@@ -52,7 +54,7 @@ class PathwayMutationTypeFoldBuilder:
         if self.fitted is not None:
             return
         families = (
-            fixed_pathway_burden_family(self.gene_columns, KNOWLEDGE_PATH),
+            self.burden_factory(self.gene_columns, KNOWLEDGE_PATH),
             self.composition_factory(self.gene_columns, KNOWLEDGE_PATH),
         )
         self.fitted = tuple(family.fit(self.train.iloc[:1]) for family in families)

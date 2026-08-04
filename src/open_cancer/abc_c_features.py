@@ -5,14 +5,20 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any, Callable, Literal
 
 import numpy as np
 import pandas as pd
 from scipy import sparse
 
 from open_cancer.feature_family import FeatureFamilyDescriptor, KnowledgeProvenance
-from open_cancer.mutation_features import MUTATION_TYPES, parse_mutation_token
+from open_cancer.mutation_features import (
+    MUTATION_TYPES,
+    ParsedMutationToken,
+    parse_mutation_token,
+)
+
+MutationTokenParser = Callable[[str], ParsedMutationToken]
 
 GroupKind = Literal["pathways", "functional_roles"]
 
@@ -58,6 +64,7 @@ class FittedFixedGroupBurdenFamily:
     gene_columns: tuple[str, ...]
     groups: dict[str, tuple[str, ...]]
     intersections: dict[str, tuple[str, ...]]
+    token_parser: MutationTokenParser = parse_mutation_token
 
     def transform(self, frame: pd.DataFrame) -> sparse.csr_matrix:
         missing = [gene for gene in self.gene_columns if gene not in frame.columns]
@@ -74,7 +81,8 @@ class FittedFixedGroupBurdenFamily:
                         continue
                     mutated += 1
                     if any(
-                        parse_mutation_token(token).mutation_type in {"nonsense", "frameshift"}
+                        self.token_parser(token).mutation_type
+                        in {"nonsense", "frameshift"}
                         for token in tokens
                     ):
                         lof += 1
@@ -92,6 +100,7 @@ class FittedPathwayMutationTypeFamily:
     groups: dict[str, tuple[str, ...]]
     intersections: dict[str, tuple[str, ...]]
     value_mode: Literal["count", "fraction"] = "count"
+    token_parser: MutationTokenParser = parse_mutation_token
 
     def transform(self, frame: pd.DataFrame) -> sparse.csr_matrix:
         missing = [gene for gene in self.gene_columns if gene not in frame.columns]
@@ -115,7 +124,7 @@ class FittedPathwayMutationTypeFamily:
                         continue
                     mutated_genes += 1
                     observed_types = {
-                        parse_mutation_token(token).mutation_type for token in tokens
+                        self.token_parser(token).mutation_type for token in tokens
                     }
                     for mutation_type in observed_types:
                         output[row_index, offset + type_index[mutation_type]] += 1
@@ -134,6 +143,7 @@ class FixedGroupBurdenFamily:
     knowledge_path: Path
     kind: GroupKind
     version: str = "1.0.0"
+    token_parser: MutationTokenParser = parse_mutation_token
 
     def fit(
         self,
@@ -178,6 +188,7 @@ class FixedGroupBurdenFamily:
             gene_columns=self.gene_columns,
             groups=groups,
             intersections=intersections,
+            token_parser=self.token_parser,
         )
 
 
@@ -189,6 +200,7 @@ class PathwayMutationTypeFamily:
     knowledge_path: Path
     value_mode: Literal["count", "fraction"] = "count"
     version: str = "1.0.0"
+    token_parser: MutationTokenParser = parse_mutation_token
 
     def fit(
         self,
@@ -235,13 +247,20 @@ class PathwayMutationTypeFamily:
             groups=groups,
             intersections=intersections,
             value_mode=self.value_mode,
+            token_parser=self.token_parser,
         )
 
 
 def fixed_pathway_burden_family(
-    gene_columns: tuple[str, ...], knowledge_path: Path
+    gene_columns: tuple[str, ...],
+    knowledge_path: Path,
+    *,
+    token_parser: MutationTokenParser = parse_mutation_token,
+    version: str = "1.0.0",
 ) -> FixedGroupBurdenFamily:
-    return FixedGroupBurdenFamily(gene_columns, knowledge_path, "pathways")
+    return FixedGroupBurdenFamily(
+        gene_columns, knowledge_path, "pathways", version, token_parser
+    )
 
 
 def functional_role_burden_family(
@@ -251,9 +270,15 @@ def functional_role_burden_family(
 
 
 def pathway_mutation_type_family(
-    gene_columns: tuple[str, ...], knowledge_path: Path
+    gene_columns: tuple[str, ...],
+    knowledge_path: Path,
+    *,
+    token_parser: MutationTokenParser = parse_mutation_token,
+    version: str = "1.0.0",
 ) -> PathwayMutationTypeFamily:
-    return PathwayMutationTypeFamily(gene_columns, knowledge_path)
+    return PathwayMutationTypeFamily(
+        gene_columns, knowledge_path, "count", version, token_parser
+    )
 
 
 def pathway_mutation_type_fraction_family(
