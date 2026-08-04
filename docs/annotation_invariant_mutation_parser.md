@@ -28,9 +28,14 @@ duplication
 other_unmappable
 ```
 
-`X`와 `*`는 단순 치환의 alternate residue일 때만 `stop_gain`으로 통합한다.
+`X`, `*`, `Ter`는 단순 치환의 alternate residue일 때만 `stop_gain`으로 통합한다.
 `X127C`처럼 reference가 `X`인 표기는 reference amino acid를 알 수 없으므로
 `other_unmappable`로 보존한다. transcript나 실제 발현 isoform을 추정하지 않는다.
+
+`-287fs`처럼 음수로 시작하는 부분 표기와 `*261*`처럼 양쪽 별표로 둘러싸인
+표기는 정상 단백질 잔기 좌표로 해석하지 않는다. 이들은
+`other_unmappable`, `position_eligible=false`, 빈 residue-position으로 격리한다.
+사건 의미를 추측해 정상 frameshift나 stop-gain으로 강제 변환하지 않는다.
 
 ## Robust representation 계약
 
@@ -60,3 +65,8 @@ other_unmappable
 
 각 단계는 별도 Experiment Issue와 EXP-ID를 사용하고, 선행 결과를 보고 parser
 범주를 다시 조정하지 않는다.
+
+R1 EXP-355와 R2 EXP-359는 모두 성능 gate를 통과하지 못해 robust feature
+representation 교체는 종료했다. parser의 표기 정규화·의미 동등성 자체는 Issue
+#364의 fixture와 compact audit로 독립 검증하며, 기존 공식 Feature Spec을
+소급 변경하지 않는다.

@@ -271,7 +271,9 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   수정하지 않는다.
 - mutation parser 변경은 기존 parser를 덮어쓰지 않고 별도 definition version과
   feature contract로 추가한다. token 원문은 provenance로 보존하되 모델 입력은
-  공백·순서·대소문자와 의미상 같은 stop 표기(`X`, `*`)에 결정적이어야 한다.
+  공백·순서·대소문자와 의미상 같은 stop 표기(`X`, `*`, `Ter`)에 결정적이어야 한다.
+  음수·UTR형 부분 표기나 `*숫자*`처럼 의미가 불명확한 값은 정상 단백질 잔기
+  위치로 강제 해석하지 않고 `position-ineligible`로 격리한다.
   raw token multiplicity 대신 unique-gene count를 쓰는 robust 표현은 선택형 family로
   두고 별도 Experiment Issue의 canonical 5-fold를 통과하기 전 기본 Feature Spec으로
   승격하지 않는다. 상세 계약은

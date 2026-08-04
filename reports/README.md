@@ -85,6 +85,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 - [고정 암종 표지 mutation-proxy 의미 감사](analysis/observable_marker_semantic_audit/README.md)
 - [Track B isoform·잔기 의미 QC](analysis/isoform_residue_semantics/README.md)
 - [Annotation-invariant mutation parser v2 감사](analysis/robust_mutation_parser_v2/README.md)
+- [변이 표기 정규화·의미 동등성 계약 감사](analysis/mutation_notation_semantic_contract/README.md)
 
 ## 역할 구분
 

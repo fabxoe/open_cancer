@@ -64,9 +64,11 @@ ORDERED_NON_SIMPLE_EVENT_FAMILIES: tuple[EventFamily, ...] = tuple(
 
 _AMINO_ACIDS = "ACDEFGHIKLMNPQRSTVWY"
 _SIMPLE_SUBSTITUTION = re.compile(
-    rf"^([{_AMINO_ACIDS}])([1-9][0-9]*)([{_AMINO_ACIDS}*X])$",
+    rf"^([{_AMINO_ACIDS}])([1-9][0-9]*)([{_AMINO_ACIDS}*X]|TER)$",
     re.IGNORECASE,
 )
+_NON_PROTEIN_NEGATIVE_POSITION = re.compile(r"^-[1-9][0-9]*", re.IGNORECASE)
+_AMBIGUOUS_DOUBLE_STOP = re.compile(r"^\*[1-9][0-9]*\*$", re.IGNORECASE)
 _RESIDUE_POSITION = re.compile(r"[1-9][0-9]*")
 _LEADING_AMINO_ACIDS = re.compile(rf"^([{_AMINO_ACIDS}*]+)", re.IGNORECASE)
 _TRAILING_AMINO_ACIDS = re.compile(rf"([{_AMINO_ACIDS}*]+)$", re.IGNORECASE)
@@ -116,6 +118,19 @@ def parse_robust_mutation_token(token: str) -> NormalizedMutationToken:
 
     raw = token.strip()
     normalized = raw.upper()
+    if _NON_PROTEIN_NEGATIVE_POSITION.match(normalized) or _AMBIGUOUS_DOUBLE_STOP.fullmatch(
+        normalized
+    ):
+        return NormalizedMutationToken(
+            raw=raw,
+            normalized=normalized,
+            event_family="other_unmappable",
+            residue_positions=(),
+            reference_amino_acid=None,
+            alternate_amino_acid=None,
+            confidence="low",
+            position_eligible=False,
+        )
     positions = tuple(int(value) for value in _RESIDUE_POSITION.findall(normalized))
     reference: str | None = None
     alternate: str | None = None
@@ -131,7 +146,7 @@ def parse_robust_mutation_token(token: str) -> NormalizedMutationToken:
         position_eligible = True
         if alternate == reference:
             family: EventFamily = "synonymous"
-        elif alternate in {"*", "X"}:
+        elif alternate in {"*", "X", "TER"}:
             family = "stop_gain"
             alternate = "*"
             normalized = f"{reference}{positions[0]}*"

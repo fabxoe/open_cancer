@@ -1,0 +1,276 @@
+{
+  "analysis_only": true,
+  "parser_version": "2.0.0",
+  "target_used": false,
+  "public_leaderboard_used": false,
+  "patient_level_values_retained": false,
+  "train": {
+    "rows": 6201,
+    "gene_columns": 4384,
+    "source_token_occurrences": 255164,
+    "unique_raw_tokens": 115200,
+    "unique_canonical_tokens": 115200,
+    "canonical_vocabulary_reduction": 0,
+    "position_eligible_occurrences": 254750,
+    "position_ineligible_occurrences": 414,
+    "event_family_occurrences": {
+      "missense": 164740,
+      "synonymous": 66883,
+      "stop_gain": 13289,
+      "frameshift": 9838,
+      "inframe_deletion": 4,
+      "inframe_insertion": 0,
+      "delins": 0,
+      "range_replacement": 236,
+      "duplication": 0,
+      "other_unmappable": 174
+    },
+    "confidence_occurrences": {
+      "high": 244912,
+      "medium": 10078,
+      "low": 174
+    },
+    "known_notation_cases": {
+      "simple_x_stop": 0,
+      "simple_ter_stop": 0,
+      "negative_or_upstream_partial": 75,
+      "ambiguous_double_stop": 99
+    },
+    "top_semantic_collisions": []
+  },
+  "test": {
+    "rows": 2546,
+    "gene_columns": 4384,
+    "source_token_occurrences": 337512,
+    "unique_raw_tokens": 134224,
+    "unique_canonical_tokens": 133300,
+    "canonical_vocabulary_reduction": 924,
+    "position_eligible_occurrences": 332778,
+    "position_ineligible_occurrences": 4734,
+    "event_family_occurrences": {
+      "missense": 201925,
+      "synonymous": 88724,
+      "stop_gain": 16316,
+      "frameshift": 25813,
+      "inframe_deletion": 2583,
+      "inframe_insertion": 1142,
+      "delins": 545,
+      "range_replacement": 40,
+      "duplication": 0,
+      "other_unmappable": 424
+    },
+    "confidence_occurrences": {
+      "high": 306965,
+      "medium": 30123,
+      "low": 424
+    },
+    "known_notation_cases": {
+      "simple_x_stop": 14355,
+      "simple_ter_stop": 0,
+      "negative_or_upstream_partial": 19,
+      "ambiguous_double_stop": 13
+    },
+    "top_semantic_collisions": [
+      {
+        "canonical": "R213*",
+        "raw_forms": [
+          "R213*",
+          "R213X"
+        ],
+        "occurrences": 42
+      },
+      {
+        "canonical": "R174*",
+        "raw_forms": [
+          "R174*",
+          "R174X"
+        ],
+        "occurrences": 36
+      },
+      {
+        "canonical": "R196*",
+        "raw_forms": [
+          "R196*",
+          "R196X"
+        ],
+        "occurrences": 27
+      },
+      {
+        "canonical": "R216*",
+        "raw_forms": [
+          "R216*",
+          "R216X"
+        ],
+        "occurrences": 25
+      },
+      {
+        "canonical": "R64*",
+        "raw_forms": [
+          "R64*",
+          "R64X"
+        ],
+        "occurrences": 24
+      },
+      {
+        "canonical": "R226*",
+        "raw_forms": [
+          "R226*",
+          "R226X"
+        ],
+        "occurrences": 23
+      },
+      {
+        "canonical": "R242*",
+        "raw_forms": [
+          "R242*",
+          "R242X"
+        ],
+        "occurrences": 23
+      },
+      {
+        "canonical": "R183*",
+        "raw_forms": [
+          "R183*",
+          "R183X"
+        ],
+        "occurrences": 22
+      },
+      {
+        "canonical": "Q1328*",
+        "raw_forms": [
+          "Q1328*",
+          "Q1328X"
+        ],
+        "occurrences": 21
+      },
+      {
+        "canonical": "R147*",
+        "raw_forms": [
+          "R147*",
+          "R147X"
+        ],
+        "occurrences": 21
+      },
+      {
+        "canonical": "R154*",
+        "raw_forms": [
+          "R154*",
+          "R154X"
+        ],
+        "occurrences": 19
+      },
+      {
+        "canonical": "R191*",
+        "raw_forms": [
+          "R191*",
+          "R191X"
+        ],
+        "occurrences": 19
+      },
+      {
+        "canonical": "R342*",
+        "raw_forms": [
+          "R342*",
+          "R342X"
+        ],
+        "occurrences": 19
+      },
+      {
+        "canonical": "R306*",
+        "raw_forms": [
+          "R306*",
+          "R306X"
+        ],
+        "occurrences": 18
+      },
+      {
+        "canonical": "R37*",
+        "raw_forms": [
+          "R37*",
+          "R37X"
+        ],
+        "occurrences": 18
+      },
+      {
+        "canonical": "R536*",
+        "raw_forms": [
+          "R536*",
+          "R536X"
+        ],
+        "occurrences": 18
+      },
+      {
+        "canonical": "R160*",
+        "raw_forms": [
+          "R160*",
+          "R160X"
+        ],
+        "occurrences": 17
+      },
+      {
+        "canonical": "R168*",
+        "raw_forms": [
+          "R168*",
+          "R168X"
+        ],
+        "occurrences": 17
+      },
+      {
+        "canonical": "R207*",
+        "raw_forms": [
+          "R207*",
+          "R207X"
+        ],
+        "occurrences": 17
+      },
+      {
+        "canonical": "R281*",
+        "raw_forms": [
+          "R281*",
+          "R281X"
+        ],
+        "occurrences": 17
+      },
+      {
+        "canonical": "R198*",
+        "raw_forms": [
+          "R198*",
+          "R198X"
+        ],
+        "occurrences": 16
+      },
+      {
+        "canonical": "R393*",
+        "raw_forms": [
+          "R393*",
+          "R393X"
+        ],
+        "occurrences": 16
+      },
+      {
+        "canonical": "R223*",
+        "raw_forms": [
+          "R223*",
+          "R223X"
+        ],
+        "occurrences": 15
+      },
+      {
+        "canonical": "E102*",
+        "raw_forms": [
+          "E102*",
+          "E102X"
+        ],
+        "occurrences": 14
+      },
+      {
+        "canonical": "E299*",
+        "raw_forms": [
+          "E299*",
+          "E299X"
+        ],
+        "occurrences": 14
+      }
+    ]
+  }
+}
