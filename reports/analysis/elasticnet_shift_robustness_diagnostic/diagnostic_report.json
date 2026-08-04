@@ -1,0 +1,116 @@
+{
+  "purpose": "diagnostic_only",
+  "record_role": "diagnostic",
+  "note": "official EXP 아님 -- EXPERIMENT_HISTORY 미등록, 공식 아티팩트 아님",
+  "model": "sklearn.LogisticRegression(penalty=elasticnet, solver=saga, multinomial)",
+  "l1_ratio": 0.5,
+  "c_candidates": [
+    0.01,
+    1.0
+  ],
+  "feature_set": "EXP-334 그대로: base_mutation_type + hotspot_34 + fixed_pathway_burden + pathway_mutation_type_composition (fold-safe, PathwayMutationTypeFoldBuilder)",
+  "fold_safe": true,
+  "test_or_public_used_for_selection": false,
+  "baseline": {
+    "experiment_id": "EXP-334",
+    "model": "xgboost",
+    "oof_macro_f1": 0.4351340092674587,
+    "test_like_macro_f1": 0.4328693332036962,
+    "test_like_threshold_quantile": 0.75,
+    "test_like_threshold_value": 0.2500581443309784
+  },
+  "candidates": {
+    "0.01": {
+      "oof_macro_f1": 0.15118749863221423,
+      "oof_macro_f1_delta_vs_exp334_xgboost": -0.28394651063524445,
+      "fold_macro_f1": [
+        0.16274993255478443,
+        0.13483492153115348,
+        0.1455951418775231,
+        0.13180304174663962,
+        0.1489819891684928
+      ],
+      "fold_std": 0.01103217866822423,
+      "log_loss": 3.0580376447303244,
+      "per_class_f1": {
+        "ACC": 0.3261538461538461,
+        "BLCA": 0.0,
+        "BRCA": 0.09272581934452438,
+        "CESC": 0.0,
+        "COAD": 0.5869158878504673,
+        "DLBC": 0.125,
+        "GBMLGG": 0.0,
+        "HNSC": 0.0,
+        "KIPAN": 0.0,
+        "KIRC": 0.44904458598726116,
+        "LAML": 0.11834319526627218,
+        "LGG": 0.5413533834586466,
+        "LIHC": 0.0,
+        "LUAD": 0.0380952380952381,
+        "LUSC": 0.12567324955116696,
+        "OV": 0.266173752310536,
+        "PAAD": 0.0,
+        "PCPG": 0.11064425770308123,
+        "PRAD": 0.0,
+        "SARC": 0.0,
+        "SKCM": 0.252129471890971,
+        "STES": 0.0,
+        "TGCT": 0.0674955595026643,
+        "THCA": 0.5406976744186046,
+        "THYM": 0.0,
+        "UCEC": 0.29042904290429045
+      },
+      "test_like_subset": {
+        "n_test_like": 1666,
+        "macro_f1_test_like": 0.13362055581570295,
+        "macro_f1_test_like_delta_vs_exp334_xgboost": -0.29924877738799327
+      }
+    },
+    "1.0": {
+      "oof_macro_f1": 0.38209181435497924,
+      "oof_macro_f1_delta_vs_exp334_xgboost": -0.05304219491247947,
+      "fold_macro_f1": [
+        0.3780090845604626,
+        0.3781738584786717,
+        0.38385483132071346,
+        0.3757689284811633,
+        0.39107912999589683
+      ],
+      "fold_std": 0.005537588113003452,
+      "log_loss": 2.103314274535067,
+      "per_class_f1": {
+        "ACC": 0.76,
+        "BLCA": 0.2620689655172414,
+        "BRCA": 0.5020177562550444,
+        "CESC": 0.15083798882681565,
+        "COAD": 0.6862302483069977,
+        "DLBC": 0.37142857142857144,
+        "GBMLGG": 0.3166144200626959,
+        "HNSC": 0.3131991051454139,
+        "KIPAN": 0.15180265654648956,
+        "KIRC": 0.28895184135977336,
+        "LAML": 0.5517241379310345,
+        "LGG": 0.5540983606557377,
+        "LIHC": 0.22580645161290322,
+        "LUAD": 0.2702702702702703,
+        "LUSC": 0.2913165266106443,
+        "OV": 0.3656716417910448,
+        "PAAD": 0.23846153846153847,
+        "PCPG": 0.23529411764705882,
+        "PRAD": 0.2465753424657534,
+        "SARC": 0.17676767676767677,
+        "SKCM": 0.73558648111332,
+        "STES": 0.37344398340248963,
+        "TGCT": 0.3415841584158416,
+        "THCA": 0.656084656084656,
+        "THYM": 0.3222748815165877,
+        "UCEC": 0.54627539503386
+      },
+      "test_like_subset": {
+        "n_test_like": 1666,
+        "macro_f1_test_like": 0.35101553622485593,
+        "macro_f1_test_like_delta_vs_exp334_xgboost": -0.08185379697884027
+      }
+    }
+  }
+}
