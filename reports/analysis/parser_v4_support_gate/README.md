@@ -2,6 +2,8 @@
 
 > Task Issue: [#407](https://github.com/fabxoe/open_cancer/issues/407)
 >
+> Subtype correction: [#410](https://github.com/fabxoe/open_cancer/issues/410)
+>
 > Parent roadmap: [#360](https://github.com/fabxoe/open_cancer/issues/360)
 
 이 감사의 `EXPERIMENT_ELIGIBLE`은 성능 채택이 아니라 **canonical 5-fold를
@@ -17,7 +19,8 @@
 | substitution:no_change | 5,251 | 1049/1044/1034/1057/1067 | 2,304 | EXPERIMENT_ELIGIBLE |
 | substitution:nonsense | 3,266 | 684/662/632/634/654 | 1,559 | EXPERIMENT_ELIGIBLE |
 | frameshift:frameshift | 3,274 | 644/651/666/647/666 | 1,642 | EXPERIMENT_ELIGIBLE |
-| range_replacement:range_replacement | 129 | 18/29/29/25/28 | 24 | EXPERIMENT_ELIGIBLE |
+| range_replacement:range_replacement (ordinary) | 101 | 11/22/23/24/21 | 16 | EXPERIMENT_ELIGIBLE |
+| range_replacement:stop_containing | 34 | 9/7/8/2/8 | 9 | ANALYSIS_ONLY |
 | range_replacement:synonymous | 47 | 5/9/15/6/12 | 9 | ANALYSIS_ONLY |
 | range_replacement:stop_gain | 23 | 3/6/7/3/4 | 2 | ANALYSIS_ONLY |
 | deletion | 3 | 1/0/0/1/1 | 520 | ANALYSIS_ONLY |
@@ -42,6 +45,15 @@ start-codon은 OOF에서 의미 피처 효과를 검증할 train 모집단이 �
 - synonymous/stop-containing range는 ordinary family에 합치지 않고 각각 QC로
   유지한다.
 - train-zero/test-only family는 parser completeness 자산으로만 보존한다.
+
+## #410 subtype correction
+
+초기 #407 matrix는 `300_301LE>F*`처럼 alternate 내부에 non-immediate stop이
+있는 range 34 samples를 ordinary range에 포함했다. router의 source structure와
+event type만으로는 이 subtype이 분리되지 않기 때문이다. #410에서
+`payload.contains_stop`을 명시적으로 확인해 ordinary 101 samples와
+stop-containing 34 samples를 분리했다. 후자는 fold 3 support가 2명뿐이므로
+Experiment 대상이 아니다. #409는 수정된 ordinary 101 samples만 사용한다.
 
 ```bash
 uv run python scripts/audit_parser_v4_support.py

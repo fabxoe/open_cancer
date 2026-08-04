@@ -1,4 +1,4 @@
-from open_cancer.parser_support_gate import decide_support_gate
+from open_cancer.parser_support_gate import decide_support_gate, support_family_key
 
 
 def test_supported_family_is_experiment_eligible() -> None:
@@ -29,3 +29,15 @@ def test_unresolved_never_becomes_experiment_feature() -> None:
     )
     assert result.decision == "UNRESOLVED_ONLY"
 
+
+def test_stop_containing_range_is_not_collapsed_into_ordinary_range() -> None:
+    assert support_family_key(
+        route="range_replacement",
+        event_type="range_replacement",
+        payload={"contains_stop": True},
+    ) == ("range_replacement", "stop_containing")
+    assert support_family_key(
+        route="range_replacement",
+        event_type="range_replacement",
+        payload={"contains_stop": False},
+    ) == ("range_replacement", "range_replacement")

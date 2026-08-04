@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Literal, Sequence
+from typing import Any, Literal, Mapping, Sequence
 
 
 SupportDecision = Literal[
@@ -15,6 +15,29 @@ SupportDecision = Literal[
 class SupportGateResult:
     decision: SupportDecision
     reason: str
+
+
+def support_family_key(
+    *,
+    route: str,
+    event_type: str,
+    payload: Mapping[str, Any],
+) -> tuple[str, str]:
+    """Return the audit key without collapsing stop-containing ranges.
+
+    A range replacement whose alternate sequence contains a non-immediate stop
+    remains ``event_type=range_replacement`` in the semantic router.  The
+    support audit must nevertheless keep it separate from ordinary ranges so
+    an experiment cannot silently combine two biological consequences.
+    """
+
+    if (
+        route == "range_replacement"
+        and event_type == "range_replacement"
+        and payload.get("contains_stop") is True
+    ):
+        return route, "stop_containing"
+    return route, event_type
 
 
 def decide_support_gate(
@@ -50,4 +73,3 @@ def decide_support_gate(
         "EXPERIMENT_ELIGIBLE",
         "mechanical train/fold support gate passed; performance is untested",
     )
-
