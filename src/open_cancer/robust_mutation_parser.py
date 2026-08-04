@@ -58,6 +58,9 @@ NON_SIMPLE_EVENT_FAMILIES: frozenset[EventFamily] = frozenset(
         "other_unmappable",
     }
 )
+ORDERED_NON_SIMPLE_EVENT_FAMILIES: tuple[EventFamily, ...] = tuple(
+    family for family in EVENT_FAMILIES if family in NON_SIMPLE_EVENT_FAMILIES
+)
 
 _AMINO_ACIDS = "ACDEFGHIKLMNPQRSTVWY"
 _SIMPLE_SUBSTITUTION = re.compile(
@@ -356,6 +359,81 @@ class RobustNonSimpleGeneCountFamily:
                 feature_names=("sample__robust_non_simple_event_gene_count",),
             ),
             gene_columns=self.gene_columns,
+        )
+
+
+@dataclass(frozen=True)
+class FittedRobustNonSimpleGeneIndicatorFamily:
+    """Sparse gene-by-normalized-event indicators replacing generic complex."""
+
+    descriptor: FeatureFamilyDescriptor
+    gene_columns: tuple[str, ...]
+    base_feature_names_to_drop: tuple[str, ...]
+
+    def transform(self, frame: pd.DataFrame) -> sparse.csr_matrix:
+        missing = [gene for gene in self.gene_columns if gene not in frame.columns]
+        if missing:
+            raise ValueError(f"입력에 유전자 열이 없습니다: {missing[:5]}")
+        family_index = {
+            family: index
+            for index, family in enumerate(ORDERED_NON_SIMPLE_EVENT_FAMILIES)
+        }
+        rows: list[int] = []
+        columns: list[int] = []
+        for row_index, row in enumerate(
+            frame.loc[:, self.gene_columns].itertuples(index=False, name=None)
+        ):
+            for gene_index, cell in enumerate(row):
+                present = {
+                    token.event_family
+                    for token in canonicalize_mutation_cell(cell).tokens
+                    if token.event_family in NON_SIMPLE_EVENT_FAMILIES
+                }
+                for family in present:
+                    rows.append(row_index)
+                    columns.append(
+                        gene_index * len(ORDERED_NON_SIMPLE_EVENT_FAMILIES)
+                        + family_index[family]
+                    )
+        data = np.ones(len(rows), dtype=np.float32)
+        return sparse.csr_matrix(
+            (data, (rows, columns)),
+            shape=(len(frame), self.descriptor.output_dimension),
+            dtype=np.float32,
+        )
+
+
+@dataclass(frozen=True)
+class RobustNonSimpleGeneIndicatorFamily:
+    """R2 replacement: generic complex per gene -> six semantic indicators."""
+
+    gene_columns: tuple[str, ...]
+    version: str = ROBUST_PARSER_VERSION
+
+    def fit(
+        self,
+        train_frame: pd.DataFrame,
+        target: pd.Series | None = None,
+    ) -> FittedRobustNonSimpleGeneIndicatorFamily:
+        del target
+        if not self.gene_columns:
+            raise ValueError("유전자 열이 하나 이상 필요합니다.")
+        names = tuple(
+            f"{gene}__robust_{family}_any"
+            for gene in self.gene_columns
+            for family in ORDERED_NON_SIMPLE_EVENT_FAMILIES
+        )
+        return FittedRobustNonSimpleGeneIndicatorFamily(
+            descriptor=FeatureFamilyDescriptor(
+                name="robust_non_simple_gene_event_indicators",
+                version=self.version,
+                fit_scope="stateless",
+                feature_names=names,
+            ),
+            gene_columns=self.gene_columns,
+            base_feature_names_to_drop=tuple(
+                f"{gene}__complex" for gene in self.gene_columns
+            ),
         )
 
 
