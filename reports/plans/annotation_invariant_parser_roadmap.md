@@ -21,7 +21,7 @@ mutation presence는 보존하고 raw token multiplicity·불확실 위치가 �
 | R3 | 채택 robust representation + EXP-313 mask | 미발급 | 미발급 | 미발급 | REJECTED | N/A | R1·R2 모두 실패해 중단 조건 적용 | 실행하지 않음 |
 | P4 | parser v4 family train-support gate | #407 | 해당 없음 | #408 | COMPLETED | N/A | #410 정정 후 ordinary 101 samples만 eligible | P5 실행 |
 | P5 | ordinary range-replacement gene indicator | #409 | EXP-409 | #412 | COMPLETED | 0.4249303829 | F1 +0.00194이나 fold std·Log Loss gate 실패 | ARCHIVE·추가 튜닝 중단 |
-| P6 | stop 정규화 + Ensembl isoform residue mask | #374 | EXP-374 | 미발급 | COMPLETED | 0.4267909268 | EXP-369 대비 F1·fold std·Log Loss·클래스 안정성 gate 모두 통과 | ADOPT·수동 제출 후보 |
+| P6 | stop 정규화 + Ensembl isoform residue mask | #374 | EXP-374 | #413 | PR_OPEN | 0.4267909268 | EXP-369 대비 F1·fold std·Log Loss·클래스 안정성 gate 모두 통과 | ADOPT·수동 제출 후보 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`를 사용하며
 실험 재현 상태와 구분한다.
