@@ -1,16 +1,17 @@
 # NPM1 288(exon-12 frameshift, "NPM1c") hotspot 사전 검증
 
-> 새 모델 실험이나 점수를 만들지 않는 target-independent 사전 검증
-> 기록입니다. 실행 전 기각/승인 판단이므로 이 문서 자체는 Experiment
-> Issue와 EXP-ID를 만들지 않습니다. 실제 실험 결과의 단일 원본은
-> [`EXPERIMENT_HISTORY.md`](../../EXPERIMENT_HISTORY.md)입니다.
+> `SUBCLASS`를 사용하는 **target-informed exploratory QC** 기록입니다.
+> dominance, 암종 분포, 클래스별 F1과 Macro F1을 계산했으므로
+> target-independent 분석이 아닙니다. 후보 승격 전 안정성 screening에서
+> 기각되었기 때문에 공식 Experiment Issue·EXP-ID·제출 파일은 만들지 않으며,
+> 아래 수치는 공식 History 점수가 아닌 분석 산출물입니다.
 
 ## 배경
 
 DominoEffect 스타일 panel-wide 스크리닝(240개 후보) 대기열 중 하나인
 NPM1 288을 [#295](hotspot_screening_burden_control.md) 이후 표준이 된
 5단계 절차(Vera 게이트 → burden 교란 → 암종 분포 → semantic
-equivalence → 3-seed 안정성)로 검증했다.
+equivalence → 4-seed 안정성)로 검증했다.
 
 ## 위치 정의: reference-AA 표기 불일치
 
@@ -54,7 +55,7 @@ pathognomonic marker(거의 확정적 진단 마커)이며, 데이터가 그 사
 정확히 재현한 것으로 해석한다. Step 2~4(burden clean, 오염 없음, 중복
 없음) 전부 통과가 이 해석을 뒷받침한다.
 
-**결론: Gate C를 이 케이스에 한해 예외로 적용하고 Step 5(3-seed 안정성
+**결론: Gate C를 이 케이스에 한해 예외로 적용하고 Step 5(4-seed 안정성
 체크)로 진행한다.** 이번 예외를 계기로 Gate C를 raw hotspot feature
 사전검증에도 그대로 적용할지, offset 전용으로 스코프를 좁힐지는
 [#254](https://github.com/fabxoe/open_cancer/issues/254)(게이팅 기준
@@ -83,7 +84,7 @@ carrier 22건 전부 LAML(100%), 다른 암종 오염 없음.
 - NPM1은 기존 `CO_MUTATION_PAIRS`(IDH1/IDH2, APC/CTNNB1, PIK3CA/PTEN)에
   없어 co-mutation 축과도 무관
 
-## Step 5 — 3-seed 안정성 체크: LAML은 안정적, 전체 Macro F1은 불안정
+## Step 5 — 4-seed 안정성 체크: LAML은 안정적, 전체 Macro F1은 불안정
 
 공식 seed 42 + stability seed 1001/1002/1003, 4개 seed 전부 EXP-094
 Feature Spec v1 + `hotspot__NPM1_288`(train 22건, test 9건) 학습.
@@ -138,6 +139,12 @@ train.csv/canonical split/frozen v1 spec에서 직접 재계산, 실행마다
 커밋했다(seed별 fold Macro F1·per-class delta 전체 포함). #251 PR 리뷰에서
 요구된 것과 같은 기준으로, raw OOF까지는 커밋하지 않았지만 스크립트
 재실행으로 동일한 결과를 재생성할 수 있다.
+
+이 분석은 `SUBCLASS`를 사용하며 canonical 5-fold를 네 seed로 반복한
+target-informed screening이다. test 변이값은 transform·test-positive 수 확인에
+사용되지만 candidate 선택, threshold, OOF 판정에는 사용하지 않았고 Public LB는
+전혀 사용하지 않았다. 이 예외적 screening 결과를 공식 피처나 점수로 사용하려면
+새 Experiment Issue에서 사전 고정 config로 다시 실행해야 한다.
 
 ## 관련
 

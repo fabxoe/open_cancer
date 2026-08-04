@@ -1,7 +1,9 @@
 #!/usr/bin/env python
-"""NPM1 288(WQ) precheck steps 1-4 (Issue #329).
+"""NPM1 288(WQ) target-informed exploratory precheck (Issue #329).
 
-RUN_MODE=explore, no EXP-ID. Steps: (1) Vera gates per fold, (2) burden
+RUN_MODE=explore, no EXP-ID. This script uses SUBCLASS for dominance,
+within-class burden, and cancer-type distribution; it is not target-independent.
+Steps: (1) Vera gates per fold, (2) burden
 confound via screen_hotspot_burden_confound.py's logic, (3) cancer-type
 distribution, (4) semantic equivalence vs frozen v1 (hotspot-34 +
 co-mutation features).

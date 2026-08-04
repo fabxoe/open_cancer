@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 """NPM1 288 precheck Step 5: 4-seed model stability check (Issue #329).
 
-RUN_MODE=explore, no EXP-ID (pre-Issue diagnostic, Gate C exception --
-see npm1_288_precheck.py for steps 1-4). Trains EXP-094 Feature Spec v1 +
+RUN_MODE=explore, no EXP-ID (pre-Issue target-informed screening, Gate C
+exception -- see npm1_288_precheck.py for steps 1-4). This script uses
+SUBCLASS, canonical folds, Macro F1, and per-class F1; it is not
+target-independent. Trains EXP-094 Feature Spec v1 +
 hotspot__NPM1_288 (position 288 frameshift, ref-agnostic, 22 positive rows)
 with the official seed 42 plus 3 stability seeds (1001/1002/1003), matching
 the POLE/CTNNB1 pilot pattern.
@@ -162,6 +164,11 @@ def main() -> None:
 
     stability_oof = np.array([r["oof_macro_f1"] for r in all_seed_results])
     summary = {
+        "analysis_only": True,
+        "run_mode": "explore",
+        "target_used": True,
+        "test_features_used_for_selection": False,
+        "public_score_used": False,
         "baseline_experiment_id": baseline["experiment_id"],
         "baseline_oof_macro_f1": baseline_oof["macro_f1"],
         "train_positive": int(train_flag.sum()),

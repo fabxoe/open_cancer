@@ -1,4 +1,9 @@
 {
+  "analysis_only": true,
+  "run_mode": "explore",
+  "target_used": true,
+  "test_features_used_for_selection": false,
+  "public_score_used": false,
   "baseline_experiment_id": "EXP-094",
   "baseline_oof_macro_f1": 0.4168865738785269,
   "train_positive": 22,
