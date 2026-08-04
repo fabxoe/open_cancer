@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 80
+- 실제 실험 수: 81
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -99,6 +99,7 @@
 | EXP-334 | COMPLETED | fabxoe | #334 | EXP-285 fold별 고정 파라미터 + EXP-313 Ensembl semantic residue-position mask | 0.4351340093 | 0.3150635813 | INFERENCE_VERIFIED | Local 최고이나 Public은 EXP-223 대비 -0.0081799437로 전이 실패·최종 선택 제출은 EXP-223 유지 | [보고서](reports/exp334_exp285_isoform_residue_mask/README.md) |
 | EXP-355 | COMPLETED | fabxoe | #355 | EXP-229 raw complex token count를 normalized non-simple unique-gene count로 교체 | 0.4176342820 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0053543·Log Loss +0.0263959·DLBC -0.06258로 R1 기각, R2는 독립 실행 | [보고서](reports/exp355_robust_complex_gene_count/README.md) |
 | EXP-359 | COMPLETED | fabxoe | #359 | EXP-229 generic gene complex를 normalized non-simple event-family indicator 6종으로 교체 | 0.4187813830 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0042072·Log Loss +0.0103444로 R2 기각, robust representation 공식 탐색 종료 | [보고서](reports/exp359_robust_event_gene_indicators/README.md) |
+| EXP-369 | COMPLETED | fabxoe | #369 | EXP-229의 simple stop 표기 `*`·`X`·`Ter`를 모든 피처 경로에서 동일한 nonsense로 정규화 | 0.4229885745 | 미제출 | INFERENCE_VERIFIED | OOF는 EXP-229와 완전 동일, test 확률 875행·라벨 347행 변경으로 의미 보정 제출 후보 | [보고서](reports/exp369_stop_notation_normalization/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -170,10 +171,45 @@
 | 2026-08-04T01:42:37.063988+00:00 | EXP-327 | fabxoe | `f3b309170206163aa4adc138fec7513e4bfcd2d7` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp327_isoform_relative_position_bin/comparison.json) |
 | 2026-08-04T07:07:59.587191+00:00 | EXP-355 | fabxoe | `b03b9163955a9978736f19925a05d356a3f7a82e` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp355_robust_complex_gene_count/comparison.json) |
 | 2026-08-04T07:36:26.479110+00:00 | EXP-359 | fabxoe | `4fbd1e267664949b515867c452ffa770405d4884` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.46e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp359_robust_event_gene_indicators/comparison.json) |
+| 2026-08-04T08:39:18.352925+00:00 | EXP-369 | fabxoe | `f49bf2209b22492d11bc5c31ab76de9af3946b59` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.40e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp369_stop_notation_normalization/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-369] Stop 표기 정규화 단독 ablation
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #369 / `issue-369-exp-stop-notation-normalization`
+- 소스 commit: `f49bf2209b22492d11bc5c31ab76de9af3946b59`
+- 시작/종료: 2026-08-04T08:27:03.834903+00:00 /
+  2026-08-04T08:39:16.463011+00:00 (732.93초)
+
+#### 실행
+
+- Config: `configs/exp369_stop_notation_normalization.yaml`
+- Runner: `scripts/run_exp369_stop_notation_normalization.py`
+- Metrics: `reports/exp369_stop_notation_normalization/metrics.json`
+- Report: `reports/exp369_stop_notation_normalization/README.md`
+- 부모 EXP-229의 모델·피처·fold·seed·checkpoint 정책을 고정하고 simple stop
+  alternate `*`, `X`, `Ter`만 base·hotspot·pathway LoF·pathway mutation-type
+  전 경로에서 동일한 nonsense로 정규화했다.
+
+#### 결과와 판단
+
+- Fold Macro F1: 0.4125153614, 0.4227302800, 0.4172366349,
+  0.4221575240, 0.4415264445
+- OOF Macro F1: 0.4229885745 (EXP-229와 완전 동일)
+- Fold 표준편차: 0.0098679649, Log Loss: 1.8509613276
+- test 확률 변경: 875/2,546행, 최대 절대 차이 0.8442194160
+- submission 라벨 변경: 347/2,546행
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — checkpoint 재추론 submission SHA-256
+  byte-level 일치, test 라벨 100%, 확률 최대 차이 1.40e-7
+- 결론: train 의미와 OOF를 보존하면서 test의 표기 shift에 실질적인 영향을 준
+  의미 보정 후보다. Public을 본 뒤 parser 규칙을 역조정하지 않으며, 위치
+  sanitation·synonymous 처리는 별도 실험으로 분리한다.
 
 ### [EXP-359] Normalized non-simple event-family gene indicator 교체
 
