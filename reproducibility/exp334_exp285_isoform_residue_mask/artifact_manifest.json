@@ -1,0 +1,163 @@
+{
+  "experiment_id": "EXP-334",
+  "issue_number": 334,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "cf0bc5382b067b3dad63f3253b4b724cdcbdec28",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp334_exp285_isoform_residue_mask/data_manifest.json",
+  "environment": "reproducibility/exp334_exp285_isoform_residue_mask/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-04T04:42:33.366932+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp334_exp285_isoform_residue_mask/fold_00.json",
+      "size_bytes": 6802033,
+      "sha256": "dd9b2bc2820b813e9df4e87484b72c788adf769618f2d4ed230c9aff84ef081c",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp334_exp285_isoform_residue_mask/fold_01.json",
+      "size_bytes": 16581563,
+      "sha256": "d8c962e90c4564201b1428d27b90872556cd8c0dab3e2f5dcc023dde1168fa34",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp334_exp285_isoform_residue_mask/fold_02.json",
+      "size_bytes": 23030817,
+      "sha256": "7e761ece8051d0e2caba23dcd9e81d571bce07f7ddac0715a8e38e7103a3fdaa",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp334_exp285_isoform_residue_mask/fold_03.json",
+      "size_bytes": 9256346,
+      "sha256": "dd78968e56e9a7669e0591ac76062ce261a37045529992a4dd176b399681ec96",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp334_exp285_isoform_residue_mask/fold_04.json",
+      "size_bytes": 18869219,
+      "sha256": "7000fd12b31e2861e5e081e3fed924529117c1619c87057316f8ebd58bc93911",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp334_exp285_isoform_residue_mask.csv",
+      "size_bytes": 38059,
+      "sha256": "b7b57180ac686553c9f2c65c5634043e756fa8988df9d01e5f441edc485f3918",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp334_exp285_isoform_residue_mask.csv",
+      "size_bytes": 2111411,
+      "sha256": "66d27597de01b244866d959297299a24b8b0120d1d2ecb86e4fcaf8b82c1513f",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp334_exp285_isoform_residue_mask_test_proba.csv",
+      "size_bytes": 826540,
+      "sha256": "bfb2c241cc9ae1201ab0e2e702b6fcb8fc6d1f312dd30b3802f784c989654bd3",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp334_exp285_isoform_residue_mask/metrics.json",
+      "size_bytes": 45268,
+      "sha256": "82dd7df321fa7f0941b6a570917c11bc366865d9693df47b5055205c1a35d552",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp334_exp285_isoform_residue_mask/config.resolved.yaml",
+      "size_bytes": 50039,
+      "sha256": "4328d2a466d48e51c6214728ec918a813db6f7bf2b3fa13f584dcab8e88d8c80",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp334_exp285_isoform_residue_mask/fold_00_checkpoint_audit.json",
+      "size_bytes": 25592,
+      "sha256": "badccb7200c24d47e5b7cef2ad67fc5cbdd8c9e10b327350fdb92210c598c601",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp334_exp285_isoform_residue_mask/fold_01_checkpoint_audit.json",
+      "size_bytes": 56627,
+      "sha256": "24696c37e740052f815fe340ebce0046ad3ca2e913417c67e395910e50d813db",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp334_exp285_isoform_residue_mask/fold_02_checkpoint_audit.json",
+      "size_bytes": 56647,
+      "sha256": "a6c41b797d79d43c885b7bca9ea729d3fa9c3fa9e3b52922c877960405d6ed7e",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp334_exp285_isoform_residue_mask/fold_03_checkpoint_audit.json",
+      "size_bytes": 56615,
+      "sha256": "2cdbcfb8be46c38bac4fd34119e19a90123ec47fc9babd117826c380d8d98c3d",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp334_exp285_isoform_residue_mask/fold_04_checkpoint_audit.json",
+      "size_bytes": 56654,
+      "sha256": "687b3dd4aec0c84117e47ed6f9450e3ba4a50030c49650b1ac78f48ab342168a",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "reports/exp285_exp229_nested_optuna_xgb/optuna_outer_00.json",
+      "size_bytes": 22661,
+      "sha256": "f169add175dd60c27724d357d19bea4f88f8e0a8b8bba5f5d58a800dc86f9808",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "reports/exp285_exp229_nested_optuna_xgb/optuna_outer_01.json",
+      "size_bytes": 22666,
+      "sha256": "55cd254c074dfa04f499ff4619078f33fd309f00894a0b6cb7a043bf783dad71",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "reports/exp285_exp229_nested_optuna_xgb/optuna_outer_02.json",
+      "size_bytes": 22656,
+      "sha256": "045617f22a79f86ff074875c2056f269dc01a96522e400e7b0be935a0d8f7c83",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "reports/exp285_exp229_nested_optuna_xgb/optuna_outer_03.json",
+      "size_bytes": 22661,
+      "sha256": "816d2cbfb6d41ba1cffb7e80655710d0737ccb4df216e2045cda91a4be47c65e",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "reports/exp285_exp229_nested_optuna_xgb/optuna_outer_04.json",
+      "size_bytes": 22677,
+      "sha256": "db4cec205aa6089c8721ab67eebd81800675116fc236c4eff281642ff4736e82",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

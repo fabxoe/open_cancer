@@ -7,12 +7,12 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 77
+- 실제 실험 수: 78
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4314709544 (`EXP-285`)
+- 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
 - 최고 Public LB Macro F1: 0.323243525 (`EXP-223`)
-- 최고 재현 검증 모델: `EXP-285` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-334` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-04
 
 ## 실험 요약
@@ -96,6 +96,7 @@
 | EXP-317 | COMPLETED | fabxoe | #317 | EXP-229 + Ensembl 의미 범주 sample count/any 12개 | 0.4170163022 | 미제출 | INFERENCE_VERIFIED | Macro F1·fold std·Log Loss·DLBC 모두 악화로 ARCHIVE | [보고서](reports/exp317_isoform_semantic_summary/README.md) |
 | EXP-323 | COMPLETED | fabxoe | #323 | EXP-285·EXP-313 고정 0.5/0.5 확률 평균 | 0.4260586706 | 미제출 | INFERENCE_VERIFIED | 오류 다양성은 확인했지만 최고 부모 대비 -0.0054123·fold std 악화로 ARCHIVE, 가중치 추가 탐색 중단 | [보고서](reports/exp323_exp285_exp313_fixed_blend/README.md) |
 | EXP-327 | COMPLETED | fabxoe | #327 | EXP-229의 raw max residue-position을 Ensembl 116 isoform-relative 5-bin+observed로 교체 | 0.4266361381 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 +0.0036476이나 EXP-313보다 F1·fold 안정성·Log Loss 열세로 ARCHIVE | [보고서](reports/exp327_isoform_relative_position_bin/README.md) |
+| EXP-334 | COMPLETED | fabxoe | #334 | EXP-285 fold별 고정 파라미터 + EXP-313 Ensembl semantic residue-position mask | 0.4351340093 | 미제출 | INFERENCE_VERIFIED | EXP-285 대비 +0.0036631·Accuracy 개선·fold std 감소로 Local 최고 갱신, Log Loss +0.0010·A40/4090 환경 차이 주의 | [보고서](reports/exp334_exp285_isoform_residue_mask/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -167,6 +168,37 @@
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-334] EXP-285 고정 fold 파라미터 + Ensembl semantic residue mask
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #334 / `issue-334-exp285-semantic-residue-mask`
+- 소스 commit: `cf0bc5382b067b3dad63f3253b4b724cdcbdec28`
+- 시작/종료: 2026-08-04T04:29:17.146887+00:00 /
+  2026-08-04T04:42:29.173934+00:00
+- 부모: EXP-285; semantic mask 정의: EXP-313
+- 유일한 변경: residue-position 집계에서 Ensembl 116 sequence로 설명되지 않는
+  semantic 범주를 제외했다. 나머지 피처와 EXP-285 fold별 파라미터는 해시로
+  고정하고 재탐색하지 않았다.
+- OOF Macro F1: 0.4351340093 (EXP-285 대비 `+0.0036630549`)
+- Fold Macro F1: 0.4293405 / 0.4420335 / 0.4226493 / 0.4300833 /
+  0.4526057
+- Fold 표준편차: 0.0106544650 (EXP-285 대비 `-0.0010664778`)
+- Accuracy: 0.4238026125 (EXP-285 대비 `+0.0016126431`)
+- Log Loss: 1.8419390917 (EXP-285 대비 `+0.0010001659`)
+- 클래스별 최대 하락: LUAD `-0.01587`; `-0.05` 이상 붕괴 없음
+- low-MANE train OOF quartile: Q1 `+0.00378`, Q2 `+0.00583`, Q3
+  `-0.00252`, Q4 `+0.00601` (사후 안전성 진단, 선택에 미사용)
+- 실행 환경: RunPod Secure Cloud NVIDIA A40 46GB; EXP-285 RTX 4090과 GPU
+  기종 차이를 보고서에 명시
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`; 제출 SHA-256 일치, test label 100%,
+  확률 최대 차이 `1.4582672e-7`
+- 결론: M1 gate 통과·새 Local 최고 및 제출 후보로 채택. 최종 지정 전 독립
+  재학습 검증 필요
+- Report: `reports/exp334_exp285_isoform_residue_mask/README.md`
+- Metrics: `reports/exp334_exp285_isoform_residue_mask/metrics.json`
 
 ### [EXP-327] Ensembl isoform-relative residue-position 5-bin
 
