@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 81
+- 실제 실험 수: 82
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -100,6 +100,7 @@
 | EXP-355 | COMPLETED | fabxoe | #355 | EXP-229 raw complex token count를 normalized non-simple unique-gene count로 교체 | 0.4176342820 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0053543·Log Loss +0.0263959·DLBC -0.06258로 R1 기각, R2는 독립 실행 | [보고서](reports/exp355_robust_complex_gene_count/README.md) |
 | EXP-359 | COMPLETED | fabxoe | #359 | EXP-229 generic gene complex를 normalized non-simple event-family indicator 6종으로 교체 | 0.4187813830 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0042072·Log Loss +0.0103444로 R2 기각, robust representation 공식 탐색 종료 | [보고서](reports/exp359_robust_event_gene_indicators/README.md) |
 | EXP-369 | COMPLETED | fabxoe | #369 | EXP-229의 simple stop 표기 `*`·`X`·`Ter`를 모든 피처 경로에서 동일한 nonsense로 정규화 | 0.4229885745 | 0.3407944343 | INFERENCE_VERIFIED | OOF 동일 통제에서 EXP-229 Public 대비 +0.0204345510·팀 최고 갱신, stop parser 결함이 핵심 Public 병목이었음을 확인 | [보고서](reports/exp369_stop_notation_normalization/README.md) |
+| EXP-374 | COMPLETED | 2heej | #374 | EXP-369(stop 정규화) + EXP-313/EXP-334 동일 Ensembl isoform mask 단일 조합, Optuna 튜닝 미포함 | 0.4267909268 | 미제출 | INFERENCE_VERIFIED | EXP-369 대비 +0.0038024(EXP-313의 EXP-229 대비 개선폭과 동일)로 Local 게이트 통과; test 라벨 20.93% 변경(EXP-229 대비)이라 EXP-334 Public 부진이 mask 결함인지 잔여 stop 버그인지는 Public 제출로만 확인 가능 | [보고서](reports/exp374_stop_notation_isoform_mask/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -173,10 +174,50 @@
 | 2026-08-04T07:07:59.587191+00:00 | EXP-355 | fabxoe | `b03b9163955a9978736f19925a05d356a3f7a82e` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp355_robust_complex_gene_count/comparison.json) |
 | 2026-08-04T07:36:26.479110+00:00 | EXP-359 | fabxoe | `4fbd1e267664949b515867c452ffa770405d4884` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.46e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp359_robust_event_gene_indicators/comparison.json) |
 | 2026-08-04T08:39:18.352925+00:00 | EXP-369 | fabxoe | `f49bf2209b22492d11bc5c31ab76de9af3946b59` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.40e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp369_stop_notation_normalization/comparison.json) |
+| 2026-08-04T09:11:14.761750+00:00 | EXP-374 | 2heej | `fb44df80c4ff054767c5366fcd85d89bfb3f8a3f` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.83e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp374_stop_notation_isoform_mask/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-374] EXP-369 stop 정규화 + Ensembl isoform mask 단일 조합
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #374 / `issue-374-exp369-isoform-mask-combination`
+- 소스 commit: `fb44df80c4ff054767c5366fcd85d89bfb3f8a3f`
+- 시작/종료: 2026-08-04T09:01:47.579095+00:00 / 2026-08-04T09:11:12.806768+00:00
+- 부모: EXP-369(EXP-334 아님). EXP-285의 nested-Optuna 파라미터는 의도적으로
+  가져오지 않음 — EXP-285는 Local만 개선하고 Public은 EXP-229와 사실상
+  동일했고(0.3201744850 vs 0.3203598833), EXP-334는 그 튜닝과 isoform mask를
+  동시에 바꿔 무엇 때문에 부진했는지 분리할 수 없었음
+- 가설: EXP-334의 Public 부진(0.3150635813, 부모 EXP-285의 0.3201744850보다
+  낮음)이 isoform mask 자체의 결함이 아니라 그때까지 남아있던 stop 표기
+  버그(`sample__complex_count`/`GENE__complex` 오염) 때문이었을 가능성을
+  검증
+- 유일한 변경: EXP-313/EXP-334와 동일한 Ensembl release 116 semantic
+  mask를 residue-position에 적용. 나머지는 EXP-369(stop 정규화)와 EXP-229
+  기본 파라미터 그대로
+- OOF Macro F1: 0.4267909268 (EXP-369 대비 `+0.0038023523`, EXP-313의
+  EXP-229 대비 개선폭과 소수점까지 동일 — train에 X-표기가 없어 stop
+  정규화가 train에는 영향을 주지 않음)
+- Fold Macro F1: 0.4243902236 / 0.4214466890 / 0.4201172029 / 0.4239068711 /
+  0.4433574970
+- Fold 표준편차: 0.0085032169 (EXP-369 대비 `-0.0013647481`)
+- Log Loss: 1.8440648317 (EXP-369 대비 `-0.0068964959`)
+- Local 채택 게이트(+0.001, fold std 악화 `<0.002`, 클래스 붕괴 `-0.05`
+  없음) 통과
+- Test 영향 감사(EXP-229 대비, 로컬에 EXP-369 test 확률이 없어 직접 비교는
+  못함): 라벨 변경 533/2,546(20.93%), 확률 변경 100%, 평균 절대 차이
+  0.0100970962
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`; 제출 SHA-256 byte-level 일치, test 라벨
+  100%, 확률 최대 차이 1.83e-07
+- 결론: Local 게이트는 통과했지만 이 실험의 핵심 질문(mask 결함 vs 잔여
+  parser 버그)은 Public 제출로만 답할 수 있음. 제출 횟수 제한으로 팀 합의
+  필요
+- Report: `reports/exp374_stop_notation_isoform_mask/README.md`
+- Metrics: `reports/exp374_stop_notation_isoform_mask/metrics.json`
 
 ### [EXP-369] Stop 표기 정규화 단독 ablation
 
