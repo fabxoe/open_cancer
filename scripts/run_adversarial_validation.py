@@ -33,6 +33,23 @@ def load_ids(path: Path) -> list[str]:
     return pd.read_csv(path, usecols=["ID"], dtype=str)["ID"].tolist()
 
 
+def classify_feature_family(name: str) -> str:
+    """Group a Feature Spec v1 column name into its engineering family.
+
+    Per-gene columns share a "__" suffix (e.g. "TP53__missense"); the suffix
+    alone is the family, since gene identity is not the shift signal we want
+    to aggregate over. "sample__*" and "hotspot__*" are already family-level
+    aggregates, so the prefix is the family.
+    """
+    if name.startswith("sample__"):
+        return "sample_burden_aggregate"
+    if name.startswith("hotspot__"):
+        return "hotspot"
+    if "__" in name:
+        return name.split("__", 1)[1]
+    return "other"
+
+
 def run_adversarial_validation(
     feature_dir: Path,
     train_path: Path,
@@ -104,6 +121,29 @@ def run_adversarial_validation(
         if mean_gain[i] > 0
     ]
 
+    families = [classify_feature_family(name) for name in feature_names]
+    family_gain: dict[str, float] = {}
+    family_count: dict[str, int] = {}
+    for family, gain in zip(families, mean_gain):
+        family_gain[family] = family_gain.get(family, 0.0) + float(gain)
+        family_count[family] = family_count.get(family, 0) + 1
+    total_gain = float(mean_gain.sum())
+    family_shift = sorted(
+        (
+            {
+                "family": family,
+                "n_features": family_count[family],
+                "total_gain": family_gain[family],
+                "mean_gain_per_feature": family_gain[family] / family_count[family],
+                "share_of_total_gain": (
+                    family_gain[family] / total_gain if total_gain > 0 else 0.0
+                ),
+            }
+            for family in family_gain
+        ),
+        key=lambda row: -row["total_gain"],
+    )
+
     n_train = train_matrix.shape[0]
     train_oof = oof_pred[:n_train]
     raw_weight = train_oof / np.clip(1.0 - train_oof, 1e-6, None)
@@ -118,7 +158,9 @@ def run_adversarial_validation(
         "seed": seed,
         "fold_auc": fold_auc,
         "overall_auc": overall_auc,
+        "total_gain": total_gain,
         "top_features": top_features,
+        "family_shift": family_shift,
         "train_ids": train_ids,
         "train_domain_propensity": train_oof.tolist(),
         "train_importance_weight": importance_weight.tolist(),
@@ -134,9 +176,15 @@ train 행(도메인 라벨 0)과 test 행(도메인 라벨 1)을 구분하는 �
 있다는 뜻이다.
 
 - `metrics.json`: fold별/전체 OOF AUC, feature 수, 상위 shift feature
-- `top_shift_features.csv`: gain 기준 train/test를 가장 잘 구분하는 feature
+- `top_shift_features.csv`: gain 기준 train/test를 가장 잘 구분하는 개별 feature
+- `family_shift.csv`: 개별 feature가 아니라 Feature Spec v1의 엔지니어링
+  family(예: `sample_burden_aggregate`, `complex`, `missense`,
+  `max_residue_position`, `hotspot`, ...) 단위로 gain을 합산한 결과.
+  gene마다 나뉘어 개별 순위표에서는 작아 보이는 신호도 family로 합치면
+  전체 shift에서 차지하는 비중이 드러난다.
 - `train_domain_propensity.csv`: 각 train 행이 "test처럼 보이는" OOF 확률과
-  `p/(1-p)` 기반 제안 importance weight(99th percentile로 clip)
+  `p/(1-p)` 기반 제안 importance weight(99th percentile로 clip) — 참고용으로만
+  보존하며, EXP-294 검토 결과에 따라 학습 가중치로 재사용하지 않는다.
 
 여기서 사용한 5-fold는 도메인 분류(train vs test)를 위한 별도 stratified
 split이며, 공식 `data/splits/stratified_5fold_seed42.csv`(SUBCLASS 계층화)와
@@ -146,13 +194,21 @@ split이며, 공식 `data/splits/stratified_5fold_seed42.csv`(SUBCLASS 계층화
 
 1. 이 결과는 진단(QC)이며 그 자체로 Feature Spec, threshold, 제출 후보를
    바꾸는 근거가 아니다. `PROJECT_CONTEXT.md`의 OOD QC 제약을 따른다.
-2. AUC가 뚜렷하게 0.5보다 크면(예: 0.7 이상) 상위 shift feature가 실제로
+2. AUC가 뚜렷하게 0.5보다 크면(예: 0.7 이상) `family_shift.csv`에서 어느
+   family가 shift를 지배하는지 확인하고, 그 family가 실제로
    `reports/analysis/eda_violin`, `reports/analysis/tokenization_ood`에서 이미
    확인한 burden/complex 계열과 겹치는지 대조한다.
-3. 겹친다면 `train_domain_propensity.csv`의 weight로 outer-fold train만
-   재가중한 재학습을 새 Experiment Issue에서 OOF로 검증한 뒤에만 Public 제출
-   여부를 판단한다. 이 진단 실행만으로 제출하지 않는다.
-4. `SUBCLASS`와 Public 점수는 이 스크립트의 어떤 단계에서도 사용하지 않았다.
+3. **`train_domain_propensity.csv`(test feature 분포에서 유도한 weight)를
+   학습 sample weight로 재사용하지 않는다.** Issue #294에서 이 방식을
+   시도했으나 test feature 분포 정보가 학습 전처리에 직접 들어가
+   `PROJECT_CONTEXT.md`의 "test/validation 분포 정보를 학습 전처리에 사용하지
+   않는다" 계약과 충돌한다는 팀장 검토로 기각됐다(PR #303 참고). 이 파일은
+   참고 자료로만 보존한다.
+4. `family_shift.csv`가 지목한 family를 실제로 검증하려면, **test 데이터를
+   전혀 참조하지 않는** train-only ablation(예: 해당 family를 Feature Spec
+   에서 제외하고 기존 canonical 5-fold로 재학습해 OOF·fold-std 변화만 확인)을
+   새 Experiment Issue에서 수행한다.
+5. `SUBCLASS`와 Public 점수는 이 스크립트의 어떤 단계에서도 사용하지 않았다.
 """
 
 
@@ -167,6 +223,7 @@ def write_outputs(output_dir: Path, result: dict) -> None:
         json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     pd.DataFrame(result["top_features"]).to_csv(output_dir / "top_shift_features.csv", index=False)
+    pd.DataFrame(result["family_shift"]).to_csv(output_dir / "family_shift.csv", index=False)
     pd.DataFrame(
         {
             "ID": result["train_ids"],
