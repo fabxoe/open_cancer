@@ -3,11 +3,11 @@
   "issue_number": 374,
   "reproducibility_status": "INFERENCE_VERIFIED",
   "source_commit": "fb44df80c4ff054767c5366fcd85d89bfb3f8a3f",
-  "source_tag": null,
+  "source_tag": "exp-374-repro-v1",
   "dirty_worktree": false,
   "data_manifest": "reproducibility/exp374_stop_notation_isoform_mask/data_manifest.json",
   "environment": "reproducibility/exp374_stop_notation_isoform_mask/environment.json",
-  "release_url": null,
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-374-repro-v1",
   "verifier": "2heej",
   "verified_at": "2026-08-04T09:11:14.761750+00:00",
   "artifacts": [
@@ -16,56 +16,56 @@
       "path": "models/exp374_stop_notation_isoform_mask/fold_00.json",
       "size_bytes": 9972795,
       "sha256": "7c0c10afcb7cc3ef7723a83c9538b3db04ceca6ed59d2ff122f2c4a4726cbb94",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-374-repro-v1/exp374_stop_notation_isoform_mask_repro.tar.gz#models/exp374_stop_notation_isoform_mask/fold_00.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp374_stop_notation_isoform_mask/fold_01.json",
       "size_bytes": 9064707,
       "sha256": "d1c0d64d09bbea9a6cd4dd4a696da45c8641e6a4a84c275f9d7e8f13e08b9861",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-374-repro-v1/exp374_stop_notation_isoform_mask_repro.tar.gz#models/exp374_stop_notation_isoform_mask/fold_01.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp374_stop_notation_isoform_mask/fold_02.json",
       "size_bytes": 14118061,
       "sha256": "5fa597b660e361eafa227cdb996a9800f6cb6cc5e2225b0a173f6177a4c2e7ed",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-374-repro-v1/exp374_stop_notation_isoform_mask_repro.tar.gz#models/exp374_stop_notation_isoform_mask/fold_02.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp374_stop_notation_isoform_mask/fold_03.json",
       "size_bytes": 7492652,
       "sha256": "6e22d4d173ea78eced3219103d2a49f6b79c75ea8a88e6dbe918ccacd1075477",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-374-repro-v1/exp374_stop_notation_isoform_mask_repro.tar.gz#models/exp374_stop_notation_isoform_mask/fold_03.json"
     },
     {
       "kind": "checkpoint",
       "path": "models/exp374_stop_notation_isoform_mask/fold_04.json",
       "size_bytes": 11362130,
       "sha256": "d59d92daf037b37f34fa7b6eac741db78f42c14a7b05f9171c61d6c75a7d82fd",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-374-repro-v1/exp374_stop_notation_isoform_mask_repro.tar.gz#models/exp374_stop_notation_isoform_mask/fold_04.json"
     },
     {
       "kind": "submission",
       "path": "submissions/exp374_stop_notation_isoform_mask.csv",
       "size_bytes": 38127,
       "sha256": "6ebae265d36ce5b87748cdb40c412fc9563e64a69c0194d92b43cc1af4e6d006",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-374-repro-v1/exp374_stop_notation_isoform_mask_repro.tar.gz#submissions/exp374_stop_notation_isoform_mask.csv"
     },
     {
       "kind": "oof_probability",
       "path": "oof/exp374_stop_notation_isoform_mask.csv",
       "size_bytes": 2122619,
       "sha256": "4d4f9182fca8e6023d775b77ace463cad3a80144206f82f9653d98b11345da9a",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-374-repro-v1/exp374_stop_notation_isoform_mask_repro.tar.gz#oof/exp374_stop_notation_isoform_mask.csv"
     },
     {
       "kind": "test_probability",
       "path": "preds/exp374_stop_notation_isoform_mask_test_proba.csv",
       "size_bytes": 834584,
       "sha256": "11730e0f7a033e90e5bc3aed346601479b47959b917fb5654f1f0ba55aadd13b",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-374-repro-v1/exp374_stop_notation_isoform_mask_repro.tar.gz#preds/exp374_stop_notation_isoform_mask_test_proba.csv"
     },
     {
       "kind": "metrics",
@@ -79,42 +79,49 @@
       "path": "reproducibility/exp374_stop_notation_isoform_mask/config.resolved.yaml",
       "size_bytes": 46250,
       "sha256": "9dac1b27e01a709bcfcad586e2a9b43e5a90db49a8dcc3811c7051a0b19b8100",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-374-repro-v1/exp374_stop_notation_isoform_mask_repro.tar.gz#reproducibility/exp374_stop_notation_isoform_mask/config.resolved.yaml"
     },
     {
       "kind": "checkpoint_iteration_audit",
       "path": "models/exp374_stop_notation_isoform_mask/fold_00_checkpoint_audit.json",
       "size_bytes": 24462,
       "sha256": "5a6c4bcf29e284ea1c023a19b7d67d6eac92440d81fdb3a75d4c82a52bc55c67",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-374-repro-v1/exp374_stop_notation_isoform_mask_repro.tar.gz#models/exp374_stop_notation_isoform_mask/fold_00_checkpoint_audit.json"
     },
     {
       "kind": "checkpoint_iteration_audit",
       "path": "models/exp374_stop_notation_isoform_mask/fold_01_checkpoint_audit.json",
       "size_bytes": 26828,
       "sha256": "affaf86fa3a9cac5d7e9f8ff92abf42e7724400fb951d0364a65a0be3c1fd080",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-374-repro-v1/exp374_stop_notation_isoform_mask_repro.tar.gz#models/exp374_stop_notation_isoform_mask/fold_01_checkpoint_audit.json"
     },
     {
       "kind": "checkpoint_iteration_audit",
       "path": "models/exp374_stop_notation_isoform_mask/fold_02_checkpoint_audit.json",
       "size_bytes": 32657,
       "sha256": "d7f4cdcd205787ba892be667b058c2eb2d061a900e02dfa89e81f375f772d6c9",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-374-repro-v1/exp374_stop_notation_isoform_mask_repro.tar.gz#models/exp374_stop_notation_isoform_mask/fold_02_checkpoint_audit.json"
     },
     {
       "kind": "checkpoint_iteration_audit",
       "path": "models/exp374_stop_notation_isoform_mask/fold_03_checkpoint_audit.json",
       "size_bytes": 29070,
       "sha256": "963f84f6a3ce5461ce9a85d4bc20c951d222e8f9fccd4dad1ac4073abb1184aa",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-374-repro-v1/exp374_stop_notation_isoform_mask_repro.tar.gz#models/exp374_stop_notation_isoform_mask/fold_03_checkpoint_audit.json"
     },
     {
       "kind": "checkpoint_iteration_audit",
       "path": "models/exp374_stop_notation_isoform_mask/fold_04_checkpoint_audit.json",
       "size_bytes": 28836,
       "sha256": "a4f9b1adf479408ebe35d2394ab993f6641f2957bb561bf45a1ed230f9188e31",
-      "storage_uri": null
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-374-repro-v1/exp374_stop_notation_isoform_mask_repro.tar.gz#models/exp374_stop_notation_isoform_mask/fold_04_checkpoint_audit.json"
+    },
+    {
+      "kind": "release_bundle",
+      "path": "release-assets/exp374_stop_notation_isoform_mask_repro.tar.gz",
+      "size_bytes": 15153675,
+      "sha256": "6802174a4921bd85b80e2809c1ef83a5f45f792b17dfc6f47936ddd6c217ce85",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-374-repro-v1/exp374_stop_notation_isoform_mask_repro.tar.gz"
     }
   ],
   "verification": {

@@ -11,7 +11,7 @@
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
-- 최고 Public LB Macro F1: 0.3407944343 (`EXP-369`)
+- 최고 Public LB Macro F1: 0.346215922 (`EXP-374`)
 - 최고 재현 검증 모델: `EXP-334` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-04
 
@@ -100,7 +100,7 @@
 | EXP-355 | COMPLETED | fabxoe | #355 | EXP-229 raw complex token count를 normalized non-simple unique-gene count로 교체 | 0.4176342820 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0053543·Log Loss +0.0263959·DLBC -0.06258로 R1 기각, R2는 독립 실행 | [보고서](reports/exp355_robust_complex_gene_count/README.md) |
 | EXP-359 | COMPLETED | fabxoe | #359 | EXP-229 generic gene complex를 normalized non-simple event-family indicator 6종으로 교체 | 0.4187813830 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0042072·Log Loss +0.0103444로 R2 기각, robust representation 공식 탐색 종료 | [보고서](reports/exp359_robust_event_gene_indicators/README.md) |
 | EXP-369 | COMPLETED | fabxoe | #369 | EXP-229의 simple stop 표기 `*`·`X`·`Ter`를 모든 피처 경로에서 동일한 nonsense로 정규화 | 0.4229885745 | 0.3407944343 | INFERENCE_VERIFIED | OOF 동일 통제에서 EXP-229 Public 대비 +0.0204345510·팀 최고 갱신, stop parser 결함이 핵심 Public 병목이었음을 확인 | [보고서](reports/exp369_stop_notation_normalization/README.md) |
-| EXP-374 | COMPLETED | 2heej | #374 | EXP-369(stop 정규화) + EXP-313/EXP-334 동일 Ensembl isoform mask 단일 조합, Optuna 튜닝 미포함 | 0.4267909268 | 미제출 | INFERENCE_VERIFIED | EXP-369 대비 +0.0038024(EXP-313의 EXP-229 대비 개선폭과 동일)로 Local 게이트 통과; test 라벨 20.93% 변경(EXP-229 대비)이라 EXP-334 Public 부진이 mask 결함인지 잔여 stop 버그인지는 Public 제출로만 확인 가능 | [보고서](reports/exp374_stop_notation_isoform_mask/README.md) |
+| EXP-374 | COMPLETED | 2heej | #374 | EXP-369(stop 정규화) + EXP-313/EXP-334 동일 Ensembl isoform mask 단일 조합, Optuna 튜닝 미포함 | 0.4267909268 | 0.346215922 | INFERENCE_VERIFIED | EXP-369 대비 Public +0.0054214877로 팀 최고 갱신 — EXP-334 Public 부진이 mask 결함이 아니라 잔여 stop 표기 버그 때문이었음을 확인, isoform mask 방향 재확인 | [보고서](reports/exp374_stop_notation_isoform_mask/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -128,6 +128,7 @@
 | 2026-08-04T14:29:44+09:00 | EXP-334 | #334 | `submissions/exp334_exp285_isoform_residue_mask.csv` (제출 ID `1510674`) | `b7b57180ac686553c9f2c65c5634043e756fa8988df9d01e5f441edc485f3918` | 0.3150635813 | EXP-223 최고 대비 -0.0081799437<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">확인 당시 참가 4팀 중 4위·팀 제출 21회</span> | INFERENCE_VERIFIED |
 | 2026-08-04T14:40:15+09:00 | EXP-285 | #285 | `submissions/exp285_exp229_nested_optuna_xgb.csv` (제출 ID `1510681`) | `6291e67c9a4ea4dfe34b294ed6ea9fa0f8e94708cc156f95566292655937145a` | 0.320174485 | EXP-223 최고 대비 -0.003069040<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">확인 당시 참가 4팀 중 4위·팀 제출 22회</span> | INFERENCE_VERIFIED |
 | 2026-08-04T17:49:07+09:00 | EXP-369 | #369 | `submissions/exp369_stop_notation_normalization.csv` (제출 ID `1510848`) | `9c1fad8c118928f23157b7558a1b73fa16af22a34966a244841ac539fed5bdd3` | 0.3407944343 | 팀 Public 최고 갱신<span style="display:block">EXP-229 대비 +0.0204345510·EXP-223 대비 +0.0175509093</span><span style="display:block">확인 당시 참가 4팀 중 4위·팀 제출 23회</span> | INFERENCE_VERIFIED |
+| 2026-08-04T18:29:26+09:00 | EXP-374 | #374 | `submissions/exp374_stop_notation_isoform_mask.csv` (제출 ID `1510884`) | `6ebae265d36ce5b87748cdb40c412fc9563e64a69c0194d92b43cc1af4e6d006` | 0.346215922 | 팀 Public 최고 갱신<span style="display:block">EXP-369 최고 대비 +0.0054214877</span><span style="display:block">확인 당시 참가 4팀 중 4위·팀 제출 24회·선택 제출 반영</span> | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -210,12 +211,15 @@
 - Test 영향 감사(EXP-229 대비, 로컬에 EXP-369 test 확률이 없어 직접 비교는
   못함): 라벨 변경 533/2,546(20.93%), 확률 변경 100%, 평균 절대 차이
   0.0100970962
-- Public LB: 미제출
+- Public LB: 0.346215922 (제출 ID `1510884`, 2026-08-04 18:29:26 KST;
+  EXP-369 최고 대비 `+0.0054214877`, 팀 Public 최고 갱신, 선택 제출 반영).
+  가설 검증 결과: EXP-334의 Public 부진은 isoform mask 결함이 아니라 그때
+  남아있던 stop 표기 버그 때문이었음을 확인 — mask 방향은 유효
 - 재현 상태: `INFERENCE_VERIFIED`; 제출 SHA-256 byte-level 일치, test 라벨
   100%, 확률 최대 차이 1.83e-07
-- 결론: Local 게이트는 통과했지만 이 실험의 핵심 질문(mask 결함 vs 잔여
-  parser 버그)은 Public 제출로만 답할 수 있음. 제출 횟수 제한으로 팀 합의
-  필요
+- 결론: Local 게이트 통과·Public 팀 최고 갱신으로 채택. EXP-334 Public
+  부진의 원인이 mask 결함이 아니라 잔여 stop 표기 버그였음을 확인해,
+  Ensembl isoform mask 계열(EXP-313/317/327) 재검토 우선순위가 올라감
 - Report: `reports/exp374_stop_notation_isoform_mask/README.md`
 - Metrics: `reports/exp374_stop_notation_isoform_mask/metrics.json`
 
