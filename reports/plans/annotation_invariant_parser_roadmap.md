@@ -17,8 +17,8 @@ mutation presence는 보존하고 raw token multiplicity·불확실 위치가 �
 | P0 | parser v2·canonical event contract | #352 | 해당 없음 | #354 | COMPLETED | N/A | 구현·전체 테스트 완료 | R1 완료 |
 | P1 | train/test compact parser QC | #352 | explore | #354 | COMPLETED | N/A | X stop 표기 차이 확인 | R1 완료 |
 | R1 | raw complex count → unique complex-event gene count | #355 | EXP-355 | #358 | REJECTED | 0.4176342820 | EXP-229 대비 -0.0053543·Log Loss·DLBC 악화 | R2 독립 실행 |
-| R2 | generic complex gene signal → normalized event-family indicator | #359 | EXP-359 | 미발급 | IN_PROGRESS | N/A | - | 구현·공식 5-fold |
-| R3 | 채택 robust representation + EXP-313 mask | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | R1/R2 통과 시만 실행 |
+| R2 | generic complex gene signal → normalized event-family indicator | #359 | EXP-359 | 미발급 | REJECTED | 0.4187813830 | EXP-229 대비 -0.0042072·Log Loss 악화 | 공식 탐색 종료 |
+| R3 | 채택 robust representation + EXP-313 mask | 미발급 | 미발급 | 미발급 | REJECTED | N/A | R1·R2 모두 실패해 중단 조건 적용 | 실행하지 않음 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`를 사용하며
 실험 재현 상태와 구분한다.
@@ -85,6 +85,16 @@ residue-position mask와 조합한다. parser family와 mask 범주를 다시 �
 R1·R2는 사전 정의된 독립 실험으로 각 1회 실행한다. 둘 다 실패하면 parser v2를
 QC·파싱 라이브러리로만 보존하고 robust representation 공식 탐색을 종료한다.
 Public 결과를 보고 event family나 교체 범위를 수정하지 않는다.
+
+## 최종 결정
+
+- R1 EXP-355와 R2 EXP-359가 모두 부모 EXP-229보다 낮아 공식 표현 교체를
+  채택하지 않는다.
+- R3은 조건부 단계였으므로 Issue·EXP-ID를 만들지 않고 종료한다.
+- parser v2의 X/`*` stop-gain 통합, exact duplicate 제거, 명시적 event semantics는
+  향후 QC와 annotation audit에 재사용하되 현재 모델의 base 표현을 바꾸지 않는다.
+- 상세 R2 결과는
+  [`reports/exp359_robust_event_gene_indicators/README.md`](../exp359_robust_event_gene_indicators/README.md)에 기록한다.
 
 ## 실제 QC에서 새로 확인한 점
 
