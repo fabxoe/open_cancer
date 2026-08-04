@@ -17,7 +17,7 @@ mutation presence는 보존하고 raw token multiplicity·불확실 위치가 �
 | P0 | parser v2·canonical event contract | #352 | 해당 없음 | #354 | COMPLETED | N/A | 구현·전체 테스트 완료 | R1 완료 |
 | P1 | train/test compact parser QC | #352 | explore | #354 | COMPLETED | N/A | X stop 표기 차이 확인 | R1 완료 |
 | R1 | raw complex count → unique complex-event gene count | #355 | EXP-355 | #358 | REJECTED | 0.4176342820 | EXP-229 대비 -0.0053543·Log Loss·DLBC 악화 | R2 독립 실행 |
-| R2 | generic complex gene signal → normalized event-family indicator | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | R1과 독립 실행 |
+| R2 | generic complex gene signal → normalized event-family indicator | #359 | EXP-359 | 미발급 | IN_PROGRESS | N/A | - | 구현·공식 5-fold |
 | R3 | 채택 robust representation + EXP-313 mask | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | R1/R2 통과 시만 실행 |
 
 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`를 사용하며

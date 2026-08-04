@@ -8,8 +8,10 @@ from open_cancer.hashing import sha256_lines
 from open_cancer.robust_mutation_parser import (
     EVENT_FAMILIES,
     ROBUST_PARSER_VERSION,
+    ORDERED_NON_SIMPLE_EVENT_FAMILIES,
     RobustMutationEventFamily,
     RobustNonSimpleGeneCountFamily,
+    RobustNonSimpleGeneIndicatorFamily,
     audit_robust_mutation_parser,
     canonicalize_mutation_cell,
     parse_robust_mutation_token,
@@ -115,6 +117,40 @@ def test_r1_replacement_excludes_x_stop_and_counts_non_simple_genes_once() -> No
     )
     assert matrix[0, 0] == 2  # multiple events in G1 still count as one affected gene
     assert matrix[1, 0] == 0  # X alternate is normalized stop-gain, not non-simple
+
+
+def test_r2_replaces_only_generic_gene_complex_with_semantic_indicators() -> None:
+    frame = pd.DataFrame(
+        {
+            "G1": ["R213X P233del P234del", "A20dup"],
+            "G2": ["R376_A377delinsP", "R2H"],
+        }
+    )
+    fitted = RobustNonSimpleGeneIndicatorFamily(("G1", "G2")).fit(frame)
+    matrix = fitted.transform(frame)
+    names = fitted.descriptor.feature_names
+
+    assert fitted.base_feature_names_to_drop == ("G1__complex", "G2__complex")
+    assert matrix.shape == (2, 2 * len(ORDERED_NON_SIMPLE_EVENT_FAMILIES))
+    assert matrix[0, names.index("G1__robust_inframe_deletion_any")] == 1
+    assert matrix[0, names.index("G1__robust_other_unmappable_any")] == 0
+    assert matrix[0, names.index("G2__robust_delins_any")] == 1
+    assert matrix[1, names.index("G1__robust_duplication_any")] == 1
+    assert matrix[1].nnz == 1
+    assert "sample__complex_count" not in fitted.base_feature_names_to_drop
+
+
+def test_r2_feature_order_is_gene_then_fixed_non_simple_family_order() -> None:
+    fitted = RobustNonSimpleGeneIndicatorFamily(("B", "A")).fit(
+        pd.DataFrame({"B": ["WT"], "A": ["WT"]})
+    )
+    expected = tuple(
+        f"{gene}__robust_{family}_any"
+        for gene in ("B", "A")
+        for family in ORDERED_NON_SIMPLE_EVENT_FAMILIES
+    )
+    assert fitted.descriptor.feature_names == expected
+    assert fitted.transform(pd.DataFrame({"B": ["WT"], "A": ["WT"]})).nnz == 0
 
 
 def test_feature_order_and_hash_are_deterministic() -> None:
