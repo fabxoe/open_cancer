@@ -96,7 +96,7 @@
 | EXP-317 | COMPLETED | fabxoe | #317 | EXP-229 + Ensembl 의미 범주 sample count/any 12개 | 0.4170163022 | 미제출 | INFERENCE_VERIFIED | Macro F1·fold std·Log Loss·DLBC 모두 악화로 ARCHIVE | [보고서](reports/exp317_isoform_semantic_summary/README.md) |
 | EXP-323 | COMPLETED | fabxoe | #323 | EXP-285·EXP-313 고정 0.5/0.5 확률 평균 | 0.4260586706 | 미제출 | INFERENCE_VERIFIED | 오류 다양성은 확인했지만 최고 부모 대비 -0.0054123·fold std 악화로 ARCHIVE, 가중치 추가 탐색 중단 | [보고서](reports/exp323_exp285_exp313_fixed_blend/README.md) |
 | EXP-327 | COMPLETED | fabxoe | #327 | EXP-229의 raw max residue-position을 Ensembl 116 isoform-relative 5-bin+observed로 교체 | 0.4266361381 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 +0.0036476이나 EXP-313보다 F1·fold 안정성·Log Loss 열세로 ARCHIVE | [보고서](reports/exp327_isoform_relative_position_bin/README.md) |
-| EXP-334 | COMPLETED | fabxoe | #334 | EXP-285 fold별 고정 파라미터 + EXP-313 Ensembl semantic residue-position mask | 0.4351340093 | 미제출 | INFERENCE_VERIFIED | EXP-285 대비 +0.0036631·Accuracy 개선·fold std 감소로 Local 최고 갱신, Log Loss +0.0010·A40/4090 환경 차이 주의 | [보고서](reports/exp334_exp285_isoform_residue_mask/README.md) |
+| EXP-334 | COMPLETED | fabxoe | #334 | EXP-285 fold별 고정 파라미터 + EXP-313 Ensembl semantic residue-position mask | 0.4351340093 | 0.3150635813 | INFERENCE_VERIFIED | Local 최고이나 Public은 EXP-223 대비 -0.0081799437로 전이 실패·최종 선택 제출은 EXP-223 유지 | [보고서](reports/exp334_exp285_isoform_residue_mask/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -121,6 +121,7 @@
 | 2026-08-03T10:30:33+09:00 | EXP-223 | #223 | `submissions/exp223_pathway_macro_f1_checkpoint.csv` (제출 ID `1509283`) | `74a23b6337b17fc4ed70ae1e3639331065e0d74432bed6b8fcf9dc9344e6c48c` | 0.323243525 | 팀 Public 최고 갱신<span style="display:block">2026-08-03 19:13 KST 기준 참가 4팀 중 4위·팀 제출 17회</span> | INFERENCE_VERIFIED |
 | 2026-08-03T23:45:30+09:00 | EXP-229 | #229 | `submissions/exp229_pathway_mutation_types.csv` (제출 ID `1509990`) | `66f50d7fdd3c0ca65e586f83c4ee4d8cfb3a99d85d03c04ef9b8fbea7b1af61b` | 0.3203598833 | EXP-223 최고 대비 -0.0028836417<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">확인 당시 참가 4팀 중 4위·팀 제출 20회</span> | INFERENCE_VERIFIED |
 | 2026-08-03T23:32:05+09:00 | EXP-253 | #253 | `submissions/exp253_lightgbm_xgboost_blend.csv` (제출 ID `1509964`) | `c57c06bcfadae47741f9c5392ecf73fc3d16ed36ed410901b73acda81b320f48` | 0.3054410279 | EXP-223 최고 대비 -0.0178024971<span style="display:block">제출 직후 참가 4팀 중 4위·팀 제출 18회·선택 제출은 EXP-223 유지</span> | INFERENCE_VERIFIED |
+| 2026-08-04T14:29:44+09:00 | EXP-334 | #334 | `submissions/exp334_exp285_isoform_residue_mask.csv` (제출 ID `1510674`) | `b7b57180ac686553c9f2c65c5634043e756fa8988df9d01e5f441edc485f3918` | 0.3150635813 | EXP-223 최고 대비 -0.0081799437<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">확인 당시 참가 4팀 중 4위·팀 제출 21회</span> | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -192,13 +193,15 @@
   `-0.00252`, Q4 `+0.00601` (사후 안전성 진단, 선택에 미사용)
 - 실행 환경: RunPod Secure Cloud NVIDIA A40 46GB; EXP-285 RTX 4090과 GPU
   기종 차이를 보고서에 명시
-- Public LB: 미제출
+- Public LB: `0.3150635813` (제출 ID `1510674`, 2026-08-04 14:29:44 KST)
 - 재현 상태: `INFERENCE_VERIFIED`; 제출 SHA-256 일치, test label 100%,
   확률 최대 차이 `1.4582672e-7`
 - Release: [`exp-334-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-334-repro-v1),
   bundle SHA-256 `78ee11a6a47f1a5acb2f9e9312ece44193974c5820774ce89d97beac070237f7`
-- 결론: M1 gate 통과·새 Local 최고 및 제출 후보로 채택. 최종 지정 전 독립
-  재학습 검증 필요
+- 결론: M1 Local gate와 재현 검증은 통과했지만 Public은 EXP-223보다
+  `-0.0081799437` 낮아 최종 선택 제출을 바꾸지 않는다. Local 의미 감사 결과는
+  보존하되 Public 대표 후보에서는 후순위로 내리고, 최종 지정 전 독립 재학습
+  검증이 필요하다.
 - Report: `reports/exp334_exp285_isoform_residue_mask/README.md`
 - Metrics: `reports/exp334_exp285_isoform_residue_mask/metrics.json`
 

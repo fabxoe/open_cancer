@@ -9,8 +9,11 @@ EXP-313에서 검증한 Ensembl release 116 semantic mask를 residue-position �
 
 Accuracy와 fold 안정성도 함께 개선됐다. Log Loss는 `+0.0010001659`로 아주 조금
 악화됐지만 사전 허용 범위 `+0.01` 이내이며, 어떤 클래스도 F1이 `-0.05` 이상
-붕괴하지 않았다. 따라서 EXP-334를 새 제출 후보로 채택한다. Public LB는 아직
-제출하지 않았고, 최종 후보 지정 전 독립 재학습 검증이 필요하다.
+붕괴하지 않았다. 따라서 EXP-334를 새 제출 후보로 채택해 Public LB에 제출했다.
+Public Macro F1은 `0.3150635813`으로 팀 최고 EXP-223의 `0.323243525`보다
+`-0.0081799437` 낮았다. Local 개선이 Public으로 전이되지 않았으므로 최종 선택
+제출은 EXP-223을 유지한다. EXP-334의 의미 감사 결과는 보존하지만 Public 대표
+후보에서는 후순위로 내리며, 최종 후보 지정에는 여전히 독립 재학습 검증이 필요하다.
 
 ## 통제 실험 계약
 
@@ -93,8 +96,9 @@ Pod에서 공식 실행했다. 첫 A40 시도는 원격 `git user.name` 누락, 
 
 ## 판단과 다음 행동
 
-M1 gate를 통과했으므로 EXP-334를 EXP-285와 함께 제출 후보로 유지한다. 다음
-고순도 `MANE_MATCH only` ablation은 이 결과의 Public 점수를 보고 정의를 바꾸지
-않고, 별도 Experiment Issue에서 동일한 frozen parameter 계약으로 한 번만
-검증한다. EXP-334를 최종 후보로 지정하려면 다른 팀원이 fresh clone에서
-재학습해 `TRAINING_VERIFIED`를 완료해야 한다.
+M1 Local gate는 통과했지만 Public `0.3150635813`은 EXP-223보다 낮아 EXP-334를
+대표 제출 후보로 승격하지 않는다. 고순도 `MANE_MATCH only` ablation을 진행한다면
+이번 Public 결과로 mask나 threshold를 역조정하지 않고, 별도 Experiment Issue에서
+이미 사전 정의한 frozen parameter 계약을 한 번만 검증한다. EXP-334를 최종 후보로
+다시 검토하려면 다른 팀원이 fresh clone에서 `TRAINING_VERIFIED`를 완료하고 Public
+전이 실패 가능성까지 함께 감사해야 한다.
