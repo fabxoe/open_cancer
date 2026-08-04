@@ -276,6 +276,34 @@ def reconstruction_audit(
     }
 
 
+def prevalence_baseline_bce(
+    matrix: sparse.csr_matrix,
+    fit_indices: Sequence[int],
+    evaluation_indices: Sequence[int],
+    *,
+    epsilon: float = 1e-6,
+    batch_size: int = 256,
+) -> float:
+    """Score a gene-wise prevalence baseline fit without evaluation rows."""
+
+    fit = np.asarray(fit_indices, dtype=np.int64)
+    evaluation = np.asarray(evaluation_indices, dtype=np.int64)
+    if fit.size == 0 or evaluation.size == 0:
+        raise ValueError("fit and evaluation indices must not be empty")
+    prevalence = np.asarray(matrix[fit].mean(axis=0)).ravel().astype(np.float64)
+    prevalence = np.clip(prevalence, epsilon, 1.0 - epsilon)
+    loss_sum = 0.0
+    entry_count = 0
+    for start in range(0, evaluation.size, batch_size):
+        dense = matrix[evaluation[start : start + batch_size]].toarray().astype(
+            np.float64, copy=False
+        )
+        loss = -(dense * np.log(prevalence) + (1.0 - dense) * np.log1p(-prevalence))
+        loss_sum += float(loss.sum())
+        entry_count += int(loss.size)
+    return float(loss_sum / entry_count)
+
+
 def latent_audit(latent: np.ndarray, burden: np.ndarray) -> dict[str, Any]:
     """Audit constant dimensions and burden replication."""
 

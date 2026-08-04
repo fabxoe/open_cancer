@@ -13,6 +13,7 @@ from open_cancer.sparse_denoising_autoencoder import (  # noqa: E402
     deterministic_holdout,
     latent_audit,
     load_gene_presence_csv,
+    prevalence_baseline_bce,
     train_autoencoder,
     transform_autoencoder,
 )
@@ -40,6 +41,21 @@ def test_holdout_is_deterministic_and_disjoint() -> None:
     assert np.array_equal(valid_a, valid_b)
     assert len(valid_a) == 4
     assert not set(train_a) & set(valid_a)
+
+
+def test_prevalence_baseline_uses_fit_rows_only() -> None:
+    matrix = sparse.csr_matrix(
+        np.asarray(
+            [[1, 0, 0], [1, 1, 0], [0, 0, 1], [0, 0, 1]],
+            dtype=np.float32,
+        )
+    )
+    score_a = prevalence_baseline_bce(matrix, [0, 1], [2])
+    changed = matrix.copy().tolil()
+    changed[3, :] = [1, 1, 1]
+    score_b = prevalence_baseline_bce(changed.tocsr(), [0, 1], [2])
+    assert score_a == score_b
+    assert np.isfinite(score_a)
 
 
 def test_train_checkpoint_transform_and_latent_audit(tmp_path: Path) -> None:
