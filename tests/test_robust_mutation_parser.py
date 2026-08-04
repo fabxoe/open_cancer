@@ -9,6 +9,7 @@ from open_cancer.robust_mutation_parser import (
     EVENT_FAMILIES,
     ROBUST_PARSER_VERSION,
     RobustMutationEventFamily,
+    RobustNonSimpleGeneCountFamily,
     audit_robust_mutation_parser,
     canonicalize_mutation_cell,
     parse_robust_mutation_token,
@@ -96,6 +97,24 @@ def test_robust_family_counts_unique_genes_not_raw_tokens() -> None:
     assert matrix[0, names.index("G2__robust_stop_gain_any")] == 1
     assert matrix[0, names.index("G2__robust_inframe_deletion_any")] == 1
     assert matrix[1, names.index("sample__robust_missense_gene_count")] == 1
+
+
+def test_r1_replacement_excludes_x_stop_and_counts_non_simple_genes_once() -> None:
+    frame = pd.DataFrame(
+        {
+            "G1": ["R213X R213* P233del P234del", "WT"],
+            "G2": ["R376_A377delinsP", "Q10X"],
+        }
+    )
+    fitted = RobustNonSimpleGeneCountFamily(("G1", "G2")).fit(frame)
+    matrix = fitted.transform(frame)
+
+    assert fitted.base_feature_names_to_drop == ("sample__complex_count",)
+    assert fitted.descriptor.feature_names == (
+        "sample__robust_non_simple_event_gene_count",
+    )
+    assert matrix[0, 0] == 2  # multiple events in G1 still count as one affected gene
+    assert matrix[1, 0] == 0  # X alternate is normalized stop-gain, not non-simple
 
 
 def test_feature_order_and_hash_are_deterministic() -> None:
