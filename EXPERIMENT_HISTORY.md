@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 81
+- 실제 실험 수: 82
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -100,6 +100,7 @@
 | EXP-355 | COMPLETED | fabxoe | #355 | EXP-229 raw complex token count를 normalized non-simple unique-gene count로 교체 | 0.4176342820 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0053543·Log Loss +0.0263959·DLBC -0.06258로 R1 기각, R2는 독립 실행 | [보고서](reports/exp355_robust_complex_gene_count/README.md) |
 | EXP-359 | COMPLETED | fabxoe | #359 | EXP-229 generic gene complex를 normalized non-simple event-family indicator 6종으로 교체 | 0.4187813830 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0042072·Log Loss +0.0103444로 R2 기각, robust representation 공식 탐색 종료 | [보고서](reports/exp359_robust_event_gene_indicators/README.md) |
 | EXP-369 | COMPLETED | fabxoe | #369 | EXP-229의 simple stop 표기 `*`·`X`·`Ter`를 모든 피처 경로에서 동일한 nonsense로 정규화 | 0.4229885745 | 0.3407944343 | INFERENCE_VERIFIED | OOF 동일 통제에서 EXP-229 Public 대비 +0.0204345510·팀 최고 갱신, stop parser 결함이 핵심 Public 병목이었음을 확인 | [보고서](reports/exp369_stop_notation_normalization/README.md) |
+| EXP-380 | COMPLETED | fabxoe | #380 | EXP-369 + range stop/no-change 고유 유전자 수·존재 여부 4개 | 0.4221880021 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0008006로 성능 채택 기준 미달; fold 표준편차·Log Loss는 개선했으나 ARCHIVE | [보고서](reports/exp380_range_semantic_summary/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -173,10 +174,35 @@
 | 2026-08-04T07:07:59.587191+00:00 | EXP-355 | fabxoe | `b03b9163955a9978736f19925a05d356a3f7a82e` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp355_robust_complex_gene_count/comparison.json) |
 | 2026-08-04T07:36:26.479110+00:00 | EXP-359 | fabxoe | `4fbd1e267664949b515867c452ffa770405d4884` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.46e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp359_robust_event_gene_indicators/comparison.json) |
 | 2026-08-04T08:39:18.352925+00:00 | EXP-369 | fabxoe | `f49bf2209b22492d11bc5c31ab76de9af3946b59` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.40e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp369_stop_notation_normalization/comparison.json) |
+| 2026-08-04T11:26:08.400609+00:00 | EXP-380 | fabxoe | `623cd06bf82f4f6186fd468c963f4305d48299fc` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp380_range_semantic_summary/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-380] Range stop·no-change 의미 요약 4개
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #380 / `issue-380-exp-range-semantic-summary`
+- 부모 실험: EXP-369
+- 소스 commit: `623cd06bf82f4f6186fd468c963f4305d48299fc`
+- 시작/종료: 2026-08-04T11:15:08.733344+00:00 /
+  2026-08-04T11:26:06.496942+00:00 (658.06초)
+- Config: `configs/exp380_range_semantic_summary.yaml`
+- Runner: `scripts/run_exp380_range_semantic_summary.py`
+- 변경: EXP-369 전체 피처를 유지하고 range stop/no-change의 샘플별 고유
+  유전자 수·존재 여부 4개만 추가
+- OOF Macro F1: 0.4221880021 (EXP-369 대비 -0.0008005725)
+- Fold 평균 / 표준편차: 0.4222193056 / 0.0062025822
+- Accuracy / Log Loss: 0.4107402032 / 1.8463485241
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED
+- 판단: Macro F1 성능 채택 기준 미달. fold 안정성과 Log Loss는 개선됐지만
+  추가 피처이므로 간소화 이점도 없어 ARCHIVE하고 range 요약 확장을 중단한다.
+- 상세: [보고서](reports/exp380_range_semantic_summary/README.md)
+- 재현 증빙:
+  [comparison](reproducibility/exp380_range_semantic_summary/comparison.json)
 
 ### [EXP-369] Stop 표기 정규화 단독 ablation
 
