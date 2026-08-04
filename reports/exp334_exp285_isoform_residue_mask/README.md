@@ -80,6 +80,9 @@ MANE 구간에서도 성능이 하락하지 않았으므로, mask가 high-MANE s
 - submission SHA-256:
   `b7b57180ac686553c9f2c65c5634043e756fa8988df9d01e5f441edc485f3918`
 - 재현 상태: `INFERENCE_VERIFIED`
+- Release: [exp-334-repro-v1](https://github.com/fabxoe/open_cancer/releases/tag/exp-334-repro-v1)
+- Release bundle SHA-256:
+  `78ee11a6a47f1a5acb2f9e9312ece44193974c5820774ce89d97beac070237f7`
 - checkpoint 추론: 제출 SHA-256 일치, test label 100%, 확률 최대 차이
   `1.4582672e-7`
 

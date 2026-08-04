@@ -195,6 +195,8 @@
 - Public LB: 미제출
 - 재현 상태: `INFERENCE_VERIFIED`; 제출 SHA-256 일치, test label 100%,
   확률 최대 차이 `1.4582672e-7`
+- Release: [`exp-334-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-334-repro-v1),
+  bundle SHA-256 `78ee11a6a47f1a5acb2f9e9312ece44193974c5820774ce89d97beac070237f7`
 - 결론: M1 gate 통과·새 Local 최고 및 제출 후보로 채택. 최종 지정 전 독립
   재학습 검증 필요
 - Report: `reports/exp334_exp285_isoform_residue_mask/README.md`
