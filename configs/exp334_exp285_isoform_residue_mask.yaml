@@ -1,0 +1,135 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-334
+issue_number: 334
+slug: exp285_isoform_residue_mask
+parent_experiment: EXP-285
+component_experiments:
+  - EXP-229
+  - EXP-285
+  - EXP-313
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mutation_type:
+    enabled: true
+  robust_aggregates:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+  residue_position:
+    enabled: true
+    aggregates:
+      - max
+    missing_policy: zero
+    complex_tokens: include
+    transform: raw
+    isoform_semantic_mask:
+      enabled: true
+      manifest_path: knowledge/ensembl_isoform_annotation_v1.json
+      manifest_sha256: 568ea31f5b7fc7ff47d181fe552d39f3b9185f8d0a76cbb2a49d06be022d5bc0
+      annotation_cache_path: data/external/ensembl_release_116/competition_gene_isoform_index.json
+      annotation_cache_sha256: b9565339f1755d5b07e782c39064207310fa6c254b2e915a15492f4f38903daa
+      trusted_categories:
+        - CANONICAL_MATCH
+        - MANE_MATCH
+        - OTHER_ISOFORM_MATCH
+      masked_categories:
+        - COMPLEX_OR_UNMAPPABLE
+        - OUTSIDE_ALL_KNOWN_ISOFORMS
+        - POSITION_VALID_REF_MISMATCH
+hotspots:
+  table: extended_34
+  evidence_scope: additions_15
+  minimum_matching_train_rows: 5
+external_knowledge:
+  file: knowledge/canonical_pathways_sanchez_vega_v1.json
+  organizer_approval_reference: https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180
+  source_commit: 7d29965de6ac8d0c6ec18c383f6dff8a48d562e7
+  source_sha256: a625675d03fa314eb27f3ab731524de13621a35aecd8edb7c67878f2d89ae07a
+abc_families:
+  fixed_pathway_burden:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    groups: 10
+    values:
+      - mutated_gene_count
+      - lof_gene_count
+    output_dimension: 20
+  pathway_mutation_type_composition:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    groups: 10
+    values:
+      - missense_gene_count
+      - synonymous_gene_count
+      - nonsense_gene_count
+      - frameshift_gene_count
+      - complex_gene_count
+    candidate_output_dimension: 50
+    semantic_equivalence_filter: fold_train_against_feature_spec_v1
+  functional_role_burden:
+    enabled: false
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cuda
+  n_jobs: 12
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - feature_spec_v1
+    - fixed_pathway_mutated_and_lof_gene_counts
+    - fixed_pathway_mutation_type_gene_counts
+    - ensembl_release_116_residue_position_mask
+  fold_model_parameters: frozen_from_exp285
+frozen_fold_parameters:
+  source_experiment: EXP-285
+  retune_for_current_features: false
+  folds:
+    - fold: 0
+      source_path: reports/exp285_exp229_nested_optuna_xgb/optuna_outer_00.json
+      source_sha256: f169add175dd60c27724d357d19bea4f88f8e0a8b8bba5f5d58a800dc86f9808
+      parameters: {max_depth: 6, min_child_weight: 1.4180537144799796, subsample: 0.7430179407605754, colsample_bytree: 0.5682096494749166, reg_alpha: 0.06505159298527952, reg_lambda: 4.7699849176399995, learning_rate: 0.07627784399074539}
+    - fold: 1
+      source_path: reports/exp285_exp229_nested_optuna_xgb/optuna_outer_01.json
+      source_sha256: 55cd254c074dfa04f499ff4619078f33fd309f00894a0b6cb7a043bf783dad71
+      parameters: {max_depth: 6, min_child_weight: 1.856404291679414, subsample: 0.6251903957465799, colsample_bytree: 0.5069108445301507, reg_alpha: 0.4901206867968746, reg_lambda: 1.678451299037102, learning_rate: 0.023436930877205706}
+    - fold: 2
+      source_path: reports/exp285_exp229_nested_optuna_xgb/optuna_outer_02.json
+      source_sha256: 045617f22a79f86ff074875c2056f269dc01a96522e400e7b0be935a0d8f7c83
+      parameters: {max_depth: 6, min_child_weight: 1.0408963729188383, subsample: 0.6060930150802755, colsample_bytree: 0.6924814695300121, reg_alpha: 0.7848115557826797, reg_lambda: 1.5928337204070822, learning_rate: 0.028046149053031457}
+    - fold: 3
+      source_path: reports/exp285_exp229_nested_optuna_xgb/optuna_outer_03.json
+      source_sha256: 816d2cbfb6d41ba1cffb7e80655710d0737ccb4df216e2045cda91a4be47c65e
+      parameters: {max_depth: 4, min_child_weight: 1.677197213584505, subsample: 0.8505510447108267, colsample_bytree: 0.7569531624808717, reg_alpha: 0.31764392589513357, reg_lambda: 0.6341089067232432, learning_rate: 0.02019947619962994}
+    - fold: 4
+      source_path: reports/exp285_exp229_nested_optuna_xgb/optuna_outer_04.json
+      source_sha256: db4cec205aa6089c8721ab67eebd81800675116fc236c4eff281642ff4736e82
+      parameters: {max_depth: 5, min_child_weight: 1.9471036597551619, subsample: 0.7253142563002447, colsample_bytree: 0.5851415064009555, reg_alpha: 0.23175223226754962, reg_lambda: 2.83621456413986, learning_rate: 0.03238197252483872}
+notes: >-
+  Issue #334. EXP-285 canonical folds, fold-specific model parameters,
+  checkpoint policy, class weighting, mutation features, pathway families,
+  hotspots, and sample aggregates are held fixed. The sole change is the
+  EXP-313 frozen Ensembl release 116 semantic mask on residue-position
+  contributions. EXP-285 parameters are read from hash-verified outer-fold
+  Optuna summaries without retuning on the masked features. Target, test
+  distribution, and Public LB do not define or select the mask or parameters.
+comparison_metrics_path: reports/exp285_exp229_nested_optuna_xgb/metrics.json
