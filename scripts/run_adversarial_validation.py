@@ -33,7 +33,7 @@ from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import StratifiedKFold
 from xgboost import XGBClassifier
 
-from open_cancer.hashing import sha256_lines
+from open_cancer.hashing import sha256_file, sha256_lines
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -336,6 +336,30 @@ def run_adversarial_validation(
     importance_weight = np.clip(raw_weight, 0.0, weight_cap)
 
     return {
+        "input_artifacts": {
+            "train_features_sha256": sha256_file(feature_dir / "train_features.npz"),
+            "test_features_sha256": sha256_file(feature_dir / "test_features.npz"),
+            "feature_names_sha256": sha256_file(feature_dir / "feature_names.json"),
+            "ordered_feature_names_sha256": sha256_lines(feature_names),
+            "train_csv_sha256": sha256_file(train_path),
+            "test_csv_sha256": sha256_file(test_path),
+        },
+        "model_configuration": {
+            **MODEL_PARAMS,
+            "n_estimators": n_estimators,
+            "max_depth": max_depth,
+            "learning_rate": learning_rate,
+            "early_stopping_rounds": early_stopping_rounds,
+        },
+        "domain_split": {
+            "method": "StratifiedKFold",
+            "target": "train=0,test=1",
+            "shuffle": True,
+            "n_splits": n_splits,
+            "seed": seed,
+            "subclass_used": False,
+            "public_score_used": False,
+        },
         "n_train": int(n_train),
         "n_test": int(test_matrix.shape[0]),
         "n_features": len(feature_names),
@@ -448,7 +472,22 @@ def write_outputs(output_dir: Path, result: dict) -> None:
         encoding="utf-8",
     )
     (output_dir / "family_column_mapping.json").write_text(
-        json.dumps(result["family_column_mapping"], ensure_ascii=False, indent=2) + "\n",
+        json.dumps(
+            {
+                "analysis_only": True,
+                "families": {
+                    family: {
+                        "n_features": info["n_features"],
+                        "feature_name_sha256": info["feature_name_sha256"],
+                        "features": result["family_column_mapping"][family],
+                    }
+                    for family, info in result["family_auc"].items()
+                },
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
         encoding="utf-8",
     )
     (output_dir / "residue_ablation.json").write_text(

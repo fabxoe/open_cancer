@@ -1,4 +1,37 @@
 {
+  "analysis_only": true,
+  "input_artifacts": {
+    "train_features_sha256": "dfb0b8fbade7d69c460411dfdbc5bb5fbd97eb9b5e1056dd82294135adac5c8a",
+    "test_features_sha256": "66f0471b230d25d688b1564d5adece0077d5deaaf52c8c987e3e719491127575",
+    "feature_names_sha256": "b7464c1fd0e985e722eabd2f8becb33051879d4b4cdfd25d99cd1e6b793b98c8",
+    "ordered_feature_names_sha256": "8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf",
+    "train_csv_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+    "test_csv_sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+  },
+  "model_configuration": {
+    "objective": "binary:logistic",
+    "eval_metric": "auc",
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_lambda": 1.0,
+    "tree_method": "hist",
+    "device": "cpu",
+    "n_jobs": 8,
+    "verbosity": 0,
+    "n_estimators": 300,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "early_stopping_rounds": 30
+  },
+  "domain_split": {
+    "method": "StratifiedKFold",
+    "target": "train=0,test=1",
+    "shuffle": true,
+    "n_splits": 5,
+    "seed": 42,
+    "subclass_used": false,
+    "public_score_used": false
+  },
   "n_train": 6201,
   "n_test": 2546,
   "n_features": 35119,
@@ -12,6 +45,7 @@
     0.7417128778756573
   ],
   "overall_auc": 0.7210227159722483,
+  "total_gain": 2150.1389559686163,
   "top_features": [
     {
       "feature": "sample__complex_count",
@@ -212,6 +246,78 @@
     {
       "feature": "ZFPM2__max_residue_position",
       "mean_gain": 6.453952693939209
+    }
+  ],
+  "family_shift": [
+    {
+      "family": "max_residue_position",
+      "n_features": 4384,
+      "total_gain": 1291.4944818794716,
+      "mean_gain_per_feature": 0.29459271940681375,
+      "share_of_total_gain": 0.6006562870247919
+    },
+    {
+      "family": "sample_burden_aggregate",
+      "n_features": 12,
+      "total_gain": 459.9624354839325,
+      "mean_gain_per_feature": 38.33020295699438,
+      "share_of_total_gain": 0.2139221905668529
+    },
+    {
+      "family": "mutated",
+      "n_features": 4384,
+      "total_gain": 182.1222414493561,
+      "mean_gain_per_feature": 0.04154248208242612,
+      "share_of_total_gain": 0.0847025448954353
+    },
+    {
+      "family": "missense",
+      "n_features": 4384,
+      "total_gain": 138.29680583477017,
+      "mean_gain_per_feature": 0.03154580425063188,
+      "share_of_total_gain": 0.06431993869552902
+    },
+    {
+      "family": "synonymous",
+      "n_features": 4384,
+      "total_gain": 52.72484674453735,
+      "mean_gain_per_feature": 0.012026652998297754,
+      "share_of_total_gain": 0.02452159968460519
+    },
+    {
+      "family": "nonsense",
+      "n_features": 4384,
+      "total_gain": 16.44985008239746,
+      "mean_gain_per_feature": 0.0037522468253643844,
+      "share_of_total_gain": 0.007650598598166864
+    },
+    {
+      "family": "frameshift",
+      "n_features": 4384,
+      "total_gain": 4.924444389343262,
+      "mean_gain_per_feature": 0.0011232765486640652,
+      "share_of_total_gain": 0.002290291227770834
+    },
+    {
+      "family": "hotspot",
+      "n_features": 35,
+      "total_gain": 4.009492194652557,
+      "mean_gain_per_feature": 0.11455691984721592,
+      "share_of_total_gain": 0.0018647595698512984
+    },
+    {
+      "family": "complex",
+      "n_features": 4384,
+      "total_gain": 0.15435791015625,
+      "mean_gain_per_feature": 3.520937731666287e-05,
+      "share_of_total_gain": 7.17897369971204e-05
+    },
+    {
+      "family": "missing",
+      "n_features": 4384,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
     }
   ]
 }
