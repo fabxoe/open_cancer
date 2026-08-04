@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 83
+- 실제 실험 수: 84
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -101,6 +101,7 @@
 | EXP-359 | COMPLETED | fabxoe | #359 | EXP-229 generic gene complex를 normalized non-simple event-family indicator 6종으로 교체 | 0.4187813830 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0042072·Log Loss +0.0103444로 R2 기각, robust representation 공식 탐색 종료 | [보고서](reports/exp359_robust_event_gene_indicators/README.md) |
 | EXP-369 | COMPLETED | fabxoe | #369 | EXP-229의 simple stop 표기 `*`·`X`·`Ter`를 모든 피처 경로에서 동일한 nonsense로 정규화 | 0.4229885745 | 0.3407944343 | INFERENCE_VERIFIED | OOF 동일 통제에서 EXP-229 Public 대비 +0.0204345510·팀 최고 갱신, stop parser 결함이 핵심 Public 병목이었음을 확인 | [보고서](reports/exp369_stop_notation_normalization/README.md) |
 | EXP-374 | COMPLETED | fabxoe | #374 | EXP-369 stop 정규화 + Ensembl 116 residue-position semantic mask | 0.4267909268 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0038024·fold std·Log Loss·클래스 안정성 모두 통과, ADOPT·신규 제출 후보 | [보고서](reports/exp374_stop_isoform_residue_mask/README.md) |
+| EXP-392 | COMPLETED | fabxoe | #392 | EXP-374 + fold-train range stop/no-change gene indicator | 0.4290431888 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0022523·안정성 gate 통과, Log Loss +0.0032364 소폭 악화로 ADOPT_WITH_CAUTION | [보고서](reports/exp392_range_semantic_indicators/README.md) |
 | EXP-409 | COMPLETED | fabxoe | #409 | EXP-369 + fold-train ordinary range-replacement gene indicator | 0.4249303829 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0019418이나 fold std +0.0023141·Log Loss +0.1327703으로 gate 실패, ARCHIVE | [보고서](reports/exp409_ordinary_range_replacement_indicator/README.md) |
 
 ## 리더보드 제출 이력
@@ -176,6 +177,7 @@
 | 2026-08-04T07:36:26.479110+00:00 | EXP-359 | fabxoe | `4fbd1e267664949b515867c452ffa770405d4884` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.46e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp359_robust_event_gene_indicators/comparison.json) |
 | 2026-08-04T08:39:18.352925+00:00 | EXP-369 | fabxoe | `f49bf2209b22492d11bc5c31ab76de9af3946b59` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.40e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp369_stop_notation_normalization/comparison.json) |
 | 2026-08-04T22:04:37.570398+00:00 | EXP-374 | fabxoe | `4a2dfb685859277bd78746e8ab9578ade51a64a7` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.83e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp374_stop_isoform_residue_mask/comparison.json) |
+| 2026-08-04T22:30:46.801549+00:00 | EXP-392 | fabxoe | `af5a082e709ee5b6ea66befb7710cf18dcedabc6` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.46e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp392_range_semantic_indicators/comparison.json) |
 | 2026-08-04T21:45:04.915445+00:00 | EXP-409 | fabxoe | `7519b8e0dfa8e6b2c2e49d1b1ee4e7f54bc0c412` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp409_ordinary_range_replacement_indicator/comparison.json) |
 
 ## 상세 실험 로그
@@ -258,6 +260,29 @@
   byte-level 일치, test 라벨 100%, 확률 최대 차이 1.83e-7
 - 결론: 모든 Local gate를 통과했다. stop 정규화와 isoform mask 효과를 분리해
   확인한 `ADOPT` 후보이며 사용자가 제출 횟수·팀 후보를 확인한 뒤 수동 제출한다.
+
+### [EXP-392] Range stop/no-change gene indicators
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #392 / `issue-392-exp-range-stop-no-change`
+- 소스 commit: `af5a082e709ee5b6ea66befb7710cf18dcedabc6`
+- 시작/종료: 2026-08-04T22:18:40.145539+00:00 /
+  2026-08-04T22:30:44.956863+00:00 (725.12초)
+- 부모 EXP-374의 모든 조건을 고정하고 fold-train `range_stop`·
+  `range_no_change` 유전자 indicator만 추가했다.
+- OOF Macro F1: 0.4290431888 (부모 대비 `+0.0022522620`)
+- Fold 표준편차: 0.0092465129 (`+0.0007432961`)
+- Accuracy: 0.4134816965 (`+0.0006450572`)
+- Log Loss: 1.8473012447 (`+0.0032364130`)
+- 클래스 최대 하락 LUAD `-0.02949`; `-0.05` 붕괴 없음
+- 실제 신규 열: fold별 4 / 1 / 2 / 2 / 3개
+- EXP-374 대비 test argmax 변경: 121/2,546행
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+- 결론: 주 지표·안정성 gate는 통과했으나 Log Loss가 소폭 악화해
+  `ADOPT_WITH_CAUTION`으로 EXP-374와 함께 보존한다.
+- Report: `reports/exp392_range_semantic_indicators/README.md`
 
 ### [EXP-409] Ordinary range-replacement gene indicator
 
