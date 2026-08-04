@@ -100,7 +100,7 @@
 | EXP-355 | COMPLETED | fabxoe | #355 | EXP-229 raw complex token count를 normalized non-simple unique-gene count로 교체 | 0.4176342820 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0053543·Log Loss +0.0263959·DLBC -0.06258로 R1 기각, R2는 독립 실행 | [보고서](reports/exp355_robust_complex_gene_count/README.md) |
 | EXP-359 | COMPLETED | fabxoe | #359 | EXP-229 generic gene complex를 normalized non-simple event-family indicator 6종으로 교체 | 0.4187813830 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0042072·Log Loss +0.0103444로 R2 기각, robust representation 공식 탐색 종료 | [보고서](reports/exp359_robust_event_gene_indicators/README.md) |
 | EXP-369 | COMPLETED | fabxoe | #369 | EXP-229의 simple stop 표기 `*`·`X`·`Ter`를 모든 피처 경로에서 동일한 nonsense로 정규화 | 0.4229885745 | 0.3407944343 | INFERENCE_VERIFIED | OOF 동일 통제에서 EXP-229 Public 대비 +0.0204345510·팀 최고 갱신, stop parser 결함이 핵심 Public 병목이었음을 확인 | [보고서](reports/exp369_stop_notation_normalization/README.md) |
-| EXP-380 | COMPLETED | fabxoe | #380 | EXP-369 + range stop/no-change 고유 유전자 수·존재 여부 4개 | 0.4221880021 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0008006로 성능 채택 기준 미달; fold 표준편차·Log Loss는 개선했으나 ARCHIVE | [보고서](reports/exp380_range_semantic_summary/README.md) |
+| EXP-380 | COMPLETED | fabxoe | #380 | EXP-369 + range stop/no-change 고유 유전자 수·존재 여부 4개 | 0.4221880021 | 미제출 | INFERENCE_VERIFIED | 이 4개 sample 요약은 Macro F1 -0.0008006로 ARCHIVE; parser·다른 의미 표현은 독립 실험으로 계속 검증 | [보고서](reports/exp380_range_semantic_summary/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -199,7 +199,8 @@
 - Public LB: 미제출
 - 재현 상태: INFERENCE_VERIFIED
 - 판단: Macro F1 성능 채택 기준 미달. fold 안정성과 Log Loss는 개선됐지만
-  추가 피처이므로 간소화 이점도 없어 ARCHIVE하고 range 요약 확장을 중단한다.
+  추가 피처이므로 이 4개 sample 요약 조합만 ARCHIVE한다. range parser,
+  mutation-type 교정과 다른 feature representation은 기각하지 않는다.
 - 상세: [보고서](reports/exp380_range_semantic_summary/README.md)
 - 재현 증빙:
   [comparison](reproducibility/exp380_range_semantic_summary/comparison.json)

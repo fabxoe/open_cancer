@@ -12,8 +12,11 @@ OOF Macro F1은 `0.4221880021`로 부모 EXP-369의 `0.4229885745`보다
 `1.8463485241`로 개선됐다.
 
 대회 주 지표인 Macro F1이 하락했으며, 네 피처는 모델을 단순화하지도 않는다.
-따라서 성능 피처로 채택하거나 리더보드에 제출하지 않고 `ARCHIVE`한다. 다만
-구간 표기를 버리지 않고 안전하게 의미화할 수 있다는 구현·분포 증빙은 보존한다.
+따라서 **이 네 개의 sample-level 요약 표현**은 성능 피처로 채택하거나
+리더보드에 제출하지 않고 `ARCHIVE`한다. 다만 이는 range parser, 개별 사건의
+정규화, mutation-type 재분류 또는 다른 feature representation을 기각한 결과가
+아니다. 구간 표기를 버리지 않고 안전하게 구조화할 수 있다는 구현·분포 증빙은
+후속 parser 버전을 위해 보존한다.
 
 ## 실험 계약
 
@@ -84,8 +87,19 @@ fold Macro F1은 `0.4173773 / 0.4204568 / 0.4154077 / 0.4250923 /
 
 ## 판단과 다음 행동
 
-EXP-380은 `ARCHIVE`한다. range 의미 파서와 테스트는 공용 기반으로 유지하지만,
-이 결과를 근거로 샘플 집계 피처를 더 늘리거나 pathway·유전자 단위로 확장하지
-않는다. 후속 parser 실험은 기존 피처에 요약값을 추가하는 방식보다, 실제로 잘못
-분류되는 표기를 하나씩 교정하고 train 불변성·test 이동을 감사하는 단독
-ablation으로 설계한다.
+EXP-380의 **정확히 이 네 개 피처 조합**은 `ARCHIVE`한다. range 의미 파서와
+테스트는 공용 기반으로 유지한다. 이 결과 하나로 sample·gene·pathway 표현 전체를
+닫지 않으며, 같은 네 값을 단순히 더 세분화하는 기계적 확장만 보류한다.
+
+후속 작업은 다음 세 층을 별도 버전과 독립 ablation으로 관리한다.
+
+1. **Notation normalization**: `*`·`X`·`Ter`, 대소문자, 공백처럼 동일 의미의
+   표기만 canonical token으로 통일한다.
+2. **Semantic parser**: multi-letter frameshift, range stop, no-change, indel과
+   ambiguous token을 raw 손실 없이 구조화한다.
+3. **Feature representation**: 구조화된 의미를 mutation-type 교정, sample 요약,
+   gene indicator 또는 pathway 집계 중 어떤 형태로 모델에 전달할지 각각 검증한다.
+
+EXP-380은 3번의 첫 번째 좁은 표현 실험일 뿐이다. 다음 parser 실험은
+`SDEL133fs` 같은 현재 오분류 표기를 실제 mutation-type 경로에서 바로잡는 단독
+ablation으로 설계하고, 다른 요약 피처를 동시에 섞지 않는다.
