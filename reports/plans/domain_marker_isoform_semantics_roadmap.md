@@ -32,7 +32,7 @@
 | B1 | isoform token 의미 QC | #307 | explore | #308 | COMPLETED | N/A | coverage 충분·train/test 의미 분포 큰 차이 | [보고서](../analysis/isoform_residue_semantics/README.md) |
 | B2-1 | 불확실 residue-position mask | #311(구현), #313(실험) | EXP-313 | #314 | COMPLETED | 0.4267909268 | EXP-229 대비 +0.0038023523·fold std·Log Loss 개선, INFERENCE_VERIFIED | 채택 후보 유지·B2-2는 별도 Issue |
 | B2-2 | sample 범주 요약 | #315(구현), #317(실험) | EXP-317 | #321 | REJECTED | 0.4170163022 | EXP-229 대비 -0.0059723·fold std·Log Loss·DLBC 악화, INFERENCE_VERIFIED | ARCHIVE·추가 튜닝 중단 |
-| B2-3 | isoform-relative coarse bin | #325(구현) | 미발급 | 미발급 | IN_PROGRESS | N/A | #307 팀장 예외 승인·사전 고정 5-bin 구현 중 | 구현 병합 후 별도 Experiment Issue |
+| B2-3 | isoform-relative coarse bin | #325(구현) | 미발급 | #326 | PR_OPEN | N/A | #307 팀장 예외 승인·사전 고정 5-bin 구현 완료 | PR 병합 후 별도 Experiment Issue |
 | C | Track A+B 조건부 조합 | 미발급 | 미발급 | 미발급 | REJECTED | N/A | Track A gate 실패 | 조합 실험을 열지 않음 |
 
 작업 상태는 다음 값만 사용합니다.
