@@ -71,6 +71,106 @@ EXP-170(Cell Cycle any-nonsilent)의 DLBC OOF 확률을 baseline(EXP-094)과
 비결정성 vs 클래스 자체의 구조적 민감성)은 서로 다르므로 대책도 같이
 묶어 설계하지 않는다.
 
+## 예비 관찰: feature-독립 노이즈 바닥 (n=5, 예비 신호 — 확정 아님)
+
+위 세 진단은 전부 "새 feature를 추가한 채로 hyperparameter만 바꾼"
+경우다. feature 자체를 완전히 빼고(순수 EXP-094 v1 base spec, 추가
+컬럼 없음) model seed만 바꿔도 DLBC delta가 얼마나 흔들리는지 별도로
+확인했다(진단용 ad-hoc, EXP-ID 없음, `seed_base` 5개: 1001/1002/2001/
+2002/2003).
+
+| 설정 | delta 평균 | delta 표준편차 |
+|---|---:|---:|
+| 노이즈 바닥 (`seed_base=1001`, feature 없음) | +0.003342 | 0.042609 |
+| 노이즈 바닥 (`seed_base=1002`, feature 없음) | -0.005885 | 0.033197 |
+| 노이즈 바닥 (`seed_base=2001`, feature 없음) | +0.005377 | 0.037117 |
+| 노이즈 바닥 (`seed_base=2002`, feature 없음) | +0.004920 | 0.050262 |
+| 노이즈 바닥 (`seed_base=2003`, feature 없음) | +0.008505 | 0.039438 |
+
+std 5개: `[0.0332, 0.0371, 0.0394, 0.0426, 0.0503]`, 평균 0.0405.
+feature 추가 3건의 std `[0.0540, 0.0599, 0.0638]`(평균 0.0593)는
+**5개 노이즈 표본 전부보다 크다** — 노이즈 최댓값(0.0503)이 feature
+최솟값(0.0540)에 못 미친다(비율 1.46배, 여백 약 7%).
+
+5-seed 간 pairwise delta 상관의 평균은 0.35다(n=2였을 때의 단일 쌍
+0.21보다 높음) — 완전 무작위(상관 0)는 아니며, 일부 DLBC 샘플이 seed와
+무관하게 경계선에 있어 방향이 약하게 재현되는 성분이 있을 가능성을
+시사한다. 이 상관 구조의 원인은 아직 해석하지 않았다.
+
+**이것은 예비 신호이지 확정된 결론이 아니다.** n=5/n=3 표본으로는
+formal 통계 검정(t-test 등)을 신뢰할 수 없고, 5/5 완전 분리라는
+패턴 자체는 무시하기 어렵지만 표본을 더 늘리면 뒤집힐 가능성을
+배제할 수 없다. "feature 추가 효과가 순수 seed 노이즈보다 크다"는
+잠정 결론으로 두고, 확정 여부는 추가 seed 확보 이후로 미룬다.
+
+팀의 "소수 클래스 F1 악화 없음" promotion 게이트가 DLBC 같은 극소수
+클래스에서는 단일 실행 노이즈(std ~0.04)를 실제 효과로 오판할 위험이
+있다는 점은 이미 무시하기 어려운 수준이라고 판단해, 확정 제안이 아닌
+"인지 필요 + 논의 필요" 톤으로 별도 팀 공유용 Task Issue
+[#254](https://github.com/fabxoe/open_cancer/issues/254)를 열었다.
+이 문서(#251)는 조사 스레드 기록이고, 게이팅 기준 변경 여부의 실제
+논의와 결정은 #254에서 진행한다.
+
+### 재현성 (PR #255 리뷰 보완)
+
+fabxoe 리뷰(2026-08-03, `CHANGES_REQUESTED`)가 요구한 4개 항목을 모두
+추가했다.
+
+1. **Source commit**: 5개 seed 진단은 `08400ad02579d7ffc8745ba139b64d8eaf480b8b`
+   (`docs(#251): finalize 5-seed noise-floor observation, open #254 for
+   gating policy`, 이 문서를 처음 완성한 커밋)가 HEAD였던 시점에 이
+   브랜치에서 실행했다. 입력(`configs/exp094_feature_spec_v1.yaml`,
+   canonical train/test/split)은 2026-08-01 이후 변경되지 않아, 그
+   사이 다른 브랜치의 무관한 커밋들은 이 결과에 영향을 주지 않는다 —
+   아래 SHA-256이 이를 커밋 해시보다 더 직접적으로 보증한다.
+2. **재실행 가능한 스크립트**: `scripts/diag_exp094_seed_variant.py
+   <seed_base>`(seed별 OOF 생성, EXP-094와 동일 하이퍼파라미터·frozen
+   Feature Spec v1) + `scripts/dlbc_5seed_noise_floor.py`(위 표 전체를
+   원본에서 재계산). 후자를 그대로 실행하면 이 섹션의 모든 수치가
+   재현된다(직접 확인함 — 아래 SHA-256과 함께 실행 로그 재현 완료).
+3. **seed별 원본 결과**: 전체 26클래스 OOF 확률 5개는 Git에 커밋하지
+   않고 immutable GitHub Release `issue-251-dlbc-noise-floor-v1`의
+   `issue-251-dlbc-noise-floor-oof-v1.tar.gz`에 보관한다. 저장소에는
+   `_meta.json`(모델 파라미터), `summary.json`(표·상관의 compact 원본),
+   재계산 스크립트와 asset SHA-256만 남긴다. 비교 대상인 EXP-094 공식
+   baseline OOF도 `scripts/fetch_experiment_artifacts.py --experiment
+   EXP-094`로 해당 실험 Release에서 받는다.
+   - Release: https://github.com/fabxoe/open_cancer/releases/tag/issue-251-dlbc-noise-floor-v1
+   - Release source commit: `858492dd8c04f59acde1e03127b9e20cea953b33`
+4. **재계산 설명**: `dlbc_5seed_noise_floor.py`가 baseline과 5개 seed
+   OOF의 DLBC 컬럼만 대조해 delta mean/std, 5-seed 분포, pairwise
+   correlation, feature-added 3건과의 백분위 비교를 전부 계산한다 —
+   위 표의 모든 숫자가 이 스크립트 출력과 정확히 일치함을 확인했다.
+
+Release 원본 회수와 재계산:
+
+```bash
+gh release download issue-251-dlbc-noise-floor-v1 \
+  --pattern issue-251-dlbc-noise-floor-oof-v1.tar.gz
+tar -xzf issue-251-dlbc-noise-floor-oof-v1.tar.gz
+uv run python scripts/fetch_experiment_artifacts.py --experiment EXP-094
+uv run python scripts/dlbc_5seed_noise_floor.py
+```
+
+- Release asset SHA-256:
+  `881c81ca163bf5de49a65ee0aaf9647c0cf937d2db5ec02d3a5c702253b709ca`
+
+**Feature Spec v1 입력 identity(SHA-256, 커밋 해시보다 강한 보증)**:
+
+| 항목 | SHA-256 |
+|---|---|
+| `base_feature_spec_sha256` | `1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3` |
+| `source_config_sha256` | `4282727de03bd0f31989fdcce61d65530ba69e339e6dce1fe7f72fa85ebd57c4` |
+| `train_input_sha256` | `92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab` |
+| `test_input_sha256` | `e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0` |
+
+이 4개 해시가 일치하면 어느 커밋에서 돌리든 동일한 Feature Spec v1
+입력(모델 학습 전 단계)임이 보장된다. 5개 raw OOF 파일에는 이 identity가
+기록되지 않았지만(진단 스크립트의 이후 버전에서 추가), 위 표는 지금
+저장소의 `configs/exp094_feature_spec_v1.yaml`·canonical 데이터로
+`materialize_frozen_feature_spec`을 다시 돌려 확인한 현재 값이며, 해당
+파일들이 2026-08-01 이후 변경되지 않았으므로 실행 시점과 동일하다.
+
 ## 권장 사항
 
 향후 유사한 실험(EXP-094 v1에 양성 건수 50건 미만의 희소 이진 컬럼 1개를
