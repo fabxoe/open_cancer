@@ -218,3 +218,15 @@ ID가 없는 competition input에서는 confirmed group을 만들지 않고, cro
 recurrence도 환자 사이에서 합치지 않는다. 상세 계약은
 [`reports/analysis/isoform_annotation_multiplicity/README.md`](../reports/analysis/isoform_annotation_multiplicity/README.md)에
 기록한다.
+
+## Driver-preserving canonical event signature
+
+Issue #390은 likely multiplicity collapse가 알려진 protein driver를 제거하지 않는지
+별도로 감사한다. raw annotation, annotation multiplicity, independent canonical event,
+driver presence와 equivalence confidence를 각각 저장한다. `EXACT`, fixed-reference
+`ISOFORM_PROJECTED`, `FAMILY_LEVEL`을 구분하고, 마지막 상태를 canonical coordinate
+동일성으로 오해하지 않는다. 첫 regression case인 EGFR IPVAIK 네 annotation은 raw
+4개를 유지하면서 canonical signature 1개와 driver presence 1을 만든다. 상세 근거와
+feature overlap은
+[`reports/analysis/driver_event_signature/README.md`](../reports/analysis/driver_event_signature/README.md)에
+기록한다.
