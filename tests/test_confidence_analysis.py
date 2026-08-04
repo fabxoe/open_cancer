@@ -48,4 +48,3 @@ def test_trial_selection_uses_macro_f1_then_log_loss() -> None:
         },
     ]
     assert select_best_trial(trials)["trial"] == 2
-

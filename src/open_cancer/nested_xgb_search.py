@@ -148,4 +148,3 @@ def run_nested_xgb_search(
         "folds": outer_records,
     }
     return tuple(selected_parameters), document
-

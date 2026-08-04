@@ -99,4 +99,3 @@ def evaluate_pmax_thresholds(
         "sample_count": len(y),
         "thresholds": rows,
     }
-
