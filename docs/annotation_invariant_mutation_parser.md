@@ -209,3 +209,12 @@ Ensembl reference로 검증하고 first-new peptide는 후보로 보존하지만
 keyword가 아니라 frameshift 새 peptide 후보로 라우팅한다. 상세 결과는
 [`reports/analysis/protein_frameshift_semantics/README.md`](../reports/analysis/protein_frameshift_semantics/README.md)에
 기록한다.
+
+## Isoform annotation multiplicity
+
+Issue #389는 raw annotation count와 exact-normalized strict event count, 그리고
+gene+event+ref/alt 기반 likely event count를 직교 저장한다. transcript/genomic event
+ID가 없는 competition input에서는 confirmed group을 만들지 않고, cross-sample
+recurrence도 환자 사이에서 합치지 않는다. 상세 계약은
+[`reports/analysis/isoform_annotation_multiplicity/README.md`](../reports/analysis/isoform_annotation_multiplicity/README.md)에
+기록한다.

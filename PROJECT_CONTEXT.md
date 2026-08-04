@@ -310,6 +310,13 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   peptide·termination distance를 추정하지 않는다. 상세 계약은
   [`reports/analysis/protein_frameshift_semantics/README.md`](reports/analysis/protein_frameshift_semantics/README.md)를
   따른다.
+- isoform annotation multiplicity는 raw annotation count, exact-normalized strict
+  event count와 gene+event+ref/alt 기반 likely event count를 함께 보존한다.
+  transcript/genomic event ID가 없으면 confirmed group을 만들지 않으며 환자 사이의
+  동일 token recurrence를 collapse하지 않는다. known driver 보존 검증 전에는 likely
+  count로 기존 feature를 대체하지 않는다. 상세 감사는
+  [`reports/analysis/isoform_annotation_multiplicity/README.md`](reports/analysis/isoform_annotation_multiplicity/README.md)를
+  따른다.
 - protein insertion과 tandem duplication은 원문 syntax와 reference-aware 의미를
   분리한다. literal `dup`가 없더라도 `ins` 서열이 삽입 경계 바로 N-terminal의
   reference 서열과 완전히 같고 flanking residue·isoform이 검증된 경우에만
