@@ -70,3 +70,20 @@ R1 EXP-355와 R2 EXP-359는 모두 성능 gate를 통과하지 못해 robust fea
 representation 교체는 종료했다. parser의 표기 정규화·의미 동등성 자체는 Issue
 #364의 fixture와 compact audit로 독립 검증하며, 기존 공식 Feature Spec을
 소급 변경하지 않는다.
+
+## Feature Factory adapter 계약
+
+Issue #366에서 기본 v1 동작을 바꾸지 않는 선택형 parser hook을 추가했다.
+
+- `parse_stop_notation_invariant_cell`: token 수와 나머지 v1 의미는 유지하고
+  단순 stop alternate `*`, `X`, `Ter`만 `*`로 정규화한다.
+- `parse_position_sanitized_cell`: v1 mutation type은 유지하되 `-287fs`,
+  `*261*` 같은 불명확 표기의 residue-position만 제거한다.
+- custom adapter는 반드시 versioned `mutation_parser_contract`와 함께 사용한다.
+- adapter contract는 Feature Spec·cache key에 들어가므로 v1 cache와 섞이지 않는다.
+
+실제 train의 `A숫자*` 13,289건을 각각 `A숫자X`, `A숫자Ter`로 바꾼
+metamorphic audit에서 canonical equivalence 실패는 0건이었다. v1에서는 같은
+13,289건이 `nonsense`에서 `complex`로 달라졌다. 상세 결과는
+[`reports/analysis/stop_notation_invariance/README.md`](../reports/analysis/stop_notation_invariance/README.md)에
+기록한다.

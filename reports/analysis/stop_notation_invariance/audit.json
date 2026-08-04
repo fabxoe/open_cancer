@@ -1,0 +1,48 @@
+{
+  "analysis_only": true,
+  "target_used": false,
+  "test_data_used": false,
+  "public_leaderboard_used": false,
+  "patient_level_values_retained": false,
+  "stop_parser_contract": {
+    "name": "stop_notation_invariant_v2",
+    "definition_version": "2.1.0",
+    "equivalent_stop_alternates": [
+      "*",
+      "X",
+      "Ter"
+    ],
+    "deduplicate_tokens": false,
+    "other_v1_semantics_preserved": true,
+    "target_used": false,
+    "test_distribution_used_for_rule": false
+  },
+  "position_parser_contract": {
+    "name": "ambiguous_position_sanitized_v2",
+    "definition_version": "2.1.0",
+    "position_ineligible_patterns": [
+      "leading_negative",
+      "double_stop"
+    ],
+    "mutation_type_semantics_preserved": true,
+    "target_used": false,
+    "test_distribution_used_for_rule": false
+  },
+  "train_star_stop_occurrences_tested": 13289,
+  "train_unique_star_stop_tokens_tested": 6245,
+  "train_genes_with_star_stop": 3182,
+  "v1_occurrences_whose_type_changes_under_x_notation": 13289,
+  "canonical_equivalence_failures": [],
+  "canonical_equivalence_passed": true,
+  "ambiguous_occurrences": {
+    "double_stop": 99,
+    "leading_negative": 75
+  },
+  "negative_control": {
+    "-287fs_positions": [],
+    "-287fs_mutation_type_preserved": "frameshift",
+    "*261*_positions": [],
+    "*261*_mutation_type_preserved": "complex",
+    "position_sanitation_passed": true
+  }
+}
