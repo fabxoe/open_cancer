@@ -33,7 +33,7 @@ uv run python scripts/validate_experiment.py
 - [ ] 최신 `origin/main`이 반영되어 있습니다.
 - [ ] 테스트와 CI `quality`가 통과했습니다.
 - [ ] `data/raw/` 원본과 원본 기반 PDF가 tracked·staged되지 않았습니다.
-- [ ] 가공 데이터, 모델, OOF, 비밀 파일을 커밋하지 않았습니다.
+- [ ] 가공 데이터, 모델, 비밀 파일과 승인되지 않은 OOF를 커밋하지 않았습니다. 승인 OOF는 `reports/shared_oof/` manifest 검증을 통과했습니다.
 - [ ] 실제로 측정하지 않은 실험 결과를 기록하지 않았습니다.
 - [ ] 리더보드 제출 모델이면 재현 번들을 Release에 업로드하고 manifest의 URL·SHA-256을 기록했습니다.
 - [ ] 리더보드 제출 모델이면 `validate_experiment.py --check-remote-storage`를 통과했습니다.

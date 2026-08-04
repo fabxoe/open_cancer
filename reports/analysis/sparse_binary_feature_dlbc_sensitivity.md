@@ -128,13 +128,15 @@ fabxoe 리뷰(2026-08-03, `CHANGES_REQUESTED`)가 요구한 4개 항목을 모�
    Feature Spec v1) + `scripts/dlbc_5seed_noise_floor.py`(위 표 전체를
    원본에서 재계산). 후자를 그대로 실행하면 이 섹션의 모든 수치가
    재현된다(직접 확인함 — 아래 SHA-256과 함께 실행 로그 재현 완료).
-3. **seed별 원본 결과**: 전체 26클래스 OOF 확률 5개는 Git에 커밋하지
-   않고 immutable GitHub Release `issue-251-dlbc-noise-floor-v1`의
-   `issue-251-dlbc-noise-floor-oof-v1.tar.gz`에 보관한다. 저장소에는
-   `_meta.json`(모델 파라미터), `summary.json`(표·상관의 compact 원본),
-   재계산 스크립트와 asset SHA-256만 남긴다. 비교 대상인 EXP-094 공식
-   baseline OOF도 `scripts/fetch_experiment_artifacts.py --experiment
-   EXP-094`로 해당 실험 Release에서 받는다.
+3. **seed별 원본 결과**: 전체 26클래스 OOF 확률 5개는 팀장 승인 Issue
+   #341의 소형 OOF Git 공유 예외에 따라
+   `reports/shared_oof/issue251_dlbc_noise_floor/`에 편의 복제본을 둔다.
+   파일에는 `ID + 26개 클래스 확률`만 있고 정답 라벨·원본 변이값·test
+   확률은 없다. immutable 원본은 GitHub Release
+   `issue-251-dlbc-noise-floor-v1`의
+   `issue-251-dlbc-noise-floor-oof-v1.tar.gz`로 함께 보관한다. 비교 대상인
+   EXP-094 공식 baseline OOF는 `scripts/fetch_experiment_artifacts.py
+   --experiment EXP-094`로 해당 실험 Release에서 받는다.
    - Release: https://github.com/fabxoe/open_cancer/releases/tag/issue-251-dlbc-noise-floor-v1
    - Release source commit: `858492dd8c04f59acde1e03127b9e20cea953b33`
 4. **재계산 설명**: `dlbc_5seed_noise_floor.py`가 baseline과 5개 seed

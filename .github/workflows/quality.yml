@@ -31,3 +31,6 @@ jobs:
 
       - name: Validate experiment records
         run: uv run python scripts/validate_experiment.py --check-remote-storage
+
+      - name: Validate approved shared OOF probabilities
+        run: uv run python scripts/validate_shared_oof.py
