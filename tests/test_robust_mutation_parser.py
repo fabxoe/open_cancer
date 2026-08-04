@@ -26,6 +26,7 @@ from open_cancer.robust_mutation_parser import (
         ("R132R", "synonymous", "R132R", True),
         ("R213*", "stop_gain", "R213*", True),
         ("R213X", "stop_gain", "R213*", True),
+        ("R213Ter", "stop_gain", "R213*", True),
         ("WQ288fs", "frameshift", "WQ288FS", True),
         ("P233del", "inframe_deletion", "P233DEL", False),
         ("P11_K12insP", "inframe_insertion", "P11_K12INSP", False),
@@ -34,6 +35,8 @@ from open_cancer.robust_mutation_parser import (
         ("A20dup", "duplication", "A20DUP", False),
         ("X127C", "other_unmappable", "X127C", False),
         ("UNKNOWN", "other_unmappable", "UNKNOWN", False),
+        ("-287fs", "other_unmappable", "-287FS", False),
+        ("*261*", "other_unmappable", "*261*", False),
     ],
 )
 def test_parse_robust_event_families(
@@ -49,12 +52,56 @@ def test_parse_robust_event_families(
 
 
 def test_stop_x_and_star_share_one_semantic_token() -> None:
-    cell = canonicalize_mutation_cell("R213X R213* r213x")
-    assert cell.source_token_count == 3
-    assert cell.exact_duplicate_count == 2
+    cell = canonicalize_mutation_cell("R213X R213* r213x R213Ter")
+    assert cell.source_token_count == 4
+    assert cell.exact_duplicate_count == 3
     assert len(cell.tokens) == 1
     assert cell.tokens[0].normalized == "R213*"
     assert cell.tokens[0].event_family == "stop_gain"
+
+
+def test_ambiguous_non_protein_positions_are_never_exposed_as_residues() -> None:
+    for token in ("-287fs", "*261*"):
+        parsed = parse_robust_mutation_token(token)
+        assert parsed.event_family == "other_unmappable"
+        assert parsed.residue_positions == ()
+        assert parsed.position_eligible is False
+
+
+@pytest.mark.parametrize(
+    "token",
+    [
+        "R132H",
+        "D623D",
+        "R213X",
+        "R213Ter",
+        "K16fs",
+        "91_92NH>KY",
+        "249del",
+        "R649del",
+        "-287fs",
+        "*261*",
+    ],
+)
+def test_token_normalization_is_idempotent(token: str) -> None:
+    first = parse_robust_mutation_token(token)
+    second = parse_robust_mutation_token(first.normalized)
+    assert second.normalized == first.normalized
+    assert second.event_family == first.event_family
+    assert second.residue_positions == first.residue_positions
+    assert second.position_eligible == first.position_eligible
+
+
+def test_similar_positions_do_not_collapse_different_event_meanings() -> None:
+    stop = parse_robust_mutation_token("R213X")
+    missense = parse_robust_mutation_token("R213H")
+    deletion = parse_robust_mutation_token("R213del")
+    assert {stop.event_family, missense.event_family, deletion.event_family} == {
+        "stop_gain",
+        "missense",
+        "inframe_deletion",
+    }
+    assert len({stop.normalized, missense.normalized, deletion.normalized}) == 3
 
 
 def test_cell_representation_is_invariant_to_order_whitespace_and_duplicates() -> None:
