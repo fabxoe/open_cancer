@@ -283,6 +283,13 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   함께 이름·definition version·변경 의미·target/test/Public 미사용 여부가 담긴
   `mutation_parser_contract`를 반드시 전달한다. contract는 Feature Spec과 cache
   key에 포함되어야 하며, 누락한 custom parser 실행은 실패해야 한다.
+- 새 통합 parser를 사용하는 공식 runner는 notation normalizer, semantic parser,
+  feature adapter의 버전과 fixture catalog SHA-256·schema version을 resolved config의
+  `parser_contract`에 모두 기록한다. 누락되거나 저장소 catalog와 hash가 다르면
+  실행을 실패시킨다. 역사적 runner와 Feature Spec v1에는 이 계약을 소급 적용하지
+  않는다. 통합 계약과 fixture는
+  [`reports/analysis/parser_contract_v4/README.md`](reports/analysis/parser_contract_v4/README.md)를
+  따른다.
 - 같은 생물학적 사건의 표기만 `*`/`X`/`Ter`로 바꾼 metamorphic fixture에서
   canonical feature matrix가 완전히 같아야 한다. 음수 부분 표기와 `*숫자*`는
   mutation presence/type을 임의 삭제하지 않되 residue-position에는 넣지 않는다.
