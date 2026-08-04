@@ -199,3 +199,13 @@ contract를 opt-in하면 resolved config의 계약 필드 누락이나 fixture h
 실행 오류로 처리한다. 과거 실험과 기본 Feature Spec은 변경하지 않는다. 상세 계약은
 [`reports/analysis/parser_contract_v4/README.md`](../reports/analysis/parser_contract_v4/README.md)에
 기록한다.
+
+## Parser v4: frameshift compact grammar
+
+Issue #383은 `REF+POSITION+fs`, `REF+ALTSEQ+POSITION+fs`,
+`REF+POSITION+ALTSEQ+fs`의 세 관측 문법을 분리한다. 첫 residue와 position은 fixed
+Ensembl reference로 검증하고 first-new peptide는 후보로 보존하지만, DNA frame과
+종료까지 거리는 원본에 없으므로 추정하지 않는다. `SDEL133fs`의 `DEL`은 deletion
+keyword가 아니라 frameshift 새 peptide 후보로 라우팅한다. 상세 결과는
+[`reports/analysis/protein_frameshift_semantics/README.md`](../reports/analysis/protein_frameshift_semantics/README.md)에
+기록한다.

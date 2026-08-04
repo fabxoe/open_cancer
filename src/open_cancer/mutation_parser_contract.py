@@ -25,6 +25,10 @@ from open_cancer.protein_duplication_semantics import (
     PROTEIN_DUPLICATION_SEMANTICS_VERSION,
     parse_protein_insertion_token,
 )
+from open_cancer.protein_frameshift_semantics import (
+    PROTEIN_FRAMESHIFT_SEMANTICS_VERSION,
+    parse_protein_frameshift_token,
+)
 from open_cancer.protein_substitution_semantics import (
     PROTEIN_SUBSTITUTION_SEMANTICS_VERSION,
     parse_protein_substitution_token,
@@ -40,12 +44,6 @@ SEMANTIC_ROUTER_VERSION = "4.0.0"
 FEATURE_ADAPTER_VERSION = "4.0.0-opt-in"
 PARSER_FIXTURE_SCHEMA_VERSION = "1.0.0"
 
-_REF_POSITION_FIRST_ALT_FRAMESHIFT = re.compile(
-    r"^(?P<reference>[ACDEFGHIKLMNPQRSTVWY])"
-    r"(?P<position>[1-9][0-9]*)"
-    r"(?P<first_alternate>[ACDEFGHIKLMNPQRSTVWY])FS$",
-    re.IGNORECASE,
-)
 _NON_PROTEIN_PARTIAL = re.compile(r"^-[1-9][0-9]*", re.IGNORECASE)
 _AMBIGUOUS_DOUBLE_STOP = re.compile(r"^\*[1-9][0-9]*\*$", re.IGNORECASE)
 
@@ -126,31 +124,13 @@ def route_protein_mutation(raw_token: str) -> RoutedProteinMutation:
             ROBUST_PARSER_VERSION, "unresolved", "other_unmappable", (),
             _payload(robust),
         )
-    if robust.source_structure == "frameshift":
+    frameshift = parse_protein_frameshift_token(raw)
+    if frameshift.parse_status != "not_applicable":
+        positions = (() if frameshift.position is None else (frameshift.position,))
         return RoutedProteinMutation(
-            raw, robust.normalized, "frameshift", "robust_mutation_parser",
-            ROBUST_PARSER_VERSION, "complete", "frameshift",
-            robust.residue_positions, _payload(robust),
-        )
-
-    # Observed compact HGVS-like form: reference + position + first new amino
-    # acid + fs (for example P953Hfs).  Route the family, but keep the semantic
-    # detail partial until Issue #383 validates the source annotation grammar.
-    ref_alt_frameshift = _REF_POSITION_FIRST_ALT_FRAMESHIFT.fullmatch(raw)
-    if ref_alt_frameshift is not None:
-        position = int(ref_alt_frameshift.group("position"))
-        normalized = raw.upper()
-        return RoutedProteinMutation(
-            raw, normalized, "frameshift", "mutation_parser_contract",
-            SEMANTIC_ROUTER_VERSION, "partial", "frameshift", (position,),
-            {
-                "raw_token": raw,
-                "normalized_token": normalized,
-                "reference_residue_candidate": ref_alt_frameshift.group("reference").upper(),
-                "position": position,
-                "first_alternate_residue_candidate": ref_alt_frameshift.group("first_alternate").upper(),
-                "ambiguity_reason": "source frameshift grammar not yet reference-validated",
-            },
+            raw, frameshift.normalized_token, "frameshift",
+            "protein_frameshift_semantics", PROTEIN_FRAMESHIFT_SEMANTICS_VERSION,
+            frameshift.parse_status, "frameshift", positions, _payload(frameshift),
         )
 
     delins = parse_protein_delins_token(raw)
