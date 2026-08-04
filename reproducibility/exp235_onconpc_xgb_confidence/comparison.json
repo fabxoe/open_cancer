@@ -1,0 +1,23 @@
+{
+  "verified_at": "2026-08-04T06:07:52.821402+00:00",
+  "data_hashes_match": true,
+  "submission_sha256_match": true,
+  "test_label_agreement": 1.0,
+  "test_probability_allclose": true,
+  "test_probability_max_abs_diff": 5.5756728678524325e-08,
+  "probability_atol": 1e-06,
+  "probability_rtol": 1e-06,
+  "passed": true,
+  "artifact_recovery": {
+    "verified_at": "2026-08-04T06:07:52.821402+00:00",
+    "method": "original_local_artifacts_vs_manifest_sha256",
+    "retrained": false,
+    "checkpoint_count": 5,
+    "required_artifact_sha256_match": true,
+    "source_tag": "exp-235-repro-v1",
+    "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-235-repro-v1",
+    "bundle_size_bytes": 32262478,
+    "bundle_sha256": "673d4b49c0adc8c527b6e1ae68ccbb458945cfb5dcf19176a6ba24c43afa4de0",
+    "remote_asset_download_verified": true
+  }
+}
