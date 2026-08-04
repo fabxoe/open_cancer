@@ -303,6 +303,13 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   [`docs/annotation_invariant_mutation_parser.md`](docs/annotation_invariant_mutation_parser.md)와
   [`reports/analysis/multiletter_frameshift_range_parser/README.md`](reports/analysis/multiletter_frameshift_range_parser/README.md)를
   따른다.
+- frameshift compact notation은 `REF+POSITION+fs`, `REF+ALTSEQ+POSITION+fs`,
+  `REF+POSITION+ALTSEQ+fs` 순서를 별도 source grammar로 보존한다. 첫 residue는
+  fixed reference로 검증하고 뒤 peptide는 first-new candidate로만 기록하며,
+  `SDEL133fs`의 `DEL`을 deletion으로 소비하지 않는다. 원본에 없는 새 reading-frame
+  peptide·termination distance를 추정하지 않는다. 상세 계약은
+  [`reports/analysis/protein_frameshift_semantics/README.md`](reports/analysis/protein_frameshift_semantics/README.md)를
+  따른다.
 - protein insertion과 tandem duplication은 원문 syntax와 reference-aware 의미를
   분리한다. literal `dup`가 없더라도 `ins` 서열이 삽입 경계 바로 N-terminal의
   reference 서열과 완전히 같고 flanking residue·isoform이 검증된 경우에만

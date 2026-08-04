@@ -22,12 +22,12 @@
     "unresolved": 2
   },
   "semantic_module_counts": {
-    "mutation_parser_contract@4.0.0": 1,
     "protein_deletion_semantics@4.0.0": 2,
     "protein_delins_semantics@4.0.0": 3,
     "protein_duplication_semantics@4.0.0": 2,
+    "protein_frameshift_semantics@4.0.0": 3,
     "protein_substitution_semantics@4.0.0": 4,
-    "robust_mutation_parser@3.0.0": 6
+    "robust_mutation_parser@3.0.0": 4
   },
   "max_raw_token_length": 197,
   "v3_v4_difference_count": 8,
