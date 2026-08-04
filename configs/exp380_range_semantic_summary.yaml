@@ -1,0 +1,110 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-380
+issue_number: 380
+slug: range_semantic_summary
+parent_experiment: EXP-369
+component_experiments: [EXP-094, EXP-096, EXP-219, EXP-223, EXP-229, EXP-369]
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mutation_type:
+    enabled: true
+    parser:
+      name: stop_notation_invariant_v2
+      definition_version: 2.1.0
+      equivalent_stop_alternates: ["*", X, Ter]
+      other_v1_semantics_preserved: true
+  robust_aggregates:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+  residue_position:
+    enabled: true
+    aggregates: [max]
+    missing_policy: zero
+    complex_tokens: include
+    transform: raw
+  range_semantic_summary:
+    enabled: true
+    definition_version: 1.0.0
+    parser_definition_version: 3.0.0
+    fit_scope: stateless
+    values:
+      - sample__range_stop_gene_count
+      - sample__range_stop_any
+      - sample__range_no_change_gene_count
+      - sample__range_no_change_any
+    output_dimension: 4
+    raw_token_multiplicity: false
+    count_unit: unique_gene
+hotspots:
+  table: extended_34
+  evidence_scope: additions_15
+  minimum_matching_train_rows: 5
+  stop_notation_normalization: true
+external_knowledge:
+  file: knowledge/canonical_pathways_sanchez_vega_v1.json
+  organizer_approval_reference: https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180
+  source_commit: 7d29965de6ac8d0c6ec18c383f6dff8a48d562e7
+  source_sha256: a625675d03fa314eb27f3ab731524de13621a35aecd8edb7c67878f2d89ae07a
+abc_families:
+  fixed_pathway_burden:
+    enabled: true
+    definition_version: 2.1.0
+    fit_scope: stateless
+    groups: 10
+    values: [mutated_gene_count, lof_gene_count]
+    stop_notation_normalization: true
+    output_dimension: 20
+  pathway_mutation_type_composition:
+    enabled: true
+    definition_version: 2.1.0
+    fit_scope: stateless
+    groups: 10
+    values:
+      - missense_gene_count
+      - synonymous_gene_count
+      - nonsense_gene_count
+      - frameshift_gene_count
+      - complex_gene_count
+    stop_notation_normalization: true
+    candidate_output_dimension: 50
+    semantic_equivalence_filter: fold_train_against_feature_spec_v1
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - feature_spec_v1_with_stop_notation_invariant_parser
+    - fixed_pathway_mutated_and_lof_gene_counts_with_same_parser
+    - fixed_pathway_mutation_type_gene_counts_with_same_parser
+    - range_stop_and_no_change_unique_gene_count_any
+notes: >-
+  Issue #380. EXP-369 model, fold, seed, checkpoint policy and every parent
+  feature are fixed. The only change adds four target-independent sample
+  summaries: unique-gene count and any indicator for range replacements that
+  contain a stop, and for range replacements whose reference and alternate
+  protein sequences are identical. Existing complex features are retained.
+  Gene-level range indicators, ordinary range replacements and pathway LoF
+  expansion are out of scope. SUBCLASS, test prevalence and Public LB do not
+  define the grammar or any threshold.
+comparison_metrics_path: reports/exp369_stop_notation_normalization/metrics.json
