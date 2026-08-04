@@ -188,3 +188,14 @@ train 0건·test 545건이므로 모델 실험은 강행하지 않고 OOD semant
 상세 결과는
 [`reports/analysis/protein_delins_semantics/README.md`](../reports/analysis/protein_delins_semantics/README.md)에
 기록한다.
+
+## Parser contract v4: 계층 버전과 통합 router
+
+Issue #387은 notation normalizer, semantic parser, feature adapter를 독립 버전으로
+기록하고 실제 원본 사례 fixture catalog를 content-addressed SHA-256으로 고정한다.
+통합 router는 `frameshift → delins → deletion → insertion → substitution → range
+replacement` 순서로 한 token을 정확히 한 모듈에만 전달한다. 새 공식 runner가 이
+contract를 opt-in하면 resolved config의 계약 필드 누락이나 fixture hash 불일치를
+실행 오류로 처리한다. 과거 실험과 기본 Feature Spec은 변경하지 않는다. 상세 계약은
+[`reports/analysis/parser_contract_v4/README.md`](../reports/analysis/parser_contract_v4/README.md)에
+기록한다.
