@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 78
+- 실제 실험 수: 79
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -97,6 +97,7 @@
 | EXP-323 | COMPLETED | fabxoe | #323 | EXP-285·EXP-313 고정 0.5/0.5 확률 평균 | 0.4260586706 | 미제출 | INFERENCE_VERIFIED | 오류 다양성은 확인했지만 최고 부모 대비 -0.0054123·fold std 악화로 ARCHIVE, 가중치 추가 탐색 중단 | [보고서](reports/exp323_exp285_exp313_fixed_blend/README.md) |
 | EXP-327 | COMPLETED | fabxoe | #327 | EXP-229의 raw max residue-position을 Ensembl 116 isoform-relative 5-bin+observed로 교체 | 0.4266361381 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 +0.0036476이나 EXP-313보다 F1·fold 안정성·Log Loss 열세로 ARCHIVE | [보고서](reports/exp327_isoform_relative_position_bin/README.md) |
 | EXP-334 | COMPLETED | fabxoe | #334 | EXP-285 fold별 고정 파라미터 + EXP-313 Ensembl semantic residue-position mask | 0.4351340093 | 0.3150635813 | INFERENCE_VERIFIED | Local 최고이나 Public은 EXP-223 대비 -0.0081799437로 전이 실패·최종 선택 제출은 EXP-223 유지 | [보고서](reports/exp334_exp285_isoform_residue_mask/README.md) |
+| EXP-355 | COMPLETED | fabxoe | #355 | EXP-229 raw complex token count를 normalized non-simple unique-gene count로 교체 | 0.4176342820 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0053543·Log Loss +0.0263959·DLBC -0.06258로 R1 기각, R2는 독립 실행 | [보고서](reports/exp355_robust_complex_gene_count/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -166,10 +167,43 @@
 | 2026-08-04T00:33:48.973528+00:00 | EXP-285 | fabxoe | `893f0be9c82442bf5e3940848578dc7a73677af4` / [`exp-285-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-285-repro-v1) | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 2.01e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp285_exp229_nested_optuna_xgb/comparison.json) |
 | 2026-08-04T01:01:11.073002+00:00 | EXP-323 | fabxoe | `4f0776175fd935acc4edb435f9e21e426909b23e` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp323_exp285_exp313_fixed_blend/comparison.json) |
 | 2026-08-04T01:42:37.063988+00:00 | EXP-327 | fabxoe | `f3b309170206163aa4adc138fec7513e4bfcd2d7` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp327_isoform_relative_position_bin/comparison.json) |
+| 2026-08-04T07:07:59.587191+00:00 | EXP-355 | fabxoe | `b03b9163955a9978736f19925a05d356a3f7a82e` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp355_robust_complex_gene_count/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-355] Robust non-simple unique-gene count 교체
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #355 / `issue-355-exp-robust-complex-gene-count`
+- 소스 commit: `b03b9163955a9978736f19925a05d356a3f7a82e`
+- 시작/종료: 2026-08-04T06:54:15.273501+00:00 /
+  2026-08-04T07:07:57.006052+00:00
+- 부모: EXP-229
+- 유일한 변경: raw `sample__complex_count`를 parser v2의 normalized
+  non-simple event가 관찰된 서로 다른 유전자 수 한 열로 교체했다. `X` alternate
+  stop-gain은 complex에서 제외하고 exact semantic duplicate는 한 번만 셌다.
+- OOF Macro F1: 0.4176342820 (EXP-229 대비 `-0.0053542926`)
+- Fold Macro F1: 0.4077713 / 0.4170402 / 0.4133458 / 0.4138382 /
+  0.4402090
+- Fold 표준편차: 0.0112853475 (EXP-229 대비 `+0.0014173826`)
+- Accuracy: 0.4094500887 (EXP-229 대비 `-0.0030640219`)
+- Log Loss: 1.8773572445 (EXP-229 대비 `+0.0263959169`)
+- 클래스별 최대 하락: DLBC `-0.06258`, LUAD `-0.03704`, SARC
+  `-0.01998`; 클래스 붕괴 gate 실패
+- 실행시간: 822.20초; parser v2 전체 CSV 추가 순회 비용 포함
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`; 제출 SHA-256 일치, test label 100%,
+  확률 최대 차이 `1.4761963e-7`
+- 결론: R1은 성능·Log Loss·클래스 안정성 gate를 모두 통과하지 못해
+  `ARCHIVE`한다. 이는 generic complex raw count 한 열을 unique-gene count로
+  교체하는 표현이 현재 부모에서 유효하지 않았다는 결과이며, X stop 정규화나
+  parser QC 자체가 무효라는 뜻은 아니다. 사전 등록된 R2 gene-level event-family
+  교체는 독립적으로 한 번 실행한다.
+- Report: `reports/exp355_robust_complex_gene_count/README.md`
+- Metrics: `reports/exp355_robust_complex_gene_count/metrics.json`
 
 ### [EXP-334] EXP-285 고정 fold 파라미터 + Ensembl semantic residue mask
 
