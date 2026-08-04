@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 72
+- 실제 실험 수: 73
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4267909268 (`EXP-313`)
@@ -91,6 +91,7 @@
 | EXP-279 | COMPLETED | fabxoe | #279 | EXP-219 동일 조건 + trailing 21-iteration Macro F1 중앙값 checkpoint 선택 | 0.4206209582 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0016112로 사전 허용치 초과, Log Loss는 개선됐으나 ARCHIVE | [보고서](reports/exp279_checkpoint_rolling_median/README.md) |
 | EXP-302 | COMPLETED | fabxoe | #302 | EXP-229 + 고정 관찰 가능 암종 표지 mutation proxy 17~18개 | 0.4212799841 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0017086로 gate 실패, Log Loss·fold 안정성은 개선했으나 ARCHIVE | [보고서](reports/exp302_observable_marker_proxies/README.md) |
 | EXP-313 | COMPLETED | fabxoe | #313 | EXP-229 + Ensembl 116 신뢰도 기반 residue-position mask | 0.4267909268 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0038024·fold std·Log Loss 동시 개선으로 채택 후보 | [보고서](reports/exp313_isoform_residue_mask/README.md) |
+| EXP-317 | COMPLETED | fabxoe | #317 | EXP-229 + Ensembl 의미 범주 sample count/any 12개 | 0.4170163022 | 미제출 | INFERENCE_VERIFIED | Macro F1·fold std·Log Loss·DLBC 모두 악화로 ARCHIVE | [보고서](reports/exp317_isoform_semantic_summary/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -154,10 +155,31 @@
 | 2026-08-03T13:53:13.072581+00:00 | EXP-279 | fabxoe | `e904bc0e9a3e409c5b7884dbe6bf512bf63be1b7` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.43e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp279_checkpoint_rolling_median/comparison.json) |
 | 2026-08-03T16:50:07.665158+00:00 | EXP-302 | fabxoe | `6f6094a28fe5f1f6ae0b710df5c3f6b8c8cc3db3` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.34e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp302_observable_marker_proxies/comparison.json) |
 | 2026-08-03T18:38:55.344594+00:00 | EXP-313 | fabxoe | `f8a9c30c5b2b34014e05b64c61b0eb27fa0e4636` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.83e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp313_isoform_residue_mask/comparison.json) |
+| 2026-08-03T23:57:10.879539+00:00 | EXP-317 | fabxoe | `8be79a94fb0b5f77f0c97a87ffcc4a6bcbe17196` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.49e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp317_isoform_semantic_summary/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-317] isoform 의미 범주 sample 요약
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #317 / `issue-317-exp-isoform-summary`
+- 실행 source commit: `8be79a94fb0b5f77f0c97a87ffcc4a6bcbe17196`
+- 시작/종료: 2026-08-03T23:44:54.309135+00:00 /
+  2026-08-03T23:57:09.106596+00:00
+- 유일한 변경: Ensembl 116 의미 범주 6개의 count·any indicator 총 12개 추가
+- Fold Macro F1: 0.4144549506 / 0.4094846772 / 0.4078213016 /
+  0.4168022464 / 0.4391416942
+- OOF Macro F1: 0.4170163022 (EXP-229 대비 `-0.0059722724`)
+- Fold 표준편차: 0.0112786198 (`+0.0014106548`, 악화)
+- Log Loss: 1.9048725367 (`+0.0539112091`, 악화)
+- DLBC F1: EXP-229 대비 `-0.06258`
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+- 결론: 모든 주요 gate를 실패해 `ARCHIVE`; B2-2 추가 튜닝 중단
+- 상세: [보고서](reports/exp317_isoform_semantic_summary/README.md)
 
 ### [EXP-313] Ensembl 신뢰도 기반 residue-position mask
 
