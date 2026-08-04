@@ -20,6 +20,7 @@ mutation presence는 보존하고 raw token multiplicity·불확실 위치가 �
 |---|---|---:|---|---:|---|---:|---|---|
 | P0 | parser v2·canonical event contract | #352 | 해당 없음 | #354 | COMPLETED | N/A | 구현·전체 테스트 완료 | R1 완료 |
 | P1 | train/test compact parser QC | #352 | explore | #354 | COMPLETED | N/A | X stop 표기 차이 확인 | R1 완료 |
+| P2 | 음수 위치(5' UTR)·양쪽 별표 토큰 처리 정정 | #362 | 미발급 | 미발급 | PLANNED | N/A | train 75+99건·test 19+13건, 소규모지만 position_eligible 오분류 | 팀장 확인 후 v2 반영 |
 | R1 | raw complex count → unique complex-event gene count | #355 | EXP-355 | #358 | REJECTED | 0.4176342820 | EXP-229 대비 -0.0053543·Log Loss·DLBC 악화 | R2 독립 실행 |
 | R2 | generic complex gene signal → normalized event-family indicator | #359 | 미발급 | 미발급 | PLANNED | N/A | - | R1과 독립 실행 |
 | R3 | 채택 robust representation + EXP-313 mask | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | R1/R2 통과 시만 실행 |
@@ -97,6 +98,9 @@ Public 결과를 보고 event family나 교체 범위를 수정하지 않는다.
   가정하지 않는다.
 - EXP-109의 morphology **추가**는 OOF를 악화시켰으므로 이번에는 추가가 아니라
   기존 generic complex 표현의 단일 교체만 검증한다.
+- `-287fs`류 음수(5' UTR) 위치 토큰(train 75·test 19)과 `*261*`류 양쪽 별표
+  토큰(train 99·test 13)은 v1·v2 파서 모두에서 아직 정정되지 않았다(#362).
+  건수는 작지만 같은 유형의 "표기를 못 읽는" 문제다.
 
 상세 수치는
 [`reports/analysis/robust_mutation_parser_v2/README.md`](../analysis/robust_mutation_parser_v2/README.md)를
