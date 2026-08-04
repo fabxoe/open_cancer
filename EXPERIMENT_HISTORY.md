@@ -11,7 +11,7 @@
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
-- 최고 Public LB Macro F1: 0.323243525 (`EXP-223`)
+- 최고 Public LB Macro F1: 0.3407944343 (`EXP-369`)
 - 최고 재현 검증 모델: `EXP-334` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-04
 
@@ -99,7 +99,7 @@
 | EXP-334 | COMPLETED | fabxoe | #334 | EXP-285 fold별 고정 파라미터 + EXP-313 Ensembl semantic residue-position mask | 0.4351340093 | 0.3150635813 | INFERENCE_VERIFIED | Local 최고이나 Public은 EXP-223 대비 -0.0081799437로 전이 실패·최종 선택 제출은 EXP-223 유지 | [보고서](reports/exp334_exp285_isoform_residue_mask/README.md) |
 | EXP-355 | COMPLETED | fabxoe | #355 | EXP-229 raw complex token count를 normalized non-simple unique-gene count로 교체 | 0.4176342820 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0053543·Log Loss +0.0263959·DLBC -0.06258로 R1 기각, R2는 독립 실행 | [보고서](reports/exp355_robust_complex_gene_count/README.md) |
 | EXP-359 | COMPLETED | fabxoe | #359 | EXP-229 generic gene complex를 normalized non-simple event-family indicator 6종으로 교체 | 0.4187813830 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0042072·Log Loss +0.0103444로 R2 기각, robust representation 공식 탐색 종료 | [보고서](reports/exp359_robust_event_gene_indicators/README.md) |
-| EXP-369 | COMPLETED | fabxoe | #369 | EXP-229의 simple stop 표기 `*`·`X`·`Ter`를 모든 피처 경로에서 동일한 nonsense로 정규화 | 0.4229885745 | 미제출 | INFERENCE_VERIFIED | OOF는 EXP-229와 완전 동일, test 확률 875행·라벨 347행 변경으로 의미 보정 제출 후보 | [보고서](reports/exp369_stop_notation_normalization/README.md) |
+| EXP-369 | COMPLETED | fabxoe | #369 | EXP-229의 simple stop 표기 `*`·`X`·`Ter`를 모든 피처 경로에서 동일한 nonsense로 정규화 | 0.4229885745 | 0.3407944343 | INFERENCE_VERIFIED | OOF 동일 통제에서 EXP-229 Public 대비 +0.0204345510·팀 최고 갱신, stop parser 결함이 핵심 Public 병목이었음을 확인 | [보고서](reports/exp369_stop_notation_normalization/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -126,6 +126,7 @@
 | 2026-08-03T23:32:05+09:00 | EXP-253 | #253 | `submissions/exp253_lightgbm_xgboost_blend.csv` (제출 ID `1509964`) | `c57c06bcfadae47741f9c5392ecf73fc3d16ed36ed410901b73acda81b320f48` | 0.3054410279 | EXP-223 최고 대비 -0.0178024971<span style="display:block">제출 직후 참가 4팀 중 4위·팀 제출 18회·선택 제출은 EXP-223 유지</span> | INFERENCE_VERIFIED |
 | 2026-08-04T14:29:44+09:00 | EXP-334 | #334 | `submissions/exp334_exp285_isoform_residue_mask.csv` (제출 ID `1510674`) | `b7b57180ac686553c9f2c65c5634043e756fa8988df9d01e5f441edc485f3918` | 0.3150635813 | EXP-223 최고 대비 -0.0081799437<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">확인 당시 참가 4팀 중 4위·팀 제출 21회</span> | INFERENCE_VERIFIED |
 | 2026-08-04T14:40:15+09:00 | EXP-285 | #285 | `submissions/exp285_exp229_nested_optuna_xgb.csv` (제출 ID `1510681`) | `6291e67c9a4ea4dfe34b294ed6ea9fa0f8e94708cc156f95566292655937145a` | 0.320174485 | EXP-223 최고 대비 -0.003069040<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">확인 당시 참가 4팀 중 4위·팀 제출 22회</span> | INFERENCE_VERIFIED |
+| 2026-08-04T17:49:07+09:00 | EXP-369 | #369 | `submissions/exp369_stop_notation_normalization.csv` (제출 ID `1510848`) | `9c1fad8c118928f23157b7558a1b73fa16af22a34966a244841ac539fed5bdd3` | 0.3407944343 | 팀 Public 최고 갱신<span style="display:block">EXP-229 대비 +0.0204345510·EXP-223 대비 +0.0175509093</span><span style="display:block">확인 당시 참가 4팀 중 4위·팀 제출 23회</span> | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -204,12 +205,19 @@
 - Fold 표준편차: 0.0098679649, Log Loss: 1.8509613276
 - test 확률 변경: 875/2,546행, 최대 절대 차이 0.8442194160
 - submission 라벨 변경: 347/2,546행
-- Public LB: 미제출
+- Public LB: `0.3407944343` (제출 ID `1510848`, 2026-08-04
+  17:49:07 KST). EXP-229 대비 `+0.0204345510`, 기존 팀 최고 EXP-223 대비
+  `+0.0175509093`으로 팀 Public 최고를 갱신했다. 확인 당시 참가 4팀 중
+  4위이며 팀 제출은 23회였다.
 - 재현 상태: `INFERENCE_VERIFIED` — checkpoint 재추론 submission SHA-256
   byte-level 일치, test 라벨 100%, 확률 최대 차이 1.40e-7
-- 결론: train 의미와 OOF를 보존하면서 test의 표기 shift에 실질적인 영향을 준
-  의미 보정 후보다. Public을 본 뒤 parser 규칙을 역조정하지 않으며, 위치
-  sanitation·synonymous 처리는 별도 실험으로 분리한다.
+- Release: [`exp-369-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-369-repro-v1),
+  bundle SHA-256 `17a307d755099bfb474ed61eb225a57bc63148095fd0c083f09201de967452cf`
+- 결론: OOF가 완전히 같은 직접 통제에서 Public이 `+0.02043` 상승했으므로,
+  stop 표기 parser 결함이 지금까지의 핵심 Public 병목이었다는 강한 인과
+  증거다. 이를 모든 실패 원인의 유일한 설명으로 확대하지는 않지만, 이후 모델은
+  stop 정규화 parser를 새 기준으로 사용한다. Public을 본 뒤 parser 규칙을
+  역조정하지 않으며 위치 sanitation·synonymous 처리는 별도 실험으로 분리한다.
 
 ### [EXP-359] Normalized non-simple event-family gene indicator 교체
 

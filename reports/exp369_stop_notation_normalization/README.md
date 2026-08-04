@@ -10,8 +10,9 @@ EXP-229 피처 경로에서 동일한 `nonsense` 의미로 정규화했다. OOF 
 반면 test에서는 2,546행 중 875행의 확률이 바뀌었고 347행(13.63%)의 최종
 예측 라벨이 달라졌다. 따라서 이 수정은 사소한 문자열 정리가 아니라, train에는
 주로 `*`, test에는 주로 `X`로 기록된 동일 생물학적 사건을 같은 피처 공간으로
-복원한 의미 있는 분포 보정이다. Public LB는 아직 사용하지 않았으므로 효과의
-방향은 제출 전까지 판단하지 않는다.
+복원한 의미 있는 분포 보정이다. Public Macro F1은 `0.3407944343`으로
+EXP-229보다 `+0.0204345510`, 기존 팀 최고 EXP-223보다 `+0.0175509093`
+상승해 팀 최고를 갱신했다.
 
 ## 실험 계약
 
@@ -53,6 +54,20 @@ EXP-229와 EXP-369의 test 확률을 ID·26개 클래스 고정 순서로 직접
 test에서 어느 방향이 맞는지는 알 수 없으며, Public 점수를 이용해 규칙을 다시
 조정하지 않는다.
 
+## Public LB 결과
+
+- 제출 시각: 2026-08-04 17:49:07 KST
+- 제출 ID: `1510848`
+- Public Macro F1: `0.3407944343`
+- EXP-229 Public `0.3203598833` 대비: `+0.0204345510`
+- 기존 팀 최고 EXP-223 `0.323243525` 대비: `+0.0175509093`
+- 확인 당시 참가 4팀 중 4위, 팀 제출 23회
+
+모델·fold·seed·피처 이름·OOF가 같은 상태에서 stop 표기 해석만 달랐으므로,
+이 큰 Public 상승은 parser 정규화 효과에 대한 강한 인과 증거다. 다만 과거의
+모든 실패 실험이 parser 하나로 설명된다는 뜻은 아니다. train/test annotation
+shift가 컸던 stop 계열에서 parser가 가장 큰 Public 병목이었다고 해석한다.
+
 ## 재현성
 
 - 소스 commit: `f49bf2209b22492d11bc5c31ab76de9af3946b59`
@@ -65,12 +80,14 @@ test에서 어느 방향이 맞는지는 알 수 없으며, Public 점수를 이
 - submission SHA-256:
   `9c1fad8c118928f23157b7558a1b73fa16af22a34966a244841ac539fed5bdd3`
 - 재현 상태: `INFERENCE_VERIFIED`
+- Release: [exp-369-repro-v1](https://github.com/fabxoe/open_cancer/releases/tag/exp-369-repro-v1)
+- Release bundle SHA-256:
+  `17a307d755099bfb474ed61eb225a57bc63148095fd0c083f09201de967452cf`
 - checkpoint 재추론: submission SHA-256 byte-level 일치, test 라벨 100%,
   확률 최대 차이 `1.40e-7`
 
 ## 판단과 다음 행동
 
-parser 의미 계약과 train 불변성은 통과했다. EXP-369은 Local OOF 우열로
-선택할 수 없는 **의미 보정 제출 후보**이며, EXP-229와 test 라벨이 347개나
-달라 Public 결과가 중요한 독립 검증이 된다. 위치 sanitation과 synonymous
-처리는 효과를 섞지 않도록 각각 별도 Issue·EXP-ID로만 평가한다.
+parser 의미 계약과 train 불변성, Public 전이가 모두 확인됐다. EXP-369의 stop
+정규화는 후속 모델의 기본 parser contract로 승격한다. 위치 sanitation과
+synonymous 처리는 효과를 섞지 않도록 각각 별도 Issue·EXP-ID로만 평가한다.
