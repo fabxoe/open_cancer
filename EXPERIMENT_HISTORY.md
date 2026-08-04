@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 74
+- 실제 실험 수: 75
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4314709544 (`EXP-285`)
@@ -93,6 +93,7 @@
 | EXP-302 | COMPLETED | fabxoe | #302 | EXP-229 + 고정 관찰 가능 암종 표지 mutation proxy 17~18개 | 0.4212799841 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0017086로 gate 실패, Log Loss·fold 안정성은 개선했으나 ARCHIVE | [보고서](reports/exp302_observable_marker_proxies/README.md) |
 | EXP-313 | COMPLETED | fabxoe | #313 | EXP-229 + Ensembl 116 신뢰도 기반 residue-position mask | 0.4267909268 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0038024·fold std·Log Loss 동시 개선으로 채택 후보 | [보고서](reports/exp313_isoform_residue_mask/README.md) |
 | EXP-317 | COMPLETED | fabxoe | #317 | EXP-229 + Ensembl 의미 범주 sample count/any 12개 | 0.4170163022 | 미제출 | INFERENCE_VERIFIED | Macro F1·fold std·Log Loss·DLBC 모두 악화로 ARCHIVE | [보고서](reports/exp317_isoform_semantic_summary/README.md) |
+| EXP-323 | COMPLETED | fabxoe | #323 | EXP-285·EXP-313 고정 0.5/0.5 확률 평균 | 0.4260586706 | 미제출 | INFERENCE_VERIFIED | 오류 다양성은 확인했지만 최고 부모 대비 -0.0054123·fold std 악화로 ARCHIVE, 가중치 추가 탐색 중단 | [보고서](reports/exp323_exp285_exp313_fixed_blend/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -158,10 +159,31 @@
 | 2026-08-03T18:38:55.344594+00:00 | EXP-313 | fabxoe | `f8a9c30c5b2b34014e05b64c61b0eb27fa0e4636` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.83e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp313_isoform_residue_mask/comparison.json) |
 | 2026-08-03T23:57:10.879539+00:00 | EXP-317 | fabxoe | `8be79a94fb0b5f77f0c97a87ffcc4a6bcbe17196` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.49e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp317_isoform_semantic_summary/comparison.json) |
 | 2026-08-04T00:33:48.973528+00:00 | EXP-285 | fabxoe | `893f0be9c82442bf5e3940848578dc7a73677af4` / [`exp-285-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-285-repro-v1) | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 2.01e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp285_exp229_nested_optuna_xgb/comparison.json) |
+| 2026-08-04T01:01:11.073002+00:00 | EXP-323 | fabxoe | `4f0776175fd935acc4edb435f9e21e426909b23e` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp323_exp285_exp313_fixed_blend/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-323] EXP-285·EXP-313 고정 0.5/0.5 확률 평균
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #323 / `issue-323-exp285-exp313-fixed-blend`
+- source commit: `4f0776175fd935acc4edb435f9e21e426909b23e`
+- 시작/종료: 2026-08-04T01:01:10.579110+00:00 /
+  2026-08-04T01:01:11.073002+00:00
+- 사전 다양성 감사: 예측 불일치율 16.76%, 오류 상관 0.8430
+- Fold Macro F1: 0.4265049565 / 0.4198154548 / 0.4157122586 /
+  0.4175498749 / 0.4486491485
+- OOF Macro F1: 0.4260586706 (EXP-285 대비 `-0.0054122838`)
+- Fold 표준편차: 0.0120673474 (두 부모 대비 악화)
+- Accuracy: 0.4146105467, Log Loss: 1.8292042544
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+- 결론: 공식 Macro F1과 안정성이 최고 부모보다 낮아 `ARCHIVE`; 추가 가중치
+  탐색·Public 제출 중단
+- 상세: [보고서](reports/exp323_exp285_exp313_fixed_blend/README.md)
 
 ### [EXP-285] EXP-229 nested Optuna XGBoost
 
