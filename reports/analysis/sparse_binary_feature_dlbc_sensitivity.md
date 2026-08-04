@@ -135,6 +135,8 @@ fabxoe 리뷰(2026-08-03, `CHANGES_REQUESTED`)가 요구한 4개 항목을 모�
    재계산 스크립트와 asset SHA-256만 남긴다. 비교 대상인 EXP-094 공식
    baseline OOF도 `scripts/fetch_experiment_artifacts.py --experiment
    EXP-094`로 해당 실험 Release에서 받는다.
+   - Release: https://github.com/fabxoe/open_cancer/releases/tag/issue-251-dlbc-noise-floor-v1
+   - Release source commit: `858492dd8c04f59acde1e03127b9e20cea953b33`
 4. **재계산 설명**: `dlbc_5seed_noise_floor.py`가 baseline과 5개 seed
    OOF의 DLBC 컬럼만 대조해 delta mean/std, 5-seed 분포, pairwise
    correlation, feature-added 3건과의 백분위 비교를 전부 계산한다 —
