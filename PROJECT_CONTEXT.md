@@ -269,6 +269,14 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   OOF Macro F1이 `0.002` 이상 개선되지 않으면 채택하지 않는다.
 - Public LB 또는 test 분포를 보고 파서, 유전자 그룹, hotspot이나 feature 규칙을
   수정하지 않는다.
+- mutation parser 변경은 기존 parser를 덮어쓰지 않고 별도 definition version과
+  feature contract로 추가한다. token 원문은 provenance로 보존하되 모델 입력은
+  공백·순서·대소문자와 의미상 같은 stop 표기(`X`, `*`)에 결정적이어야 한다.
+  raw token multiplicity 대신 unique-gene count를 쓰는 robust 표현은 선택형 family로
+  두고 별도 Experiment Issue의 canonical 5-fold를 통과하기 전 기본 Feature Spec으로
+  승격하지 않는다. 상세 계약은
+  [`docs/annotation_invariant_mutation_parser.md`](docs/annotation_invariant_mutation_parser.md)를
+  따른다.
 - 상관·희소도 기반 feature selection은 각 outer fold의 **학습 행에서만** fit하고,
   확정한 같은 mask를 validation·test에 적용한다. 상관을 `GENE__mutated`에서
   계산했다면 해당 mutation-presence 열만 제거하며 mutation-type, missing,
