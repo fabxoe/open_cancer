@@ -18,6 +18,11 @@ from scipy import sparse
 
 from open_cancer.feature_family import FeatureFamilyDescriptor
 from open_cancer.hashing import sha256_lines
+from open_cancer.mutation_features import (
+    ParsedMutationCell,
+    ParsedMutationToken,
+    parse_mutation_token,
+)
 
 
 ROBUST_PARSER_VERSION = "2.0.0"
@@ -233,6 +238,82 @@ def canonicalize_mutation_cell(cell: Any) -> CanonicalMutationCell:
         source_token_count=len(source),
         exact_duplicate_count=len(source) - len(parsed),
     )
+
+
+STOP_NOTATION_PARSER_CONTRACT: dict[str, Any] = {
+    "name": "stop_notation_invariant_v2",
+    "definition_version": "2.1.0",
+    "equivalent_stop_alternates": ["*", "X", "Ter"],
+    "deduplicate_tokens": False,
+    "other_v1_semantics_preserved": True,
+    "target_used": False,
+    "test_distribution_used_for_rule": False,
+}
+
+
+def _assemble_feature_factory_cell(
+    parsed: tuple[ParsedMutationToken, ...],
+) -> ParsedMutationCell:
+    positions = tuple(
+        position for token in parsed for position in token.residue_positions
+    )
+    return ParsedMutationCell(
+        tokens=parsed,
+        token_count=len(parsed),
+        residue_positions=positions,
+        mutation_types=frozenset(token.mutation_type for token in parsed),
+        has_complex_token=any(token.is_complex for token in parsed),
+    )
+
+
+def parse_stop_notation_invariant_cell(cell: str) -> ParsedMutationCell:
+    """Preserve v1 semantics except canonicalizing simple X/*/Ter stop notation.
+
+    Token multiplicity is deliberately retained so this adapter changes exactly
+    one semantic rule and can be used in a clean official ablation later.
+    """
+
+    tokens: list[ParsedMutationToken] = []
+    for raw in cell.split():
+        if not raw or raw.upper() == "WT":
+            continue
+        robust = parse_robust_mutation_token(raw)
+        serialized = robust.normalized if robust.event_family == "stop_gain" else raw
+        tokens.append(parse_mutation_token(serialized))
+    return _assemble_feature_factory_cell(tuple(tokens))
+
+
+POSITION_SANITATION_PARSER_CONTRACT: dict[str, Any] = {
+    "name": "ambiguous_position_sanitized_v2",
+    "definition_version": "2.1.0",
+    "position_ineligible_patterns": ["leading_negative", "double_stop"],
+    "mutation_type_semantics_preserved": True,
+    "target_used": False,
+    "test_distribution_used_for_rule": False,
+}
+
+
+def parse_position_sanitized_cell(cell: str) -> ParsedMutationCell:
+    """Preserve v1 mutation types but remove unsafe residue coordinates."""
+
+    tokens: list[ParsedMutationToken] = []
+    for raw in cell.split():
+        if not raw or raw.upper() == "WT":
+            continue
+        parsed = parse_mutation_token(raw)
+        robust = parse_robust_mutation_token(raw)
+        if robust.event_family == "other_unmappable" and not robust.position_eligible:
+            parsed = ParsedMutationToken(
+                raw=parsed.raw,
+                mutation_type=parsed.mutation_type,
+                residue_positions=(),
+                reference_amino_acid=parsed.reference_amino_acid,
+                alternate_amino_acid=parsed.alternate_amino_acid,
+                token_shape=parsed.token_shape,
+                is_complex=parsed.is_complex,
+            )
+        tokens.append(parsed)
+    return _assemble_feature_factory_cell(tuple(tokens))
 
 
 def robust_event_feature_names(

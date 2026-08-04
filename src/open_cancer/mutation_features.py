@@ -111,6 +111,7 @@ PositionTokenFilter = Callable[[str, ParsedMutationToken], bool]
 PositionTokenTransformer = Callable[
     [str, ParsedMutationToken], tuple[float, ...]
 ]
+MutationCellParser = Callable[[str], ParsedMutationCell]
 
 
 def classify_mutation_token(token: str) -> str:
@@ -251,6 +252,7 @@ def _read_sparse_features(
     position_bin_width: int,
     position_token_filter: PositionTokenFilter | None,
     position_token_transformer: PositionTokenTransformer | None,
+    mutation_cell_parser: MutationCellParser = parse_mutation_cell,
     selected_co_mutation_pairs: tuple[tuple[str, str], ...] | None = None,
 ) -> FeatureMatrix:
     robust_features = _resolve_robust_features(
@@ -337,7 +339,7 @@ def _read_sparse_features(
                     values.append(1.0)
                     continue
 
-                parsed_cell = parse_mutation_cell(cell)
+                parsed_cell = mutation_cell_parser(cell)
                 if not parsed_cell.tokens:
                     continue
 
@@ -487,6 +489,8 @@ def build_mutation_features(
     position_token_filter: PositionTokenFilter | None = None,
     position_token_transformer: PositionTokenTransformer | None = None,
     position_semantic_contract: dict[str, Any] | None = None,
+    mutation_cell_parser: MutationCellParser = parse_mutation_cell,
+    mutation_parser_contract: dict[str, Any] | None = None,
     selected_co_mutation_pairs: tuple[tuple[str, str], ...] | None = None,
 ) -> dict[str, object]:
     """Build train/test CSR matrices with identical, target-independent features."""
@@ -526,6 +530,15 @@ def build_mutation_features(
         raise ValueError(
             "position semantic contract는 position token 변환과 함께 사용해야 합니다."
         )
+    custom_mutation_parser = mutation_cell_parser is not parse_mutation_cell
+    if custom_mutation_parser and mutation_parser_contract is None:
+        raise ValueError(
+            "custom mutation parser를 사용하면 versioned parser contract가 필요합니다."
+        )
+    if not custom_mutation_parser and mutation_parser_contract is not None:
+        raise ValueError(
+            "mutation parser contract는 custom mutation parser와 함께 사용해야 합니다."
+        )
     co_mutation_pairs = _resolve_co_mutation_pairs(selected_co_mutation_pairs)
     names = feature_names(
         genes,
@@ -544,6 +557,7 @@ def build_mutation_features(
         position_transform=position_transform,
         position_bin_width=position_bin_width,
         position_semantic_contract=position_semantic_contract,
+        mutation_parser_contract=mutation_parser_contract,
         co_mutation_pairs=co_mutation_pairs,
     )
     feature_spec = {
@@ -591,6 +605,7 @@ def build_mutation_features(
         position_bin_width=position_bin_width,
         position_token_filter=position_token_filter,
         position_token_transformer=position_token_transformer,
+        mutation_cell_parser=mutation_cell_parser,
         selected_co_mutation_pairs=co_mutation_pairs,
     )
     test = _read_sparse_features(
@@ -606,6 +621,7 @@ def build_mutation_features(
         position_bin_width=position_bin_width,
         position_token_filter=position_token_filter,
         position_token_transformer=position_token_transformer,
+        mutation_cell_parser=mutation_cell_parser,
         selected_co_mutation_pairs=co_mutation_pairs,
     )
 
@@ -721,17 +737,23 @@ def _feature_registry(
     position_transform: str,
     position_bin_width: int,
     position_semantic_contract: dict[str, Any] | None,
+    mutation_parser_contract: dict[str, Any] | None,
     co_mutation_pairs: tuple[tuple[str, str], ...] = (),
 ) -> dict[str, dict[str, Any]]:
     """Describe enabled families and their leakage/knowledge contract."""
 
     return {
         "mutation_type": {
-            "definition_version": "1.0.0",
+            "definition_version": (
+                mutation_parser_contract.get("definition_version", "custom")
+                if mutation_parser_contract is not None
+                else "1.0.0"
+            ),
             "enabled": True,
             "output_dimension": len(GLOBAL_FEATURES) + gene_count * len(GENE_FEATURES),
             "fit_scope": "stateless; train and test parsed independently",
             "external_knowledge": None,
+            "parser_contract": mutation_parser_contract,
         },
         "robust_aggregate": {
             "definition_version": "1.0.0",
