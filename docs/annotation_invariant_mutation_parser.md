@@ -158,3 +158,21 @@ Issue #393은 단일 위치 substitution의 문법·의미를 별도 v4 adapter�
 train/test 전수 수치와 해석 제한은
 [`reports/analysis/protein_substitution_semantics/README.md`](../reports/analysis/protein_substitution_semantics/README.md)에
 기록한다.
+
+## Parser v4: protein deletion semantic adapter
+
+Issue #394는 complete anchored deletion grammar를 별도 v4 adapter로 구현한다.
+
+- single/range와 residue-aware/position-only 표기를 각각 구조화한다.
+- range length는 `end - start + 1`의 inclusive 값이며 deletion endpoint는
+  insertion boundary와 달리 인접할 필요가 없다.
+- `277_277del` 같은 equal-position range는 raw를 보존한 채 semantic single로만
+  정규화하고 nonconformant 상태를 남긴다.
+- reversed range는 자동 swap하지 않고 unresolved로 보존한다.
+- `SDEL133fs`, `delins`, nonsense는 deletion substring보다 우선하는 전용 event다.
+- 3′ rule은 fixed reference 없이 적용하지 않는다.
+
+실제 감사에서 true deletion은 train 3건, test 2,583건이었고 test delins 545건과
+train `SDEL133fs` 1건은 모두 별도로 유지됐다. 상세 결과는
+[`reports/analysis/protein_deletion_semantics/README.md`](../reports/analysis/protein_deletion_semantics/README.md)에
+기록한다.
