@@ -53,6 +53,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 
 현재 장기 계획:
 
+- [Annotation-invariant parser·robust representation 로드맵](plans/annotation_invariant_parser_roadmap.md)
 - [고정 암종 표지 패널·isoform 의미 검증 로드맵](plans/domain_marker_isoform_semantics_roadmap.md)
 - [Residue-position·Hotspot 개발 로드맵](plans/residue_position_hotspot_roadmap.md)
 - [ABC 신호 포트폴리오·스태킹 로드맵](plans/abc_signal_portfolio_stacking_roadmap.md)
@@ -83,6 +84,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 - [채택 XGBoost 모델 validation-only TreeSHAP 감사·시각화 노트북](analysis/adopted_model_tree_shap/README.md)
 - [고정 암종 표지 mutation-proxy 의미 감사](analysis/observable_marker_semantic_audit/README.md)
 - [Track B isoform·잔기 의미 QC](analysis/isoform_residue_semantics/README.md)
+- [Annotation-invariant mutation parser v2 감사](analysis/robust_mutation_parser_v2/README.md)
 
 ## 역할 구분
 

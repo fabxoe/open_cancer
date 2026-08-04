@@ -1,0 +1,86 @@
+{
+  "record_role": "explore",
+  "target_used": false,
+  "public_lb_used": false,
+  "threshold_selected_from_train_test_prevalence": false,
+  "train": {
+    "parser_version": "2.0.0",
+    "rows": 6201,
+    "gene_columns": 4384,
+    "source_tokens": 255164,
+    "canonical_tokens": 249064,
+    "exact_duplicates_removed": 6100,
+    "position_eligible_tokens": 248741,
+    "event_family_counts": {
+      "missense": 161051,
+      "synonymous": 64844,
+      "stop_gain": 13080,
+      "frameshift": 9766,
+      "inframe_deletion": 4,
+      "inframe_insertion": 0,
+      "delins": 0,
+      "range_replacement": 230,
+      "duplication": 0,
+      "other_unmappable": 89
+    },
+    "confidence_counts": {
+      "high": 238975,
+      "medium": 10000,
+      "low": 89
+    },
+    "contract_sha256": "9340f882172e7c6460b82b7befea2fa321d8102a9ce6cfb515b972d37136676e",
+    "source_path": "data/raw/train.csv",
+    "v1_complex_reclassified_as_v2": {
+      "missense": 0,
+      "synonymous": 0,
+      "stop_gain": 0,
+      "frameshift": 3,
+      "inframe_deletion": 3,
+      "inframe_insertion": 0,
+      "delins": 0,
+      "range_replacement": 230,
+      "duplication": 0,
+      "other_unmappable": 89
+    }
+  },
+  "test": {
+    "parser_version": "2.0.0",
+    "rows": 2546,
+    "gene_columns": 4384,
+    "source_tokens": 337512,
+    "canonical_tokens": 337294,
+    "exact_duplicates_removed": 218,
+    "position_eligible_tokens": 332579,
+    "event_family_counts": {
+      "missense": 201807,
+      "synonymous": 88678,
+      "stop_gain": 16299,
+      "frameshift": 25795,
+      "inframe_deletion": 2583,
+      "inframe_insertion": 1142,
+      "delins": 545,
+      "range_replacement": 40,
+      "duplication": 0,
+      "other_unmappable": 405
+    },
+    "confidence_counts": {
+      "high": 306784,
+      "medium": 30105,
+      "low": 405
+    },
+    "contract_sha256": "9340f882172e7c6460b82b7befea2fa321d8102a9ce6cfb515b972d37136676e",
+    "source_path": "data/raw/test.csv",
+    "v1_complex_reclassified_as_v2": {
+      "missense": 0,
+      "synonymous": 0,
+      "stop_gain": 14355,
+      "frameshift": 0,
+      "inframe_deletion": 2583,
+      "inframe_insertion": 1142,
+      "delins": 545,
+      "range_replacement": 40,
+      "duplication": 0,
+      "other_unmappable": 405
+    }
+  }
+}
