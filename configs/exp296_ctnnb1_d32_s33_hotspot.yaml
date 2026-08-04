@@ -1,0 +1,65 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-296
+issue_number: 296
+parent_experiment: EXP-094
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+baseline:
+  feature_spec: v1
+  metrics_path: reports/exp094_feature_spec_v1/metrics.json
+variants:
+  - name: ctnnb1_d32
+    added_features: [hotspot__CTNNB1_32]
+    gene: CTNNB1
+    position: 32
+    reference_aa: D
+    feature_family: src/open_cancer/ctnnb1_hotspot_features.py::ctnnb1_d32_family
+    domain_basis: >-
+      DominoEffect-style panel-wide screening (Issue #292 backlog) + Vera
+      Health gate A/B/C precheck (Issue #296 discussion). Same beta-catenin
+      N-terminal phosphodegron motif as the already-adopted CTNNB1 S37/S45
+      (EXTENDED_HOTSPOTS), added as a separate column (not merged) after
+      confirming zero sample-ID overlap with S37/S45 and a distinct
+      cancer-type distribution.
+  - name: ctnnb1_s33
+    added_features: [hotspot__CTNNB1_33]
+    gene: CTNNB1
+    position: 33
+    reference_aa: S
+    feature_family: src/open_cancer/ctnnb1_hotspot_features.py::ctnnb1_s33_family
+    domain_basis: >-
+      Same provenance and rationale as ctnnb1_d32 above.
+watch_classes:
+  - UCEC
+  - LIHC
+stability:
+  train_positive_count: {d32: 23, s33: 24}
+  fold_positive_counts:
+    d32: {0: 3, 1: 2, 2: 4, 3: 8, 4: 6}
+    s33: {0: 5, 1: 5, 2: 4, 3: 7, 4: 3}
+  note: "no fold has zero positives for either column, unlike EXP-181's fold 3 (n=1) -- still small-sample, 3-seed stability check kept for consistency with the POLE hotspot pilot pattern"
+  model_seeds: [1001, 1002, 1003]
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+acceptance:
+  min_macro_f1_delta: 0.001
+  max_fold_std_delta: 0.002
+  require_no_log_loss_regression: true
+  require_no_per_class_f1_regression: true

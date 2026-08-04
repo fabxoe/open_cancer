@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 75
+- 실제 실험 수: 76
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4314709544 (`EXP-285`)
@@ -90,6 +90,7 @@
 | EXP-276 | COMPLETED | Kangho-Park | #276 | EXP-233 class-wise logit offset + inner-fold 최소 표본 게이트(15/20/25) | 0.4262111346 | 미제출 | NOT_STARTED | Macro F1 +0.0039790이나 Log Loss·fold 안정성 악화 및 DLBC argmax 경쟁 손실로 ARCHIVE | [보고서](reports/exp276_nested_decision_offset_sample_gate/README.md) |
 | EXP-279 | COMPLETED | fabxoe | #279 | EXP-219 동일 조건 + trailing 21-iteration Macro F1 중앙값 checkpoint 선택 | 0.4206209582 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0016112로 사전 허용치 초과, Log Loss는 개선됐으나 ARCHIVE | [보고서](reports/exp279_checkpoint_rolling_median/README.md) |
 | EXP-285 | COMPLETED | fabxoe | #285 | EXP-229 고정 피처 + outer-train 3-fold nested Optuna XGBoost | 0.4314709544 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 +0.0084824로 Local 최고 갱신·fold std 악화 주의·Public/독립 검증 전 최종 확정 보류 | [보고서](reports/exp285_exp229_nested_optuna_xgb/README.md) |
+| EXP-296 | COMPLETED | Kangho-Park | #296 | EXP-094 + CTNNB1 D32/S33 hotspot 2개 컬럼(phosphodegron 모티프, hotspot-34 S37/S45와 별도 컬럼) | 0.4172413559 | 미제출 | NOT_STARTED | EXP-094 대비 Macro F1 +0.0003548로 gate 미달, fold 표준편차·클래스별 F1(LUAD -0.0472) gate도 실패로 ARCHIVE | [보고서](reports/exp296_ctnnb1_d32_s33_hotspot/README.md) |
 | EXP-302 | COMPLETED | fabxoe | #302 | EXP-229 + 고정 관찰 가능 암종 표지 mutation proxy 17~18개 | 0.4212799841 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0017086로 gate 실패, Log Loss·fold 안정성은 개선했으나 ARCHIVE | [보고서](reports/exp302_observable_marker_proxies/README.md) |
 | EXP-313 | COMPLETED | fabxoe | #313 | EXP-229 + Ensembl 116 신뢰도 기반 residue-position mask | 0.4267909268 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0038024·fold std·Log Loss 동시 개선으로 채택 후보 | [보고서](reports/exp313_isoform_residue_mask/README.md) |
 | EXP-317 | COMPLETED | fabxoe | #317 | EXP-229 + Ensembl 의미 범주 sample count/any 12개 | 0.4170163022 | 미제출 | INFERENCE_VERIFIED | Macro F1·fold std·Log Loss·DLBC 모두 악화로 ARCHIVE | [보고서](reports/exp317_isoform_semantic_summary/README.md) |
@@ -164,6 +165,48 @@
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-296] CTNNB1 D32/S33 hotspot 확장 (phosphodegron 모티프 나머지 조각)
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #296 / `issue-296-ctnnb1-d32-s33-hotspot`
+- 소스 commit: `a5395390fe724cece6afffd09ae24039c03cc82d`
+- 시작/종료: 2026-08-03T15:24:07.542781+00:00 /
+  2026-08-03T16:39:06.419383+00:00
+
+#### 배경
+
+- DominoEffect 스타일 panel-wide 스크리닝(#292 백로그)에서 발굴한 CTNNB1
+  D32/S33은 기존 hotspot-34의 CTNNB1 S37/S45와 같은 beta-catenin N-terminal
+  phosphodegron 모티프의 나머지 조각이다.
+- 사전검증에서 Vera 게이트 A/B/C를 5개 fold 모두 통과했고, D32/S33/S37/S45
+  표본 교집합은 0이었다. EXP-058의 정보 손실 패턴을 피하기 위해 D32/S33을
+  별도 컬럼 2개로 추가했다.
+
+#### 실행과 결과
+
+- 신규 피처: `hotspot__CTNNB1_32`, `hotspot__CTNNB1_33`
+- train 양성: 각각 23건, 24건이며 5개 fold에 모두 존재했다.
+- Fold Macro F1: 0.4157178019 / 0.4183811139 / 0.3981947711 /
+  0.4242935546 / 0.4263623735
+- OOF Macro F1: 0.4172413559 (EXP-094 대비 `+0.0003547820`)
+- Fold 표준편차: 0.0099719336 (`+0.0020876816`, 악화)
+- Log Loss: 1.8386958719 (`-0.0012414574`, 개선)
+- UCEC `+0.0003878839`, LIHC `-0.0032803097`; 최악 클래스 LUAD
+  `-0.0472178289`
+- 3-seed(1001/1002/1003) 안정성 확인 결과 공식 seed 42는 이상치가 아니었다.
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+
+#### 산출물과 결론
+
+- Config: `configs/exp296_ctnnb1_d32_s33_hotspot.yaml`
+- Metrics: `reports/exp296_ctnnb1_d32_s33_hotspot/metrics.json`
+- Report: `reports/exp296_ctnnb1_d32_s33_hotspot/README.md`
+- Verdict: `reports/exp296_ctnnb1_d32_s33_hotspot/verdict.json`
+- Macro F1·fold 안정성·클래스별 F1 gate를 통과하지 못해 `ARCHIVE`하고,
+  CTNNB1 phosphodegron 확장 트랙을 종료한다.
 
 ### [EXP-323] EXP-285·EXP-313 고정 0.5/0.5 확률 평균
 
