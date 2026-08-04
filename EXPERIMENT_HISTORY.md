@@ -7,12 +7,12 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 73
+- 실제 실험 수: 74
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4267909268 (`EXP-313`)
+- 최고 Local OOF Macro F1: 0.4314709544 (`EXP-285`)
 - 최고 Public LB Macro F1: 0.323243525 (`EXP-223`)
-- 최고 재현 검증 모델: `EXP-313` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-285` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-04
 
 ## 실험 요약
@@ -89,6 +89,7 @@
 | EXP-272 | COMPLETED | fabxoe | #272 | EXP-219 고정 5-seed(42·142·242·342·442) 확률 0.2 평균 | 0.4208578157 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0013743·fold 표준편차와 Log Loss 악화로 ARCHIVE | [보고서](reports/exp272_exp219_multiseed_ensemble/README.md) |
 | EXP-276 | COMPLETED | Kangho-Park | #276 | EXP-233 class-wise logit offset + inner-fold 최소 표본 게이트(15/20/25) | 0.4262111346 | 미제출 | NOT_STARTED | Macro F1 +0.0039790이나 Log Loss·fold 안정성 악화 및 DLBC argmax 경쟁 손실로 ARCHIVE | [보고서](reports/exp276_nested_decision_offset_sample_gate/README.md) |
 | EXP-279 | COMPLETED | fabxoe | #279 | EXP-219 동일 조건 + trailing 21-iteration Macro F1 중앙값 checkpoint 선택 | 0.4206209582 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0016112로 사전 허용치 초과, Log Loss는 개선됐으나 ARCHIVE | [보고서](reports/exp279_checkpoint_rolling_median/README.md) |
+| EXP-285 | COMPLETED | fabxoe | #285 | EXP-229 고정 피처 + outer-train 3-fold nested Optuna XGBoost | 0.4314709544 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 +0.0084824로 Local 최고 갱신·fold std 악화 주의·Public/독립 검증 전 최종 확정 보류 | [보고서](reports/exp285_exp229_nested_optuna_xgb/README.md) |
 | EXP-302 | COMPLETED | fabxoe | #302 | EXP-229 + 고정 관찰 가능 암종 표지 mutation proxy 17~18개 | 0.4212799841 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0017086로 gate 실패, Log Loss·fold 안정성은 개선했으나 ARCHIVE | [보고서](reports/exp302_observable_marker_proxies/README.md) |
 | EXP-313 | COMPLETED | fabxoe | #313 | EXP-229 + Ensembl 116 신뢰도 기반 residue-position mask | 0.4267909268 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0038024·fold std·Log Loss 동시 개선으로 채택 후보 | [보고서](reports/exp313_isoform_residue_mask/README.md) |
 | EXP-317 | COMPLETED | fabxoe | #317 | EXP-229 + Ensembl 의미 범주 sample count/any 12개 | 0.4170163022 | 미제출 | INFERENCE_VERIFIED | Macro F1·fold std·Log Loss·DLBC 모두 악화로 ARCHIVE | [보고서](reports/exp317_isoform_semantic_summary/README.md) |
@@ -156,10 +157,32 @@
 | 2026-08-03T16:50:07.665158+00:00 | EXP-302 | fabxoe | `6f6094a28fe5f1f6ae0b710df5c3f6b8c8cc3db3` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.34e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp302_observable_marker_proxies/comparison.json) |
 | 2026-08-03T18:38:55.344594+00:00 | EXP-313 | fabxoe | `f8a9c30c5b2b34014e05b64c61b0eb27fa0e4636` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.83e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp313_isoform_residue_mask/comparison.json) |
 | 2026-08-03T23:57:10.879539+00:00 | EXP-317 | fabxoe | `8be79a94fb0b5f77f0c97a87ffcc4a6bcbe17196` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.49e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp317_isoform_semantic_summary/comparison.json) |
+| 2026-08-04T00:33:48.973528+00:00 | EXP-285 | fabxoe | `893f0be9c82442bf5e3940848578dc7a73677af4` / [`exp-285-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-285-repro-v1) | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 2.01e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp285_exp229_nested_optuna_xgb/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-285] EXP-229 nested Optuna XGBoost
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #285 / `issue-285-exp229-nested-optuna-result`
+- 실행 source commit: `893f0be9c82442bf5e3940848578dc7a73677af4`
+- 시작/종료: 2026-08-04T00:25:41.635305+00:00 /
+  2026-08-04T00:33:44.727395+00:00
+- 부모 EXP-229의 피처 정책을 고정하고 각 outer-train 내부 3-fold에서만
+  TPE 30 trial을 수행(총 150개 완료 trial)
+- Fold Macro F1: 0.4252500505 / 0.4380602207 / 0.4149180217 /
+  0.4314910879 / 0.4496814376
+- OOF Macro F1: 0.4314709544 (EXP-229 대비 `+0.0084823799`, Local 최고)
+- Fold 표준편차: 0.0117209428 (EXP-229 대비 `+0.0018529779`, 악화)
+- Accuracy: 0.4221899694, Log Loss: 1.8409389257
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+- 결론: 성능 채택 후보로 보존하되 fold 변동성과 OOF 반복 탐색을 고려해
+  Public·독립 재학습 전 최종 모델 확정은 보류
+- 상세: [보고서](reports/exp285_exp229_nested_optuna_xgb/README.md)
 
 ### [EXP-317] isoform 의미 범주 sample 요약
 

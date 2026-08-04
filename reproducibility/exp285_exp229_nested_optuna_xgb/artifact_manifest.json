@@ -1,0 +1,205 @@
+{
+  "experiment_id": "EXP-285",
+  "issue_number": 285,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "893f0be9c82442bf5e3940848578dc7a73677af4",
+  "source_tag": "exp-285-repro-v1",
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp285_exp229_nested_optuna_xgb/data_manifest.json",
+  "environment": "reproducibility/exp285_exp229_nested_optuna_xgb/environment.json",
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-285-repro-v1",
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-04T00:33:48.973528+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp285_exp229_nested_optuna_xgb/fold_00.json",
+      "size_bytes": 8846900,
+      "sha256": "91a055cd0d1354c5c30f99551e6a57a39f6da7cba2d3b15514fb04f2285687f3",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-285-repro-v1/exp285_exp229_nested_optuna_xgb_repro.tar.gz#models/exp285_exp229_nested_optuna_xgb/fold_00.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp285_exp229_nested_optuna_xgb/fold_01.json",
+      "size_bytes": 14427232,
+      "sha256": "776f67b5017a65e3a55b21216ac16b6ef0a5a48c8656acd3f5755013d17b1184",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-285-repro-v1/exp285_exp229_nested_optuna_xgb_repro.tar.gz#models/exp285_exp229_nested_optuna_xgb/fold_01.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp285_exp229_nested_optuna_xgb/fold_02.json",
+      "size_bytes": 23390074,
+      "sha256": "8a3032bdeca3f8d325c09f2352edb2d3ffcf90002d6a768e16575bc8a7f68c05",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-285-repro-v1/exp285_exp229_nested_optuna_xgb_repro.tar.gz#models/exp285_exp229_nested_optuna_xgb/fold_02.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp285_exp229_nested_optuna_xgb/fold_03.json",
+      "size_bytes": 9397778,
+      "sha256": "aeb2b44beb67727ea6214702ca29d50660cbfa2ee6dc9e9596e9659591d95b8a",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-285-repro-v1/exp285_exp229_nested_optuna_xgb_repro.tar.gz#models/exp285_exp229_nested_optuna_xgb/fold_03.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp285_exp229_nested_optuna_xgb/fold_04.json",
+      "size_bytes": 17501982,
+      "sha256": "8e5c78c4ee0d4c16175cc07d178b905781e179385f91ab443318f1d6f99bfaf0",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-285-repro-v1/exp285_exp229_nested_optuna_xgb_repro.tar.gz#models/exp285_exp229_nested_optuna_xgb/fold_04.json"
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp285_exp229_nested_optuna_xgb.csv",
+      "size_bytes": 38087,
+      "sha256": "6291e67c9a4ea4dfe34b294ed6ea9fa0f8e94708cc156f95566292655937145a",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-285-repro-v1/exp285_exp229_nested_optuna_xgb_repro.tar.gz#submissions/exp285_exp229_nested_optuna_xgb.csv"
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp285_exp229_nested_optuna_xgb.csv",
+      "size_bytes": 2112719,
+      "sha256": "b6794f5e102335a4aa755ac1ef9d37ae961b441ce9f21e5a6a49ba9c76d2ddaa",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-285-repro-v1/exp285_exp229_nested_optuna_xgb_repro.tar.gz#oof/exp285_exp229_nested_optuna_xgb.csv"
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp285_exp229_nested_optuna_xgb_test_proba.csv",
+      "size_bytes": 827962,
+      "sha256": "f76ae1679cb49b6aa295b3d39e3e9f6a129eb4d824cf43753c32ced7012f7215",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-285-repro-v1/exp285_exp229_nested_optuna_xgb_repro.tar.gz#preds/exp285_exp229_nested_optuna_xgb_test_proba.csv"
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp285_exp229_nested_optuna_xgb/metrics.json",
+      "size_bytes": 45058,
+      "sha256": "6961f703cc6fcbcf3a1bb9ff42fdbd07a66356cb76ebcc31376e5d330cd8a7ad",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp285_exp229_nested_optuna_xgb/config.resolved.yaml",
+      "size_bytes": 134019,
+      "sha256": "19ec292ed75d996dd9172fc6ee24ce7ac01f041f25813b52f92dcdaf52197358",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-285-repro-v1/exp285_exp229_nested_optuna_xgb_repro.tar.gz#reproducibility/exp285_exp229_nested_optuna_xgb/config.resolved.yaml"
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp285_exp229_nested_optuna_xgb/fold_00_checkpoint_audit.json",
+      "size_bytes": 25587,
+      "sha256": "f4de31bce15cf28c074bb20247ba59402674cce9cfc15c12e44b1c3d82acc13b",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-285-repro-v1/exp285_exp229_nested_optuna_xgb_repro.tar.gz#models/exp285_exp229_nested_optuna_xgb/fold_00_checkpoint_audit.json"
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp285_exp229_nested_optuna_xgb/fold_01_checkpoint_audit.json",
+      "size_bytes": 56635,
+      "sha256": "56c50699865cc94ea0cab2f5bc5931489ba430744ff3e229094cf900ba347b7e",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-285-repro-v1/exp285_exp229_nested_optuna_xgb_repro.tar.gz#models/exp285_exp229_nested_optuna_xgb/fold_01_checkpoint_audit.json"
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp285_exp229_nested_optuna_xgb/fold_02_checkpoint_audit.json",
+      "size_bytes": 56608,
+      "sha256": "c5538a393ba3b0d3501335e94787a49cecd7ba4a21268ca3a8164108abbd4289",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-285-repro-v1/exp285_exp229_nested_optuna_xgb_repro.tar.gz#models/exp285_exp229_nested_optuna_xgb/fold_02_checkpoint_audit.json"
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp285_exp229_nested_optuna_xgb/fold_03_checkpoint_audit.json",
+      "size_bytes": 56622,
+      "sha256": "67632576d0dc43916ed428b5823c02573d33754c3b5b46c651c5f3b79c565fc0",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-285-repro-v1/exp285_exp229_nested_optuna_xgb_repro.tar.gz#models/exp285_exp229_nested_optuna_xgb/fold_03_checkpoint_audit.json"
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp285_exp229_nested_optuna_xgb/fold_04_checkpoint_audit.json",
+      "size_bytes": 56603,
+      "sha256": "d57f1977998df2cde8a4525c30a57ffd01b2eb88ad554c2a1255693993dc46d1",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-285-repro-v1/exp285_exp229_nested_optuna_xgb_repro.tar.gz#models/exp285_exp229_nested_optuna_xgb/fold_04_checkpoint_audit.json"
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "models/exp285_exp229_nested_optuna_xgb/optuna/outer_00.sqlite3",
+      "size_bytes": 159744,
+      "sha256": "d2b461706f4f666619c4ee54d07edec9fbf330ffa20d0f00c718f198213e3b6e",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "reports/exp285_exp229_nested_optuna_xgb/optuna_outer_00.json",
+      "size_bytes": 22661,
+      "sha256": "f169add175dd60c27724d357d19bea4f88f8e0a8b8bba5f5d58a800dc86f9808",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "models/exp285_exp229_nested_optuna_xgb/optuna/outer_01.sqlite3",
+      "size_bytes": 159744,
+      "sha256": "caee62e68656bbf7c6307a329425b7a2cd2c274256dac8578dd5ef2cdde4d022",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "reports/exp285_exp229_nested_optuna_xgb/optuna_outer_01.json",
+      "size_bytes": 22666,
+      "sha256": "55cd254c074dfa04f499ff4619078f33fd309f00894a0b6cb7a043bf783dad71",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "models/exp285_exp229_nested_optuna_xgb/optuna/outer_02.sqlite3",
+      "size_bytes": 159744,
+      "sha256": "70811ccd6ccd2739b796eb69147f43b02069092d797e28432fec46b2d64e2473",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "reports/exp285_exp229_nested_optuna_xgb/optuna_outer_02.json",
+      "size_bytes": 22656,
+      "sha256": "045617f22a79f86ff074875c2056f269dc01a96522e400e7b0be935a0d8f7c83",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "models/exp285_exp229_nested_optuna_xgb/optuna/outer_03.sqlite3",
+      "size_bytes": 159744,
+      "sha256": "b17cf37ab4dba75b930bbbf2637341866d46560aec124d5162683dd7a416c84d",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "reports/exp285_exp229_nested_optuna_xgb/optuna_outer_03.json",
+      "size_bytes": 22661,
+      "sha256": "816d2cbfb6d41ba1cffb7e80655710d0737ccb4df216e2045cda91a4be47c65e",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "models/exp285_exp229_nested_optuna_xgb/optuna/outer_04.sqlite3",
+      "size_bytes": 159744,
+      "sha256": "55097877f8c234fe36e44fff2b211159cc066a24a34695963b4a56dcdb6e4bfa",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "reports/exp285_exp229_nested_optuna_xgb/optuna_outer_04.json",
+      "size_bytes": 22677,
+      "sha256": "db4cec205aa6089c8721ab67eebd81800675116fc236c4eff281642ff4736e82",
+      "storage_uri": null
+    },
+    {
+      "kind": "release_bundle",
+      "path": "release-assets/exp285_exp229_nested_optuna_xgb_repro.tar.gz",
+      "size_bytes": 20365426,
+      "sha256": "a6fd31c7eb42b7feb33c19b47e5fd203e976ee9d649e4c025ba750ea195eca16",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-285-repro-v1/exp285_exp229_nested_optuna_xgb_repro.tar.gz"
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
