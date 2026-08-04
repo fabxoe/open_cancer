@@ -156,6 +156,17 @@ GRCh38 GTF·protein FASTA annotation을 사용할 수 있다.
 기반 변경은 허용하지 않는다. isoform-relative bin은 여전히 별도 Issue 승인이
 필요하다.
 
+2026-08-04 Task Issue #307의 팀장 승인 범위를 B2-3까지 명시적으로 확장하고,
+구현은 별도 Task Issue #325에서 관리한다. 과거 EXP-313·317 manifest의 해시를
+보존하기 위해 `knowledge/ensembl_isoform_relative_bin_v1.json`을 별도 revision으로
+사용한다. simple substitution이 일치하는 sequence는 MANE Select → Ensembl
+canonical → other protein-coding isoform 순으로 선택하고, 같은 우선순위에서는
+transcript ID·protein ID 사전순으로 대표 sequence를 고정한다. 잔기 위치를 대표
+protein 길이로 나눈 값은 사전 고정 5개 구간으로 변환한다. 일치하지 않거나 복잡한
+token은 값 0과 observed indicator로 구분한다. 이 값은 실제 발현 transcript나
+임상적 isoform의 정답으로 해석하지 않는다. SUBCLASS·test 분포·Public LB로
+우선순위, bin 경계나 대표 sequence를 변경하지 않는다.
+
 resolved config에는 Ensembl release, assembly, manifest·annotation cache 경로와
 SHA-256, 승인 근거 Issue comment URL을 저장한다. 이 예외는 프로젝트의 기본값인
 `외부 데이터 사용 안 함`을 일반적으로 변경하지 않는다.

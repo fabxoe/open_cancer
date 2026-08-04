@@ -32,7 +32,7 @@
 | B1 | isoform token 의미 QC | #307 | explore | #308 | COMPLETED | N/A | coverage 충분·train/test 의미 분포 큰 차이 | [보고서](../analysis/isoform_residue_semantics/README.md) |
 | B2-1 | 불확실 residue-position mask | #311(구현), #313(실험) | EXP-313 | #314 | COMPLETED | 0.4267909268 | EXP-229 대비 +0.0038023523·fold std·Log Loss 개선, INFERENCE_VERIFIED | 채택 후보 유지·B2-2는 별도 Issue |
 | B2-2 | sample 범주 요약 | #315(구현), #317(실험) | EXP-317 | #321 | REJECTED | 0.4170163022 | EXP-229 대비 -0.0059723·fold std·Log Loss·DLBC 악화, INFERENCE_VERIFIED | ARCHIVE·추가 튜닝 중단 |
-| B2-3 | isoform-relative coarse bin | 미발급 | 미발급 | 미발급 | BLOCKED | N/A | #311 예외 범위 밖 | 별도 범위 검토 |
+| B2-3 | isoform-relative coarse bin | #325(구현) | 미발급 | 미발급 | IN_PROGRESS | N/A | #307 팀장 예외 승인·사전 고정 5-bin 구현 중 | 구현 병합 후 별도 Experiment Issue |
 | C | Track A+B 조건부 조합 | 미발급 | 미발급 | 미발급 | REJECTED | N/A | Track A gate 실패 | 조합 실험을 열지 않음 |
 
 작업 상태는 다음 값만 사용합니다.
@@ -258,6 +258,7 @@ fold별 checkpoint, OOF/test 확률을 저장합니다. 리더보드 제출 후�
 | 2026-08-04 | Track A를 Track B보다 먼저 실행 | 현재 CSV에서 직접 관찰 가능한 작은 고정 패널을 먼저 검증하라는 팀장 결정 |
 | 2026-08-04 | fusion·amplification·MSI·germline 주장을 제외 | 입력에 해당 assay·event type·transcript 정보가 없음 |
 | 2026-08-04 | 두 트랙 독립 통과 후에만 조합 | 한 결과로 다른 가설을 조정하는 OOF 과적합 방지 |
+| 2026-08-04 | B2-3 Ensembl 116 예외 승인·Issue #325 구현 착수 | #307의 사전 고정 세 번째 ablation을 독립 검증하며 과거 manifest 해시는 보존 |
 | 2026-08-04 | KRAS·NRAS·MSH6 누락을 명시하고 실제 panel 교집합만 사용 | 실제 4,384개 train 열 target-independent 감사 |
 | 2026-08-04 | Track B B0/B1 완료, B2는 BLOCKED | Ensembl 116 coverage는 충분하나 MANE 일치율이 train 88.50%·test 53.46%로 크게 다르고 외부 annotation 허용 미확인 |
 | 2026-08-04 | Task #311과 첫 B2 불확실 위치 mask에 외부 annotation 예외 허용 | 팀장 명시 지시; 고정 Ensembl 116의 정적 sequence 일치 범주만 허용, 외부 환자 데이터·암종 빈도·test 기반 조정은 계속 금지 |

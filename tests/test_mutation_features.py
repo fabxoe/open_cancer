@@ -337,6 +337,43 @@ def test_residue_position_semantic_filter_requires_reproducible_contract(
         )
 
 
+def test_residue_position_semantic_transformer_emits_bin_and_indicator(
+    tmp_path: Path,
+) -> None:
+    train_path = tmp_path / "train.csv"
+    test_path = tmp_path / "test.csv"
+    train_path.write_text(
+        "ID,SUBCLASS,GENE1,GENE2\nTR1,A,R10H,WT\nTR2,B,A10H,WT\n",
+        encoding="utf-8",
+    )
+    test_path.write_text(
+        "ID,GENE1,GENE2\nTE1,R10H,WT\n",
+        encoding="utf-8",
+    )
+
+    def transformer(gene: str, token: object) -> tuple[float, ...]:
+        return (4.0,) if gene == "GENE1" and getattr(token, "raw", "") == "R10H" else ()
+
+    report = build_mutation_features(
+        train_path,
+        test_path,
+        tmp_path / "semantic_transformer",
+        selected_position_features=("max_residue_position",),
+        position_missing_policy="indicator",
+        position_token_transformer=transformer,
+        position_semantic_contract={"definition_version": "test"},
+    )
+    output = tmp_path / "semantic_transformer"
+    matrix = sparse.load_npz(output / "train_features.npz").toarray()
+    names = json.loads((output / "feature_names.json").read_text(encoding="utf-8"))
+    value_index = names.index("GENE1__max_residue_position")
+    observed_index = names.index("GENE1__residue_position_observed")
+    assert matrix[0, value_index] == 4
+    assert matrix[0, observed_index] == 1
+    assert matrix[1, value_index] == 0
+    assert matrix[1, observed_index] == 0
+
+
 def test_residue_position_coarse_bin_is_fixed_for_train_and_test(tmp_path: Path) -> None:
     train = tmp_path / "train.csv"
     test = tmp_path / "test.csv"

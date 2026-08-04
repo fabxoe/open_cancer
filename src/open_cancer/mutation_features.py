@@ -108,6 +108,9 @@ class ParsedMutationCell:
 
 
 PositionTokenFilter = Callable[[str, ParsedMutationToken], bool]
+PositionTokenTransformer = Callable[
+    [str, ParsedMutationToken], tuple[float, ...]
+]
 
 
 def classify_mutation_token(token: str) -> str:
@@ -247,6 +250,7 @@ def _read_sparse_features(
     position_transform: str,
     position_bin_width: int,
     position_token_filter: PositionTokenFilter | None,
+    position_token_transformer: PositionTokenTransformer | None,
     selected_co_mutation_pairs: tuple[tuple[str, str], ...] | None = None,
 ) -> FeatureMatrix:
     robust_features = _resolve_robust_features(
@@ -379,11 +383,16 @@ def _read_sparse_features(
                     gene_symbol=genes[gene_index],
                     token_scope=position_token_scope,
                     token_filter=position_token_filter,
+                    token_transformer=position_token_transformer,
                 )
-                if position_token_filter is not None:
+                if position_token_filter is not None or position_token_transformer is not None:
                     parsing_qc["semantic_masked_position_tokens"] += sum(
                         bool(token.residue_positions)
-                        and not position_token_filter(genes[gene_index], token)
+                        and not (
+                            position_token_filter(genes[gene_index], token)
+                            if position_token_filter is not None
+                            else position_token_transformer(genes[gene_index], token)
+                        )
                         for token in parsed_cell.tokens
                     )
                 if eligible_positions:
@@ -476,6 +485,7 @@ def build_mutation_features(
     position_transform: str = "raw",
     position_bin_width: int = 100,
     position_token_filter: PositionTokenFilter | None = None,
+    position_token_transformer: PositionTokenTransformer | None = None,
     position_semantic_contract: dict[str, Any] | None = None,
     selected_co_mutation_pairs: tuple[tuple[str, str], ...] | None = None,
 ) -> dict[str, object]:
@@ -503,13 +513,18 @@ def build_mutation_features(
         selected_position_features,
         missing_policy=position_missing_policy,
     )
-    if position_token_filter is not None and position_semantic_contract is None:
+    if position_token_filter is not None and position_token_transformer is not None:
+        raise ValueError("position token filter와 transformer를 동시에 사용할 수 없습니다.")
+    semantic_transform = (
+        position_token_filter is not None or position_token_transformer is not None
+    )
+    if semantic_transform and position_semantic_contract is None:
         raise ValueError(
-            "position token filter를 사용하면 재현 가능한 semantic contract가 필요합니다."
+            "position token 변환을 사용하면 재현 가능한 semantic contract가 필요합니다."
         )
-    if position_token_filter is None and position_semantic_contract is not None:
+    if not semantic_transform and position_semantic_contract is not None:
         raise ValueError(
-            "position semantic contract는 position token filter와 함께 사용해야 합니다."
+            "position semantic contract는 position token 변환과 함께 사용해야 합니다."
         )
     co_mutation_pairs = _resolve_co_mutation_pairs(selected_co_mutation_pairs)
     names = feature_names(
@@ -575,6 +590,7 @@ def build_mutation_features(
         position_transform=position_transform,
         position_bin_width=position_bin_width,
         position_token_filter=position_token_filter,
+        position_token_transformer=position_token_transformer,
         selected_co_mutation_pairs=co_mutation_pairs,
     )
     test = _read_sparse_features(
@@ -589,6 +605,7 @@ def build_mutation_features(
         position_transform=position_transform,
         position_bin_width=position_bin_width,
         position_token_filter=position_token_filter,
+        position_token_transformer=position_token_transformer,
         selected_co_mutation_pairs=co_mutation_pairs,
     )
 
@@ -982,18 +999,25 @@ def _eligible_residue_positions(
     gene_symbol: str,
     token_scope: str,
     token_filter: PositionTokenFilter | None = None,
-) -> tuple[int, ...]:
+    token_transformer: PositionTokenTransformer | None = None,
+) -> tuple[float, ...]:
+    if token_filter is not None and token_transformer is not None:
+        raise ValueError("position token filter와 transformer를 동시에 사용할 수 없습니다.")
     return tuple(
         position
         for token in parsed_cell.tokens
         if token_scope == "include_complex" or not token.is_complex
         if token_filter is None or token_filter(gene_symbol, token)
-        for position in token.residue_positions
+        for position in (
+            token_transformer(gene_symbol, token)
+            if token_transformer is not None
+            else tuple(float(value) for value in token.residue_positions)
+        )
     )
 
 
 def _transform_residue_positions(
-    positions: tuple[int, ...],
+    positions: tuple[float, ...],
     *,
     transform: str,
     bin_width: int,
