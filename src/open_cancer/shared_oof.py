@@ -14,7 +14,7 @@ import pandas as pd
 from open_cancer.constants import CLASS_LABELS
 
 MAX_MANIFEST_BYTES = 25 * 1024 * 1024
-MAX_REPOSITORY_BYTES = 100 * 1024 * 1024
+MAX_REPOSITORY_BYTES = 300 * 1024 * 1024
 SOURCE_COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40}$")
 REQUIRED_MANIFEST_KEYS = {
     "policy_version",
@@ -129,7 +129,7 @@ def validate_shared_oof_repository(repository_root: Path) -> dict[str, Any]:
     actual = {path.relative_to(root).as_posix() for path in csv_files}
     _require(referenced == actual, f"shared OOF manifest 참조 불일치: missing={sorted(actual-referenced)}, stale={sorted(referenced-actual)}")
     total_bytes = sum(result["bytes"] for result in results)
-    _require(total_bytes <= MAX_REPOSITORY_BYTES, "shared OOF 저장소 누적 100 MiB 한도 초과")
+    _require(total_bytes <= MAX_REPOSITORY_BYTES, "shared OOF 저장소 누적 300 MiB 한도 초과")
     return {
         "manifests": len(results),
         "artifacts": sum(len(result["artifacts"]) for result in results),
