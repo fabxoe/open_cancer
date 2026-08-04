@@ -48,6 +48,16 @@ EVENT_FAMILIES: tuple[EventFamily, ...] = (
     "duplication",
     "other_unmappable",
 )
+NON_SIMPLE_EVENT_FAMILIES: frozenset[EventFamily] = frozenset(
+    {
+        "inframe_deletion",
+        "inframe_insertion",
+        "delins",
+        "range_replacement",
+        "duplication",
+        "other_unmappable",
+    }
+)
 
 _AMINO_ACIDS = "ACDEFGHIKLMNPQRSTVWY"
 _SIMPLE_SUBSTITUTION = re.compile(
@@ -292,6 +302,60 @@ class RobustMutationEventFamily:
             ),
             gene_columns=self.gene_columns,
             include_gene_indicators=self.include_gene_indicators,
+        )
+
+
+@dataclass(frozen=True)
+class FittedRobustNonSimpleGeneCountFamily:
+    """One replacement column counting affected genes, never raw token multiplicity."""
+
+    descriptor: FeatureFamilyDescriptor
+    gene_columns: tuple[str, ...]
+    base_feature_names_to_drop: tuple[str, ...] = ("sample__complex_count",)
+
+    def transform(self, frame: pd.DataFrame) -> sparse.csr_matrix:
+        missing = [gene for gene in self.gene_columns if gene not in frame.columns]
+        if missing:
+            raise ValueError(f"입력에 유전자 열이 없습니다: {missing[:5]}")
+        output = np.zeros((len(frame), 1), dtype=np.float32)
+        for row_index, row in enumerate(
+            frame.loc[:, self.gene_columns].itertuples(index=False, name=None)
+        ):
+            affected_genes = 0
+            for cell in row:
+                canonical = canonicalize_mutation_cell(cell)
+                if any(
+                    token.event_family in NON_SIMPLE_EVENT_FAMILIES
+                    for token in canonical.tokens
+                ):
+                    affected_genes += 1
+            output[row_index, 0] = affected_genes
+        return sparse.csr_matrix(output)
+
+
+@dataclass(frozen=True)
+class RobustNonSimpleGeneCountFamily:
+    """Single-column R1 replacement family from the parser roadmap."""
+
+    gene_columns: tuple[str, ...]
+    version: str = ROBUST_PARSER_VERSION
+
+    def fit(
+        self,
+        train_frame: pd.DataFrame,
+        target: pd.Series | None = None,
+    ) -> FittedRobustNonSimpleGeneCountFamily:
+        del target
+        if not self.gene_columns:
+            raise ValueError("유전자 열이 하나 이상 필요합니다.")
+        return FittedRobustNonSimpleGeneCountFamily(
+            descriptor=FeatureFamilyDescriptor(
+                name="robust_non_simple_event_gene_count",
+                version=self.version,
+                fit_scope="stateless",
+                feature_names=("sample__robust_non_simple_event_gene_count",),
+            ),
+            gene_columns=self.gene_columns,
         )
 
 
