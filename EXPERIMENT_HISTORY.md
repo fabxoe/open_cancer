@@ -89,7 +89,7 @@
 | EXP-272 | COMPLETED | fabxoe | #272 | EXP-219 고정 5-seed(42·142·242·342·442) 확률 0.2 평균 | 0.4208578157 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0013743·fold 표준편차와 Log Loss 악화로 ARCHIVE | [보고서](reports/exp272_exp219_multiseed_ensemble/README.md) |
 | EXP-276 | COMPLETED | Kangho-Park | #276 | EXP-233 class-wise logit offset + inner-fold 최소 표본 게이트(15/20/25) | 0.4262111346 | 미제출 | NOT_STARTED | Macro F1 +0.0039790이나 Log Loss·fold 안정성 악화 및 DLBC argmax 경쟁 손실로 ARCHIVE | [보고서](reports/exp276_nested_decision_offset_sample_gate/README.md) |
 | EXP-279 | COMPLETED | fabxoe | #279 | EXP-219 동일 조건 + trailing 21-iteration Macro F1 중앙값 checkpoint 선택 | 0.4206209582 | 미제출 | INFERENCE_VERIFIED | EXP-219 대비 Macro F1 -0.0016112로 사전 허용치 초과, Log Loss는 개선됐으나 ARCHIVE | [보고서](reports/exp279_checkpoint_rolling_median/README.md) |
-| EXP-285 | COMPLETED | fabxoe | #285 | EXP-229 고정 피처 + outer-train 3-fold nested Optuna XGBoost | 0.4314709544 | 미제출 | INFERENCE_VERIFIED | EXP-229 대비 +0.0084824로 Local 최고 갱신·fold std 악화 주의·Public/독립 검증 전 최종 확정 보류 | [보고서](reports/exp285_exp229_nested_optuna_xgb/README.md) |
+| EXP-285 | COMPLETED | fabxoe | #285 | EXP-229 고정 피처 + outer-train 3-fold nested Optuna XGBoost | 0.4314709544 | 0.320174485 | INFERENCE_VERIFIED | Local 개선이 Public에 일부 전이됐지만 EXP-223 대비 -0.003069040·최종 선택 제출은 EXP-223 유지 | [보고서](reports/exp285_exp229_nested_optuna_xgb/README.md) |
 | EXP-296 | COMPLETED | Kangho-Park | #296 | EXP-094 + CTNNB1 D32/S33 hotspot 2개 컬럼(phosphodegron 모티프, hotspot-34 S37/S45와 별도 컬럼) | 0.4172413559 | 미제출 | NOT_STARTED | EXP-094 대비 Macro F1 +0.0003548로 gate 미달, fold 표준편차·클래스별 F1(LUAD -0.0472) gate도 실패로 ARCHIVE | [보고서](reports/exp296_ctnnb1_d32_s33_hotspot/README.md) |
 | EXP-302 | COMPLETED | fabxoe | #302 | EXP-229 + 고정 관찰 가능 암종 표지 mutation proxy 17~18개 | 0.4212799841 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0017086로 gate 실패, Log Loss·fold 안정성은 개선했으나 ARCHIVE | [보고서](reports/exp302_observable_marker_proxies/README.md) |
 | EXP-313 | COMPLETED | fabxoe | #313 | EXP-229 + Ensembl 116 신뢰도 기반 residue-position mask | 0.4267909268 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0038024·fold std·Log Loss 동시 개선으로 채택 후보 | [보고서](reports/exp313_isoform_residue_mask/README.md) |
@@ -122,6 +122,7 @@
 | 2026-08-03T23:45:30+09:00 | EXP-229 | #229 | `submissions/exp229_pathway_mutation_types.csv` (제출 ID `1509990`) | `66f50d7fdd3c0ca65e586f83c4ee4d8cfb3a99d85d03c04ef9b8fbea7b1af61b` | 0.3203598833 | EXP-223 최고 대비 -0.0028836417<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">확인 당시 참가 4팀 중 4위·팀 제출 20회</span> | INFERENCE_VERIFIED |
 | 2026-08-03T23:32:05+09:00 | EXP-253 | #253 | `submissions/exp253_lightgbm_xgboost_blend.csv` (제출 ID `1509964`) | `c57c06bcfadae47741f9c5392ecf73fc3d16ed36ed410901b73acda81b320f48` | 0.3054410279 | EXP-223 최고 대비 -0.0178024971<span style="display:block">제출 직후 참가 4팀 중 4위·팀 제출 18회·선택 제출은 EXP-223 유지</span> | INFERENCE_VERIFIED |
 | 2026-08-04T14:29:44+09:00 | EXP-334 | #334 | `submissions/exp334_exp285_isoform_residue_mask.csv` (제출 ID `1510674`) | `b7b57180ac686553c9f2c65c5634043e756fa8988df9d01e5f441edc485f3918` | 0.3150635813 | EXP-223 최고 대비 -0.0081799437<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">확인 당시 참가 4팀 중 4위·팀 제출 21회</span> | INFERENCE_VERIFIED |
+| 2026-08-04T14:40:15+09:00 | EXP-285 | #285 | `submissions/exp285_exp229_nested_optuna_xgb.csv` (제출 ID `1510681`) | `6291e67c9a4ea4dfe34b294ed6ea9fa0f8e94708cc156f95566292655937145a` | 0.320174485 | EXP-223 최고 대비 -0.003069040<span style="display:block;color:#8b949e">미달·팀 순위 미갱신</span><span style="display:block">확인 당시 참가 4팀 중 4위·팀 제출 22회</span> | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -308,10 +309,12 @@
 - OOF Macro F1: 0.4314709544 (EXP-229 대비 `+0.0084823799`, Local 최고)
 - Fold 표준편차: 0.0117209428 (EXP-229 대비 `+0.0018529779`, 악화)
 - Accuracy: 0.4221899694, Log Loss: 1.8409389257
-- Public LB: 미제출
+- Public LB: `0.320174485` (제출 ID `1510681`, 2026-08-04 14:40:15 KST)
 - 재현 상태: `INFERENCE_VERIFIED`
-- 결론: 성능 채택 후보로 보존하되 fold 변동성과 OOF 반복 탐색을 고려해
-  Public·독립 재학습 전 최종 모델 확정은 보류
+- 결론: Public은 EXP-229보다 `-0.0001853983`, EXP-223보다 `-0.003069040`
+  낮아 최종 선택 제출을 바꾸지 않는다. nested Optuna의 큰 Local 개선이 Public에
+  같은 크기로 전이되지 않았으므로 대표 후보에서는 후순위로 내리고, 독립 재학습
+  검증 전 최종 모델 확정은 보류한다.
 - 상세: [보고서](reports/exp285_exp229_nested_optuna_xgb/README.md)
 
 ### [EXP-317] isoform 의미 범주 sample 요약
