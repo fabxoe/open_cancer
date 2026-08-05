@@ -28,6 +28,10 @@ from open_cancer.parser_native_v2_features import (
     ParserNativeV2TokenCountFamily,
     native_v2_semantic_contract_record,
 )
+from open_cancer.parser_native_v3_features import (
+    ParserNativeV3SemanticRangeFamily,
+    native_v3_semantic_contract_record,
+)
 
 
 ParserRepresentation = Literal[
@@ -38,6 +42,7 @@ ParserRepresentation = Literal[
     "native_no_provenance",
     "native_v2",
     "native_v2_token_count",
+    "native_v3_semantic_range",
 ]
 
 
@@ -53,6 +58,7 @@ def validate_controlled_parser_baseline_config(config: dict) -> ParserRepresenta
         "native_no_provenance",
         "native_v2",
         "native_v2_token_count",
+        "native_v3_semantic_range",
     }:
         raise ValueError(f"지원하지 않는 parser baseline arm: {representation}")
     if config.get("hotspots", {}).get("table") != "none":
@@ -131,8 +137,10 @@ class ParserBaselineFoldBuilder:
             families = (ParserNativeNoProvenanceFamily(self.gene_columns),)
         elif self.representation == "native_v2":
             families = (ParserNativeV2SemanticFamily(self.gene_columns),)
-        else:
+        elif self.representation == "native_v2_token_count":
             families = (ParserNativeV2TokenCountFamily(self.gene_columns),)
+        else:
+            families = (ParserNativeV3SemanticRangeFamily(self.gene_columns),)
         bundle = fit_transform_family_set(
             families,
             fold_train=self.train.iloc[train_indices],
@@ -169,6 +177,13 @@ class ParserBaselineFoldBuilder:
                 "semantic_contract"
             ] = native_v2_semantic_contract_record(  # type: ignore[arg-type]
                 fitted_v2_token
+            )
+        elif self.representation == "native_v3_semantic_range":
+            fitted_v3 = bundle.fitted_families[0]
+            registry["parser_v4_native_semantic_v3_range"][
+                "semantic_contract"
+            ] = native_v3_semantic_contract_record(  # type: ignore[arg-type]
+                fitted_v3
             )
         registry["parser_baseline_projection"] = {
             "definition_version": "1.0.0",
