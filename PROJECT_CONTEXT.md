@@ -455,8 +455,14 @@ GitHub는 폴더 안의 `README.md`를 자동으로 표시하므로 팀원이 re
 사용하는 작업은 시작할 때 이 문서, `EXPERIMENT_HISTORY.md`와 관련 로드맵을 함께
 읽는다. 로드맵은 작업 순서와 중단 조건을 관리하며, 실제 점수의 단일 원본은
 `EXPERIMENT_HISTORY.md`와 실험별 `metrics.json`이다. 로드맵에는 예상 점수나
-실행하지 않은 결과를 기록하지 않는다. 현재 전체 실행 계획의 단일 진입점은
-[`ABC 신호 포트폴리오·스태킹 로드맵`](reports/plans/abc_signal_portfolio_stacking_roadmap.md)이다.
+실행하지 않은 결과를 기록하지 않는다. 현재 최우선 실행 계획의 단일 진입점은
+[`Full parser v4 기반 모델 기준선 재정립 로드맵`](reports/plans/parser_v4_baseline_reset_roadmap.md)이다.
+parser v4 이전 ABC·Optuna·isoform·driver 결과는 삭제하지 않고 legacy parser
+lineage의 증거로 보존한다. 새 isoform·driver·Optuna 실험은 parser v4 paired
+control과 Parser Baseline v1 동결 이후에 시작한다.
+기존 ABC 실행 계획은
+[`ABC 신호 포트폴리오·스태킹 로드맵`](reports/plans/abc_signal_portfolio_stacking_roadmap.md)에
+보존한다.
 완료된 residue-position·hotspot 선행 과정은
 [`reports/plans/residue_position_hotspot_roadmap.md`](reports/plans/residue_position_hotspot_roadmap.md)에
 보존한다.
@@ -691,6 +697,29 @@ resolved config에는 실행에 실제 적용된 항목만 기록한다.
 - 해당 모델에서 사용하는 경우에만 epoch, batch size, optimizer, scheduler
 - 사용한 경우에만 앙상블 구성, 가중치, threshold, TTA와 후처리
 - 학습·추론 명령과 입력·출력 경로
+- parser를 사용하는 실험은 notation normalizer, semantic router, feature adapter,
+  fixture catalog와 compatibility/native projection의 버전·경로·SHA-256
+- core mutation type, sample aggregate, pathway, hotspot, residue-position 각 소비자가
+  실제 사용한 parser·projection identity
+
+### Parser lineage 계약
+
+- 새 parser 모듈을 import하거나 저장소 기본 코드를 갱신해도 과거 실험에 parser가
+  소급 적용된 것으로 간주하지 않는다. 실제 runner·resolved config·feature
+  registry에 기록된 parser만 해당 실험의 lineage다.
+- parser semantics와 feature representation은 별도 계약이다. 생물학적으로 올바른
+  parser를 Local/Public 점수가 낮다는 이유로 되돌리지 않으며, 성능이 낮으면
+  feature projection을 별도 Issue에서 수정·검증한다.
+- pure parser A/B에서는 fold, seed, model, checkpoint, feature 이름·차원·순서와
+  sample weight를 고정하고 parser·projection만 변경한다.
+- 한 실험 안에서 core mutation type, sample aggregate, pathway, hotspot,
+  residue-position이 서로 다른 parser lineage를 사용하면 공식 실행을 실패시킨다.
+- parser·projection이 바뀌어 feature vector나 예측이 달라지면 새 Experiment
+  Issue와 새 EXP-ID를 사용한다.
+- SUBCLASS, test prevalence, adversarial AUC 또는 Public LB를 parser 의미,
+  compatibility mapping, unresolved 처리나 feature threshold 선택에 사용하지 않는다.
+- 과거 Optuna 파라미터는 해당 parser·Feature Spec에만 유효하다. parser 또는
+  Feature Spec을 동결한 뒤 새 nested Optuna를 실행하기 전에는 재사용하지 않는다.
 
 ### macOS·Windows 공통 기록 규칙
 
