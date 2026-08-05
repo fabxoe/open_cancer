@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 98
+- 실제 실험 수: 99
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -110,6 +110,7 @@
 | EXP-450 | COMPLETED | Kangho-Park | #450 | EXP-374 + EXP-449(LightGBM) 고정 0.5/0.5 확률 평균 | 0.4272696329 | 미제출 | INFERENCE_VERIFIED | 전체 OOF +0.0004787(게이트 미달), fold std +0.0046(게이트 미달), **test-like 서브셋 -0.0104(EXP-253과 동일 실패 패턴 재현)**로 REJECTED | [보고서](reports/exp450_lightgbm_exp374_blend/README.md) |
 | EXP-457 | COMPLETED | Kangho-Park | #457 | EXP-374+EXP-449 outer-fold cross-fitted 로지스틱 회귀 stacking(52차원 확률 입력) | 0.3981144756 | 미제출 | INFERENCE_VERIFIED | 전체 OOF -0.0287(게이트 대폭 미달), **test-like 서브셋 -0.0473(전체보다 더 악화)**, LGG/DLBC F1 -0.37~-0.41 붕괴로 REJECTED | [보고서](reports/exp457_stacking_ensemble/README.md) |
 | EXP-464 | COMPLETED | Kangho-Park | #464 | EXP-374+EXP-449 블렌드 비율 스윕(0.9/0.1~0.6/0.4, 공식 대표 arm 0.7/0.3) | 0.4305524768 | 미제출 | INFERENCE_VERIFIED | 0.7/0.3 전체 OOF +0.0037616(게이트 통과)이나 **test-like 서브셋 -0.0034452(4개 비율 전부 악화)**로 스윕 전체 REJECTED | [보고서](reports/exp464_blend_ratio_sweep/README.md) |
+| EXP-465 | COMPLETED | Kangho-Park | #465 | hotspot-only(35 feature) + sample-aggregate-burden-only(74 feature) XGBoost 0.5/0.5 블렌드 | 0.3081813284 | 미제출 | INFERENCE_VERIFIED | 전체 OOF -0.1186096(대폭 미달), **test-like 서브셋 -0.1399293**, ACC/DLBC F1 -0.40~-0.40 붕괴 — 컴포넌트 feature 극단적 부족(설계 결함)으로 REJECTED | [보고서](reports/exp465_feature_subset_ensemble/README.md) |
 | EXP-444 | COMPLETED | fabxoe | #444 | Parser v4 compatibility 5-family + train-supported native range 의미 | 0.4127201906 | 미제출 | NOT_STARTED | C 대비 +0.0016167·Legacy L 정확성 허용 gate 통과; native baseline 동결은 보류 | [보고서](reports/exp444_parser_v4_supported_range_hybrid/README.md) |
 | EXP-448 | COMPLETED | fabxoe | #448 | Parser v4 native consequence에서 sample provenance summary 6개 제거 | 0.4104538324 | 미제출 | NOT_STARTED | L 대비 -0.0028225·PAAD -0.0524로 gate 실패, ARCHIVE·native adapter v2 필요 | [보고서](reports/exp448_parser_v4_native_no_provenance/README.md) |
 | EXP-456 | COMPLETED | fabxoe | #456 | Parser v4 support-gated native semantic adapter v2 | 0.4111053102 | 미제출 | NOT_STARTED | v1 대비 개선했으나 L 대비 -0.0021710·PAAD -0.06285로 gate 실패, ARCHIVE | [보고서](reports/exp456_parser_v4_native_v2/README.md) |
@@ -198,11 +199,54 @@
 | 2026-08-05T05:23:56.437651+00:00 | EXP-450 | Kangho-Park | `f5b755c51496ff59b073d936754767ab6d690b27` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp450_lightgbm_exp374_blend/comparison.json) |
 | 2026-08-05T05:47:15.365693+00:00 | EXP-457 | Kangho-Park | `a662caa65ceaa758dadf2216fbeec8c13c66fe50` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | outer 5-fold cross-fit 메타러너 재학습(저장된 fold 모델 재로드로 검증) | INFERENCE_VERIFIED | [comparison](reproducibility/exp457_stacking_ensemble/comparison.json) |
 | 2026-08-05T06:08:34.724720+00:00 | EXP-464 | Kangho-Park | `8068877c6eb96209c69ff4f5fed2d55067782dab` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp464_blend_ratio_sweep/comparison.json) |
+| 2026-08-05T06:20:33.889237+00:00 | EXP-465 | Kangho-Park | `2aaff58e5094162fe9d5fbcaccaf9dfa1e99df1a` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 0(XGBoost checkpoint 재로드 결정론), 제출 SHA-256 byte-level 일치 | 저장 checkpoint 재추론(Model A/B 각각) | INFERENCE_VERIFIED | [comparison](reproducibility/exp465_feature_subset_ensemble/comparison.json) |
 | 2026-08-05T06:46:14.485134+00:00 | EXP-459 | 2heej | `09430f2632c14ef459fb309915368bac561533f2` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.11e-16 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp459_catboost_exp374/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-465] Feature subset 다양성 앙상블 (hotspot-only vs sample-aggregate-burden-only)
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #465 / `issue-465-feature-subset-ensemble`
+- 부모: EXP-374
+
+#### 실행
+
+- Config: `configs/exp465_feature_subset_ensemble.yaml`
+- Runner: `scripts/run_exp465_feature_subset_ensemble.py`
+- 검증: `scripts/check_exp465_test_like_subset.py`
+- EXP-374의 feature build(파서·hotspot·pathway family·canonical
+  5-fold/seed·고정 하이퍼파라미터)를 재사용하되, column mask로 두
+  XGBoost를 독립 학습: Model A는 `hotspot__*` 열만(35개, #292
+  shift-AUC ~0.55), Model B는 `sample__*` 열만(74개, #292 shift-AUC
+  ~0.73). 0.5/0.5 블렌드. EXP-450/457과 달리 서로 다른 feature
+  set·shift 민감도를 가진 두 컴포넌트를 섞어 다른 실패 메커니즘(혹은
+  성공) 여부를 확인하려는 시도.
+
+#### 결과와 판단
+
+- Model A(hotspot-only) 단독 OOF Macro F1: 0.1427365706(35 feature)
+- Model B(burden-only) 단독 OOF Macro F1: 0.2769648421(74 feature)
+- 블렌드(0.5/0.5) 전체 OOF Macro F1: 0.3081813284(EXP-374 대비
+  `-0.1186095984`, 게이트 `+0.001` 대폭 미달)
+- **test-like 서브셋(n=1,666) Macro F1: 0.2884492965(EXP-374 대비
+  `-0.1399293003`)** — 전체보다 더 악화
+- worst-class delta: ACC `-0.4049386575`, DLBC `-0.3976190476`,
+  BLCA `-0.2770583034` 등 다수 클래스 대폭 붕괴(게이트 `-0.05` 큰
+  폭 초과)
+- 원인 분석: 두 컴포넌트 모두 EXP-374 전체 feature(~4,470개 이상)의
+  대부분을 차지하는 유전자별 mutation presence/type indicator를
+  포함하지 않아 예측력 자체가 애초에 너무 낮았다. #292의
+  family-level shift-AUC(도메인 구분 가능성 진단)와 family-level
+  예측 충분성(26-class 분류 능력)은 다른 질문이라는 점을 설계
+  단계에서 충분히 반영하지 못한 **실험 설계 결함**으로 판단 —
+  EXP-450/457(예측력이 비슷한 두 모델이 shift/정규화 문제로 실패)과
+  성격이 다름
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
 
 ### [EXP-464] XGBoost(EXP-374) + LightGBM(EXP-449) 블렌드 비율 스윕
 

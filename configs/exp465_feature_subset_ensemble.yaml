@@ -1,0 +1,53 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-465
+issue_number: 465
+slug: feature_subset_ensemble
+parent_experiment: EXP-374
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+model:
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+training:
+  balanced_sample_weight: true
+ensemble:
+  method: probability_mean
+  weight_a: 0.5
+  weight_b: 0.5
+  model_a: hotspot_only
+  model_b: sample_aggregate_burden_only
+acceptance:
+  comparison_experiment: EXP-374
+  minimum_macro_f1_delta: 0.001
+  worst_class_f1_floor_delta: -0.05
+notes: >-
+  Issue #465. Two independently-trained XGBoost models on EXP-374's exact
+  feature build (same parser, hotspots, pathway families, canonical
+  5-fold/seed, EXP-374's fixed hyperparameters, no Optuna), each restricted
+  by column mask to one #292 shift-AUC family: Model A uses only
+  "hotspot__*" columns (fixed_hotspot family, shift-AUC ~0.55), Model B
+  uses only "sample__*" columns (sample_aggregate_burden family -- robust
+  burden aggregates plus fixed-pathway burden/composition, shift-AUC
+  ~0.73). Blended 0.5/0.5. Unlike EXP-450/EXP-457/EXP-464 (same feature
+  set, different models), this pair has different feature sets and
+  different shift sensitivity, so a different failure mechanism (or
+  success) is possible. Mandatory train_domain_propensity.csv test-like
+  subset check (same boundary as EXP-351/EXP-450/EXP-457/EXP-464) is the
+  primary judgment criterion.
