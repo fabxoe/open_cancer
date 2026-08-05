@@ -1,0 +1,15 @@
+{
+  "parent": "EXP-469",
+  "source": "EXP-479",
+  "rows": 6201,
+  "both_correct": 2362,
+  "parent_only_correct": 142,
+  "source_only_correct": 122,
+  "both_wrong": 3575,
+  "prediction_changed": 603,
+  "prediction_changed_ratio": 0.09724238026124818,
+  "mean_absolute_probability_delta": 0.005836537538086028,
+  "max_absolute_probability_delta": 0.53032127,
+  "parent_oof_sha256": "4ae1de3b889f1ed56abdd20c6e4c216ec56f09be35477d06b96ab7029c55d824",
+  "source_oof_sha256": "eb8683ee30f3b483d997b3e67c4a8d58a297425aefa45a30b2f861bf184d44fe"
+}

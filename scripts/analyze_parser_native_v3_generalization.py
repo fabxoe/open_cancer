@@ -48,6 +48,8 @@ BASE_FEATURE_DIR = (
 ANALYSIS_CACHE = ROOT / "data" / "processed" / "issue475_native_v3_analysis"
 MODEL_DIR = ROOT / "models" / "exp479_parser_v4_native_semantic_range"
 OUTPUT_DIR = ROOT / "reports" / "analysis" / "parser_native_v3_generalization"
+PARENT_OOF_PATH = ROOT / "oof" / "exp469_parser_v4_native_v2_token_count.csv"
+SOURCE_OOF_PATH = ROOT / "oof" / "exp479_parser_v4_native_semantic_range.csv"
 
 
 def native_consequence_from_name(name: str) -> str | None:
@@ -267,6 +269,103 @@ def range_cooccurrence(
     return rows
 
 
+def compare_parent_oof(
+    train: sparse.csr_matrix, names: tuple[str, ...]
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """Compare EXP-469 and EXP-479 only on canonical OOF rows.
+
+    The range flags come from the source experiment's final feature matrix.
+    They are used for stratified diagnostics, never to select a threshold.
+    """
+
+    parent = pd.read_csv(PARENT_OOF_PATH, dtype={"ID": str})
+    source = pd.read_csv(SOURCE_OOF_PATH, dtype={"ID": str})
+    required = {"ID", "SUBCLASS_TRUE", "SUBCLASS_PRED", "FOLD"}
+    if not required.issubset(parent) or not required.issubset(source):
+        raise ValueError("OOF files do not satisfy the canonical prediction contract")
+    if not parent["ID"].equals(source["ID"]):
+        raise ValueError("EXP-469 and EXP-479 OOF ID order differs")
+    for column in ("SUBCLASS_TRUE", "FOLD"):
+        if not parent[column].equals(source[column]):
+            raise ValueError(f"EXP-469 and EXP-479 {column} differs")
+    if len(source) != train.shape[0]:
+        raise ValueError("OOF and native-v3 feature row counts differ")
+
+    true = source["SUBCLASS_TRUE"].to_numpy()
+    parent_pred = parent["SUBCLASS_PRED"].to_numpy()
+    source_pred = source["SUBCLASS_PRED"].to_numpy()
+    parent_correct = parent_pred == true
+    source_correct = source_pred == true
+    proba_columns = [f"PROBA_{label}" for label in CLASS_LABELS]
+    true_indices = np.asarray([CLASS_LABELS.index(label) for label in true])
+    parent_true_proba = parent[proba_columns].to_numpy()[
+        np.arange(len(parent)), true_indices
+    ]
+    source_true_proba = source[proba_columns].to_numpy()[
+        np.arange(len(source)), true_indices
+    ]
+    probability_delta = source[proba_columns].to_numpy() - parent[proba_columns].to_numpy()
+
+    range_columns = {
+        consequence: names.index(
+            f"sample__native_v3_{consequence}_token_count"
+        )
+        for consequence in (
+            "range_replacement",
+            "range_stop",
+            "range_no_change",
+        )
+    }
+    flags = {
+        consequence: np.asarray(train[:, index].todense()).ravel() > 0
+        for consequence, index in range_columns.items()
+    }
+    flags["any_range"] = np.logical_or.reduce(list(flags.values()))
+    flags["no_range"] = ~flags["any_range"]
+
+    rows: list[dict[str, Any]] = []
+    for group, mask in flags.items():
+        count = int(mask.sum())
+        rows.append(
+            {
+                "group": group,
+                "rows": count,
+                "prevalence": float(mask.mean()),
+                "exp469_accuracy": float(parent_correct[mask].mean()) if count else None,
+                "exp479_accuracy": float(source_correct[mask].mean()) if count else None,
+                "accuracy_delta": (
+                    float(source_correct[mask].mean() - parent_correct[mask].mean())
+                    if count
+                    else None
+                ),
+                "exp469_only_correct": int(np.sum(mask & parent_correct & ~source_correct)),
+                "exp479_only_correct": int(np.sum(mask & ~parent_correct & source_correct)),
+                "prediction_changed": int(np.sum(mask & (parent_pred != source_pred))),
+                "mean_true_class_probability_delta": (
+                    float(np.mean(source_true_proba[mask] - parent_true_proba[mask]))
+                    if count
+                    else None
+                ),
+            }
+        )
+    summary = {
+        "parent": "EXP-469",
+        "source": "EXP-479",
+        "rows": int(len(source)),
+        "both_correct": int(np.sum(parent_correct & source_correct)),
+        "parent_only_correct": int(np.sum(parent_correct & ~source_correct)),
+        "source_only_correct": int(np.sum(~parent_correct & source_correct)),
+        "both_wrong": int(np.sum(~parent_correct & ~source_correct)),
+        "prediction_changed": int(np.sum(parent_pred != source_pred)),
+        "prediction_changed_ratio": float(np.mean(parent_pred != source_pred)),
+        "mean_absolute_probability_delta": float(np.mean(np.abs(probability_delta))),
+        "max_absolute_probability_delta": float(np.max(np.abs(probability_delta))),
+        "parent_oof_sha256": sha256_file(PARENT_OOF_PATH),
+        "source_oof_sha256": sha256_file(SOURCE_OOF_PATH),
+    }
+    return summary, rows
+
+
 def adversarial_audit(
     train: sparse.csr_matrix,
     test: sparse.csr_matrix,
@@ -387,7 +486,7 @@ def tree_shap_audit(
                 "validation_rows": int(len(validation)),
                 "sampled_rows": int(len(selected)),
                 "sample_id_sha256": hashlib.sha256(
-                    "\n".join(str(value) for value in selected).encode()
+                    "\n".join(train_meta["ID"].iloc[selected].astype(str)).encode()
                 ).hexdigest(),
                 "checkpoint_sha256": sha256_file(checkpoint),
             }
@@ -468,6 +567,8 @@ def write_report(
     support: list[dict[str, Any]],
     adversarial: dict[str, Any],
     shap: dict[str, Any],
+    oof_comparison: dict[str, Any],
+    oof_comparison_groups: list[dict[str, Any]],
 ) -> None:
     support_by_family = {row["family"]: row for row in support}
     auc = adversarial["families"]
@@ -484,6 +585,21 @@ def write_report(
             f"{row['test_row_prevalence']:.4%} | {auc[family]['standalone_auc']:.6f} | "
             f"{shap_family[family]['total_share']:.4%} |"
         )
+    comparison_by_group = {
+        row["group"]: row for row in oof_comparison_groups
+    }
+    any_range = comparison_by_group["any_range"]
+    no_range = comparison_by_group["no_range"]
+    family_rows = []
+    for family in sorted(support_by_family):
+        row = support_by_family[family]
+        family_rows.append(
+            f"| {family} | {row['n_features']} | "
+            f"{row['train_row_prevalence']:.2%} | {row['test_row_prevalence']:.2%} | "
+            f"{auc[family]['standalone_auc']:.6f} | "
+            f"{auc[family]['leave_one_out_auc']:.6f} | "
+            f"{shap_family[family]['total_share']:.2%} |"
+        )
     text = f"""# Parser native v3 일반화 진단
 
 이 분석은 EXP-479의 비튜닝 HGVS-informed semantic baseline을 설명하기 위한
@@ -496,9 +612,66 @@ QC다. test는 train/test shift 진단에만 사용했으며 feature 삭제·가
 - 전체 train/test domain OOF AUC: `{adversarial['full_auc']:.6f}`
 - TreeSHAP 표본: `{shap['summary']['sampled_rows']}`행
 
+| family | 열 수 | train row prevalence | test row prevalence | standalone AUC | leave-one-out AUC | SHAP share |
+|---|---:|---:|---:|---:|---:|---:|
+{chr(10).join(family_rows)}
+
 | range family | 열 수 | train row prevalence | test row prevalence | standalone domain AUC | SHAP share |
 |---|---:|---:|---:|---:|---:|
 {chr(10).join(range_rows)}
+
+## EXP-469 → EXP-479 OOF 변화
+
+- 전체 6,201행 중 예측 라벨 변경: `{oof_comparison['prediction_changed']:,}`행
+  (`{oof_comparison['prediction_changed_ratio']:.2%}`)
+- EXP-469만 정답: `{oof_comparison['parent_only_correct']:,}`행
+- EXP-479만 정답: `{oof_comparison['source_only_correct']:,}`행
+- range 의미가 하나라도 있는 `{any_range['rows']:,}`행의 accuracy 변화:
+  `{any_range['exp469_accuracy']:.4f} → {any_range['exp479_accuracy']:.4f}`
+  (`{any_range['accuracy_delta']:+.4f}`)
+- range 의미가 없는 `{no_range['rows']:,}`행의 accuracy 변화:
+  `{no_range['exp469_accuracy']:.4f} → {no_range['exp479_accuracy']:.4f}`
+  (`{no_range['accuracy_delta']:+.4f}`)
+
+새 range family는 희소하지만 트리 구조와 boosting 경로를 바꾸므로 range가 없는
+행의 예측도 달라질 수 있다. 따라서 fixed XGBoost 점수 하락을 range 보유 행의
+직접 효과로만 해석하지 않는다.
+
+## 주요 해석
+
+1. 새 range 의미는 **해당 행에서 유효했다**. `any_range` 집합에서는 EXP-479가
+   EXP-469보다 정답 4개를 순증가시켰다. 의미를 다시 합치거나 삭제할 근거가 없다.
+2. 세 range family는 합계 13,155열이지만 매우 희소하고 validation TreeSHAP 합계는
+   약 0.07%다. 고정 XGBoost가 이 차원을 효율적으로 다루지 못해, range가 없는
+   다수 행까지 분할 경로가 바뀐 것이 전체 하락의 더 그럴듯한 설명이다.
+3. `base_sample_aggregate` 4열만으로 domain AUC가 0.720289이며 SHAP share도
+   27.41%다. 특히 mutated-gene count와 total-variant count의 Spearman 상관은
+   0.996089다. 이는 암종 신호와 dataset acquisition shift가 같은 burden 축에서
+   경쟁한다는 경고다.
+4. 전체 AUC보다 family 제외 AUC가 오르는 경우가 많다. 이는 제거 family가 무가치하다는
+   뜻이 아니라, 중복된 희소 피처 사이에서 domain classifier도 feature competition을
+   겪는다는 뜻이다. leave-one-out 수치를 additive 기여도로 해석하지 않는다.
+
+## 다음 native v3 튜닝 설계
+
+다음 공식 Experiment Issue는 EXP-479를 부모로 하고 parser·semantic schema·피처
+집계는 고정한다. outer validation·test·Public을 탐색에 사용하지 않는 nested
+XGBoost tuning만 수행한다.
+
+- `max_depth`: 3–7
+- `min_child_weight`: 2–20
+- `learning_rate`: 0.02–0.08
+- `subsample`: 0.60–0.90
+- `colsample_bytree`: 0.25–0.75
+- `reg_alpha`: 0–2
+- `reg_lambda`: 1–12
+- `gamma`: 0–0.5
+- outer fold 내부 3-fold, seed `42+outer_fold`, 최대 30 trials
+- 목적값: inner OOF Macro F1; 동률이면 fold 표준편차가 낮은 후보
+
+특히 낮은 `colsample_bytree`, 얕은 depth와 더 강한 child/leaf 규제로 39,467개
+중복·희소 열의 분할 경쟁을 억제한다. range 의미나 parser taxonomy 자체는 탐색
+대상이 아니다.
 
 `standalone AUC`는 해당 family만으로 train/test를 구분한 정도다. 높을수록 shift가
 크다는 뜻이지 암종 예측력이 높다는 뜻이 아니다. leave-one-out AUC와 SHAP 역시
@@ -520,6 +693,8 @@ QC다. test는 train/test shift 진단에만 사용했으며 feature 삭제·가
 - `family_support.csv`: family별 차원·nnz·prevalence·row-sum quantile
 - `sample_feature_correlations.csv`: sample aggregate Spearman 상관
 - `range_cooccurrence.csv`: 세 range 의미의 sample 동시 출현
+- `exp469_exp479_oof_comparison.json`,
+  `exp469_exp479_oof_comparison_groups.csv`: 부모 대비 오류 전환
 - `adversarial_auc.json`: 전체·family standalone·leave-one-out domain AUC
 - `top_shift_distributions.csv`: gain 상위 shift 피처 train/test 분포
 - `tree_shap_global_top500.csv`, `tree_shap_class_top20.csv`,
@@ -552,6 +727,7 @@ def main() -> None:
     support = summarize_family_support(train, test, groups)
     correlations = sample_feature_correlations(train, names)
     cooccurrence = range_cooccurrence(train, test, names)
+    oof_comparison, oof_comparison_groups = compare_parent_oof(train, names)
     adversarial = adversarial_audit(
         train,
         test,
@@ -574,6 +750,10 @@ def main() -> None:
         OUTPUT_DIR / "sample_feature_correlations.csv", index=False
     )
     pd.DataFrame(cooccurrence).to_csv(OUTPUT_DIR / "range_cooccurrence.csv", index=False)
+    _write_json(OUTPUT_DIR / "exp469_exp479_oof_comparison.json", oof_comparison)
+    pd.DataFrame(oof_comparison_groups).to_csv(
+        OUTPUT_DIR / "exp469_exp479_oof_comparison_groups.csv", index=False
+    )
     _write_json(OUTPUT_DIR / "adversarial_auc.json", adversarial)
     top_distributions = []
     for entry in adversarial["top_shift_features"]:
@@ -606,6 +786,8 @@ def main() -> None:
         "feature_names_sha256": sha256_lines(names),
         "family_support": support,
         "sample_feature_top_correlations": correlations[:20],
+        "exp469_exp479_oof_comparison": oof_comparison,
+        "exp469_exp479_oof_comparison_groups": oof_comparison_groups,
         "adversarial": {
             key: adversarial[key]
             for key in (
@@ -626,6 +808,8 @@ def main() -> None:
         support=support,
         adversarial=adversarial,
         shap=shap,
+        oof_comparison=oof_comparison,
+        oof_comparison_groups=oof_comparison_groups,
     )
     print(
         json.dumps(
