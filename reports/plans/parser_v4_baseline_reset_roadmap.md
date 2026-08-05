@@ -132,8 +132,8 @@ semantic parser
 | N4-R | L/C/N 통제 runner 구현 | #431 | 해당 없음 | #432 | MERGED | N/A | 표현 외 confounder 차단 | N4-L/C/N 실행 |
 | N4-L | 현재 환경 legacy control | #433 | EXP-433 | 미발급 | COMPLETED | 0.4132762899 | 동일 환경 control 확정 | N4-C 실행 |
 | N4-C | v4 compatibility audit arm | #435 | EXP-435 | 미발급 | COMPLETED | 0.4111034467 | L 대비 -0.0021728433; baseline 아님 | N4-N 실행 |
-| N4-N | v4-native semantic treatment | 미발급 | 미발급 | 미발급 | PLANNED | N/A | 실제 baseline 후보 | N4-L/C와 동일 환경 실행 |
-| N5 | Parser-native Baseline v1 동결 | 미발급 | explore | 미발급 | PLANNED | N/A | - | N4 3-arm 감사 |
+| N4-N | v4-native semantic treatment | #438 | EXP-438 | 미발급 | COMPLETED | 0.4102050373 | adapter gate 실패·parser 유지 | native family ablation |
+| N5 | Parser-native Baseline v1 동결 | 미발급 | explore | 미발급 | BLOCKED | N/A | EXP-438 gate 실패 | adapter 수정 후 재평가 |
 | N6 | isoform 독립 재검증 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N5 완료 대기 |
 | N7 | driver 독립 재검증 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N5 완료 대기 |
 | N8 | pathway·hotspot 재검증·Feature Spec 동결 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N6·N7 판단 |
