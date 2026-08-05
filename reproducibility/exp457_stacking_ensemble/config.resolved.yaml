@@ -1,0 +1,65 @@
+experiment:
+  issue_number: 457
+  experiment_id: EXP-457
+  branch: issue-457-stacking-ensemble
+  owner: Kangho Park
+  source_commit: a662caa65ceaa758dadf2216fbeec8c13c66fe50
+  dirty_worktree: false
+  started_at: '2026-08-05T05:47:13.944642+00:00'
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+class_order:
+- ACC
+- BLCA
+- BRCA
+- CESC
+- COAD
+- DLBC
+- GBMLGG
+- HNSC
+- KIPAN
+- KIRC
+- LAML
+- LGG
+- LIHC
+- LUAD
+- LUSC
+- OV
+- PAAD
+- PCPG
+- PRAD
+- SARC
+- SKCM
+- STES
+- TGCT
+- THCA
+- THYM
+- UCEC
+base_experiments:
+- experiment_id: EXP-374
+  oof_probability_path: oof/exp374_stop_isoform_residue_mask.csv
+  test_probability_path: preds/exp374_stop_isoform_residue_mask_test_proba.csv
+- experiment_id: EXP-449
+  oof_probability_path: oof/exp449_lightgbm_exp374.csv
+  test_probability_path: preds/exp449_lightgbm_exp374_test_proba.csv
+meta_model:
+  class: sklearn.linear_model.LogisticRegression
+  C: 0.2
+  max_iter: 1000
+  class_weight: null
+  random_state: 42
+outputs:
+  oof: oof/exp457_stacking_ensemble.csv
+  test_probability: preds/exp457_stacking_ensemble_test_proba.csv
+  submission: submissions/exp457_stacking_ensemble.csv
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]
+  platform: Windows-10-10.0.26200-SP0
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  joblib: 1.5.3
+  uv_lock_sha256: d896b2cf88b1d84d8e7819687db813d811b7dceacf7a1494e970b0378e3a1476
+command: uv run python scripts/run_exp457_stacking_ensemble.py

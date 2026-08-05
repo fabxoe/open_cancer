@@ -1,0 +1,108 @@
+{
+  "experiment_id": "EXP-457",
+  "issue_number": 457,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "a662caa65ceaa758dadf2216fbeec8c13c66fe50",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp457_stacking_ensemble/data_manifest.json",
+  "environment": "reproducibility/exp457_stacking_ensemble/environment.json",
+  "release_url": null,
+  "verifier": "Kangho Park",
+  "verified_at": "2026-08-05T05:47:15.365693+00:00",
+  "artifacts": [
+    {
+      "kind": "submission",
+      "path": "submissions/exp457_stacking_ensemble.csv",
+      "size_bytes": 38580,
+      "sha256": "70b3e68a42af5819198a3549e8c4eb99ebefbd283f59def0129f7baabd42835d",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp457_stacking_ensemble.csv",
+      "size_bytes": 3478062,
+      "sha256": "bbb91de8aae63267ffb65753a88284b287afd9c2989319711dfca98e0ba1220c",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp457_stacking_ensemble_test_proba.csv",
+      "size_bytes": 1392348,
+      "sha256": "ca89015c389372474e21e8e444e702bbf844f287f890eb77ed6f43d0ea94c57d",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp457_stacking_ensemble/metrics.json",
+      "size_bytes": 12571,
+      "sha256": "918863bc807480cd521588f39db14c64ab80eae1a8f6620da77431c715ffcf2e",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp457_stacking_ensemble/config.resolved.yaml",
+      "size_bytes": 1625,
+      "sha256": "177725be22c5c681a70b5e41a3763ec3409570decd8fcf59f0d7cbaf8a232918",
+      "storage_uri": null
+    },
+    {
+      "kind": "comparison",
+      "path": "reproducibility/exp457_stacking_ensemble/comparison.json",
+      "size_bytes": 490,
+      "sha256": "6b2b7df7808d86a37ac2938aa8938cffc9fea7f576317f0a2401161f34529aeb",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp457_stacking_ensemble/fold_0.joblib",
+      "size_bytes": 12183,
+      "sha256": "60207334097ca47a5387a61d501c0abde6c919c511572d6922ad2faebd4bf980",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp457_stacking_ensemble/fold_1.joblib",
+      "size_bytes": 12183,
+      "sha256": "d2f738b4a99e8f0a7ee7a2ce50065bf2d92a5a68b59d495cd187ea8ca1bc753b",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp457_stacking_ensemble/fold_2.joblib",
+      "size_bytes": 12183,
+      "sha256": "080e2cfa67cf9cfd2a574de6274fd58e9407292c0ad19251d40a3da743d9aa2a",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp457_stacking_ensemble/fold_3.joblib",
+      "size_bytes": 12183,
+      "sha256": "dd6c4d75dcbdb4930b38cef219aa30488e2b6f05417b1756771a7a3fb4e3d3d9",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp457_stacking_ensemble/fold_4.joblib",
+      "size_bytes": 12183,
+      "sha256": "40748442777dcee8260747797c0c71edc02000631d442d4a1765936e33e62858",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp457_stacking_ensemble/final.joblib",
+      "size_bytes": 12183,
+      "sha256": "144270106b6dd0fef90230e7afd88816a3004b6e11b38ac401971bd519e49a26",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
