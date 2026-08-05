@@ -31,11 +31,19 @@ from open_cancer.protein_duplication_semantics import classify_protein_duplicati
 
 
 PARSER_NATIVE_V2_FEATURE_VERSION = "2.0.0"
+PARSER_NATIVE_V2_TOKEN_COUNT_FEATURE_VERSION = "2.1.0"
 DEFAULT_V2_SCHEMA_PATH = (
     Path(__file__).resolve().parents[2]
     / "configs"
     / "parser_v4_native_feature_schema_v2.yaml"
 )
+DEFAULT_V2_TOKEN_COUNT_SCHEMA_PATH = (
+    Path(__file__).resolve().parents[2]
+    / "configs"
+    / "parser_v4_native_feature_schema_v2_token_count.yaml"
+)
+
+SampleAggregation = Literal["affected_gene_count", "token_count"]
 
 ModelConsequence = Literal[
     "missense",
@@ -109,6 +117,7 @@ def native_v2_model_consequence(
 @dataclass(frozen=True)
 class NativeV2GeneCellSemantics:
     model_consequences: frozenset[ModelConsequence]
+    model_consequence_counts: tuple[tuple[ModelConsequence, int], ...]
     primary_family_counts: tuple[tuple[str, int], ...]
     token_count: int
 
@@ -123,8 +132,9 @@ def parse_native_v2_gene_cell(
     """Parse a gene cell once without dropping QC-only semantic events."""
 
     if not isinstance(cell, str) or not cell.strip() or cell.strip().upper() == "WT":
-        return NativeV2GeneCellSemantics(frozenset(), (), 0)
+        return NativeV2GeneCellSemantics(frozenset(), (), (), 0)
     consequences: set[ModelConsequence] = set()
+    consequence_counts: dict[ModelConsequence, int] = {}
     primary_counts: dict[str, int] = {}
     canonical = parse_canonical_gene_cell(cell)
     for routed in canonical.events:
@@ -133,6 +143,7 @@ def parse_native_v2_gene_cell(
         consequence = native_v2_model_consequence(routed)
         if consequence is not None:
             consequences.add(consequence)
+            consequence_counts[consequence] = consequence_counts.get(consequence, 0) + 1
     source_token_count = sum(
         1 for token in cell.split() if token.strip() and token.upper() != "WT"
     )
@@ -140,6 +151,7 @@ def parse_native_v2_gene_cell(
         raise AssertionError("parser v4 token preservation contract failed")
     return NativeV2GeneCellSemantics(
         model_consequences=frozenset(consequences),
+        model_consequence_counts=tuple(sorted(consequence_counts.items())),
         primary_family_counts=tuple(sorted(primary_counts.items())),
         token_count=len(canonical.events),
     )
@@ -147,9 +159,14 @@ def parse_native_v2_gene_cell(
 
 def parser_native_v2_feature_names(
     gene_columns: tuple[str, ...],
+    *,
+    sample_aggregation: SampleAggregation = "affected_gene_count",
 ) -> tuple[str, ...]:
+    sample_suffix = (
+        "gene_count" if sample_aggregation == "affected_gene_count" else "token_count"
+    )
     sample_names = tuple(
-        f"sample__native_v2_{name}_gene_count"
+        f"sample__native_v2_{name}_{sample_suffix}"
         for name in MODEL_ACTIVE_V2_CONSEQUENCES
     )
     gene_names = tuple(
@@ -165,6 +182,7 @@ class FittedParserNativeV2SemanticFamily:
     descriptor: FeatureFamilyDescriptor
     gene_columns: tuple[str, ...]
     schema_sha256: str
+    sample_aggregation: SampleAggregation = "affected_gene_count"
 
     def transform(self, frame: pd.DataFrame) -> sparse.csr_matrix:
         missing = [gene for gene in self.gene_columns if gene not in frame.columns]
@@ -195,9 +213,15 @@ class FittedParserNativeV2SemanticFamily:
                 parsed = parse_native_v2_gene_cell(
                     gene, gene_values[row_index]
                 )
+                consequence_counts = dict(parsed.model_consequence_counts)
                 for consequence in parsed.model_consequences:
                     index = consequence_index[consequence]
-                    sample_counts[row_index, index] += 1.0
+                    if self.sample_aggregation == "affected_gene_count":
+                        sample_counts[row_index, index] += 1.0
+                    else:
+                        sample_counts[row_index, index] += float(
+                            consequence_counts[consequence]
+                        )
                     rows.append(int(row_index))
                     columns.append(width + gene_index * width + index)
                     values.append(1.0)
@@ -239,6 +263,46 @@ class ParserNativeV2SemanticFamily:
             ),
             gene_columns=self.gene_columns,
             schema_sha256=sha256_file(self.schema_path),
+            sample_aggregation="affected_gene_count",
+        )
+
+
+@dataclass(frozen=True)
+class ParserNativeV2TokenCountFamily:
+    """Native-v2 semantics with token-count sample summaries.
+
+    Gene-level presence and semantic routing are identical to native_v2.  Only
+    the five sample summary columns count active mutation tokens instead of
+    affected genes, isolating the aggregation choice discovered in Issue #462.
+    """
+
+    gene_columns: tuple[str, ...]
+    schema_path: Path = DEFAULT_V2_TOKEN_COUNT_SCHEMA_PATH
+    version: str = PARSER_NATIVE_V2_TOKEN_COUNT_FEATURE_VERSION
+
+    def fit(
+        self, train_frame: pd.DataFrame, target: pd.Series | None = None
+    ) -> FittedParserNativeV2SemanticFamily:
+        del target
+        if not self.gene_columns:
+            raise ValueError("유전자 열이 하나 이상 필요합니다.")
+        missing = [gene for gene in self.gene_columns if gene not in train_frame.columns]
+        if missing:
+            raise ValueError(f"입력에 유전자 열이 없습니다: {missing[:5]}")
+        if not self.schema_path.is_file():
+            raise FileNotFoundError(self.schema_path)
+        return FittedParserNativeV2SemanticFamily(
+            descriptor=FeatureFamilyDescriptor(
+                name="parser_v4_native_semantic_v2_token_count",
+                version=self.version,
+                fit_scope="stateless",
+                feature_names=parser_native_v2_feature_names(
+                    self.gene_columns, sample_aggregation="token_count"
+                ),
+            ),
+            gene_columns=self.gene_columns,
+            schema_sha256=sha256_file(self.schema_path),
+            sample_aggregation="token_count",
         )
 
 
@@ -255,5 +319,6 @@ def native_v2_semantic_contract_record(
         "model_active_consequences": list(MODEL_ACTIVE_V2_CONSEQUENCES),
         "mutation_presence_policy": "preserve_existing_base_feature",
         "qc_primary_family_policy": "exclusive_and_raw_preserved_outside_matrix",
-        "aggregation": "affected_gene_presence",
+        "gene_aggregation": "consequence_presence",
+        "sample_aggregation": fitted.sample_aggregation,
     }

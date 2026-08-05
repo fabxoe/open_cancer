@@ -1,0 +1,32 @@
+schema_name: parser_v4_native_semantic_v2_token_count
+schema_version: 2.1.0
+issue: 466
+parent_schema: configs/parser_v4_native_feature_schema_v2.yaml
+parser_contract:
+  notation_normalizer_version: 4.0.0
+  semantic_router_version: 4.0.0
+  feature_adapter_version: 4.0.0-opt-in
+representation:
+  input_unit: mutation_token
+  sample_aggregation: active_token_count
+  gene_aggregation: consequence_presence
+  mutation_presence_policy: preserve_existing_base_feature
+  raw_provenance_policy: preserve_outside_model_matrix
+controlled_difference_from_native_v2:
+  changed: sample summary aggregation only
+  unchanged:
+    - semantic routing
+    - model-active consequences
+    - gene-level consequence presence
+    - strict range-replacement definition
+    - mutation-presence features
+model_active_consequences:
+  - missense
+  - no_change
+  - nonsense
+  - frameshift
+  - range_replacement
+constraints:
+  target_used: false
+  test_distribution_used_for_schema: false
+  public_lb_used: false

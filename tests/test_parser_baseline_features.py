@@ -36,7 +36,10 @@ def _write_frames(tmp_path: Path) -> tuple[Path, Path]:
 
 @pytest.mark.parametrize(
     "representation",
-    ["compatibility", "native", "hybrid", "native_no_provenance", "native_v2"],
+    [
+        "compatibility", "native", "hybrid", "native_no_provenance",
+        "native_v2", "native_v2_token_count",
+    ],
 )
 def test_parser_baseline_builder_replaces_five_family(
     tmp_path: Path, representation: str
@@ -117,6 +120,14 @@ def test_parser_baseline_builder_replaces_five_family(
             "missense", "no_change", "nonsense", "frameshift",
             "range_replacement",
         ]
+    elif representation == "native_v2_token_count":
+        assert len(bundle.feature_names) == 5 + 2 * 5
+        assert "sample__native_v2_missense_token_count" in bundle.feature_names
+        assert "gene__TP53__native_v2_missense_any" in bundle.feature_names
+        contract = bundle.registry["parser_v4_native_semantic_v2_token_count"][
+            "semantic_contract"
+        ]
+        assert contract["sample_aggregation"] == "token_count"
 
 
 def test_disabled_hotspot_table_has_zero_columns(tmp_path: Path) -> None:
