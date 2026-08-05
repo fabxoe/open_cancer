@@ -9,7 +9,6 @@ one native consequence so mutation presence can be audited by an OR reduction.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from functools import lru_cache
 from pathlib import Path
 from typing import Any, Literal
 
@@ -19,7 +18,8 @@ from scipy import sparse
 
 from open_cancer.feature_family import FeatureFamilyDescriptor
 from open_cancer.hashing import sha256_file
-from open_cancer.mutation_parser_contract import RoutedProteinMutation, route_protein_mutation
+from open_cancer.canonical_mutation_events import parse_canonical_gene_cell
+from open_cancer.mutation_parser_contract import RoutedProteinMutation
 
 
 PARSER_NATIVE_FEATURE_VERSION = "1.0.0"
@@ -52,11 +52,6 @@ FRAMESHIFT_GRAMMARS = (
     "ref_alt_before_position",
     "ref_position_alt",
 )
-
-
-@lru_cache(maxsize=8_192)
-def _route_cached(token: str) -> RoutedProteinMutation:
-    return route_protein_mutation(token)
 
 
 def native_consequence(routed: RoutedProteinMutation) -> NativeConsequence:
@@ -102,12 +97,9 @@ def parse_native_gene_cell(cell: object) -> NativeGeneCellSemantics:
     grammars: set[str] = set()
     route_counts: dict[str, int] = {}
     token_count = 0
-    for raw in cell.split():
-        token = raw.strip()
-        if not token or token.upper() == "WT":
-            continue
+    canonical_cell = parse_canonical_gene_cell(cell)
+    for routed in canonical_cell.events:
         token_count += 1
-        routed = _route_cached(token)
         consequences.add(native_consequence(routed))
         status = routed.parse_status
         statuses.add(status if status in PARSE_STATUSES else "unresolved")
