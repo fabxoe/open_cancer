@@ -263,6 +263,13 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   26개 클래스 순서를 모든 runner가 실행 전에 검증한다. 각 모델은 별도
   Experiment Issue에서 동일한 `(6201, 26)` OOF와 `(2546, 26)` test 확률을
   저장하고, 구현만 바꾸는 공통 runner 작업에는 EXP-ID를 만들지 않는다.
+- parser-v4 native 희소 행렬을 SAINT 입력용 128·256·512열로 제한할 때는
+  validation/test 통계를 보지 않는 outer-train-only 의미 압축기를 사용한다.
+  이름 없는 잠재벡터가 아니라 원본 gene-event 이름·family·순서를 보존하고,
+  같은 fold의 작은 차원은 큰 차원의 prefix여야 한다. compatibility mutation/missing
+  열을 native selector에 섞지 않는다. 구현·manifest·실행법은
+  [`docs/SEMANTIC_COMPRESSION_SAINT_DATASET.md`](docs/SEMANTIC_COMPRESSION_SAINT_DATASET.md)를
+  따른다.
 - 스태킹은 EXP-094 대비 OOF Macro F1 하락이 `0.004` 이내인 모델 중 OOF 오류
   상관이 `0.92` 이하이거나 예측 라벨 불일치율이 `10%` 이상인 조합이 있을 때만
   진행한다. meta learner는 cross-fitted 예측만 사용하며, 단순 고정 blend보다
