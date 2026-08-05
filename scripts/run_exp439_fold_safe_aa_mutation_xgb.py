@@ -17,7 +17,6 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-import optuna
 import pandas as pd
 import yaml
 from scipy import sparse
@@ -334,6 +333,7 @@ def combine_features(
 
 
 def sample_parameters(trial: optuna.Trial, config: dict[str, Any]) -> dict[str, Any]:
+    import optuna
     """Sample regularized XGBoost parameters from the YAML search space."""
     space = config["model"]["parameter_space"]
     return {
