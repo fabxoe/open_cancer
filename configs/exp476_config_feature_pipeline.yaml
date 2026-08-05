@@ -1,0 +1,87 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-476
+issue_number: 476
+slug: config_feature_pipeline
+parent_experiment: null
+component_experiments: []
+owner: Gomin-art
+seed: 42
+
+data:
+  train_path: data/raw/train.csv
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
+  canonical_split_path: data/splits/stratified_5fold_seed42.csv
+  canonical_split_sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  id_column: ID
+  target_column: SUBCLASS
+  fold_column: fold
+
+features:
+  gene_mutation_presence: true
+  amino_acid_by_mutation_type_100: true
+  sample_mutation_aggregates: true
+  stop_notation_normalization: true
+  complex_or_unparsed_family: MT
+  missing_policy: separate_not_mutated
+  minimum_fold_train_gene_support: 2
+  maximum_gene_features: 1500
+  class_panel:
+    enabled: true
+    scope: all_26_classes
+    selection: smoothed_one_vs_rest_log_odds
+    top_k_genes_per_class: 20
+    minimum_fold_train_support: 3
+    fit_scope: current_training_partition_only
+
+imbalance:
+  method: fold_train_balanced_power_weight
+  power_choices: [0.75, 1.0, 1.15]
+  normalize_mean_to_one: true
+  oversampling: false
+  smote: false
+
+nested_optuna:
+  enabled: true
+  n_trials: 5
+  inner_n_splits: 2
+  sampler: tpe
+  primary_metric: macro_f1
+  n_estimators_ceiling: 800
+  early_stopping_rounds: 40
+
+model:
+  objective: multi:softprob
+  eval_metric: mlogloss
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+  search_space:
+    learning_rate: [0.02, 0.08]
+    max_depth: [3, 7]
+    min_child_weight: [1.0, 10.0]
+    subsample: [0.60, 0.95]
+    colsample_bytree: [0.50, 0.90]
+    reg_alpha: [0.0001, 2.0]
+    reg_lambda: [0.5, 10.0]
+    gamma: [0.0, 0.5]
+
+ablation_contract:
+  test_used_for_fit: false
+  outer_validation_used_for_feature_selection: false
+  outer_validation_used_for_optuna: false
+  full_train_feature_importance_used_for_selection: false
+  missing_canonical_split_fallback: false
+  final_prediction: five_fold_probability_mean
+  low_f1_classes_used_for_manual_gene_selection: false
+  public_leaderboard_used_for_selection: false
+
+notes: >-
+  The previous personal OOF report is used only to motivate a new experiment.
+  To avoid manually overfitting the reported low-F1 classes, the same
+  fold-trained one-vs-rest panel rule is applied to all 26 classes. Gene
+  recurrence selection, class panels, Optuna and weight-power selection are
+  refitted inside each applicable training partition. SMOTE and random
+  oversampling are disabled for sparse discrete mutation features.
