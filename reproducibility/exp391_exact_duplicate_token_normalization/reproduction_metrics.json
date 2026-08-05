@@ -1,0 +1,15 @@
+{
+  "experiment_id": "EXP-391",
+  "verification_type": "checkpoint_inference",
+  "verified_at": "2026-08-05T01:44:29.823676+00:00",
+  "data_hashes_match": true,
+  "original_submission_sha256": "2a835f6532945d6613115db1877a7ebfe466e669adfc067e8c8d13ba1a048df8",
+  "reproduced_submission_sha256": "2a835f6532945d6613115db1877a7ebfe466e669adfc067e8c8d13ba1a048df8",
+  "submission_sha256_match": true,
+  "test_label_agreement": 1.0,
+  "test_probability_allclose": true,
+  "test_probability_max_abs_diff": 1.240924072387628e-07,
+  "probability_atol": 1e-06,
+  "probability_rtol": 1e-06,
+  "passed": true
+}

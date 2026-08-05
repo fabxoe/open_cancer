@@ -7,13 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 82
+- 실제 실험 수: 83
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
 - 최고 Public LB Macro F1: 0.346215922 (`EXP-374`)
 - 최고 재현 검증 모델: `EXP-334` (`INFERENCE_VERIFIED`)
-- 최종 갱신일: 2026-08-04
+- 최종 갱신일: 2026-08-05
 
 ## 실험 요약
 
@@ -101,6 +101,7 @@
 | EXP-359 | COMPLETED | fabxoe | #359 | EXP-229 generic gene complex를 normalized non-simple event-family indicator 6종으로 교체 | 0.4187813830 | 미제출 | INFERENCE_VERIFIED | Macro F1 -0.0042072·Log Loss +0.0103444로 R2 기각, robust representation 공식 탐색 종료 | [보고서](reports/exp359_robust_event_gene_indicators/README.md) |
 | EXP-369 | COMPLETED | fabxoe | #369 | EXP-229의 simple stop 표기 `*`·`X`·`Ter`를 모든 피처 경로에서 동일한 nonsense로 정규화 | 0.4229885745 | 0.3407944343 | INFERENCE_VERIFIED | OOF 동일 통제에서 EXP-229 Public 대비 +0.0204345510·팀 최고 갱신, stop parser 결함이 핵심 Public 병목이었음을 확인 | [보고서](reports/exp369_stop_notation_normalization/README.md) |
 | EXP-374 | COMPLETED | 2heej | #374 | EXP-369(stop 정규화) + EXP-313/EXP-334 동일 Ensembl isoform mask 단일 조합, Optuna 튜닝 미포함 | 0.4267909268 | 0.346215922 | INFERENCE_VERIFIED | EXP-369 대비 Public +0.0054214877로 팀 최고 갱신 — EXP-334 Public 부진이 mask 결함이 아니라 잔여 stop 표기 버그 때문이었음을 확인, isoform mask 방향 재확인 | [보고서](reports/exp374_stop_notation_isoform_mask/README.md) |
+| EXP-391 | COMPLETED | Gomin-art | #391 | EXP-374 + stop 정규화 후 exact duplicate token 제거·token 순서 정렬 | 0.4251053830 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 Macro F1 -0.0016855·fold std +0.0006600·Log Loss +0.0121809로 미채택, parser/QC 자산만 보존 | [보고서](reports/exp391_exact_duplicate_token_normalization/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -176,10 +177,40 @@
 | 2026-08-04T07:36:26.479110+00:00 | EXP-359 | fabxoe | `4fbd1e267664949b515867c452ffa770405d4884` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.46e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp359_robust_event_gene_indicators/comparison.json) |
 | 2026-08-04T08:39:18.352925+00:00 | EXP-369 | fabxoe | `f49bf2209b22492d11bc5c31ab76de9af3946b59` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.40e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp369_stop_notation_normalization/comparison.json) |
 | 2026-08-04T09:11:14.761750+00:00 | EXP-374 | 2heej | `fb44df80c4ff054767c5366fcd85d89bfb3f8a3f` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.83e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp374_stop_notation_isoform_mask/comparison.json) |
+| 2026-08-05T01:44:29.823676+00:00 | EXP-391 | Gomin-art | `1160c2afcea2dee1f4a5d75cee19ebb53cfe4375` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.24e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp391_exact_duplicate_token_normalization/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-391] Exact duplicate mutation-token 정규화
+
+- 상태: COMPLETED
+- 실행자: Gomin-art
+- Issue/브랜치: #391 / `issue-391-exp-exact-duplicate-token-normalization`
+- 소스 commit: `1160c2afcea2dee1f4a5d75cee19ebb53cfe4375`
+- 시작/종료: 2026-08-05T01:13:29.902806+00:00 /
+  2026-08-05T01:44:27.248650+00:00
+- 부모: EXP-374
+- 유일한 변경: stop 정규화 후 완전히 같은 token을 한 번만 사용하고 token 순서를
+  정렬했다. 서로 다른 위치·변이 유형은 유지했다.
+- label-free 영향 감사: train 144개 샘플·3,068 cells·6,100 duplicate, test 35개
+  샘플·209 cells·218 duplicate. stop 정규화로 새로 생긴 duplicate는 양쪽 모두 0건.
+- Fold Macro F1: 0.4261550774 / 0.4189377298 / 0.4122109136 /
+  0.4286879972 / 0.4393035840
+- OOF Macro F1: 0.4251053830 (EXP-374 대비 `-0.0016855438`)
+- Fold 표준편차: 0.0091632140 (EXP-374 대비 `+0.0006599971`)
+- Accuracy: 0.4088050314 (EXP-374 대비 `-0.0040316078`)
+- Log Loss: 1.8562457561 (EXP-374 대비 `+0.0121809244`)
+- EXP-374 제출 대비 label 변경: 229/2,546(8.99%); ID·순서 일치
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`; 제출 SHA-256 byte-level 일치, test label
+  100%, 확률 최대 차이 `1.2409241e-07`
+- 결론: 공식 OOF Macro F1·Accuracy·Log Loss가 부모보다 악화되어 미채택하고
+  Public 제출을 중단한다. parser와 감사 코드는 annotation-invariant QC 자산으로
+  보존한다.
+- Report: `reports/exp391_exact_duplicate_token_normalization/README.md`
+- Metrics: `reports/exp391_exact_duplicate_token_normalization/metrics.json`
 
 ### [EXP-374] EXP-369 stop 정규화 + Ensembl isoform mask 단일 조합
 
