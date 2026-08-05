@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 93
+- 실제 실험 수: 94
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -112,6 +112,7 @@
 | EXP-459 | COMPLETED | 2heej | #459 | EXP-374 feature set + CatBoost(모델 다양성, GPU 미보유로 CPU-bounded depth=6/iterations=400/rsm=0.1) | 0.4120129509 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0147780(compute-bounded 축소분 포함, quality gate 미달)이나 다양성 gate(오류상관 0.6551·라벨불일치 34.2%) 명확히 통과, blend/stacking 후보로 보존 | [보고서](reports/exp459_catboost_exp374/README.md) |
 | EXP-469 | COMPLETED | fabxoe | #469 | EXP-456 native v2의 sample summary만 affected-gene count→token count | 0.4117817779 | 미제출 | INFERENCE_VERIFIED | EXP-456 대비 +0.0006765·Log Loss 개선; Legacy gate 미달이나 native 전용 분석·튜닝용 비튜닝 기준점으로 보존 | [보고서](reports/exp469_parser_v4_native_v2_token_count/README.md) |
 | EXP-479 | COMPLETED | fabxoe | #479 | EXP-469 + HGVS-informed range_replacement·range_stop·range_no_change 상호 배타 의미 | 0.4087566023 | 미제출 | INFERENCE_VERIFIED | 고정 XGBoost에서 EXP-469 대비 -0.0030252·안정성/Log Loss 악화; 제출 보류, 의미는 유지하고 비튜닝 native semantic 기준선으로 동결 | [보고서](reports/exp479_parser_v4_native_semantic_range/README.md) |
+| EXP-484 | COMPLETED | 2heej | #484 | EXP-374+EXP-459 고정 0.7/0.3 확률 블렌드(#482 test-like propensity 스크리닝으로 비율 사전 고정) | 0.4320213767 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 +0.0052304·test-like subset도 +0.0022953으로 통과·Log Loss 개선·클래스 붕괴 없음. Fold std +0.0052388는 임계값 초과했으나 전 fold 개선(악화 없음)이 원인 — ADOPT_WITH_CAUTION, Public 제출은 팀 논의 후 | [보고서](reports/exp484_exp374_exp459_blend/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -3953,3 +3954,40 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
 - 판단: 현재 고정 XGBoost 설정에서는 EXP-469보다 성능과 안정성이 악화돼 제출을
   보류한다. parser 의미를 되돌리지는 않으며, EXP-479를 비튜닝 native semantic
   기준선으로 동결하고 분포·상관·SHAP·nested tuning으로 adapter와 모델을 최적화한다.
+
+### [EXP-484] EXP-374+EXP-459 고정 0.7/0.3 확률 블렌드
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #484 / `issue-484-exp374-exp459-blend`
+- 부모: EXP-374 (컴포넌트: EXP-374 weight 0.7, EXP-459 weight 0.3)
+- Config: `configs/exp484_exp374_exp459_blend.yaml`
+- Runner: `scripts/run_exp484_exp374_exp459_blend.py`
+- Metrics/Report: `reports/exp484_exp374_exp459_blend/`
+- 배경: Task #482(PR #483)가 새 학습 없이 EXP-374+EXP-459 고정 블렌드 후보
+  비율을 `#292` test-like propensity(train 상위 25%) subset 게이트로
+  스크리닝했다. LightGBM 계열(EXP-449, #450/457/464/465)은 4번의 독립 시도
+  전부 test-like subset에서 REJECTED됐지만, CatBoost(EXP-459)는 EXP-374
+  가중치 0.9~0.7 구간에서 전체·test-like 양쪽 모두 개선했고 0.7/0.3이 두
+  지표 모두 최고였다. 이 실험은 그 비율을 canonical 공식 실행으로 확정한다.
+- 방법: 재학습 없음. `0.7 * EXP-374 확률 + 0.3 * EXP-459 확률` 산술 평균
+  (inference-only, EXP-075/135/253과 동일 패턴). 비율은 평가 전에 고정했다.
+- Fold Macro F1: 0.4243665025, 0.4239061489, 0.4218148394,
+  0.4299131875, 0.4586960290
+- OOF Macro F1: 0.4320213767 (EXP-374 대비 `+0.0052304498`)
+- Fold 표준편차: 0.0137419885 (EXP-374 대비 `+0.0052387716`)
+- Accuracy / Log Loss: 0.4184808902 / 1.8336908448 (EXP-374 대비 Log Loss
+  `-0.0103739869`)
+- test-like propensity(#292) subset delta: `+0.0022953029` (공식 실행 결과로
+  Task #482 스크리닝을 재계산해 byte-level 일치 확인, 1,666/6,201행)
+- 최대 클래스 하락/상승: THYM `-0.0233` / LGG `+0.0626` (`-0.05` 붕괴 없음)
+- Public LB: 미제출(팀 논의 후 진행)
+- 재현 상태: `INFERENCE_VERIFIED` — 결정론적 블렌드 재계산으로 제출
+  SHA-256·라벨·확률 일치 확인(최대 절대 오차 `1e-6` 이내).
+- 판단: 전체 OOF·test-like subset·Log Loss·클래스 붕괴 기준은 모두 통과.
+  Fold 표준편차만 사전 설정 임계값(`+0.002`)을 초과했으나(`+0.0052388`),
+  5개 fold 전부 개선(fold0은 사실상 동일)한 상태에서 개선폭이 fold마다
+  고르지 않아 발생한 것으로 확인했다(어떤 fold도 악화되지 않음) — 전형적인
+  fold 붕괴형 불안정과는 다르다고 판단해 `ADOPT_WITH_CAUTION`으로 기록한다.
+  EXP-449(LightGBM) 계열 블렌드가 전부 실패했던 이전 결론("어떤 모델을
+  블렌드해도 test-like gate에서 실패한다")에 대한 반례다.
