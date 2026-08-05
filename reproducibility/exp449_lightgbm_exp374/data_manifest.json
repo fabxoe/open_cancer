@@ -1,0 +1,17 @@
+{
+  "experiment_id": "EXP-449",
+  "train": {
+    "path": "data/raw/train.csv",
+    "sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab"
+  },
+  "test": {
+    "path": "data/raw/test.csv",
+    "sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+  },
+  "split": {
+    "path": "data/splits/stratified_5fold_seed42.csv",
+    "sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf"
+  },
+  "gene_order_sha256": "fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff",
+  "feature_spec_sha256": "3e3bf6f5aa71d20e01fa0f3115582dd59c105883e09bc72c3c17de7d755f28f9"
+}

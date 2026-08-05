@@ -1,0 +1,94 @@
+{
+  "purpose": "standalone_component_diagnostics",
+  "issue": 465,
+  "model_a_hotspot_only": {
+    "folds": [
+      {
+        "fold": 0,
+        "macro_f1": 0.154038465732131,
+        "accuracy": 0.18694601128122482,
+        "log_loss": 2.7882161142639434,
+        "best_iteration": 217
+      },
+      {
+        "fold": 1,
+        "macro_f1": 0.13060650841999996,
+        "accuracy": 0.20080645161290323,
+        "log_loss": 2.8200419095660116,
+        "best_iteration": 193
+      },
+      {
+        "fold": 2,
+        "macro_f1": 0.13235033172242097,
+        "accuracy": 0.1967741935483871,
+        "log_loss": 2.824659119359498,
+        "best_iteration": 285
+      },
+      {
+        "fold": 3,
+        "macro_f1": 0.11931612994967664,
+        "accuracy": 0.16612903225806452,
+        "log_loss": 2.800620992282989,
+        "best_iteration": 271
+      },
+      {
+        "fold": 4,
+        "macro_f1": 0.1435711044456079,
+        "accuracy": 0.20887096774193548,
+        "log_loss": 2.788974788652243,
+        "best_iteration": 230
+      }
+    ],
+    "oof": {
+      "macro_f1": 0.14273657057376574,
+      "n_features": 35
+    }
+  },
+  "model_b_burden_only": {
+    "folds": [
+      {
+        "fold": 0,
+        "macro_f1": 0.26350526739940094,
+        "accuracy": 0.2731668009669621,
+        "log_loss": 2.3409923534070574,
+        "best_iteration": 120
+      },
+      {
+        "fold": 1,
+        "macro_f1": 0.2963543800518182,
+        "accuracy": 0.29596774193548386,
+        "log_loss": 2.3431076156498634,
+        "best_iteration": 126
+      },
+      {
+        "fold": 2,
+        "macro_f1": 0.27735091964873104,
+        "accuracy": 0.2903225806451613,
+        "log_loss": 2.288743526099556,
+        "best_iteration": 113
+      },
+      {
+        "fold": 3,
+        "macro_f1": 0.2716551842969079,
+        "accuracy": 0.2814516129032258,
+        "log_loss": 2.3248895218127332,
+        "best_iteration": 123
+      },
+      {
+        "fold": 4,
+        "macro_f1": 0.27666625534505446,
+        "accuracy": 0.29193548387096774,
+        "log_loss": 2.322289560984421,
+        "best_iteration": 118
+      }
+    ],
+    "oof": {
+      "macro_f1": 0.27696484212586325,
+      "n_features": 74
+    }
+  },
+  "blend_weights": {
+    "a": 0.5,
+    "b": 0.5
+  }
+}

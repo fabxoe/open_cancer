@@ -1,0 +1,55 @@
+{
+  "analysis_only": true,
+  "official_experiment": false,
+  "history_update": false,
+  "fold": 0,
+  "device": "mps",
+  "torch_version": "2.13.0",
+  "seed": 42,
+  "batch_size": 4,
+  "steps": 2,
+  "dimensions": {
+    "128": {
+      "selector_feature_names_sha256": "5d212be2de0ce41ea7536b7d2a633dc8664b493a64d70285e4c78df9be8459ba",
+      "train_shape": [4960, 128],
+      "validation_shape": [1241, 128],
+      "test_shape": [2546, 128],
+      "binary_columns": 117,
+      "continuous_columns": 11,
+      "parameter_count": 51482,
+      "losses": [3.5623574256896973, 4.768261909484863],
+      "finite_logits": true,
+      "exact_fixed_batch_inference": true,
+      "runtime_seconds": 4.683987917000195,
+      "peak_memory_bytes": 14441216
+    },
+    "256": {
+      "selector_feature_names_sha256": "b3ab3060adb46ee692f64f5f7e6c92828f6be20773f343304d38d87dd2903f49",
+      "train_shape": [4960, 256],
+      "validation_shape": [1241, 256],
+      "test_shape": [2546, 256],
+      "binary_columns": 245,
+      "continuous_columns": 11,
+      "parameter_count": 67866,
+      "losses": [3.476447582244873, 3.3747756481170654],
+      "finite_logits": true,
+      "exact_fixed_batch_inference": true,
+      "runtime_seconds": 1.1381560000008903,
+      "peak_memory_bytes": 6897664
+    },
+    "512": {
+      "selector_feature_names_sha256": "5d277ffbc0005263184757cb96c43dd8c61e68af81c0a04344c1ac70236b9f0c",
+      "train_shape": [4960, 512],
+      "validation_shape": [1241, 512],
+      "test_shape": [2546, 512],
+      "binary_columns": 501,
+      "continuous_columns": 11,
+      "parameter_count": 100634,
+      "losses": [3.912653923034668, 3.6297147274017334],
+      "finite_logits": true,
+      "exact_fixed_batch_inference": true,
+      "runtime_seconds": 1.4627504590025637,
+      "peak_memory_bytes": 9668352
+    }
+  }
+}

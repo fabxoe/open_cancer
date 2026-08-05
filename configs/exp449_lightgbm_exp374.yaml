@@ -1,0 +1,42 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-449
+issue_number: 449
+slug: lightgbm_exp374
+parent_experiment: EXP-374
+component_experiments: [EXP-209, EXP-229, EXP-313, EXP-369, EXP-374]
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+model:
+  name: lightgbm
+  parameters:
+    n_estimators: 1200
+    learning_rate: 0.03
+    num_leaves: 31
+    max_depth: -1
+    min_child_samples: 20
+    subsample: 0.8
+    subsample_freq: 1
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    early_stopping_rounds: 60
+    n_jobs: 8
+    verbosity: -1
+    deterministic: true
+    force_col_wise: true
+training:
+  balanced_sample_weight: true
+notes: >-
+  Issue #449. EXP-374's exact feature set (stop-notation-invariant v2
+  parser, Ensembl release 116 isoform residue mask, pathway families,
+  hotspot-34) is held fixed via build_fold_features() reused directly from
+  scripts/run_exp374_stop_isoform_residue_mask.py. The sole change is the
+  model: LightGBM with EXP-209's fixed hyperparameters (no retuning, no
+  Optuna -- time-constrained, and EXP-285's tuning did not transfer to
+  Public). Supersedes #342 (stalled, targeted the pre-parser-fix EXP-334
+  lineage). Target, test distribution and Public LB do not define the
+  feature set or hyperparameters.
+comparison_metrics_path: reports/exp374_stop_isoform_residue_mask/metrics.json
