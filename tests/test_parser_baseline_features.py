@@ -36,7 +36,7 @@ def _write_frames(tmp_path: Path) -> tuple[Path, Path]:
 
 @pytest.mark.parametrize(
     "representation",
-    ["compatibility", "native", "hybrid", "native_no_provenance"],
+    ["compatibility", "native", "hybrid", "native_no_provenance", "native_v2"],
 )
 def test_parser_baseline_builder_replaces_five_family(
     tmp_path: Path, representation: str
@@ -104,6 +104,19 @@ def test_parser_baseline_builder_replaces_five_family(
         assert contract["excluded_feature_count"] == 6
         assert contract["target_used"] is False
         assert contract["test_distribution_used_for_schema"] is False
+    elif representation == "native_v2":
+        assert len(bundle.feature_names) == 5 + 2 * 5
+        assert "sample__native_v2_missense_gene_count" in bundle.feature_names
+        assert "sample__native_v2_range_replacement_gene_count" in bundle.feature_names
+        assert not any("unresolved" in name for name in bundle.feature_names)
+        assert not any("deletion" in name for name in bundle.feature_names)
+        contract = bundle.registry["parser_v4_native_semantic_v2"][
+            "semantic_contract"
+        ]
+        assert contract["model_active_consequences"] == [
+            "missense", "no_change", "nonsense", "frameshift",
+            "range_replacement",
+        ]
 
 
 def test_disabled_hotspot_table_has_zero_columns(tmp_path: Path) -> None:
