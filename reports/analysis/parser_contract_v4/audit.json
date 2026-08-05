@@ -1,0 +1,100 @@
+{
+  "analysis_only": true,
+  "target_used": false,
+  "test_distribution_used_for_rule": false,
+  "fixture_count": 18,
+  "fixture_catalog_sha256": "26b149f5c4e1bfca12aa48ed6c3183f0f27f257ef039856b213efa7c42ed272c",
+  "fixture_schema_sha256": "925ed90195e70d2405549c0dccdebaee7dc3dee3b4e80a4bc2d187d03db746df",
+  "contract": {
+    "notation_normalizer_version": "4.0.0",
+    "semantic_parser_version": "4.0.0",
+    "feature_adapter_version": "4.0.0-opt-in",
+    "fixture_catalog_sha256": "26b149f5c4e1bfca12aa48ed6c3183f0f27f257ef039856b213efa7c42ed272c",
+    "fixture_schema_version": "1.0.0"
+  },
+  "route_counts": {
+    "deletion": 2,
+    "delins": 3,
+    "frameshift": 3,
+    "insertion": 2,
+    "range_replacement": 2,
+    "substitution": 4,
+    "unresolved": 2
+  },
+  "semantic_module_counts": {
+    "protein_deletion_semantics@4.0.0": 2,
+    "protein_delins_semantics@4.0.0": 3,
+    "protein_duplication_semantics@4.0.0": 2,
+    "protein_frameshift_semantics@4.0.0": 3,
+    "protein_substitution_semantics@4.0.0": 4,
+    "robust_mutation_parser@3.0.0": 4
+  },
+  "max_raw_token_length": 197,
+  "v3_v4_difference_count": 8,
+  "v3_v4_differences": [
+    {
+      "fixture_id": "same_aa_d623d",
+      "v3_event": "synonymous",
+      "v3_normalized": "D623D",
+      "v4_route": "substitution",
+      "v4_event": "no_change",
+      "v4_normalized": "D623D"
+    },
+    {
+      "fixture_id": "stop_x_r213x",
+      "v3_event": "stop_gain",
+      "v3_normalized": "R213*",
+      "v4_route": "substitution",
+      "v4_event": "nonsense",
+      "v4_normalized": "R213*"
+    },
+    {
+      "fixture_id": "stop_star_r213",
+      "v3_event": "stop_gain",
+      "v3_normalized": "R213*",
+      "v4_route": "substitution",
+      "v4_event": "nonsense",
+      "v4_normalized": "R213*"
+    },
+    {
+      "fixture_id": "frameshift_p953h",
+      "v3_event": "other_unmappable",
+      "v3_normalized": "P953HFS",
+      "v4_route": "frameshift",
+      "v4_event": "frameshift",
+      "v4_normalized": "P953HFS"
+    },
+    {
+      "fixture_id": "deletion_single_g108",
+      "v3_event": "inframe_deletion",
+      "v3_normalized": "G108DEL",
+      "v4_route": "deletion",
+      "v4_event": "deletion",
+      "v4_normalized": "G108DEL"
+    },
+    {
+      "fixture_id": "deletion_range_g235_g238",
+      "v3_event": "inframe_deletion",
+      "v3_normalized": "G235_G238DEL",
+      "v4_route": "deletion",
+      "v4_event": "deletion",
+      "v4_normalized": "G235_G238DEL"
+    },
+    {
+      "fixture_id": "insertion_egfr",
+      "v3_event": "inframe_insertion",
+      "v3_normalized": "K745_E746INSIPVAIK",
+      "v4_route": "insertion",
+      "v4_event": "insertion",
+      "v4_normalized": "K745_E746INSIPVAIK"
+    },
+    {
+      "fixture_id": "insertion_madcam1",
+      "v3_event": "inframe_insertion",
+      "v3_normalized": "S261_P262INSQEPPDTTS",
+      "v4_route": "insertion",
+      "v4_event": "insertion",
+      "v4_normalized": "S261_P262INSQEPPDTTS"
+    }
+  ]
+}

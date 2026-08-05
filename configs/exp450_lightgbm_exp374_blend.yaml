@@ -1,0 +1,41 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-450
+issue_number: 450
+slug: lightgbm_exp374_blend
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+ensemble:
+  method: probability_mean
+  weights_fixed_before_evaluation: true
+  components:
+    - experiment_id: EXP-374
+      weight: 0.5
+      oof_probability_path: oof/exp374_stop_isoform_residue_mask.csv
+      test_probability_path: preds/exp374_stop_isoform_residue_mask_test_proba.csv
+      metrics_path: reports/exp374_stop_isoform_residue_mask/metrics.json
+      resolved_config_path: reproducibility/exp374_stop_isoform_residue_mask/config.resolved.yaml
+    - experiment_id: EXP-449
+      weight: 0.5
+      oof_probability_path: oof/exp449_lightgbm_exp374.csv
+      test_probability_path: preds/exp449_lightgbm_exp374_test_proba.csv
+      metrics_path: reports/exp449_lightgbm_exp374/metrics.json
+      resolved_config_path: reproducibility/exp449_lightgbm_exp374/config.resolved.yaml
+submission:
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
+acceptance:
+  comparison_experiment: EXP-374
+  minimum_macro_f1_delta: 0.001
+  maximum_fold_std_increase: 0.002
+  require_no_clear_log_loss_regression: true
+notes: >-
+  Issue #450. Fixed 0.5/0.5 arithmetic probability mean of EXP-374 (XGBoost)
+  and EXP-449 (LightGBM, same feature set). Supersedes stalled #342. Unlike
+  EXP-253 (same blend idea, pre-parser-fix EXP-209/EXP-229 lineage, Public
+  -0.0178 despite passing the Local gate), this uses the current legacy
+  parent (EXP-374) and requires a mandatory train_domain_propensity.csv
+  test-like subset check before any adoption decision. No alternative
+  weights, test distribution, or Public LB select this blend.

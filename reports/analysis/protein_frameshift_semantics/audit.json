@@ -1,0 +1,95 @@
+{
+  "record_role": "explore",
+  "issue": 383,
+  "parser_version": "4.0.0",
+  "annotation_cache_sha256": "b9565339f1755d5b07e782c39064207310fa6c254b2e915a15492f4f38903daa",
+  "target_used": false,
+  "public_lb_used": false,
+  "termination_distance_inferred": false,
+  "train": {
+    "source_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+    "occurrences": 9833,
+    "unique_tokens": 6546,
+    "affected_genes": 2719,
+    "grammar_occurrences": {
+      "ref_alt_before_position": 1217,
+      "short_ref_position": 8616
+    },
+    "grammar_reference_match_tiers": {
+      "ref_alt_before_position": {
+        "MANE_MATCH": 1127,
+        "NO_REFERENCE": 2,
+        "OTHER_ISOFORM_MATCH": 73,
+        "POSITION_VALID_REF_MISMATCH": 15
+      },
+      "short_ref_position": {
+        "CANONICAL_MATCH": 5,
+        "MANE_MATCH": 8004,
+        "NO_REFERENCE": 10,
+        "OTHER_ISOFORM_MATCH": 519,
+        "OUTSIDE_ALL_KNOWN_ISOFORMS": 6,
+        "POSITION_VALID_REF_MISMATCH": 72
+      }
+    },
+    "reference_match_tiers": {
+      "CANONICAL_MATCH": 5,
+      "MANE_MATCH": 9131,
+      "NO_REFERENCE": 12,
+      "OTHER_ISOFORM_MATCH": 592,
+      "OUTSIDE_ALL_KNOWN_ISOFORMS": 6,
+      "POSITION_VALID_REF_MISMATCH": 87
+    },
+    "team_examples": {
+      "ELF3:SDEL133FS": 1,
+      "NPM1:WQ288FS": 21
+    }
+  },
+  "test": {
+    "source_sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0",
+    "occurrences": 25813,
+    "unique_tokens": 15035,
+    "affected_genes": 2924,
+    "grammar_occurrences": {
+      "ref_alt_before_position": 254,
+      "ref_position_alt": 22222,
+      "short_ref_position": 3337
+    },
+    "grammar_reference_match_tiers": {
+      "ref_alt_before_position": {
+        "CANONICAL_MATCH": 1,
+        "MANE_MATCH": 235,
+        "NO_REFERENCE": 1,
+        "OTHER_ISOFORM_MATCH": 14,
+        "POSITION_VALID_REF_MISMATCH": 3
+      },
+      "ref_position_alt": {
+        "CANONICAL_MATCH": 7,
+        "MANE_MATCH": 10681,
+        "NO_REFERENCE": 20,
+        "OTHER_ISOFORM_MATCH": 8375,
+        "OUTSIDE_ALL_KNOWN_ISOFORMS": 26,
+        "POSITION_VALID_REF_MISMATCH": 3113
+      },
+      "short_ref_position": {
+        "CANONICAL_MATCH": 21,
+        "MANE_MATCH": 2532,
+        "NO_REFERENCE": 2,
+        "OTHER_ISOFORM_MATCH": 513,
+        "OUTSIDE_ALL_KNOWN_ISOFORMS": 1,
+        "POSITION_VALID_REF_MISMATCH": 268
+      }
+    },
+    "reference_match_tiers": {
+      "CANONICAL_MATCH": 29,
+      "MANE_MATCH": 13448,
+      "NO_REFERENCE": 23,
+      "OTHER_ISOFORM_MATCH": 8902,
+      "OUTSIDE_ALL_KNOWN_ISOFORMS": 27,
+      "POSITION_VALID_REF_MISMATCH": 3384
+    },
+    "team_examples": {
+      "CLSTN3:P953HFS": 6,
+      "NPM1:WQ288FS": 6
+    }
+  }
+}

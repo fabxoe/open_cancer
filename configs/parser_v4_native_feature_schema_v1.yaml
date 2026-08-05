@@ -1,0 +1,45 @@
+schema_name: parser_v4_native_semantic_v1
+schema_version: 1.0.0
+parser_contract:
+  notation_normalizer_version: 4.0.0
+  semantic_router_version: 4.0.0
+  feature_adapter_version: 4.0.0-opt-in
+representation:
+  input_unit: gene_cell
+  aggregation: affected_gene_presence
+  mutation_presence_policy: preserve_existing_base_feature
+  raw_provenance_policy: preserve_outside_model_matrix
+model_active_consequences:
+  - missense
+  - no_change
+  - nonsense
+  - frameshift
+  - range_replacement
+  - non_simple_or_unresolved
+model_active_parse_statuses:
+  - complete
+  - partial
+  - unresolved
+model_active_frameshift_grammars:
+  - short_ref_position
+  - ref_alt_before_position
+  - ref_position_alt
+qc_only_routes:
+  - deletion
+  - insertion
+  - delins
+qc_only_semantics:
+  - duplication
+qc_only_fields:
+  - raw_peptide
+  - peptide_hash
+  - deleted_length
+  - inserted_length
+  - replacement_length
+  - canonical_equivalence_confidence
+support_policy:
+  source: reports/analysis/parser_v4_semantic_completeness/audit.json
+  train_only_for_model_activation: true
+  test_prevalence_used_for_activation: false
+  target_used: false
+  public_lb_used: false

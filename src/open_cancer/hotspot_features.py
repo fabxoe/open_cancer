@@ -85,9 +85,11 @@ ADDITIONAL_HOTSPOTS: HotspotTable = (
 EXTENDED_HOTSPOTS: HotspotTable = KNOWN_HOTSPOTS + ADDITIONAL_HOTSPOTS
 
 HOTSPOT_TABLES: dict[str, HotspotTable] = {
+    "none": (),
     "extended_34": EXTENDED_HOTSPOTS,
 }
 HOTSPOT_EVIDENCE_TABLES: dict[str, HotspotTable] = {
+    "none": (),
     # The original 19 are literature-fixed. The later 15 were mined from the
     # project train panel before manual literature review, so only those 15
     # receive the configurable train-only minimum-count guard.
@@ -116,6 +118,8 @@ def resolve_hotspot_config(
 
 
 def hotspot_feature_names(hotspots: HotspotTable) -> tuple[str, ...]:
+    if not hotspots:
+        return ()
     return (
         *(f"hotspot__{gene}_{position}" for gene, position, _ in hotspots),
         "hotspot__known_hotspot_total_count",
@@ -183,6 +187,8 @@ def build_hotspot_matrix(
         shape=(row_index, total_features),
         dtype=np.float32,
     )
+    if not hotspots:
+        return individual
     total_count = np.asarray(individual.sum(axis=1)).ravel().astype(np.float32)
     total_column = sparse.csr_matrix(total_count.reshape(-1, 1))
     return sparse.hstack([individual, total_column], format="csr")

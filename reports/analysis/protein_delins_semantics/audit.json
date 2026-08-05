@@ -1,0 +1,111 @@
+{
+  "record_role": "explore",
+  "target_used": false,
+  "public_lb_used": false,
+  "test_distribution_used_for_rule": false,
+  "train": {
+    "parser_version": "4.0.0",
+    "rows": 6201,
+    "gene_columns": 4384,
+    "occurrences": 0,
+    "syntax_counts": {
+      "single_position": 0,
+      "residue_range": 0,
+      "unknown_reference": 0
+    },
+    "stop_counts": {
+      "no_stop": 0,
+      "immediate_stop": 0,
+      "later_stop": 0
+    },
+    "unique_token_counts": {
+      "single_position": 0,
+      "residue_range": 0,
+      "unknown_reference": 0
+    },
+    "affected_genes": 0,
+    "affected_samples": 0,
+    "alternate_length": {},
+    "net_length_change": {},
+    "examples": {},
+    "semantic_contract_sha256": "de2e09c83768b072f0007a415ec043a9d94f4f35665da2df29479c7314ce1b67",
+    "source_path": "data/raw/train.csv",
+    "source_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab"
+  },
+  "test": {
+    "parser_version": "4.0.0",
+    "rows": 2546,
+    "gene_columns": 4384,
+    "occurrences": 545,
+    "syntax_counts": {
+      "single_position": 144,
+      "residue_range": 368,
+      "unknown_reference": 33
+    },
+    "stop_counts": {
+      "no_stop": 508,
+      "immediate_stop": 30,
+      "later_stop": 7
+    },
+    "unique_token_counts": {
+      "single_position": 81,
+      "residue_range": 151,
+      "unknown_reference": 6
+    },
+    "affected_genes": 93,
+    "affected_samples": 220,
+    "alternate_length": {
+      "min": 1,
+      "p50": 1.0,
+      "p90": 61.0,
+      "max": 1148
+    },
+    "net_length_change": {
+      "min": -4071,
+      "p50": -1.0,
+      "p90": 44.40000000000009,
+      "max": 638
+    },
+    "examples": {
+      "residue_range": [
+        "R376_A377delinsP",
+        "R377_A378delinsP",
+        "H1176_W1177delinsQ",
+        "H1214_W1215delinsQ",
+        "I208_Y209delinsN",
+        "K240_P242delinsT",
+        "K233_P235delinsT",
+        "W56_T57delinsS",
+        "W126_T127delinsS",
+        "G101_I104delinsV",
+        "H1400_P1401delinsQ",
+        "H1395_P1396delinsQ"
+      ],
+      "unknown_reference": [
+        "X541delinsX",
+        "X816delinsX",
+        "L400_X401delinsLX",
+        "X1024delinsX",
+        "X993delinsX",
+        "X889delinsX"
+      ],
+      "single_position": [
+        "K629delinsKX",
+        "K176delinsNEGNNHWPRVEMPTGWLLVGYNTRNTAQNPRLQQHLKHWQQCTRARWCQEPCQTLTFFHFFFFFKTVSLCCPGWSKGQWHDLGSLQPPPPGLKPSSLASQVARTTGVYQHVWLICFVFFVCVETGFCHVAQVGLERLGSSDLPTSVSLSAGITDVNHWAQPKPSPSKGTGMNRPIGLRVGKGVWARL",
+        "E1117delinsGGRRIIK",
+        "H92delinsLFND",
+        "R292delinsSLFLSQDLAL",
+        "R284delinsSLFLSQDLAL",
+        "R306delinsSLFLSQDLAL",
+        "R274delinsSLFLSQDLAL",
+        "R310delinsSLFLSQDLAL",
+        "R333delinsSLFLSQDLAL",
+        "R443delinsSLFLSQDLAL",
+        "K857delinsNDLQLFVMSDTTYKIYWTVILLNPCGNLHLKTTSL"
+      ]
+    },
+    "semantic_contract_sha256": "de2e09c83768b072f0007a415ec043a9d94f4f35665da2df29479c7314ce1b67",
+    "source_path": "data/raw/test.csv",
+    "source_sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+  }
+}

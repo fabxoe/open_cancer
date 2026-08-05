@@ -1,0 +1,50 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-435
+issue_number: 435
+slug: parser_v4_compatibility_control
+parent_experiment: EXP-433
+component_experiments: []
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+parser_baseline:
+  representation: compatibility
+features:
+  mutation_type:
+    enabled: true
+  robust_aggregates: []
+  residue_position:
+    enabled: false
+hotspots:
+  table: none
+  evidence_scope: none
+  minimum_matching_train_rows: 1
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - mutation_presence
+    - parser_v4_compatibility_five_family
+notes: >-
+  N4 Compatibility C. The historical five-family columns are replaced by the
+  full parser-v4 canonical-event compatibility projection. All other settings
+  are identical to EXP-433.

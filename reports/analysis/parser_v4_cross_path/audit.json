@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0.0",
+  "issue": 429,
+  "analysis_only": true,
+  "model_trained": false,
+  "subclass_used": false,
+  "public_lb_used": false,
+  "compatibility_contract": {
+    "output_dimension": 21925,
+    "feature_names_sha256": "80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc",
+    "base_feature_names_to_drop_sha256": "80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc",
+    "mutation_presence_replaced": false,
+    "legacy_families": [
+      "missense",
+      "synonymous",
+      "nonsense",
+      "frameshift",
+      "complex"
+    ]
+  },
+  "train": {
+    "path": "data/raw/train.csv",
+    "source_tokens": 255164,
+    "non_wt_gene_cells": 218893,
+    "canonical_route_counts": {
+      "deletion": 3,
+      "frameshift": 9833,
+      "range_replacement": 239,
+      "substitution": 244912,
+      "unresolved": 177
+    },
+    "normalized_identity_collision_count": 0,
+    "normalized_identity_collision_examples": {},
+    "legacy_to_v4_compatibility_crosswalk": [
+      {
+        "legacy": "complex",
+        "compatibility": "complex",
+        "count": 341
+      },
+      {
+        "legacy": "frameshift",
+        "compatibility": "complex",
+        "count": 78
+      },
+      {
+        "legacy": "frameshift",
+        "compatibility": "frameshift",
+        "count": 9833
+      },
+      {
+        "legacy": "missense",
+        "compatibility": "missense",
+        "count": 164740
+      },
+      {
+        "legacy": "nonsense",
+        "compatibility": "nonsense",
+        "count": 13289
+      },
+      {
+        "legacy": "synonymous",
+        "compatibility": "synonymous",
+        "count": 66883
+      }
+    ],
+    "changed_family_token_count": 78
+  },
+  "test": {
+    "path": "data/raw/test.csv",
+    "source_tokens": 337512,
+    "non_wt_gene_cells": 198930,
+    "canonical_route_counts": {
+      "deletion": 2583,
+      "delins": 544,
+      "frameshift": 25813,
+      "insertion": 1142,
+      "range_replacement": 40,
+      "substitution": 307355,
+      "unresolved": 35
+    },
+    "normalized_identity_collision_count": 0,
+    "normalized_identity_collision_examples": {},
+    "legacy_to_v4_compatibility_crosswalk": [
+      {
+        "legacy": "complex",
+        "compatibility": "complex",
+        "count": 4714
+      },
+      {
+        "legacy": "complex",
+        "compatibility": "frameshift",
+        "count": 1
+      },
+      {
+        "legacy": "complex",
+        "compatibility": "nonsense",
+        "count": 14355
+      },
+      {
+        "legacy": "frameshift",
+        "compatibility": "complex",
+        "count": 20
+      },
+      {
+        "legacy": "frameshift",
+        "compatibility": "frameshift",
+        "count": 25812
+      },
+      {
+        "legacy": "missense",
+        "compatibility": "complex",
+        "count": 572
+      },
+      {
+        "legacy": "missense",
+        "compatibility": "missense",
+        "count": 201353
+      },
+      {
+        "legacy": "nonsense",
+        "compatibility": "nonsense",
+        "count": 1961
+      },
+      {
+        "legacy": "synonymous",
+        "compatibility": "synonymous",
+        "count": 88724
+      }
+    ],
+    "changed_family_token_count": 14948
+  },
+  "legacy_consumer_policy": {
+    "allowed_for_historical_lineage": [
+      "open_cancer.mutation_features",
+      "open_cancer.pathway_aggregation_features",
+      "open_cancer.parser_semantic_completeness"
+    ],
+    "new_parser_lineage_modules": [
+      "open_cancer.canonical_mutation_events",
+      "open_cancer.parser_native_features",
+      "open_cancer.parser_compatibility_features"
+    ],
+    "new_lineage_direct_legacy_classifier_calls": 0
+  }
+}

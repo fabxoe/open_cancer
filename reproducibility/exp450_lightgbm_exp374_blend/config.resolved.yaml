@@ -1,0 +1,67 @@
+experiment:
+  issue_number: 450
+  experiment_id: EXP-450
+  branch: issue-450-lightgbm-exp374-blend
+  owner: Kangho Park
+  source_commit: f5b755c51496ff59b073d936754767ab6d690b27
+  dirty_worktree: false
+  started_at: '2026-08-05T05:23:55.492655+00:00'
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+class_order:
+- ACC
+- BLCA
+- BRCA
+- CESC
+- COAD
+- DLBC
+- GBMLGG
+- HNSC
+- KIPAN
+- KIRC
+- LAML
+- LGG
+- LIHC
+- LUAD
+- LUSC
+- OV
+- PAAD
+- PCPG
+- PRAD
+- SARC
+- SKCM
+- STES
+- TGCT
+- THCA
+- THYM
+- UCEC
+ensemble:
+  method: probability_mean
+  weights_fixed_before_evaluation: true
+  components:
+  - experiment_id: EXP-374
+    weight: 0.5
+    oof_probability_path: oof/exp374_stop_isoform_residue_mask.csv
+    test_probability_path: preds/exp374_stop_isoform_residue_mask_test_proba.csv
+    metrics_path: reports/exp374_stop_isoform_residue_mask/metrics.json
+    resolved_config_path: reproducibility/exp374_stop_isoform_residue_mask/config.resolved.yaml
+  - experiment_id: EXP-449
+    weight: 0.5
+    oof_probability_path: oof/exp449_lightgbm_exp374.csv
+    test_probability_path: preds/exp449_lightgbm_exp374_test_proba.csv
+    metrics_path: reports/exp449_lightgbm_exp374/metrics.json
+    resolved_config_path: reproducibility/exp449_lightgbm_exp374/config.resolved.yaml
+outputs:
+  oof: oof/exp450_lightgbm_exp374_blend.csv
+  test_probability: preds/exp450_lightgbm_exp374_blend_test_proba.csv
+  submission: submissions/exp450_lightgbm_exp374_blend.csv
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]
+  platform: Windows-10-10.0.26200-SP0
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  uv_lock_sha256: d896b2cf88b1d84d8e7819687db813d811b7dceacf7a1494e970b0378e3a1476
+command: uv run python scripts/run_exp450_lightgbm_exp374_blend.py

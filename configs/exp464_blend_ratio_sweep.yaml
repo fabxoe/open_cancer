@@ -1,0 +1,43 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-464
+issue_number: 464
+slug: blend_ratio_sweep
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+ensemble:
+  method: probability_mean
+  weights_fixed_before_evaluation: true
+  components:
+    - experiment_id: EXP-374
+      weight: 0.7
+      oof_probability_path: oof/exp374_stop_isoform_residue_mask.csv
+      test_probability_path: preds/exp374_stop_isoform_residue_mask_test_proba.csv
+      metrics_path: reports/exp374_stop_isoform_residue_mask/metrics.json
+      resolved_config_path: reproducibility/exp374_stop_isoform_residue_mask/config.resolved.yaml
+    - experiment_id: EXP-449
+      weight: 0.3
+      oof_probability_path: oof/exp449_lightgbm_exp374.csv
+      test_probability_path: preds/exp449_lightgbm_exp374_test_proba.csv
+      metrics_path: reports/exp449_lightgbm_exp374/metrics.json
+      resolved_config_path: reproducibility/exp449_lightgbm_exp374/config.resolved.yaml
+submission:
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
+acceptance:
+  comparison_experiment: EXP-374
+  minimum_macro_f1_delta: 0.001
+  maximum_fold_std_increase: 0.002
+  require_no_clear_log_loss_regression: true
+notes: >-
+  Issue #464. Ratio sweep of (EXP-374, EXP-449) arithmetic probability-mean
+  weights -- (0.9,0.1), (0.8,0.2), (0.7,0.3), (0.6,0.4) -- computed by
+  scripts/sweep_exp464_blend_ratios.py against the mandatory
+  train_domain_propensity.csv test-like subset check. No ratio passed
+  (test_like_delta >= 0); 0.7/0.3 was the least-bad point (overall OOF
+  +0.0037615500, test-like -0.0034452142) and is recorded here as the
+  official representative arm for this Issue. See
+  reports/exp464_blend_ratio_sweep/sweep_results.json for the full
+  4-ratio comparison table.

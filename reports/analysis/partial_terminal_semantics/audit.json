@@ -1,0 +1,307 @@
+{
+  "parser_version": "4.0.0",
+  "issue": 362,
+  "train": {
+    "occurrences": {
+      "bilateral_stop_unresolved": 99,
+      "signed_nonstandard_frameshift": 75
+    },
+    "unique_tokens": {
+      "bilateral_stop_unresolved": 80,
+      "signed_nonstandard_frameshift": 53
+    },
+    "top_genes": {
+      "bilateral_stop_unresolved": [
+        {
+          "gene": "CFH",
+          "occurrences": 3
+        },
+        {
+          "gene": "NFYC",
+          "occurrences": 3
+        },
+        {
+          "gene": "CA2",
+          "occurrences": 2
+        },
+        {
+          "gene": "CADM3",
+          "occurrences": 2
+        },
+        {
+          "gene": "CFHR2",
+          "occurrences": 2
+        },
+        {
+          "gene": "CIDEA",
+          "occurrences": 2
+        },
+        {
+          "gene": "DSC2",
+          "occurrences": 2
+        },
+        {
+          "gene": "GCKR",
+          "occurrences": 2
+        },
+        {
+          "gene": "IL32",
+          "occurrences": 2
+        },
+        {
+          "gene": "POSTN",
+          "occurrences": 2
+        },
+        {
+          "gene": "TAT",
+          "occurrences": 2
+        },
+        {
+          "gene": "RHOA",
+          "occurrences": 2
+        },
+        {
+          "gene": "RAPGEF3",
+          "occurrences": 2
+        },
+        {
+          "gene": "CTSV",
+          "occurrences": 2
+        },
+        {
+          "gene": "ADAMTS5",
+          "occurrences": 1
+        },
+        {
+          "gene": "PLCB1",
+          "occurrences": 1
+        },
+        {
+          "gene": "KCNH1",
+          "occurrences": 1
+        },
+        {
+          "gene": "JAGN1",
+          "occurrences": 1
+        },
+        {
+          "gene": "FOXC1",
+          "occurrences": 1
+        },
+        {
+          "gene": "KLK8",
+          "occurrences": 1
+        }
+      ],
+      "signed_nonstandard_frameshift": [
+        {
+          "gene": "NPM1",
+          "occurrences": 17
+        },
+        {
+          "gene": "VHL",
+          "occurrences": 2
+        },
+        {
+          "gene": "PTEN",
+          "occurrences": 2
+        },
+        {
+          "gene": "SLC6A3",
+          "occurrences": 2
+        },
+        {
+          "gene": "RBM4",
+          "occurrences": 2
+        },
+        {
+          "gene": "CDH1",
+          "occurrences": 2
+        },
+        {
+          "gene": "TP53",
+          "occurrences": 2
+        },
+        {
+          "gene": "HBZ",
+          "occurrences": 2
+        },
+        {
+          "gene": "ARID5B",
+          "occurrences": 2
+        },
+        {
+          "gene": "ATRX",
+          "occurrences": 2
+        },
+        {
+          "gene": "ME2",
+          "occurrences": 1
+        },
+        {
+          "gene": "MYO15A",
+          "occurrences": 1
+        },
+        {
+          "gene": "MAP1B",
+          "occurrences": 1
+        },
+        {
+          "gene": "NCAM1",
+          "occurrences": 1
+        },
+        {
+          "gene": "OPTN",
+          "occurrences": 1
+        },
+        {
+          "gene": "TAT",
+          "occurrences": 1
+        },
+        {
+          "gene": "CCT6A",
+          "occurrences": 1
+        },
+        {
+          "gene": "ITGB3",
+          "occurrences": 1
+        },
+        {
+          "gene": "HLA-A",
+          "occurrences": 1
+        },
+        {
+          "gene": "ZNF277",
+          "occurrences": 1
+        }
+      ]
+    }
+  },
+  "test": {
+    "occurrences": {
+      "bilateral_stop_unresolved": 13,
+      "signed_nonstandard_frameshift": 19
+    },
+    "unique_tokens": {
+      "bilateral_stop_unresolved": 13,
+      "signed_nonstandard_frameshift": 16
+    },
+    "top_genes": {
+      "bilateral_stop_unresolved": [
+        {
+          "gene": "CYP39A1",
+          "occurrences": 1
+        },
+        {
+          "gene": "ELOVL5",
+          "occurrences": 1
+        },
+        {
+          "gene": "TXNIP",
+          "occurrences": 1
+        },
+        {
+          "gene": "CDH6",
+          "occurrences": 1
+        },
+        {
+          "gene": "PRKAA2",
+          "occurrences": 1
+        },
+        {
+          "gene": "UQCRH",
+          "occurrences": 1
+        },
+        {
+          "gene": "ATAD2",
+          "occurrences": 1
+        },
+        {
+          "gene": "FETUB",
+          "occurrences": 1
+        },
+        {
+          "gene": "IL32",
+          "occurrences": 1
+        },
+        {
+          "gene": "APOM",
+          "occurrences": 1
+        },
+        {
+          "gene": "KYNU",
+          "occurrences": 1
+        },
+        {
+          "gene": "LTBP1",
+          "occurrences": 1
+        },
+        {
+          "gene": "TNFSF15",
+          "occurrences": 1
+        }
+      ],
+      "signed_nonstandard_frameshift": [
+        {
+          "gene": "NPM1",
+          "occurrences": 4
+        },
+        {
+          "gene": "GATA3",
+          "occurrences": 2
+        },
+        {
+          "gene": "MAP3K1",
+          "occurrences": 2
+        },
+        {
+          "gene": "PTEN",
+          "occurrences": 2
+        },
+        {
+          "gene": "CTNND1",
+          "occurrences": 1
+        },
+        {
+          "gene": "RMDN3",
+          "occurrences": 1
+        },
+        {
+          "gene": "PFN2",
+          "occurrences": 1
+        },
+        {
+          "gene": "INPP5F",
+          "occurrences": 1
+        },
+        {
+          "gene": "FBLN1",
+          "occurrences": 1
+        },
+        {
+          "gene": "ARF4",
+          "occurrences": 1
+        },
+        {
+          "gene": "CFB",
+          "occurrences": 1
+        },
+        {
+          "gene": "TP53",
+          "occurrences": 1
+        },
+        {
+          "gene": "ARHGEF3",
+          "occurrences": 1
+        }
+      ]
+    }
+  },
+  "contract": {
+    "raw_and_signed_position_preserved": true,
+    "protein_position_eligible": false,
+    "forced_utr_or_extension_interpretation": false,
+    "existing_feature_adapter_changed": false,
+    "target_or_public_lb_used": false
+  }
+}
