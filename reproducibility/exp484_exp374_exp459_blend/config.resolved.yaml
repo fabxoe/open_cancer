@@ -1,0 +1,82 @@
+experiment:
+  issue_number: 484
+  experiment_id: EXP-484
+  branch: issue-484-exp374-exp459-blend
+  owner: 2heej
+  source_commit: f2a08c35656f25436e2bfcf3e5f093ee446ab933
+  dirty_worktree: false
+  started_at: '2026-08-05T08:05:48.750473+00:00'
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+class_order:
+- ACC
+- BLCA
+- BRCA
+- CESC
+- COAD
+- DLBC
+- GBMLGG
+- HNSC
+- KIPAN
+- KIRC
+- LAML
+- LGG
+- LIHC
+- LUAD
+- LUSC
+- OV
+- PAAD
+- PCPG
+- PRAD
+- SARC
+- SKCM
+- STES
+- TGCT
+- THCA
+- THYM
+- UCEC
+ensemble:
+  method: probability_mean
+  weights_fixed_before_evaluation: true
+  weight_selection_basis: 'Task #482 (PR #483) screened fixed blend ratios of EXP-374
+    and EXP-459 against the #292 test-like propensity subset before this official
+    run. 0.7/0.3 was the only ratio maximizing both the full OOF delta (+0.0052304498)
+    and the test-like subset delta (+0.0022953029); 0.6/0.4 and 0.5/0.5 failed the
+    test-like gate despite higher full OOF. Weight was fixed from that screening before
+    this run and is not tuned here.'
+  components:
+  - experiment_id: EXP-374
+    weight: 0.7
+    oof_probability_path: oof/exp374_stop_notation_isoform_mask.csv
+    test_probability_path: preds/exp374_stop_notation_isoform_mask_test_proba.csv
+    metrics_path: reports/exp374_stop_isoform_residue_mask/metrics.json
+    resolved_config_path: reproducibility/exp374_stop_isoform_residue_mask/config.resolved.yaml
+    provenance_note: 'Canonical EXP-374 (exp374_stop_isoform_residue_mask) has no
+      uploaded Release/checkpoint artifact (manifest storage_uri all null). The OOF
+      and test probabilities used here were reproduced in an isolated worktree from
+      scripts/run_exp374_stop_isoform_residue_mask.py by 2heej during EXP-459 (#459)
+      and matched the recorded canonical OOF Macro F1 exactly (0.4267909268) before
+      being reused here. metrics_path and resolved_config_path point at the canonical
+      tracked experiment record; oof/test probability paths point at the byte-verified
+      reproduction under the historical exp374_stop_notation_isoform_mask slug (see
+      #EXP-374 duplicate/collision note in EXP-459 report).'
+  - experiment_id: EXP-459
+    weight: 0.3
+    oof_probability_path: oof/exp459_catboost_exp374.csv
+    test_probability_path: preds/exp459_catboost_exp374_test_proba.csv
+    metrics_path: reports/exp459_catboost_exp374/metrics.json
+    resolved_config_path: reproducibility/exp459_catboost_exp374/config.resolved.yaml
+outputs:
+  oof: oof/exp484_exp374_exp459_blend.csv
+  test_probability: preds/exp484_exp374_exp459_blend_test_proba.csv
+  submission: submissions/exp484_exp374_exp459_blend.csv
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 08:56:36) [Clang 18.1.8 ]
+  platform: macOS-26.5.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  uv_lock_sha256: d896b2cf88b1d84d8e7819687db813d811b7dceacf7a1494e970b0378e3a1476
+command: uv run python scripts/run_exp484_exp374_exp459_blend.py
