@@ -1,0 +1,20 @@
+{
+  "experiment_id": "EXP-449",
+  "issue_number": 449,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "c5ec905f4f4eb09d538b74c305cc9edc36596665",
+  "verified_at": "2026-08-05T05:16:03.101478+00:00",
+  "verifier": "Kangho Park",
+  "verification": {
+    "verified_at": "2026-08-05T05:16:03.101478+00:00",
+    "data_hashes_match": true,
+    "original_submission_sha256": "770ce597d2ab7bc7597ec2f2dc75f1f0434c91a0412912d7a8c5d4de4c40f885",
+    "reproduced_submission_sha256": "770ce597d2ab7bc7597ec2f2dc75f1f0434c91a0412912d7a8c5d4de4c40f885",
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "test_probability_max_abs_diff": 0.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
