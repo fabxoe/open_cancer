@@ -1,0 +1,41 @@
+{
+  "annotation_cache": "data/external/ensembl_release_116/competition_gene_isoform_index.json",
+  "unique_gene_token_pairs_scanned": 486399,
+  "genes_with_tokens": 4363,
+  "eligibility_diff_counts": {
+    "v4_only": 10397,
+    "legacy_only": 336
+  },
+  "eligibility_diff_rate": {
+    "v4_only": 0.02137545513045874,
+    "legacy_only": 0.0006907908938957523
+  },
+  "eligibility_diff_reasons": {
+    "legacy_only:start_codon_affected": 336,
+    "v4_only:legacy_shape_complex": 10397
+  },
+  "eligibility_diff_examples": {
+    "v4_only:legacy_shape_complex": [
+      "A2M:R507X",
+      "A2M:R407X",
+      "A2M:R357X",
+      "A2M:Y519X",
+      "A2M:E13X"
+    ],
+    "legacy_only:start_codon_affected": [
+      "A2M:M1V",
+      "ABCA8:M1T",
+      "ABCB6:M1I",
+      "ACE:M1R",
+      "ACE:M1L"
+    ]
+  },
+  "category_transition_counts": {
+    "COMPLEX_OR_UNMAPPABLE->MANE_MATCH": 5034,
+    "COMPLEX_OR_UNMAPPABLE->OTHER_ISOFORM_MATCH": 4018,
+    "COMPLEX_OR_UNMAPPABLE->POSITION_VALID_REF_MISMATCH": 1303,
+    "MANE_MATCH->COMPLEX_OR_UNMAPPABLE": 335,
+    "COMPLEX_OR_UNMAPPABLE->OUTSIDE_ALL_KNOWN_ISOFORMS": 13,
+    "COMPLEX_OR_UNMAPPABLE->CANONICAL_MATCH": 10
+  }
+}
