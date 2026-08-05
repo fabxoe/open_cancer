@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 95
+- 실제 실험 수: 97
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -107,6 +107,7 @@
 | EXP-433 | COMPLETED | fabxoe | #433 | Parser v4 N4-L: stop-v2 + 기존 5-family, 의미 외 피처 제거 통제군 | 0.4132762899 | 미제출 | NOT_STARTED | N4 L/C/N 비교용 Legacy control; 단독 채택 판단 없음 | [보고서](reports/exp433_parser_v4_legacy_control/README.md) |
 | EXP-435 | COMPLETED | fabxoe | #435 | Parser v4 N4-C: full v4 → 기존 5-family compatibility projection | 0.4111034467 | 미제출 | NOT_STARTED | L 대비 Macro F1 하락·std/Log Loss 개선; compatibility audit 전용 | [보고서](reports/exp435_parser_v4_compatibility_control/README.md) |
 | EXP-438 | COMPLETED | fabxoe | #438 | Parser v4 N4-N: mutation presence + native semantic schema | 0.4102050373 | 미제출 | NOT_STARTED | native adapter gate 실패; parser 유지·adapter family ablation 필요 | [보고서](reports/exp438_parser_v4_native_semantic_baseline/README.md) |
+| EXP-449 | COMPLETED | Kangho-Park | #449 | EXP-374 feature set + LightGBM(EXP-209 고정 파라미터, 모델 다양성) | 0.4220549915 | 미제출 | INFERENCE_VERIFIED | 단독 F1은 EXP-374보다 낮으나 예상된 결과(다양성 컴포넌트); 라벨 불일치율 23.1%로 블렌드(#450) 진행 근거 확보 | [보고서](reports/exp449_lightgbm_exp374/README.md) |
 | EXP-444 | COMPLETED | fabxoe | #444 | Parser v4 compatibility 5-family + train-supported native range 의미 | 0.4127201906 | 미제출 | NOT_STARTED | C 대비 +0.0016167·Legacy L 정확성 허용 gate 통과; native baseline 동결은 보류 | [보고서](reports/exp444_parser_v4_supported_range_hybrid/README.md) |
 | EXP-448 | COMPLETED | fabxoe | #448 | Parser v4 native consequence에서 sample provenance summary 6개 제거 | 0.4104538324 | 미제출 | NOT_STARTED | L 대비 -0.0028225·PAAD -0.0524로 gate 실패, ARCHIVE·native adapter v2 필요 | [보고서](reports/exp448_parser_v4_native_no_provenance/README.md) |
 | EXP-456 | COMPLETED | fabxoe | #456 | Parser v4 support-gated native semantic adapter v2 | 0.4111053102 | 미제출 | NOT_STARTED | v1 대비 개선했으나 L 대비 -0.0021710·PAAD -0.06285로 gate 실패, ARCHIVE | [보고서](reports/exp456_parser_v4_native_v2/README.md) |
@@ -192,11 +193,70 @@
 | 2026-08-04T22:04:37.570398+00:00 | EXP-374 | fabxoe | `4a2dfb685859277bd78746e8ab9578ade51a64a7` / [`exp-374-repro-v2`](https://github.com/fabxoe/open_cancer/releases/tag/exp-374-repro-v2) | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.83e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp374_stop_isoform_residue_mask/comparison.json) |
 | 2026-08-04T22:30:46.801549+00:00 | EXP-392 | fabxoe | `af5a082e709ee5b6ea66befb7710cf18dcedabc6` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.46e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp392_range_semantic_indicators/comparison.json) |
 | 2026-08-04T21:45:04.915445+00:00 | EXP-409 | fabxoe | `7519b8e0dfa8e6b2c2e49d1b1ee4e7f54bc0c412` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp409_ordinary_range_replacement_indicator/comparison.json) |
+| 2026-08-05T05:16:03.101478+00:00 | EXP-449 | Kangho-Park | (issue-449 브랜치) / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 0.0(LightGBM deterministic), 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp449_lightgbm_exp374/comparison.json) |
 | 2026-08-05T06:46:14.485134+00:00 | EXP-459 | 2heej | `09430f2632c14ef459fb309915368bac561533f2` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.11e-16 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp459_catboost_exp374/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-450] EXP-374 + EXP-449(LightGBM) 0.5/0.5 블렌드
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #450 / `issue-450-lightgbm-exp374-blend`
+- 부모: EXP-374, EXP-449
+
+#### 실행
+
+- Config: `configs/exp450_lightgbm_exp374_blend.yaml`
+- Runner: `scripts/run_exp450_lightgbm_exp374_blend.py`
+- 검증: `scripts/check_exp450_test_like_subset.py`
+- EXP-374(XGBoost)·EXP-449(LightGBM, 동일 feature set) 고정 0.5/0.5
+  산술 평균. `train_domain_propensity.csv` 기준 test-like 서브셋
+  검증을 완료 조건에 필수로 포함(EXP-253 실패 재현 방지).
+
+#### 결과와 판단
+
+- 전체 OOF Macro F1: 0.4272696329(EXP-374 대비 `+0.0004787061`, 게이트
+  `+0.001` 미달)
+- Fold 표준편차: 0.0131082006(`+0.0046049837`, 게이트 `<0.002` 미달)
+- Log Loss: 1.8085013600(`-0.0355634717`, 개선)
+- **test-like 서브셋(n=1,666) Macro F1: 0.4179331667(EXP-374 대비
+  `-0.0104454301`)** — EXP-253과 동일한 실패 패턴(전체에서는 버티지만
+  test 분포에 가까운 샘플에서 악화) 재현 확인
+- 3개 게이트(Macro F1, fold std, test-like) 전부 미달로 REJECTED,
+  가중치 스윕 진행 안 함(시간 제약 + 근본적 실패 신호로 판단)
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`(inference-only 블렌드)
+
+### [EXP-449] LightGBM on EXP-374 feature set
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #449 / `issue-449-lightgbm-exp374`
+- 부모: EXP-374(feature set), EXP-209(LightGBM 하이퍼파라미터)
+
+#### 실행
+
+- Config: `configs/exp449_lightgbm_exp374.yaml`
+- Runner: `scripts/run_exp449_lightgbm_exp374.py`
+- `run_exp374_stop_isoform_residue_mask.build_fold_features()`를 그대로
+  재사용 — feature set이 EXP-374와 완전히 동일. #342(2heej, 24시간+
+  미착수, EXP-334 기반이라 구식) 대체.
+
+#### 결과와 판단
+
+- OOF Macro F1: 0.4220549915(EXP-374 대비 `-0.0047359353`, 예상된
+  결과 — 다양성 컴포넌트 목적)
+- Fold 표준편차: 0.0165060943, Log Loss: 1.8184868005(EXP-374보다 개선)
+- Runtime: 279.35초(EXP-374의 XGBoost보다 빠름)
+- 다양성 사전 확인: OOF 확률 상관 0.9578921078, **라벨 불일치율
+  23.1%**(PROJECT_CONTEXT.md 기준 상관≤0.92 OR 불일치율≥10% 중
+  불일치율 조건 충족) — 블렌드(#450) 진행 근거 확보
+- Public LB: 미제출(구성요소 실험)
+- 재현 상태: `INFERENCE_VERIFIED`(LightGBM deterministic, 확률 최대
+  차이 0.0)
 
 ### [EXP-380] Range stop·no-change 의미 요약 4개
 
