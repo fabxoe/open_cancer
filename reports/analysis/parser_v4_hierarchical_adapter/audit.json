@@ -1,0 +1,152 @@
+{
+  "audit_type": "parser_v4_hierarchical_event_adapter",
+  "detail_minimum_support": 2,
+  "global_minimum_support": 1,
+  "inputs": {
+    "train_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+    "test_sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0",
+    "split_sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf"
+  },
+  "full_train_fit": {
+    "detail_dimension": 100451,
+    "global_dimension": 459,
+    "output_dimension": 100910,
+    "feature_sha256": "a5edc6fe4165d28e44daaa84678548a266beead43d362320b3ce6d175e82ec13",
+    "adapter_sha256": "88639362fdf96d870f461fc075e65c0d47c03d1127b6a7ba161ab2f7014a239a",
+    "train": {
+      "patient_count": 6201,
+      "detail_occurrences": 1032917,
+      "detail_oov_occurrences": 103015,
+      "detail_oov_rate": 0.09973211787587967,
+      "detail_oov_recovered_occurrences": 103015,
+      "detail_oov_recovery_rate": 1.0,
+      "unrecovered_detail_occurrences": 0,
+      "patients_with_detail_oov": 4913,
+      "patients_with_unrecovered_detail": 0,
+      "global_occurrences": 1288081,
+      "global_oov_occurrences": 0,
+      "global_oov_rate": 0.0
+    },
+    "test": {
+      "patient_count": 2546,
+      "detail_occurrences": 1447794,
+      "detail_oov_occurrences": 383892,
+      "detail_oov_rate": 0.2651565070721387,
+      "detail_oov_recovered_occurrences": 288141,
+      "detail_oov_recovery_rate": 0.7505782876433997,
+      "unrecovered_detail_occurrences": 95751,
+      "patients_with_detail_oov": 2461,
+      "patients_with_unrecovered_detail": 1022,
+      "global_occurrences": 1785306,
+      "global_oov_occurrences": 98399,
+      "global_oov_rate": 0.055116041731781557
+    }
+  },
+  "canonical_folds": [
+    {
+      "fold": 0,
+      "detail_dimension": 87090,
+      "global_dimension": 451,
+      "feature_sha256": "b8760555825ef4131af908514552c44e152f02c360296d55fea9eac73c297276",
+      "adapter_sha256": "654ac3b573da078950d87ce9dd869a236fcfdcba69fd6d629c1650d06aee5a22",
+      "validation": {
+        "patient_count": 1241,
+        "detail_occurrences": 205111,
+        "detail_oov_occurrences": 37566,
+        "detail_oov_rate": 0.18314961167367913,
+        "detail_oov_recovered_occurrences": 37558,
+        "detail_oov_recovery_rate": 0.999787041473673,
+        "unrecovered_detail_occurrences": 8,
+        "patients_with_detail_oov": 1187,
+        "patients_with_unrecovered_detail": 8,
+        "global_occurrences": 255883,
+        "global_oov_occurrences": 8,
+        "global_oov_rate": 3.126428875697096e-05
+      }
+    },
+    {
+      "fold": 1,
+      "detail_dimension": 86205,
+      "global_dimension": 449,
+      "feature_sha256": "f7e316579d89a6132cb683f81a25f3952f782cbfc92231930c51ab758ae1201c",
+      "adapter_sha256": "10da79a76d43416aa9cda2ed966f2d2b6874ec3ee5444d4c16cb7177bb249d59",
+      "validation": {
+        "patient_count": 1240,
+        "detail_occurrences": 238515,
+        "detail_oov_occurrences": 42952,
+        "detail_oov_rate": 0.18008091734272477,
+        "detail_oov_recovered_occurrences": 42941,
+        "detail_oov_recovery_rate": 0.9997439001676289,
+        "unrecovered_detail_occurrences": 11,
+        "patients_with_detail_oov": 1184,
+        "patients_with_unrecovered_detail": 10,
+        "global_occurrences": 297534,
+        "global_oov_occurrences": 11,
+        "global_oov_rate": 3.6970564708571124e-05
+      }
+    },
+    {
+      "fold": 2,
+      "detail_dimension": 86139,
+      "global_dimension": 449,
+      "feature_sha256": "88dbc7d57dc324a596cab11548a923a162ed7d888e10775e647fbec4dbf14e0a",
+      "adapter_sha256": "a261f36c37e7832599c734480b1e73823864a6c778d8aae2b350f3f379207c4a",
+      "validation": {
+        "patient_count": 1240,
+        "detail_occurrences": 217132,
+        "detail_oov_occurrences": 40879,
+        "detail_oov_rate": 0.18826796602988044,
+        "detail_oov_recovered_occurrences": 40869,
+        "detail_oov_recovery_rate": 0.9997553756207344,
+        "unrecovered_detail_occurrences": 10,
+        "patients_with_detail_oov": 1189,
+        "patients_with_unrecovered_detail": 10,
+        "global_occurrences": 270599,
+        "global_oov_occurrences": 10,
+        "global_oov_rate": 3.695505157077447e-05
+      }
+    },
+    {
+      "fold": 3,
+      "detail_dimension": 89427,
+      "global_dimension": 455,
+      "feature_sha256": "b653b605a2095498c3be8b94030f3ab4199a3051b6d00b4eb8463f9c2b470e31",
+      "adapter_sha256": "82a1206c57cb8e3d01dc508d2a8f89f629a979c829a6b8ae2ff1068b959398b3",
+      "validation": {
+        "patient_count": 1240,
+        "detail_occurrences": 172193,
+        "detail_oov_occurrences": 30413,
+        "detail_oov_rate": 0.17662158159739363,
+        "detail_oov_recovered_occurrences": 30405,
+        "detail_oov_recovery_rate": 0.9997369545917864,
+        "unrecovered_detail_occurrences": 8,
+        "patients_with_detail_oov": 1191,
+        "patients_with_unrecovered_detail": 5,
+        "global_occurrences": 214730,
+        "global_oov_occurrences": 8,
+        "global_oov_rate": 3.725608904205281e-05
+      }
+    },
+    {
+      "fold": 4,
+      "detail_dimension": 87382,
+      "global_dimension": 450,
+      "feature_sha256": "d6b92f0bf9695c6f6593540cfa25a9717957020c52770a597760654cc4d6b95a",
+      "adapter_sha256": "787deb4b91882d31b9641bcee37e51fb58d172b648b4fb73d1e817d55ee155dd",
+      "validation": {
+        "patient_count": 1240,
+        "detail_occurrences": 199966,
+        "detail_oov_occurrences": 36714,
+        "detail_oov_rate": 0.18360121220607503,
+        "detail_oov_recovered_occurrences": 36704,
+        "detail_oov_recovery_rate": 0.999727624339489,
+        "unrecovered_detail_occurrences": 10,
+        "patients_with_detail_oov": 1178,
+        "patients_with_unrecovered_detail": 10,
+        "global_occurrences": 249335,
+        "global_oov_occurrences": 10,
+        "global_oov_rate": 4.010668377885175e-05
+      }
+    }
+  ]
+}
