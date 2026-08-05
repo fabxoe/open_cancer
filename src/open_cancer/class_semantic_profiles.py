@@ -102,9 +102,19 @@ class ClassSemanticProfileFamily:
         target: pd.Series | np.ndarray,
     ) -> FittedClassSemanticProfiles:
         matrix = _as_csr_nonnegative(train_matrix)
-        labels = np.asarray(target, dtype=str)
-        if labels.ndim != 1 or len(labels) != matrix.shape[0]:
+        raw_labels = np.asarray(target)
+        if raw_labels.ndim != 1 or len(raw_labels) != matrix.shape[0]:
             raise ValueError("target 길이는 outer-train 행 수와 같아야 합니다.")
+        if np.issubdtype(raw_labels.dtype, np.integer):
+            if raw_labels.size and (
+                raw_labels.min() < 0 or raw_labels.max() >= len(self.class_labels)
+            ):
+                raise ValueError("정수 target이 고정 class order 범위를 벗어났습니다.")
+            labels = np.asarray(
+                [self.class_labels[int(index)] for index in raw_labels], dtype=str
+            )
+        else:
+            labels = raw_labels.astype(str)
         if not self.class_labels or len(self.class_labels) != len(set(self.class_labels)):
             raise ValueError("고정 class label은 하나 이상이며 중복되지 않아야 합니다.")
         unknown = sorted(set(labels) - set(self.class_labels))

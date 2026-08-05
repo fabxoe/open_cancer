@@ -69,3 +69,12 @@ def test_audit_record_is_deterministic_and_contains_support() -> None:
     assert left == right
     assert left["class_support"] == {"A": 1, "B": 1}
     assert len(str(left["profile_sha256"])) == 64
+
+
+def test_integer_encoded_target_uses_fixed_class_order() -> None:
+    matrix = sparse.csr_matrix([[2, 0], [0, 2]], dtype=np.float32)
+    fitted = ClassSemanticProfileFamily(("ACC", "BLCA"), method="cosine").fit(
+        matrix, np.array([0, 1], dtype=np.int32)
+    )
+    assert fitted.class_support == (1, 1)
+    assert fitted.descriptor.feature_names[0].endswith("__ACC")

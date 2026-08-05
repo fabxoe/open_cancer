@@ -1,0 +1,56 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-521
+issue_number: 521
+slug: parser_v4_class_cosine
+parent_experiment: EXP-374
+component_experiments: []
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  parent: exp374_stop_isoform_residue_mask
+  parser_v4_patient_semantic_vector:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    include_directly_in_model: false
+  class_profile:
+    enabled: true
+    definition_version: 1.0.0
+    method: cosine
+    fit_scope: outer_train_only
+    output_dimension: 26
+    zero_vector_policy: all_zero_scores
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - exp374_stop_isoform_residue_mask
+    - parser_v4_26_class_cosine_profile
+notes: >-
+  Issue #521. EXP-374 is fixed. Parser-v4 patient vectors retain gene by
+  semantic-family event counts, reference/alternate amino-acid composition,
+  exact substitution pairs and explicit inserted/new sequence composition.
+  Each 26-class centroid is fit only on the current outer-train partition;
+  outer-validation and test are transform-only. Test and Public LB do not
+  define the vector schema, profile, or model selection.
+comparison_metrics_path: reports/exp374_stop_isoform_residue_mask/metrics.json
