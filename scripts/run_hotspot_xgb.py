@@ -396,9 +396,20 @@ def main(
                         *(extra.feature_names[-5:] if len(extra.feature_names) > 5 else ()),
                     ],
                     "registry": extra.registry,
-                    "base_feature_names_to_drop": list(
+                    "base_feature_names_to_drop_count": len(
                         extra.base_feature_names_to_drop
                     ),
+                    "base_feature_names_to_drop_sha256": sha256_lines(
+                        extra.base_feature_names_to_drop
+                    ),
+                    "base_feature_names_to_drop_preview": [
+                        *extra.base_feature_names_to_drop[:5],
+                        *(
+                            extra.base_feature_names_to_drop[-5:]
+                            if len(extra.base_feature_names_to_drop) > 5
+                            else ()
+                        ),
+                    ],
                     "base_feature_names_after_drop_sha256": sha256_lines(
                         kept_base_feature_names
                     ),
