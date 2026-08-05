@@ -125,7 +125,7 @@ semantic parser
 | 단계 | 작업 | Issue | EXP | PR | 상태 | OOF Macro F1 | 판단 | 다음 행동 |
 |---|---|---:|---|---:|---|---:|---|---|
 | H0 | 이전 호환 중심 계획 | #417 | 해당 없음 | #418 | SUPERSEDED | N/A | 결정 이력 보존 | #422 따름 |
-| N0 | native 기준선 최상위 계획·운영 계약 | #422 | 해당 없음 | 미발급 | IN_PROGRESS | N/A | 새 정의 반영 중 | 계획 PR 생성 |
+| N0 | native 기준선 최상위 계획·운영 계약 | #422 | 해당 없음 | #423 | PR_OPEN | N/A | 새 정의·운영 계약 검토 중 | PR 병합 대기 |
 | N1 | semantic completeness·support·collision 감사 | 미발급 | 해당 없음 | 미발급 | PLANNED | N/A | - | N0 병합 대기 |
 | N2 | unified native feature schema·adapter 구현 | 미발급 | 해당 없음 | 미발급 | PLANNED | N/A | - | N1 완료 대기 |
 | N3 | cross-path consistency·compatibility audit 구현 | 미발급 | 해당 없음 | 미발급 | PLANNED | N/A | QC 전용 | N2와 병렬 금지 |
