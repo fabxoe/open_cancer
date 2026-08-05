@@ -23,6 +23,10 @@ from open_cancer.parser_native_features import (
     ParserNativeSemanticFamily,
     native_semantic_contract_record,
 )
+from open_cancer.parser_native_v2_features import (
+    ParserNativeV2SemanticFamily,
+    native_v2_semantic_contract_record,
+)
 
 
 ParserRepresentation = Literal[
@@ -31,6 +35,7 @@ ParserRepresentation = Literal[
     "native",
     "hybrid",
     "native_no_provenance",
+    "native_v2",
 ]
 
 
@@ -44,6 +49,7 @@ def validate_controlled_parser_baseline_config(config: dict) -> ParserRepresenta
         "native",
         "hybrid",
         "native_no_provenance",
+        "native_v2",
     }:
         raise ValueError(f"지원하지 않는 parser baseline arm: {representation}")
     if config.get("hotspots", {}).get("table") != "none":
@@ -118,8 +124,10 @@ class ParserBaselineFoldBuilder:
                 ParserCompatibilityFamily(self.gene_columns),
                 ParserSupportedRangeFamily(self.gene_columns),
             )
-        else:
+        elif self.representation == "native_no_provenance":
             families = (ParserNativeNoProvenanceFamily(self.gene_columns),)
+        else:
+            families = (ParserNativeV2SemanticFamily(self.gene_columns),)
         bundle = fit_transform_family_set(
             families,
             fold_train=self.train.iloc[train_indices],
@@ -144,6 +152,11 @@ class ParserBaselineFoldBuilder:
                 "semantic_contract"
             ] = native_no_provenance_contract_record(  # type: ignore[arg-type]
                 fitted_native
+            )
+        elif self.representation == "native_v2":
+            fitted_v2 = bundle.fitted_families[0]
+            registry["parser_v4_native_semantic_v2"]["semantic_contract"] = (
+                native_v2_semantic_contract_record(fitted_v2)  # type: ignore[arg-type]
             )
         registry["parser_baseline_projection"] = {
             "definition_version": "1.0.0",
