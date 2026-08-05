@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 85
+- 실제 실험 수: 86
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -104,6 +104,7 @@
 | EXP-392 | COMPLETED | fabxoe | #392 | EXP-374 + fold-train range stop/no-change gene indicator | 0.4290431888 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0022523·안정성 gate 통과, Log Loss +0.0032364 소폭 악화로 ADOPT_WITH_CAUTION | [보고서](reports/exp392_range_semantic_indicators/README.md) |
 | EXP-409 | COMPLETED | fabxoe | #409 | EXP-369 + fold-train ordinary range-replacement gene indicator | 0.4249303829 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0019418이나 fold std +0.0023141·Log Loss +0.1327703으로 gate 실패, ARCHIVE | [보고서](reports/exp409_ordinary_range_replacement_indicator/README.md) |
 | EXP-433 | COMPLETED | fabxoe | #433 | Parser v4 N4-L: stop-v2 + 기존 5-family, 의미 외 피처 제거 통제군 | 0.4132762899 | 미제출 | NOT_STARTED | N4 L/C/N 비교용 Legacy control; 단독 채택 판단 없음 | [보고서](reports/exp433_parser_v4_legacy_control/README.md) |
+| EXP-440 | COMPLETED | Kangho-Park | #440 | EXP-374 + EGFR A289/G598·NFE2L2 E79 burden-clean hotspot 3컬럼 | 0.4270222874 | 미제출 | NOT_STARTED | Macro F1 +0.0002313605·Log Loss +0.0184311867로 게이트 2개 미달, REJECTED | [보고서](reports/exp440_egfr_nfe2l2_hotspot/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -180,10 +181,40 @@
 | 2026-08-04T22:04:37.570398+00:00 | EXP-374 | fabxoe | `4a2dfb685859277bd78746e8ab9578ade51a64a7` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.83e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp374_stop_isoform_residue_mask/comparison.json) |
 | 2026-08-04T22:30:46.801549+00:00 | EXP-392 | fabxoe | `af5a082e709ee5b6ea66befb7710cf18dcedabc6` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.46e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp392_range_semantic_indicators/comparison.json) |
 | 2026-08-04T21:45:04.915445+00:00 | EXP-409 | fabxoe | `7519b8e0dfa8e6b2c2e49d1b1ee4e7f54bc0c412` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp409_ordinary_range_replacement_indicator/comparison.json) |
+| 2026-08-05T04:46:13.230155+00:00 | EXP-440 | Kangho-Park | `dbeb414fb007a256cc5ea8f44e79fcada5a19460` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.81e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp440_egfr_nfe2l2_hotspot/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-440] EGFR A289/G598 + NFE2L2 E79 hotspot 확장
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #440 / `issue-440-egfr-nfe2l2-hotspot`
+- 부모: EXP-374
+
+#### 실행
+
+- Config: `configs/exp440_egfr_nfe2l2_hotspot.yaml`
+- Runner: `scripts/run_exp440_egfr_nfe2l2_hotspot.py`
+- Metrics: `reports/exp440_egfr_nfe2l2_hotspot/metrics.json`
+- Report: `reports/exp440_egfr_nfe2l2_hotspot/README.md`
+- burden-clean 확인된 대기열 후보 3개(EGFR 289/598, NFE2L2 79)를 EXP-374
+  위에 additive-only stateless hotspot 컬럼으로 추가.
+
+#### 결과와 판단
+
+- OOF Macro F1: 0.4270222874(EXP-374 대비 `+0.0002313605`, 게이트
+  `+0.001` 미달)
+- Fold 표준편차: 0.0092560370(`+0.0007528201`, 게이트 통과)
+- Log Loss: 1.8624960184(`+0.0184311867`, 명백한 악화로 게이트 미달)
+- worst per-class F1: LUAD `-0.0462494028`(게이트 통과, 근접)
+- 컬럼별 fold gain: `hotspot__EGFR_598`만 5-fold 전부 사용, `NFE2L2_79`는
+  3-fold에서 전혀 미사용(train n=4로 과소 지지, 예상된 결과)
+- 게이트 2개(Macro F1, Log Loss) 동시 미달로 REJECTED, 3-4 seed 안정성
+  체크 미실행(사전 합의된 조기 종료 조건)
+- Public LB: 미제출
 
 ### [EXP-369] Stop 표기 정규화 단독 ablation
 
