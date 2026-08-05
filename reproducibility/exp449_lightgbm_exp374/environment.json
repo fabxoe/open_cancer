@@ -1,0 +1,11 @@
+{
+  "experiment_id": "EXP-449",
+  "python": "3.11.10 (MSC v.1929 64 bit AMD64)",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "numpy": "2.4.6",
+  "pandas": "3.0.5",
+  "scikit_learn": "1.9.0",
+  "xgboost": "3.2.0",
+  "lightgbm": "not recorded in resolved config",
+  "uv_lock_sha256": "d896b2cf88b1d84d8e7819687db813d811b7dceacf7a1494e970b0378e3a1476"
+}
