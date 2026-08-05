@@ -1,0 +1,128 @@
+{
+  "experiment_id": "EXP-469",
+  "issue_number": 469,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "9ff694948792b0a32262e2920c9e253ce17391b3",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp469_parser_v4_native_v2_token_count/data_manifest.json",
+  "environment": "reproducibility/exp469_parser_v4_native_v2_token_count/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-05T06:42:00.532383+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp469_parser_v4_native_v2_token_count/fold_00.json",
+      "size_bytes": 13019509,
+      "sha256": "1c455531913f4f4eae542d25aafcc54d1ae48dcac1f172dcfe5d5f699f6a54fa",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp469_parser_v4_native_v2_token_count/fold_01.json",
+      "size_bytes": 11445283,
+      "sha256": "2bfa81e02b5dd00685db67d0c19c781221f4e02ac090e79c6301f0c6ab57a46c",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp469_parser_v4_native_v2_token_count/fold_02.json",
+      "size_bytes": 2945889,
+      "sha256": "ec334096f7734313de5206f60b1a254bc513d393bcd8cca69cf0bd1d16475dce",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp469_parser_v4_native_v2_token_count/fold_03.json",
+      "size_bytes": 10377154,
+      "sha256": "bbac705f3f86b7ea5f5a915ec33d02d6038d8b4f98e64855aa7e4de8a6490741",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp469_parser_v4_native_v2_token_count/fold_04.json",
+      "size_bytes": 8336366,
+      "sha256": "fbb786b0a17d7e7941dc9cd2753406bf2b9da7193f9738b85c1ba0027dbeecbc",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp469_parser_v4_native_v2_token_count.csv",
+      "size_bytes": 38097,
+      "sha256": "5e0d74db25cdadff6914a18d0ed8b50ec1af2abe0e2f083aba4cec00458e22a2",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp469_parser_v4_native_v2_token_count.csv",
+      "size_bytes": 2103102,
+      "sha256": "4ae1de3b889f1ed56abdd20c6e4c216ec56f09be35477d06b96ab7029c55d824",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp469_parser_v4_native_v2_token_count_test_proba.csv",
+      "size_bytes": 821761,
+      "sha256": "987644f2cd0ebf9a1ec1be761e5610c6911ec23354fb22d5a91249acf15c80dc",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp469_parser_v4_native_v2_token_count/metrics.json",
+      "size_bytes": 40155,
+      "sha256": "e08af14286aa094b0f0a6aff2db05d24dc800167f65a107f45921c15351e945d",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp469_parser_v4_native_v2_token_count/config.resolved.yaml",
+      "size_bytes": 16516,
+      "sha256": "84d92f95364ad45fee8aa72759d6a15dc74bcd67a9886c904ddc9bd9c92cb876",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp469_parser_v4_native_v2_token_count/fold_00_checkpoint_audit.json",
+      "size_bytes": 28048,
+      "sha256": "abb7855c1df29e5336a9987adb0ab9475f91098d37d9521b6ff9e975ed7fa787",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp469_parser_v4_native_v2_token_count/fold_01_checkpoint_audit.json",
+      "size_bytes": 31767,
+      "sha256": "d1d504cc79850284eeeb00867da7fae1d4a15606ae2940fc9d21de5594a913b6",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp469_parser_v4_native_v2_token_count/fold_02_checkpoint_audit.json",
+      "size_bytes": 31523,
+      "sha256": "14e5a7df83aed7300ba21c9c661cf4c03a8a3e1e6076e8c90bf1879a0bd198e5",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp469_parser_v4_native_v2_token_count/fold_03_checkpoint_audit.json",
+      "size_bytes": 28714,
+      "sha256": "1752f16c2d100f1807213cfdfd83a3b924d7f389bc4cde24fd803519ff604586",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp469_parser_v4_native_v2_token_count/fold_04_checkpoint_audit.json",
+      "size_bytes": 32521,
+      "sha256": "ed7c844b4cfa9dfcdc395b5be75745caad6b1e61a4b31a42ca96bf14f6dfef31",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

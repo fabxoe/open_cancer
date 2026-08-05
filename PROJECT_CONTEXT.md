@@ -728,6 +728,19 @@ resolved config에는 실행에 실제 적용된 항목만 기록한다.
   substitution·frameshift·deletion·insertion·duplication·delins·range·unresolved
   의미를 고정 schema로 노출한다. isoform·driver·pathway 신규 지식과 Optuna는 이
   baseline에 섞지 않는다.
+- range 표기는 하나의 포괄적 `complex` 또는 `range`로 뭉개지 않는다. Parser v4의
+  상호 배타적인 핵심 의미인 `range_replacement`, `range_stop`, `range_no_change`를
+  각각 별도 consequence로 보존한다. 예를 들어 `1436_1437SI>RF`,
+  `300_301LE>F*`, `236_237LL>LL`은 서로 다른 의미다.
+- parser-native schema가 의미를 지원한다는 것과 세부 파생 피처를 모델 열로
+  활성화한다는 것은 구분한다. 다만 substitution·frameshift와 위 세 range consequence
+  같은 **핵심 상호 배타적 사건 분류**는 Parser Baseline의 정체성이므로 점수나
+  support gate로 삭제하지 않는다. train-zero, fold 지원 미달인 더 세분화된 의미나
+  외부 annotation 파생 피처만 QC-only로 유지할 수 있다. test 출현·SUBCLASS·Public
+  점수를 보고 활성화 여부를 바꾸지 않는다.
+- 올바른 parser 의미는 점수로 되돌리지 않는다. 성능 gate의 대상은 parser가 아니라
+  집계 방식, feature adapter, 모델과 하이퍼파라미터다. 따라서 native semantic
+  baseline은 먼저 고정한 뒤 분포·상관·SHAP·nested tuning으로 일반화 성능을 개선한다.
 - Parser-native Baseline v1은 native adapter version, fixture·schema·feature-name
   hash, 모든 consumer identity와 canonical 5-fold 결과가 확보된 뒤에만 동결한다.
 - 한 실험 안에서 core mutation type, sample aggregate, pathway, hotspot,

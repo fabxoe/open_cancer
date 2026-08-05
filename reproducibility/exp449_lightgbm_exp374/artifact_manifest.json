@@ -3,18 +3,49 @@
   "issue_number": 449,
   "reproducibility_status": "INFERENCE_VERIFIED",
   "source_commit": "c5ec905f4f4eb09d538b74c305cc9edc36596665",
-  "verified_at": "2026-08-05T05:16:03.101478+00:00",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp449_lightgbm_exp374/data_manifest.json",
+  "environment": "reproducibility/exp449_lightgbm_exp374/environment.json",
+  "release_url": null,
   "verifier": "Kangho Park",
+  "verified_at": "2026-08-05T05:16:03.101478+00:00",
   "verification": {
-    "verified_at": "2026-08-05T05:16:03.101478+00:00",
     "data_hashes_match": true,
-    "original_submission_sha256": "770ce597d2ab7bc7597ec2f2dc75f1f0434c91a0412912d7a8c5d4de4c40f885",
-    "reproduced_submission_sha256": "770ce597d2ab7bc7597ec2f2dc75f1f0434c91a0412912d7a8c5d4de4c40f885",
     "submission_sha256_match": true,
     "test_label_agreement": 1.0,
-    "test_probability_max_abs_diff": 0.0,
-    "probability_atol": 1e-06,
-    "probability_rtol": 1e-06,
+    "probability_atol": 0.000001,
+    "probability_rtol": 0.000001,
     "passed": true
-  }
+  },
+  "artifacts": [
+    {
+      "kind": "submission",
+      "path": "submissions/exp449_lightgbm_exp374.csv",
+      "size_bytes": 38190,
+      "sha256": "770ce597d2ab7bc7597ec2f2dc75f1f0434c91a0412912d7a8c5d4de4c40f885",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp449_lightgbm_exp374/config.resolved.yaml",
+      "size_bytes": 6775,
+      "sha256": "11d77052946a0c57c29eb6b6d206a023587ee3a3c17cfc0142ce7d0a8585d14d",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp449_lightgbm_exp374/metrics.json",
+      "size_bytes": 11576,
+      "sha256": "148aa1725410f99d90b9ff5f9dcf87a14e92d3928d7d173edf9edb004265c5ba",
+      "storage_uri": null
+    },
+    {
+      "kind": "comparison",
+      "path": "reproducibility/exp449_lightgbm_exp374/comparison.json",
+      "size_bytes": 469,
+      "sha256": "182f7eecee8b3f288f091d283a3df706c201a572f955fbc530cb4a21a71d4cd9",
+      "storage_uri": null
+    }
+  ]
 }
