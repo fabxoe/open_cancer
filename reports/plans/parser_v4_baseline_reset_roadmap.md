@@ -128,7 +128,7 @@ semantic parser
 | N0 | native 기준선 최상위 계획·운영 계약 | #422 | 해당 없음 | #423 | MERGED | N/A | 새 정의·운영 계약 병합 완료 | N1 진행 |
 | N1 | semantic completeness·support·collision 감사 | #424 | 해당 없음 | #425 | MERGED | N/A | token 전수 route·collision 0·support 5 family 확인 | N2 진행 |
 | N2 | unified native feature schema·adapter 구현 | #427 | 해당 없음 | #428 | MERGED | N/A | native schema·presence 보존 검증 완료 | N3 진행 |
-| N3 | cross-path consistency·compatibility audit 구현 | #429 | 해당 없음 | 미발급 | IN_PROGRESS | N/A | QC 전용 | 실제 train/test crosswalk·collision 감사 |
+| N3 | cross-path consistency·compatibility audit 구현 | #429 | 해당 없음 | #430 | PR_OPEN | N/A | identity collision 0·legacy diff 감사 완료 | CI·검토 후 병합 |
 | N4-L | 현재 환경 legacy control | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N2·N3 병합 대기 |
 | N4-C | v4 compatibility audit arm | 미발급 | 미발급 | 미발급 | PLANNED | N/A | baseline 아님 | N4-L과 paired 실행 |
 | N4-N | v4-native semantic treatment | 미발급 | 미발급 | 미발급 | PLANNED | N/A | 실제 baseline 후보 | N4-L/C와 동일 환경 실행 |
