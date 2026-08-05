@@ -1,0 +1,75 @@
+{
+  "purpose": "ratio_sweep_diagnostic",
+  "issue": 464,
+  "base_experiments": [
+    "EXP-374",
+    "EXP-449"
+  ],
+  "exp374_reference": {
+    "oof_macro_f1": 0.4267909268459148,
+    "test_like_macro_f1": 0.4283785968196299
+  },
+  "propensity_source": "reports/analysis/adversarial_validation/train_domain_propensity.csv",
+  "test_like_threshold_quantile": 0.75,
+  "test_like_threshold_value": 0.2500581443309784,
+  "n_test_like": 1666,
+  "ratios": [
+    {
+      "weights": {
+        "EXP-374": 0.9,
+        "EXP-449": 0.1
+      },
+      "oof_macro_f1": 0.42636072600096697,
+      "oof_macro_f1_delta_vs_exp374": -0.0004302008449478256,
+      "fold_std": 0.008447443289923286,
+      "test_like_macro_f1": 0.4219444176167229,
+      "test_like_delta_vs_exp374": -0.006434179202907009,
+      "worst_class": "BLCA",
+      "worst_class_delta": -0.014720709820528366,
+      "verdict": "FAIL_test_like_regression"
+    },
+    {
+      "weights": {
+        "EXP-374": 0.8,
+        "EXP-449": 0.2
+      },
+      "oof_macro_f1": 0.4286871271972115,
+      "oof_macro_f1_delta_vs_exp374": 0.0018962003512967285,
+      "fold_std": 0.008852801884616828,
+      "test_like_macro_f1": 0.4239130702447697,
+      "test_like_delta_vs_exp374": -0.004465526574860212,
+      "worst_class": "PAAD",
+      "worst_class_delta": -0.02637818612922349,
+      "verdict": "FAIL_test_like_regression"
+    },
+    {
+      "weights": {
+        "EXP-374": 0.7,
+        "EXP-449": 0.3
+      },
+      "oof_macro_f1": 0.43055247681925884,
+      "oof_macro_f1_delta_vs_exp374": 0.003761549973344047,
+      "fold_std": 0.008806734524644316,
+      "test_like_macro_f1": 0.4249333826075819,
+      "test_like_delta_vs_exp374": -0.00344521421204802,
+      "worst_class": "BLCA",
+      "worst_class_delta": -0.026416616253276903,
+      "verdict": "FAIL_test_like_regression"
+    },
+    {
+      "weights": {
+        "EXP-374": 0.6,
+        "EXP-449": 0.4
+      },
+      "oof_macro_f1": 0.4277228786636168,
+      "oof_macro_f1_delta_vs_exp374": 0.0009319518177020036,
+      "fold_std": 0.010300627715768748,
+      "test_like_macro_f1": 0.4199872891155544,
+      "test_like_delta_vs_exp374": -0.008391307704075535,
+      "worst_class": "BLCA",
+      "worst_class_delta": -0.04076450147019517,
+      "verdict": "FAIL_test_like_regression"
+    }
+  ],
+  "any_ratio_passes_test_like": false
+}
