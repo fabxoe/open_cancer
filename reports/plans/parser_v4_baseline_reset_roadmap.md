@@ -140,8 +140,8 @@ semantic parser
 | N4-V2-E | native v2 controlled canonical 5-fold | #456 | EXP-456 | #461 | MERGED | 0.4111053102 | L 대비 -0.0021710·PAAD -0.06285, ARCHIVE | supported family additive ablation |
 | N4-X | compatibility·native v2 비중복·집계단위 감사 | #462 | 해당 없음 | #463 | MERGED | N/A | gene any 4종 동일·sample token/gene count 혼입·range 정의 차이 확인 | token-count ablation |
 | N4-T | native v2 sample token-count adapter | #466 | 해당 없음 | #468 | MERGED | N/A | 의미 route·gene any·strict range 고정, sample 집계만 단일변수화 | EXP-469 평가 |
-| N4-T-E | native v2 token-count canonical 5-fold | #469 | EXP-469 | #474 | PR_OPEN | 0.4117817779 | EXP-456 +0.0006765·Legacy gate 미달, 비튜닝 native 기준점 보존 | 병합 후 native 전용 통계 감사 |
-| N4-S | native v2 분포·희소도·상관·adversarial AUC | 미발급 | explore | 미발급 | PLANNED | N/A | test·label을 feature 선택에 쓰지 않는 진단 | SHAP 설계 |
+| N4-T-E | native v2 token-count canonical 5-fold | #469 | EXP-469 | #474 | MERGED | 0.4117817779 | EXP-456 +0.0006765·Legacy gate 미달, 비튜닝 native 기준점 보존 | native 전용 통계 감사 |
+| N4-S | native v2 분포·희소도·상관·adversarial AUC·TreeSHAP | #475 | explore | 미발급 | IN_PROGRESS | N/A | test·label을 feature 선택에 쓰지 않는 진단 | tuning space 동결 |
 | N4-SHAP | fold validation TreeSHAP·클래스별 기여 | 미발급 | explore | 미발급 | PLANNED | N/A | native feature competition·실사용 확인 | tuning space 동결 |
 | N4-OPT | native v2 전용 nested XGBoost tuning | 미발급 | 미발급 | 미발급 | PLANNED | N/A | outer fold 외부 정보 사용 금지 | multi-seed 검증 |
 | N4-MS | native tuned 후보 multi-seed 안정성 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | Local gate·클래스 안정성 판단 | N5 동결 여부 |
