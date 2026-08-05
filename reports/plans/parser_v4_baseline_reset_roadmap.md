@@ -54,7 +54,7 @@ parser v4 이전에 생성된 고득점·Optuna·isoform·driver 계보는 당�
 
 | 단계 | 작업 | Issue | EXP | PR | 상태 | OOF Macro F1 | 판단 | 다음 행동 |
 |---|---|---:|---|---:|---|---:|---|---|
-| R0 | 최상위 로드맵·운영 계약 | #417 | 해당 없음 | 미발급 | IN_PROGRESS | N/A | 계획 작성 | PR 병합 |
+| R0 | 최상위 로드맵·운영 계약 | #417 | 해당 없음 | #418 | PR_OPEN | N/A | 계획·운영 계약 작성 완료 | PR 병합 |
 | R1 | v4 compatibility projection·경로 일관성 validator | 미발급 | 해당 없음 | 미발급 | PLANNED | N/A | - | R0 병합 대기 |
 | R2 | 현재 환경 stop-v2 paired control 재실행 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | R1 병합 대기 |
 | R3 | full parser-v4 compatibility treatment | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | R2 완료 대기 |
