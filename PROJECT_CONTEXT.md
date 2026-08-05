@@ -728,6 +728,10 @@ resolved config에는 실행에 실제 적용된 항목만 기록한다.
   substitution·frameshift·deletion·insertion·duplication·delins·range·unresolved
   의미를 고정 schema로 노출한다. isoform·driver·pathway 신규 지식과 Optuna는 이
   baseline에 섞지 않는다.
+- parser-native schema가 의미를 지원한다는 것과 그 의미를 모델 열로 활성화한다는
+  것은 구분한다. 모든 사건은 exclusive primary family와 raw provenance로 보존하되,
+  모델 열은 train과 canonical fold 지원 gate를 통과한 family만 활성화한다. train-zero
+  또는 fold 지원 미달 의미를 test 출현만 보고 활성화하지 않는다.
 - Parser-native Baseline v1은 native adapter version, fixture·schema·feature-name
   hash, 모든 consumer identity와 canonical 5-fold 결과가 확보된 뒤에만 동결한다.
 - 한 실험 안에서 core mutation type, sample aggregate, pathway, hotspot,

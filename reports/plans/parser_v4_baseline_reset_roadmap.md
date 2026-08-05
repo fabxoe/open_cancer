@@ -133,6 +133,13 @@ semantic parser
 | N4-L | 현재 환경 legacy control | #433 | EXP-433 | 미발급 | COMPLETED | 0.4132762899 | 동일 환경 control 확정 | N4-C 실행 |
 | N4-C | v4 compatibility audit arm | #435 | EXP-435 | 미발급 | COMPLETED | 0.4111034467 | L 대비 -0.0021728433; baseline 아님 | N4-N 실행 |
 | N4-N | v4-native semantic treatment | #438 | EXP-438 | 미발급 | COMPLETED | 0.4102050373 | adapter gate 실패·parser 유지 | native family ablation |
+| N4-A | L/C/N 결과 감사·adapter 재설계 | #442 | 해당 없음 | 미발급 | COMPLETED | N/A | C + supported range 의미 고정 | hybrid Experiment |
+| N4-H | compatibility + supported native range | #444 | EXP-444 | 미발급 | COMPLETED | 0.4127201906 | C 대비 +0.0016167·L 정확성 허용 gate 통과 | provenance 제거 ablation |
+| N4-P | native sample provenance summary 제거 | #448 | EXP-448 | 미발급 | REJECTED | 0.4104538324 | L 대비 -0.0028225·PAAD -0.0524로 gate 실패 | native adapter v2 구현 |
+| N4-V2 | support-gated parser-native semantic adapter v2 | #453 | 해당 없음 | #455 | MERGED | N/A | coarse fallback 제거·저지원 family QC 보존 | EXP-456 평가 |
+| N4-V2-E | native v2 controlled canonical 5-fold | #456 | EXP-456 | #461 | MERGED | 0.4111053102 | L 대비 -0.0021710·PAAD -0.06285, ARCHIVE | supported family additive ablation |
+| N4-X | compatibility·native v2 비중복·집계단위 감사 | #462 | 해당 없음 | #463 | MERGED | N/A | gene any 4종 동일·sample token/gene count 혼입·range 정의 차이 확인 | token-count ablation |
+| N4-T | native v2 sample token-count adapter | #466 | 해당 없음 | #468 | PR_OPEN | N/A | 의미 route·gene any·strict range 고정, sample 집계만 단일변수화 | 병합 후 Experiment |
 | N5 | Parser-native Baseline v1 동결 | 미발급 | explore | 미발급 | BLOCKED | N/A | EXP-438 gate 실패 | adapter 수정 후 재평가 |
 | N6 | isoform 독립 재검증 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N5 완료 대기 |
 | N7 | driver 독립 재검증 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N5 완료 대기 |

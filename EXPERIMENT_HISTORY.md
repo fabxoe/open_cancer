@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 87
+- 실제 실험 수: 90
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -106,6 +106,9 @@
 | EXP-433 | COMPLETED | fabxoe | #433 | Parser v4 N4-L: stop-v2 + 기존 5-family, 의미 외 피처 제거 통제군 | 0.4132762899 | 미제출 | NOT_STARTED | N4 L/C/N 비교용 Legacy control; 단독 채택 판단 없음 | [보고서](reports/exp433_parser_v4_legacy_control/README.md) |
 | EXP-435 | COMPLETED | fabxoe | #435 | Parser v4 N4-C: full v4 → 기존 5-family compatibility projection | 0.4111034467 | 미제출 | NOT_STARTED | L 대비 Macro F1 하락·std/Log Loss 개선; compatibility audit 전용 | [보고서](reports/exp435_parser_v4_compatibility_control/README.md) |
 | EXP-438 | COMPLETED | fabxoe | #438 | Parser v4 N4-N: mutation presence + native semantic schema | 0.4102050373 | 미제출 | NOT_STARTED | native adapter gate 실패; parser 유지·adapter family ablation 필요 | [보고서](reports/exp438_parser_v4_native_semantic_baseline/README.md) |
+| EXP-444 | COMPLETED | fabxoe | #444 | Parser v4 compatibility 5-family + train-supported native range 의미 | 0.4127201906 | 미제출 | NOT_STARTED | C 대비 +0.0016167·Legacy L 정확성 허용 gate 통과; native baseline 동결은 보류 | [보고서](reports/exp444_parser_v4_supported_range_hybrid/README.md) |
+| EXP-448 | COMPLETED | fabxoe | #448 | Parser v4 native consequence에서 sample provenance summary 6개 제거 | 0.4104538324 | 미제출 | NOT_STARTED | L 대비 -0.0028225·PAAD -0.0524로 gate 실패, ARCHIVE·native adapter v2 필요 | [보고서](reports/exp448_parser_v4_native_no_provenance/README.md) |
+| EXP-456 | COMPLETED | fabxoe | #456 | Parser v4 support-gated native semantic adapter v2 | 0.4111053102 | 미제출 | NOT_STARTED | v1 대비 개선했으나 L 대비 -0.0021710·PAAD -0.06285로 gate 실패, ARCHIVE | [보고서](reports/exp456_parser_v4_native_v2/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -3787,3 +3790,67 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
 - 재현 상태: `NOT_STARTED`
 - 판단: native adapter gate 실패. parser v4 의미 계약은 유지하고 feature adapter를
   family별로 수정·재검증한다. N5 동결은 보류한다.
+
+### [EXP-444] Parser v4 supported-range hybrid
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #444 / `issue-444-parser-v4-supported-range-hybrid`
+- 소스 commit: `e40c0183937378e0edcb1f66c93878a4da1aff67`
+- 시작/종료: 2026-08-05T04:43:07.449188+00:00 /
+  2026-08-05T04:56:39.825939+00:00
+- Config: `configs/exp444_parser_v4_supported_range_hybrid.yaml`
+- Runner: `scripts/run_exp444_parser_v4_supported_range_hybrid.py`
+- OOF Macro F1: 0.4127201906 (EXP-435 대비 +0.0016167439,
+  EXP-433 대비 -0.0005560993)
+- Fold std: 0.0097804225 (EXP-433 대비 +0.0002462190)
+- Accuracy / Log Loss: 0.4034833091 / 1.8767832518
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+- 판단: EXP-435 대비 성능 기준을 통과했고 EXP-433 대비 정확성 기준선 허용
+  gate도 통과했다. supported range 의미는 유지하되, 전체 native baseline 동결 전
+  sample provenance summary 제거 ablation을 수행한다.
+
+### [EXP-448] Parser v4 native consequence without sample provenance
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #448 / `issue-448-parser-v4-native-no-provenance`
+- 소스 commit: `e3f1d79`
+- Config: `configs/exp448_parser_v4_native_no_provenance.yaml`
+- Runner: `scripts/run_exp448_parser_v4_native_no_provenance.py`
+- OOF Macro F1: 0.4104538324 (EXP-438 대비 +0.0002487951,
+  EXP-433 대비 -0.0028224576)
+- Fold std: 0.0091361111 (EXP-433 대비 -0.0003980924)
+- Accuracy / Log Loss: 0.4015481374 / 1.8858425617
+- PAAD F1: 0.1557377049 (EXP-433 대비 -0.0524070915)
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+- 판단: provenance 제거만으로 native v1을 구제하지 못해 `ARCHIVE`. 다음은
+  deletion·insertion·duplication·delins를 coarse fallback에서 분리하는 native
+  adapter v2 구현이다.
+
+### [EXP-456] Parser v4 support-gated native semantic adapter v2
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #456 / `issue-456-exp-parser-v4-native-v2`
+- 소스 commit: `3c30825a9c9e0f310b44692f543963fbe4610dd8`
+- 시작/종료: 2026-08-05T05:36:36.966520+00:00 /
+  2026-08-05T05:46:49.978053+00:00 (613.37초)
+- Config: `configs/exp456_parser_v4_native_v2.yaml`
+- Runner: `scripts/run_exp456_parser_v4_native_v2.py`
+- Metrics/Report: `reports/exp456_parser_v4_native_v2/`
+- 모델 활성 consequence: missense, no_change, nonsense, frameshift,
+  range_replacement. 저지원 native family는 QC·raw provenance로 보존했다.
+- Fold Macro F1: 0.4047467936, 0.4209757834, 0.4065389233,
+  0.4012972365, 0.4196621128
+- OOF Macro F1: 0.4111053102 (EXP-433 대비 `-0.0021709797`,
+  EXP-448 대비 `+0.0006514778`)
+- Fold 표준편차: 0.0080878031 (EXP-433 대비 `-0.0014464004`)
+- Accuracy / Log Loss: 0.4042896307 / 1.9309408665
+- PAAD F1: 0.1452991453 (EXP-433 대비 `-0.0628456511`)
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+- 판단: coarse unresolved 열 제거는 v1을 개선했지만 Legacy L 허용 gate를 통과하지
+  못해 `ARCHIVE`. Parser v4 correctness는 유지하고 adapter 후속 ablation으로 간다.
