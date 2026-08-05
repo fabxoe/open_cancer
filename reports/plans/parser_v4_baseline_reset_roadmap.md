@@ -130,7 +130,7 @@ semantic parser
 | N2 | unified native feature schema·adapter 구현 | #427 | 해당 없음 | #428 | MERGED | N/A | native schema·presence 보존 검증 완료 | N3 진행 |
 | N3 | cross-path consistency·compatibility audit 구현 | #429 | 해당 없음 | #430 | MERGED | N/A | identity collision 0·legacy diff 감사 완료 | N4 runner 구현 |
 | N4-R | L/C/N 통제 runner 구현 | #431 | 해당 없음 | #432 | MERGED | N/A | 표현 외 confounder 차단 | N4-L/C/N 실행 |
-| N4-L | 현재 환경 legacy control | #433 | EXP-433 | 미발급 | IN_PROGRESS | N/A | 전용 runner 추가 후 재실행 | clean source 실행 |
+| N4-L | 현재 환경 legacy control | #433 | EXP-433 | 미발급 | COMPLETED | 0.4132762899 | 동일 환경 control 확정 | N4-C 실행 |
 | N4-C | v4 compatibility audit arm | 미발급 | 미발급 | 미발급 | PLANNED | N/A | baseline 아님 | N4-L과 paired 실행 |
 | N4-N | v4-native semantic treatment | 미발급 | 미발급 | 미발급 | PLANNED | N/A | 실제 baseline 후보 | N4-L/C와 동일 환경 실행 |
 | N5 | Parser-native Baseline v1 동결 | 미발급 | explore | 미발급 | PLANNED | N/A | - | N4 3-arm 감사 |

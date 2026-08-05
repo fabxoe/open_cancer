@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 84
+- 실제 실험 수: 85
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -103,6 +103,7 @@
 | EXP-374 | COMPLETED | fabxoe | #374 | EXP-369 stop 정규화 + Ensembl 116 residue-position semantic mask | 0.4267909268 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0038024·fold std·Log Loss·클래스 안정성 모두 통과, ADOPT·신규 제출 후보 | [보고서](reports/exp374_stop_isoform_residue_mask/README.md) |
 | EXP-392 | COMPLETED | fabxoe | #392 | EXP-374 + fold-train range stop/no-change gene indicator | 0.4290431888 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0022523·안정성 gate 통과, Log Loss +0.0032364 소폭 악화로 ADOPT_WITH_CAUTION | [보고서](reports/exp392_range_semantic_indicators/README.md) |
 | EXP-409 | COMPLETED | fabxoe | #409 | EXP-369 + fold-train ordinary range-replacement gene indicator | 0.4249303829 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0019418이나 fold std +0.0023141·Log Loss +0.1327703으로 gate 실패, ARCHIVE | [보고서](reports/exp409_ordinary_range_replacement_indicator/README.md) |
+| EXP-433 | COMPLETED | fabxoe | #433 | Parser v4 N4-L: stop-v2 + 기존 5-family, 의미 외 피처 제거 통제군 | 0.4132762899 | 미제출 | NOT_STARTED | N4 L/C/N 비교용 Legacy control; 단독 채택 판단 없음 | [보고서](reports/exp433_parser_v4_legacy_control/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -3722,3 +3723,28 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   구조적 config-민감성(`reports/analysis/sparse_binary_feature_dlbc_sensitivity.md`)을
   고려해 단일 실험만으로 원인을 특정하지 않는다.
 - #176은 이 결과로 대체·종료하며, 추가 튜닝이나 제출 없이 마무리한다.
+
+### [EXP-433] Parser v4 N4-L Legacy control
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #433 / `issue-433-parser-v4-legacy-control`
+- 소스 commit: `3cd8ec8ea3a4003cd0c693bd5df64dc82807f4cb`
+- 시작/종료: 2026-08-05T03:48:18.696584+00:00 /
+  2026-08-05T03:54:29.035853+00:00
+
+#### 실행과 결과
+
+- Config: `configs/exp433_parser_v4_legacy_control.yaml`
+- Runner: `scripts/run_exp433_parser_v4_legacy_control.py`
+- Metrics/Report: `reports/exp433_parser_v4_legacy_control/`
+- 통제: stop-v2 기존 5-family, canonical 5-fold, seed 42, balanced weight,
+  validation Macro F1 checkpoint; 의미 외 추가 피처 전부 제외
+- Fold Macro F1: 0.4030107242, 0.4271935225, 0.4078921683,
+  0.4072246618, 0.4227851258
+- OOF Macro F1: 0.4132762899
+- Fold 표준편차: 0.0095342035
+- Accuracy / Log Loss: 0.4029995162 / 1.9535857439
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+- 판단: N4 C/N 비교용 control이며 단독 성능으로 parser를 채택·기각하지 않는다.
