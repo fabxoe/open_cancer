@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 101
+- 실제 실험 수: 102
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -102,6 +102,7 @@
 | EXP-369 | COMPLETED | fabxoe | #369 | EXP-229의 simple stop 표기 `*`·`X`·`Ter`를 모든 피처 경로에서 동일한 nonsense로 정규화 | 0.4229885745 | 0.3407944343 | INFERENCE_VERIFIED | OOF 동일 통제에서 EXP-229 Public 대비 +0.0204345510·팀 최고 갱신, stop parser 결함이 핵심 Public 병목이었음을 확인 | [보고서](reports/exp369_stop_notation_normalization/README.md) |
 | EXP-370 | COMPLETED | Gomin-art | #370 | EXP-223 설정에 simple stop 표기 정규화를 이식해 현재 source에서 재학습 | 0.4195957914 | 미제출 | INFERENCE_VERIFIED | train `X`·`Ter` token 0건으로 train 특징 불변; 역사적 EXP-223 OOF 차이는 source 변경이 섞여 정규화 효과로 해석하지 않으며 test 영향은 원본 확률 부재로 미측정 | [보고서](reports/exp370_exp223_stop_notation_normalization/README.md) |
 | EXP-380 | COMPLETED | fabxoe | #380 | EXP-369 + range stop/no-change 고유 유전자 수·존재 여부 4개 | 0.4221880021 | 미제출 | INFERENCE_VERIFIED | 이 4개 sample 요약은 Macro F1 -0.0008006로 ARCHIVE; 최신 fold-safe gene indicator 구현과 구분되는 역사적 sample-summary 실험 | [보고서](reports/exp380_range_semantic_summary/README.md) |
+| EXP-391 | COMPLETED | Gomin-art | #391 | EXP-374 + stop 정규화 후 exact duplicate token 제거·token 순서 정렬 | 0.4251053830 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 Macro F1 -0.0016855·fold std +0.0006600·Log Loss +0.0121809로 미채택; 최신 parser를 대체하지 않고 역사적 adapter/QC 자산만 보존 | [보고서](reports/exp391_exact_duplicate_token_normalization/README.md) |
 | EXP-374 | COMPLETED | fabxoe | #374 | EXP-369 stop 정규화 + Ensembl 116 residue-position semantic mask | 0.4267909268 | 0.346215922 | INFERENCE_VERIFIED | Local gate 통과·EXP-369 대비 Public +0.0054214877, 팀 Public 최고 갱신 | [보고서](reports/exp374_stop_isoform_residue_mask/README.md) |
 | EXP-392 | COMPLETED | fabxoe | #392 | EXP-374 + fold-train range stop/no-change gene indicator | 0.4290431888 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0022523·안정성 gate 통과, Log Loss +0.0032364 소폭 악화로 ADOPT_WITH_CAUTION | [보고서](reports/exp392_range_semantic_indicators/README.md) |
 | EXP-409 | COMPLETED | fabxoe | #409 | EXP-369 + fold-train ordinary range-replacement gene indicator | 0.4249303829 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0019418이나 fold std +0.0023141·Log Loss +0.1327703으로 gate 실패, ARCHIVE | [보고서](reports/exp409_ordinary_range_replacement_indicator/README.md) |
@@ -199,6 +200,7 @@
 | 2026-08-04T22:04:37.570398+00:00 | EXP-374 | fabxoe | `4a2dfb685859277bd78746e8ab9578ade51a64a7` / [`exp-374-repro-v2`](https://github.com/fabxoe/open_cancer/releases/tag/exp-374-repro-v2) | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.83e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp374_stop_isoform_residue_mask/comparison.json) |
 | 2026-08-04T22:30:46.801549+00:00 | EXP-392 | fabxoe | `af5a082e709ee5b6ea66befb7710cf18dcedabc6` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.46e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp392_range_semantic_indicators/comparison.json) |
 | 2026-08-04T21:45:04.915445+00:00 | EXP-409 | fabxoe | `7519b8e0dfa8e6b2c2e49d1b1ee4e7f54bc0c412` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp409_ordinary_range_replacement_indicator/comparison.json) |
+| 2026-08-05T01:44:29.823676+00:00 | EXP-391 | Gomin-art | `1160c2afcea2dee1f4a5d75cee19ebb53cfe4375` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.24e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp391_exact_duplicate_token_normalization/comparison.json) |
 | 2026-08-05T05:16:03.101478+00:00 | EXP-449 | Kangho-Park | (issue-449 브랜치) / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 0.0(LightGBM deterministic), 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp449_lightgbm_exp374/comparison.json) |
 | 2026-08-05T05:23:56.437651+00:00 | EXP-450 | Kangho-Park | `f5b755c51496ff59b073d936754767ab6d690b27` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp450_lightgbm_exp374_blend/comparison.json) |
 | 2026-08-05T05:47:15.365693+00:00 | EXP-457 | Kangho-Park | `a662caa65ceaa758dadf2216fbeec8c13c66fe50` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | outer 5-fold cross-fit 메타러너 재학습(저장된 fold 모델 재로드로 검증) | INFERENCE_VERIFIED | [comparison](reproducibility/exp457_stacking_ensemble/comparison.json) |
@@ -209,6 +211,37 @@
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-391] Exact duplicate mutation-token 정규화
+
+- 상태: COMPLETED
+- 실행자: Gomin-art
+- Issue/브랜치: #391 / `issue-391-exp-exact-duplicate-token-normalization`
+- 소스 commit: `1160c2afcea2dee1f4a5d75cee19ebb53cfe4375`
+- 시작/종료: 2026-08-05T01:13:29.902806+00:00 /
+  2026-08-05T01:44:27.248650+00:00
+- 부모: EXP-374
+- 유일한 변경: stop 정규화 후 완전히 같은 token을 한 번만 사용하고 token 순서를
+  정렬했다. 서로 다른 위치·변이 유형은 유지했다. 이 역사적 adapter는
+  `exact_duplicate_mutation_parser.py`에 독립 보존하며 최신 parser v4 의미
+  구현을 대체하거나 기본 parser로 승격하지 않는다.
+- label-free 영향 감사: train 144개 샘플·3,068 cells·6,100 duplicate, test 35개
+  샘플·209 cells·218 duplicate. stop 정규화로 새로 생긴 duplicate는 양쪽 모두 0건.
+- Fold Macro F1: 0.4261550774 / 0.4189377298 / 0.4122109136 /
+  0.4286879972 / 0.4393035840
+- OOF Macro F1: 0.4251053830 (EXP-374 대비 `-0.0016855438`)
+- Fold 표준편차: 0.0091632140 (EXP-374 대비 `+0.0006599971`)
+- Accuracy: 0.4088050314 (EXP-374 대비 `-0.0040316078`)
+- Log Loss: 1.8562457561 (EXP-374 대비 `+0.0121809244`)
+- EXP-374 제출 대비 label 변경: 229/2,546(8.99%); ID·순서 일치
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`; 제출 SHA-256 byte-level 일치, test label
+  100%, 확률 최대 차이 `1.2409241e-07`
+- 결론: 공식 OOF Macro F1·Accuracy·Log Loss가 부모보다 악화되어 미채택하고
+  Public 제출을 중단한다. parser와 감사 코드는 annotation-invariant QC 자산으로
+  보존한다.
+- Report: `reports/exp391_exact_duplicate_token_normalization/README.md`
+- Metrics: `reports/exp391_exact_duplicate_token_normalization/metrics.json`
 
 ### [EXP-370] EXP-223 stop 표기 정규화 이식 검증
 
