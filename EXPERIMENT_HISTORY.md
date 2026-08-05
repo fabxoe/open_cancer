@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 108
+- 실제 실험 수: 109
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4479925392 (`EXP-521`, train self-inclusion 탐색 결과)
@@ -128,6 +128,7 @@
 | EXP-521 | COMPLETED | fabxoe | #521 | EXP-374 + fold-safe parser-v4 26-class cosine semantic profile | 0.4479925392 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 +0.0212016124·fold std -0.0047146798로 현재 Local 최고; Log Loss는 +0.0670036077로 악화되어 Public 제출 전 주의 필요 | [보고서](reports/exp521_parser_v4_class_cosine/README.md) |
 | EXP-522 | COMPLETED | fabxoe | #522 | EXP-374 + fold-safe parser-v4 26-class smoothed mean log-likelihood profile | 0.4045242129 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0222667140·EXP-521 대비 -0.0434683264·Log Loss 큰 악화로 ARCHIVE; alpha=1 전체-vocabulary likelihood 종료 | [보고서](reports/exp522_parser_v4_class_likelihood/README.md) |
 | EXP-527 | COMPLETED | fabxoe | #527 | EXP-521 class cosine의 outer-train target-class centroid에 leave-one-out 적용 | 0.4468722707 | 미제출 | INFERENCE_VERIFIED | EXP-521 대비 -0.0011202685이나 EXP-374 대비 +0.0200813439 유지; self-inclusion 제거한 leakage-safe 공식 기준선 채택 | [보고서](reports/exp527_parser_v4_class_cosine_loo/README.md) |
+| EXP-539 | COMPLETED | fabxoe | #539 | parser-v4 hierarchical detail/global raw-count + LinearSVC | 0.3662402061 | 미제출 | NOT_STARTED | row-L2 효과를 분리하기 위한 raw-count 기준선; 전 fold 수렴 경고와 낮은 성능으로 단독 제출 제외 | [보고서](reports/exp539_hierarchical_raw_linear/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -4484,3 +4485,30 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
 - 판단: EXP-521 상승의 대부분이 self-inclusion 제거 후에도 유지되어
   parser-v4 class cosine을 실질적 신호로 채택한다. 후속 비교에서는 EXP-521이
   아닌 leakage-safe EXP-527을 사용한다.
+
+### [EXP-539] Parser-v4 hierarchical raw-count LinearSVC 기준선
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #539 / `issue-539-hierarchical-raw-linear`
+- 소스 commit: `128d85e240ff624b8fe528dcd5b72a7953dc844a`
+- Config: `configs/exp539_hierarchical_raw_linear.yaml`
+- Runner: `scripts/run_exp539_hierarchical_raw_linear.py`
+- Metrics/Report: `reports/exp539_hierarchical_raw_linear/`
+- 입력: parser-v4 canonical event token을 gene-specific detail과
+  gene-agnostic global fallback으로 계층화. detail 최소 train support 2,
+  global 최소 train support 1, raw count, `LinearSVC(C=1,
+  class_weight=balanced)`.
+- Fold Macro F1: 0.3501667568, 0.3734695615, 0.3736720319,
+  0.3599046813, 0.3655963038
+- OOF Macro F1: 0.3662402061
+- Fold 평균/표준편차: 0.3645618671 / 0.0088579993
+- Accuracy / decision-score softmax Log Loss: 0.3667150460 /
+  2.5453414917
+- 실행 주의: 모든 fold가 10,000 iteration에서 `LinearSVC` 수렴 경고를
+  기록했다.
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+- 판단: 계층형 vocabulary 자체의 raw-count 기준선으로만 보존한다. 점수가
+  낮고 수렴 경고가 있어 단독 제출 후보에서 제외하며, 다음 독립 실험에서
+  동일 입력의 row-L2 normalization 효과만 비교한다.
