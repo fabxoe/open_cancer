@@ -7,12 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 107
+- 실제 실험 수: 108
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4479925392 (`EXP-521`)
+- 최고 Local OOF Macro F1: 0.4479925392 (`EXP-521`, train self-inclusion 탐색 결과)
+- 최고 leakage-safe Local OOF Macro F1: 0.4468722707 (`EXP-527`)
 - 최고 Public LB Macro F1: 0.346215922 (`EXP-374`)
-- 최고 재현 검증 모델: `EXP-521` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-527` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-06
 
 ## 실험 요약
@@ -126,6 +127,7 @@
 | EXP-512 | COMPLETED | fabxoe | #512 | EXP-374 + parser v4 환자별 semantic token count 18개 | 0.4258183004 | 0.3329881004 | INFERENCE_VERIFIED | EXP-374 대비 OOF -0.0009726·Public -0.0132278·Log Loss 악화로 전역 count adapter ARCHIVE; parser v4 의미 체계 자체의 기각으로 해석하지 않음 | [보고서](reports/exp512_parser_v4_semantic_counts/README.md) |
 | EXP-521 | COMPLETED | fabxoe | #521 | EXP-374 + fold-safe parser-v4 26-class cosine semantic profile | 0.4479925392 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 +0.0212016124·fold std -0.0047146798로 현재 Local 최고; Log Loss는 +0.0670036077로 악화되어 Public 제출 전 주의 필요 | [보고서](reports/exp521_parser_v4_class_cosine/README.md) |
 | EXP-522 | COMPLETED | fabxoe | #522 | EXP-374 + fold-safe parser-v4 26-class smoothed mean log-likelihood profile | 0.4045242129 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0222667140·EXP-521 대비 -0.0434683264·Log Loss 큰 악화로 ARCHIVE; alpha=1 전체-vocabulary likelihood 종료 | [보고서](reports/exp522_parser_v4_class_likelihood/README.md) |
+| EXP-527 | COMPLETED | fabxoe | #527 | EXP-521 class cosine의 outer-train target-class centroid에 leave-one-out 적용 | 0.4468722707 | 미제출 | INFERENCE_VERIFIED | EXP-521 대비 -0.0011202685이나 EXP-374 대비 +0.0200813439 유지; self-inclusion 제거한 leakage-safe 공식 기준선 채택 | [보고서](reports/exp527_parser_v4_class_cosine_loo/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -218,6 +220,7 @@
 | 2026-08-05T15:29:59.157313+00:00 | EXP-487 | fabxoe | `ea5278c0b9342e77d6552c2a3b4039ff550ff81a` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.43e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp487_native_v3_nested_xgb_tuning/comparison.json) |
 | 2026-08-05T18:22:27.697340+00:00 | EXP-521 | fabxoe | `eee39c928e60e12eb2c24fd56edbe0c025522da9` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.46e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp521_parser_v4_class_cosine/comparison.json) |
 | 2026-08-05T18:37:03.224031+00:00 | EXP-522 | fabxoe | `cfe6ec6793491dc55b2eb36896909c658e81ae66` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.22e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp522_parser_v4_class_likelihood/comparison.json) |
+| 2026-08-05T18:57:52.107245+00:00 | EXP-527 | fabxoe | `3cc84bca12b6a2767a35e979248e1fdb468c3114` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 8.56e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp527_parser_v4_class_cosine_loo/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -4455,3 +4458,29 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
 - 판단: 성능·fold 안정성·Log Loss 모두 실패해 `ARCHIVE`. 66,242차원
   희소 vocabulary에 alpha=1을 일괄 적용한 likelihood 방식은 종료하고,
   EXP-521 cosine을 선택 후보로 유지한다.
+
+### [EXP-527] Parser-v4 leave-one-out 26-class cosine profile
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #527 / `issue-527-parser-v4-class-cosine-loo`
+- 소스 commit: `3cc84bca12b6a2767a35e979248e1fdb468c3114`
+- 시작/종료: 2026-08-05T18:51:41.986118+00:00 /
+  2026-08-05T18:57:51.127081+00:00 (369.14초)
+- Config: `configs/exp527_parser_v4_class_cosine_loo.yaml`
+- Runner: `scripts/run_exp527_parser_v4_class_cosine_loo.py`
+- Metrics/Report: `reports/exp527_parser_v4_class_cosine_loo/`
+- 부모: EXP-521 (실제 기반 피처는 EXP-374)
+- 유일한 변경: outer-train target-class cosine centroid에서 해당 행을 제외.
+- Fold Macro F1: 0.4343333042, 0.4506124547, 0.4487400982,
+  0.4500989150, 0.4511656678
+- OOF Macro F1: 0.4468722707 (EXP-521 대비 `-0.0011202685`,
+  EXP-374 대비 `+0.0200813439`)
+- Fold 표준편차: 0.0063793185
+- Accuracy / Log Loss: 0.4339622642 / 2.0274887085
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — submission SHA-256 byte-level 일치,
+  test label 100%, 확률 최대 절대 차이 `8.56e-08`.
+- 판단: EXP-521 상승의 대부분이 self-inclusion 제거 후에도 유지되어
+  parser-v4 class cosine을 실질적 신호로 채택한다. 후속 비교에서는 EXP-521이
+  아닌 leakage-safe EXP-527을 사용한다.
