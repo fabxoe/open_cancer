@@ -71,6 +71,50 @@
   이 경우 두 모델의 feature 대부분이 겹치게 되어 애초에 의도했던
   "다른 shift 민감도" 축이 흐려질 가능성이 높다.
 
+### 재설계 검토(2026-08-05) — 포기로 확정
+
+"유전자별 mutation indicator를 공통 base로 포함하고 그 위에 hotspot만
+추가한 모델 vs burden만 추가한 모델"로 재설계하면 예측력 격차 문제는
+해결되는지 계산해봤다. 이번 실행에서 이미 만든 feature 산출물
+(`data/processed/exp465_feature_subset_ensemble_features/feature_names.json`,
+`reproducibility/exp374_stop_isoform_residue_mask/config.resolved.yaml`)
+로 실측한 결과:
+
+| 구성 요소 | 열 수 |
+|---|---:|
+| Base(유전자별 mutation indicator 등, "공통 포함" 대상) | 35,119 |
+| Base 안의 `hotspot__*` (이미 base에 전부 포함됨) | 35 |
+| Base 안의 `sample__*`(robust burden aggregate 등) | 12 |
+| Fold-safe extra(pathway burden+composition, 전부 `sample__*`) | 62~63(fold별 상이) |
+| EXP-374 전체 feature 수 | 35,119 + 62~63 ≈ **35,182** |
+
+`hotspot__` 열은 이미 base 안에 전부 들어 있으므로, "base + hotspot
+추가"는 base 그대로다. "base + burden 추가"는 base + fold-safe
+extra(62~63) = **EXP-374 전체 feature set과 완전히 동일**하다. 즉
+재설계하면:
+
+- Model B'(base+burden) = EXP-374와 100% 동일한 feature set
+- Model A'(base+hotspot) = EXP-374에서 62~63개(전체 대비 **0.18%**)만
+  제거한 것
+
+두 모델이 35,182개 열 중 99.82%를 공유하게 되어, 오차가 사실상 완전히
+상관될 수밖에 없다 — 팀 다양성 게이트(OOF 확률 상관 ≤0.92 또는 예측
+라벨 불일치율 ≥10%, #449/#459와 동일 기준)를 통과할 가능성이 사실상
+없다. 학습 자체는 저렴하다(같은 머신 실측 기준 EXP-465의 좁은 모델
+2개가 132초, EXP-449의 전체 feature 모델 1개가 279초였던 것을
+근거로 전체급 모델 2개는 대략 15~35분 수준으로 추정 — 마감까지
+남은 시간에 비하면 부담 없는 규모). **그러나 시간이 남아도 재설계는
+진행하지 않는다** — 결과가 나와도 "EXP-374를 두 번 학습해 섞은 것"과
+통계적으로 구분되지 않을 가능성이 높아 새로운 정보를 얻기 어렵고,
+애초에 검증하려던 "다른 shift 민감도를 가진 컴포넌트의 앙상블"이라는
+가설 자체를 이 feature space 구조(hotspot이 이미 base에 포함되어
+있고, pathway/burden extra가 전체의 0.18%에 불과) 안에서는 물리적으로
+구성할 수 없다는 것이 이번 계산의 핵심 결론이다. EXP-450(고정
+블렌드)·EXP-457(stacking)·EXP-464(비율 스윕)·EXP-465(feature subset)
+네 가지가 모두 이 EXP-374+EXP-449 기반 앙상블 공간에서 exploitable한
+다양성을 찾지 못했다는 결과와 합쳐, **이 앙상블 축은 여기서 완전히
+접는다.**
+
 ## 재현성
 
 - Config: `configs/exp465_feature_subset_ensemble.yaml`
