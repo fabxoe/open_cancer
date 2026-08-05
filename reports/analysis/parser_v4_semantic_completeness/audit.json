@@ -1,0 +1,2544 @@
+{
+  "schema_version": "1.0.0",
+  "audit_version": "1.0.0",
+  "issue": 424,
+  "analysis_only": true,
+  "parser_contract": {
+    "notation_normalizer_version": "4.0.0",
+    "semantic_parser_version": "4.0.0",
+    "feature_adapter_version": "4.0.0-opt-in",
+    "fixture_catalog_sha256": "26b149f5c4e1bfca12aa48ed6c3183f0f27f257ef039856b213efa7c42ed272c",
+    "fixture_schema_version": "1.0.0"
+  },
+  "inputs": {
+    "train": {
+      "path": "data/raw/train.csv",
+      "sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab"
+    },
+    "test": {
+      "path": "data/raw/test.csv",
+      "sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+    },
+    "split": {
+      "path": "data/splits/stratified_5fold_seed42.csv",
+      "sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf"
+    },
+    "fixtures": {
+      "path": "reports/analysis/parser_contract_v4/fixtures.json",
+      "sha256": "26b149f5c4e1bfca12aa48ed6c3183f0f27f257ef039856b213efa7c42ed272c"
+    },
+    "fixture_schema_sha256": "925ed90195e70d2405549c0dccdebaee7dc3dee3b4e80a4bc2d187d03db746df"
+  },
+  "constraints": {
+    "subclass_used": false,
+    "public_lb_used": false,
+    "test_prevalence_used_for_decision": false,
+    "raw_tokens_preserved": true,
+    "model_trained": false
+  },
+  "datasets": {
+    "train": {
+      "dataset": "train",
+      "samples": 6201,
+      "non_wt_gene_cells": 218893,
+      "source_token_count": 255164,
+      "routed_token_count": 255164,
+      "mutation_presence_preserved": true,
+      "parse_statuses": {
+        "complete": 245152,
+        "partial": 9835,
+        "unresolved": 177
+      },
+      "unresolved_reasons": {
+        "frameshift": 3,
+        "other_unmappable": 174
+      },
+      "families": [
+        {
+          "route": "deletion",
+          "event_type": "deletion",
+          "occurrences": 3,
+          "unique_tokens": 3,
+          "samples": 3,
+          "genes": 3,
+          "gene_cells": 3,
+          "fold_samples": [
+            1,
+            0,
+            0,
+            1,
+            1
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 3,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 1,
+              "fraction": 0.3333333333333333
+            },
+            "alternate": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "range_endpoints": {
+              "count": 3,
+              "fraction": 1.0
+            },
+            "length": {
+              "count": 3,
+              "fraction": 1.0
+            },
+            "stop_semantics": {
+              "count": 3,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 3,
+              "fraction": 1.0
+            },
+            "position_eligibility": {
+              "count": 3,
+              "fraction": 1.0
+            }
+          }
+        },
+        {
+          "route": "frameshift",
+          "event_type": "frameshift",
+          "occurrences": 9833,
+          "unique_tokens": 6546,
+          "samples": 3274,
+          "genes": 2719,
+          "gene_cells": 9463,
+          "fold_samples": [
+            644,
+            651,
+            666,
+            647,
+            666
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 9833,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 9833,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 1217,
+              "fraction": 0.12376690735279162
+            },
+            "range_endpoints": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 0,
+              "fraction": 0.0
+            }
+          }
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "range_replacement",
+          "occurrences": 109,
+          "unique_tokens": 103,
+          "samples": 101,
+          "genes": 98,
+          "gene_cells": 108,
+          "fold_samples": [
+            11,
+            22,
+            23,
+            24,
+            21
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 109,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 109,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 109,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 109,
+              "fraction": 1.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 109,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 109,
+              "fraction": 1.0
+            }
+          }
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "stop_containing",
+          "occurrences": 39,
+          "unique_tokens": 36,
+          "samples": 34,
+          "genes": 32,
+          "gene_cells": 39,
+          "fold_samples": [
+            9,
+            7,
+            8,
+            2,
+            8
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 39,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 39,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 39,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 39,
+              "fraction": 1.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 39,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 39,
+              "fraction": 1.0
+            }
+          }
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "stop_gain",
+          "occurrences": 24,
+          "unique_tokens": 23,
+          "samples": 23,
+          "genes": 22,
+          "gene_cells": 23,
+          "fold_samples": [
+            3,
+            6,
+            7,
+            3,
+            4
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 24,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 24,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 24,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 24,
+              "fraction": 1.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 24,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 24,
+              "fraction": 1.0
+            }
+          }
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "synonymous",
+          "occurrences": 67,
+          "unique_tokens": 60,
+          "samples": 47,
+          "genes": 58,
+          "gene_cells": 63,
+          "fold_samples": [
+            5,
+            9,
+            15,
+            6,
+            12
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 67,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 67,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 67,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 67,
+              "fraction": 1.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 67,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 67,
+              "fraction": 1.0
+            }
+          }
+        },
+        {
+          "route": "substitution",
+          "event_type": "missense",
+          "occurrences": 164740,
+          "unique_tokens": 80439,
+          "samples": 6017,
+          "genes": 4222,
+          "gene_cells": 146359,
+          "fold_samples": [
+            1210,
+            1208,
+            1200,
+            1201,
+            1198
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 164740,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 164740,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 164740,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 164740,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 0,
+              "fraction": 0.0
+            }
+          }
+        },
+        {
+          "route": "substitution",
+          "event_type": "no_change",
+          "occurrences": 66883,
+          "unique_tokens": 21609,
+          "samples": 5251,
+          "genes": 4164,
+          "gene_cells": 61493,
+          "fold_samples": [
+            1049,
+            1044,
+            1034,
+            1057,
+            1067
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 66883,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 66883,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 66883,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 66883,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 0,
+              "fraction": 0.0
+            }
+          }
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "occurrences": 13289,
+          "unique_tokens": 6245,
+          "samples": 3266,
+          "genes": 3182,
+          "gene_cells": 12765,
+          "fold_samples": [
+            684,
+            662,
+            632,
+            634,
+            654
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 13289,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 13289,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 13289,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 13289,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 0,
+              "fraction": 0.0
+            }
+          }
+        },
+        {
+          "route": "unresolved",
+          "event_type": "frameshift",
+          "occurrences": 3,
+          "unique_tokens": 3,
+          "samples": 3,
+          "genes": 3,
+          "gene_cells": 3,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            3,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 3,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 3,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "range_endpoints": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 3,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 3,
+              "fraction": 1.0
+            }
+          }
+        },
+        {
+          "route": "unresolved",
+          "event_type": "other_unmappable",
+          "occurrences": 174,
+          "unique_tokens": 133,
+          "samples": 149,
+          "genes": 132,
+          "gene_cells": 164,
+          "fold_samples": [
+            31,
+            33,
+            25,
+            33,
+            27
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "reference": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "alternate": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "range_endpoints": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 174,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 174,
+              "fraction": 1.0
+            }
+          }
+        }
+      ],
+      "subfamilies": [
+        {
+          "route": "deletion",
+          "event_type": "deletion",
+          "subfamily": "single_residue:position_only_single",
+          "occurrences": 2
+        },
+        {
+          "route": "deletion",
+          "event_type": "deletion",
+          "subfamily": "single_residue:residue_aware_single",
+          "occurrences": 1
+        },
+        {
+          "route": "frameshift",
+          "event_type": "frameshift",
+          "subfamily": "ref_alt_before_position",
+          "occurrences": 1217
+        },
+        {
+          "route": "frameshift",
+          "event_type": "frameshift",
+          "subfamily": "short_ref_position",
+          "occurrences": 8616
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "range_replacement",
+          "subfamily": "replacement",
+          "occurrences": 109
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "stop_containing",
+          "subfamily": "later_stop",
+          "occurrences": 39
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "stop_gain",
+          "subfamily": "immediate_stop",
+          "occurrences": 24
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "synonymous",
+          "subfamily": "no_change",
+          "occurrences": 67
+        },
+        {
+          "route": "substitution",
+          "event_type": "missense",
+          "subfamily": "missense",
+          "occurrences": 164740
+        },
+        {
+          "route": "substitution",
+          "event_type": "no_change",
+          "subfamily": "no_change",
+          "occurrences": 66883
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "subfamily": "nonsense",
+          "occurrences": 13289
+        },
+        {
+          "route": "unresolved",
+          "event_type": "frameshift",
+          "subfamily": "frameshift:frameshift",
+          "occurrences": 3
+        },
+        {
+          "route": "unresolved",
+          "event_type": "other_unmappable",
+          "subfamily": "other_unmappable:other",
+          "occurrences": 174
+        }
+      ],
+      "legacy_crosswalk": [
+        {
+          "legacy_family": "complex",
+          "route": "deletion",
+          "event_type": "deletion",
+          "occurrences": 3
+        },
+        {
+          "legacy_family": "complex",
+          "route": "range_replacement",
+          "event_type": "range_replacement",
+          "occurrences": 109
+        },
+        {
+          "legacy_family": "complex",
+          "route": "range_replacement",
+          "event_type": "stop_containing",
+          "occurrences": 39
+        },
+        {
+          "legacy_family": "complex",
+          "route": "range_replacement",
+          "event_type": "stop_gain",
+          "occurrences": 24
+        },
+        {
+          "legacy_family": "complex",
+          "route": "range_replacement",
+          "event_type": "synonymous",
+          "occurrences": 67
+        },
+        {
+          "legacy_family": "complex",
+          "route": "unresolved",
+          "event_type": "other_unmappable",
+          "occurrences": 99
+        },
+        {
+          "legacy_family": "frameshift",
+          "route": "frameshift",
+          "event_type": "frameshift",
+          "occurrences": 9833
+        },
+        {
+          "legacy_family": "frameshift",
+          "route": "unresolved",
+          "event_type": "frameshift",
+          "occurrences": 3
+        },
+        {
+          "legacy_family": "frameshift",
+          "route": "unresolved",
+          "event_type": "other_unmappable",
+          "occurrences": 75
+        },
+        {
+          "legacy_family": "missense",
+          "route": "substitution",
+          "event_type": "missense",
+          "occurrences": 164740
+        },
+        {
+          "legacy_family": "nonsense",
+          "route": "substitution",
+          "event_type": "nonsense",
+          "occurrences": 13289
+        },
+        {
+          "legacy_family": "synonymous",
+          "route": "substitution",
+          "event_type": "no_change",
+          "occurrences": 66883
+        }
+      ],
+      "raw_token_semantic_collision_count": 0,
+      "raw_token_semantic_collisions": {},
+      "normalized_semantic_collision_count": 0,
+      "normalized_semantic_collisions": {},
+      "canonical_equivalence_group_count": 0,
+      "canonical_equivalence_examples": [],
+      "sequence_length_distributions": {
+        "alternate_translated": {
+          "count": 239,
+          "min": 0,
+          "p50": 2,
+          "p90": 2,
+          "p99": 2,
+          "max": 2
+        },
+        "first_new_candidate": {
+          "count": 1217,
+          "min": 1,
+          "p50": 1,
+          "p90": 4,
+          "p99": 9,
+          "max": 13
+        }
+      },
+      "gene_count": 4384
+    },
+    "test": {
+      "dataset": "test",
+      "samples": 2546,
+      "non_wt_gene_cells": 198930,
+      "source_token_count": 337512,
+      "routed_token_count": 337512,
+      "mutation_presence_preserved": true,
+      "parse_statuses": {
+        "complete": 311176,
+        "partial": 25878,
+        "unresolved": 458
+      },
+      "unresolved_reasons": {
+        "frameshift": 1,
+        "nonsense": 30,
+        "other_unmappable": 34,
+        "unknown_reference_substitution": 390,
+        "unresolved": 3
+      },
+      "families": [
+        {
+          "route": "deletion",
+          "event_type": "deletion",
+          "occurrences": 2583,
+          "unique_tokens": 1606,
+          "samples": 520,
+          "genes": 666,
+          "gene_cells": 1485,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 2583,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 2568,
+              "fraction": 0.9941927990708479
+            },
+            "alternate": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "range_endpoints": {
+              "count": 2583,
+              "fraction": 1.0
+            },
+            "length": {
+              "count": 2583,
+              "fraction": 1.0
+            },
+            "stop_semantics": {
+              "count": 2583,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 2583,
+              "fraction": 1.0
+            },
+            "position_eligibility": {
+              "count": 2583,
+              "fraction": 1.0
+            }
+          }
+        },
+        {
+          "route": "delins",
+          "event_type": "delins",
+          "occurrences": 511,
+          "unique_tokens": 231,
+          "samples": 195,
+          "genes": 87,
+          "gene_cells": 224,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 511,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 511,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 511,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 511,
+              "fraction": 1.0
+            },
+            "length": {
+              "count": 511,
+              "fraction": 1.0
+            },
+            "stop_semantics": {
+              "count": 511,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 511,
+              "fraction": 1.0
+            }
+          }
+        },
+        {
+          "route": "delins",
+          "event_type": "nonsense",
+          "occurrences": 30,
+          "unique_tokens": 5,
+          "samples": 28,
+          "genes": 4,
+          "gene_cells": 29,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 30,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 30,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 30,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 30,
+              "fraction": 1.0
+            },
+            "length": {
+              "count": 30,
+              "fraction": 1.0
+            },
+            "stop_semantics": {
+              "count": 30,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 30,
+              "fraction": 1.0
+            }
+          }
+        },
+        {
+          "route": "delins",
+          "event_type": "unresolved",
+          "occurrences": 3,
+          "unique_tokens": 1,
+          "samples": 3,
+          "genes": 1,
+          "gene_cells": 3,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 3,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 3,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 3,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 3,
+              "fraction": 1.0
+            },
+            "length": {
+              "count": 3,
+              "fraction": 1.0
+            },
+            "stop_semantics": {
+              "count": 3,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 3,
+              "fraction": 1.0
+            }
+          }
+        },
+        {
+          "route": "frameshift",
+          "event_type": "frameshift",
+          "occurrences": 25813,
+          "unique_tokens": 15035,
+          "samples": 1642,
+          "genes": 2924,
+          "gene_cells": 13335,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 25813,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 25813,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 22476,
+              "fraction": 0.8707240537713555
+            },
+            "range_endpoints": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 0,
+              "fraction": 0.0
+            }
+          }
+        },
+        {
+          "route": "insertion",
+          "event_type": "insertion",
+          "occurrences": 1142,
+          "unique_tokens": 595,
+          "samples": 345,
+          "genes": 235,
+          "gene_cells": 686,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 1142,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 1142,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 1142,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 1142,
+              "fraction": 1.0
+            },
+            "length": {
+              "count": 1142,
+              "fraction": 1.0
+            },
+            "stop_semantics": {
+              "count": 1142,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 0,
+              "fraction": 0.0
+            }
+          }
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "range_replacement",
+          "occurrences": 20,
+          "unique_tokens": 20,
+          "samples": 16,
+          "genes": 19,
+          "gene_cells": 20,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 20,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 20,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 20,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 20,
+              "fraction": 1.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 20,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 20,
+              "fraction": 1.0
+            }
+          }
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "stop_containing",
+          "occurrences": 9,
+          "unique_tokens": 9,
+          "samples": 9,
+          "genes": 8,
+          "gene_cells": 9,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 9,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 9,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 9,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 9,
+              "fraction": 1.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 9,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 9,
+              "fraction": 1.0
+            }
+          }
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "stop_gain",
+          "occurrences": 2,
+          "unique_tokens": 2,
+          "samples": 2,
+          "genes": 2,
+          "gene_cells": 2,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 2,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 2,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 2,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 2,
+              "fraction": 1.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 2,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 2,
+              "fraction": 1.0
+            }
+          }
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "synonymous",
+          "occurrences": 9,
+          "unique_tokens": 9,
+          "samples": 9,
+          "genes": 9,
+          "gene_cells": 9,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 9,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 9,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 9,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 9,
+              "fraction": 1.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 9,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 9,
+              "fraction": 1.0
+            }
+          }
+        },
+        {
+          "route": "substitution",
+          "event_type": "missense",
+          "occurrences": 201353,
+          "unique_tokens": 87039,
+          "samples": 2485,
+          "genes": 4353,
+          "gene_cells": 121860,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 201353,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 201353,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 201353,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 201353,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 0,
+              "fraction": 0.0
+            }
+          }
+        },
+        {
+          "route": "substitution",
+          "event_type": "no_change",
+          "occurrences": 88724,
+          "unique_tokens": 22079,
+          "samples": 2304,
+          "genes": 4247,
+          "gene_cells": 54495,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 88724,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 88724,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 88724,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 88724,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 0,
+              "fraction": 0.0
+            }
+          }
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "occurrences": 16316,
+          "unique_tokens": 7232,
+          "samples": 1559,
+          "genes": 2742,
+          "gene_cells": 7533,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 16316,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 16316,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 16316,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 16316,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 0,
+              "fraction": 0.0
+            }
+          }
+        },
+        {
+          "route": "substitution",
+          "event_type": "start_codon_affected",
+          "occurrences": 572,
+          "unique_tokens": 6,
+          "samples": 371,
+          "genes": 313,
+          "gene_cells": 572,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 572,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 572,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 572,
+              "fraction": 1.0
+            },
+            "range_endpoints": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 572,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 0,
+              "fraction": 0.0
+            }
+          }
+        },
+        {
+          "route": "substitution",
+          "event_type": "unknown_reference_substitution",
+          "occurrences": 390,
+          "unique_tokens": 323,
+          "samples": 138,
+          "genes": 165,
+          "gene_cells": 220,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 390,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 390,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "range_endpoints": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 390,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 0,
+              "fraction": 0.0
+            }
+          }
+        },
+        {
+          "route": "unresolved",
+          "event_type": "frameshift",
+          "occurrences": 1,
+          "unique_tokens": 1,
+          "samples": 1,
+          "genes": 1,
+          "gene_cells": 1,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 1,
+              "fraction": 1.0
+            },
+            "reference": {
+              "count": 1,
+              "fraction": 1.0
+            },
+            "alternate": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "range_endpoints": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 1,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 1,
+              "fraction": 1.0
+            }
+          }
+        },
+        {
+          "route": "unresolved",
+          "event_type": "other_unmappable",
+          "occurrences": 34,
+          "unique_tokens": 31,
+          "samples": 31,
+          "genes": 27,
+          "gene_cells": 33,
+          "fold_samples": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "field_coverage": {
+            "positions": {
+              "count": 2,
+              "fraction": 0.058823529411764705
+            },
+            "reference": {
+              "count": 2,
+              "fraction": 0.058823529411764705
+            },
+            "alternate": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "range_endpoints": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "length": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "stop_semantics": {
+              "count": 34,
+              "fraction": 1.0
+            },
+            "hgvs_conformance": {
+              "count": 0,
+              "fraction": 0.0
+            },
+            "position_eligibility": {
+              "count": 34,
+              "fraction": 1.0
+            }
+          }
+        }
+      ],
+      "subfamilies": [
+        {
+          "route": "deletion",
+          "event_type": "deletion",
+          "subfamily": "residue_range:position_only_range",
+          "occurrences": 4
+        },
+        {
+          "route": "deletion",
+          "event_type": "deletion",
+          "subfamily": "residue_range:residue_aware_range",
+          "occurrences": 888
+        },
+        {
+          "route": "deletion",
+          "event_type": "deletion",
+          "subfamily": "single_residue:equal_position_range",
+          "occurrences": 11
+        },
+        {
+          "route": "deletion",
+          "event_type": "deletion",
+          "subfamily": "single_residue:residue_aware_single",
+          "occurrences": 1680
+        },
+        {
+          "route": "delins",
+          "event_type": "delins",
+          "subfamily": "residue_range:no_stop",
+          "occurrences": 368
+        },
+        {
+          "route": "delins",
+          "event_type": "delins",
+          "subfamily": "single_position:later_stop",
+          "occurrences": 4
+        },
+        {
+          "route": "delins",
+          "event_type": "delins",
+          "subfamily": "single_position:no_stop",
+          "occurrences": 139
+        },
+        {
+          "route": "delins",
+          "event_type": "nonsense",
+          "subfamily": "single_position:immediate_stop",
+          "occurrences": 30
+        },
+        {
+          "route": "delins",
+          "event_type": "unresolved",
+          "subfamily": "residue_range:later_stop",
+          "occurrences": 3
+        },
+        {
+          "route": "frameshift",
+          "event_type": "frameshift",
+          "subfamily": "ref_alt_before_position",
+          "occurrences": 254
+        },
+        {
+          "route": "frameshift",
+          "event_type": "frameshift",
+          "subfamily": "ref_position_alt",
+          "occurrences": 22222
+        },
+        {
+          "route": "frameshift",
+          "event_type": "frameshift",
+          "subfamily": "short_ref_position",
+          "occurrences": 3337
+        },
+        {
+          "route": "insertion",
+          "event_type": "insertion",
+          "subfamily": "adjacent=True:stop=False",
+          "occurrences": 1142
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "range_replacement",
+          "subfamily": "replacement",
+          "occurrences": 20
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "stop_containing",
+          "subfamily": "later_stop",
+          "occurrences": 9
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "stop_gain",
+          "subfamily": "immediate_stop",
+          "occurrences": 2
+        },
+        {
+          "route": "range_replacement",
+          "event_type": "synonymous",
+          "subfamily": "no_change",
+          "occurrences": 9
+        },
+        {
+          "route": "substitution",
+          "event_type": "missense",
+          "subfamily": "missense",
+          "occurrences": 201353
+        },
+        {
+          "route": "substitution",
+          "event_type": "no_change",
+          "subfamily": "no_change",
+          "occurrences": 88724
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "subfamily": "nonsense",
+          "occurrences": 16316
+        },
+        {
+          "route": "substitution",
+          "event_type": "start_codon_affected",
+          "subfamily": "start_codon_affected",
+          "occurrences": 572
+        },
+        {
+          "route": "substitution",
+          "event_type": "unknown_reference_substitution",
+          "subfamily": "unknown_reference_substitution",
+          "occurrences": 390
+        },
+        {
+          "route": "unresolved",
+          "event_type": "frameshift",
+          "subfamily": "frameshift:frameshift",
+          "occurrences": 1
+        },
+        {
+          "route": "unresolved",
+          "event_type": "other_unmappable",
+          "subfamily": "other_unmappable:other",
+          "occurrences": 34
+        }
+      ],
+      "legacy_crosswalk": [
+        {
+          "legacy_family": "complex",
+          "route": "deletion",
+          "event_type": "deletion",
+          "occurrences": 2583
+        },
+        {
+          "legacy_family": "complex",
+          "route": "delins",
+          "event_type": "delins",
+          "occurrences": 511
+        },
+        {
+          "legacy_family": "complex",
+          "route": "delins",
+          "event_type": "nonsense",
+          "occurrences": 30
+        },
+        {
+          "legacy_family": "complex",
+          "route": "delins",
+          "event_type": "unresolved",
+          "occurrences": 3
+        },
+        {
+          "legacy_family": "complex",
+          "route": "frameshift",
+          "event_type": "frameshift",
+          "occurrences": 1
+        },
+        {
+          "legacy_family": "complex",
+          "route": "insertion",
+          "event_type": "insertion",
+          "occurrences": 1142
+        },
+        {
+          "legacy_family": "complex",
+          "route": "range_replacement",
+          "event_type": "range_replacement",
+          "occurrences": 20
+        },
+        {
+          "legacy_family": "complex",
+          "route": "range_replacement",
+          "event_type": "stop_containing",
+          "occurrences": 9
+        },
+        {
+          "legacy_family": "complex",
+          "route": "range_replacement",
+          "event_type": "stop_gain",
+          "occurrences": 2
+        },
+        {
+          "legacy_family": "complex",
+          "route": "range_replacement",
+          "event_type": "synonymous",
+          "occurrences": 9
+        },
+        {
+          "legacy_family": "complex",
+          "route": "substitution",
+          "event_type": "nonsense",
+          "occurrences": 14355
+        },
+        {
+          "legacy_family": "complex",
+          "route": "substitution",
+          "event_type": "unknown_reference_substitution",
+          "occurrences": 390
+        },
+        {
+          "legacy_family": "complex",
+          "route": "unresolved",
+          "event_type": "other_unmappable",
+          "occurrences": 15
+        },
+        {
+          "legacy_family": "frameshift",
+          "route": "frameshift",
+          "event_type": "frameshift",
+          "occurrences": 25812
+        },
+        {
+          "legacy_family": "frameshift",
+          "route": "unresolved",
+          "event_type": "frameshift",
+          "occurrences": 1
+        },
+        {
+          "legacy_family": "frameshift",
+          "route": "unresolved",
+          "event_type": "other_unmappable",
+          "occurrences": 19
+        },
+        {
+          "legacy_family": "missense",
+          "route": "substitution",
+          "event_type": "missense",
+          "occurrences": 201353
+        },
+        {
+          "legacy_family": "missense",
+          "route": "substitution",
+          "event_type": "start_codon_affected",
+          "occurrences": 572
+        },
+        {
+          "legacy_family": "nonsense",
+          "route": "substitution",
+          "event_type": "nonsense",
+          "occurrences": 1961
+        },
+        {
+          "legacy_family": "synonymous",
+          "route": "substitution",
+          "event_type": "no_change",
+          "occurrences": 88724
+        }
+      ],
+      "raw_token_semantic_collision_count": 0,
+      "raw_token_semantic_collisions": {},
+      "normalized_semantic_collision_count": 0,
+      "normalized_semantic_collisions": {},
+      "canonical_equivalence_group_count": 924,
+      "canonical_equivalence_examples": [
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "C112*",
+          "raw_forms": [
+            "C112*",
+            "C112X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "C211*",
+          "raw_forms": [
+            "C211*",
+            "C211X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "C266*",
+          "raw_forms": [
+            "C266*",
+            "C266X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "C276*",
+          "raw_forms": [
+            "C276*",
+            "C276X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "C277*",
+          "raw_forms": [
+            "C277*",
+            "C277X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "C3*",
+          "raw_forms": [
+            "C3*",
+            "C3X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "C66*",
+          "raw_forms": [
+            "C66*",
+            "C66X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "E100*",
+          "raw_forms": [
+            "E100*",
+            "E100X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "E1013*",
+          "raw_forms": [
+            "E1013*",
+            "E1013X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "E102*",
+          "raw_forms": [
+            "E102*",
+            "E102X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "E1024*",
+          "raw_forms": [
+            "E1024*",
+            "E1024X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "E105*",
+          "raw_forms": [
+            "E105*",
+            "E105X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "E106*",
+          "raw_forms": [
+            "E106*",
+            "E106X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "E108*",
+          "raw_forms": [
+            "E108*",
+            "E108X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "E1129*",
+          "raw_forms": [
+            "E1129*",
+            "E1129X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "E1130*",
+          "raw_forms": [
+            "E1130*",
+            "E1130X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "E114*",
+          "raw_forms": [
+            "E114*",
+            "E114X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "E115*",
+          "raw_forms": [
+            "E115*",
+            "E115X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "E1158*",
+          "raw_forms": [
+            "E1158*",
+            "E1158X"
+          ]
+        },
+        {
+          "route": "substitution",
+          "event_type": "nonsense",
+          "normalized_token": "E116*",
+          "raw_forms": [
+            "E116*",
+            "E116X"
+          ]
+        }
+      ],
+      "sequence_length_distributions": {
+        "alternate_raw": {
+          "count": 544,
+          "min": 1,
+          "p50": 1,
+          "p90": 61,
+          "p99": 794,
+          "max": 1148
+        },
+        "alternate_translated": {
+          "count": 584,
+          "min": 0,
+          "p50": 1,
+          "p90": 47,
+          "p99": 794,
+          "max": 1148
+        },
+        "first_new_candidate": {
+          "count": 22476,
+          "min": 1,
+          "p50": 1,
+          "p90": 1,
+          "p99": 1,
+          "max": 11
+        },
+        "inserted": {
+          "count": 1142,
+          "min": 1,
+          "p50": 2,
+          "p90": 12,
+          "p99": 309,
+          "max": 309
+        }
+      },
+      "gene_count": 4384
+    }
+  },
+  "support_decisions": [
+    {
+      "route": "deletion",
+      "event_type": "deletion",
+      "train_occurrences": 3,
+      "train_unique_tokens": 3,
+      "train_samples": 3,
+      "train_genes": 3,
+      "train_gene_cells": 3,
+      "train_fold_samples": [
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "test_occurrences": 2583,
+      "test_unique_tokens": 1606,
+      "test_samples": 520,
+      "test_genes": 666,
+      "test_gene_cells": 1485,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "canonical fold support is below 5 samples"
+    },
+    {
+      "route": "delins",
+      "event_type": "delins",
+      "train_occurrences": 0,
+      "train_unique_tokens": 0,
+      "train_samples": 0,
+      "train_genes": 0,
+      "train_gene_cells": 0,
+      "train_fold_samples": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "test_occurrences": 511,
+      "test_unique_tokens": 231,
+      "test_samples": 195,
+      "test_genes": 87,
+      "test_gene_cells": 224,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "family has zero train samples"
+    },
+    {
+      "route": "delins",
+      "event_type": "nonsense",
+      "train_occurrences": 0,
+      "train_unique_tokens": 0,
+      "train_samples": 0,
+      "train_genes": 0,
+      "train_gene_cells": 0,
+      "train_fold_samples": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "test_occurrences": 30,
+      "test_unique_tokens": 5,
+      "test_samples": 28,
+      "test_genes": 4,
+      "test_gene_cells": 29,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "family has zero train samples"
+    },
+    {
+      "route": "delins",
+      "event_type": "unresolved",
+      "train_occurrences": 0,
+      "train_unique_tokens": 0,
+      "train_samples": 0,
+      "train_genes": 0,
+      "train_gene_cells": 0,
+      "train_fold_samples": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "test_occurrences": 3,
+      "test_unique_tokens": 1,
+      "test_samples": 3,
+      "test_genes": 1,
+      "test_gene_cells": 3,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "family has zero train samples"
+    },
+    {
+      "route": "frameshift",
+      "event_type": "frameshift",
+      "train_occurrences": 9833,
+      "train_unique_tokens": 6546,
+      "train_samples": 3274,
+      "train_genes": 2719,
+      "train_gene_cells": 9463,
+      "train_fold_samples": [
+        644,
+        651,
+        666,
+        647,
+        666
+      ],
+      "test_occurrences": 25813,
+      "test_unique_tokens": 15035,
+      "test_samples": 1642,
+      "test_genes": 2924,
+      "test_gene_cells": 13335,
+      "decision": "EXPERIMENT_ELIGIBLE",
+      "reason": "mechanical train/fold support gate passed; performance is untested"
+    },
+    {
+      "route": "insertion",
+      "event_type": "insertion",
+      "train_occurrences": 0,
+      "train_unique_tokens": 0,
+      "train_samples": 0,
+      "train_genes": 0,
+      "train_gene_cells": 0,
+      "train_fold_samples": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "test_occurrences": 1142,
+      "test_unique_tokens": 595,
+      "test_samples": 345,
+      "test_genes": 235,
+      "test_gene_cells": 686,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "family has zero train samples"
+    },
+    {
+      "route": "range_replacement",
+      "event_type": "range_replacement",
+      "train_occurrences": 109,
+      "train_unique_tokens": 103,
+      "train_samples": 101,
+      "train_genes": 98,
+      "train_gene_cells": 108,
+      "train_fold_samples": [
+        11,
+        22,
+        23,
+        24,
+        21
+      ],
+      "test_occurrences": 20,
+      "test_unique_tokens": 20,
+      "test_samples": 16,
+      "test_genes": 19,
+      "test_gene_cells": 20,
+      "decision": "EXPERIMENT_ELIGIBLE",
+      "reason": "mechanical train/fold support gate passed; performance is untested"
+    },
+    {
+      "route": "range_replacement",
+      "event_type": "stop_containing",
+      "train_occurrences": 39,
+      "train_unique_tokens": 36,
+      "train_samples": 34,
+      "train_genes": 32,
+      "train_gene_cells": 39,
+      "train_fold_samples": [
+        9,
+        7,
+        8,
+        2,
+        8
+      ],
+      "test_occurrences": 9,
+      "test_unique_tokens": 9,
+      "test_samples": 9,
+      "test_genes": 8,
+      "test_gene_cells": 9,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "canonical fold support is below 5 samples"
+    },
+    {
+      "route": "range_replacement",
+      "event_type": "stop_gain",
+      "train_occurrences": 24,
+      "train_unique_tokens": 23,
+      "train_samples": 23,
+      "train_genes": 22,
+      "train_gene_cells": 23,
+      "train_fold_samples": [
+        3,
+        6,
+        7,
+        3,
+        4
+      ],
+      "test_occurrences": 2,
+      "test_unique_tokens": 2,
+      "test_samples": 2,
+      "test_genes": 2,
+      "test_gene_cells": 2,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "canonical fold support is below 5 samples"
+    },
+    {
+      "route": "range_replacement",
+      "event_type": "synonymous",
+      "train_occurrences": 67,
+      "train_unique_tokens": 60,
+      "train_samples": 47,
+      "train_genes": 58,
+      "train_gene_cells": 63,
+      "train_fold_samples": [
+        5,
+        9,
+        15,
+        6,
+        12
+      ],
+      "test_occurrences": 9,
+      "test_unique_tokens": 9,
+      "test_samples": 9,
+      "test_genes": 9,
+      "test_gene_cells": 9,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "train support is below 50 samples"
+    },
+    {
+      "route": "substitution",
+      "event_type": "missense",
+      "train_occurrences": 164740,
+      "train_unique_tokens": 80439,
+      "train_samples": 6017,
+      "train_genes": 4222,
+      "train_gene_cells": 146359,
+      "train_fold_samples": [
+        1210,
+        1208,
+        1200,
+        1201,
+        1198
+      ],
+      "test_occurrences": 201353,
+      "test_unique_tokens": 87039,
+      "test_samples": 2485,
+      "test_genes": 4353,
+      "test_gene_cells": 121860,
+      "decision": "EXPERIMENT_ELIGIBLE",
+      "reason": "mechanical train/fold support gate passed; performance is untested"
+    },
+    {
+      "route": "substitution",
+      "event_type": "no_change",
+      "train_occurrences": 66883,
+      "train_unique_tokens": 21609,
+      "train_samples": 5251,
+      "train_genes": 4164,
+      "train_gene_cells": 61493,
+      "train_fold_samples": [
+        1049,
+        1044,
+        1034,
+        1057,
+        1067
+      ],
+      "test_occurrences": 88724,
+      "test_unique_tokens": 22079,
+      "test_samples": 2304,
+      "test_genes": 4247,
+      "test_gene_cells": 54495,
+      "decision": "EXPERIMENT_ELIGIBLE",
+      "reason": "mechanical train/fold support gate passed; performance is untested"
+    },
+    {
+      "route": "substitution",
+      "event_type": "nonsense",
+      "train_occurrences": 13289,
+      "train_unique_tokens": 6245,
+      "train_samples": 3266,
+      "train_genes": 3182,
+      "train_gene_cells": 12765,
+      "train_fold_samples": [
+        684,
+        662,
+        632,
+        634,
+        654
+      ],
+      "test_occurrences": 16316,
+      "test_unique_tokens": 7232,
+      "test_samples": 1559,
+      "test_genes": 2742,
+      "test_gene_cells": 7533,
+      "decision": "EXPERIMENT_ELIGIBLE",
+      "reason": "mechanical train/fold support gate passed; performance is untested"
+    },
+    {
+      "route": "substitution",
+      "event_type": "start_codon_affected",
+      "train_occurrences": 0,
+      "train_unique_tokens": 0,
+      "train_samples": 0,
+      "train_genes": 0,
+      "train_gene_cells": 0,
+      "train_fold_samples": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "test_occurrences": 572,
+      "test_unique_tokens": 6,
+      "test_samples": 371,
+      "test_genes": 313,
+      "test_gene_cells": 572,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "family has zero train samples"
+    },
+    {
+      "route": "substitution",
+      "event_type": "unknown_reference_substitution",
+      "train_occurrences": 0,
+      "train_unique_tokens": 0,
+      "train_samples": 0,
+      "train_genes": 0,
+      "train_gene_cells": 0,
+      "train_fold_samples": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "test_occurrences": 390,
+      "test_unique_tokens": 323,
+      "test_samples": 138,
+      "test_genes": 165,
+      "test_gene_cells": 220,
+      "decision": "ANALYSIS_ONLY",
+      "reason": "family has zero train samples"
+    },
+    {
+      "route": "unresolved",
+      "event_type": "frameshift",
+      "train_occurrences": 3,
+      "train_unique_tokens": 3,
+      "train_samples": 3,
+      "train_genes": 3,
+      "train_gene_cells": 3,
+      "train_fold_samples": [
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      "test_occurrences": 1,
+      "test_unique_tokens": 1,
+      "test_samples": 1,
+      "test_genes": 1,
+      "test_gene_cells": 1,
+      "decision": "UNRESOLVED_ONLY",
+      "reason": "semantic route is unresolved and remains provenance/QC only"
+    },
+    {
+      "route": "unresolved",
+      "event_type": "other_unmappable",
+      "train_occurrences": 174,
+      "train_unique_tokens": 133,
+      "train_samples": 149,
+      "train_genes": 132,
+      "train_gene_cells": 164,
+      "train_fold_samples": [
+        31,
+        33,
+        25,
+        33,
+        27
+      ],
+      "test_occurrences": 34,
+      "test_unique_tokens": 31,
+      "test_samples": 31,
+      "test_genes": 27,
+      "test_gene_cells": 33,
+      "decision": "UNRESOLVED_ONLY",
+      "reason": "semantic route is unresolved and remains provenance/QC only"
+    }
+  ]
+}
