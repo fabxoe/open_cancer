@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Parser v4 semantic completeness audit",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "audit_version",
+    "issue",
+    "analysis_only",
+    "parser_contract",
+    "inputs",
+    "constraints",
+    "datasets",
+    "support_decisions"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "audit_version": {"type": "string", "minLength": 1},
+    "issue": {"const": 424},
+    "analysis_only": {"const": true},
+    "parser_contract": {"type": "object"},
+    "inputs": {"type": "object"},
+    "constraints": {
+      "type": "object",
+      "required": [
+        "subclass_used",
+        "public_lb_used",
+        "test_prevalence_used_for_decision",
+        "raw_tokens_preserved",
+        "model_trained"
+      ],
+      "properties": {
+        "subclass_used": {"const": false},
+        "public_lb_used": {"const": false},
+        "test_prevalence_used_for_decision": {"const": false},
+        "raw_tokens_preserved": {"const": true},
+        "model_trained": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "datasets": {
+      "type": "object",
+      "required": ["train", "test"],
+      "properties": {
+        "train": {"$ref": "#/$defs/dataset"},
+        "test": {"$ref": "#/$defs/dataset"}
+      },
+      "additionalProperties": false
+    },
+    "support_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "route", "event_type", "train_occurrences", "train_samples",
+          "train_fold_samples", "test_occurrences", "decision", "reason"
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "dataset": {
+      "type": "object",
+      "required": [
+        "dataset", "samples", "gene_count", "source_token_count",
+        "routed_token_count", "mutation_presence_preserved", "parse_statuses",
+        "families", "subfamilies", "legacy_crosswalk",
+        "raw_token_semantic_collision_count",
+        "normalized_semantic_collision_count",
+        "sequence_length_distributions"
+      ],
+      "properties": {
+        "source_token_count": {"type": "integer", "minimum": 0},
+        "routed_token_count": {"type": "integer", "minimum": 0},
+        "mutation_presence_preserved": {"const": true},
+        "raw_token_semantic_collision_count": {"const": 0},
+        "normalized_semantic_collision_count": {"const": 0}
+      }
+    }
+  }
+}

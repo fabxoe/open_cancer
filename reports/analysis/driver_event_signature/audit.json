@@ -1,0 +1,139 @@
+{
+  "signature_version": "1.0.0",
+  "issue": 390,
+  "catalog": "knowledge/known_driver_protein_events_v1.json",
+  "catalog_sha256": "77dcc92441f2de2986593718eeb6472e002cabbf6b088ec6fef9d7fb56214151",
+  "annotation_cache": "data/external/ensembl_release_116/competition_gene_isoform_index.json",
+  "annotation_cache_sha256": "b9565339f1755d5b07e782c39064207310fa6c254b2e915a15492f4f38903daa",
+  "case": {
+    "dataset": "test",
+    "sample_id": "TEST_2438",
+    "gene": "EGFR",
+    "summary": {
+      "driver_presence": 1,
+      "independent_driver_event_count": 1,
+      "annotation_multiplicity": 4,
+      "exact_match_count": 1,
+      "isoform_projected_count": 2,
+      "family_level_count": 1,
+      "canonical_signatures": [
+        "ENSG00000146648.23|ENST00000275493.7|I740_K745dup|EGFR_exon19_IPVAIK_inframe_duplication"
+      ],
+      "raw_tokens": [
+        "K692_E693insIPVAIK",
+        "K745_E746insIPVAIK",
+        "K478_E479insIPVAIK",
+        "K700_E701insIPVAIK"
+      ],
+      "matches": [
+        {
+          "raw_token": "K692_E693insIPVAIK",
+          "normalized_token": "K692_E693INSIPVAIK",
+          "event_id": "EGFR_EXON19_IPVAIK_DUP",
+          "canonical_signature": "ENSG00000146648.23|ENST00000275493.7|I740_K745dup|EGFR_exon19_IPVAIK_inframe_duplication",
+          "canonical_protein_event": "I740_K745dup",
+          "driver_presence": 1,
+          "annotation_multiplicity": 1,
+          "equivalence_confidence": "ISOFORM_PROJECTED",
+          "exact_coordinate_equivalence": false,
+          "reference_validated": true,
+          "matched_transcript_ids": [
+            "ENST00000450046"
+          ],
+          "matched_protein_ids": [
+            "ENSP00000413354"
+          ],
+          "reason": "fixed alternative isoform confirms the same tandem-copy product; canonical coordinates come from the catalog reference transcript"
+        },
+        {
+          "raw_token": "K745_E746insIPVAIK",
+          "normalized_token": "K745_E746INSIPVAIK",
+          "event_id": "EGFR_EXON19_IPVAIK_DUP",
+          "canonical_signature": "ENSG00000146648.23|ENST00000275493.7|I740_K745dup|EGFR_exon19_IPVAIK_inframe_duplication",
+          "canonical_protein_event": "I740_K745dup",
+          "driver_presence": 1,
+          "annotation_multiplicity": 1,
+          "equivalence_confidence": "EXACT",
+          "exact_coordinate_equivalence": true,
+          "reference_validated": true,
+          "matched_transcript_ids": [
+            "ENST00000275493"
+          ],
+          "matched_protein_ids": [
+            "ENSP00000275493"
+          ],
+          "reason": "fixed MANE/reference coordinates equal the catalog event"
+        },
+        {
+          "raw_token": "K478_E479insIPVAIK",
+          "normalized_token": "K478_E479INSIPVAIK",
+          "event_id": "EGFR_EXON19_IPVAIK_DUP",
+          "canonical_signature": "ENSG00000146648.23|ENST00000275493.7|I740_K745dup|EGFR_exon19_IPVAIK_inframe_duplication",
+          "canonical_protein_event": "I740_K745dup",
+          "driver_presence": 1,
+          "annotation_multiplicity": 1,
+          "equivalence_confidence": "FAMILY_LEVEL",
+          "exact_coordinate_equivalence": false,
+          "reference_validated": false,
+          "matched_transcript_ids": [],
+          "matched_protein_ids": [],
+          "reason": "gene and inserted peptide match the fixed driver family, but the observed coordinates lack reference confirmation"
+        },
+        {
+          "raw_token": "K700_E701insIPVAIK",
+          "normalized_token": "K700_E701INSIPVAIK",
+          "event_id": "EGFR_EXON19_IPVAIK_DUP",
+          "canonical_signature": "ENSG00000146648.23|ENST00000275493.7|I740_K745dup|EGFR_exon19_IPVAIK_inframe_duplication",
+          "canonical_protein_event": "I740_K745dup",
+          "driver_presence": 1,
+          "annotation_multiplicity": 1,
+          "equivalence_confidence": "ISOFORM_PROJECTED",
+          "exact_coordinate_equivalence": false,
+          "reference_validated": true,
+          "matched_transcript_ids": [
+            "ENST00000455089"
+          ],
+          "matched_protein_ids": [
+            "ENSP00000415559"
+          ],
+          "reason": "fixed alternative isoform confirms the same tandem-copy product; canonical coordinates come from the catalog reference transcript"
+        }
+      ]
+    }
+  },
+  "feature_overlap": {
+    "pathway_memberships": [
+      "rtk_ras"
+    ],
+    "pathway_overlap": true,
+    "pathway_interpretation": "Existing pathway features know that EGFR belongs to RTK-RAS, but not that four annotations encode one IPVAIK driver family.",
+    "existing_hotspot_positions": [
+      790,
+      858
+    ],
+    "canonical_event_source_positions": [
+      740,
+      741,
+      742,
+      743,
+      744,
+      745
+    ],
+    "direct_hotspot_overlap": false,
+    "hotspot_interpretation": "Existing EGFR T790/L858 point hotspots do not encode this range insertion/duplication event."
+  },
+  "invariants": {
+    "raw_tokens_preserved": true,
+    "driver_presence_preserved": true,
+    "annotation_multiplicity_preserved": true,
+    "one_independent_driver_signature": true,
+    "no_target_or_public_lb_used": true,
+    "no_model_feature_changed": true
+  },
+  "interpretation_limits": [
+    "FAMILY_LEVEL is not an exact coordinate-equivalence claim.",
+    "A sequence-compatible isoform does not prove tumour expression.",
+    "Driver presence does not infer tumour class or treatment response.",
+    "This audit does not replace raw annotations or existing features."
+  ]
+}

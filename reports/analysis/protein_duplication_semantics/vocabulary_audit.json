@@ -1,0 +1,855 @@
+{
+  "parser_version": "4.0.0",
+  "target_used": false,
+  "test_distribution_used_for_rule": false,
+  "train": {
+    "dataset": "train",
+    "rows": 6201,
+    "gene_columns": 4384,
+    "source_tokens": 255164,
+    "pure_insertion_occurrences": 0,
+    "pure_insertion_unique_tokens": 0,
+    "pure_insertion_genes": 0,
+    "pure_insertion_samples": 0,
+    "parse_status_counts": {},
+    "duplication_status_counts": {},
+    "semantic_event_counts": {},
+    "status_sample_counts": {},
+    "top_tokens": [],
+    "top_genes": []
+  },
+  "test": {
+    "dataset": "test",
+    "rows": 2546,
+    "gene_columns": 4384,
+    "source_tokens": 337512,
+    "pure_insertion_occurrences": 1142,
+    "pure_insertion_unique_tokens": 595,
+    "pure_insertion_genes": 235,
+    "pure_insertion_samples": 345,
+    "parse_status_counts": {
+      "complete": 1092,
+      "partial": 50
+    },
+    "duplication_status_counts": {
+      "REFERENCE_CONFIRMED": 753,
+      "REJECTED": 265,
+      "STRONG_TOKEN_CANDIDATE": 3,
+      "UNRESOLVED_ISOFORM": 121
+    },
+    "semantic_event_counts": {
+      "insertion": 370,
+      "tandem_duplication": 772
+    },
+    "status_sample_counts": {
+      "REFERENCE_CONFIRMED": 253,
+      "REJECTED": 140,
+      "STRONG_TOKEN_CANDIDATE": 2,
+      "UNRESOLVED_ISOFORM": 49
+    },
+    "top_tokens": [
+      {
+        "token": "K538_G539INSK",
+        "occurrences": 22
+      },
+      {
+        "token": "T60_W61INSCADNT",
+        "occurrences": 11
+      },
+      {
+        "token": "G679_680INSRLSYPHPGTDNLLMLNARSYGRRRGRSSLFPIDDGLLDDGHSDQVGVLNSPTCYSAHQNGERIERFSRKVFVGGLPPDIDEDEITASFRRFGPLVVDWPHKAESKSYFPPKGYAFLLFQEESSVQALIDACIEEDGKLYLCVSSPTIKDKPVQIRPWNLSDSDFVMDGSQPLDPRKTIFVGGVPRPLRAVELAMIMDRLYGGVCYAGIDTDPELKYPKGAGRVAFSNQQSYIAAISARFVQLQHGDIDKRVEVKPYVLDDQMCDECQGARCGGKFAPFFVPMSLACSITVSFVGQISTLVLDVSSISHW",
+        "occurrences": 9
+      },
+      {
+        "token": "G679_680INSRLSYPHPGTDNLLMLNGRSSLFPIDDGLLDDGHSDQVGVLNSPTCYSAHQNGERIERFSRKVFVGGLPPDIDEDEITASFRRFGPLVVDWPHKAESKSYFPPKGYAFLLFQEESSVQALIDACIEEDGKLYLCVSSPTIKDKPVQIRPWNLSDSDFVMDGSQPLDPRKTIFVGGVPRPLRAVELAMIMDRLYGGVCYAGIDTDPELKYPKGAGRVAFSNQQSYIAAISARFVQLQHGDIDKRVEVKPYVLDDQMCDECQGARCGGKFAPFFVPMSLACSITVSFVGQISTLVLDVSSISHW",
+        "occurrences": 9
+      },
+      {
+        "token": "G682_683INSRLSYPHPGTDNLLMLNARSYGRRRGRSSLFPIDDGLLDDGHSDQVGVLNSPTCYSAHQNGERIERFSRKVFVGGLPPDIDEDEITASFRRFGPLVVDWPHKAESKSYFPPKGYAFLLFQEESSVQALIDACIEEDGKLYLCVSSPTIKDKPVQIRPWNLSDSDFVMDGSQPLDPRKTIFVGGVPRPLRAVELAMIMDRLYGGVCYAGIDTDPELKYPKGAGRVAFSNQQSYIAAISARFVQLQHGDIDKRVEVKPYVLDDQMCDECQGARCGGKFAPFFVPMSLACSITVSFVGQISTLVLDVSSISHW",
+        "occurrences": 9
+      },
+      {
+        "token": "G682_683INSRLSYPHPGTDNLLMLNGRSSLFPIDDGLLDDGHSDQVGVLNSPTCYSAHQNGERIERFSRKVFVGGLPPDIDEDEITASFRRFGPLVVDWPHKAESKSYFPPKGYAFLLFQEESSVQALIDACIEEDGKLYLCVSSPTIKDKPVQIRPWNLSDSDFVMDGSQPLDPRKTIFVGGVPRPLRAVELAMIMDRLYGGVCYAGIDTDPELKYPKGAGRVAFSNQQSYIAAISARFVQLQHGDIDKRVEVKPYVLDDQMCDECQGARCGGKFAPFFVPMSLACSITVSFVGQISTLVLDVSSISHW",
+        "occurrences": 9
+      },
+      {
+        "token": "G709_710INSRLSYPHPGTDNLLMLNGRSSLFPIDDGLLDDGHSDQVGVLNSPTCYSAHQNGERIERFSRKVFVGGLPPDIDEDEITASFRRFGPLVVDWPHKAESKSYFPPKGYAFLLFQEESSVQALIDACIEEDGKLYLCVSSPTIKDKPVQIRPWNLSDSDFVMDGSQPLDPRKTIFVGGVPRPLRAVELAMIMDRLYGGVCYAGIDTDPELKYPKGAGRVAFSNQQSYIAAISARFVQLQHGDIDKRVEVKPYVLDDQMCDECQGARCGGKFAPFFVPMSLACSITVSFVGQISTLVLDVSSISHW",
+        "occurrences": 9
+      },
+      {
+        "token": "P182_P183INSHP",
+        "occurrences": 9
+      },
+      {
+        "token": "P196_P197INSHP",
+        "occurrences": 9
+      },
+      {
+        "token": "P231_P232INSHP",
+        "occurrences": 9
+      },
+      {
+        "token": "P77_P78INSHP",
+        "occurrences": 9
+      },
+      {
+        "token": "Q208_H209INSQ",
+        "occurrences": 9
+      },
+      {
+        "token": "A480_A481INSPA",
+        "occurrences": 8
+      },
+      {
+        "token": "A50_A51INSPA",
+        "occurrences": 8
+      },
+      {
+        "token": "G456_Q457INSG",
+        "occurrences": 8
+      },
+      {
+        "token": "P93_Q94INSP",
+        "occurrences": 8
+      },
+      {
+        "token": "Q62_A63INSQQQ",
+        "occurrences": 8
+      },
+      {
+        "token": "A159_K160INSAA",
+        "occurrences": 7
+      },
+      {
+        "token": "A159_K160INSAAA",
+        "occurrences": 7
+      },
+      {
+        "token": "G45_G46INSDFGGG",
+        "occurrences": 7
+      },
+      {
+        "token": "Q509_P510INSQQ",
+        "occurrences": 7
+      },
+      {
+        "token": "Q510_P511INSQQ",
+        "occurrences": 7
+      },
+      {
+        "token": "S261_P262INSQEPPDTTSQEPPDTTS",
+        "occurrences": 7
+      },
+      {
+        "token": "S31_Q32INSPS",
+        "occurrences": 7
+      },
+      {
+        "token": "A159_K160INSAAAAA",
+        "occurrences": 6
+      },
+      {
+        "token": "D261_V262INSDD",
+        "occurrences": 6
+      },
+      {
+        "token": "Q374_Q375INSPLGPAKPPA",
+        "occurrences": 6
+      },
+      {
+        "token": "Q506_L507INSERREQQ",
+        "occurrences": 6
+      },
+      {
+        "token": "Q509_P510INSQ",
+        "occurrences": 6
+      },
+      {
+        "token": "Q510_P511INSQ",
+        "occurrences": 6
+      },
+      {
+        "token": "R1192_Q1193INSR",
+        "occurrences": 6
+      },
+      {
+        "token": "T967_S968INSVSCGVGQGAGGGWEHSDNLYPESIT",
+        "occurrences": 6
+      },
+      {
+        "token": "A159_K160INSAAAAAAA",
+        "occurrences": 5
+      },
+      {
+        "token": "D261_V262INSD",
+        "occurrences": 5
+      },
+      {
+        "token": "D277_E278INSD",
+        "occurrences": 5
+      },
+      {
+        "token": "G380_A381INSG",
+        "occurrences": 5
+      },
+      {
+        "token": "L21_L22INSPLL",
+        "occurrences": 5
+      },
+      {
+        "token": "M1_F2INSL",
+        "occurrences": 5
+      },
+      {
+        "token": "P10_Q11INSP",
+        "occurrences": 5
+      },
+      {
+        "token": "P264_L265INSPPP",
+        "occurrences": 5
+      },
+      {
+        "token": "Q118_L119INSQ",
+        "occurrences": 5
+      },
+      {
+        "token": "Q1218_R1219INSQ",
+        "occurrences": 5
+      },
+      {
+        "token": "Q1328_R1329INSQ",
+        "occurrences": 5
+      },
+      {
+        "token": "Q225_H226INSQ",
+        "occurrences": 5
+      },
+      {
+        "token": "Q524_R525INSQ",
+        "occurrences": 5
+      },
+      {
+        "token": "Q80_E81INSQ",
+        "occurrences": 5
+      },
+      {
+        "token": "R363_S364INSR",
+        "occurrences": 5
+      },
+      {
+        "token": "R402_S403INSR",
+        "occurrences": 5
+      },
+      {
+        "token": "R403_S404INSR",
+        "occurrences": 5
+      },
+      {
+        "token": "R451_S452INSR",
+        "occurrences": 5
+      },
+      {
+        "token": "R452_S453INSR",
+        "occurrences": 5
+      },
+      {
+        "token": "R471_S472INSR",
+        "occurrences": 5
+      },
+      {
+        "token": "A159_K160INSA",
+        "occurrences": 4
+      },
+      {
+        "token": "A27_P28INSHSA",
+        "occurrences": 4
+      },
+      {
+        "token": "A429_G430INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A499_G500INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A689_G690INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A715_G716INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A742_G743INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A745_G746INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A759_G760INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A760_G761INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A761_G762INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A763_G764INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A772_G773INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A774_G775INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A775_G776INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A782_G783INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A785_G786INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A800_G801INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A802_G803INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A809_G810INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "A814_G815INSYVMA",
+        "occurrences": 4
+      },
+      {
+        "token": "D1020_D1021INSE",
+        "occurrences": 4
+      },
+      {
+        "token": "D1040_D1041INSE",
+        "occurrences": 4
+      },
+      {
+        "token": "E239_S240INSPPNTTSPE",
+        "occurrences": 4
+      },
+      {
+        "token": "G16_S17INSG",
+        "occurrences": 4
+      },
+      {
+        "token": "G45_G46INSDFGGGDFGGG",
+        "occurrences": 4
+      },
+      {
+        "token": "Q49_D50INSFF",
+        "occurrences": 4
+      },
+      {
+        "token": "Q80_E81INSQQ",
+        "occurrences": 4
+      },
+      {
+        "token": "V249_N250INSKK",
+        "occurrences": 4
+      },
+      {
+        "token": "V267_N268INSKK",
+        "occurrences": 4
+      },
+      {
+        "token": "V52_N53INSKK",
+        "occurrences": 4
+      },
+      {
+        "token": "D788_G789INSD",
+        "occurrences": 3
+      },
+      {
+        "token": "E208_D209INSFFN",
+        "occurrences": 3
+      },
+      {
+        "token": "E221_D222INSE",
+        "occurrences": 3
+      },
+      {
+        "token": "E250_D251INSFFN",
+        "occurrences": 3
+      },
+      {
+        "token": "E257_D258INSFFN",
+        "occurrences": 3
+      },
+      {
+        "token": "E289_D290INSFFN",
+        "occurrences": 3
+      },
+      {
+        "token": "E28_A29INSE",
+        "occurrences": 3
+      },
+      {
+        "token": "E28_A29INSEEEE",
+        "occurrences": 3
+      },
+      {
+        "token": "E310_D311INSFFN",
+        "occurrences": 3
+      },
+      {
+        "token": "E317_D318INSFFN",
+        "occurrences": 3
+      },
+      {
+        "token": "E323_D324INSFFN",
+        "occurrences": 3
+      },
+      {
+        "token": "E345_R346INSE",
+        "occurrences": 3
+      },
+      {
+        "token": "E444_G445INSE",
+        "occurrences": 3
+      },
+      {
+        "token": "L16_C17INSL",
+        "occurrences": 3
+      },
+      {
+        "token": "L16_C17INSLL",
+        "occurrences": 3
+      },
+      {
+        "token": "P19_L20INSPLP",
+        "occurrences": 3
+      },
+      {
+        "token": "P214_A215INSP",
+        "occurrences": 3
+      }
+    ],
+    "top_genes": [
+      {
+        "gene": "ERBB2",
+        "occurrences": 95
+      },
+      {
+        "gene": "CPEB2",
+        "occurrences": 54
+      },
+      {
+        "gene": "CEBPA",
+        "occurrences": 40
+      },
+      {
+        "gene": "NCOR2",
+        "occurrences": 34
+      },
+      {
+        "gene": "RPL14",
+        "occurrences": 34
+      },
+      {
+        "gene": "LSR",
+        "occurrences": 30
+      },
+      {
+        "gene": "AR",
+        "occurrences": 23
+      },
+      {
+        "gene": "ATXN1",
+        "occurrences": 22
+      },
+      {
+        "gene": "CAMKK2",
+        "occurrences": 22
+      },
+      {
+        "gene": "TCHH",
+        "occurrences": 22
+      },
+      {
+        "gene": "ARHGEF9",
+        "occurrences": 21
+      },
+      {
+        "gene": "EGFR",
+        "occurrences": 20
+      },
+      {
+        "gene": "MADCAM1",
+        "occurrences": 17
+      },
+      {
+        "gene": "HRC",
+        "occurrences": 16
+      },
+      {
+        "gene": "TP53",
+        "occurrences": 16
+      },
+      {
+        "gene": "TNRC6B",
+        "occurrences": 15
+      },
+      {
+        "gene": "ASCL1",
+        "occurrences": 14
+      },
+      {
+        "gene": "FOXC1",
+        "occurrences": 14
+      },
+      {
+        "gene": "MAP7",
+        "occurrences": 14
+      },
+      {
+        "gene": "APC",
+        "occurrences": 13
+      },
+      {
+        "gene": "KDM4B",
+        "occurrences": 13
+      },
+      {
+        "gene": "KDM6B",
+        "occurrences": 12
+      },
+      {
+        "gene": "NCOA3",
+        "occurrences": 12
+      },
+      {
+        "gene": "PGM1",
+        "occurrences": 12
+      },
+      {
+        "gene": "TENT5A",
+        "occurrences": 12
+      },
+      {
+        "gene": "CBX3",
+        "occurrences": 11
+      },
+      {
+        "gene": "ABI3BP",
+        "occurrences": 10
+      },
+      {
+        "gene": "IGFBP2",
+        "occurrences": 10
+      },
+      {
+        "gene": "ALMS1",
+        "occurrences": 9
+      },
+      {
+        "gene": "LATS2",
+        "occurrences": 9
+      },
+      {
+        "gene": "RRP12",
+        "occurrences": 9
+      },
+      {
+        "gene": "BCL11B",
+        "occurrences": 8
+      },
+      {
+        "gene": "FZD1",
+        "occurrences": 8
+      },
+      {
+        "gene": "IGSF3",
+        "occurrences": 8
+      },
+      {
+        "gene": "STK39",
+        "occurrences": 8
+      },
+      {
+        "gene": "CACNA1A",
+        "occurrences": 7
+      },
+      {
+        "gene": "MYB",
+        "occurrences": 7
+      },
+      {
+        "gene": "NOTCH4",
+        "occurrences": 7
+      },
+      {
+        "gene": "OGFR",
+        "occurrences": 7
+      },
+      {
+        "gene": "PCLO",
+        "occurrences": 7
+      },
+      {
+        "gene": "PODXL",
+        "occurrences": 7
+      },
+      {
+        "gene": "AUTS2",
+        "occurrences": 6
+      },
+      {
+        "gene": "CACNA1F",
+        "occurrences": 6
+      },
+      {
+        "gene": "CTSB",
+        "occurrences": 6
+      },
+      {
+        "gene": "EIF4G1",
+        "occurrences": 6
+      },
+      {
+        "gene": "GSPT1",
+        "occurrences": 6
+      },
+      {
+        "gene": "KIF20B",
+        "occurrences": 6
+      },
+      {
+        "gene": "NFASC",
+        "occurrences": 6
+      },
+      {
+        "gene": "PAXIP1",
+        "occurrences": 6
+      },
+      {
+        "gene": "VEZF1",
+        "occurrences": 6
+      },
+      {
+        "gene": "ATAD2",
+        "occurrences": 5
+      },
+      {
+        "gene": "BMP2K",
+        "occurrences": 5
+      },
+      {
+        "gene": "BMP6",
+        "occurrences": 5
+      },
+      {
+        "gene": "DDX10",
+        "occurrences": 5
+      },
+      {
+        "gene": "M6PR",
+        "occurrences": 5
+      },
+      {
+        "gene": "RANBP9",
+        "occurrences": 5
+      },
+      {
+        "gene": "SGK1",
+        "occurrences": 5
+      },
+      {
+        "gene": "APP",
+        "occurrences": 4
+      },
+      {
+        "gene": "ATP2A1",
+        "occurrences": 4
+      },
+      {
+        "gene": "CBL",
+        "occurrences": 4
+      },
+      {
+        "gene": "CELSR2",
+        "occurrences": 4
+      },
+      {
+        "gene": "CUL4A",
+        "occurrences": 4
+      },
+      {
+        "gene": "DKC1",
+        "occurrences": 4
+      },
+      {
+        "gene": "E2F4",
+        "occurrences": 4
+      },
+      {
+        "gene": "EZH2",
+        "occurrences": 4
+      },
+      {
+        "gene": "FGFR1",
+        "occurrences": 4
+      },
+      {
+        "gene": "HNF4A",
+        "occurrences": 4
+      },
+      {
+        "gene": "HOXB1",
+        "occurrences": 4
+      },
+      {
+        "gene": "MAST2",
+        "occurrences": 4
+      },
+      {
+        "gene": "NF2",
+        "occurrences": 4
+      },
+      {
+        "gene": "NR4A3",
+        "occurrences": 4
+      },
+      {
+        "gene": "PAK1",
+        "occurrences": 4
+      },
+      {
+        "gene": "PAK3",
+        "occurrences": 4
+      },
+      {
+        "gene": "PCDH1",
+        "occurrences": 4
+      },
+      {
+        "gene": "SCAF4",
+        "occurrences": 4
+      },
+      {
+        "gene": "SLC23A2",
+        "occurrences": 4
+      },
+      {
+        "gene": "SRP14",
+        "occurrences": 4
+      },
+      {
+        "gene": "TGIF1",
+        "occurrences": 4
+      },
+      {
+        "gene": "WLS",
+        "occurrences": 4
+      },
+      {
+        "gene": "AXL",
+        "occurrences": 3
+      },
+      {
+        "gene": "DOCK10",
+        "occurrences": 3
+      },
+      {
+        "gene": "DST",
+        "occurrences": 3
+      },
+      {
+        "gene": "HSP90AB1",
+        "occurrences": 3
+      },
+      {
+        "gene": "IRS2",
+        "occurrences": 3
+      },
+      {
+        "gene": "ITGA6",
+        "occurrences": 3
+      },
+      {
+        "gene": "NAP1L2",
+        "occurrences": 3
+      },
+      {
+        "gene": "NECTIN1",
+        "occurrences": 3
+      },
+      {
+        "gene": "NUB1",
+        "occurrences": 3
+      },
+      {
+        "gene": "OXA1L",
+        "occurrences": 3
+      },
+      {
+        "gene": "PTEN",
+        "occurrences": 3
+      },
+      {
+        "gene": "SATB1",
+        "occurrences": 3
+      },
+      {
+        "gene": "SORBS2",
+        "occurrences": 3
+      },
+      {
+        "gene": "TLE3",
+        "occurrences": 3
+      },
+      {
+        "gene": "TNS1",
+        "occurrences": 3
+      },
+      {
+        "gene": "ACADS",
+        "occurrences": 2
+      },
+      {
+        "gene": "AEBP1",
+        "occurrences": 2
+      },
+      {
+        "gene": "AMOT",
+        "occurrences": 2
+      },
+      {
+        "gene": "ANLN",
+        "occurrences": 2
+      },
+      {
+        "gene": "ARPC5L",
+        "occurrences": 2
+      },
+      {
+        "gene": "CAD",
+        "occurrences": 2
+      }
+    ]
+  }
+}

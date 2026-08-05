@@ -1,0 +1,246 @@
+{
+  "record_role": "explore",
+  "issue": 389,
+  "grouper_version": "1.0.0",
+  "target_used": false,
+  "public_lb_used": false,
+  "confirmed_groups_created": 0,
+  "train": {
+    "source_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+    "non_wt_gene_cells": 218893,
+    "cells_with_likely_multiplicity": 0,
+    "exact_duplicate_reduction": 6100,
+    "additional_likely_reduction": 0,
+    "likely_group_routes": {},
+    "team_examples": {},
+    "tmem97_cross_sample_recurrence": {
+      "non_wt_cells": 17,
+      "tokens": [
+        {
+          "sha256": "557a673d6c302cf6fdc582f21c3dc265aadd8b73fd031eeeacdc9f1ee9f9e294",
+          "token_length": 7,
+          "occurrences": 4,
+          "prefix": "RK173FS"
+        },
+        {
+          "sha256": "23467a7b2465f89be3ce6454991d3cab8a9a768383da7169f20f360a59fc4c9f",
+          "token_length": 6,
+          "occurrences": 3,
+          "prefix": "R173FS"
+        },
+        {
+          "sha256": "b074e7aa6f1a213965d79ec6e3c5f3c0d7b610dc53b4a1891e18e29f988ae804",
+          "token_length": 4,
+          "occurrences": 1,
+          "prefix": "E73*"
+        },
+        {
+          "sha256": "43dd6a7c609a221bf30780fec077f874bb9f5631d69db9d0b5257d0e2d24f179",
+          "token_length": 4,
+          "occurrences": 1,
+          "prefix": "R97Q"
+        },
+        {
+          "sha256": "217b14368210fb967f7791f73a2e4ae41cedd385ed653d18d940a560f5bfd479",
+          "token_length": 5,
+          "occurrences": 1,
+          "prefix": "S145F"
+        },
+        {
+          "sha256": "25718f4fa394a1505dc0b91496a82eeb8e48be230ec7da80506d0d7d007e94ed",
+          "token_length": 5,
+          "occurrences": 1,
+          "prefix": "R163W"
+        },
+        {
+          "sha256": "d7ed937a9f4667fb7d3c51eb2d33d07d95c981843f9bc07a5c667eba09dc6de4",
+          "token_length": 4,
+          "occurrences": 1,
+          "prefix": "Y50H"
+        },
+        {
+          "sha256": "4c39bc0e78480757b5caf2ead3b05c598701354a4a3f14d42626ec816ad026a7",
+          "token_length": 4,
+          "occurrences": 1,
+          "prefix": "E73G"
+        },
+        {
+          "sha256": "275a56defd8f9b6ea001658d4e0f1a318dd6f775d67e85582eafd4ea5f51889a",
+          "token_length": 5,
+          "occurrences": 1,
+          "prefix": "R173K"
+        },
+        {
+          "sha256": "144bfe0e1b8f1b162d902472524648770752dacf01a290a1feb9b30e610b1c16",
+          "token_length": 4,
+          "occurrences": 1,
+          "prefix": "V33L"
+        }
+      ],
+      "interpretation": "cross-sample recurrence only; never collapsed across patients"
+    }
+  },
+  "test": {
+    "source_sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0",
+    "non_wt_gene_cells": 198930,
+    "cells_with_likely_multiplicity": 4666,
+    "exact_duplicate_reduction": 218,
+    "additional_likely_reduction": 12178,
+    "likely_group_routes": {
+      "delins": 139,
+      "frameshift": 4424,
+      "insertion": 177
+    },
+    "team_examples": {
+      "TEST_0027:CPEB2": {
+        "raw_annotation_count": 6,
+        "strict_event_count": 6,
+        "likely_event_count": 3,
+        "likely_groups": [
+          {
+            "signature": [
+              "insertion",
+              "RLSYPHPGTDNLLMLNARSYGRRRGRSSLFPIDDGLLDDGHSDQVGVLNSPTCYSAHQNGERIERFSRKVFVGGLPPDIDEDEITASFRRFGPLVVDWPHKAESKSYFPPKGYAFLLFQEESSVQALIDACIEEDGKLYLCVSSPTIKDKPVQIRPWNLSDSDFVMDGSQPLDPRKTIFVGGVPRPLRAVELAMIMDRLYGGVCYAGIDTDPELKYPKGAGRVAFSNQQSYIAAISARFVQLQHGDIDKRVEVKPYVLDDQMCDECQGARCGGKFAPFFVPMSLACSITVSFVGQISTLVLDVSSISHW"
+            ],
+            "annotation_count": 2,
+            "normalized_tokens": [
+              "G679_680INSRLSYPHPGTDNLLMLNARSYGRRRGRSSLFPIDDGLLDDGHSDQVGVLNSPTCYSAHQNGERIERFSRKVFVGGLPPDIDEDEITASFRRFGPLVVDWPHKAESKSYFPPKGYAFLLFQEESSVQALIDACIEEDGKLYLCVSSPTIKDKPVQIRPWNLSDSDFVMDGSQPLDPRKTIFVGGVPRPLRAVELAMIMDRLYGGVCYAGIDTDPELKYPKGAGRVAFSNQQSYIAAISARFVQLQHGDIDKRVEVKPYVLDDQMCDECQGARCGGKFAPFFVPMSLACSITVSFVGQISTLVLDVSSISHW",
+              "G682_683INSRLSYPHPGTDNLLMLNARSYGRRRGRSSLFPIDDGLLDDGHSDQVGVLNSPTCYSAHQNGERIERFSRKVFVGGLPPDIDEDEITASFRRFGPLVVDWPHKAESKSYFPPKGYAFLLFQEESSVQALIDACIEEDGKLYLCVSSPTIKDKPVQIRPWNLSDSDFVMDGSQPLDPRKTIFVGGVPRPLRAVELAMIMDRLYGGVCYAGIDTDPELKYPKGAGRVAFSNQQSYIAAISARFVQLQHGDIDKRVEVKPYVLDDQMCDECQGARCGGKFAPFFVPMSLACSITVSFVGQISTLVLDVSSISHW"
+            ],
+            "confidence": "likely"
+          },
+          {
+            "signature": [
+              "insertion",
+              "RLSYPHPGTDNLLMLNGRSSLFPIDDGLLDDGHSDQVGVLNSPTCYSAHQNGERIERFSRKVFVGGLPPDIDEDEITASFRRFGPLVVDWPHKAESKSYFPPKGYAFLLFQEESSVQALIDACIEEDGKLYLCVSSPTIKDKPVQIRPWNLSDSDFVMDGSQPLDPRKTIFVGGVPRPLRAVELAMIMDRLYGGVCYAGIDTDPELKYPKGAGRVAFSNQQSYIAAISARFVQLQHGDIDKRVEVKPYVLDDQMCDECQGARCGGKFAPFFVPMSLACSITVSFVGQISTLVLDVSSISHW"
+            ],
+            "annotation_count": 3,
+            "normalized_tokens": [
+              "G679_680INSRLSYPHPGTDNLLMLNGRSSLFPIDDGLLDDGHSDQVGVLNSPTCYSAHQNGERIERFSRKVFVGGLPPDIDEDEITASFRRFGPLVVDWPHKAESKSYFPPKGYAFLLFQEESSVQALIDACIEEDGKLYLCVSSPTIKDKPVQIRPWNLSDSDFVMDGSQPLDPRKTIFVGGVPRPLRAVELAMIMDRLYGGVCYAGIDTDPELKYPKGAGRVAFSNQQSYIAAISARFVQLQHGDIDKRVEVKPYVLDDQMCDECQGARCGGKFAPFFVPMSLACSITVSFVGQISTLVLDVSSISHW",
+              "G682_683INSRLSYPHPGTDNLLMLNGRSSLFPIDDGLLDDGHSDQVGVLNSPTCYSAHQNGERIERFSRKVFVGGLPPDIDEDEITASFRRFGPLVVDWPHKAESKSYFPPKGYAFLLFQEESSVQALIDACIEEDGKLYLCVSSPTIKDKPVQIRPWNLSDSDFVMDGSQPLDPRKTIFVGGVPRPLRAVELAMIMDRLYGGVCYAGIDTDPELKYPKGAGRVAFSNQQSYIAAISARFVQLQHGDIDKRVEVKPYVLDDQMCDECQGARCGGKFAPFFVPMSLACSITVSFVGQISTLVLDVSSISHW",
+              "G709_710INSRLSYPHPGTDNLLMLNGRSSLFPIDDGLLDDGHSDQVGVLNSPTCYSAHQNGERIERFSRKVFVGGLPPDIDEDEITASFRRFGPLVVDWPHKAESKSYFPPKGYAFLLFQEESSVQALIDACIEEDGKLYLCVSSPTIKDKPVQIRPWNLSDSDFVMDGSQPLDPRKTIFVGGVPRPLRAVELAMIMDRLYGGVCYAGIDTDPELKYPKGAGRVAFSNQQSYIAAISARFVQLQHGDIDKRVEVKPYVLDDQMCDECQGARCGGKFAPFFVPMSLACSITVSFVGQISTLVLDVSSISHW"
+            ],
+            "confidence": "likely"
+          }
+        ]
+      },
+      "TEST_0063:IARS1": {
+        "raw_annotation_count": 12,
+        "strict_event_count": 12,
+        "likely_event_count": 1,
+        "likely_groups": [
+          {
+            "signature": [
+              "frameshift",
+              "Y",
+              "C"
+            ],
+            "annotation_count": 12,
+            "normalized_tokens": [
+              "Y1201CFS",
+              "Y1204CFS",
+              "Y1207CFS",
+              "Y1211CFS",
+              "Y1220CFS",
+              "Y1224CFS",
+              "Y1227CFS",
+              "Y1232CFS",
+              "Y1238CFS",
+              "Y1252CFS",
+              "Y1259CFS",
+              "Y1273CFS"
+            ],
+            "confidence": "likely"
+          }
+        ]
+      },
+      "TEST_2438:EGFR": {
+        "raw_annotation_count": 4,
+        "strict_event_count": 4,
+        "likely_event_count": 1,
+        "likely_groups": [
+          {
+            "signature": [
+              "insertion",
+              "IPVAIK"
+            ],
+            "annotation_count": 4,
+            "normalized_tokens": [
+              "K478_E479INSIPVAIK",
+              "K692_E693INSIPVAIK",
+              "K700_E701INSIPVAIK",
+              "K745_E746INSIPVAIK"
+            ],
+            "confidence": "likely"
+          }
+        ]
+      }
+    },
+    "tmem97_cross_sample_recurrence": {
+      "non_wt_cells": 27,
+      "tokens": [
+        {
+          "sha256": "e0b340edb6aa2a6e38ca9a320c90f159c6f3cfedf1e3f21f078c7515bb378039",
+          "token_length": 197,
+          "occurrences": 18,
+          "prefix": "K176DELINSNEGNNHWPRVEMPTGWLLVGYN"
+        },
+        {
+          "sha256": "fba15f55d35dc7d83199387affff0b292b431bd60a5bcd31ebc0938d4ac2d2d6",
+          "token_length": 4,
+          "occurrences": 1,
+          "prefix": "I22T"
+        },
+        {
+          "sha256": "4b1dabf25c9a2aef3f4fa6fcde5a4cd64d700e1725157497bdae1a00a7e62cbf",
+          "token_length": 3,
+          "occurrences": 1,
+          "prefix": "M1V"
+        },
+        {
+          "sha256": "1743c9ab66322c9a68f86a41d8037e3ad69619045011c0822765a4e286373a1f",
+          "token_length": 6,
+          "occurrences": 1,
+          "prefix": "P63QFS"
+        },
+        {
+          "sha256": "b78caf453e3defbea933f624a0eecea6d16949e8a727ba71dad5cb857811a049",
+          "token_length": 5,
+          "occurrences": 1,
+          "prefix": "R140R"
+        },
+        {
+          "sha256": "23467a7b2465f89be3ce6454991d3cab8a9a768383da7169f20f360a59fc4c9f",
+          "token_length": 6,
+          "occurrences": 1,
+          "prefix": "R173FS"
+        },
+        {
+          "sha256": "d64719f105448c1a53604f9b56db54e0bd8ad2274381d1e424f71a4515e748bd",
+          "token_length": 4,
+          "occurrences": 1,
+          "prefix": "F80L"
+        },
+        {
+          "sha256": "ef75a5c557ab46b62b9dc72f8c3f0864480d6704bbe608b88fb02c66202b4909",
+          "token_length": 5,
+          "occurrences": 1,
+          "prefix": "L119L"
+        },
+        {
+          "sha256": "651b99233ceed28f91634f88a27098e1b735f6bbee5ef8dd12a28269154850c5",
+          "token_length": 4,
+          "occurrences": 1,
+          "prefix": "I83V"
+        },
+        {
+          "sha256": "1a4116f15d8f790786f659297442544fc58fedada421ad5a6945488afa42bbf2",
+          "token_length": 4,
+          "occurrences": 1,
+          "prefix": "S20I"
+        }
+      ],
+      "interpretation": "cross-sample recurrence only; never collapsed across patients"
+    }
+  }
+}

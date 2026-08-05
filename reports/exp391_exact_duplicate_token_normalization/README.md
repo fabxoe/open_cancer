@@ -76,3 +76,9 @@ exact duplicate 제거는 annotation 순서와 중복 표기에 대한 결정성
 LB에는 제출하지 않고 현재 모델에는 채택하지 않는다. parser 구현과 감사 코드는
 입력 정규화·QC 자산으로 보존하되, 이 결과를 근거로 다른 token을 합치거나 규칙을
 추가 조정하지 않는다.
+
+이 PR을 최신 `main`에 통합할 때 EXP-391 구현은 역사적 독립 adapter인
+`exact_duplicate_mutation_parser.py`로만 보존했다. 현재 parser v4의 HGVS-informed
+semantic router와 feature adapter를 덮어쓰거나 기본 parser로 승격하지 않는다.
+따라서 이 결과는 EXP-374 계보에서 exact duplicate 제거 하나를 시험한 과거
+ablation으로만 해석한다.

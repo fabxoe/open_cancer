@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/fabxoe/open_cancer/schemas/mutation_parser_fixture.schema.json",
+  "title": "Mutation parser v4 fixture catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contract", "fixtures"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raw_preserved", "target_used", "test_distribution_used_for_rule"],
+      "properties": {
+        "raw_preserved": {"const": true},
+        "target_used": {"const": false},
+        "test_distribution_used_for_rule": {"const": false}
+      }
+    },
+    "fixtures": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "raw_token", "expected_route", "expected_event_type", "expected_positions", "confidence", "provenance"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "raw_token": {"type": "string", "minLength": 1},
+          "expected_route": {"enum": ["frameshift", "delins", "deletion", "insertion", "substitution", "range_replacement", "unresolved"]},
+          "expected_event_type": {"type": "string", "minLength": 1},
+          "expected_positions": {"type": "array", "items": {"type": "integer", "minimum": 1}},
+          "confidence": {"enum": ["exact", "partial", "unresolved"]},
+          "provenance": {"enum": ["train", "test", "team_review"]},
+          "ambiguity_reason": {"type": ["string", "null"]},
+          "notes": {"type": "string"}
+        }
+      }
+    }
+  }
+}

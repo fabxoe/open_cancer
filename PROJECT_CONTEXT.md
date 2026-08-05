@@ -283,9 +283,96 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   함께 이름·definition version·변경 의미·target/test/Public 미사용 여부가 담긴
   `mutation_parser_contract`를 반드시 전달한다. contract는 Feature Spec과 cache
   key에 포함되어야 하며, 누락한 custom parser 실행은 실패해야 한다.
+- 새 통합 parser를 사용하는 공식 runner는 notation normalizer, semantic parser,
+  feature adapter의 버전과 fixture catalog SHA-256·schema version을 resolved config의
+  `parser_contract`에 모두 기록한다. 누락되거나 저장소 catalog와 hash가 다르면
+  실행을 실패시킨다. 역사적 runner와 Feature Spec v1에는 이 계약을 소급 적용하지
+  않는다. 통합 계약과 fixture는
+  [`reports/analysis/parser_contract_v4/README.md`](reports/analysis/parser_contract_v4/README.md)를
+  따른다.
 - 같은 생물학적 사건의 표기만 `*`/`X`/`Ter`로 바꾼 metamorphic fixture에서
   canonical feature matrix가 완전히 같아야 한다. 음수 부분 표기와 `*숫자*`는
   mutation presence/type을 임의 삭제하지 않되 residue-position에는 넣지 않는다.
+- multi-letter frameshift와 range replacement는 substring이 아니라 complete anchored
+  grammar로 판정한다. `SDEL133fs`의 residue `DEL`을 deletion keyword로 보거나,
+  `721_722LA>FS`의 alternate Phe-Ser를 frameshift suffix로 보지 않는다. range의
+  source structure와 stop/no-change/truncating protein consequence는 직교 속성으로
+  보존하고, 첫 stop 뒤 source 문자는 provenance에는 남기되 번역된 alternate
+  sequence와 모델 잔기에는 넣지 않는다. multi-letter frameshift prefix는 근거 없이
+  reference·alternate peptide로 분해하지 않는다. 상세 계약과 실제 감사는
+  [`docs/annotation_invariant_mutation_parser.md`](docs/annotation_invariant_mutation_parser.md)와
+  [`reports/analysis/multiletter_frameshift_range_parser/README.md`](reports/analysis/multiletter_frameshift_range_parser/README.md)를
+  따른다.
+- frameshift compact notation은 `REF+POSITION+fs`, `REF+ALTSEQ+POSITION+fs`,
+  `REF+POSITION+ALTSEQ+fs` 순서를 별도 source grammar로 보존한다. 첫 residue는
+  fixed reference로 검증하고 뒤 peptide는 first-new candidate로만 기록하며,
+  `SDEL133fs`의 `DEL`을 deletion으로 소비하지 않는다. 원본에 없는 새 reading-frame
+  peptide·termination distance를 추정하지 않는다. 상세 계약은
+  [`reports/analysis/protein_frameshift_semantics/README.md`](reports/analysis/protein_frameshift_semantics/README.md)를
+  따른다.
+- isoform annotation multiplicity는 raw annotation count, exact-normalized strict
+  event count와 gene+event+ref/alt 기반 likely event count를 함께 보존한다.
+  transcript/genomic event ID가 없으면 confirmed group을 만들지 않으며 환자 사이의
+  동일 token recurrence를 collapse하지 않는다. known driver 보존 검증 전에는 likely
+  count로 기존 feature를 대체하지 않는다. 상세 감사는
+  [`reports/analysis/isoform_annotation_multiplicity/README.md`](reports/analysis/isoform_annotation_multiplicity/README.md)를
+  따른다.
+- known driver annotation을 isoform 간에 접을 때는 raw annotation multiplicity,
+  independent canonical event count와 driver presence를 직교 보존한다. exact
+  canonical coordinate, fixed-reference isoform projection과 gene+event family-level
+  일치를 구분하며 family-level 일치를 exact equivalence로 승격하지 않는다. catalog는
+  사전 고정 출처·reference transcript/version·snapshot hash·라이선스를 가져야 하고,
+  암종 label·test prevalence·Public LB로 선택하지 않는다. 상세 감사는
+  [`reports/analysis/driver_event_signature/README.md`](reports/analysis/driver_event_signature/README.md)를
+  따른다.
+- protein insertion과 tandem duplication은 원문 syntax와 reference-aware 의미를
+  분리한다. literal `dup`가 없더라도 `ins` 서열이 삽입 경계 바로 N-terminal의
+  reference 서열과 완전히 같고 flanking residue·isoform이 검증된 경우에만
+  duplication으로 추가 해석한다. 근처에 같은 서열이 있다는 이유만으로 승격하지
+  않으며, 반복 구간은 HGVS 3' rule의 가장 C-terminal인 동등 표현을 사용한다.
+  오른쪽 residue가 생략된 부분 경계 표기는 raw를 보존하고 reference 확인 전에는
+  확정하지 않는다. stop·frameshift·extension·delins precedence, isoform 불일치와
+  reference 누락 상태를 보존하며 DNA/exon 원인·repeat total copy number를 발명하지
+  않는다. 상세 계약과 전수 감사는
+  [`reports/analysis/protein_duplication_semantics/README.md`](reports/analysis/protein_duplication_semantics/README.md)를
+  따른다.
+- `-762fs`형 signed frameshift와 `*261*`형 bilateral-stop 부분 표기는 원문 숫자와
+  marker를 보존하되 protein residue-position에서 제외한다. protein 간이표기만으로
+  전자를 5′ UTR/extension, 후자를 nonsense/stop-loss/extension으로 강제 분류하지
+  않으며 기존 feature adapter에서는 `other_unmappable`을 유지한다. 상세 감사는
+  [`reports/analysis/partial_terminal_semantics/README.md`](reports/analysis/partial_terminal_semantics/README.md)를
+  따른다.
+- parser 의미 family를 모델에 연결하기 전 train sample과 canonical 5-fold support를
+  감사한다. `EXPERIMENT_ELIGIBLE`은 실행 가능성일 뿐 성능 채택이 아니며,
+  unresolved·train-zero family는 분석/QC로만 유지한다. test prevalence·SUBCLASS·
+  Public LB는 이 gate에 사용하지 않는다. 상세 matrix는
+  [`reports/analysis/parser_v4_support_gate/README.md`](reports/analysis/parser_v4_support_gate/README.md)를
+  따른다.
+- protein single-position substitution은 표준 amino acid 1개에서 다른 표준
+  amino acid 1개로 바뀌는 ordinary missense, same-AA/no-change, immediate
+  nonsense, `M1` start-site 영향과 unresolved reference 표기를 서로 구분한다.
+  alternate `*`, `X`, `Ter`는 같은 stop 의미로 canonicalize하지만 leading `X`나
+  leading `*`는 stop-loss·extension으로 추정하지 않는다. physicochemical delta는
+  exact ordinary missense에만 허용하고 range·indel·frameshift는 전용 parser로
+  전달한다. 실제 전수 감사와 v4 계약은
+  [`reports/analysis/protein_substitution_semantics/README.md`](reports/analysis/protein_substitution_semantics/README.md)를
+  따른다.
+- protein deletion은 complete anchored grammar로 single/range와
+  residue-aware/position-only를 구분한다. Range length는 inclusive하며 endpoint가
+  인접할 필요는 없다. equal-position range는 raw를 보존한 semantic single로만
+  정규화하고 reversed range는 자동 교환하지 않는다. `delins`, complete
+  frameshift와 nonsense는 deletion보다 우선하며, fixed reference 없이 중간
+  sequence나 HGVS 3′ 위치를 만들지 않는다. 실제 전수 감사와 v4 계약은
+  [`reports/analysis/protein_deletion_semantics/README.md`](reports/analysis/protein_deletion_semantics/README.md)를
+  따른다.
+- protein delins는 deletion·insertion과 중복 집계하지 않고 raw source structure와
+  immediate/later stop consequence를 함께 보존한다. Alternate의 first stop 이후
+  sequence는 provenance에만 남기며 DNA frame을 추정하지 않는다. Multi-letter
+  one-letter peptide 내부 upper-case `TER`는 Thr-Glu-Arg일 수 있으므로 전역 stop
+  치환하지 않고 explicit `Ter` suffix와 `X/*`만 canonicalize한다. 실제 감사와
+  v4 계약은
+  [`reports/analysis/protein_delins_semantics/README.md`](reports/analysis/protein_delins_semantics/README.md)를
+  따른다.
 - 상관·희소도 기반 feature selection은 각 outer fold의 **학습 행에서만** fit하고,
   확정한 같은 mask를 validation·test에 적용한다. 상관을 `GENE__mutated`에서
   계산했다면 해당 mutation-presence 열만 제거하며 mutation-type, missing,
@@ -368,8 +455,18 @@ GitHub는 폴더 안의 `README.md`를 자동으로 표시하므로 팀원이 re
 사용하는 작업은 시작할 때 이 문서, `EXPERIMENT_HISTORY.md`와 관련 로드맵을 함께
 읽는다. 로드맵은 작업 순서와 중단 조건을 관리하며, 실제 점수의 단일 원본은
 `EXPERIMENT_HISTORY.md`와 실험별 `metrics.json`이다. 로드맵에는 예상 점수나
-실행하지 않은 결과를 기록하지 않는다. 현재 전체 실행 계획의 단일 진입점은
-[`ABC 신호 포트폴리오·스태킹 로드맵`](reports/plans/abc_signal_portfolio_stacking_roadmap.md)이다.
+실행하지 않은 결과를 기록하지 않는다. 현재 최우선 실행 계획의 단일 진입점은
+[`Parser v4-native semantic baseline 재정립 로드맵`](reports/plans/parser_v4_baseline_reset_roadmap.md)이다.
+parser v4 이전 ABC·Optuna·isoform·driver 결과는 삭제하지 않고 legacy parser
+lineage의 증거로 보존한다. 기존 5-family compatibility projection은 과거 계보와
+parser 교체의 인과효과를 감사하는 QC이며 새 기준선이 아니다. substitution,
+frameshift, deletion, insertion, duplication, delins, range와 unresolved provenance를
+compact native feature로 통합한 canonical 5-fold 모델 이후에만 Parser-native
+Baseline v1을 동결한다. 새 isoform·driver·pathway·Optuna 실험은 이 동결 이후에
+시작한다.
+기존 ABC 실행 계획은
+[`ABC 신호 포트폴리오·스태킹 로드맵`](reports/plans/abc_signal_portfolio_stacking_roadmap.md)에
+보존한다.
 완료된 residue-position·hotspot 선행 과정은
 [`reports/plans/residue_position_hotspot_roadmap.md`](reports/plans/residue_position_hotspot_roadmap.md)에
 보존한다.
@@ -604,6 +701,56 @@ resolved config에는 실행에 실제 적용된 항목만 기록한다.
 - 해당 모델에서 사용하는 경우에만 epoch, batch size, optimizer, scheduler
 - 사용한 경우에만 앙상블 구성, 가중치, threshold, TTA와 후처리
 - 학습·추론 명령과 입력·출력 경로
+- parser를 사용하는 실험은 notation normalizer, semantic router, feature adapter,
+  fixture catalog와 compatibility/native projection의 버전·경로·SHA-256
+- core mutation type, sample aggregate, pathway, hotspot, residue-position 각 소비자가
+  실제 사용한 parser·projection identity
+
+### Parser lineage 계약
+
+- 새 parser 모듈을 import하거나 저장소 기본 코드를 갱신해도 과거 실험에 parser가
+  소급 적용된 것으로 간주하지 않는다. 실제 runner·resolved config·feature
+  registry에 기록된 parser만 해당 실험의 lineage다.
+- parser semantics와 feature representation은 별도 계약이다. 생물학적으로 올바른
+  parser를 Local/Public 점수가 낮다는 이유로 되돌리지 않으며, 성능이 낮으면
+  feature projection을 별도 Issue에서 수정·검증한다.
+- `parser만의 효과`라는 모호한 표현을 단독으로 사용하지 않는다. 기존 5-family와
+  같은 차원에 v4를 투영한 실험은 `compatibility audit`, v4의 HGVS-derived 의미를
+  compact feature로 통합한 실제 새 기준선은 `parser-native baseline`으로 구분한다.
+- compatibility audit에서는 fold, seed, model, checkpoint, feature 이름·차원·순서와
+  sample weight를 고정하고 parser·projection만 변경한다. 이 결과로 Parser
+  Baseline을 동결하지 않는다.
+- Parser v4의 최초 `legacy / compatibility / native` 통제 비교에서는 세 arm 모두
+  hotspot·residue-position·pathway·isoform·driver·추가 aggregate·Optuna를 제외한다.
+  compatibility와 native arm은 기존 5-family 열을 각각의 projection으로 **교체**하며,
+  같은 의미 열을 중복해서 더하지 않는다. mutation presence와 missing 열은 유지한다.
+- parser-native baseline은 mutation presence와 raw provenance를 보존하면서
+  substitution·frameshift·deletion·insertion·duplication·delins·range·unresolved
+  의미를 고정 schema로 노출한다. isoform·driver·pathway 신규 지식과 Optuna는 이
+  baseline에 섞지 않는다.
+- range 표기는 하나의 포괄적 `complex` 또는 `range`로 뭉개지 않는다. Parser v4의
+  상호 배타적인 핵심 의미인 `range_replacement`, `range_stop`, `range_no_change`를
+  각각 별도 consequence로 보존한다. 예를 들어 `1436_1437SI>RF`,
+  `300_301LE>F*`, `236_237LL>LL`은 서로 다른 의미다.
+- parser-native schema가 의미를 지원한다는 것과 세부 파생 피처를 모델 열로
+  활성화한다는 것은 구분한다. 다만 substitution·frameshift와 위 세 range consequence
+  같은 **핵심 상호 배타적 사건 분류**는 Parser Baseline의 정체성이므로 점수나
+  support gate로 삭제하지 않는다. train-zero, fold 지원 미달인 더 세분화된 의미나
+  외부 annotation 파생 피처만 QC-only로 유지할 수 있다. test 출현·SUBCLASS·Public
+  점수를 보고 활성화 여부를 바꾸지 않는다.
+- 올바른 parser 의미는 점수로 되돌리지 않는다. 성능 gate의 대상은 parser가 아니라
+  집계 방식, feature adapter, 모델과 하이퍼파라미터다. 따라서 native semantic
+  baseline은 먼저 고정한 뒤 분포·상관·SHAP·nested tuning으로 일반화 성능을 개선한다.
+- Parser-native Baseline v1은 native adapter version, fixture·schema·feature-name
+  hash, 모든 consumer identity와 canonical 5-fold 결과가 확보된 뒤에만 동결한다.
+- 한 실험 안에서 core mutation type, sample aggregate, pathway, hotspot,
+  residue-position이 서로 다른 parser lineage를 사용하면 공식 실행을 실패시킨다.
+- parser·projection이 바뀌어 feature vector나 예측이 달라지면 새 Experiment
+  Issue와 새 EXP-ID를 사용한다.
+- SUBCLASS, test prevalence, adversarial AUC 또는 Public LB를 parser 의미,
+  compatibility mapping, unresolved 처리나 feature threshold 선택에 사용하지 않는다.
+- 과거 Optuna 파라미터는 해당 parser·Feature Spec에만 유효하다. parser 또는
+  Feature Spec을 동결한 뒤 새 nested Optuna를 실행하기 전에는 재사용하지 않는다.
 
 ### macOS·Windows 공통 기록 규칙
 
