@@ -1,0 +1,438 @@
+{
+  "analysis_only": true,
+  "full_spec": {
+    "n_features": 35230,
+    "overall_auc": 0.7251887001475702,
+    "fold_auc": [
+      0.7163609422023244,
+      0.7508570524984188,
+      0.7293182394321568,
+      0.7396745674630838,
+      0.7535957601875911
+    ]
+  },
+  "without_residue_position": {
+    "n_features": 30846,
+    "overall_auc": 0.735054896373428,
+    "fold_auc": [
+      0.7173488013500743,
+      0.7428542061986084,
+      0.7316140122948224,
+      0.7361144559224285,
+      0.7467163635211356
+    ]
+  },
+  "auc_delta": -0.009866196225857826,
+  "fold_auc_delta": [
+    -0.0009878591477499032,
+    0.008002846299810407,
+    -0.0022957728626655793,
+    0.0035601115406552752,
+    0.0068793966664555395
+  ],
+  "top_shift_features_full_spec": [
+    {
+      "feature": "sample__multi_variant_gene_count",
+      "mean_gain": 130.1973434448242
+    },
+    {
+      "feature": "sample__multi_variant_gene_count_log1p",
+      "mean_gain": 99.21149215698242
+    },
+    {
+      "feature": "sample__complex_count",
+      "mean_gain": 46.43321990966797
+    },
+    {
+      "feature": "sample__mutated_gene_count",
+      "mean_gain": 30.621733093261717
+    },
+    {
+      "feature": "sample__mutated_gene_count_log1p",
+      "mean_gain": 30.04039077758789
+    },
+    {
+      "feature": "AHNAK__max_residue_position",
+      "mean_gain": 20.466017723083496
+    },
+    {
+      "feature": "CPEB2__max_residue_position",
+      "mean_gain": 20.455268478393556
+    },
+    {
+      "feature": "TCHH__max_residue_position",
+      "mean_gain": 18.484682846069337
+    },
+    {
+      "feature": "TCHH__mutated",
+      "mean_gain": 18.254041290283205
+    },
+    {
+      "feature": "KDM6B__synonymous",
+      "mean_gain": 15.51085968017578
+    },
+    {
+      "feature": "LY75__max_residue_position",
+      "mean_gain": 15.000799369812011
+    },
+    {
+      "feature": "HLA-A__max_residue_position",
+      "mean_gain": 14.243165397644043
+    },
+    {
+      "feature": "MAGEE1__max_residue_position",
+      "mean_gain": 13.675093269348144
+    },
+    {
+      "feature": "CACNA1A__max_residue_position",
+      "mean_gain": 12.981701469421386
+    },
+    {
+      "feature": "WASL__max_residue_position",
+      "mean_gain": 12.210560417175293
+    },
+    {
+      "feature": "KDM6B__max_residue_position",
+      "mean_gain": 12.040606689453124
+    },
+    {
+      "feature": "CPEB2__missense",
+      "mean_gain": 11.608962249755859
+    },
+    {
+      "feature": "sample__total_variant_count_log1p",
+      "mean_gain": 11.199458980560303
+    },
+    {
+      "feature": "MYH4__max_residue_position",
+      "mean_gain": 10.985669326782226
+    },
+    {
+      "feature": "RXRA__max_residue_position",
+      "mean_gain": 10.769038772583007
+    },
+    {
+      "feature": "MFHAS1__max_residue_position",
+      "mean_gain": 10.678564643859863
+    },
+    {
+      "feature": "VWF__max_residue_position",
+      "mean_gain": 10.608655548095703
+    },
+    {
+      "feature": "MTOR__max_residue_position",
+      "mean_gain": 10.497546195983887
+    },
+    {
+      "feature": "XPO1__max_residue_position",
+      "mean_gain": 10.326471900939941
+    },
+    {
+      "feature": "sample__total_variant_count",
+      "mean_gain": 10.081022548675538
+    },
+    {
+      "feature": "HSPA1L__max_residue_position",
+      "mean_gain": 9.972935485839844
+    },
+    {
+      "feature": "FGD6__max_residue_position",
+      "mean_gain": 9.944713592529297
+    },
+    {
+      "feature": "MYH1__max_residue_position",
+      "mean_gain": 9.780272674560546
+    },
+    {
+      "feature": "ALOX12B__max_residue_position",
+      "mean_gain": 9.695125198364257
+    },
+    {
+      "feature": "LY75__mutated",
+      "mean_gain": 9.63408374786377
+    },
+    {
+      "feature": "NF1__max_residue_position",
+      "mean_gain": 9.297264099121094
+    },
+    {
+      "feature": "FURIN__max_residue_position",
+      "mean_gain": 8.814625549316407
+    },
+    {
+      "feature": "ICAM5__max_residue_position",
+      "mean_gain": 8.51691493988037
+    },
+    {
+      "feature": "SYNE1__max_residue_position",
+      "mean_gain": 8.443169403076173
+    },
+    {
+      "feature": "APC__max_residue_position",
+      "mean_gain": 8.30964012145996
+    },
+    {
+      "feature": "KALRN__max_residue_position",
+      "mean_gain": 8.273672580718994
+    },
+    {
+      "feature": "ABCB1__max_residue_position",
+      "mean_gain": 8.148918342590331
+    },
+    {
+      "feature": "HDAC9__max_residue_position",
+      "mean_gain": 8.068465614318848
+    },
+    {
+      "feature": "LTBP2__max_residue_position",
+      "mean_gain": 7.9223535537719725
+    },
+    {
+      "feature": "APC__nonsense",
+      "mean_gain": 7.848277282714844
+    },
+    {
+      "feature": "DOCK10__max_residue_position",
+      "mean_gain": 7.7318767547607425
+    },
+    {
+      "feature": "MEP1A__missense",
+      "mean_gain": 7.656231498718261
+    },
+    {
+      "feature": "NPY4R__max_residue_position",
+      "mean_gain": 7.637876701354981
+    },
+    {
+      "feature": "TUBGCP6__max_residue_position",
+      "mean_gain": 7.550562763214112
+    },
+    {
+      "feature": "ACVR2A__frameshift",
+      "mean_gain": 7.5401958465576175
+    },
+    {
+      "feature": "NID2__max_residue_position",
+      "mean_gain": 7.427305603027344
+    },
+    {
+      "feature": "SAMD9__max_residue_position",
+      "mean_gain": 7.361591148376465
+    },
+    {
+      "feature": "EGFR__max_residue_position",
+      "mean_gain": 7.232123756408692
+    },
+    {
+      "feature": "sample__missense_count",
+      "mean_gain": 7.167563819885254
+    },
+    {
+      "feature": "ATP2B4__max_residue_position",
+      "mean_gain": 7.0605308532714846
+    }
+  ],
+  "top_shift_features_without_residue_position": [
+    {
+      "feature": "sample__multi_variant_gene_count_log1p",
+      "mean_gain": 104.66494293212891
+    },
+    {
+      "feature": "sample__multi_variant_gene_count",
+      "mean_gain": 94.35823211669921
+    },
+    {
+      "feature": "sample__complex_count",
+      "mean_gain": 35.95491180419922
+    },
+    {
+      "feature": "sample__mutated_gene_count_log1p",
+      "mean_gain": 32.58725433349609
+    },
+    {
+      "feature": "sample__mutated_gene_count",
+      "mean_gain": 26.909909820556642
+    },
+    {
+      "feature": "TCHH__mutated",
+      "mean_gain": 24.86922416687012
+    },
+    {
+      "feature": "CPEB2__missense",
+      "mean_gain": 18.809644317626955
+    },
+    {
+      "feature": "CPEB2__mutated",
+      "mean_gain": 13.806713485717774
+    },
+    {
+      "feature": "sample__total_variant_count_log1p",
+      "mean_gain": 13.195050239562988
+    },
+    {
+      "feature": "LY75__mutated",
+      "mean_gain": 12.868656730651855
+    },
+    {
+      "feature": "KDM6B__synonymous",
+      "mean_gain": 12.435030937194824
+    },
+    {
+      "feature": "AHNAK__mutated",
+      "mean_gain": 12.37326774597168
+    },
+    {
+      "feature": "KDM6B__mutated",
+      "mean_gain": 11.206434631347657
+    },
+    {
+      "feature": "WASL__mutated",
+      "mean_gain": 10.540356826782226
+    },
+    {
+      "feature": "APC__nonsense",
+      "mean_gain": 10.328702926635742
+    },
+    {
+      "feature": "sample__missing_gene_count",
+      "mean_gain": 10.262236595153809
+    },
+    {
+      "feature": "ALOX12B__mutated",
+      "mean_gain": 10.079850578308106
+    },
+    {
+      "feature": "WASL__missense",
+      "mean_gain": 10.050729751586914
+    },
+    {
+      "feature": "CDKN2AIP__mutated",
+      "mean_gain": 9.919222736358643
+    },
+    {
+      "feature": "sample__total_variant_count",
+      "mean_gain": 9.680356502532959
+    },
+    {
+      "feature": "HLA-A__missense",
+      "mean_gain": 9.661832904815673
+    },
+    {
+      "feature": "APC__mutated",
+      "mean_gain": 9.508334159851074
+    },
+    {
+      "feature": "CASP8AP2__mutated",
+      "mean_gain": 9.342398881912231
+    },
+    {
+      "feature": "UBC__synonymous",
+      "mean_gain": 8.90184154510498
+    },
+    {
+      "feature": "MYH4__mutated",
+      "mean_gain": 8.593958759307862
+    },
+    {
+      "feature": "HMOX2__mutated",
+      "mean_gain": 8.430331230163574
+    },
+    {
+      "feature": "MAP4K1__missense",
+      "mean_gain": 8.414464378356934
+    },
+    {
+      "feature": "PRMT2__mutated",
+      "mean_gain": 8.396615409851075
+    },
+    {
+      "feature": "VWF__mutated",
+      "mean_gain": 8.1751070022583
+    },
+    {
+      "feature": "CD86__mutated",
+      "mean_gain": 7.899792671203613
+    },
+    {
+      "feature": "RXRA__mutated",
+      "mean_gain": 7.842394065856934
+    },
+    {
+      "feature": "ZMIZ1__mutated",
+      "mean_gain": 7.615682792663574
+    },
+    {
+      "feature": "MAGEE1__mutated",
+      "mean_gain": 7.580723094940185
+    },
+    {
+      "feature": "MTCH2__mutated",
+      "mean_gain": 7.130083465576172
+    },
+    {
+      "feature": "FURIN__missense",
+      "mean_gain": 7.0831451416015625
+    },
+    {
+      "feature": "ROS1__mutated",
+      "mean_gain": 7.0663347244262695
+    },
+    {
+      "feature": "RYR2__synonymous",
+      "mean_gain": 7.0650629043579105
+    },
+    {
+      "feature": "ABCB1__missense",
+      "mean_gain": 7.042862796783448
+    },
+    {
+      "feature": "PCLO__synonymous",
+      "mean_gain": 7.034767103195191
+    },
+    {
+      "feature": "MYH9__mutated",
+      "mean_gain": 6.912043142318725
+    },
+    {
+      "feature": "EXO1__missense",
+      "mean_gain": 6.873022079467773
+    },
+    {
+      "feature": "CENPF__mutated",
+      "mean_gain": 6.725814628601074
+    },
+    {
+      "feature": "sample__missense_count",
+      "mean_gain": 6.723558139801026
+    },
+    {
+      "feature": "ERCC5__mutated",
+      "mean_gain": 6.610616779327392
+    },
+    {
+      "feature": "HUWE1__missense",
+      "mean_gain": 6.593631935119629
+    },
+    {
+      "feature": "RUNX1__missense",
+      "mean_gain": 6.532993221282959
+    },
+    {
+      "feature": "ABCB1__mutated",
+      "mean_gain": 6.520768070220948
+    },
+    {
+      "feature": "LSS__mutated",
+      "mean_gain": 6.275906944274903
+    },
+    {
+      "feature": "NF1__mutated",
+      "mean_gain": 6.236490631103516
+    },
+    {
+      "feature": "sample__nonsense_count",
+      "mean_gain": 6.123690509796143
+    }
+  ],
+  "note": "OOD 원인 진단 전용. residue-position 제외로 AUC가 떨어져도 공식 모델에서 이 family를 바로 제거하는 근거로 쓰지 않는다."
+}
