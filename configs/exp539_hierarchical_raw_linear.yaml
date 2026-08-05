@@ -1,0 +1,32 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-539
+issue_number: 539
+slug: hierarchical_raw_linear
+parent_experiment: null
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  tokenizer: canonical_event_tokenizer_v1
+  adapter: hierarchical_event_adapter_v1
+  position_bin_width: 100
+  detail_minimum_patient_support: 2
+  global_minimum_patient_support: 1
+  normalization: raw
+model:
+  class: sklearn.svm.LinearSVC
+  C: 1.0
+  class_weight: balanced
+  dual: auto
+  max_iter: 10000
+  random_state: 42
+training:
+  checkpoint_selection: fitted_linear_model
+  primary_metric: macro_f1
+  class_order: project_constant
+notes: >-
+  Issue #539. First official canonical 5-fold baseline for the parser-v4
+  hierarchical detail/global event-token adapter. Vocabulary fitting is
+  outer-train only. No row normalization or TF-IDF is applied.
