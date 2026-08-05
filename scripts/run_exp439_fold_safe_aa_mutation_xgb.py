@@ -138,8 +138,11 @@ def classify_mutation_token(token: str, *, multi_token: bool = False) -> tuple[s
     normalized = normalize_stop_notation_token(token)
     reference = normalized[:1].upper()
     amino_acid = reference if reference in AA_INDEX else None
+    
+    # 1. 다중 토큰인 경우: MT 타입이지만 첫 번째 아미노산 정보(amino_acid)는 유지
     if multi_token:
         return "MT", amino_acid
+        
     if "FS" in normalized.upper():
         return "FS", amino_acid
     if normalized.endswith("*"):
@@ -149,7 +152,9 @@ def classify_mutation_token(token: str, *, multi_token: bool = False) -> tuple[s
         ref = substitution.group(1).upper()
         alt = substitution.group(3).upper()
         return ("S" if ref == alt else "M"), ref
-    return "MT", amino_acid
+        
+    # 2. delins 등 복합/모호한 단일 토큰(MT)인 경우: reference amino acid를 추정하지 않고 None 반환
+    return "MT", None
 
 
 def engineered_feature_names() -> tuple[str, ...]:
