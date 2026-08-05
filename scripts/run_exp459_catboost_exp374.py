@@ -43,6 +43,7 @@ from open_cancer.hashing import sha256_file
 from open_cancer.hotspot_features import build_hotspot_augmented_features, resolve_hotspot_config
 from open_cancer.isoform_position_mask import resolve_isoform_position_mask_from_config
 from open_cancer.isoform_relative_position import resolve_isoform_relative_position_from_config
+from open_cancer.model_artifacts import write_model_run_records
 from open_cancer.model_runner import CatBoostAdapter
 from open_cancer.mutation_features import (
     resolve_position_features_from_config,
@@ -183,7 +184,6 @@ def main() -> None:
             if config["training"]["balanced_sample_weight"]
             else None
         )
-        fold_started = time.perf_counter()
         adapter = CatBoostAdapter(dict(model_params), seed=seed + fold)
         adapter.fit(x_train_fold, y_train, x_valid_fold, y_valid, sample_weight)
         valid_proba = adapter.predict_proba(x_valid_fold).astype(np.float64)
@@ -199,7 +199,6 @@ def main() -> None:
             "accuracy": float(accuracy_score(y_valid, valid_pred)),
             "log_loss": float(log_loss(y_valid, valid_proba, labels=np.arange(len(CLASS_LABELS)))),
             "best_iteration": adapter.best_iteration,
-            "seconds": time.perf_counter() - fold_started,
         }
         fold_metrics.append(result)
         print(json.dumps(result, ensure_ascii=False))
@@ -275,11 +274,6 @@ def main() -> None:
             "uv_lock_sha256": sha256_file(ROOT / "uv.lock"),
         },
     }
-    resolved_config_path = reproducibility_dir / "config.resolved.yaml"
-    resolved_config_path.write_text(
-        yaml.safe_dump(resolved_config, allow_unicode=True, sort_keys=False), encoding="utf-8"
-    )
-
     metrics = {
         "experiment_id": "EXP-459",
         "record_role": "official",
@@ -305,7 +299,7 @@ def main() -> None:
         "leaderboard": None,
         "runtime": {"seconds": time.perf_counter() - clock, "hardware": platform.platform()},
         "artifacts": {
-            "resolved_config": relative_posix(resolved_config_path, ROOT),
+            "resolved_config": relative_posix(reproducibility_dir / "config.resolved.yaml", ROOT),
             "oof": relative_posix(oof_path, ROOT),
             "test_probability": relative_posix(test_probability_path, ROOT),
             "submission": relative_posix(submission_path, ROOT),
@@ -317,6 +311,28 @@ def main() -> None:
     metrics_path = report_dir / "metrics.json"
     write_json(metrics_path, metrics)
     validate_json_document(metrics_path, ROOT / "schemas" / "experiment_metrics.schema.json")
+
+    write_model_run_records(
+        root=ROOT,
+        output_dir=reproducibility_dir,
+        experiment_id="EXP-459",
+        issue_number=459,
+        source_commit=source_commit,
+        resolved_config=resolved_config,
+        metrics=metrics,
+        data_files={
+            "train": TRAIN_PATH,
+            "test": TEST_PATH,
+            "sample_submission": SAMPLE_SUBMISSION_PATH,
+            "split": ROOT / config["split"]["path"],
+        },
+        artifacts={
+            **{f"checkpoint_fold_{fold}": model_dir / f"fold_{fold:02d}.cbm" for fold in range(n_splits)},
+            "oof_probabilities": oof_path,
+            "test_probabilities": test_probability_path,
+            "submission": submission_path,
+        },
+    )
 
     # Inference-only reproducibility check: reload saved CatBoost boosters,
     # re-predict on test, confirm byte-identical submission and near-zero
@@ -355,8 +371,12 @@ def main() -> None:
         repro_submission.to_csv(repro_path, index=False, lineterminator="\n")
         repro_sha = sha256_file(repro_path)
     max_diff = float(np.max(np.abs(repro_test_proba - test_proba)))
+    verified_at = datetime.now(timezone.utc).isoformat()
+    # comparison.json keeps the full diagnostic record (unconstrained shape);
+    # artifact_manifest.json's "verification" object must only use the keys
+    # schemas/reproducibility_manifest.schema.json allows (additionalProperties: false).
     comparison = {
-        "verified_at": datetime.now(timezone.utc).isoformat(),
+        "verified_at": verified_at,
         "data_hashes_match": True,
         "original_submission_sha256": submission_validation["sha256"],
         "reproduced_submission_sha256": repro_sha,
@@ -368,16 +388,22 @@ def main() -> None:
     }
     comparison["passed"] = comparison["submission_sha256_match"] and max_diff <= 1e-6
     write_json(reproducibility_dir / "comparison.json", comparison)
-    manifest = {
-        "experiment_id": "EXP-459",
-        "issue_number": 459,
-        "reproducibility_status": "INFERENCE_VERIFIED" if comparison["passed"] else "FAILED",
-        "source_commit": source_commit,
-        "verified_at": comparison["verified_at"],
-        "verifier": owner,
-        "verification": comparison,
+
+    manifest_path = reproducibility_dir / "artifact_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["reproducibility_status"] = "INFERENCE_VERIFIED" if comparison["passed"] else "FAILED"
+    manifest["verifier"] = owner
+    manifest["verified_at"] = verified_at
+    manifest["verification"] = {
+        "data_hashes_match": comparison["data_hashes_match"],
+        "submission_sha256_match": comparison["submission_sha256_match"],
+        "test_label_agreement": comparison["test_label_agreement"],
+        "probability_atol": comparison["probability_atol"],
+        "probability_rtol": comparison["probability_rtol"],
+        "passed": comparison["passed"],
     }
-    write_json(reproducibility_dir / "artifact_manifest.json", manifest)
+    write_json(manifest_path, manifest)
+    validate_json_document(manifest_path, ROOT / "schemas" / "reproducibility_manifest.schema.json")
 
     print(
         json.dumps(
