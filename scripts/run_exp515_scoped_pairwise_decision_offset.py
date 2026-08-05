@@ -22,6 +22,7 @@ import subprocess
 import sys
 import time
 from datetime import datetime, timezone
+from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -54,11 +55,13 @@ from open_cancer.nested_decision_offset import (
 )
 from open_cancer.paths import relative_posix
 from open_cancer.validation import validate_json_document
-from run_exp374_stop_isoform_residue_mask import build_fold_features
+from run_exp229_pathway_mutation_types import PathwayMutationTypeFoldBuilder
+from open_cancer.abc_c_features import fixed_pathway_burden_family, pathway_mutation_type_family
 from open_cancer.robust_mutation_parser import (
     STOP_NOTATION_PARSER_CONTRACT,
     normalize_stop_notation_token,
     parse_stop_notation_invariant_cell,
+    parse_stop_notation_invariant_token,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -136,7 +139,26 @@ def build_exp374_train_matrix() -> tuple[sparse.csr_matrix, pd.Series]:
     )
     feature_train_ids = pd.read_csv(base_dir / "train_ids.csv", dtype=str)["ID"]
 
-    builder = build_fold_features()
+    # Own membership_path -- EXP-374's run_exp374_stop_isoform_residue_mask's
+    # build_fold_features() hardcodes MEMBERSHIP to EXP-374's own committed
+    # report path; reusing it here would overwrite that file as a side
+    # effect. Point this proxy reconstruction at its own path instead.
+    membership_path = ROOT / "reports" / ARTIFACT_SLUG / "exp374_pathway_membership_proxy.json"
+    burden = partial(
+        fixed_pathway_burden_family,
+        token_parser=parse_stop_notation_invariant_token,
+        version="2.1.0",
+    )
+    composition = partial(
+        pathway_mutation_type_family,
+        token_parser=parse_stop_notation_invariant_token,
+        version="2.1.0",
+    )
+    builder = PathwayMutationTypeFoldBuilder(
+        membership_path=membership_path,
+        burden_factory=burden,
+        composition_factory=composition,
+    )
     n = x_base.shape[0]
     all_idx = np.arange(n)
     empty_idx = np.array([], dtype=np.int64)
