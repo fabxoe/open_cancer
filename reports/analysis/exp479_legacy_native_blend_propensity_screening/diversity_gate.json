@@ -1,0 +1,26 @@
+{
+  "base_experiment": "EXP-479",
+  "correlation_max_threshold": 0.92,
+  "disagreement_min_threshold": 0.1,
+  "pairs": [
+    {
+      "compared_to": "EXP-374",
+      "oof_error_correlation": 0.7877601377810367,
+      "prediction_label_disagreement": 0.22835026608611514,
+      "gate_pass": true
+    },
+    {
+      "compared_to": "EXP-459",
+      "oof_error_correlation": 0.7061507567805105,
+      "prediction_label_disagreement": 0.29866150620867604,
+      "gate_pass": true
+    },
+    {
+      "compared_to": "EXP-484",
+      "oof_error_correlation": 0.8028822385635705,
+      "prediction_label_disagreement": 0.21254636348975972,
+      "gate_pass": true
+    }
+  ],
+  "all_pairs_pass": true
+}
