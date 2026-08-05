@@ -34,7 +34,10 @@ def _write_frames(tmp_path: Path) -> tuple[Path, Path]:
     return train_path, test_path
 
 
-@pytest.mark.parametrize("representation", ["compatibility", "native", "hybrid"])
+@pytest.mark.parametrize(
+    "representation",
+    ["compatibility", "native", "hybrid", "native_no_provenance"],
+)
 def test_parser_baseline_builder_replaces_five_family(
     tmp_path: Path, representation: str
 ) -> None:
@@ -84,6 +87,21 @@ def test_parser_baseline_builder_replaces_five_family(
         contract = bundle.registry["parser_v4_supported_range_replacement"][
             "semantic_contract"
         ]
+        assert contract["target_used"] is False
+        assert contract["test_distribution_used_for_schema"] is False
+    elif representation == "native_no_provenance":
+        assert not any(name.startswith("sample__native_parse_") for name in bundle.feature_names)
+        assert "sample__native_frameshift_short_ref_position_gene_count" not in bundle.feature_names
+        assert "sample__native_frameshift_ref_alt_before_position_gene_count" not in bundle.feature_names
+        assert "sample__native_frameshift_ref_position_alt_gene_count" not in bundle.feature_names
+        assert "sample__native_missense_gene_count" in bundle.feature_names
+        assert "sample__native_frameshift_gene_count" in bundle.feature_names
+        assert "sample__native_non_simple_or_unresolved_gene_count" in bundle.feature_names
+        assert "gene__TP53__native_range_replacement_any" in bundle.feature_names
+        contract = bundle.registry["parser_v4_native_no_sample_provenance"][
+            "semantic_contract"
+        ]
+        assert contract["excluded_feature_count"] == 6
         assert contract["target_used"] is False
         assert contract["test_distribution_used_for_schema"] is False
 

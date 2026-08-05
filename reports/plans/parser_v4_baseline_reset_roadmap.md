@@ -135,7 +135,7 @@ semantic parser
 | N4-N | v4-native semantic treatment | #438 | EXP-438 | 미발급 | COMPLETED | 0.4102050373 | adapter gate 실패·parser 유지 | native family ablation |
 | N4-A | L/C/N 결과 감사·adapter 재설계 | #442 | 해당 없음 | 미발급 | COMPLETED | N/A | C + supported range 의미 고정 | hybrid Experiment |
 | N4-H | compatibility + supported native range | #444 | EXP-444 | 미발급 | COMPLETED | 0.4127201906 | C 대비 +0.0016167·L 정확성 허용 gate 통과 | provenance 제거 ablation |
-| N4-P | native sample provenance summary 제거 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | consequence와 annotation provenance 경쟁 분리 | Issue 생성 |
+| N4-P | native sample provenance summary 제거 | #448 | EXP-448 | 미발급 | IN_PROGRESS | N/A | consequence와 annotation provenance 경쟁 분리 | canonical 5-fold |
 | N5 | Parser-native Baseline v1 동결 | 미발급 | explore | 미발급 | BLOCKED | N/A | EXP-438 gate 실패 | adapter 수정 후 재평가 |
 | N6 | isoform 독립 재검증 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N5 완료 대기 |
 | N7 | driver 독립 재검증 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N5 완료 대기 |
