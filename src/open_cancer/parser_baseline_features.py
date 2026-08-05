@@ -17,20 +17,34 @@ from open_cancer.feature_family import (
 from open_cancer.mutation_features import MUTATION_TYPES
 from open_cancer.parser_compatibility_features import ParserCompatibilityFamily
 from open_cancer.parser_native_features import (
+    FRAMESHIFT_GRAMMARS,
+    PARSE_STATUSES,
     FittedParserNativeSemanticFamily,
     ParserNativeSemanticFamily,
     native_semantic_contract_record,
 )
 
 
-ParserRepresentation = Literal["legacy", "compatibility", "native", "hybrid"]
+ParserRepresentation = Literal[
+    "legacy",
+    "compatibility",
+    "native",
+    "hybrid",
+    "native_no_provenance",
+]
 
 
 def validate_controlled_parser_baseline_config(config: dict) -> ParserRepresentation:
     """Reject any setting that would confound the N4 three-arm comparison."""
 
     representation = str(config.get("parser_baseline", {}).get("representation", ""))
-    if representation not in {"legacy", "compatibility", "native", "hybrid"}:
+    if representation not in {
+        "legacy",
+        "compatibility",
+        "native",
+        "hybrid",
+        "native_no_provenance",
+    }:
         raise ValueError(f"지원하지 않는 parser baseline arm: {representation}")
     if config.get("hotspots", {}).get("table") != "none":
         raise ValueError("parser baseline은 hotspot을 사용하지 않습니다.")
@@ -99,11 +113,13 @@ class ParserBaselineFoldBuilder:
             families = (ParserCompatibilityFamily(self.gene_columns),)
         elif self.representation == "native":
             families = (ParserNativeSemanticFamily(self.gene_columns),)
-        else:
+        elif self.representation == "hybrid":
             families = (
                 ParserCompatibilityFamily(self.gene_columns),
                 ParserSupportedRangeFamily(self.gene_columns),
             )
+        else:
+            families = (ParserNativeNoProvenanceFamily(self.gene_columns),)
         bundle = fit_transform_family_set(
             families,
             fold_train=self.train.iloc[train_indices],
@@ -122,6 +138,13 @@ class ParserBaselineFoldBuilder:
             registry["parser_v4_supported_range_replacement"][
                 "semantic_contract"
             ] = supported_range_contract_record(fitted_range)  # type: ignore[arg-type]
+        elif self.representation == "native_no_provenance":
+            fitted_native = bundle.fitted_families[0]
+            registry["parser_v4_native_no_sample_provenance"][
+                "semantic_contract"
+            ] = native_no_provenance_contract_record(  # type: ignore[arg-type]
+                fitted_native
+            )
         registry["parser_baseline_projection"] = {
             "definition_version": "1.0.0",
             "representation": self.representation,
@@ -193,6 +216,84 @@ def supported_range_contract_record(
             "sample native range-replacement affected-gene count plus "
             "gene-level native range-replacement presence"
         ),
+        "target_used": False,
+        "test_distribution_used_for_schema": False,
+    }
+
+
+@dataclass(frozen=True)
+class FittedParserNativeNoProvenanceFamily:
+    """Native consequence matrix without sample annotation-provenance summaries."""
+
+    descriptor: FeatureFamilyDescriptor
+    source: FittedParserNativeSemanticFamily
+    selected_indices: tuple[int, ...]
+
+    def transform(self, frame: pd.DataFrame) -> sparse.csr_matrix:
+        matrix = self.source.transform(frame)
+        return sparse.csr_matrix(matrix[:, self.selected_indices], dtype="float32")
+
+
+@dataclass(frozen=True)
+class ParserNativeNoProvenanceFamily:
+    gene_columns: tuple[str, ...]
+
+    def fit(
+        self, train_frame: pd.DataFrame, target: pd.Series | None = None
+    ) -> FittedParserNativeNoProvenanceFamily:
+        del target
+        source = ParserNativeSemanticFamily(self.gene_columns).fit(train_frame)
+        excluded = {
+            *(f"sample__native_parse_{status}_gene_count" for status in PARSE_STATUSES),
+            *(
+                f"sample__native_frameshift_{grammar}_gene_count"
+                for grammar in FRAMESHIFT_GRAMMARS
+            ),
+        }
+        selected = tuple(
+            index
+            for index, name in enumerate(source.descriptor.feature_names)
+            if name not in excluded
+        )
+        names = tuple(source.descriptor.feature_names[index] for index in selected)
+        expected_dimension = 6 + len(self.gene_columns) * 6
+        if len(names) != expected_dimension:
+            raise ValueError("native no-provenance feature schema가 예상과 다릅니다.")
+        return FittedParserNativeNoProvenanceFamily(
+            descriptor=FeatureFamilyDescriptor(
+                name="parser_v4_native_no_sample_provenance",
+                version="1.0.0",
+                fit_scope="stateless",
+                feature_names=names,
+            ),
+            source=source,
+            selected_indices=selected,
+        )
+
+
+def native_no_provenance_contract_record(
+    fitted: FittedParserNativeNoProvenanceFamily,
+) -> dict[str, object]:
+    """Record the exact six sample columns removed from the native schema."""
+
+    excluded_names = {
+        *(f"sample__native_parse_{status}_gene_count" for status in PARSE_STATUSES),
+        *(
+            f"sample__native_frameshift_{grammar}_gene_count"
+            for grammar in FRAMESHIFT_GRAMMARS
+        ),
+    }
+    excluded = tuple(
+        name
+        for name in fitted.source.descriptor.feature_names
+        if name in excluded_names
+    )
+    return {
+        "source_family": fitted.source.descriptor.name,
+        "source_version": fitted.source.descriptor.version,
+        "source_schema_sha256": fitted.source.schema_sha256,
+        "excluded_sample_features": excluded,
+        "excluded_feature_count": len(excluded),
         "target_used": False,
         "test_distribution_used_for_schema": False,
     }
