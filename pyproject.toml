@@ -20,6 +20,7 @@ dependencies = [
     "scipy>=1.14",
     "seaborn>=0.13",
     "xgboost>=2.1",
+    "optuna>=4.9.0",
 ]
 
 [build-system]
