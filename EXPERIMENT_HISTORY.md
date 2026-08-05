@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 106
+- 실제 실험 수: 107
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4479925392 (`EXP-521`)
@@ -125,6 +125,7 @@
 | EXP-487 | COMPLETED | fabxoe | #487 | EXP-479 native-v3 semantic schema + outer-train 전용 nested Optuna XGBoost tuning | 0.4228690293 | 미제출 | INFERENCE_VERIFIED | EXP-479 대비 +0.0141124로 native-v3 성능 회복 확인; EXP-374보다 -0.0039219로 낮아 대표 제출 후보는 아니며 튜닝된 native-v3 기준선·다양성 자산으로 보존 | [보고서](reports/exp487_native_v3_nested_xgb_tuning/README.md) |
 | EXP-512 | COMPLETED | fabxoe | #512 | EXP-374 + parser v4 환자별 semantic token count 18개 | 0.4258183004 | 0.3329881004 | INFERENCE_VERIFIED | EXP-374 대비 OOF -0.0009726·Public -0.0132278·Log Loss 악화로 전역 count adapter ARCHIVE; parser v4 의미 체계 자체의 기각으로 해석하지 않음 | [보고서](reports/exp512_parser_v4_semantic_counts/README.md) |
 | EXP-521 | COMPLETED | fabxoe | #521 | EXP-374 + fold-safe parser-v4 26-class cosine semantic profile | 0.4479925392 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 +0.0212016124·fold std -0.0047146798로 현재 Local 최고; Log Loss는 +0.0670036077로 악화되어 Public 제출 전 주의 필요 | [보고서](reports/exp521_parser_v4_class_cosine/README.md) |
+| EXP-522 | COMPLETED | fabxoe | #522 | EXP-374 + fold-safe parser-v4 26-class smoothed mean log-likelihood profile | 0.4045242129 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0222667140·EXP-521 대비 -0.0434683264·Log Loss 큰 악화로 ARCHIVE; alpha=1 전체-vocabulary likelihood 종료 | [보고서](reports/exp522_parser_v4_class_likelihood/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -216,6 +217,7 @@
 | 2026-08-05T13:10:12.733299+00:00 | EXP-476 | Gomin-art | `ca1b4c6e4210e4eb98e1636818e0b7df8c12b852` / [`exp-476-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-476-repro-v1) | SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 2.98e-08, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp476_config_feature_pipeline/comparison.json) |
 | 2026-08-05T15:29:59.157313+00:00 | EXP-487 | fabxoe | `ea5278c0b9342e77d6552c2a3b4039ff550ff81a` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.43e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp487_native_v3_nested_xgb_tuning/comparison.json) |
 | 2026-08-05T18:22:27.697340+00:00 | EXP-521 | fabxoe | `eee39c928e60e12eb2c24fd56edbe0c025522da9` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.46e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp521_parser_v4_class_cosine/comparison.json) |
+| 2026-08-05T18:37:03.224031+00:00 | EXP-522 | fabxoe | `cfe6ec6793491dc55b2eb36896909c658e81ae66` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.22e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp522_parser_v4_class_likelihood/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -4426,3 +4428,30 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
 - 판단: Local Macro F1·fold 안정성은 현재 최고로 B단계 채택 후보.
   다만 Log Loss가 EXP-374 대비 `+0.0670036077`로 악화되어 Public 일반화를
   주의해야 한다. 동일 정보의 smoothed likelihood C단계를 다음으로 비교한다.
+
+### [EXP-522] Parser-v4 26-class smoothed likelihood profile
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #522 / `issue-522-parser-v4-class-likelihood`
+- 소스 commit: `cfe6ec6793491dc55b2eb36896909c658e81ae66`
+- 시작/종료: 2026-08-05T18:32:47.152545+00:00 /
+  2026-08-05T18:37:02.139926+00:00 (254.99초)
+- Config: `configs/exp522_parser_v4_class_likelihood.yaml`
+- Runner: `scripts/run_exp522_parser_v4_class_likelihood.py`
+- Metrics/Report: `reports/exp522_parser_v4_class_likelihood/`
+- 부모: EXP-374
+- 변경: EXP-521과 동일한 환자 semantic vector에서 cosine 26개 대신
+  alpha=1, class-prior 없는 mean log-likelihood 26개를 outer-train에서만 fit.
+- Fold Macro F1: 0.3961122583, 0.4075343046, 0.3970186800,
+  0.4201506820, 0.3983945398
+- OOF Macro F1: 0.4045242129 (EXP-374 대비 `-0.0222667140`,
+  EXP-521 대비 `-0.0434683264`)
+- Fold 표준편차: 0.0091168816
+- Accuracy / Log Loss: 0.4000967586 / 2.3159396648
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — submission SHA-256 byte-level 일치,
+  test label 100%, 확률 최대 절대 차이 `1.22e-7`.
+- 판단: 성능·fold 안정성·Log Loss 모두 실패해 `ARCHIVE`. 66,242차원
+  희소 vocabulary에 alpha=1을 일괄 적용한 likelihood 방식은 종료하고,
+  EXP-521 cosine을 선택 후보로 유지한다.
