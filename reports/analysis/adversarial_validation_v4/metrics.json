@@ -1,0 +1,1100 @@
+{
+  "input_artifacts": {
+    "train_features_sha256": "8028f08600f583e99b434f182a9250390b57db55c895eecbbefd37eba7b8fd59",
+    "test_features_sha256": "94efe01040201152e2db88389868ffa2b90c85b52f72574161a50fe9512b43f7",
+    "feature_names_sha256": "8011ac38bafb25db3ad487c962b54e162f28a224e7ee25334502b58e5e223d10",
+    "ordered_feature_names_sha256": "f3cdbb0279e62283df7bc6c6bcf952d730db963eff002a9746d1b44200379eba",
+    "train_csv_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+    "test_csv_sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+  },
+  "model_configuration": {
+    "objective": "binary:logistic",
+    "eval_metric": "auc",
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_lambda": 1.0,
+    "tree_method": "hist",
+    "device": "cpu",
+    "n_jobs": 8,
+    "verbosity": 0,
+    "n_estimators": 300,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "early_stopping_rounds": 30
+  },
+  "domain_split": {
+    "method": "StratifiedKFold",
+    "target": "train=0,test=1",
+    "shuffle": true,
+    "n_splits": 5,
+    "seed": 42,
+    "subclass_used": false,
+    "public_score_used": false
+  },
+  "n_train": 6201,
+  "n_test": 2546,
+  "n_features": 35230,
+  "n_splits": 5,
+  "seed": 42,
+  "fold_auc": [
+    0.7163609422023244,
+    0.7508570524984188,
+    0.7293182394321568,
+    0.7396745674630838,
+    0.7535957601875911
+  ],
+  "overall_auc": 0.7251887001475702,
+  "total_gain": 2248.3887554332623,
+  "top_features": [
+    {
+      "feature": "sample__multi_variant_gene_count",
+      "mean_gain": 130.1973434448242
+    },
+    {
+      "feature": "sample__multi_variant_gene_count_log1p",
+      "mean_gain": 99.21149215698242
+    },
+    {
+      "feature": "sample__complex_count",
+      "mean_gain": 46.43321990966797
+    },
+    {
+      "feature": "sample__mutated_gene_count",
+      "mean_gain": 30.621733093261717
+    },
+    {
+      "feature": "sample__mutated_gene_count_log1p",
+      "mean_gain": 30.04039077758789
+    },
+    {
+      "feature": "AHNAK__max_residue_position",
+      "mean_gain": 20.466017723083496
+    },
+    {
+      "feature": "CPEB2__max_residue_position",
+      "mean_gain": 20.455268478393556
+    },
+    {
+      "feature": "TCHH__max_residue_position",
+      "mean_gain": 18.484682846069337
+    },
+    {
+      "feature": "TCHH__mutated",
+      "mean_gain": 18.254041290283205
+    },
+    {
+      "feature": "KDM6B__synonymous",
+      "mean_gain": 15.51085968017578
+    },
+    {
+      "feature": "LY75__max_residue_position",
+      "mean_gain": 15.000799369812011
+    },
+    {
+      "feature": "HLA-A__max_residue_position",
+      "mean_gain": 14.243165397644043
+    },
+    {
+      "feature": "MAGEE1__max_residue_position",
+      "mean_gain": 13.675093269348144
+    },
+    {
+      "feature": "CACNA1A__max_residue_position",
+      "mean_gain": 12.981701469421386
+    },
+    {
+      "feature": "WASL__max_residue_position",
+      "mean_gain": 12.210560417175293
+    },
+    {
+      "feature": "KDM6B__max_residue_position",
+      "mean_gain": 12.040606689453124
+    },
+    {
+      "feature": "CPEB2__missense",
+      "mean_gain": 11.608962249755859
+    },
+    {
+      "feature": "sample__total_variant_count_log1p",
+      "mean_gain": 11.199458980560303
+    },
+    {
+      "feature": "MYH4__max_residue_position",
+      "mean_gain": 10.985669326782226
+    },
+    {
+      "feature": "RXRA__max_residue_position",
+      "mean_gain": 10.769038772583007
+    },
+    {
+      "feature": "MFHAS1__max_residue_position",
+      "mean_gain": 10.678564643859863
+    },
+    {
+      "feature": "VWF__max_residue_position",
+      "mean_gain": 10.608655548095703
+    },
+    {
+      "feature": "MTOR__max_residue_position",
+      "mean_gain": 10.497546195983887
+    },
+    {
+      "feature": "XPO1__max_residue_position",
+      "mean_gain": 10.326471900939941
+    },
+    {
+      "feature": "sample__total_variant_count",
+      "mean_gain": 10.081022548675538
+    },
+    {
+      "feature": "HSPA1L__max_residue_position",
+      "mean_gain": 9.972935485839844
+    },
+    {
+      "feature": "FGD6__max_residue_position",
+      "mean_gain": 9.944713592529297
+    },
+    {
+      "feature": "MYH1__max_residue_position",
+      "mean_gain": 9.780272674560546
+    },
+    {
+      "feature": "ALOX12B__max_residue_position",
+      "mean_gain": 9.695125198364257
+    },
+    {
+      "feature": "LY75__mutated",
+      "mean_gain": 9.63408374786377
+    },
+    {
+      "feature": "NF1__max_residue_position",
+      "mean_gain": 9.297264099121094
+    },
+    {
+      "feature": "FURIN__max_residue_position",
+      "mean_gain": 8.814625549316407
+    },
+    {
+      "feature": "ICAM5__max_residue_position",
+      "mean_gain": 8.51691493988037
+    },
+    {
+      "feature": "SYNE1__max_residue_position",
+      "mean_gain": 8.443169403076173
+    },
+    {
+      "feature": "APC__max_residue_position",
+      "mean_gain": 8.30964012145996
+    },
+    {
+      "feature": "KALRN__max_residue_position",
+      "mean_gain": 8.273672580718994
+    },
+    {
+      "feature": "ABCB1__max_residue_position",
+      "mean_gain": 8.148918342590331
+    },
+    {
+      "feature": "HDAC9__max_residue_position",
+      "mean_gain": 8.068465614318848
+    },
+    {
+      "feature": "LTBP2__max_residue_position",
+      "mean_gain": 7.9223535537719725
+    },
+    {
+      "feature": "APC__nonsense",
+      "mean_gain": 7.848277282714844
+    },
+    {
+      "feature": "DOCK10__max_residue_position",
+      "mean_gain": 7.7318767547607425
+    },
+    {
+      "feature": "MEP1A__missense",
+      "mean_gain": 7.656231498718261
+    },
+    {
+      "feature": "NPY4R__max_residue_position",
+      "mean_gain": 7.637876701354981
+    },
+    {
+      "feature": "TUBGCP6__max_residue_position",
+      "mean_gain": 7.550562763214112
+    },
+    {
+      "feature": "ACVR2A__frameshift",
+      "mean_gain": 7.5401958465576175
+    },
+    {
+      "feature": "NID2__max_residue_position",
+      "mean_gain": 7.427305603027344
+    },
+    {
+      "feature": "SAMD9__max_residue_position",
+      "mean_gain": 7.361591148376465
+    },
+    {
+      "feature": "EGFR__max_residue_position",
+      "mean_gain": 7.232123756408692
+    },
+    {
+      "feature": "sample__missense_count",
+      "mean_gain": 7.167563819885254
+    },
+    {
+      "feature": "ATP2B4__max_residue_position",
+      "mean_gain": 7.0605308532714846
+    }
+  ],
+  "family_shift": [
+    {
+      "family": "max_residue_position",
+      "n_features": 4384,
+      "total_gain": 1370.3572335049512,
+      "mean_gain_per_feature": 0.31258148574474254,
+      "share_of_total_gain": 0.6094841162114266
+    },
+    {
+      "family": "sample_burden_aggregate",
+      "n_features": 12,
+      "total_gain": 384.73911824226377,
+      "mean_gain_per_feature": 32.06159318685531,
+      "share_of_total_gain": 0.17111770253811154
+    },
+    {
+      "family": "mutated",
+      "n_features": 4384,
+      "total_gain": 266.9360101342201,
+      "mean_gain_per_feature": 0.06088868844302466,
+      "share_of_total_gain": 0.11872324547486086
+    },
+    {
+      "family": "missense",
+      "n_features": 4384,
+      "total_gain": 135.8349431276321,
+      "mean_gain_per_feature": 0.030984247976193455,
+      "share_of_total_gain": 0.06041434907525894
+    },
+    {
+      "family": "synonymous",
+      "n_features": 4384,
+      "total_gain": 53.587263822555535,
+      "mean_gain_per_feature": 0.012223372222298252,
+      "share_of_total_gain": 0.02383362916802585
+    },
+    {
+      "family": "frameshift",
+      "n_features": 4384,
+      "total_gain": 17.708188343048093,
+      "mean_gain_per_feature": 0.004039276538104036,
+      "share_of_total_gain": 0.007875945963639967
+    },
+    {
+      "family": "nonsense",
+      "n_features": 4384,
+      "total_gain": 13.306633567810058,
+      "mean_gain_per_feature": 0.0030352722554311262,
+      "share_of_total_gain": 0.005918297507783917
+    },
+    {
+      "family": "hotspot",
+      "n_features": 35,
+      "total_gain": 5.91936469078064,
+      "mean_gain_per_feature": 0.1691247054508754,
+      "share_of_total_gain": 0.0026327140608920115
+    },
+    {
+      "family": "complex",
+      "n_features": 4384,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "missing",
+      "n_features": 4384,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "ABCA6__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "ADIG__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "AFAP1L2__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "ALMS1__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "ANLN__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "APP__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "ARAP3__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "ARRB2__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "ATP2A1__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "BCAN__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "CAPN9__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "CD276__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "CD82__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "CHAF1A__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "CIR1__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "CROCC__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "CTCF__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "CXCR6__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "CYB5B__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "CYP1A2__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "DCT__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "DEF6__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "DHX15__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "DPEP3__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "EPHA5__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "EPOR__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "F5__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "FABP5__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "FLNA__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "FZD2__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "G3BP1__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "GOLGA4__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "HGF__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "HNRNPD__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "HSD17B7__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "HTR7__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "ICAM1__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "IDE__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "IKBKB__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "INPP4B__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "IP6K2__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "ITGAM__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "JAK1__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "KDM6B__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "L1CAM__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "L3MBTL4__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "LFNG__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "LIG1__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "LLGL1__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "LRPPRC__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "LSM7__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "LY75__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "MAGEE1__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "MMP2__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "MMS22L__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "MOV10__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "MYH2__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "MYH7__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "MYH9__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "MYO15A__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "NELFE__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "NOTCH2__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "PANX1__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "PCSK1__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "PER1__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "PEX5__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "PHGDH__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "PIK3CB__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "PIM3__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "PLAGL1__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "PLEC__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "PLXNB2__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "PRC1__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "PRDM4__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "PRKCE__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "PRKDC__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "PVALB__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "REG1A__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "RREB1__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "RUVBL2__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "RXRG__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "RYR2__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "SAMD9L__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "SDC1__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "SDHC__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "SF3A3__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "SLAMF7__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "SLC12A4__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "SLC23A2__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "SLC25A17__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "SLC2A5__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "SLC6A8__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "SNRPA__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "SOAT2__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "SPEG__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "SPTA1__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "SPTB__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "ST6GAL1__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "STAG3__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "TAOK2__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "TFAP2B__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "TFCP2L1__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "TFDP2__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "TGFBI__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "TNNT3__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "TP53__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "TUBGCP5__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "TYR__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "VPS4B__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "WIZ__range_no_change_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    },
+    {
+      "family": "ZMIZ1__range_stop_any",
+      "n_features": 1,
+      "total_gain": 0.0,
+      "mean_gain_per_feature": 0.0,
+      "share_of_total_gain": 0.0
+    }
+  ],
+  "analysis_only": true
+}

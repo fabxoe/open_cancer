@@ -1,0 +1,13 @@
+{
+  "experiment_id": "EXP-484",
+  "data_hashes_match": true,
+  "original_submission_sha256": "0a4c45024d0eeb5a8e467be7c42cedacb079ee2e9d45b598c050bfee8223008b",
+  "reproduced_submission_sha256": "0a4c45024d0eeb5a8e467be7c42cedacb079ee2e9d45b598c050bfee8223008b",
+  "submission_sha256_match": true,
+  "oof_label_agreement": 1.0,
+  "test_label_agreement": 1.0,
+  "probability_max_abs_difference": 0.0,
+  "probability_atol": 1e-06,
+  "probability_rtol": 1e-06,
+  "passed": true
+}
