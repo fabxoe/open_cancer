@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 85
+- 실제 실험 수: 86
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -104,6 +104,7 @@
 | EXP-392 | COMPLETED | fabxoe | #392 | EXP-374 + fold-train range stop/no-change gene indicator | 0.4290431888 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0022523·안정성 gate 통과, Log Loss +0.0032364 소폭 악화로 ADOPT_WITH_CAUTION | [보고서](reports/exp392_range_semantic_indicators/README.md) |
 | EXP-409 | COMPLETED | fabxoe | #409 | EXP-369 + fold-train ordinary range-replacement gene indicator | 0.4249303829 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0019418이나 fold std +0.0023141·Log Loss +0.1327703으로 gate 실패, ARCHIVE | [보고서](reports/exp409_ordinary_range_replacement_indicator/README.md) |
 | EXP-433 | COMPLETED | fabxoe | #433 | Parser v4 N4-L: stop-v2 + 기존 5-family, 의미 외 피처 제거 통제군 | 0.4132762899 | 미제출 | NOT_STARTED | N4 L/C/N 비교용 Legacy control; 단독 채택 판단 없음 | [보고서](reports/exp433_parser_v4_legacy_control/README.md) |
+| EXP-435 | COMPLETED | fabxoe | #435 | Parser v4 N4-C: full v4 → 기존 5-family compatibility projection | 0.4111034467 | 미제출 | NOT_STARTED | L 대비 Macro F1 하락·std/Log Loss 개선; compatibility audit 전용 | [보고서](reports/exp435_parser_v4_compatibility_control/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -3748,3 +3749,21 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
 - Public LB: 미제출
 - 재현 상태: `NOT_STARTED`
 - 판단: N4 C/N 비교용 control이며 단독 성능으로 parser를 채택·기각하지 않는다.
+
+### [EXP-435] Parser v4 N4-C Compatibility control
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #435 / `issue-435-parser-v4-compatibility-control`
+- 소스 commit: `203b236c47d70f2a93d8675862c09bd367ab28f2`
+- 시작/종료: 2026-08-05T03:58:58.896242+00:00 /
+  2026-08-05T04:10:04.003589+00:00
+- Config: `configs/exp435_parser_v4_compatibility_control.yaml`
+- Runner: `scripts/run_exp435_parser_v4_compatibility_control.py`
+- OOF Macro F1: 0.4111034467 (EXP-433 대비 -0.0021728433)
+- Fold std: 0.0086359500 (EXP-433 대비 -0.0008982534)
+- Accuracy / Log Loss: 0.4046121593 / 1.9422048330
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+- 판단: compatibility audit 전용. native semantic baseline을 대신하지 않으며 parser
+  correctness를 점수로 되돌리지 않는다.
