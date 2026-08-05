@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 92
+- 실제 실험 수: 93
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -109,6 +109,7 @@
 | EXP-444 | COMPLETED | fabxoe | #444 | Parser v4 compatibility 5-family + train-supported native range 의미 | 0.4127201906 | 미제출 | NOT_STARTED | C 대비 +0.0016167·Legacy L 정확성 허용 gate 통과; native baseline 동결은 보류 | [보고서](reports/exp444_parser_v4_supported_range_hybrid/README.md) |
 | EXP-448 | COMPLETED | fabxoe | #448 | Parser v4 native consequence에서 sample provenance summary 6개 제거 | 0.4104538324 | 미제출 | NOT_STARTED | L 대비 -0.0028225·PAAD -0.0524로 gate 실패, ARCHIVE·native adapter v2 필요 | [보고서](reports/exp448_parser_v4_native_no_provenance/README.md) |
 | EXP-456 | COMPLETED | fabxoe | #456 | Parser v4 support-gated native semantic adapter v2 | 0.4111053102 | 미제출 | NOT_STARTED | v1 대비 개선했으나 L 대비 -0.0021710·PAAD -0.06285로 gate 실패, ARCHIVE | [보고서](reports/exp456_parser_v4_native_v2/README.md) |
+| EXP-459 | COMPLETED | 2heej | #459 | EXP-374 feature set + CatBoost(모델 다양성, GPU 미보유로 CPU-bounded depth=6/iterations=400/rsm=0.1) | 0.4120129509 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0147780(compute-bounded 축소분 포함, quality gate 미달)이나 다양성 gate(오류상관 0.6551·라벨불일치 34.2%) 명확히 통과, blend/stacking 후보로 보존 | [보고서](reports/exp459_catboost_exp374/README.md) |
 | EXP-469 | COMPLETED | fabxoe | #469 | EXP-456 native v2의 sample summary만 affected-gene count→token count | 0.4117817779 | 미제출 | INFERENCE_VERIFIED | EXP-456 대비 +0.0006765·Log Loss 개선; Legacy gate 미달이나 native 전용 분석·튜닝용 비튜닝 기준점으로 보존 | [보고서](reports/exp469_parser_v4_native_v2_token_count/README.md) |
 | EXP-479 | COMPLETED | fabxoe | #479 | EXP-469 + HGVS-informed range_replacement·range_stop·range_no_change 상호 배타 의미 | 0.4087566023 | 미제출 | INFERENCE_VERIFIED | 고정 XGBoost에서 EXP-469 대비 -0.0030252·안정성/Log Loss 악화; 제출 보류, 의미는 유지하고 비튜닝 native semantic 기준선으로 동결 | [보고서](reports/exp479_parser_v4_native_semantic_range/README.md) |
 
@@ -187,6 +188,7 @@
 | 2026-08-04T22:04:37.570398+00:00 | EXP-374 | fabxoe | `4a2dfb685859277bd78746e8ab9578ade51a64a7` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.83e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp374_stop_isoform_residue_mask/comparison.json) |
 | 2026-08-04T22:30:46.801549+00:00 | EXP-392 | fabxoe | `af5a082e709ee5b6ea66befb7710cf18dcedabc6` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.46e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp392_range_semantic_indicators/comparison.json) |
 | 2026-08-04T21:45:04.915445+00:00 | EXP-409 | fabxoe | `7519b8e0dfa8e6b2c2e49d1b1ee4e7f54bc0c412` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp409_ordinary_range_replacement_indicator/comparison.json) |
+| 2026-08-05T06:46:14.485134+00:00 | EXP-459 | 2heej | `09430f2632c14ef459fb309915368bac561533f2` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.11e-16 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp459_catboost_exp374/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -3856,6 +3858,44 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
 - 재현 상태: `NOT_STARTED`
 - 판단: coarse unresolved 열 제거는 v1을 개선했지만 Legacy L 허용 gate를 통과하지
   못해 `ARCHIVE`. Parser v4 correctness는 유지하고 adapter 후속 ablation으로 간다.
+
+### [EXP-459] CatBoost on EXP-374 feature set (모델 다양성, CPU-bounded)
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #459 / `issue-459-catboost-exp374`
+- 부모: EXP-374(N5 baseline 동결이 여전히 진행 중이라 현재 유효한 legacy
+  parent). #449(LightGBM)·#457(stacking)과 병렬인 세 번째 모델 다양성 arm.
+- 소스 commit: `09430f2632c14ef459fb309915368bac561533f2`
+- Config: `configs/exp459_catboost_exp374.yaml`
+- Runner: `scripts/run_exp459_catboost_exp374.py`
+- 피처: EXP-374의 `build_fold_features()` 100% 재사용, 변경 없음
+- 모델: CatBoost. 이 실행 환경엔 GPU가 없어(EXP-127도 CPU에서 depth=8/
+  iterations=1000이 fold 1개를 30분 내 못 끝내 RunPod RTX 4090으로 이동한
+  전례) preflight 타이밍 측정(depth=6/rsm=0.1/border_count=32/thread_count=10
+  에서 1.30초/iteration)을 근거로 depth=6, iterations=400, rsm=0.1로 축소한
+  compute-bounded 설정을 사용했다. EXP-127 GPU 결과와 직접 비교 가능한 값이
+  아니다.
+- OOF Macro F1: 0.4120129509 (EXP-374 대비 -0.0147779759)
+- Fold std: 0.0107206162 (EXP-374 대비 +0.0022173993)
+- Accuracy / Log Loss: 0.4004192872 / 1.9682460078
+- best_iteration: 5-fold 전부 399(iterations 상한 도달, 미수렴 가능성)
+- 클래스별: KIRC +0.2588, LGG +0.1595 큰 개선; STES -0.1361, SARC -0.1185,
+  UCEC -0.0783 큰 하락(EXP-374 대비)
+- 다양성 gate: OOF 오류(정오답) 상관 0.6550612572(≤0.92 통과), 예측 라벨
+  불일치율 0.3422028705(≥10% 통과), 확률 Pearson 상관 0.8871325166(참고).
+  두 조건 모두 명확히 통과.
+- canonical EXP-374 비교 기준: main의 Release·checkpoint가 실제로는 업로드돼
+  있지 않아(manifest `storage_uri` 전부 null) 별도 git worktree에서
+  `scripts/run_exp374_stop_isoform_residue_mask.py`를 재실행해 기록값과
+  완전히 일치하는 OOF(`0.4267909268`, `INFERENCE_VERIFIED`)를 재확인한 뒤
+  비교했다.
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`(저장 checkpoint 추론으로 제출 SHA-256·
+  라벨·확률 일치 확인)
+- 판단: 단독 성능은 compute-bounded 축소 때문에 EXP-374 미달로 quality gate
+  실패. 다양성 gate는 명확히 통과해 blend/stacking 후보 자산으로 보존한다.
+  단독 채택은 하지 않는다.
 
 ### [EXP-469] Parser v4 native v2 token-count aggregation ablation
 
