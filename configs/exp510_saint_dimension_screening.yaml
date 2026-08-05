@@ -1,0 +1,39 @@
+run_mode: experiment
+record_role: screening
+experiment_id: EXP-510
+issue_number: 510
+slug: saint_dimension_screening
+parent_experiment: EXP-479
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  folds: [0, 1]
+feature_cache: data/processed/issue475_native_v3_analysis
+semantic_compression:
+  dimensions: [128, 256, 512]
+  min_support: 5
+  inner_splits: 3
+model:
+  architecture: saint_row_column_attention
+  token_dim: 32
+  depth: 2
+  heads: 4
+  dropout: 0.1
+  n_classes: 26
+training:
+  device: cpu
+  torch_threads: 8
+  batch_size: 32
+  max_epochs: 12
+  early_stopping_patience: 4
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  class_weight: balanced
+  checkpoint_selection: validation_macro_f1
+  sampler: deterministic_epoch_permutation
+  validation_batch_policy: canonical_id_order_fixed_batch_32
+notes: >-
+  Issue #510 limited two-fold dimension screening. Dimension is the only
+  comparison variable. No Public LB or test distribution is used for model,
+  checkpoint, dimension, or threshold selection. Results are not a canonical
+  five-fold OOF score.
