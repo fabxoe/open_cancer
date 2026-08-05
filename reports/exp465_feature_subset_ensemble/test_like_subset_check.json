@@ -1,0 +1,21 @@
+{
+  "purpose": "mandatory_completion_condition",
+  "issue": 465,
+  "propensity_source": "reports/analysis/adversarial_validation/train_domain_propensity.csv",
+  "propensity_use": "read_only_diagnostic_subset_selector",
+  "test_or_public_used_for_selection": false,
+  "test_like_threshold_quantile": 0.75,
+  "test_like_threshold_value": 0.2500581443309784,
+  "n_test_like": 1666,
+  "overall": {
+    "blend_macro_f1": 0.30818132840047974,
+    "exp374_macro_f1": 0.4267909268459148,
+    "delta": -0.11860959844543506
+  },
+  "test_like_subset": {
+    "blend_macro_f1": 0.28844929650331835,
+    "exp374_macro_f1": 0.4283785968196299,
+    "delta": -0.13992930031631157
+  },
+  "verdict": "FAIL_test_like_regression"
+}
