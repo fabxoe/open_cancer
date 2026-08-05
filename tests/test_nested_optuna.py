@@ -43,6 +43,34 @@ def test_search_space_is_pre_registered() -> None:
     assert trial.calls[-1] == ("float", "learning_rate", 0.02, 0.08, True)
 
 
+def test_native_v3_regularized_search_space_is_explicit() -> None:
+    trial = FakeTrial()
+    parameters = suggest_xgboost_parameters(
+        trial,
+        {
+            "max_depth": [3, 7],
+            "min_child_weight": [2.0, 20.0],
+            "subsample": [0.6, 0.9],
+            "colsample_bytree": [0.25, 0.75],
+            "reg_alpha": [0.0, 2.0],
+            "reg_lambda": [1.0, 12.0],
+            "learning_rate": [0.02, 0.08, "log"],
+            "gamma": [0.0, 0.5],
+        },
+    )
+    assert parameters == {
+        "max_depth": 3,
+        "min_child_weight": 2.0,
+        "subsample": 0.6,
+        "colsample_bytree": 0.25,
+        "reg_alpha": 0.0,
+        "reg_lambda": 1.0,
+        "learning_rate": 0.02,
+        "gamma": 0.0,
+    }
+    assert trial.calls[-1] == ("float", "gamma", 0.0, 0.5, False)
+
+
 def test_inner_splits_are_deterministic_disjoint_and_complete() -> None:
     target = np.repeat(np.arange(4), 9)
     first = inner_splits(target, outer_fold=2, seed=42, n_splits=3)
