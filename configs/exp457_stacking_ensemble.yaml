@@ -1,0 +1,41 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-457
+issue_number: 457
+slug: stacking_ensemble
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+base_experiments:
+  - experiment_id: EXP-374
+    oof_probability_path: oof/exp374_stop_isoform_residue_mask.csv
+    test_probability_path: preds/exp374_stop_isoform_residue_mask_test_proba.csv
+  - experiment_id: EXP-449
+    oof_probability_path: oof/exp449_lightgbm_exp374.csv
+    test_probability_path: preds/exp449_lightgbm_exp374_test_proba.csv
+meta_model:
+  class: sklearn.linear_model.LogisticRegression
+  C: 0.2
+  max_iter: 1000
+  class_weight: null
+  random_state: 42
+submission:
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
+acceptance:
+  comparison_experiment: EXP-374
+  minimum_macro_f1_delta: 0.001
+  maximum_fold_std_increase: 0.002
+notes: >-
+  Issue #457. Leakage-safe outer 5-fold cross-fitted multinomial Logistic
+  Regression (strong L2, C=0.2, same hyperparameters as EXP-137's precedent)
+  over EXP-374 and EXP-449 OOF probabilities (52-dim concatenation). For
+  each outer fold, the meta learner is fit only on the other four folds'
+  base OOF rows and predicts the held-out fold -- base OOF probabilities
+  are themselves already out-of-fold with respect to the base models, so
+  no row's true label ever influences its own meta-feature. No Optuna, no
+  hyperparameter search. A mandatory train_domain_propensity.csv test-like
+  subset check (same boundary as EXP-351/EXP-450) is required before any
+  adoption decision, to catch an EXP-253/EXP-450-style Local-pass/test-
+  like-fail pattern.

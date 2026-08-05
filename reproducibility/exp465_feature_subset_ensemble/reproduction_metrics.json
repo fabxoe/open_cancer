@@ -1,0 +1,13 @@
+{
+  "verification_type": "saved_checkpoint_inference_two_component_blend",
+  "experiment_id": "EXP-465",
+  "data_hashes_match": true,
+  "original_submission_sha256": "5b3758306cf11d01b69eb236eb9178517d0f0bef5c1a6bf6bfbf944d210e5377",
+  "reproduced_submission_sha256": "5b3758306cf11d01b69eb236eb9178517d0f0bef5c1a6bf6bfbf944d210e5377",
+  "submission_sha256_match": true,
+  "test_label_agreement": 1.0,
+  "probability_max_abs_difference": 1.3411044941236128e-08,
+  "probability_atol": 1e-06,
+  "probability_rtol": 1e-06,
+  "passed": true
+}

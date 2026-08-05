@@ -1,0 +1,128 @@
+{
+  "experiment_id": "EXP-391",
+  "issue_number": 391,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "1160c2afcea2dee1f4a5d75cee19ebb53cfe4375",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp391_exact_duplicate_token_normalization/data_manifest.json",
+  "environment": "reproducibility/exp391_exact_duplicate_token_normalization/environment.json",
+  "release_url": null,
+  "verifier": "Gomin-art",
+  "verified_at": "2026-08-05T01:44:29.823676+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp391_exact_duplicate_token_normalization/fold_00.json",
+      "size_bytes": 9472756,
+      "sha256": "b71f1330570ccc2228c434d226ac76839cbf697a64539d82e56e01ceab76f477",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp391_exact_duplicate_token_normalization/fold_01.json",
+      "size_bytes": 9366230,
+      "sha256": "27f114d21c53f934e62213ff3af93f1ce365506b0a35c693e2f41d0d9dbc949a",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp391_exact_duplicate_token_normalization/fold_02.json",
+      "size_bytes": 9130747,
+      "sha256": "488c83ae3ddd528f5fd65c0fa7bc5bd13b69b0fa77a2bb4a45b71e30e1fe6eff",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp391_exact_duplicate_token_normalization/fold_03.json",
+      "size_bytes": 6240151,
+      "sha256": "f2366ba1f60a8f94c0dcf365995ad33b7742c13c3e4a1a03d77d3bbc2b4077a1",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp391_exact_duplicate_token_normalization/fold_04.json",
+      "size_bytes": 10578955,
+      "sha256": "ddf2d68f570678577f72a9955982d379993b0474f37a93b37137b195308be336",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp391_exact_duplicate_token_normalization.csv",
+      "size_bytes": 38114,
+      "sha256": "2a835f6532945d6613115db1877a7ebfe466e669adfc067e8c8d13ba1a048df8",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp391_exact_duplicate_token_normalization.csv",
+      "size_bytes": 2111905,
+      "sha256": "819900a2b655398aeab0c8286e3c0142c6dadeb6784cfa57e72fd021fd3d8c72",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp391_exact_duplicate_token_normalization_test_proba.csv",
+      "size_bytes": 831106,
+      "sha256": "bbc6357358f640629ceab07c4446b1ff247ec3d40f35c4e1b38513bd2d32fd8f",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp391_exact_duplicate_token_normalization/metrics.json",
+      "size_bytes": 40567,
+      "sha256": "6356dee4b0f5dce5466593db91e0b552f5fcfd3a152c017b15df938350e49798",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp391_exact_duplicate_token_normalization/config.resolved.yaml",
+      "size_bytes": 46497,
+      "sha256": "8e8169601b187233c7324bc881f564d120ac0626916127146d22b3517afe5341",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp391_exact_duplicate_token_normalization/fold_00_checkpoint_audit.json",
+      "size_bytes": 24450,
+      "sha256": "e9392bc0f3b826a68e419a37cc1724ac689991dcbcd23e99344029e98004045b",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp391_exact_duplicate_token_normalization/fold_01_checkpoint_audit.json",
+      "size_bytes": 27259,
+      "sha256": "84f0759de1f0c4e2a6616fcf1bd5d03e7689635c86c6651b65ce119eb656a9ac",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp391_exact_duplicate_token_normalization/fold_02_checkpoint_audit.json",
+      "size_bytes": 33212,
+      "sha256": "8497bc7351444f881a73d9c013893fca4f450c0283dcf389ec1b606a91e792bc",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp391_exact_duplicate_token_normalization/fold_03_checkpoint_audit.json",
+      "size_bytes": 26029,
+      "sha256": "8c8120b29aeee6d330dac5eb939bc55bfb715e4535f3f17da7607b118632e1aa",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp391_exact_duplicate_token_normalization/fold_04_checkpoint_audit.json",
+      "size_bytes": 31051,
+      "sha256": "5faa1a6b80e6600d18dd8198bb40d091f37942e21bba04d9fdea042209d88570",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

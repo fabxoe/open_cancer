@@ -90,6 +90,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 - [변이 표기 정규화·의미 동등성 계약 감사](analysis/mutation_notation_semantic_contract/README.md)
 - [Stop 표기 교란 parser·feature 불변성 감사](analysis/stop_notation_invariance/README.md)
 - [Parser native v3 분포·상관·adversarial AUC·TreeSHAP 진단](analysis/parser_native_v3_generalization/README.md)
+- [Parser v4 gene-event TF-IDF 단일-fold screening](analysis/tfidf_gene_event_screening/README.md)
 
 ## 역할 구분
 

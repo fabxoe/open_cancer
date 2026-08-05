@@ -1,0 +1,60 @@
+{
+  "verified_at": "2026-08-05T06:08:34.724720+00:00",
+  "files": [
+    {
+      "path": "data/splits/stratified_5fold_seed42.csv",
+      "size_bytes": 80621,
+      "sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf"
+    },
+    {
+      "path": "data/raw/test.csv",
+      "size_bytes": 35068585,
+      "sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+    },
+    {
+      "path": "data/raw/sample_submission.csv",
+      "size_bytes": 35656,
+      "sha256": "1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84"
+    },
+    {
+      "path": "oof/exp374_stop_isoform_residue_mask.csv",
+      "size_bytes": 2122619,
+      "sha256": "4d4f9182fca8e6023d775b77ace463cad3a80144206f82f9653d98b11345da9a"
+    },
+    {
+      "path": "preds/exp374_stop_isoform_residue_mask_test_proba.csv",
+      "size_bytes": 834584,
+      "sha256": "11730e0f7a033e90e5bc3aed346601479b47959b917fb5654f1f0ba55aadd13b"
+    },
+    {
+      "path": "reports/exp374_stop_isoform_residue_mask/metrics.json",
+      "size_bytes": 40221,
+      "sha256": "15812aca909ef26dd10226be90b3fa1dc9054ac695d621716eba0dbb0d91310b"
+    },
+    {
+      "path": "reproducibility/exp374_stop_isoform_residue_mask/config.resolved.yaml",
+      "size_bytes": 46085,
+      "sha256": "e7444a018e6265ca2bc7c9ec4dc898a09328b3814db1db87a37ec956e2ad47d3"
+    },
+    {
+      "path": "oof/exp449_lightgbm_exp374.csv",
+      "size_bytes": 3534986,
+      "sha256": "52ed5de86fe48f85220729c0c2fe9d507c43d0c62ce56060efd7f97af0474cf8"
+    },
+    {
+      "path": "preds/exp449_lightgbm_exp374_test_proba.csv",
+      "size_bytes": 1412167,
+      "sha256": "2be2700742c8646d0f6e81eca421e6e21d3383982aa3b520e1102bc76f192086"
+    },
+    {
+      "path": "reports/exp449_lightgbm_exp374/metrics.json",
+      "size_bytes": 11576,
+      "sha256": "148aa1725410f99d90b9ff5f9dcf87a14e92d3928d7d173edf9edb004265c5ba"
+    },
+    {
+      "path": "reproducibility/exp449_lightgbm_exp374/config.resolved.yaml",
+      "size_bytes": 6775,
+      "sha256": "11d77052946a0c57c29eb6b6d206a023587ee3a3c17cfc0142ce7d0a8585d14d"
+    }
+  ]
+}

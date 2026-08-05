@@ -88,3 +88,26 @@ def test_complex_and_missing_annotation_are_unmappable() -> None:
     assert classify_token_semantics("UNKNOWN", "A2T", ()).category == (
         "COMPLEX_OR_UNMAPPABLE"
     )
+
+
+def test_start_codon_and_unknown_reference_tokens_are_unmappable() -> None:
+    # N6: parser v4 routing distinguishes M1 start-codon and leading-X
+    # unknown-reference tokens from ordinary substitutions; the legacy lexical
+    # parser did not, so these were previously eligible for isoform matching.
+    annotation = _annotation("ENST1", "MAAA", mane=True)
+    assert classify_token_semantics("GENE1", "M1V", (annotation,)).category == (
+        "COMPLEX_OR_UNMAPPABLE"
+    )
+    assert classify_token_semantics("GENE1", "X2A", (annotation,)).category == (
+        "COMPLEX_OR_UNMAPPABLE"
+    )
+
+
+def test_nonsense_and_no_change_tokens_remain_eligible() -> None:
+    annotation = _annotation("ENST1", "MAAA", mane=True)
+    assert classify_token_semantics("GENE1", "A2*", (annotation,)).category == (
+        "MANE_MATCH"
+    )
+    assert classify_token_semantics("GENE1", "A2A", (annotation,)).category == (
+        "MANE_MATCH"
+    )
