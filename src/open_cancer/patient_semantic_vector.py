@@ -69,11 +69,16 @@ def _reference_sequence(event) -> str:
 
 def _alternate_sequence(event) -> str:
     payload = event.payload
+    if event.route == "frameshift":
+        candidate = _canonical_sequence(payload.get("first_new_peptide_candidate"))
+        # Compact multi-letter prefixes such as SDEL133fs are candidates, not
+        # a confirmed downstream peptide.  Count only one explicit first-new
+        # residue and never expand the unknown shifted C-terminal sequence.
+        return candidate if len(candidate) == 1 and candidate in ALTERNATE_SYMBOLS else ""
     for key in (
         "alternate_residue_canonical",
         "translated_alternate_sequence",
         "inserted_sequence",
-        "first_new_peptide_candidate",
     ):
         sequence = _canonical_sequence(payload.get(key))
         if sequence:
