@@ -143,8 +143,8 @@ semantic parser
 | N4-T-E | native v2 token-count canonical 5-fold | #469 | EXP-469 | #474 | MERGED | 0.4117817779 | EXP-456 +0.0006765·Legacy gate 미달, 비튜닝 native 기준점 보존 | v3 semantic range adapter |
 | N4-V3 | HGVS-informed range 3분류 native adapter | #477 | 해당 없음 | #478 | MERGED | N/A | replacement·stop·no-change를 상호 배타적 모델 의미로 보존 | EXP-479 평가 |
 | N4-V3-E | native v3 semantic range canonical 5-fold | #479 | EXP-479 | #480 | COMPLETED | 0.4087566023 | EXP-469 대비 -0.0030252·현 XGBoost 부적합, 의미 기준선은 동결 | native v3 통계 감사 |
-| N4-S | native v3 분포·희소도·상관·adversarial AUC | #475 | explore | 미발급 | PLANNED | N/A | v2가 아닌 v3 기준, test·label을 feature 선택에 쓰지 않는 진단 | Issue #475를 v3 기준으로 갱신·실행 |
-| N4-SHAP | native v3 fold validation TreeSHAP·클래스별 기여 | 미발급 | explore | 미발급 | PLANNED | N/A | native feature competition·실사용 확인 | tuning space 동결 |
+| N4-S | native v3 분포·희소도·상관·adversarial AUC | #475 | explore | 미발급 | COMPLETED | N/A | 전체 domain AUC 0.714585; range 단독 AUC 0.502–0.505, selection 미사용 | native v3 nested tuning Issue 발급 |
+| N4-SHAP | native v3 fold validation TreeSHAP·클래스별 기여 | #475 | explore | 미발급 | COMPLETED | N/A | 260행 validation-only; range SHAP 약 0.07%, any-range accuracy +0.0220 | tuning space 동결 |
 | N4-OPT | native v3 전용 nested XGBoost tuning | 미발급 | 미발급 | 미발급 | PLANNED | N/A | outer fold 외부 정보 사용 금지 | multi-seed 검증 |
 | N4-MS | native v3 tuned 후보 multi-seed 안정성 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | Local gate·클래스 안정성 판단 | N5 동결 여부 |
 | N5 | Parser-native semantic baseline 동결 | #479 | EXP-479 | 미발급 | COMPLETED | 0.4087566023 | HGVS 의미 기준선 동결·성능 최적화는 후속 단계 | N4-S·SHAP 진행 |
