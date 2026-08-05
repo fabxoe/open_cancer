@@ -720,6 +720,10 @@ resolved config에는 실행에 실제 적용된 항목만 기록한다.
 - compatibility audit에서는 fold, seed, model, checkpoint, feature 이름·차원·순서와
   sample weight를 고정하고 parser·projection만 변경한다. 이 결과로 Parser
   Baseline을 동결하지 않는다.
+- Parser v4의 최초 `legacy / compatibility / native` 통제 비교에서는 세 arm 모두
+  hotspot·residue-position·pathway·isoform·driver·추가 aggregate·Optuna를 제외한다.
+  compatibility와 native arm은 기존 5-family 열을 각각의 projection으로 **교체**하며,
+  같은 의미 열을 중복해서 더하지 않는다. mutation presence와 missing 열은 유지한다.
 - parser-native baseline은 mutation presence와 raw provenance를 보존하면서
   substitution·frameshift·deletion·insertion·duplication·delins·range·unresolved
   의미를 고정 schema로 노출한다. isoform·driver·pathway 신규 지식과 Optuna는 이
