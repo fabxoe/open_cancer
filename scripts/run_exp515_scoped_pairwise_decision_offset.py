@@ -36,9 +36,16 @@ from sklearn.utils.class_weight import compute_sample_weight
 
 from open_cancer.constants import CLASS_LABELS
 from open_cancer.experiment import resolve_experiment_context
-from open_cancer.frozen_feature_specs import materialize_frozen_feature_spec
+from open_cancer.feature_family import drop_named_base_features
 from open_cancer.hashing import sha256_file
+from open_cancer.hotspot_features import build_hotspot_augmented_features, resolve_hotspot_config
+from open_cancer.isoform_position_mask import resolve_isoform_position_mask_from_config
+from open_cancer.isoform_relative_position import resolve_isoform_relative_position_from_config
 from open_cancer.model_runner import create_model_adapter
+from open_cancer.mutation_features import (
+    resolve_position_features_from_config,
+    resolve_position_options_from_config,
+)
 from open_cancer.nested_decision_offset import (
     CANDIDATE_OFFSET_GRID,
     apply_class_offset,
@@ -47,11 +54,18 @@ from open_cancer.nested_decision_offset import (
 )
 from open_cancer.paths import relative_posix
 from open_cancer.validation import validate_json_document
+from run_exp374_stop_isoform_residue_mask import build_fold_features
+from open_cancer.robust_mutation_parser import (
+    STOP_NOTATION_PARSER_CONTRACT,
+    normalize_stop_notation_token,
+    parse_stop_notation_invariant_cell,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "configs" / "exp515_scoped_pairwise_decision_offset.yaml"
 TRAIN_PATH = ROOT / "data" / "raw" / "train.csv"
 TEST_PATH = ROOT / "data" / "raw" / "test.csv"
+EXP374_CONFIG_PATH = ROOT / "configs" / "exp374_stop_isoform_residue_mask.yaml"
 ISSUE = 515
 EXP_ID = "EXP-515"
 SLUG = "scoped_pairwise_decision_offset"
@@ -71,6 +85,82 @@ def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def build_exp374_train_matrix() -> tuple[sparse.csr_matrix, pd.Series]:
+    """Reconstruct EXP-374's actual train feature matrix (not a frozen v1 proxy).
+
+    EXP-233/276 used the frozen Feature Spec v1 as a fast inner-cross-fit
+    proxy because their baseline (EXP-219) was itself trained on v1. EXP-374
+    uses a materially different feature space (stop-notation-invariant
+    parser, pathway-20 + hotspot-34 + Ensembl isoform residue mask), so this
+    experiment rebuilds that exact feature space instead of reusing v1 --
+    the inner-cross-fit proxy should match the baseline model's actual
+    decision surface, not an older, unrelated one.
+    """
+    exp374_config = yaml.safe_load(EXP374_CONFIG_PATH.read_text(encoding="utf-8"))
+    hotspot_config = exp374_config.get("hotspots", {})
+    hotspots, _, _ = resolve_hotspot_config(hotspot_config)
+    selected_position_features = resolve_position_features_from_config(exp374_config)
+    position_options = resolve_position_options_from_config(exp374_config)
+    position_token_filter, mask_semantic_contract = resolve_isoform_position_mask_from_config(
+        exp374_config, root=ROOT
+    )
+    position_token_transformer, relative_semantic_contract = (
+        resolve_isoform_relative_position_from_config(exp374_config, root=ROOT)
+    )
+    position_semantic_contract = relative_semantic_contract or mask_semantic_contract
+    selected_robust_aggregates = tuple(
+        exp374_config.get("features", {}).get("robust_aggregates", [])
+    )
+    feature_dir = ROOT / "data" / "processed" / "exp515_exp374_base_features"
+    feature_report = build_hotspot_augmented_features(
+        TRAIN_PATH,
+        TEST_PATH,
+        feature_dir,
+        hotspots=hotspots,
+        base_feature_options={
+            "selected_robust_aggregates": selected_robust_aggregates,
+            "selected_position_features": selected_position_features,
+            "position_token_filter": position_token_filter,
+            "position_token_transformer": position_token_transformer,
+            "position_semantic_contract": position_semantic_contract,
+            "mutation_cell_parser": parse_stop_notation_invariant_cell,
+            "mutation_parser_contract": STOP_NOTATION_PARSER_CONTRACT,
+            **position_options,
+        },
+        hotspot_token_normalizer=normalize_stop_notation_token,
+    )
+    base_dir = Path(feature_report["base_dir"])
+    x_base = sparse.load_npz(feature_dir / "train_features.npz").tocsr()
+    all_feature_names = tuple(
+        json.loads((feature_dir / "feature_names.json").read_text(encoding="utf-8"))
+    )
+    feature_train_ids = pd.read_csv(base_dir / "train_ids.csv", dtype=str)["ID"]
+
+    builder = build_fold_features()
+    n = x_base.shape[0]
+    all_idx = np.arange(n)
+    empty_idx = np.array([], dtype=np.int64)
+    bundle = builder(
+        fold=0,
+        train_indices=all_idx,
+        valid_indices=empty_idx,
+        base_train=x_base,
+        base_validation=x_base[:0],
+        base_test=sparse.csr_matrix((0, x_base.shape[1])),
+        base_feature_names=all_feature_names,
+        target=np.zeros(n, dtype=np.int64),
+    )
+    x_train_full, _, _, _ = drop_named_base_features(
+        x_base,
+        x_base[:0],
+        sparse.csr_matrix((0, x_base.shape[1])),
+        all_feature_names,
+        bundle.base_feature_names_to_drop,
+    )
+    x_full = sparse.hstack([x_train_full, bundle.train], format="csr", dtype=np.float32)
+    return x_full.tocsr(), feature_train_ids
+
+
 def main() -> None:
     started = datetime.now(timezone.utc)
     clock = time.perf_counter()
@@ -82,7 +172,6 @@ def main() -> None:
 
     out_report = ROOT / "reports" / ARTIFACT_SLUG
     out_repro = ROOT / "reproducibility" / ARTIFACT_SLUG
-    feature_dir = ROOT / "data" / "processed" / f"{ARTIFACT_SLUG}_features"
     for path in (out_report, out_repro):
         path.mkdir(parents=True, exist_ok=True)
 
@@ -90,16 +179,15 @@ def main() -> None:
     if not baseline_oof_path.is_file():
         raise FileNotFoundError(f"EXP-374 baseline OOF가 없습니다: {baseline_oof_path}.")
 
-    feature_spec_manifest = materialize_frozen_feature_spec(
-        root=ROOT, name="v1", output_dir=feature_dir, train_path=TRAIN_PATH, test_path=TEST_PATH
-    )
-    x_all = sparse.load_npz(feature_dir / "train_features.npz").tocsr()
+    x_all, feature_train_ids = build_exp374_train_matrix()
 
     train_raw = pd.read_csv(TRAIN_PATH, usecols=["ID", "SUBCLASS"], dtype=str)
     split = pd.read_csv(ROOT / config["split"]["path"], dtype={"ID": str, "fold": int})
     train = train_raw.merge(split, on="ID", how="left", validate="one_to_one", sort=False)
     if not train["ID"].equals(train_raw["ID"]) or train["fold"].isna().any():
         raise ValueError("split 병합 후 train 순서 또는 커버리지가 어긋났습니다.")
+    if not feature_train_ids.equals(train["ID"]):
+        raise ValueError("재구성한 EXP-374 feature 행렬의 ID 순서가 train과 다릅니다.")
     label_index = {label: index for index, label in enumerate(CLASS_LABELS)}
     y = train["SUBCLASS"].map(label_index).to_numpy(dtype=np.int64)
     folds = train["fold"].to_numpy(dtype=np.int32)
@@ -277,11 +365,15 @@ def main() -> None:
             "per_class_f1": baseline_per_class_f1,
         },
         "base_feature_spec": {
-            "name": "v1",
-            "note": "inner cross-fit proxy only, see inner_cross_fitting.note in config",
-            "base_feature_spec_sha256": feature_spec_manifest["base_feature_spec_sha256"],
-            "feature_names_sha256": feature_spec_manifest["feature_names_sha256"],
-            "train_shape": feature_spec_manifest["train_shape"],
+            "name": "exp374_reconstructed",
+            "note": (
+                "Inner-cross-fit proxy uses EXP-374's own feature pipeline "
+                "(stop-notation parser, pathway-20, hotspot-34, Ensembl "
+                "isoform residue mask), rebuilt via build_exp374_train_matrix() "
+                "in this script -- not the frozen Feature Spec v1 used by "
+                "EXP-233/276, since EXP-374's baseline is not a v1 model."
+            ),
+            "train_shape": list(x_all.shape),
         },
         "split": {**config["split"], "sha256": sha256_file(ROOT / config["split"]["path"])},
         "inner_cross_fitting": inner_cfg,
