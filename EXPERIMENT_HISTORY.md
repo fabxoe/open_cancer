@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 96
+- 실제 실험 수: 97
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -108,6 +108,7 @@
 | EXP-438 | COMPLETED | fabxoe | #438 | Parser v4 N4-N: mutation presence + native semantic schema | 0.4102050373 | 미제출 | NOT_STARTED | native adapter gate 실패; parser 유지·adapter family ablation 필요 | [보고서](reports/exp438_parser_v4_native_semantic_baseline/README.md) |
 | EXP-449 | COMPLETED | Kangho-Park | #449 | EXP-374 feature set + LightGBM(EXP-209 고정 파라미터, 모델 다양성) | 0.4220549915 | 미제출 | INFERENCE_VERIFIED | 단독 F1은 EXP-374보다 낮으나 예상된 결과(다양성 컴포넌트); 라벨 불일치율 23.1%로 블렌드(#450) 진행 근거 확보 | [보고서](reports/exp449_lightgbm_exp374/README.md) |
 | EXP-450 | COMPLETED | Kangho-Park | #450 | EXP-374 + EXP-449(LightGBM) 고정 0.5/0.5 확률 평균 | 0.4272696329 | 미제출 | INFERENCE_VERIFIED | 전체 OOF +0.0004787(게이트 미달), fold std +0.0046(게이트 미달), **test-like 서브셋 -0.0104(EXP-253과 동일 실패 패턴 재현)**로 REJECTED | [보고서](reports/exp450_lightgbm_exp374_blend/README.md) |
+| EXP-457 | COMPLETED | Kangho-Park | #457 | EXP-374+EXP-449 outer-fold cross-fitted 로지스틱 회귀 stacking(52차원 확률 입력) | 0.3981144756 | 미제출 | INFERENCE_VERIFIED | 전체 OOF -0.0287(게이트 대폭 미달), **test-like 서브셋 -0.0473(전체보다 더 악화)**, LGG/DLBC F1 -0.37~-0.41 붕괴로 REJECTED | [보고서](reports/exp457_stacking_ensemble/README.md) |
 | EXP-444 | COMPLETED | fabxoe | #444 | Parser v4 compatibility 5-family + train-supported native range 의미 | 0.4127201906 | 미제출 | NOT_STARTED | C 대비 +0.0016167·Legacy L 정확성 허용 gate 통과; native baseline 동결은 보류 | [보고서](reports/exp444_parser_v4_supported_range_hybrid/README.md) |
 | EXP-448 | COMPLETED | fabxoe | #448 | Parser v4 native consequence에서 sample provenance summary 6개 제거 | 0.4104538324 | 미제출 | NOT_STARTED | L 대비 -0.0028225·PAAD -0.0524로 gate 실패, ARCHIVE·native adapter v2 필요 | [보고서](reports/exp448_parser_v4_native_no_provenance/README.md) |
 | EXP-456 | COMPLETED | fabxoe | #456 | Parser v4 support-gated native semantic adapter v2 | 0.4111053102 | 미제출 | NOT_STARTED | v1 대비 개선했으나 L 대비 -0.0021710·PAAD -0.06285로 gate 실패, ARCHIVE | [보고서](reports/exp456_parser_v4_native_v2/README.md) |
@@ -194,11 +195,58 @@
 | 2026-08-04T21:45:04.915445+00:00 | EXP-409 | fabxoe | `7519b8e0dfa8e6b2c2e49d1b1ee4e7f54bc0c412` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.48e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp409_ordinary_range_replacement_indicator/comparison.json) |
 | 2026-08-05T05:16:03.101478+00:00 | EXP-449 | Kangho-Park | (issue-449 브랜치) / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 0.0(LightGBM deterministic), 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp449_lightgbm_exp374/comparison.json) |
 | 2026-08-05T05:23:56.437651+00:00 | EXP-450 | Kangho-Park | `f5b755c51496ff59b073d936754767ab6d690b27` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp450_lightgbm_exp374_blend/comparison.json) |
+| 2026-08-05T05:47:15.365693+00:00 | EXP-457 | Kangho-Park | `a662caa65ceaa758dadf2216fbeec8c13c66fe50` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | outer 5-fold cross-fit 메타러너 재학습(저장된 fold 모델 재로드로 검증) | INFERENCE_VERIFIED | [comparison](reproducibility/exp457_stacking_ensemble/comparison.json) |
 | 2026-08-05T06:46:14.485134+00:00 | EXP-459 | 2heej | `09430f2632c14ef459fb309915368bac561533f2` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.11e-16 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp459_catboost_exp374/comparison.json) |
 
 ## 상세 실험 로그
 
 <!-- 실제 실험 로그는 이 줄 아래에 시간순으로 추가합니다. -->
+
+### [EXP-457] XGBoost(EXP-374) + LightGBM(EXP-449) Stacking 앙상블
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #457 / `issue-457-stacking-ensemble`
+- 부모: EXP-374, EXP-449
+
+#### 실행
+
+- Config: `configs/exp457_stacking_ensemble.yaml`
+- Runner: `scripts/run_exp457_stacking_ensemble.py`
+- 검증: `scripts/check_exp457_test_like_subset.py`
+- EXP-450(고정 0.5/0.5 블렌드, REJECTED)의 test-like 실패를 극복하기
+  위해 고정 가중치 대신 메타러너가 샘플별 신뢰도를 학습하는 stacking
+  시도. Base learner(EXP-374, EXP-449)는 재학습 없이 기존 OOF/test
+  확률 재사용, meta learner는 `LogisticRegression(C=0.2, max_iter=1000,
+  class_weight=None, random_state=42)`(EXP-137 전례와 동일 하이퍼파라미터).
+- Fold-safe: outer canonical 5-fold 안에서 메타러너를 cross-fit — 각
+  fold는 나머지 4-fold의 base-OOF 행으로만 메타러너를 학습하고 해당
+  fold는 transform만 수행(#233 사고 계열의 이중 데이터 누수 방지).
+  `train_domain_propensity.csv` 기준 test-like 서브셋 검증을 완료
+  조건에 필수로 포함(EXP-253/EXP-450 실패 재현 방지).
+
+#### 결과와 판단
+
+- 전체 OOF Macro F1: 0.3981144756(EXP-374 대비 `-0.0286764512`, 게이트
+  `+0.001` 대폭 미달)
+- Fold 표준편차: 0.0057992691(`-0.0027039478`, 개선), Log Loss:
+  1.8327800269(`-0.0112848048`, 개선) — 그러나 이는 메타러너가 다수
+  클래스(GBMLGG 등) 쪽으로 확률을 밀어붙여 분산은 줄었지만 소수 클래스
+  판별력을 잃은 결과
+- **test-like 서브셋(n=1,666) Macro F1: 0.3811231363(EXP-374 대비
+  `-0.0472554605`, 전체 delta보다 더 악화)** — 핵심 판정 기준에서
+  결정적 REJECT 신호
+- LGG F1 0.0474308300(`-0.3711738211`), DLBC F1 0.0512820513
+  (`-0.4130036630`) — LGG 228건 중 204건이 GBMLGG로 오분류, 게이트
+  `-0.05`를 대폭 초과하는 소수 클래스 붕괴
+- EXP-137(Issue #137)에서 이미 관측된 것과 동일한 메커니즘(강한 L2
+  정규화 다항 로지스틱 stacking이 다수 클래스로 수렴)의 두 번째 독립
+  확인으로 판단, 코드 버그 아님(`INFERENCE_VERIFIED`로 확인)
+- 3개 게이트(Macro F1, test-like, worst-class) 전부 큰 폭으로 미달로
+  REJECTED, 요약 입력·정규화 조정 재시도는 진행 안 함(마감 임박 +
+  붕괴 폭이 미세조정으로 해결될 수준을 넘어섬)
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
 
 ### [EXP-450] EXP-374 + EXP-449(LightGBM) 0.5/0.5 블렌드
 
