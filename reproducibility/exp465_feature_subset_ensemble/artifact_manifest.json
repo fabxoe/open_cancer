@@ -1,0 +1,142 @@
+{
+  "experiment_id": "EXP-465",
+  "issue_number": 465,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "2aaff58e5094162fe9d5fbcaccaf9dfa1e99df1a",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp465_feature_subset_ensemble/data_manifest.json",
+  "environment": "reproducibility/exp465_feature_subset_ensemble/environment.json",
+  "release_url": null,
+  "verifier": "Kangho Park",
+  "verified_at": "2026-08-05T06:20:33.889237+00:00",
+  "artifacts": [
+    {
+      "kind": "submission",
+      "path": "submissions/exp465_feature_subset_ensemble.csv",
+      "size_bytes": 37966,
+      "sha256": "5b3758306cf11d01b69eb236eb9178517d0f0bef5c1a6bf6bfbf944d210e5377",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp465_feature_subset_ensemble.csv",
+      "size_bytes": 3455499,
+      "sha256": "d28b15f1dd7f771e84c262f6e4557f3470a6821f9cd8bc8837358b1e3048d65c",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp465_feature_subset_ensemble_test_proba.csv",
+      "size_bytes": 1386261,
+      "sha256": "46bfc985bc23b2a791d5cd1f5325eb513699be32b06b5cb0231802439888f5ae",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp465_feature_subset_ensemble/metrics.json",
+      "size_bytes": 12755,
+      "sha256": "832a987c537f9cec0b25532d792af4f9265e470b9c4f34acad40dcc22fcebb27",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp465_feature_subset_ensemble/config.resolved.yaml",
+      "size_bytes": 7294,
+      "sha256": "eafc4d8e1a5074851acf918e39b86a4e0b8e3a7c7d374cd6b75492e123458646",
+      "storage_uri": null
+    },
+    {
+      "kind": "comparison",
+      "path": "reproducibility/exp465_feature_subset_ensemble/comparison.json",
+      "size_bytes": 478,
+      "sha256": "6f7445c39f5123028f396144aa90d4f14cf5c6d89a523199202e1fe8b3ec66b1",
+      "storage_uri": null
+    },
+    {
+      "kind": "component_metrics",
+      "path": "reports/exp465_feature_subset_ensemble/component_metrics.json",
+      "size_bytes": 2350,
+      "sha256": "5bac4e54951f7e4996e5126a89e454215c74fc37755ee4ebe1216b37e24d45d6",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp465_feature_subset_ensemble/hotspot_only/fold_00.json",
+      "size_bytes": 6883716,
+      "sha256": "11632f86c18860771d7289c7ba4af1bce9bbcc2f757133a9ce2a60c0d06ac8fd",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp465_feature_subset_ensemble/hotspot_only/fold_01.json",
+      "size_bytes": 6076086,
+      "sha256": "70cb225e4bd2da9131c21dedff24afad86463d8e5acf7e1d26715ac02f7c5a3b",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp465_feature_subset_ensemble/hotspot_only/fold_02.json",
+      "size_bytes": 8673024,
+      "sha256": "c3177db314629ebdf66f1cac5bbec3026a87760f220af1761261ed6d39b16133",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp465_feature_subset_ensemble/hotspot_only/fold_03.json",
+      "size_bytes": 8323956,
+      "sha256": "2ccf8ab3b724f3455aed2d753364986ff6fc111de6adb7c8ee8ab9a85f9adc3c",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp465_feature_subset_ensemble/hotspot_only/fold_04.json",
+      "size_bytes": 7270155,
+      "sha256": "4cdfecca21aa914604dab5a7138d384fbeb8795d17a1bd86633fa9896aaa3f4d",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp465_feature_subset_ensemble/burden_only/fold_00.json",
+      "size_bytes": 11505802,
+      "sha256": "dbeaf86c9e7c5c4649a3d3f595f385c6c329ae97cf16afbdc6c77ec44c219059",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp465_feature_subset_ensemble/burden_only/fold_01.json",
+      "size_bytes": 11967649,
+      "sha256": "e6cd1a85009fd209f61c128bec624a67d122c736fcbf4487aea682446c0cb117",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp465_feature_subset_ensemble/burden_only/fold_02.json",
+      "size_bytes": 11109876,
+      "sha256": "7185ff3f052e5a95150b2976cdcb293a8317c614bfb851f40915dbd1fe30bc8f",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp465_feature_subset_ensemble/burden_only/fold_03.json",
+      "size_bytes": 11766284,
+      "sha256": "1316aeae4974e43c1f2a3cc82e9e0c0636a8c508bfeee17e1d1725108ddd2f24",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp465_feature_subset_ensemble/burden_only/fold_04.json",
+      "size_bytes": 11355991,
+      "sha256": "53daee281bd8f59ba4ef9122d92886819aa96cff3f65b91bf5160172aebcb254",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

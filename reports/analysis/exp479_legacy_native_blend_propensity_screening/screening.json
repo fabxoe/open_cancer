@@ -1,0 +1,60 @@
+{
+  "propensity_source": "reports/analysis/adversarial_validation/train_domain_propensity.csv",
+  "exp484_oof_source": "oof/exp484_exp374_exp459_blend.csv",
+  "exp479_oof_source": "oof/exp479_parser_v4_native_semantic_range.csv",
+  "test_like_quantile": 0.75,
+  "test_like_threshold": 0.2500581443309784,
+  "test_like_row_count": 1666,
+  "total_row_count": 6201,
+  "exp484_baseline_full_oof_macro_f1": 0.43202137668386986,
+  "exp484_baseline_test_like_macro_f1": 0.430673899705243,
+  "ratios": [
+    {
+      "weight_exp484": 0.9,
+      "weight_exp479": 0.1,
+      "full_oof_macro_f1": 0.4323111090416676,
+      "full_oof_delta_vs_exp484": 0.0002897323577977229,
+      "test_like_macro_f1": 0.4273567041692565,
+      "test_like_delta_vs_exp484": -0.003317195535986528,
+      "test_like_gate_pass": false
+    },
+    {
+      "weight_exp484": 0.8,
+      "weight_exp479": 0.2,
+      "full_oof_macro_f1": 0.4268757373284174,
+      "full_oof_delta_vs_exp484": -0.00514563935545248,
+      "test_like_macro_f1": 0.42230796221338035,
+      "test_like_delta_vs_exp484": -0.008365937491862652,
+      "test_like_gate_pass": false
+    },
+    {
+      "weight_exp484": 0.7,
+      "weight_exp479": 0.3,
+      "full_oof_macro_f1": 0.4235780891738408,
+      "full_oof_delta_vs_exp484": -0.00844328751002904,
+      "test_like_macro_f1": 0.4174023166155969,
+      "test_like_delta_vs_exp484": -0.0132715830896461,
+      "test_like_gate_pass": false
+    },
+    {
+      "weight_exp484": 0.6,
+      "weight_exp479": 0.4,
+      "full_oof_macro_f1": 0.4197329629978753,
+      "full_oof_delta_vs_exp484": -0.012288413685994537,
+      "test_like_macro_f1": 0.41393014929532623,
+      "test_like_delta_vs_exp484": -0.01674375040991677,
+      "test_like_gate_pass": false
+    },
+    {
+      "weight_exp484": 0.5,
+      "weight_exp479": 0.5,
+      "full_oof_macro_f1": 0.4196721105662772,
+      "full_oof_delta_vs_exp484": -0.012349266117592683,
+      "test_like_macro_f1": 0.41019232014664997,
+      "test_like_delta_vs_exp484": -0.020481579558593033,
+      "test_like_gate_pass": false
+    }
+  ],
+  "any_ratio_passes_test_like_gate": false,
+  "recommendation": "no ratio passes the test-like gate -- do not pursue further EXP-484+EXP-479 (legacy+native) blend attempts"
+}

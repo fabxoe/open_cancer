@@ -1,0 +1,66 @@
+{
+  "experiment_id": "EXP-464",
+  "issue_number": 464,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "8068877c6eb96209c69ff4f5fed2d55067782dab",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp464_blend_ratio_sweep/data_manifest.json",
+  "environment": "reproducibility/exp464_blend_ratio_sweep/environment.json",
+  "release_url": null,
+  "verifier": "Kangho Park",
+  "verified_at": "2026-08-05T06:08:34.724720+00:00",
+  "artifacts": [
+    {
+      "kind": "submission",
+      "path": "submissions/exp464_blend_ratio_sweep.csv",
+      "size_bytes": 38156,
+      "sha256": "64a1133a062d59fd76ed173d41ab704e0d0999b77ed6c007316bcf0f1f639729",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp464_blend_ratio_sweep.csv",
+      "size_bytes": 3438855,
+      "sha256": "609b48e190081f1caf89196ac7ef14481a3aeaa7df9ac334b700026c49b40c78",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp464_blend_ratio_sweep_test_proba.csv",
+      "size_bytes": 1377374,
+      "sha256": "4b170ecd098be49b579fc0491e01cbb78d1575d1e943826541b3c54c71c9c194",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp464_blend_ratio_sweep/metrics.json",
+      "size_bytes": 12188,
+      "sha256": "9a0fbd1bdad6d4154857b2a8458b9ab2271417b39d4cd3b7fbd9f92297845aae",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp464_blend_ratio_sweep/config.resolved.yaml",
+      "size_bytes": 1917,
+      "sha256": "c6b37b76905a8e9932d7b7cc27695fbe5b0984b9dc87d6b13afc01f4d4b93dbd",
+      "storage_uri": null
+    },
+    {
+      "kind": "comparison",
+      "path": "reproducibility/exp464_blend_ratio_sweep/comparison.json",
+      "size_bytes": 490,
+      "sha256": "5b7b1c4d08168c66bc10555a2ce0b110d41ee4eabfbbfe1d648d6fc44e5775f2",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
