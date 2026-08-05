@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0.0",
+  "issue": 427,
+  "analysis_only": true,
+  "model_trained": false,
+  "subclass_used": false,
+  "public_lb_used": false,
+  "train": {
+    "path": "data/raw/train.csv",
+    "sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+    "rows": 6201,
+    "gene_columns": 4384,
+    "matrix_shape": [
+      6201,
+      26316
+    ],
+    "matrix_nnz": 261914,
+    "mutation_presence_preserved": true,
+    "presence_mismatch_rows": [],
+    "contract": {
+      "family": "parser_v4_native_semantic",
+      "version": "1.0.0",
+      "fit_scope": "stateless",
+      "schema_sha256": "be230576e5364322d3670872eece5a7249c09bc05796e4373148c39333e8622a",
+      "output_dimension": 26316,
+      "feature_names_sha256": "25602ca32efaeae474a5b280819cfbafad0270453f6e05496db878ae273bd025",
+      "mutation_presence_policy": "preserve_existing_base_feature",
+      "aggregation": "affected_gene_presence"
+    }
+  },
+  "test": {
+    "path": "data/raw/test.csv",
+    "sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0",
+    "rows": 2546,
+    "gene_columns": 4384,
+    "matrix_shape": [
+      2546,
+      26316
+    ],
+    "matrix_nnz": 215705,
+    "mutation_presence_preserved": true,
+    "presence_mismatch_rows": [],
+    "contract": {
+      "family": "parser_v4_native_semantic",
+      "version": "1.0.0",
+      "fit_scope": "stateless",
+      "schema_sha256": "be230576e5364322d3670872eece5a7249c09bc05796e4373148c39333e8622a",
+      "output_dimension": 26316,
+      "feature_names_sha256": "25602ca32efaeae474a5b280819cfbafad0270453f6e05496db878ae273bd025",
+      "mutation_presence_policy": "preserve_existing_base_feature",
+      "aggregation": "affected_gene_presence"
+    }
+  }
+}

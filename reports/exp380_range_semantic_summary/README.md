@@ -75,6 +75,9 @@ fold Macro F1은 `0.4173773 / 0.4204568 / 0.4154077 / 0.4250923 /
 - 소스 commit: `623cd06bf82f4f6186fd468c963f4305d48299fc`
 - Config: `configs/exp380_range_semantic_summary.yaml`
 - Runner: `scripts/run_exp380_range_semantic_summary.py`
+- 역사적 피처 구현: `src/open_cancer/range_semantic_summary_features.py`
+  (병합 당시 최신 `range_semantic_features.py`의 fold-safe gene indicator와
+  이름 충돌을 피하기 위해 별도 legacy 모듈로 격리했으며 계산식은 변경하지 않음)
 - Metrics: `reports/exp380_range_semantic_summary/metrics.json`
 - OOF: `oof/exp380_range_semantic_summary.csv`
 - test 확률: `preds/exp380_range_semantic_summary_test_proba.csv`

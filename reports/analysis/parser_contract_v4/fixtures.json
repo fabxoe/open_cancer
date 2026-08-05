@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "contract": {"raw_preserved": true, "target_used": false, "test_distribution_used_for_rule": false},
+  "fixtures": [
+    {"id":"missense_r132h","raw_token":"R132H","expected_route":"substitution","expected_event_type":"missense","expected_positions":[132],"confidence":"exact","provenance":"train"},
+    {"id":"same_aa_d623d","raw_token":"D623D","expected_route":"substitution","expected_event_type":"no_change","expected_positions":[623],"confidence":"exact","provenance":"train"},
+    {"id":"stop_x_r213x","raw_token":"R213X","expected_route":"substitution","expected_event_type":"nonsense","expected_positions":[213],"confidence":"exact","provenance":"test"},
+    {"id":"stop_star_r213","raw_token":"R213*","expected_route":"substitution","expected_event_type":"nonsense","expected_positions":[213],"confidence":"exact","provenance":"team_review"},
+    {"id":"frameshift_wq288","raw_token":"WQ288fs","expected_route":"frameshift","expected_event_type":"frameshift","expected_positions":[288],"confidence":"partial","provenance":"train","ambiguity_reason":"multi-letter prefix cannot be split into ref/alt without source annotation"},
+    {"id":"frameshift_p953h","raw_token":"P953Hfs","expected_route":"frameshift","expected_event_type":"frameshift","expected_positions":[953],"confidence":"partial","provenance":"train","ambiguity_reason":"first alternate amino acid interpretation is not yet source-validated"},
+    {"id":"frameshift_sdel133","raw_token":"SDEL133fs","expected_route":"frameshift","expected_event_type":"frameshift","expected_positions":[133],"confidence":"partial","provenance":"train","ambiguity_reason":"DEL is part of the multi-letter prefix, not deletion syntax"},
+    {"id":"deletion_single_g108","raw_token":"G108del","expected_route":"deletion","expected_event_type":"deletion","expected_positions":[108,108],"confidence":"exact","provenance":"train"},
+    {"id":"deletion_range_g235_g238","raw_token":"G235_G238del","expected_route":"deletion","expected_event_type":"deletion","expected_positions":[235,238],"confidence":"exact","provenance":"test"},
+    {"id":"insertion_egfr","raw_token":"K745_E746insIPVAIK","expected_route":"insertion","expected_event_type":"insertion","expected_positions":[745,746],"confidence":"exact","provenance":"test","notes":"Reference-aware adapter may later prove tandem duplication."},
+    {"id":"insertion_madcam1","raw_token":"S261_P262insQEPPDTTS","expected_route":"insertion","expected_event_type":"insertion","expected_positions":[261,262],"confidence":"exact","provenance":"test"},
+    {"id":"delins_single_e1117","raw_token":"E1117delinsGGRRIIK","expected_route":"delins","expected_event_type":"delins","expected_positions":[1117,1117],"confidence":"exact","provenance":"test"},
+    {"id":"delins_range_h1176_w1177","raw_token":"H1176_W1177delinsQ","expected_route":"delins","expected_event_type":"delins","expected_positions":[1176,1177],"confidence":"exact","provenance":"test"},
+    {"id":"delins_long_k176","raw_token":"K176delinsNEGNNHWPRVEMPTGWLLVGYNTRNTAQNPRLQQHLKHWQQCTRARWCQEPCQTLTFFHFFFFFKTVSLCCPGWSKGQWHDLGSLQPPPPGLKPSSLASQVARTTGVYQHVWLICFVFFVCVETGFCHVAQVGLERLGSSDLPTSVSLSAGITDVNHWAQPKPSPSKGTGMNRPIGLRVGKGVWARL","expected_route":"delins","expected_event_type":"delins","expected_positions":[176,176],"confidence":"exact","provenance":"test","notes":"Long alternate must be preserved byte-for-byte in raw provenance."},
+    {"id":"range_replacement_stop","raw_token":"300_301LE>F*","expected_route":"range_replacement","expected_event_type":"range_replacement","expected_positions":[300,301],"confidence":"exact","provenance":"train"},
+    {"id":"range_replacement_no_change","raw_token":"236_237LL>LL","expected_route":"range_replacement","expected_event_type":"synonymous","expected_positions":[236,237],"confidence":"exact","provenance":"train","notes":"Source structure is range replacement; protein consequence is no-change."},
+    {"id":"negative_partial","raw_token":"-762fs","expected_route":"unresolved","expected_event_type":"other_unmappable","expected_positions":[],"confidence":"unresolved","provenance":"train","ambiguity_reason":"negative coordinate is not a valid protein residue position"},
+    {"id":"ambiguous_double_stop","raw_token":"*261*","expected_route":"unresolved","expected_event_type":"other_unmappable","expected_positions":[],"confidence":"unresolved","provenance":"train","ambiguity_reason":"nonstandard partial stop notation"}
+  ]
+}

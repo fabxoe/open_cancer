@@ -1,0 +1,60 @@
+{
+  "propensity_source": "reports/analysis/adversarial_validation/train_domain_propensity.csv",
+  "exp374_oof_source": "oof/exp374_stop_notation_isoform_mask.csv",
+  "exp459_oof_source": "oof/exp459_catboost_exp374.csv",
+  "test_like_quantile": 0.75,
+  "test_like_threshold": 0.2500581443309784,
+  "test_like_row_count": 1666,
+  "total_row_count": 6201,
+  "exp374_baseline_full_oof_macro_f1": 0.4267909268459148,
+  "exp374_baseline_test_like_macro_f1": 0.4283785968196299,
+  "ratios": [
+    {
+      "weight_exp374": 0.9,
+      "weight_exp459": 0.1,
+      "full_oof_macro_f1": 0.4274963653466487,
+      "full_oof_delta_vs_exp374": 0.0007054385007339015,
+      "test_like_macro_f1": 0.4291430852804837,
+      "test_like_delta_vs_exp374": 0.0007644884608538072,
+      "test_like_gate_pass": true
+    },
+    {
+      "weight_exp374": 0.8,
+      "weight_exp459": 0.2,
+      "full_oof_macro_f1": 0.4293346172073559,
+      "full_oof_delta_vs_exp374": 0.0025436903614410866,
+      "test_like_macro_f1": 0.43043992607292453,
+      "test_like_delta_vs_exp374": 0.002061329253294608,
+      "test_like_gate_pass": true
+    },
+    {
+      "weight_exp374": 0.7,
+      "weight_exp459": 0.3,
+      "full_oof_macro_f1": 0.43202137668386986,
+      "full_oof_delta_vs_exp374": 0.005230449837955065,
+      "test_like_macro_f1": 0.430673899705243,
+      "test_like_delta_vs_exp374": 0.002295302885613082,
+      "test_like_gate_pass": true
+    },
+    {
+      "weight_exp374": 0.6,
+      "weight_exp459": 0.4,
+      "full_oof_macro_f1": 0.4311594924416073,
+      "full_oof_delta_vs_exp374": 0.004368565595692486,
+      "test_like_macro_f1": 0.4269368131129543,
+      "test_like_delta_vs_exp374": -0.0014417837066756367,
+      "test_like_gate_pass": false
+    },
+    {
+      "weight_exp374": 0.5,
+      "weight_exp459": 0.5,
+      "full_oof_macro_f1": 0.43233137764637275,
+      "full_oof_delta_vs_exp374": 0.005540450800457952,
+      "test_like_macro_f1": 0.42811455226228934,
+      "test_like_delta_vs_exp374": -0.0002640445573405814,
+      "test_like_gate_pass": false
+    }
+  ],
+  "any_ratio_passes_test_like_gate": true,
+  "recommendation": "at least one ratio passes the test-like gate -- propose a formal blend Experiment Issue with that ratio as the starting point"
+}

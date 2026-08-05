@@ -128,6 +128,11 @@ def write_local_dashboard(
     test_features = sparse.load_npz(feature_dir / "test_features.npz")
     feature_rows: list[dict[str, Any]] = []
     for name in highlighted_features:
+        # Highlighted columns are optional diagnostics. Parser baselines and
+        # other controlled ablations intentionally disable hotspots, so a
+        # missing highlight must not invalidate already completed training.
+        if name not in names:
+            continue
         index = names.index(name)
         train_values = train_features[:, index].toarray().ravel()
         test_values = test_features[:, index].toarray().ravel()

@@ -1,58 +1,42 @@
 from __future__ import annotations
 
 import pandas as pd
-import pytest
 
 from open_cancer.range_semantic_features import (
-    RANGE_SEMANTIC_FEATURE_NAMES,
-    RangeSemanticSummaryFamily,
+    RangeSemanticGeneFamily,
+    range_semantic_type,
 )
 
 
-def test_range_summary_counts_unique_genes_and_keeps_stop_no_change_separate() -> None:
-    frame = pd.DataFrame(
+def test_range_semantics_are_disjoint_and_stop_notation_invariant() -> None:
+    assert range_semantic_type("300_301LE>F*") == "range_stop"
+    assert range_semantic_type("300_301LE>FX") == "range_stop"
+    assert range_semantic_type("197_198YQ>**") == "range_stop"
+    assert range_semantic_type("236_237LL>LL") == "range_no_change"
+    assert range_semantic_type("1436_1437SI>RF") is None
+    assert range_semantic_type("R213X") is None
+
+
+def test_fold_train_selection_and_transform_do_not_use_other_rows() -> None:
+    fold_train = pd.DataFrame(
         {
-            "G1": ["300_301LE>F* 2126_2127WE>*K", "236_237LL>LL", "WT"],
-            "G2": ["197_198YQ>**", "236_237LL>LL", "1436_1437SI>RF"],
-            "G3": ["R213*", "R132R", "SDEL133fs"],
+            "TP53": ["300_301LE>F*", "WT"],
+            "EGFR": ["236_237LL>LL", "WT"],
+            "KRAS": ["WT", "WT"],
         }
     )
-    fitted = RangeSemanticSummaryFamily(("G1", "G2", "G3")).fit(frame)
-    matrix = fitted.transform(frame).toarray()
-
-    assert fitted.descriptor.feature_names == RANGE_SEMANTIC_FEATURE_NAMES
-    assert matrix.tolist() == [
-        [2.0, 1.0, 0.0, 0.0],
-        [0.0, 0.0, 2.0, 1.0],
-        [0.0, 0.0, 0.0, 0.0],
-    ]
-
-
-def test_range_summary_is_invariant_to_order_case_and_stop_spelling() -> None:
-    frame = pd.DataFrame(
-        {
-            "G1": [
-                "300_301LE>F* 236_237LL>LL",
-                "236_237ll>ll 300_301le>fx",
-                "300_301LE>FTer 236_237LL>LL",
-            ]
-        }
+    fitted = RangeSemanticGeneFamily(("TP53", "EGFR", "KRAS")).fit(fold_train)
+    assert fitted.selected_gene_semantics == (
+        ("TP53", "range_stop"),
+        ("EGFR", "range_no_change"),
     )
-    matrix = RangeSemanticSummaryFamily(("G1",)).fit(frame).transform(frame).toarray()
-    assert matrix.tolist() == [[1.0, 1.0, 1.0, 1.0]] * 3
-
-
-def test_range_summary_does_not_promote_non_range_stop_or_frameshift() -> None:
-    frame = pd.DataFrame(
-        {
-            "G1": ["R213*", "SDEL133fs", "721_722LA>FS"],
-        }
-    )
-    matrix = RangeSemanticSummaryFamily(("G1",)).fit(frame).transform(frame)
-    assert matrix.nnz == 0
-
-
-def test_range_summary_rejects_missing_gene_columns() -> None:
-    frame = pd.DataFrame({"G1": ["WT"]})
-    with pytest.raises(ValueError, match="유전자 열"):
-        RangeSemanticSummaryFamily(("G1", "G2")).fit(frame)
+    transformed = fitted.transform(
+        pd.DataFrame(
+            {
+                "TP53": ["WT", "197_198YQ>**"],
+                "EGFR": ["236_237LL>LL", "WT"],
+                "KRAS": ["1436_1437SI>RF", "WT"],
+            }
+        )
+    ).toarray()
+    assert transformed.tolist() == [[0.0, 1.0], [1.0, 0.0]]

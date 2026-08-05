@@ -1,0 +1,309 @@
+{
+  "schema_version": "1.0.0",
+  "issue": 462,
+  "analysis_only": true,
+  "inputs": {
+    "train_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+    "test_sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0",
+    "support_audit_sha256": "82d6a85749215ae40aa896e5d796a058f5085e4a14ae632bf35af9d1d80e84fd"
+  },
+  "constraints": {
+    "subclass_used": false,
+    "test_prevalence_used_for_selection": false,
+    "public_lb_used": false
+  },
+  "train": {
+    "token_crosswalk": {
+      "source_tokens": 255164,
+      "model_active_tokens": 254854,
+      "qc_only_tokens": 310,
+      "rows": [
+        {
+          "compatibility": "complex",
+          "native_primary": "deletion",
+          "native_model": "QC_ONLY",
+          "count": 3
+        },
+        {
+          "compatibility": "complex",
+          "native_primary": "range_no_change",
+          "native_model": "QC_ONLY",
+          "count": 67
+        },
+        {
+          "compatibility": "complex",
+          "native_primary": "range_replacement",
+          "native_model": "range_replacement",
+          "count": 109
+        },
+        {
+          "compatibility": "complex",
+          "native_primary": "range_stop",
+          "native_model": "QC_ONLY",
+          "count": 63
+        },
+        {
+          "compatibility": "complex",
+          "native_primary": "unresolved",
+          "native_model": "QC_ONLY",
+          "count": 177
+        },
+        {
+          "compatibility": "frameshift",
+          "native_primary": "frameshift",
+          "native_model": "frameshift",
+          "count": 9833
+        },
+        {
+          "compatibility": "missense",
+          "native_primary": "substitution:missense",
+          "native_model": "missense",
+          "count": 164740
+        },
+        {
+          "compatibility": "nonsense",
+          "native_primary": "substitution:nonsense",
+          "native_model": "nonsense",
+          "count": 13289
+        },
+        {
+          "compatibility": "synonymous",
+          "native_primary": "substitution:no_change",
+          "native_model": "no_change",
+          "count": 66883
+        }
+      ]
+    },
+    "features": {
+      "rows": 6201,
+      "compatibility_shape": [
+        6201,
+        21925
+      ],
+      "native_v2_shape": [
+        6201,
+        21925
+      ],
+      "mapped_sample_aggregation": {
+        "missense": {
+          "equal": false,
+          "different_cells": 1353,
+          "different_rows": 1353,
+          "max_abs_difference": 4470.0
+        },
+        "synonymous": {
+          "equal": false,
+          "different_cells": 530,
+          "different_rows": 530,
+          "max_abs_difference": 2510.0
+        },
+        "nonsense": {
+          "equal": false,
+          "different_cells": 136,
+          "different_rows": 136,
+          "max_abs_difference": 162.0
+        },
+        "frameshift": {
+          "equal": false,
+          "different_cells": 209,
+          "different_rows": 209,
+          "max_abs_difference": 14.0
+        }
+      },
+      "mapped_gene_presence": {
+        "missense": {
+          "equal": true,
+          "different_cells": 0,
+          "different_rows": 0,
+          "max_abs_difference": 0.0
+        },
+        "synonymous": {
+          "equal": true,
+          "different_cells": 0,
+          "different_rows": 0,
+          "max_abs_difference": 0.0
+        },
+        "nonsense": {
+          "equal": true,
+          "different_cells": 0,
+          "different_rows": 0,
+          "max_abs_difference": 0.0
+        },
+        "frameshift": {
+          "equal": true,
+          "different_cells": 0,
+          "different_rows": 0,
+          "max_abs_difference": 0.0
+        }
+      },
+      "native_range_equals_exp444_range_family": {
+        "equal": false,
+        "different_cells": 72,
+        "different_rows": 34,
+        "max_abs_difference": 3.0
+      }
+    }
+  },
+  "test": {
+    "token_crosswalk": {
+      "source_tokens": 337512,
+      "model_active_tokens": 332226,
+      "qc_only_tokens": 5286,
+      "rows": [
+        {
+          "compatibility": "complex",
+          "native_primary": "deletion",
+          "native_model": "QC_ONLY",
+          "count": 2583
+        },
+        {
+          "compatibility": "complex",
+          "native_primary": "delins",
+          "native_model": "QC_ONLY",
+          "count": 544
+        },
+        {
+          "compatibility": "complex",
+          "native_primary": "duplication_candidate",
+          "native_model": "QC_ONLY",
+          "count": 404
+        },
+        {
+          "compatibility": "complex",
+          "native_primary": "insertion",
+          "native_model": "QC_ONLY",
+          "count": 738
+        },
+        {
+          "compatibility": "complex",
+          "native_primary": "range_no_change",
+          "native_model": "QC_ONLY",
+          "count": 9
+        },
+        {
+          "compatibility": "complex",
+          "native_primary": "range_replacement",
+          "native_model": "range_replacement",
+          "count": 20
+        },
+        {
+          "compatibility": "complex",
+          "native_primary": "range_stop",
+          "native_model": "QC_ONLY",
+          "count": 11
+        },
+        {
+          "compatibility": "complex",
+          "native_primary": "substitution:start_codon_affected",
+          "native_model": "QC_ONLY",
+          "count": 572
+        },
+        {
+          "compatibility": "complex",
+          "native_primary": "substitution:unknown_reference_substitution",
+          "native_model": "QC_ONLY",
+          "count": 390
+        },
+        {
+          "compatibility": "complex",
+          "native_primary": "unresolved",
+          "native_model": "QC_ONLY",
+          "count": 35
+        },
+        {
+          "compatibility": "frameshift",
+          "native_primary": "frameshift",
+          "native_model": "frameshift",
+          "count": 25813
+        },
+        {
+          "compatibility": "missense",
+          "native_primary": "substitution:missense",
+          "native_model": "missense",
+          "count": 201353
+        },
+        {
+          "compatibility": "nonsense",
+          "native_primary": "substitution:nonsense",
+          "native_model": "nonsense",
+          "count": 16316
+        },
+        {
+          "compatibility": "synonymous",
+          "native_primary": "substitution:no_change",
+          "native_model": "no_change",
+          "count": 88724
+        }
+      ]
+    },
+    "features": {
+      "rows": 2546,
+      "compatibility_shape": [
+        2546,
+        21925
+      ],
+      "native_v2_shape": [
+        2546,
+        21925
+      ],
+      "mapped_sample_aggregation": {
+        "missense": {
+          "equal": false,
+          "different_cells": 1377,
+          "different_rows": 1377,
+          "max_abs_difference": 1533.0
+        },
+        "synonymous": {
+          "equal": false,
+          "different_cells": 1147,
+          "different_rows": 1147,
+          "max_abs_difference": 641.0
+        },
+        "nonsense": {
+          "equal": false,
+          "different_cells": 741,
+          "different_rows": 741,
+          "max_abs_difference": 184.0
+        },
+        "frameshift": {
+          "equal": false,
+          "different_cells": 767,
+          "different_rows": 767,
+          "max_abs_difference": 178.0
+        }
+      },
+      "mapped_gene_presence": {
+        "missense": {
+          "equal": true,
+          "different_cells": 0,
+          "different_rows": 0,
+          "max_abs_difference": 0.0
+        },
+        "synonymous": {
+          "equal": true,
+          "different_cells": 0,
+          "different_rows": 0,
+          "max_abs_difference": 0.0
+        },
+        "nonsense": {
+          "equal": true,
+          "different_cells": 0,
+          "different_rows": 0,
+          "max_abs_difference": 0.0
+        },
+        "frameshift": {
+          "equal": true,
+          "different_cells": 0,
+          "different_rows": 0,
+          "max_abs_difference": 0.0
+        }
+      },
+      "native_range_equals_exp444_range_family": {
+        "equal": false,
+        "different_cells": 18,
+        "different_rows": 9,
+        "max_abs_difference": 1.0
+      }
+    }
+  }
+}

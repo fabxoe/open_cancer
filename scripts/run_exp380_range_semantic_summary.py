@@ -17,7 +17,7 @@ from open_cancer.feature_family import (
     build_family_registry,
     transform_checked,
 )
-from open_cancer.range_semantic_features import RangeSemanticSummaryFamily
+from open_cancer.range_semantic_summary_features import RangeSemanticSummaryFamily
 from open_cancer.robust_mutation_parser import (
     STOP_NOTATION_PARSER_CONTRACT,
     normalize_stop_notation_token,

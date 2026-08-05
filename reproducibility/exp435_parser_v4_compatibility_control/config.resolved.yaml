@@ -1,0 +1,370 @@
+experiment:
+  record_role: official
+  issue_number: 435
+  experiment_id: EXP-435
+  component_experiments: []
+  branch: issue-435-parser-v4-compatibility-control
+  owner: fabxoe
+  source_commit: 203b236c47d70f2a93d8675862c09bd367ab28f2
+  dirty_worktree: false
+  started_at: '2026-08-05T03:58:58.896242+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features: []
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features: []
+  position_missing_policy: zero
+  position_token_scope: include_complex
+  position_transform: raw
+  position_bin_width: null
+  position_semantics: protein residue indices explicitly written in source tokens;
+    no transcript, codon nucleotide, genomic coordinate, or protein-length inference
+  position_semantic_filter: null
+  co_mutation_pairs: []
+  co_mutation_semantics: fixed, literature-curated gene pairs (mutual exclusivity
+    or co-occurrence); gene-level 'any mutation' presence, not restricted to a specific
+    hotspot codon; not fit from this dataset's target or frequency
+  feature_factory_version: 1.1.0
+  feature_spec_sha256: b57037ced9412f2d37e2e52a74b7363f9550f4983530b489ddc8dad844468ab7
+  hotspot_features: []
+  known_hotspots: []
+  hotspot_validation_note: The hotspot table is fixed before test transformation.
+    The original 19 and additional 15 positions are literature-defined; the config-driven
+    runner validates the additions using train rows only. Test data is not used to
+    select or filter the official list. A token counts only when both position and
+    reference AA match.
+  requested_families:
+    mutation_type:
+      enabled: true
+    robust_aggregates: []
+    residue_position:
+      enabled: false
+  hotspot_table: none
+  hotspot_evidence_scope: none
+  fold_train_hotspot_evidence:
+    '0': []
+    '1': []
+    '2': []
+    '3': []
+    '4': []
+  minimum_matching_train_rows: 1
+  selection_uses_test_data: false
+feature_outputs:
+  train_features.npz:
+    path: data/processed/exp435_parser_v4_compatibility_control_features/train_features.npz
+    sha256: 4a196b662887ec77918548405f39302b6a4b084c991a917e90a7c6980c798650
+  test_features.npz:
+    path: data/processed/exp435_parser_v4_compatibility_control_features/test_features.npz
+    sha256: 86b4182af5c9f1d4bf095b3371e4a50a455607071e4632a3cc7fde8df4596354
+  feature_names.json:
+    path: data/processed/exp435_parser_v4_compatibility_control_features/feature_names.json
+    sha256: b4c9d5e68bf179bece3bf39bec88c015c6878b51cf83e67b83372da1e4ecd0f3
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+  - mutation_presence
+  - parser_v4_compatibility_five_family
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  command: uv run python scripts/run_parser_v4_baseline.py --config configs/exp435_parser_v4_compatibility_control.yaml
+environment:
+  python: 3.11.10 (main, Oct 11 2024, 15:45:30) [Clang 15.0.0 (clang-1500.3.9.4)]
+  platform: macOS-26.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: d896b2cf88b1d84d8e7819687db813d811b7dceacf7a1494e970b0378e3a1476
+fold_train_features:
+- fold: 0
+  registry:
+    parser_v4_legacy_five_family_compatibility:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 21925
+      feature_names_sha256: 80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc
+      fit_scope: stateless
+      external_knowledge: null
+    parser_baseline_projection:
+      definition_version: 1.0.0
+      representation: compatibility
+      replaces_historical_five_family: true
+      preserves_mutation_presence: true
+      target_used: false
+      test_distribution_used_for_schema: false
+  base_feature_names_after_drop_sha256: ddf6b6d9c85b45b31d7a5a5cfd234f1936cd3cf72d31287d785422780d23e5bf
+  feature_name_count: 21925
+  feature_names_sha256: 80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc
+  feature_name_preview:
+  - sample__missense_count
+  - sample__synonymous_count
+  - sample__nonsense_count
+  - sample__frameshift_count
+  - sample__complex_count
+  - ZYX__missense
+  - ZYX__synonymous
+  - ZYX__nonsense
+  - ZYX__frameshift
+  - ZYX__complex
+  base_feature_names_to_drop_count: 21925
+  base_feature_names_to_drop_sha256: 80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc
+  base_feature_names_to_drop_preview:
+  - sample__missense_count
+  - sample__synonymous_count
+  - sample__nonsense_count
+  - sample__frameshift_count
+  - sample__complex_count
+  - ZYX__missense
+  - ZYX__synonymous
+  - ZYX__nonsense
+  - ZYX__frameshift
+  - ZYX__complex
+- fold: 1
+  registry:
+    parser_v4_legacy_five_family_compatibility:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 21925
+      feature_names_sha256: 80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc
+      fit_scope: stateless
+      external_knowledge: null
+    parser_baseline_projection:
+      definition_version: 1.0.0
+      representation: compatibility
+      replaces_historical_five_family: true
+      preserves_mutation_presence: true
+      target_used: false
+      test_distribution_used_for_schema: false
+  base_feature_names_after_drop_sha256: ddf6b6d9c85b45b31d7a5a5cfd234f1936cd3cf72d31287d785422780d23e5bf
+  feature_name_count: 21925
+  feature_names_sha256: 80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc
+  feature_name_preview:
+  - sample__missense_count
+  - sample__synonymous_count
+  - sample__nonsense_count
+  - sample__frameshift_count
+  - sample__complex_count
+  - ZYX__missense
+  - ZYX__synonymous
+  - ZYX__nonsense
+  - ZYX__frameshift
+  - ZYX__complex
+  base_feature_names_to_drop_count: 21925
+  base_feature_names_to_drop_sha256: 80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc
+  base_feature_names_to_drop_preview:
+  - sample__missense_count
+  - sample__synonymous_count
+  - sample__nonsense_count
+  - sample__frameshift_count
+  - sample__complex_count
+  - ZYX__missense
+  - ZYX__synonymous
+  - ZYX__nonsense
+  - ZYX__frameshift
+  - ZYX__complex
+- fold: 2
+  registry:
+    parser_v4_legacy_five_family_compatibility:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 21925
+      feature_names_sha256: 80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc
+      fit_scope: stateless
+      external_knowledge: null
+    parser_baseline_projection:
+      definition_version: 1.0.0
+      representation: compatibility
+      replaces_historical_five_family: true
+      preserves_mutation_presence: true
+      target_used: false
+      test_distribution_used_for_schema: false
+  base_feature_names_after_drop_sha256: ddf6b6d9c85b45b31d7a5a5cfd234f1936cd3cf72d31287d785422780d23e5bf
+  feature_name_count: 21925
+  feature_names_sha256: 80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc
+  feature_name_preview:
+  - sample__missense_count
+  - sample__synonymous_count
+  - sample__nonsense_count
+  - sample__frameshift_count
+  - sample__complex_count
+  - ZYX__missense
+  - ZYX__synonymous
+  - ZYX__nonsense
+  - ZYX__frameshift
+  - ZYX__complex
+  base_feature_names_to_drop_count: 21925
+  base_feature_names_to_drop_sha256: 80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc
+  base_feature_names_to_drop_preview:
+  - sample__missense_count
+  - sample__synonymous_count
+  - sample__nonsense_count
+  - sample__frameshift_count
+  - sample__complex_count
+  - ZYX__missense
+  - ZYX__synonymous
+  - ZYX__nonsense
+  - ZYX__frameshift
+  - ZYX__complex
+- fold: 3
+  registry:
+    parser_v4_legacy_five_family_compatibility:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 21925
+      feature_names_sha256: 80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc
+      fit_scope: stateless
+      external_knowledge: null
+    parser_baseline_projection:
+      definition_version: 1.0.0
+      representation: compatibility
+      replaces_historical_five_family: true
+      preserves_mutation_presence: true
+      target_used: false
+      test_distribution_used_for_schema: false
+  base_feature_names_after_drop_sha256: ddf6b6d9c85b45b31d7a5a5cfd234f1936cd3cf72d31287d785422780d23e5bf
+  feature_name_count: 21925
+  feature_names_sha256: 80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc
+  feature_name_preview:
+  - sample__missense_count
+  - sample__synonymous_count
+  - sample__nonsense_count
+  - sample__frameshift_count
+  - sample__complex_count
+  - ZYX__missense
+  - ZYX__synonymous
+  - ZYX__nonsense
+  - ZYX__frameshift
+  - ZYX__complex
+  base_feature_names_to_drop_count: 21925
+  base_feature_names_to_drop_sha256: 80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc
+  base_feature_names_to_drop_preview:
+  - sample__missense_count
+  - sample__synonymous_count
+  - sample__nonsense_count
+  - sample__frameshift_count
+  - sample__complex_count
+  - ZYX__missense
+  - ZYX__synonymous
+  - ZYX__nonsense
+  - ZYX__frameshift
+  - ZYX__complex
+- fold: 4
+  registry:
+    parser_v4_legacy_five_family_compatibility:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 21925
+      feature_names_sha256: 80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc
+      fit_scope: stateless
+      external_knowledge: null
+    parser_baseline_projection:
+      definition_version: 1.0.0
+      representation: compatibility
+      replaces_historical_five_family: true
+      preserves_mutation_presence: true
+      target_used: false
+      test_distribution_used_for_schema: false
+  base_feature_names_after_drop_sha256: ddf6b6d9c85b45b31d7a5a5cfd234f1936cd3cf72d31287d785422780d23e5bf
+  feature_name_count: 21925
+  feature_names_sha256: 80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc
+  feature_name_preview:
+  - sample__missense_count
+  - sample__synonymous_count
+  - sample__nonsense_count
+  - sample__frameshift_count
+  - sample__complex_count
+  - ZYX__missense
+  - ZYX__synonymous
+  - ZYX__nonsense
+  - ZYX__frameshift
+  - ZYX__complex
+  base_feature_names_to_drop_count: 21925
+  base_feature_names_to_drop_sha256: 80df2df37c7df3a975ea0161c28cd5a271eb4d0250098972d6705f6ada19e1bc
+  base_feature_names_to_drop_preview:
+  - sample__missense_count
+  - sample__synonymous_count
+  - sample__nonsense_count
+  - sample__frameshift_count
+  - sample__complex_count
+  - ZYX__missense
+  - ZYX__synonymous
+  - ZYX__nonsense
+  - ZYX__frameshift
+  - ZYX__complex

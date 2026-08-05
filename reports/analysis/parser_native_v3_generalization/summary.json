@@ -1,0 +1,645 @@
+{
+  "analysis_only": true,
+  "issue": 475,
+  "source_experiment": "EXP-479",
+  "input_manifest": {
+    "analysis_only": true,
+    "source_experiment": "EXP-479",
+    "train_csv_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+    "test_csv_sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0",
+    "base_train_features_sha256": "4a196b662887ec77918548405f39302b6a4b084c991a917e90a7c6980c798650",
+    "base_test_features_sha256": "86b4182af5c9f1d4bf095b3371e4a50a455607071e4632a3cc7fde8df4596354",
+    "native_schema_sha256": "294df7b8735f1ea839a1fd8f2b0ab3ac4388321cac53b746087de290038f3906",
+    "feature_names_sha256": "36212c8dad6daa37a40a98470e8f5bf8726a35b6436e0324ca44f481a48c6f2c",
+    "shape_train": [
+      6201,
+      39467
+    ],
+    "shape_test": [
+      2546,
+      39467
+    ]
+  },
+  "feature_names_sha256": "36212c8dad6daa37a40a98470e8f5bf8726a35b6436e0324ca44f481a48c6f2c",
+  "family_support": [
+    {
+      "family": "base_sample_aggregate",
+      "n_features": 4,
+      "train_active_features": 3,
+      "test_active_features": 4,
+      "train_nnz": 14289,
+      "test_nnz": 6691,
+      "train_row_prevalence": 0.9848411546524755,
+      "test_row_prevalence": 0.9878240377062059,
+      "train_row_sum_mean": 80.00048065185547,
+      "test_row_sum_mean": 235.6076202392578,
+      "train_row_sum_p95": 258.0,
+      "test_row_sum_p95": 1122.5
+    },
+    {
+      "family": "gene_mutation_presence",
+      "n_features": 4384,
+      "train_active_features": 4230,
+      "test_active_features": 4358,
+      "train_nnz": 218893,
+      "test_nnz": 198930,
+      "train_row_prevalence": 0.9848411546524755,
+      "test_row_prevalence": 0.9878240377062059,
+      "train_row_sum_mean": 35.29962921142578,
+      "test_row_sum_mean": 78.13433074951172,
+      "train_row_sum_p95": 122.0,
+      "test_row_sum_p95": 366.25
+    },
+    {
+      "family": "missingness",
+      "n_features": 4384,
+      "train_active_features": 0,
+      "test_active_features": 25,
+      "train_nnz": 0,
+      "test_nnz": 237,
+      "train_row_prevalence": 0.0,
+      "test_row_prevalence": 0.05027494108405342,
+      "train_row_sum_mean": 0.0,
+      "test_row_sum_mean": 0.09308719635009766,
+      "train_row_sum_p95": 0.0,
+      "test_row_sum_p95": 0.75
+    },
+    {
+      "family": "native_frameshift",
+      "n_features": 4385,
+      "train_active_features": 2720,
+      "test_active_features": 2925,
+      "train_nnz": 12737,
+      "test_nnz": 14977,
+      "train_row_prevalence": 0.5279793581680374,
+      "test_row_prevalence": 0.6449332285938727,
+      "train_row_sum_mean": 3.1117560863494873,
+      "test_row_sum_mean": 15.376276969909668,
+      "train_row_sum_p95": 8.0,
+      "test_row_sum_p95": 30.75
+    },
+    {
+      "family": "native_missense",
+      "n_features": 4385,
+      "train_active_features": 4223,
+      "test_active_features": 4354,
+      "train_nnz": 152376,
+      "test_nnz": 124345,
+      "train_row_prevalence": 0.9703273665537816,
+      "test_row_prevalence": 0.9760408483896308,
+      "train_row_sum_mean": 50.169166564941406,
+      "test_row_sum_mean": 126.94933319091797,
+      "train_row_sum_p95": 159.0,
+      "test_row_sum_p95": 511.25
+    },
+    {
+      "family": "native_no_change",
+      "n_features": 4385,
+      "train_active_features": 4165,
+      "test_active_features": 4248,
+      "train_nnz": 66744,
+      "test_nnz": 56799,
+      "train_row_prevalence": 0.8467989034026769,
+      "test_row_prevalence": 0.9049489395129615,
+      "train_row_sum_mean": 20.70246696472168,
+      "test_row_sum_mean": 56.2525520324707,
+      "train_row_sum_p95": 73.0,
+      "test_row_sum_p95": 235.0
+    },
+    {
+      "family": "native_nonsense",
+      "n_features": 4385,
+      "train_active_features": 3183,
+      "test_active_features": 2743,
+      "train_nnz": 16031,
+      "test_nnz": 9092,
+      "train_row_prevalence": 0.5266892436703757,
+      "test_row_prevalence": 0.6123330714846819,
+      "train_row_sum_mean": 4.20158052444458,
+      "test_row_sum_mean": 9.367242813110352,
+      "train_row_sum_p95": 14.0,
+      "test_row_sum_p95": 26.0
+    },
+    {
+      "family": "native_range_no_change",
+      "n_features": 4385,
+      "train_active_features": 59,
+      "test_active_features": 10,
+      "train_nnz": 110,
+      "test_nnz": 18,
+      "train_row_prevalence": 0.0075794226737622965,
+      "test_row_prevalence": 0.003534956794972506,
+      "train_row_sum_mean": 0.020964359864592552,
+      "test_row_sum_mean": 0.007069913670420647,
+      "train_row_sum_p95": 0.0,
+      "test_row_sum_p95": 0.0
+    },
+    {
+      "family": "native_range_replacement",
+      "n_features": 4385,
+      "train_active_features": 99,
+      "test_active_features": 20,
+      "train_nnz": 209,
+      "test_nnz": 36,
+      "train_row_prevalence": 0.01628769553297855,
+      "test_row_prevalence": 0.006284367635506678,
+      "train_row_sum_mean": 0.03499435633420944,
+      "test_row_sum_mean": 0.015710918232798576,
+      "train_row_sum_p95": 0.0,
+      "test_row_sum_p95": 0.0
+    },
+    {
+      "family": "native_range_stop",
+      "n_features": 4385,
+      "train_active_features": 54,
+      "test_active_features": 11,
+      "train_nnz": 118,
+      "test_nnz": 22,
+      "train_row_prevalence": 0.009030801483631673,
+      "test_row_prevalence": 0.00432050274941084,
+      "train_row_sum_mean": 0.020158039405941963,
+      "test_row_sum_mean": 0.008641005493700504,
+      "train_row_sum_p95": 0.0,
+      "test_row_sum_p95": 0.0
+    }
+  ],
+  "sample_feature_top_correlations": [
+    {
+      "left": "sample__mutated_gene_count",
+      "right": "sample__total_variant_count",
+      "spearman": 0.9960893198599309
+    },
+    {
+      "left": "sample__total_variant_count",
+      "right": "sample__native_v3_missense_token_count",
+      "spearman": 0.9750211679947764
+    },
+    {
+      "left": "sample__mutated_gene_count",
+      "right": "sample__native_v3_missense_token_count",
+      "spearman": 0.9722788361388162
+    },
+    {
+      "left": "sample__total_variant_count",
+      "right": "sample__native_v3_no_change_token_count",
+      "spearman": 0.8993851449918334
+    },
+    {
+      "left": "sample__mutated_gene_count",
+      "right": "sample__native_v3_no_change_token_count",
+      "spearman": 0.8978327869712307
+    },
+    {
+      "left": "sample__native_v3_missense_token_count",
+      "right": "sample__native_v3_no_change_token_count",
+      "spearman": 0.817170973007146
+    },
+    {
+      "left": "sample__total_variant_count",
+      "right": "sample__native_v3_nonsense_token_count",
+      "spearman": 0.6744650593939938
+    },
+    {
+      "left": "sample__mutated_gene_count",
+      "right": "sample__native_v3_nonsense_token_count",
+      "spearman": 0.6725168026238751
+    },
+    {
+      "left": "sample__total_variant_count",
+      "right": "sample__multi_variant_gene_count",
+      "spearman": 0.6267834688008086
+    },
+    {
+      "left": "sample__native_v3_missense_token_count",
+      "right": "sample__native_v3_nonsense_token_count",
+      "spearman": 0.623650072165229
+    },
+    {
+      "left": "sample__multi_variant_gene_count",
+      "right": "sample__native_v3_missense_token_count",
+      "spearman": 0.6098886843063309
+    },
+    {
+      "left": "sample__native_v3_no_change_token_count",
+      "right": "sample__native_v3_nonsense_token_count",
+      "spearman": 0.5953992724795243
+    },
+    {
+      "left": "sample__mutated_gene_count",
+      "right": "sample__multi_variant_gene_count",
+      "spearman": 0.5856654316147739
+    },
+    {
+      "left": "sample__multi_variant_gene_count",
+      "right": "sample__native_v3_no_change_token_count",
+      "spearman": 0.5805178744623591
+    },
+    {
+      "left": "sample__multi_variant_gene_count",
+      "right": "sample__native_v3_nonsense_token_count",
+      "spearman": 0.507920625811006
+    },
+    {
+      "left": "sample__total_variant_count",
+      "right": "sample__native_v3_frameshift_token_count",
+      "spearman": 0.45500924282034877
+    },
+    {
+      "left": "sample__mutated_gene_count",
+      "right": "sample__native_v3_frameshift_token_count",
+      "spearman": 0.44867777268148135
+    },
+    {
+      "left": "sample__native_v3_missense_token_count",
+      "right": "sample__native_v3_frameshift_token_count",
+      "spearman": 0.3813192092552851
+    },
+    {
+      "left": "sample__native_v3_no_change_token_count",
+      "right": "sample__native_v3_frameshift_token_count",
+      "spearman": 0.35748562497008807
+    },
+    {
+      "left": "sample__multi_variant_gene_count",
+      "right": "sample__native_v3_frameshift_token_count",
+      "spearman": 0.3428845398927131
+    }
+  ],
+  "exp469_exp479_oof_comparison": {
+    "parent": "EXP-469",
+    "source": "EXP-479",
+    "rows": 6201,
+    "both_correct": 2362,
+    "parent_only_correct": 142,
+    "source_only_correct": 122,
+    "both_wrong": 3575,
+    "prediction_changed": 603,
+    "prediction_changed_ratio": 0.09724238026124818,
+    "mean_absolute_probability_delta": 0.005836537538086028,
+    "max_absolute_probability_delta": 0.53032127,
+    "parent_oof_sha256": "4ae1de3b889f1ed56abdd20c6e4c216ec56f09be35477d06b96ab7029c55d824",
+    "source_oof_sha256": "eb8683ee30f3b483d997b3e67c4a8d58a297425aefa45a30b2f861bf184d44fe"
+  },
+  "exp469_exp479_oof_comparison_groups": [
+    {
+      "group": "range_replacement",
+      "rows": 101,
+      "prevalence": 0.01628769553297855,
+      "exp469_accuracy": 0.5445544554455446,
+      "exp479_accuracy": 0.5643564356435643,
+      "accuracy_delta": 0.01980198019801971,
+      "exp469_only_correct": 1,
+      "exp479_only_correct": 3,
+      "prediction_changed": 12,
+      "mean_true_class_probability_delta": -0.03083956263168316
+    },
+    {
+      "group": "range_stop",
+      "rows": 56,
+      "prevalence": 0.009030801483631673,
+      "exp469_accuracy": 0.5,
+      "exp479_accuracy": 0.5178571428571429,
+      "accuracy_delta": 0.017857142857142905,
+      "exp469_only_correct": 1,
+      "exp479_only_correct": 2,
+      "prediction_changed": 8,
+      "mean_true_class_probability_delta": -0.010624416946428569
+    },
+    {
+      "group": "range_no_change",
+      "rows": 47,
+      "prevalence": 0.0075794226737622965,
+      "exp469_accuracy": 0.7021276595744681,
+      "exp479_accuracy": 0.723404255319149,
+      "accuracy_delta": 0.021276595744680882,
+      "exp469_only_correct": 0,
+      "exp479_only_correct": 1,
+      "prediction_changed": 2,
+      "mean_true_class_probability_delta": 0.024387857765957442
+    },
+    {
+      "group": "any_range",
+      "rows": 182,
+      "prevalence": 0.029350104821802937,
+      "exp469_accuracy": 0.5769230769230769,
+      "exp479_accuracy": 0.5989010989010989,
+      "accuracy_delta": 0.02197802197802201,
+      "exp469_only_correct": 2,
+      "exp479_only_correct": 6,
+      "prediction_changed": 20,
+      "mean_true_class_probability_delta": -0.01529953642747253
+    },
+    {
+      "group": "no_range",
+      "rows": 6019,
+      "prevalence": 0.9706498951781971,
+      "exp469_accuracy": 0.3985711912277787,
+      "exp479_accuracy": 0.39458381790995184,
+      "accuracy_delta": -0.003987373317826837,
+      "exp469_only_correct": 140,
+      "exp479_only_correct": 116,
+      "prediction_changed": 583,
+      "mean_true_class_probability_delta": -0.014327964248584485
+    }
+  ],
+  "adversarial": {
+    "subclass_used": false,
+    "public_lb_used": false,
+    "n_splits": 3,
+    "seed": 42,
+    "n_estimators": 150,
+    "full_auc": 0.7145854132692533,
+    "full_fold_auc": [
+      0.7241605280807893,
+      0.7449906916871382,
+      0.7343871233489426
+    ]
+  },
+  "tree_shap": {
+    "analysis_only": true,
+    "method": "XGBoost exact TreeSHAP pred_contribs",
+    "selection_use": false,
+    "test_or_public_used": false,
+    "sampled_rows": 260,
+    "max_per_class_per_fold": 2,
+    "class_sample_counts": {
+      "ACC": 10,
+      "BLCA": 10,
+      "BRCA": 10,
+      "CESC": 10,
+      "COAD": 10,
+      "DLBC": 10,
+      "GBMLGG": 10,
+      "HNSC": 10,
+      "KIPAN": 10,
+      "KIRC": 10,
+      "LAML": 10,
+      "LGG": 10,
+      "LIHC": 10,
+      "LUAD": 10,
+      "LUSC": 10,
+      "OV": 10,
+      "PAAD": 10,
+      "PCPG": 10,
+      "PRAD": 10,
+      "SARC": 10,
+      "SKCM": 10,
+      "STES": 10,
+      "TGCT": 10,
+      "THCA": 10,
+      "THYM": 10,
+      "UCEC": 10
+    },
+    "folds": [
+      {
+        "fold": 0,
+        "validation_rows": 1241,
+        "sampled_rows": 52,
+        "sample_id_sha256": "70c97aea832e42efb00bf09954a9473fff9e59d3599d56e357e63165967a0f1f",
+        "checkpoint_sha256": "678bd3547332ebbb9ac6e44dc9a28128aec44ecfc4185b85743ebacd0de8f624"
+      },
+      {
+        "fold": 1,
+        "validation_rows": 1240,
+        "sampled_rows": 52,
+        "sample_id_sha256": "50014dc76fdb711ff6ca56d5c5788af9287afa14afa438bfc6da7a220c54d091",
+        "checkpoint_sha256": "139e8afe9c952c5fcf279cf5190e06aa0badc9c8ea7f9fa281b372ab4c64f030"
+      },
+      {
+        "fold": 2,
+        "validation_rows": 1240,
+        "sampled_rows": 52,
+        "sample_id_sha256": "7b7cb7826c15afad7a5f19ef0fd097c5f438e9e07f77466b7e552ae5e495ac63",
+        "checkpoint_sha256": "93480f245f350954579b3c1ec71a51f31cf1eb3730f0355c32dc44dacff518a4"
+      },
+      {
+        "fold": 3,
+        "validation_rows": 1240,
+        "sampled_rows": 52,
+        "sample_id_sha256": "461c90e035a704640f6b6dac9ee1f0b1516b902c383d49a2fe43810ad5be89ee",
+        "checkpoint_sha256": "c4110a6f9fa67b6552a6ff42075d8ba9ef7e83835d2a4901cdf147b4297e4fc5"
+      },
+      {
+        "fold": 4,
+        "validation_rows": 1240,
+        "sampled_rows": 52,
+        "sample_id_sha256": "1901f64e92aa84e23bda14ec2e0df28c5925dd1cf1fb187862a2ec012f137fa5",
+        "checkpoint_sha256": "8a78754350f8dd6fd838150926aa2347d8e22eaeb97e16156d9d65919a95142b"
+      }
+    ],
+    "global_top20": [
+      {
+        "feature": "sample__mutated_gene_count",
+        "family": "base_sample_aggregate",
+        "mean_abs_shap": 0.34687285177507937,
+        "share": 0.14273160142049734,
+        "rank": 1
+      },
+      {
+        "feature": "sample__total_variant_count",
+        "family": "base_sample_aggregate",
+        "mean_abs_shap": 0.25199963628676103,
+        "share": 0.10369307214597177,
+        "rank": 2
+      },
+      {
+        "feature": "TP53__mutated",
+        "family": "gene_mutation_presence",
+        "mean_abs_shap": 0.18170443246050966,
+        "share": 0.0747679286446666,
+        "rank": 3
+      },
+      {
+        "feature": "sample__native_v3_no_change_token_count",
+        "family": "native_no_change",
+        "mean_abs_shap": 0.16716373719900193,
+        "share": 0.06878470825188653,
+        "rank": 4
+      },
+      {
+        "feature": "sample__native_v3_missense_token_count",
+        "family": "native_missense",
+        "mean_abs_shap": 0.1631644366143271,
+        "share": 0.06713907189236333,
+        "rank": 5
+      },
+      {
+        "feature": "sample__native_v3_frameshift_token_count",
+        "family": "native_frameshift",
+        "mean_abs_shap": 0.07609400390502424,
+        "share": 0.03131123978219037,
+        "rank": 6
+      },
+      {
+        "feature": "sample__multi_variant_gene_count",
+        "family": "base_sample_aggregate",
+        "mean_abs_shap": 0.06715089366230965,
+        "share": 0.027631319488369294,
+        "rank": 7
+      },
+      {
+        "feature": "gene__IDH1__native_v3_missense_any",
+        "family": "native_missense",
+        "mean_abs_shap": 0.05946314852937156,
+        "share": 0.024467958134139146,
+        "rank": 8
+      },
+      {
+        "feature": "sample__native_v3_nonsense_token_count",
+        "family": "native_nonsense",
+        "mean_abs_shap": 0.047915806511122164,
+        "share": 0.019716445843740448,
+        "rank": 9
+      },
+      {
+        "feature": "gene__BRAF__native_v3_missense_any",
+        "family": "native_missense",
+        "mean_abs_shap": 0.03564545908765112,
+        "share": 0.014667430538058576,
+        "rank": 10
+      },
+      {
+        "feature": "VHL__mutated",
+        "family": "gene_mutation_presence",
+        "mean_abs_shap": 0.033550183460141526,
+        "share": 0.013805264346033548,
+        "rank": 11
+      },
+      {
+        "feature": "PTEN__mutated",
+        "family": "gene_mutation_presence",
+        "mean_abs_shap": 0.03354018087038101,
+        "share": 0.013801148470007032,
+        "rank": 12
+      },
+      {
+        "feature": "gene__PIK3CA__native_v3_missense_any",
+        "family": "native_missense",
+        "mean_abs_shap": 0.03063837702153606,
+        "share": 0.012607111207551086,
+        "rank": 13
+      },
+      {
+        "feature": "APC__mutated",
+        "family": "gene_mutation_presence",
+        "mean_abs_shap": 0.02592761711741289,
+        "share": 0.010668722828114138,
+        "rank": 14
+      },
+      {
+        "feature": "IDH1__mutated",
+        "family": "gene_mutation_presence",
+        "mean_abs_shap": 0.025104468591186327,
+        "share": 0.010330012817359471,
+        "rank": 15
+      },
+      {
+        "feature": "gene__TP53__native_v3_missense_any",
+        "family": "native_missense",
+        "mean_abs_shap": 0.02244546195290359,
+        "share": 0.009235882003351804,
+        "rank": 16
+      },
+      {
+        "feature": "BRAF__mutated",
+        "family": "gene_mutation_presence",
+        "mean_abs_shap": 0.01877728966800796,
+        "share": 0.007726498660636562,
+        "rank": 17
+      },
+      {
+        "feature": "gene__CTNNB1__native_v3_missense_any",
+        "family": "native_missense",
+        "mean_abs_shap": 0.014668651292023247,
+        "share": 0.006035871873152292,
+        "rank": 18
+      },
+      {
+        "feature": "gene__APC__native_v3_nonsense_any",
+        "family": "native_nonsense",
+        "mean_abs_shap": 0.014051167844381941,
+        "share": 0.005781789142602823,
+        "rank": 19
+      },
+      {
+        "feature": "KMT2D__mutated",
+        "family": "gene_mutation_presence",
+        "mean_abs_shap": 0.01379165119456693,
+        "share": 0.005675002961920694,
+        "rank": 20
+      }
+    ],
+    "family_importance": [
+      {
+        "family": "gene_mutation_presence",
+        "feature_count": 4384,
+        "total_mean_abs_shap": 0.7887483255364853,
+        "total_share": 0.32455498043576336,
+        "mean_per_feature": 0.00017991522024098604
+      },
+      {
+        "family": "base_sample_aggregate",
+        "feature_count": 4,
+        "total_mean_abs_shap": 0.66602338172415,
+        "total_share": 0.2740559930548384,
+        "mean_per_feature": 0.1665058454310375
+      },
+      {
+        "family": "native_missense",
+        "feature_count": 4385,
+        "total_mean_abs_shap": 0.5482627585122459,
+        "total_share": 0.22559972947209578,
+        "mean_per_feature": 0.0001250314158522787
+      },
+      {
+        "family": "native_no_change",
+        "feature_count": 4385,
+        "total_mean_abs_shap": 0.24824333616436497,
+        "total_share": 0.10214742586912436,
+        "mean_per_feature": 5.6611935271234825e-05
+      },
+      {
+        "family": "native_frameshift",
+        "feature_count": 4385,
+        "total_mean_abs_shap": 0.10137498210416003,
+        "total_share": 0.04171388295640771,
+        "mean_per_feature": 2.3118582007790223e-05
+      },
+      {
+        "family": "native_nonsense",
+        "feature_count": 4385,
+        "total_mean_abs_shap": 0.07584379826842777,
+        "total_share": 0.031208284906900776,
+        "mean_per_feature": 1.729619116725833e-05
+      },
+      {
+        "family": "native_range_no_change",
+        "feature_count": 4385,
+        "total_mean_abs_shap": 0.0011933903819673218,
+        "total_share": 0.000491057514205418,
+        "mean_per_feature": 2.721528807223083e-07
+      },
+      {
+        "family": "native_range_replacement",
+        "feature_count": 4385,
+        "total_mean_abs_shap": 0.0003712310561474984,
+        "total_share": 0.0001527545406618119,
+        "mean_per_feature": 8.46593058489164e-08
+      },
+      {
+        "family": "native_range_stop",
+        "feature_count": 4385,
+        "total_mean_abs_shap": 0.00018443437929710542,
+        "total_share": 7.589125000517708e-05,
+        "mean_per_feature": 4.20602917439237e-08
+      },
+      {
+        "family": "missingness",
+        "feature_count": 4384,
+        "total_mean_abs_shap": 0.0,
+        "total_share": 0.0,
+        "mean_per_feature": 0.0
+      }
+    ]
+  }
+}

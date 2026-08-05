@@ -1,0 +1,158 @@
+experiment:
+  record_role: official
+  issue_number: 433
+  experiment_id: EXP-433
+  component_experiments: []
+  branch: issue-433-parser-v4-legacy-control
+  owner: fabxoe
+  source_commit: 3cd8ec8ea3a4003cd0c693bd5df64dc82807f4cb
+  dirty_worktree: false
+  started_at: '2026-08-05T03:48:18.696584+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features: []
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features: []
+  position_missing_policy: zero
+  position_token_scope: include_complex
+  position_transform: raw
+  position_bin_width: null
+  position_semantics: protein residue indices explicitly written in source tokens;
+    no transcript, codon nucleotide, genomic coordinate, or protein-length inference
+  position_semantic_filter: null
+  co_mutation_pairs: []
+  co_mutation_semantics: fixed, literature-curated gene pairs (mutual exclusivity
+    or co-occurrence); gene-level 'any mutation' presence, not restricted to a specific
+    hotspot codon; not fit from this dataset's target or frequency
+  feature_factory_version: 1.1.0
+  feature_spec_sha256: b57037ced9412f2d37e2e52a74b7363f9550f4983530b489ddc8dad844468ab7
+  hotspot_features: []
+  known_hotspots: []
+  hotspot_validation_note: The hotspot table is fixed before test transformation.
+    The original 19 and additional 15 positions are literature-defined; the config-driven
+    runner validates the additions using train rows only. Test data is not used to
+    select or filter the official list. A token counts only when both position and
+    reference AA match.
+  requested_families:
+    mutation_type:
+      enabled: true
+    robust_aggregates: []
+    residue_position:
+      enabled: false
+  hotspot_table: none
+  hotspot_evidence_scope: none
+  fold_train_hotspot_evidence:
+    '0': []
+    '1': []
+    '2': []
+    '3': []
+    '4': []
+  minimum_matching_train_rows: 1
+  selection_uses_test_data: false
+feature_outputs:
+  train_features.npz:
+    path: data/processed/exp433_parser_v4_legacy_control_features/train_features.npz
+    sha256: 4a196b662887ec77918548405f39302b6a4b084c991a917e90a7c6980c798650
+  test_features.npz:
+    path: data/processed/exp433_parser_v4_legacy_control_features/test_features.npz
+    sha256: 86b4182af5c9f1d4bf095b3371e4a50a455607071e4632a3cc7fde8df4596354
+  feature_names.json:
+    path: data/processed/exp433_parser_v4_legacy_control_features/feature_names.json
+    sha256: b4c9d5e68bf179bece3bf39bec88c015c6878b51cf83e67b83372da1e4ecd0f3
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+  - mutation_presence
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  command: uv run python scripts/run_parser_v4_baseline.py --config configs/exp433_parser_v4_legacy_control.yaml
+environment:
+  python: 3.11.10 (main, Oct 11 2024, 15:45:30) [Clang 15.0.0 (clang-1500.3.9.4)]
+  platform: macOS-26.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: d896b2cf88b1d84d8e7819687db813d811b7dceacf7a1494e970b0378e3a1476

@@ -1,0 +1,136 @@
+{
+  "record_role": "explore",
+  "target_used": false,
+  "public_lb_used": false,
+  "test_distribution_used_for_rule": false,
+  "train": {
+    "parser_version": "4.0.0",
+    "rows": 6201,
+    "gene_columns": 4384,
+    "deletion_occurrences": 3,
+    "unique_normalized_deletion_tokens": 3,
+    "affected_genes": 3,
+    "affected_samples": 3,
+    "syntax_counts": {
+      "residue_aware_single": 1,
+      "position_only_single": 2,
+      "residue_aware_range": 0,
+      "position_only_range": 0,
+      "equal_position_range": 0
+    },
+    "length_distribution": {
+      "min": 1,
+      "p50": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1
+    },
+    "delins_routed_separately": 0,
+    "frameshift_del_substring_routed_separately": 1,
+    "unsupported_del_substring_tokens": 0,
+    "reversed_range_tokens": 0,
+    "examples": {
+      "residue_aware_single": [
+        "R649del"
+      ],
+      "position_only_single": [
+        "249del",
+        "490del"
+      ],
+      "residue_aware_range": [],
+      "position_only_range": [],
+      "equal_position_range": []
+    },
+    "semantic_contract_sha256": "ec2c721f28ab4275606a6fe9e3d01a72a9c2e2788c72f7c102acbb88d55e2324",
+    "source_path": "data/raw/train.csv",
+    "source_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab"
+  },
+  "test": {
+    "parser_version": "4.0.0",
+    "rows": 2546,
+    "gene_columns": 4384,
+    "deletion_occurrences": 2583,
+    "unique_normalized_deletion_tokens": 1606,
+    "affected_genes": 666,
+    "affected_samples": 520,
+    "syntax_counts": {
+      "residue_aware_single": 1680,
+      "position_only_single": 0,
+      "residue_aware_range": 888,
+      "position_only_range": 4,
+      "equal_position_range": 11
+    },
+    "length_distribution": {
+      "min": 1,
+      "p50": 1.0,
+      "p90": 5.0,
+      "p99": 42.53999999999951,
+      "max": 859
+    },
+    "delins_routed_separately": 545,
+    "frameshift_del_substring_routed_separately": 0,
+    "unsupported_del_substring_tokens": 0,
+    "reversed_range_tokens": 0,
+    "examples": {
+      "residue_aware_single": [
+        "P233del",
+        "K551del",
+        "K142del",
+        "E946del",
+        "K538del",
+        "K475del",
+        "E589del",
+        "L11del",
+        "F77del",
+        "L1457del",
+        "L1317del",
+        "E399del",
+        "K13del",
+        "E181del",
+        "E144del",
+        "L454del",
+        "A242del",
+        "Q430del",
+        "Q420del",
+        "Q360del"
+      ],
+      "position_only_single": [],
+      "residue_aware_range": [
+        "A630_P649del",
+        "G470_G473del",
+        "H160_I162del",
+        "C98_G105del",
+        "T761_T762del",
+        "A336_T347del",
+        "S752_K757del",
+        "N219_C227del",
+        "D41_G45del",
+        "H211_G213del",
+        "H261_G263del",
+        "Q618_Q621del",
+        "E746_A750del",
+        "E693_A697del",
+        "E701_A705del",
+        "E479_A483del",
+        "Q77_Q80del",
+        "C218_P229del",
+        "E307_E309del",
+        "L412_S415del"
+      ],
+      "position_only_range": [
+        "134_135del",
+        "88_89del",
+        "292_293del",
+        "597_598del"
+      ],
+      "equal_position_range": [
+        "277_277del",
+        "199_199del",
+        "234_234del"
+      ]
+    },
+    "semantic_contract_sha256": "ec2c721f28ab4275606a6fe9e3d01a72a9c2e2788c72f7c102acbb88d55e2324",
+    "source_path": "data/raw/test.csv",
+    "source_sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+  }
+}

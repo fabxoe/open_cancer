@@ -53,6 +53,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 
 현재 장기 계획:
 
+- [최우선: Parser v4-native semantic baseline 재정립 로드맵](plans/parser_v4_baseline_reset_roadmap.md)
 - [Annotation-invariant parser·robust representation 로드맵](plans/annotation_invariant_parser_roadmap.md)
 - [고정 암종 표지 패널·isoform 의미 검증 로드맵](plans/domain_marker_isoform_semantics_roadmap.md)
 - [Residue-position·Hotspot 개발 로드맵](plans/residue_position_hotspot_roadmap.md)
@@ -88,6 +89,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 - [Annotation-invariant mutation parser v2 감사](analysis/robust_mutation_parser_v2/README.md)
 - [변이 표기 정규화·의미 동등성 계약 감사](analysis/mutation_notation_semantic_contract/README.md)
 - [Stop 표기 교란 parser·feature 불변성 감사](analysis/stop_notation_invariance/README.md)
+- [Parser native v3 분포·상관·adversarial AUC·TreeSHAP 진단](analysis/parser_native_v3_generalization/README.md)
 
 ## 역할 구분
 

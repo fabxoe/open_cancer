@@ -1,0 +1,17 @@
+domain,range_replacement,range_stop,range_no_change,rows,prevalence
+train,False,False,False,6019,0.9706498951781971
+train,True,False,False,87,0.014029995162070633
+train,False,True,False,41,0.006611836800516046
+train,True,True,False,7,0.001128850185453959
+train,False,False,True,34,0.005482986615062087
+train,True,False,True,5,0.0008063215610385422
+train,False,True,True,6,0.0009675858732462506
+train,True,True,True,2,0.0003225286244154169
+test,False,False,False,2513,0.9870384917517675
+test,True,False,False,14,0.0054988216810683424
+test,False,True,False,9,0.003534956794972506
+test,True,True,False,1,0.00039277297721916735
+test,False,False,True,7,0.0027494108405341712
+test,True,False,True,1,0.00039277297721916735
+test,False,True,True,1,0.00039277297721916735
+test,True,True,True,0,0.0
