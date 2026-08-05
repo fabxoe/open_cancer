@@ -7,9 +7,11 @@ import yaml
 
 from open_cancer.mutation_parser_contract import route_protein_mutation
 from open_cancer.hashing import sha256_file
+from open_cancer.parser_compatibility_features import ParserCompatibilityFamily
 from open_cancer.parser_native_v2_features import (
     MODEL_ACTIVE_V2_CONSEQUENCES,
     ParserNativeV2SemanticFamily,
+    ParserNativeV2TokenCountFamily,
     native_v2_model_consequence,
     native_v2_primary_family,
     native_v2_semantic_contract_record,
@@ -60,6 +62,7 @@ def test_every_non_wt_token_has_primary_qc_provenance() -> None:
     assert parsed.token_count == 4
     assert sum(count for _, count in parsed.primary_family_counts) == 4
     assert parsed.model_consequences == frozenset({"missense"})
+    assert parsed.model_consequence_counts == (("missense", 1),)
     assert parse_native_v2_gene_cell("GENE", "WT").mutated is False
 
 
@@ -83,6 +86,71 @@ def test_v2_adapter_is_fixed_width_deterministic_and_alias_invariant() -> None:
     second = ParserNativeV2SemanticFamily(("A", "B")).fit(frame)
     assert second.descriptor.feature_names_sha256 == fitted.descriptor.feature_names_sha256
     assert np.array_equal(second.transform(frame).toarray(), matrix)
+
+
+def test_token_count_adapter_changes_only_sample_aggregation() -> None:
+    frame = pd.DataFrame(
+        {
+            "TP53": ["R1H R2H R3X", "R4H", "WT"],
+            "EGFR": ["E5H E6E", "E7X E8Ter", "1436_1437SI>RF"],
+        }
+    )
+    gene_fitted = ParserNativeV2SemanticFamily(("TP53", "EGFR")).fit(frame)
+    token_fitted = ParserNativeV2TokenCountFamily(("TP53", "EGFR")).fit(frame)
+    gene_matrix = gene_fitted.transform(frame).toarray()
+    token_matrix = token_fitted.transform(frame).toarray()
+
+    # Gene-level semantic presence is exactly unchanged.
+    assert np.array_equal(gene_matrix[:, 5:], token_matrix[:, 5:])
+    token_index = {
+        name: position for position, name in enumerate(token_fitted.descriptor.feature_names)
+    }
+    assert token_matrix[0, token_index["sample__native_v2_missense_token_count"]] == 3
+    assert token_matrix[0, token_index["sample__native_v2_no_change_token_count"]] == 1
+    assert token_matrix[0, token_index["sample__native_v2_nonsense_token_count"]] == 1
+    assert token_matrix[1, token_index["sample__native_v2_nonsense_token_count"]] == 2
+    assert token_matrix[2, token_index["sample__native_v2_range_replacement_token_count"]] == 1
+    assert gene_fitted.descriptor.feature_names_sha256 != token_fitted.descriptor.feature_names_sha256
+
+
+def test_token_count_contract_records_single_controlled_difference() -> None:
+    frame = pd.DataFrame({"TP53": ["R1H R2H"]})
+    fitted = ParserNativeV2TokenCountFamily(("TP53",)).fit(frame)
+    record = native_v2_semantic_contract_record(fitted)
+    assert record["family"] == "parser_v4_native_semantic_v2_token_count"
+    assert record["sample_aggregation"] == "token_count"
+    assert record["gene_aggregation"] == "consequence_presence"
+    assert len(record["schema_sha256"]) == 64
+
+
+def test_token_count_matches_compatibility_for_four_shared_families() -> None:
+    frame = pd.DataFrame(
+        {
+            "TP53": ["R1H R2H R3X", "WQ288fs R4R", "WT"],
+            "EGFR": ["E5H E6E", "E7X E8Ter", "1436_1437SI>RF"],
+        }
+    )
+    compatibility = ParserCompatibilityFamily(("TP53", "EGFR")).fit(frame)
+    token = ParserNativeV2TokenCountFamily(("TP53", "EGFR")).fit(frame)
+    compatibility_matrix = compatibility.transform(frame).toarray()
+    token_matrix = token.transform(frame).toarray()
+    compatibility_index = {
+        name: position for position, name in enumerate(compatibility.descriptor.feature_names)
+    }
+    token_index = {
+        name: position for position, name in enumerate(token.descriptor.feature_names)
+    }
+    mapping = {
+        "missense": "missense",
+        "synonymous": "no_change",
+        "nonsense": "nonsense",
+        "frameshift": "frameshift",
+    }
+    for legacy_name, native_name in mapping.items():
+        assert np.array_equal(
+            compatibility_matrix[:, compatibility_index[f"sample__{legacy_name}_count"]],
+            token_matrix[:, token_index[f"sample__native_v2_{native_name}_token_count"]],
+        )
 
 
 def test_v2_contract_and_schema_are_aligned() -> None:
