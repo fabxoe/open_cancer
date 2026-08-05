@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 104
+- 실제 실험 수: 105
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -122,6 +122,7 @@
 | EXP-476 | COMPLETED | Gomin-art | #476 | Config 기반 fold-safe recurrent gene·26 class panel + nested Optuna·class weight XGBoost | 0.4223302641 | 0.3223948042 | INFERENCE_VERIFIED | fold std 0.0063799로 안정적이나 EXP-374 대비 Local -0.0044607·Public -0.0238211, 대표 제출 미변경·ARCHIVE | [보고서](reports/exp476_config_feature_pipeline/README.md) |
 | EXP-479 | COMPLETED | fabxoe | #479 | EXP-469 + HGVS-informed range_replacement·range_stop·range_no_change 상호 배타 의미 | 0.4087566023 | 미제출 | INFERENCE_VERIFIED | 고정 XGBoost에서 EXP-469 대비 -0.0030252·안정성/Log Loss 악화; 제출 보류, 의미는 유지하고 비튜닝 native semantic 기준선으로 동결 | [보고서](reports/exp479_parser_v4_native_semantic_range/README.md) |
 | EXP-484 | COMPLETED | 2heej | #484 | EXP-374+EXP-459 고정 0.7/0.3 확률 블렌드(#482 test-like propensity 스크리닝으로 비율 사전 고정) | 0.4320213767 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 +0.0052304·test-like subset도 +0.0022953으로 통과·Log Loss 개선·클래스 붕괴 없음. Fold std +0.0052388는 임계값 초과했으나 전 fold 개선(악화 없음)이 원인 — ADOPT_WITH_CAUTION, Public 제출은 팀 논의 후 | [보고서](reports/exp484_exp374_exp459_blend/README.md) |
+| EXP-487 | COMPLETED | fabxoe | #487 | EXP-479 native-v3 semantic schema + outer-train 전용 nested Optuna XGBoost tuning | 0.4228690293 | 미제출 | INFERENCE_VERIFIED | EXP-479 대비 +0.0141124로 native-v3 성능 회복 확인; EXP-374보다 -0.0039219로 낮아 대표 제출 후보는 아니며 튜닝된 native-v3 기준선·다양성 자산으로 보존 | [보고서](reports/exp487_native_v3_nested_xgb_tuning/README.md) |
 | EXP-512 | COMPLETED | fabxoe | #512 | EXP-374 + parser v4 환자별 semantic token count 18개 | 0.4258183004 | 0.3329881004 | INFERENCE_VERIFIED | EXP-374 대비 OOF -0.0009726·Public -0.0132278·Log Loss 악화로 전역 count adapter ARCHIVE; parser v4 의미 체계 자체의 기각으로 해석하지 않음 | [보고서](reports/exp512_parser_v4_semantic_counts/README.md) |
 
 ## 리더보드 제출 이력
@@ -212,6 +213,7 @@
 | 2026-08-05T06:20:33.889237+00:00 | EXP-465 | Kangho-Park | `2aaff58e5094162fe9d5fbcaccaf9dfa1e99df1a` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 0(XGBoost checkpoint 재로드 결정론), 제출 SHA-256 byte-level 일치 | 저장 checkpoint 재추론(Model A/B 각각) | INFERENCE_VERIFIED | [comparison](reproducibility/exp465_feature_subset_ensemble/comparison.json) |
 | 2026-08-05T06:46:14.485134+00:00 | EXP-459 | 2heej | `09430f2632c14ef459fb309915368bac561533f2` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.11e-16 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp459_catboost_exp374/comparison.json) |
 | 2026-08-05T13:10:12.733299+00:00 | EXP-476 | Gomin-art | `ca1b4c6e4210e4eb98e1636818e0b7df8c12b852` / [`exp-476-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-476-repro-v1) | SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 2.98e-08, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp476_config_feature_pipeline/comparison.json) |
+| 2026-08-05T15:29:59.157313+00:00 | EXP-487 | fabxoe | `ea5278c0b9342e77d6552c2a3b4039ff550ff81a` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.43e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp487_native_v3_nested_xgb_tuning/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -4330,6 +4332,44 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   fold 붕괴형 불안정과는 다르다고 판단해 `ADOPT_WITH_CAUTION`으로 기록한다.
   EXP-449(LightGBM) 계열 블렌드가 전부 실패했던 이전 결론("어떤 모델을
   블렌드해도 test-like gate에서 실패한다")에 대한 반례다.
+
+### [EXP-487] Parser native-v3 nested XGBoost tuning
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #487 / `issue-487-native-v3-nested-xgboost-tuning`
+- 부모: EXP-479
+- 실행 소스 commit: `ea5278c0b9342e77d6552c2a3b4039ff550ff81a`
+- 시작/종료: 2026-08-05T08:52:12.389089+00:00 /
+  2026-08-05T15:29:53.966222+00:00 (23,862.02초, 약 6시간 38분)
+- Config: `configs/exp487_native_v3_nested_xgb_tuning.yaml`
+- Runner: `scripts/run_exp487_native_v3_nested_xgb_tuning.py`
+- Metrics/Report: `reports/exp487_native_v3_nested_xgb_tuning/`
+- 고정 조건: EXP-479의 parser contract, native-v3 semantic schema,
+  mutation presence, sample token-count aggregation, gene consequence presence,
+  canonical 5-fold, balanced sample weight, Macro-F1 checkpoint 정책.
+- 튜닝: outer fold별 outer-train 안에서만 3-fold inner CV와 TPE 30 trials를
+  수행했다. outer validation·test·Public LB는 파라미터 선택에 사용하지 않았다.
+- Fold Macro F1: 0.4199910583, 0.4384034520, 0.4200012784,
+  0.4079556465, 0.4242124218
+- OOF Macro F1: 0.4228690293
+  - EXP-479 대비 `+0.0141124270`
+  - EXP-374 대비 `-0.0039218975`
+  - EXP-512 대비 `-0.0029492711`
+- Fold 평균 / 표준편차: 0.4221127714 / 0.0097895767
+- Accuracy / Log Loss: 0.4184808902 / 1.8564265966
+- checkpoint 비교: 학습 metric(mlogloss)-best OOF 0.4161409876에서
+  validation Macro-F1-best 0.4228690293으로 `+0.0067280417`. 선택에는 각 outer
+  fold validation만 사용했고 test·Public은 사용하지 않았다.
+- Public LB: 미제출
+- Submission: `submissions/exp487_native_v3_nested_xgb_tuning.csv`, SHA-256
+  `446daa39ae8d0cf8737960d28f47072493944ceab7258a4b66bb7231ce8c3cc4`
+- 재현 상태: `INFERENCE_VERIFIED` — checkpoint 재추론에서 submission
+  SHA-256 byte 일치, test label 100%, 확률 최대 절대 차이 `1.43e-7`.
+- 판단: nested tuning으로 EXP-479의 비튜닝 native-v3 성능을 크게 회복했으므로
+  native-v3 표현이 무효였다는 해석은 기각한다. 다만 EXP-374와 현재 상위 후보를
+  넘지 못했으므로 대표 제출 후보로 승격하지 않고, 튜닝된 native-v3 기준선과
+  오류 다양성 비교 자산으로 보존한다.
 
 ### [EXP-512] Parser v4 환자별 semantic token count 18개
 
