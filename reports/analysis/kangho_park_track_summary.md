@@ -15,17 +15,18 @@
 | [#440](https://github.com/fabxoe/open_cancer/issues/440) | EGFR A289/G598 + NFE2L2 E79 hotspot 확장 | EXP-374 + hotspot 3컬럼, burden-clean 확인된 대기열 후보 | Macro F1 +0.0002313605(게이트 미달)·Log Loss +0.0184311867 악화 | REJECTED — CTNNB1 D32/S33(#296)에 이어 두 번째로 기각된 hotspot 확장, burden-clean+문헌 타당성만으로는 모델 게이트 통과를 보장 못 함을 재확인 |
 | [#449](https://github.com/fabxoe/open_cancer/issues/449) / [PR #452](https://github.com/fabxoe/open_cancer/pull/452) | LightGBM on EXP-374(모델 다양성, #342 대체) | EXP-374와 동일 feature set, EXP-209 고정 하이퍼파라미터 | OOF 0.4220549915(예상대로 EXP-374보다 낮음), 라벨 불일치율 23.1% | 다양성 게이트 통과 → #450 블렌드로 진행 |
 | [#450](https://github.com/fabxoe/open_cancer/issues/450) / [PR #454](https://github.com/fabxoe/open_cancer/pull/454) | EXP-374+EXP-449 0.5/0.5 블렌드 | 고정 산술평균 + `train_domain_propensity.csv` test-like 서브셋 필수 검증 | 전체 OOF +0.0004787061(게이트 미달), **test-like 서브셋 -0.0104454301** | REJECTED — EXP-253과 동일한 Local-pass/test-like-fail 패턴 재현, Public 제출 없이 로컬에서 사전 차단(propensity 체크 설계의 실효성 입증) |
+| [#457](https://github.com/fabxoe/open_cancer/issues/457) / [PR #460](https://github.com/fabxoe/open_cancer/pull/460) | EXP-374+EXP-449 outer-fold cross-fitted 로지스틱 회귀 stacking | 52차원(두 모델의 26-class 확률) 입력, `C=0.2` 강한 L2, outer 5-fold cross-fit(EXP-137 전례) + test-like 서브셋 필수 검증 | 전체 OOF -0.0286764512(게이트 대폭 미달), **test-like 서브셋 -0.0472554605**(전체보다 더 악화), LGG/DLBC F1 -0.37~-0.41 붕괴(LGG 228건 중 204건이 GBMLGG로 오분류) | REJECTED — EXP-137과 동일한 메커니즘(강한 L2 다항 로지스틱 stacking의 소수 클래스 붕괴)의 두 번째 독립 확인. 고정 블렌드(#450)에 이어 stacking도 test-like 서브셋에서 실패 — EXP-374+EXP-449 앙상블 트랙 자체를 당분간 보류 |
 
 ## 방법론적 기여 (일회성 결과보다 재사용 가치가 큰 것들)
 
 1. **5단계 hotspot 사전검증 표준화**(Vera 게이트 → burden 교란 → 암종 배타성 → semantic dedup → multi-seed 안정성) — #295/#296/#329(NPM1)/#440에서 반복 재사용.
 2. **Gate C(dominance≥0.8) 예외 처리 선례** — NPM1 288에서 "dominance=1.0이 위험 신호가 아니라 생물학적으로 정확한 신호일 수 있다"는 반례를 문서화(#254 참고 케이스로 연결).
 3. **fold-safe 원칙 위반의 실증 사례**(#392 discrepancy) — 같은 아이디어(range_stop/no_change indicator)를 독립적으로 두 가지 방식으로 구현했을 때, 후보 선정 범위(global vs per-fold outer-train)가 결과 부호를 실제로 뒤집을 수 있음을 보여준 교육적 사례.
-4. **propensity 기반 test-like 서브셋 사전 검증의 실효성 입증**(#450) — EXP-253이 Local 게이트를 통과하고도 Public에서 -0.0178 무너졌던 실패를, 이번엔 같은 조합(XGBoost+LightGBM 블렌드)을 Public 제출 없이 로컬 test-like 서브셋 체크만으로 사전 차단. 앞으로 모델 다양성/블렌드 시도에 재사용 가능한 완료 조건 템플릿(`scripts/check_exp450_test_like_subset.py`).
+4. **propensity 기반 test-like 서브셋 사전 검증의 실효성 입증**(#450, #457) — EXP-253이 Local 게이트를 통과하고도 Public에서 -0.0178 무너졌던 실패를, 이번엔 같은 조합(XGBoost+LightGBM)의 블렌드(#450)와 stacking(#457) 두 시도 모두 Public 제출 없이 로컬 test-like 서브셋 체크만으로 사전 차단. 두 실패는 메커니즘이 다르다(#450: 같은 shift 분포 노출로 bias 증폭, #457: 강한 정규화 stacking의 소수 클래스 붕괴)는 점에서, 이 체크가 특정 실패 유형이 아니라 "test 분포에 가까운 샘플에서의 실제 성능"이라는 일반적 기준으로 유효함을 보여준다. 앞으로 모델 다양성/블렌드/스태킹 시도에 재사용 가능한 완료 조건 템플릿(`scripts/check_exp450_test_like_subset.py`, `scripts/check_exp457_test_like_subset.py`).
 
 ## 재현성 상태
 
-- #295/#296/#367/#421/#440/#449/#450: 전부 스크립트+원본 데이터 커밋 완료, 재실행 가능. #440/#449/#450은 INFERENCE_VERIFIED까지 자동 완료.
+- #295/#296/#367/#421/#440/#449/#450/#457: 전부 스크립트+원본 데이터 커밋 완료, 재실행 가능. #440/#449/#450/#457은 INFERENCE_VERIFIED까지 자동 완료.
 - #251/#254: 진단 전용(analysis-only), EXPERIMENT_HISTORY 미등록(원래 설계대로).
 
 ## 현재 팀 production 계보 상태 (2026-08-05 기준)
