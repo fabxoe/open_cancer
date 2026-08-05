@@ -1,0 +1,99 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-512
+issue_number: 512
+slug: parser_v4_semantic_counts
+parent_experiment: EXP-374
+component_experiments: [EXP-374]
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mutation_type:
+    enabled: true
+    parser:
+      name: stop_notation_invariant_v2
+      definition_version: 2.1.0
+      equivalent_stop_alternates: ["*", X, Ter]
+      other_v1_semantics_preserved: true
+  robust_aggregates:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+  residue_position:
+    enabled: true
+    aggregates: [max]
+    missing_policy: zero
+    complex_tokens: include
+    transform: raw
+    isoform_semantic_mask:
+      enabled: true
+      manifest_path: knowledge/ensembl_isoform_annotation_v1.json
+      manifest_sha256: 568ea31f5b7fc7ff47d181fe552d39f3b9185f8d0a76cbb2a49d06be022d5bc0
+      annotation_cache_path: data/external/ensembl_release_116/competition_gene_isoform_index.json
+      annotation_cache_sha256: b9565339f1755d5b07e782c39064207310fa6c254b2e915a15492f4f38903daa
+      trusted_categories: [CANONICAL_MATCH, MANE_MATCH, OTHER_ISOFORM_MATCH]
+      masked_categories: [COMPLEX_OR_UNMAPPABLE, OUTSIDE_ALL_KNOWN_ISOFORMS, POSITION_VALID_REF_MISMATCH]
+hotspots:
+  table: extended_34
+  evidence_scope: additions_15
+  minimum_matching_train_rows: 5
+  stop_notation_normalization: true
+external_knowledge:
+  file: knowledge/canonical_pathways_sanchez_vega_v1.json
+  organizer_approval_reference: https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180
+  source_commit: 7d29965de6ac8d0c6ec18c383f6dff8a48d562e7
+  source_sha256: a625675d03fa314eb27f3ab731524de13621a35aecd8edb7c67878f2d89ae07a
+abc_families:
+  fixed_pathway_burden:
+    enabled: true
+    definition_version: 2.1.0
+    fit_scope: stateless
+    groups: 10
+    values: [mutated_gene_count, lof_gene_count]
+    stop_notation_normalization: true
+    output_dimension: 20
+  pathway_mutation_type_composition:
+    enabled: true
+    definition_version: 2.1.0
+    fit_scope: stateless
+    groups: 10
+    values: [missense_gene_count, synonymous_gene_count, nonsense_gene_count, frameshift_gene_count, complex_gene_count]
+    stop_notation_normalization: true
+    candidate_output_dimension: 50
+    semantic_equivalence_filter: fold_train_against_feature_spec_v1
+  parser_v4_patient_semantic_counts:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    output_dimension: 18
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - exp374_stop_isoform_residue_mask
+    - parser_v4_patient_semantic_token_counts
+notes: >-
+  Issue #512. EXP-374 model, folds, seed, checkpoint policy and all parent
+  features remain fixed. The sole addition is 18 patient-level counts produced
+  from parser-v4 routed protein tokens. No target, test distribution or Public
+  leaderboard result defines the count schema.
+comparison_metrics_path: reports/exp374_stop_isoform_residue_mask/metrics.json

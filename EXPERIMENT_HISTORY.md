@@ -7,13 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 103
+- 실제 실험 수: 104
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
 - 최고 Public LB Macro F1: 0.346215922 (`EXP-374`)
 - 최고 재현 검증 모델: `EXP-334` (`INFERENCE_VERIFIED`)
-- 최종 갱신일: 2026-08-05
+- 최종 갱신일: 2026-08-06
 
 ## 실험 요약
 
@@ -122,6 +122,7 @@
 | EXP-476 | COMPLETED | Gomin-art | #476 | Config 기반 fold-safe recurrent gene·26 class panel + nested Optuna·class weight XGBoost | 0.4223302641 | 0.3223948042 | INFERENCE_VERIFIED | fold std 0.0063799로 안정적이나 EXP-374 대비 Local -0.0044607·Public -0.0238211, 대표 제출 미변경·ARCHIVE | [보고서](reports/exp476_config_feature_pipeline/README.md) |
 | EXP-479 | COMPLETED | fabxoe | #479 | EXP-469 + HGVS-informed range_replacement·range_stop·range_no_change 상호 배타 의미 | 0.4087566023 | 미제출 | INFERENCE_VERIFIED | 고정 XGBoost에서 EXP-469 대비 -0.0030252·안정성/Log Loss 악화; 제출 보류, 의미는 유지하고 비튜닝 native semantic 기준선으로 동결 | [보고서](reports/exp479_parser_v4_native_semantic_range/README.md) |
 | EXP-484 | COMPLETED | 2heej | #484 | EXP-374+EXP-459 고정 0.7/0.3 확률 블렌드(#482 test-like propensity 스크리닝으로 비율 사전 고정) | 0.4320213767 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 +0.0052304·test-like subset도 +0.0022953으로 통과·Log Loss 개선·클래스 붕괴 없음. Fold std +0.0052388는 임계값 초과했으나 전 fold 개선(악화 없음)이 원인 — ADOPT_WITH_CAUTION, Public 제출은 팀 논의 후 | [보고서](reports/exp484_exp374_exp459_blend/README.md) |
+| EXP-512 | COMPLETED | fabxoe | #512 | EXP-374 + parser v4 환자별 semantic token count 18개 | 0.4258183004 | 0.3329881004 | INFERENCE_VERIFIED | EXP-374 대비 OOF -0.0009726·Public -0.0132278·Log Loss 악화로 전역 count adapter ARCHIVE; parser v4 의미 체계 자체의 기각으로 해석하지 않음 | [보고서](reports/exp512_parser_v4_semantic_counts/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -151,6 +152,7 @@
 | 2026-08-04T17:49:07+09:00 | EXP-369 | #369 | `submissions/exp369_stop_notation_normalization.csv` (제출 ID `1510848`) | `9c1fad8c118928f23157b7558a1b73fa16af22a34966a244841ac539fed5bdd3` | 0.3407944343 | 팀 Public 최고 갱신<span style="display:block">EXP-229 대비 +0.0204345510·EXP-223 대비 +0.0175509093</span><span style="display:block">확인 당시 참가 4팀 중 4위·팀 제출 23회</span> | INFERENCE_VERIFIED |
 | 2026-08-04T18:29:26+09:00 | EXP-374 | #374 | `submissions/exp374_stop_isoform_residue_mask.csv` (제출 ID `1510884`) | `6ebae265d36ce5b87748cdb40c412fc9563e64a69c0194d92b43cc1af4e6d006` | 0.346215922 | 팀 Public 최고 갱신<span style="display:block">EXP-369 대비 +0.0054214877</span><span style="display:block">대표 제출로 선택</span> | INFERENCE_VERIFIED |
 | 2026-08-05T19:05:30+09:00 | EXP-476 | #476 | `submissions/exp476_config_feature_pipeline.csv` (제출 ID `1512307`) | `0501cbcc23999d31fe428d8c9030e6a8895a9e8433e8ba438e81f635e22847cb` | 0.3223948042 | EXP-374 최고 대비 -0.0238211178<span style="display:block">확인 당시 팀 4위·팀 제출 25회·대표 제출은 EXP-374 유지</span> | INFERENCE_VERIFIED |
+| 2026-08-05T23:58:45+09:00 | EXP-512 | #512 | `submissions/exp512_parser_v4_semantic_counts.csv` (제출 ID `1512887`) | `2f1ffc1c6c91535e613e46ea084efcec4a53e9f3a3c5717d7144b2cd2b2f2c21` | 0.3329881004 | EXP-374 최고 대비 -0.0132278216<span style="display:block;color:#8b949e">미달·대표/팀 순위 미갱신</span><span style="display:block">확인 당시 팀 4위·팀 제출 26회·대표 제출은 EXP-374 유지</span> | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -4328,3 +4330,31 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   fold 붕괴형 불안정과는 다르다고 판단해 `ADOPT_WITH_CAUTION`으로 기록한다.
   EXP-449(LightGBM) 계열 블렌드가 전부 실패했던 이전 결론("어떤 모델을
   블렌드해도 test-like gate에서 실패한다")에 대한 반례다.
+
+### [EXP-512] Parser v4 환자별 semantic token count 18개
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #512 / `issue-512-parser-v4-semantic-counts`
+- 부모: EXP-374
+- 소스 commit: `96129f56f7d9a6d22a3c6e5c087a5164d91a0522`
+- 시작/종료: 2026-08-05T14:40:17.222100+00:00 /
+  2026-08-05T14:57:56.187026+00:00 (1059.39초)
+- Config: `configs/exp512_parser_v4_semantic_counts.yaml`
+- Runner: `scripts/run_exp512_parser_v4_semantic_counts.py`
+- Metrics/Report: `reports/exp512_parser_v4_semantic_counts/`
+- 유일한 변경: EXP-374의 모든 기존 피처·모델·fold·seed·checkpoint 정책을
+  유지하고 parser v4가 판정한 환자별 semantic token count 18개를 추가했다.
+- Fold Macro F1: 0.4252238369, 0.4225060175, 0.4120400910,
+  0.4252197776, 0.4430732916
+- OOF Macro F1: 0.4258183004 (EXP-374 대비 `-0.0009726264`)
+- Fold 표준편차: 0.0099904460 (EXP-374 대비 `+0.0014872291`)
+- Accuracy / Log Loss: 0.4133204322 / 1.8659275770 (Log Loss
+  `+0.0218627453`)
+- Public LB: 0.3329881004 (제출 ID `1512887`, EXP-374 대비
+  `-0.0132278216`)
+- 재현 상태: `INFERENCE_VERIFIED` — checkpoint 재추론에서 submission
+  SHA-256 byte 일치, test label 100%, 확률 최대 절대 차이 `1.42e-7`.
+- 판단: 환자 전역 semantic count adapter는 Local·Public·Log Loss 모두 개선하지
+  못해 `ARCHIVE`한다. parser v4 의미 체계 자체는 유지하며, gene×semantic family와
+  ref/alt·위치·범위 구조를 보존하는 후속 표현과 구분한다.
