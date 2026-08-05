@@ -1,0 +1,47 @@
+schema_name: parser_v4_native_semantic_v2
+schema_version: 2.0.0
+issue: 453
+parser_contract:
+  notation_normalizer_version: 4.0.0
+  semantic_router_version: 4.0.0
+  feature_adapter_version: 4.0.0-opt-in
+representation:
+  input_unit: gene_cell
+  aggregation: affected_gene_presence
+  mutation_presence_policy: preserve_existing_base_feature
+  raw_provenance_policy: preserve_outside_model_matrix
+model_active_consequences:
+  - missense
+  - no_change
+  - nonsense
+  - frameshift
+  - range_replacement
+qc_primary_families:
+  - substitution:start_codon_affected
+  - substitution:unknown_reference_substitution
+  - frameshift
+  - deletion
+  - insertion
+  - duplication_candidate
+  - delins
+  - range_replacement
+  - range_no_change
+  - range_stop
+  - unresolved
+support_policy:
+  source: reports/analysis/parser_v4_semantic_completeness/audit.json
+  source_issue: 424
+  minimum_train_samples: 50
+  minimum_samples_per_canonical_fold: 5
+  train_only_for_model_activation: true
+  test_prevalence_used_for_activation: false
+  target_used: false
+  public_lb_used: false
+exclusivity:
+  one_primary_route_per_token: true
+  delins_not_double_counted_as_deletion_or_insertion: true
+  frameshift_precedes_delins_deletion_insertion: true
+limitations:
+  reference_confirmed_duplication_requires_external_annotation: true
+  duplication_candidate_is_qc_only: true
+  length_peptide_position_summaries_deferred: true

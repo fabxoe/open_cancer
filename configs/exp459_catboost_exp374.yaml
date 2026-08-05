@@ -1,0 +1,63 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-459
+issue_number: 459
+slug: catboost_exp374
+parent_experiment: EXP-374
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+model:
+  name: catboost
+  parameters:
+    iterations: 400
+    depth: 6
+    learning_rate: 0.05
+    l2_leaf_reg: 3.0
+    border_count: 32
+    bootstrap_type: Bernoulli
+    subsample: 0.8
+    rsm: 0.1
+    thread_count: 10
+    early_stopping_rounds: 50
+    allow_writing_files: false
+training:
+  balanced_sample_weight: true
+preflight:
+  attempts:
+    - source_commit: 64a7d8a16bfb2df290f822baca9163b53b90d47a
+      parameters:
+        iterations: 100
+        depth: 6
+        rsm: 0.1
+        border_count: 32
+        thread_count: 10
+      fold: 0
+      measured_seconds: 129.9
+      seconds_per_iteration: 1.299
+      hardware: Apple M1 Pro (CPU only, no CUDA/GPU available)
+      reason: >-
+        No GPU available in this execution environment (unlike EXP-127, which
+        needed RunPod RTX 4090 because CPU depth=8/iterations=1000 did not
+        complete one fold within 30 minutes). Measured 1.30s/iteration at
+        depth=6/rsm=0.1/border_count=32/thread_count=10 on the EXP-374
+        feature matrix (~4,960 x 35,181 per fold). iterations=400 is chosen
+        so 5 folds complete in roughly 45 minutes, keeping this within a
+        single CPU-bounded session instead of requiring GPU compute.
+execution_target: local_cpu_m1_pro
+notes: >-
+  Issue #459. Model diversity arm parallel to EXP-449 (LightGBM) and #457
+  (stacking), built on top of EXP-374 (currently valid legacy parent while
+  N5/parser-native baseline reset is still in progress per roadmap #422).
+  Feature set is EXP-374's build_fold_features() reused unchanged (parser
+  v2.1.0 stop-notation-invariant + Ensembl isoform mask + pathway families +
+  hotspot-34). Only the model changes, from XGBoost to CatBoost. Starting
+  hyperparameters are EXP-127's GPU CatBoost config (iterations=1000, depth=8,
+  learning_rate=0.05, l2_leaf_reg=3, border_count=32, bootstrap_type=Bernoulli,
+  subsample=0.8), reduced to a CPU-feasible depth=6/iterations=400/rsm=0.1
+  based on the preflight timing above -- this is a compute-bounded config, not
+  a retuned one, so results are not a like-for-like comparison against
+  EXP-127's GPU run. No Optuna, no retuning beyond the compute-forced
+  reduction. Target, test distribution and Public LB do not define any
+  parameter here.

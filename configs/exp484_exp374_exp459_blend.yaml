@@ -1,0 +1,59 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-484
+issue_number: 484
+slug: exp374_exp459_blend
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+ensemble:
+  method: probability_mean
+  weights_fixed_before_evaluation: true
+  weight_selection_basis: >-
+    Task #482 (PR #483) screened fixed blend ratios of EXP-374 and EXP-459
+    against the #292 test-like propensity subset before this official run.
+    0.7/0.3 was the only ratio maximizing both the full OOF delta
+    (+0.0052304498) and the test-like subset delta (+0.0022953029); 0.6/0.4
+    and 0.5/0.5 failed the test-like gate despite higher full OOF. Weight
+    was fixed from that screening before this run and is not tuned here.
+  components:
+    - experiment_id: EXP-374
+      weight: 0.7
+      oof_probability_path: oof/exp374_stop_notation_isoform_mask.csv
+      test_probability_path: preds/exp374_stop_notation_isoform_mask_test_proba.csv
+      metrics_path: reports/exp374_stop_isoform_residue_mask/metrics.json
+      resolved_config_path: reproducibility/exp374_stop_isoform_residue_mask/config.resolved.yaml
+      provenance_note: >-
+        Canonical EXP-374 (exp374_stop_isoform_residue_mask) has no uploaded
+        Release/checkpoint artifact (manifest storage_uri all null). The OOF
+        and test probabilities used here were reproduced in an isolated
+        worktree from scripts/run_exp374_stop_isoform_residue_mask.py by
+        2heej during EXP-459 (#459) and matched the recorded canonical OOF
+        Macro F1 exactly (0.4267909268) before being reused here. metrics_path
+        and resolved_config_path point at the canonical tracked experiment
+        record; oof/test probability paths point at the byte-verified
+        reproduction under the historical exp374_stop_notation_isoform_mask
+        slug (see #EXP-374 duplicate/collision note in EXP-459 report).
+    - experiment_id: EXP-459
+      weight: 0.3
+      oof_probability_path: oof/exp459_catboost_exp374.csv
+      test_probability_path: preds/exp459_catboost_exp374_test_proba.csv
+      metrics_path: reports/exp459_catboost_exp374/metrics.json
+      resolved_config_path: reproducibility/exp459_catboost_exp374/config.resolved.yaml
+submission:
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
+acceptance:
+  comparison_experiment: EXP-374
+  minimum_macro_f1_delta: 0.001
+  maximum_fold_std_increase: 0.002
+  require_no_clear_log_loss_regression: true
+  test_like_propensity_gate:
+    source: reports/analysis/exp459_blend_propensity_screening/screening.json
+    quantile: 0.75
+    minimum_test_like_delta: 0.0
+notes: >-
+  Issue #484. Fixed 0.7/0.3 arithmetic probability mean of EXP-374 and
+  EXP-459, weight fixed by the #482 screening before this official run. No
+  alternative weights, test distribution, or Public LB select this blend.

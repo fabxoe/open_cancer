@@ -1,0 +1,41 @@
+schema_name: parser_v4_native_semantic_v3_range
+schema_version: 3.0.0
+issue: 477
+parent_schema: configs/parser_v4_native_feature_schema_v2_token_count.yaml
+parser_contract:
+  notation_normalizer_version: 4.0.0
+  semantic_router_version: 4.0.0
+  feature_adapter_version: 4.0.0-opt-in
+representation:
+  input_unit: mutation_token
+  sample_aggregation: active_token_count
+  gene_aggregation: consequence_presence
+  mutation_presence_policy: preserve_existing_base_feature
+  raw_provenance_policy: preserve_outside_model_matrix
+model_active_consequences:
+  - missense
+  - no_change
+  - nonsense
+  - frameshift
+  - range_replacement
+  - range_stop
+  - range_no_change
+range_semantics:
+  ordinary: range_replacement
+  contains_stop: range_stop
+  protein_no_change: range_no_change
+  mutually_exclusive: true
+controlled_difference_from_v2_token_count:
+  added_model_consequences:
+    - range_stop
+    - range_no_change
+  unchanged:
+    - mutation token normalization and routing
+    - sample token-count aggregation
+    - gene-level consequence presence
+    - missense, no_change, nonsense, frameshift, ordinary range semantics
+    - mutation-presence features
+constraints:
+  target_used: false
+  test_distribution_used_for_schema: false
+  public_lb_used: false
