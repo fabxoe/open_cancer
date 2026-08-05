@@ -19,6 +19,18 @@
 | [#464](https://github.com/fabxoe/open_cancer/issues/464) / [PR #467](https://github.com/fabxoe/open_cancer/pull/467) | EXP-374+EXP-449 블렌드 비율 스윕(0.9/0.1~0.6/0.4) | 재학습 없이 4개 비율로 OOF 재조합, 각 비율의 test-like 서브셋 delta 비교 | 최소 악화 지점 0.7/0.3: 전체 OOF +0.0037615500(게이트 통과)이나 **test-like 서브셋 -0.0034452142**. EXP-374 비중 90%(0.9/0.1)까지 올려도 test-like -0.0064341792로 악화 지속 | REJECTED(4개 비율 전부) — EXP-450의 실패가 가중치 문제가 아니라 LightGBM이 조금이라도 섞이면 발생하는 구조적 패턴임을 확인, 비율 조정으로는 해결 불가 |
 | [#465](https://github.com/fabxoe/open_cancer/issues/465) / [PR #470](https://github.com/fabxoe/open_cancer/pull/470) | Feature subset 다양성 앙상블(hotspot-only vs sample-aggregate-burden-only XGBoost) | #292 shift-AUC가 다른 두 family(hotspot ~0.55, sample-burden ~0.73)로 각각 독립 학습(35/74 feature) 후 0.5/0.5 블렌드 | 컴포넌트 단독 OOF 0.1427/0.2770(EXP-374 0.4268 대비 극단적으로 낮음), 블렌드 OOF -0.1186096, **test-like 서브셋 -0.1399293**, ACC/DLBC F1 -0.40 붕괴 | REJECTED — shift-robustness 실패가 아니라 설계 결함(두 subset이 EXP-374 signal 대부분을 차지하는 유전자별 mutation indicator를 아예 빼먹어 예측력 자체가 부족)으로 판단, EXP-450/457과 실패 성격이 다름. **재설계(raw mutation indicator를 공통 base로 포함) 검토 결과, hotspot 열이 이미 base 35,119개 안에 전부 포함돼 있어 재설계하면 두 모델이 EXP-374 feature의 99.82%를 공유하게 됨(0.18%=62/35,182열만 차이) — diversity gate가 구조적으로 성립 불가능해 재시도 포기, 앙상블 축 완전 종료** |
 
+## 정정 (2026-08-05, 2heej의 CatBoost 결과 반영)
+
+위 표의 #450/#457/#464/#465에서 "EXP-374 기반 앙상블은 test-like 서브셋에서
+전부 실패한다"고 결론 내렸으나, 이는 **LightGBM(EXP-449)과의 조합에 한정된
+현상**이었다. 2heej의 CatBoost(EXP-459)를 EXP-374와 0.7/0.3으로 블렌드한
+결과(#484, PR #485)는 전체 OOF `+0.0052304498`, **test-like 서브셋도
+`+0.0022953029`로 개선**돼 `ADOPT_WITH_CAUTION` 판정을 받았다. CatBoost는
+EXP-374와의 오류상관이 `0.6551`로 LightGBM보다 뚜렷이 낮다 — 즉 "이 두 모델을
+섞는 것 자체가 안 된다"가 아니라 "**EXP-374와 충분히 다른 오류 패턴을 가진
+모델이어야 test-like에서도 이득을 본다**"가 더 정확한 결론이다. #464/#465
+Issue에도 같은 정정 코멘트를 남겼다.
+
 ## 방법론적 기여 (일회성 결과보다 재사용 가치가 큰 것들)
 
 1. **5단계 hotspot 사전검증 표준화**(Vera 게이트 → burden 교란 → 암종 배타성 → semantic dedup → multi-seed 안정성) — #295/#296/#329(NPM1)/#440에서 반복 재사용.
