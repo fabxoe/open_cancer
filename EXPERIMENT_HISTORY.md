@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 91
+- 실제 실험 수: 92
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
@@ -110,6 +110,7 @@
 | EXP-448 | COMPLETED | fabxoe | #448 | Parser v4 native consequence에서 sample provenance summary 6개 제거 | 0.4104538324 | 미제출 | NOT_STARTED | L 대비 -0.0028225·PAAD -0.0524로 gate 실패, ARCHIVE·native adapter v2 필요 | [보고서](reports/exp448_parser_v4_native_no_provenance/README.md) |
 | EXP-456 | COMPLETED | fabxoe | #456 | Parser v4 support-gated native semantic adapter v2 | 0.4111053102 | 미제출 | NOT_STARTED | v1 대비 개선했으나 L 대비 -0.0021710·PAAD -0.06285로 gate 실패, ARCHIVE | [보고서](reports/exp456_parser_v4_native_v2/README.md) |
 | EXP-469 | COMPLETED | fabxoe | #469 | EXP-456 native v2의 sample summary만 affected-gene count→token count | 0.4117817779 | 미제출 | INFERENCE_VERIFIED | EXP-456 대비 +0.0006765·Log Loss 개선; Legacy gate 미달이나 native 전용 분석·튜닝용 비튜닝 기준점으로 보존 | [보고서](reports/exp469_parser_v4_native_v2_token_count/README.md) |
+| EXP-479 | COMPLETED | fabxoe | #479 | EXP-469 + HGVS-informed range_replacement·range_stop·range_no_change 상호 배타 의미 | 0.4087566023 | 미제출 | INFERENCE_VERIFIED | 고정 XGBoost에서 EXP-469 대비 -0.0030252·안정성/Log Loss 악화; 제출 보류, 의미는 유지하고 비튜닝 native semantic 기준선으로 동결 | [보고서](reports/exp479_parser_v4_native_semantic_range/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -3885,3 +3886,30 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   정확성 허용 하한을 `0.0004945` 초과해 통과하지 못했다. 이를 native 의미 표현의
   기각으로 사용하지 않고, 고정 legacy XGBoost 설정에서의 **비튜닝 native v2
   기준점**으로 보존한다. 후속은 native 전용 분포·SHAP·nested tuning·multi-seed다.
+
+### [EXP-479] Parser v4 native semantic range 3분류 기준선
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #479 / `issue-479-exp-native-semantic-range`
+- 소스 commit: `8a6010d6152a1fa8fd4dec795bba866d90137344`
+- 시작/종료: 2026-08-05T07:07:09.958226+00:00 /
+  2026-08-05T07:19:06.681143+00:00
+- Config: `configs/exp479_parser_v4_native_semantic_range.yaml`
+- Runner: `scripts/run_exp479_parser_v4_native_semantic_range.py`
+- Metrics/Report: `reports/exp479_parser_v4_native_semantic_range/`
+- 부모: EXP-469
+- 유일한 schema 변경: 기존 다섯 consequence·token-count·gene any·mutation
+  presence·모델·fold·seed를 유지하고 `range_stop`, `range_no_change`를 추가했다.
+- Fold Macro F1: 0.3984987531, 0.4235728121, 0.4047336390,
+  0.3981967162, 0.4190945801
+- OOF Macro F1: 0.4087566023 (EXP-469 대비 `-0.0030251756`)
+- Fold 표준편차: 0.0105763236 (EXP-469 대비 `+0.0016671733`)
+- Accuracy / Log Loss: 0.4005805515 / 1.9471516609
+- 최대 클래스 하락/상승: LAML `-0.0383621` / KIRC `+0.0388446`
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — 저장 checkpoint 재추론에서 submission
+  SHA-256 byte 일치, test label 100% 일치, 확률 최대 절대 차이 `1.82e-7`.
+- 판단: 현재 고정 XGBoost 설정에서는 EXP-469보다 성능과 안정성이 악화돼 제출을
+  보류한다. parser 의미를 되돌리지는 않으며, EXP-479를 비튜닝 native semantic
+  기준선으로 동결하고 분포·상관·SHAP·nested tuning으로 adapter와 모델을 최적화한다.
