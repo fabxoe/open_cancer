@@ -78,3 +78,43 @@ def test_integer_encoded_target_uses_fixed_class_order() -> None:
     )
     assert fitted.class_support == (1, 1)
     assert fitted.descriptor.feature_names[0].endswith("__ACC")
+
+
+def test_leave_one_out_removes_self_inclusion_from_target_class_score() -> None:
+    matrix = sparse.csr_matrix([[1, 0], [0, 1], [1, 1]], dtype=np.float32)
+    labels = np.array(["A", "A", "B"])
+    fitted = ClassSemanticProfileFamily(("A", "B"), method="cosine").fit(
+        matrix, labels
+    )
+
+    full = fitted.transform(matrix).toarray()
+    loo = fitted.transform_train_leave_one_out(matrix, labels).toarray()
+
+    assert full[0, 0] == pytest.approx(1 / np.sqrt(2))
+    assert loo[0, 0] == pytest.approx(0.0)
+    assert loo[1, 0] == pytest.approx(0.0)
+    assert loo[2, 1] == pytest.approx(0.0)  # singleton class
+    assert loo[0, 1] == pytest.approx(full[0, 1])  # other class unchanged
+
+
+def test_leave_one_out_accepts_integer_encoded_target() -> None:
+    matrix = sparse.csr_matrix([[1, 0], [1, 0], [0, 1], [0, 1]], dtype=np.float32)
+    fitted = ClassSemanticProfileFamily(("A", "B"), method="cosine").fit(
+        matrix, np.array([0, 0, 1, 1], dtype=np.int32)
+    )
+    scores = fitted.transform_train_leave_one_out(
+        matrix, np.array([0, 0, 1, 1], dtype=np.int32)
+    )
+    assert np.allclose(
+        scores.toarray(),
+        [[1.0, 0.0], [1.0, 0.0], [0.0, 1.0], [0.0, 1.0]],
+    )
+
+
+def test_leave_one_out_rejects_likelihood_profiles() -> None:
+    matrix = sparse.csr_matrix([[1, 0], [0, 1]], dtype=np.float32)
+    fitted = ClassSemanticProfileFamily(
+        ("A", "B"), method="mean_log_likelihood"
+    ).fit(matrix, np.array(["A", "B"]))
+    with pytest.raises(ValueError, match="cosine profile"):
+        fitted.transform_train_leave_one_out(matrix, np.array(["A", "B"]))

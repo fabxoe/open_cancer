@@ -44,6 +44,24 @@ class FittedClassSemanticProfiles:
     include_class_prior: bool
     profile_sha256: str
 
+    def _resolve_labels(self, target: pd.Series | np.ndarray, rows: int) -> np.ndarray:
+        raw_labels = np.asarray(target)
+        if raw_labels.ndim != 1 or len(raw_labels) != rows:
+            raise ValueError("target 길이는 outer-train 행 수와 같아야 합니다.")
+        if np.issubdtype(raw_labels.dtype, np.integer):
+            if raw_labels.size and (
+                raw_labels.min() < 0 or raw_labels.max() >= len(self.class_labels)
+            ):
+                raise ValueError("정수 target이 고정 class order 범위를 벗어났습니다.")
+            return np.asarray(
+                [self.class_labels[int(index)] for index in raw_labels], dtype=str
+            )
+        labels = raw_labels.astype(str)
+        unknown = sorted(set(labels) - set(self.class_labels))
+        if unknown:
+            raise ValueError(f"고정 class order에 없는 target입니다: {unknown}")
+        return labels
+
     def transform(self, matrix: sparse.spmatrix | np.ndarray) -> sparse.csr_matrix:
         values = _as_csr_nonnegative(matrix)
         if values.shape[1] != self.profiles.shape[1]:
@@ -69,6 +87,55 @@ class FittedClassSemanticProfiles:
                     support.sum() + self.alpha * len(self.class_labels)
                 )
                 scores += np.log(prior)[None, :]
+        return sparse.csr_matrix(scores.astype(np.float32))
+
+    def transform_train_leave_one_out(
+        self,
+        matrix: sparse.spmatrix | np.ndarray,
+        target: pd.Series | np.ndarray,
+    ) -> sparse.csr_matrix:
+        """Transform outer-train without including each row in its own centroid.
+
+        Scores against the other classes keep their full outer-train centroids.
+        Only the score for the row's target class is replaced by a centroid made
+        from the other rows in that class.  A singleton class receives zero for
+        its own leave-one-out score.
+        """
+
+        if self.method != "cosine":
+            raise ValueError("leave-one-out train transform은 cosine profile만 지원합니다.")
+        values = _as_csr_nonnegative(matrix)
+        labels = self._resolve_labels(target, values.shape[0])
+        scores = self.transform(values).toarray().astype(np.float64, copy=False)
+
+        for class_index, class_label in enumerate(self.class_labels):
+            row_indices = np.flatnonzero(labels == class_label)
+            if len(row_indices) != self.class_support[class_index]:
+                raise ValueError("leave-one-out target support가 fit 시점과 다릅니다.")
+            if len(row_indices) <= 1:
+                scores[row_indices, class_index] = 0.0
+                continue
+
+            class_sum = np.asarray(values[row_indices].sum(axis=0)).ravel()
+            class_sum_norm_sq = float(np.dot(class_sum, class_sum))
+            for row_index in row_indices:
+                row = values.getrow(int(row_index))
+                row_norm_sq = float(np.dot(row.data, row.data))
+                if row_norm_sq <= 0:
+                    scores[row_index, class_index] = 0.0
+                    continue
+                row_dot_sum = float(np.dot(row.data, class_sum[row.indices]))
+                loo_norm_sq = max(
+                    class_sum_norm_sq + row_norm_sq - 2.0 * row_dot_sum,
+                    0.0,
+                )
+                denominator = float(np.sqrt(row_norm_sq * loo_norm_sq))
+                scores[row_index, class_index] = (
+                    (row_dot_sum - row_norm_sq) / denominator
+                    if denominator > 0
+                    else 0.0
+                )
+
         return sparse.csr_matrix(scores.astype(np.float32))
 
     def audit_record(self) -> dict[str, object]:
