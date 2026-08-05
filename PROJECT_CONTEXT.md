@@ -456,10 +456,14 @@ GitHub는 폴더 안의 `README.md`를 자동으로 표시하므로 팀원이 re
 읽는다. 로드맵은 작업 순서와 중단 조건을 관리하며, 실제 점수의 단일 원본은
 `EXPERIMENT_HISTORY.md`와 실험별 `metrics.json`이다. 로드맵에는 예상 점수나
 실행하지 않은 결과를 기록하지 않는다. 현재 최우선 실행 계획의 단일 진입점은
-[`Full parser v4 기반 모델 기준선 재정립 로드맵`](reports/plans/parser_v4_baseline_reset_roadmap.md)이다.
+[`Parser v4-native semantic baseline 재정립 로드맵`](reports/plans/parser_v4_baseline_reset_roadmap.md)이다.
 parser v4 이전 ABC·Optuna·isoform·driver 결과는 삭제하지 않고 legacy parser
-lineage의 증거로 보존한다. 새 isoform·driver·Optuna 실험은 parser v4 paired
-control과 Parser Baseline v1 동결 이후에 시작한다.
+lineage의 증거로 보존한다. 기존 5-family compatibility projection은 과거 계보와
+parser 교체의 인과효과를 감사하는 QC이며 새 기준선이 아니다. substitution,
+frameshift, deletion, insertion, duplication, delins, range와 unresolved provenance를
+compact native feature로 통합한 canonical 5-fold 모델 이후에만 Parser-native
+Baseline v1을 동결한다. 새 isoform·driver·pathway·Optuna 실험은 이 동결 이후에
+시작한다.
 기존 ABC 실행 계획은
 [`ABC 신호 포트폴리오·스태킹 로드맵`](reports/plans/abc_signal_portfolio_stacking_roadmap.md)에
 보존한다.
@@ -710,8 +714,18 @@ resolved config에는 실행에 실제 적용된 항목만 기록한다.
 - parser semantics와 feature representation은 별도 계약이다. 생물학적으로 올바른
   parser를 Local/Public 점수가 낮다는 이유로 되돌리지 않으며, 성능이 낮으면
   feature projection을 별도 Issue에서 수정·검증한다.
-- pure parser A/B에서는 fold, seed, model, checkpoint, feature 이름·차원·순서와
-  sample weight를 고정하고 parser·projection만 변경한다.
+- `parser만의 효과`라는 모호한 표현을 단독으로 사용하지 않는다. 기존 5-family와
+  같은 차원에 v4를 투영한 실험은 `compatibility audit`, v4의 HGVS-derived 의미를
+  compact feature로 통합한 실제 새 기준선은 `parser-native baseline`으로 구분한다.
+- compatibility audit에서는 fold, seed, model, checkpoint, feature 이름·차원·순서와
+  sample weight를 고정하고 parser·projection만 변경한다. 이 결과로 Parser
+  Baseline을 동결하지 않는다.
+- parser-native baseline은 mutation presence와 raw provenance를 보존하면서
+  substitution·frameshift·deletion·insertion·duplication·delins·range·unresolved
+  의미를 고정 schema로 노출한다. isoform·driver·pathway 신규 지식과 Optuna는 이
+  baseline에 섞지 않는다.
+- Parser-native Baseline v1은 native adapter version, fixture·schema·feature-name
+  hash, 모든 consumer identity와 canonical 5-fold 결과가 확보된 뒤에만 동결한다.
 - 한 실험 안에서 core mutation type, sample aggregate, pathway, hotspot,
   residue-position이 서로 다른 parser lineage를 사용하면 공식 실행을 실패시킨다.
 - parser·projection이 바뀌어 feature vector나 예측이 달라지면 새 Experiment
