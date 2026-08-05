@@ -88,3 +88,15 @@ def test_controlled_config_rejects_confounders() -> None:
     base["hotspots"]["table"] = "extended_34"
     with pytest.raises(ValueError, match="hotspot"):
         validate_controlled_parser_baseline_config(base)
+
+
+def test_large_parser_schema_is_identified_by_count_and_hash() -> None:
+    names = legacy_five_family_feature_names(("TP53", "EGFR"))
+    assert len(names) == 15
+    assert names[:5] == (
+        "sample__missense_count",
+        "sample__synonymous_count",
+        "sample__nonsense_count",
+        "sample__frameshift_count",
+        "sample__complex_count",
+    )
