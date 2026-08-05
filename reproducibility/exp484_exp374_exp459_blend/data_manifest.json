@@ -1,0 +1,60 @@
+{
+  "verified_at": "2026-08-05T08:05:49.354047+00:00",
+  "files": [
+    {
+      "path": "data/splits/stratified_5fold_seed42.csv",
+      "size_bytes": 80621,
+      "sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf"
+    },
+    {
+      "path": "data/raw/test.csv",
+      "size_bytes": 35068585,
+      "sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+    },
+    {
+      "path": "data/raw/sample_submission.csv",
+      "size_bytes": 35656,
+      "sha256": "1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84"
+    },
+    {
+      "path": "oof/exp374_stop_notation_isoform_mask.csv",
+      "size_bytes": 2122619,
+      "sha256": "4d4f9182fca8e6023d775b77ace463cad3a80144206f82f9653d98b11345da9a"
+    },
+    {
+      "path": "preds/exp374_stop_notation_isoform_mask_test_proba.csv",
+      "size_bytes": 834584,
+      "sha256": "11730e0f7a033e90e5bc3aed346601479b47959b917fb5654f1f0ba55aadd13b"
+    },
+    {
+      "path": "reports/exp374_stop_isoform_residue_mask/metrics.json",
+      "size_bytes": 40221,
+      "sha256": "15812aca909ef26dd10226be90b3fa1dc9054ac695d621716eba0dbb0d91310b"
+    },
+    {
+      "path": "reproducibility/exp374_stop_isoform_residue_mask/config.resolved.yaml",
+      "size_bytes": 46085,
+      "sha256": "e7444a018e6265ca2bc7c9ec4dc898a09328b3814db1db87a37ec956e2ad47d3"
+    },
+    {
+      "path": "oof/exp459_catboost_exp374.csv",
+      "size_bytes": 3493553,
+      "sha256": "b43bef6f1f8501270f5b3b20bea4835c3896d2c977d690b7f28da45d7c93b47c"
+    },
+    {
+      "path": "preds/exp459_catboost_exp374_test_proba.csv",
+      "size_bytes": 1406650,
+      "sha256": "d5a52eb74614538ccb67dd9fc211f1f3d6c931e7684a58a2717ab786c052c155"
+    },
+    {
+      "path": "reports/exp459_catboost_exp374/metrics.json",
+      "size_bytes": 11955,
+      "sha256": "b98db1aade3e919474aebf015ec52ec1ac389227a65093421756ae8ec961f2a8"
+    },
+    {
+      "path": "reproducibility/exp459_catboost_exp374/config.resolved.yaml",
+      "size_bytes": 7513,
+      "sha256": "3a14aee6ccc862985fc44c1590f5c0f079cf5b8d49f0efe1543074bf03fc53cb"
+    }
+  ]
+}

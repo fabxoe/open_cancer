@@ -10,8 +10,9 @@ Log Loss도 함께 개선됐다. 모든 사전 Local gate를 통과했으며
 
 EXP-313과는 train 피처·모델이 같아 OOF 확률이 byte-level로 완전히 같다.
 그러나 test에서는 stop 정규화 때문에 EXP-313 대비 875행의 확률과 371행의
-argmax가 바뀌었다. 즉 이 실험은 Local에서 검증된 isoform mask와 Public에서
-검증된 stop 정규화를 서로 섞이지 않게 결합한 강한 신규 제출 후보다.
+argmax가 바뀌었다. Public Macro F1은 `0.346215922`로 EXP-369보다
+`+0.0054214877` 개선돼 팀 최고를 갱신했다. 즉 Local에서 검증된 isoform
+mask와 Public에서 검증된 stop 정규화의 결합이 실제 일반화 개선으로 이어졌다.
 
 ## 실험 계약
 
@@ -88,10 +89,20 @@ mask 자체의 실패”로 해석할 수 없다. tuned parameter 상호작용�
 - 재현 상태: `INFERENCE_VERIFIED`
 - checkpoint 재추론: submission SHA-256 byte-level 일치, test 라벨 100%,
   확률 최대 차이 `1.83e-7`
+- Release: [`exp-374-repro-v2`](https://github.com/fabxoe/open_cancer/releases/tag/exp-374-repro-v2)
+  (canonical `exp374_stop_isoform_residue_mask` 경로; 기존 v1 asset 보존)
+
+## Public 리더보드
+
+- 제출 ID: `1510884`
+- 제출 시각: `2026-08-04 18:29:26 KST`
+- Public Macro F1: `0.346215922`
+- EXP-369 대비: `+0.0054214877`
+- 제출 당시 팀 Public 최고를 갱신했고 대표 제출로 선택했다.
 
 ## 판단과 다음 행동
 
 - Local 성능·fold 안정성·Log Loss·클래스 안정성 gate 모두 통과: `ADOPT`.
-- EXP-369와 다른 test 라벨 228개를 만드는 독립 제출 후보로 보존한다.
-- Public 제출은 사용자가 남은 제출 횟수와 팀 후보를 확인한 뒤 수동으로 한다.
+- EXP-369보다 Public Macro F1도 개선되어 stop 정규화 이후 isoform mask의
+  일반화 기여를 확인했다.
 - Public 결과를 본 뒤 mask category나 파라미터를 역조정하지 않는다.

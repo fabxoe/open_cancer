@@ -47,6 +47,11 @@ FAMILY_RULES: dict[str, Callable[[str], bool]] = {
     "sample_aggregate_burden": lambda name: name.startswith("sample__"),
     "residue_position": lambda name: name.endswith("__max_residue_position"),
     "fixed_hotspot": lambda name: name.startswith("hotspot__"),
+    # Added for #421 (parser v4 recompute): #392's range_stop/range_no_change
+    # gene indicator family (RangeSemanticGeneFamily), not present in the
+    # original #292 run.
+    "range_stop": lambda name: name.endswith("__range_stop_any"),
+    "range_no_change": lambda name: name.endswith("__range_no_change_any"),
 }
 
 MODEL_PARAMS = {
