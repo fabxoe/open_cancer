@@ -1,0 +1,101 @@
+{
+  "experiment_id": "EXP-476",
+  "issue_number": 476,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "ca1b4c6e4210e4eb98e1636818e0b7df8c12b852",
+  "source_tag": "exp-476-repro-v1",
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp476_config_feature_pipeline/data_manifest.json",
+  "environment": "reproducibility/exp476_config_feature_pipeline/environment.json",
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-476-repro-v1",
+  "verifier": "Gomin-art",
+  "verified_at": "2026-08-05T13:10:12.733299+00:00",
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  },
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp476_config_feature_pipeline/fold_00.json",
+      "size_bytes": 13316404,
+      "sha256": "a61356ada960ce91ba46e965e70a5dc4b93be77dbc58bd5cd85c8b061c8fa52e",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-476-repro-v1/exp476_config_feature_pipeline_repro.tar.gz#models/exp476_config_feature_pipeline/fold_00.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp476_config_feature_pipeline/fold_01.json",
+      "size_bytes": 7126421,
+      "sha256": "57969b0cdaf3d4b1e5d0d2d7b1b964a163a5cb299afbc7c637921032d3603e5d",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-476-repro-v1/exp476_config_feature_pipeline_repro.tar.gz#models/exp476_config_feature_pipeline/fold_01.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp476_config_feature_pipeline/fold_02.json",
+      "size_bytes": 16960705,
+      "sha256": "5a0b38b22507062bdd2d5705f625fba097d9c1aabc97ac78a91f18c7d8712e4d",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-476-repro-v1/exp476_config_feature_pipeline_repro.tar.gz#models/exp476_config_feature_pipeline/fold_02.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp476_config_feature_pipeline/fold_03.json",
+      "size_bytes": 14160466,
+      "sha256": "6e5be7c63534c1c9635b1a1c451d7885220e4e8b904306f46985f99480d86485",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-476-repro-v1/exp476_config_feature_pipeline_repro.tar.gz#models/exp476_config_feature_pipeline/fold_03.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp476_config_feature_pipeline/fold_04.json",
+      "size_bytes": 17280513,
+      "sha256": "0a28a48743d59e2c1cb2af7af36a311a96b87615ce730e7ea055e3fde10c818d",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-476-repro-v1/exp476_config_feature_pipeline_repro.tar.gz#models/exp476_config_feature_pipeline/fold_04.json"
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp476_config_feature_pipeline.csv",
+      "size_bytes": 2124313,
+      "sha256": "a1e613d88664fd41ad959fe3fe52dda04cebd744f8ee135477483d38374a31f2",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-476-repro-v1/exp476_config_feature_pipeline_repro.tar.gz#oof/exp476_config_feature_pipeline.csv"
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp476_config_feature_pipeline_test_proba.csv",
+      "size_bytes": 832193,
+      "sha256": "d743ba759f9795a02c08a33bbd9c7bc95020f9c15277b97a820e73b3671d1301",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-476-repro-v1/exp476_config_feature_pipeline_repro.tar.gz#preds/exp476_config_feature_pipeline_test_proba.csv"
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp476_config_feature_pipeline.csv",
+      "size_bytes": 38135,
+      "sha256": "0501cbcc23999d31fe428d8c9030e6a8895a9e8433e8ba438e81f635e22847cb",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-476-repro-v1/exp476_config_feature_pipeline_repro.tar.gz#submissions/exp476_config_feature_pipeline.csv"
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp476_config_feature_pipeline/config.resolved.yaml",
+      "size_bytes": 110932,
+      "sha256": "04b2241071a2240f55ca4131ca84b574c00711049248ee2827abb9517f33cef3",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-476-repro-v1/exp476_config_feature_pipeline_repro.tar.gz#reproducibility/exp476_config_feature_pipeline/config.resolved.yaml"
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp476_config_feature_pipeline/metrics.json",
+      "size_bytes": 11396,
+      "sha256": "e5e8fa64f7d18d91ef7a9fd044b129a53e7befe95517be0c08db7c05a347ea27",
+      "storage_uri": null
+    },
+    {
+      "kind": "release_bundle",
+      "path": "release-assets/exp476_config_feature_pipeline_repro.tar.gz",
+      "size_bytes": 18097026,
+      "sha256": "689e04f32a45c3ea2809ba1098fc671a2183614f13448638a08488b6cd0e423b",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-476-repro-v1/exp476_config_feature_pipeline_repro.tar.gz"
+    }
+  ]
+}
