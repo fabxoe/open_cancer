@@ -152,7 +152,9 @@ class FittedParserNativeV3SemanticRangeFamily:
         values: list[float] = []
         sample_counts = np.zeros((len(frame), width), dtype=np.float32)
 
-        cells = extract_non_wt_gene_cells(frame, self.gene_columns)
+        cells = extract_non_wt_gene_cells(
+            frame, self.gene_columns, feature_version=self.descriptor.version
+        )
         for row_index_raw, gene_index_raw, cell in zip(
             cells.row_indices, cells.gene_indices, cells.values
         ):

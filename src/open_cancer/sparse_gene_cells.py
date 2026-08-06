@@ -13,8 +13,12 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 
+from open_cancer.canonical_mutation_events import CANONICAL_PARSER_CONTRACT_KEY
+from open_cancer.hashing import sha256_lines
+
 
 DEFAULT_GENE_BLOCK_SIZE = 256
+SPARSE_GENE_SCAN_VERSION = "1.0.0"
 
 
 def is_non_wt_cell(value: object) -> bool:
@@ -34,6 +38,10 @@ class SparseGeneCells:
     row_indices: np.ndarray
     gene_indices: np.ndarray
     values: tuple[str, ...]
+    cache_key: str
+    gene_columns_sha256: str
+    feature_version: str
+    parser_contract_key: str
 
     def __len__(self) -> int:
         return len(self.values)
@@ -44,6 +52,8 @@ def extract_non_wt_gene_cells(
     gene_columns: tuple[str, ...],
     *,
     block_size: int = DEFAULT_GENE_BLOCK_SIZE,
+    feature_version: str = "unspecified",
+    parser_contract_key: str = CANONICAL_PARSER_CONTRACT_KEY,
 ) -> SparseGeneCells:
     """Extract non-WT coordinates without a Python loop over the dense matrix.
 
@@ -58,6 +68,15 @@ def extract_non_wt_gene_cells(
     if missing:
         raise ValueError(f"입력에 유전자 열이 없습니다: {missing[:5]}")
 
+    gene_columns_sha256 = sha256_lines(gene_columns)
+    cache_key = sha256_lines(
+        (
+            f"scan_version={SPARSE_GENE_SCAN_VERSION}",
+            f"parser_contract={parser_contract_key}",
+            f"feature_version={feature_version}",
+            f"gene_columns={gene_columns_sha256}",
+        )
+    )
     row_parts: list[np.ndarray] = []
     gene_parts: list[np.ndarray] = []
     source_values: list[str] = []
@@ -93,9 +112,17 @@ def extract_non_wt_gene_cells(
             np.empty(0, dtype=np.int32),
             np.empty(0, dtype=np.int32),
             (),
+            cache_key,
+            gene_columns_sha256,
+            feature_version,
+            parser_contract_key,
         )
     return SparseGeneCells(
         np.concatenate(row_parts),
         np.concatenate(gene_parts),
         tuple(source_values),
+        cache_key,
+        gene_columns_sha256,
+        feature_version,
+        parser_contract_key,
     )

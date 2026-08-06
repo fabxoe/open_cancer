@@ -105,7 +105,9 @@ class FittedParserV4SemanticCountFamily:
         if missing:
             raise ValueError(f"입력에 유전자 열이 없습니다: {missing[:5]}")
         matrix = np.zeros((len(frame), len(FEATURE_NAMES)), dtype=np.float32)
-        cells = extract_non_wt_gene_cells(frame, self.gene_columns)
+        cells = extract_non_wt_gene_cells(
+            frame, self.gene_columns, feature_version=self.descriptor.version
+        )
         for row_index, gene_index, cell in zip(
             cells.row_indices, cells.gene_indices, cells.values
         ):

@@ -3,6 +3,12 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from open_cancer.canonical_mutation_events import (
+    CANONICAL_PARSER_CONTRACT_KEY,
+    canonical_event_cache_info,
+    clear_canonical_event_caches,
+    parse_canonical_gene_cell,
+)
 from open_cancer.sparse_gene_cells import (
     extract_non_wt_gene_cells,
     is_non_wt_cell,
@@ -41,3 +47,31 @@ def test_empty_and_missing_column_contract() -> None:
         assert "MISSING" in str(error)
     else:
         raise AssertionError("missing gene column must fail")
+
+
+def test_cache_key_includes_feature_version_and_column_order() -> None:
+    frame = pd.DataFrame({"G1": ["R1H"], "G2": ["WT"]})
+    first = extract_non_wt_gene_cells(
+        frame, ("G1", "G2"), feature_version="feature-a"
+    )
+    reordered = extract_non_wt_gene_cells(
+        frame, ("G2", "G1"), feature_version="feature-a"
+    )
+    changed = extract_non_wt_gene_cells(
+        frame, ("G1", "G2"), feature_version="feature-b"
+    )
+    assert first.cache_key != reordered.cache_key
+    assert first.cache_key != changed.cache_key
+    assert first.feature_version == "feature-a"
+    assert first.parser_contract_key
+
+
+def test_compiled_event_cache_records_contract_and_hits() -> None:
+    clear_canonical_event_caches()
+    first = parse_canonical_gene_cell("R582X E28del")
+    second = parse_canonical_gene_cell("R582X E28del")
+    info = canonical_event_cache_info()
+    assert first == second
+    assert info["parser_contract_key"] == CANONICAL_PARSER_CONTRACT_KEY
+    assert info["cell"]["hits"] == 1
+    assert info["cell"]["misses"] == 1

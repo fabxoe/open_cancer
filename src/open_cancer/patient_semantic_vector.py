@@ -128,7 +128,9 @@ class FittedPatientSemanticVector:
         inserted_offset = transition_offset + len(AMINO_ACIDS) * len(ALTERNATE_SYMBOLS)
 
         row_counts: list[dict[int, float]] = [{} for _ in range(len(frame))]
-        cells = extract_non_wt_gene_cells(frame, self.gene_columns)
+        cells = extract_non_wt_gene_cells(
+            frame, self.gene_columns, feature_version=self.descriptor.version
+        )
         for row_index_raw, gene_index_raw, cell in zip(
             cells.row_indices, cells.gene_indices, cells.values
         ):
