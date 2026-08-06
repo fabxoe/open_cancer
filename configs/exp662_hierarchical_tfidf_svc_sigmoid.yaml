@@ -1,0 +1,51 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-662
+issue_number: 662
+slug: hierarchical_tfidf_svc_sigmoid
+parent_experiment: EXP-545
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  tokenizer: canonical_event_tokenizer_v1
+  adapter: hierarchical_event_adapter_v1
+  detail_minimum_patient_support: 2
+  global_minimum_patient_support: 1
+  normalization: raw
+  tfidf:
+    norm: l2
+    use_idf: true
+    smooth_idf: true
+    sublinear_tf: false
+model:
+  class: sklearn.svm.LinearSVC
+  C: 1.0
+  class_weight: balanced
+  dual: auto
+  max_iter: 10000
+  random_state: 42
+calibration:
+  class: sklearn.calibration.CalibratedClassifierCV
+  method: sigmoid
+  inner_splits: 3
+  ensemble: true
+  n_jobs: 8
+training:
+  checkpoint_selection: fitted_outer_fold_pipeline
+  primary_metric: macro_f1
+  class_order: project_constant
+gates:
+  parent_macro_f1: 0.4396775272
+  parent_log_loss: 2.7787090540
+  parent_fold_std: 0.0038150000
+  macro_f1_min_delta: 0.0
+  log_loss_max_delta: 0.0
+  fold_std_max_delta: 0.002
+  per_class_max_regression: 0.05
+notes: >-
+  Issue #662. EXP-545의 parser-v4 hierarchical vocabulary, outer-train TF-IDF,
+  LinearSVC를 고정하고 각 outer-train 내부의 3-fold sigmoid calibration만
+  추가한다. Outer validation과 test는 transform-only이며 test prevalence나
+  Public leaderboard 정보는 보정에 사용하지 않는다.
