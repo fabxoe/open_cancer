@@ -1,0 +1,117 @@
+experiment:
+  issue_number: 642
+  experiment_id: EXP-642
+  branch: issue-642-nested-blend-weight-exp374-exp459
+  owner: 2heej
+  source_commit: a5a777c9cd4014c1ef181a6d79adf44a97bb720b
+  dirty_worktree: false
+  started_at: '2026-08-06T09:01:50.673993+00:00'
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+class_order:
+- ACC
+- BLCA
+- BRCA
+- CESC
+- COAD
+- DLBC
+- GBMLGG
+- HNSC
+- KIPAN
+- KIRC
+- LAML
+- LGG
+- LIHC
+- LUAD
+- LUSC
+- OV
+- PAAD
+- PCPG
+- PRAD
+- SARC
+- SKCM
+- STES
+- TGCT
+- THCA
+- THYM
+- UCEC
+ensemble:
+  method: nested_leave_one_fold_out_weight_search_with_test_like_stability_gate
+  weights_fixed_before_evaluation: true
+  components:
+  - experiment_id: EXP-374
+    oof_probability_path: oof/exp374_stop_notation_isoform_mask.csv
+    test_probability_path: preds/exp374_stop_notation_isoform_mask_test_proba.csv
+    metrics_path: reports/exp374_stop_isoform_residue_mask/metrics.json
+    resolved_config_path: reproducibility/exp374_stop_isoform_residue_mask/config.resolved.yaml
+    provenance_note: Same reproduced-local-copy provenance as configs/exp484_exp374_exp459_blend.yaml
+      (canonical EXP-374 has no uploaded checkpoint; this OOF/test was byte-verified
+      against the recorded canonical OOF Macro F1 0.4267909268 during EXP-459/#484).
+  - experiment_id: EXP-459
+    oof_probability_path: oof/exp459_catboost_exp374.csv
+    test_probability_path: preds/exp459_catboost_exp374_test_proba.csv
+    metrics_path: reports/exp459_catboost_exp374/metrics.json
+    resolved_config_path: reproducibility/exp459_catboost_exp374/config.resolved.yaml
+  nested_weight_selection:
+    candidate_grid_weight_374:
+    - 0.95
+    - 0.9
+    - 0.85
+    - 0.8
+    - 0.75
+    - 0.7
+    - 0.65
+    - 0.6
+    - 0.55
+    - 0.5
+    per_fold_selection_scope: other_four_outer_folds_only
+    test_like_propensity_source: reports/analysis/adversarial_validation/train_domain_propensity.csv
+    test_like_quantile: 0.75
+    stability_gate: Among candidates maximizing inner (other-4-fold) full OOF Macro
+      F1, only those whose inner test-like-subset Macro F1 does not regress vs pure
+      EXP-374 (weight=1.0) on the same inner test-like rows are eligible. If no candidate
+      satisfies this, fall back to weight=1.0 for that fold (do not blend).
+    weight_aggregation: mean_snap_to_grid
+ensemble_weight_selection_result:
+  method: leave_one_fold_out_nested_weight_search_with_test_like_stability_gate
+  candidate_grid_weight_374:
+  - 0.95
+  - 0.9
+  - 0.85
+  - 0.8
+  - 0.75
+  - 0.7
+  - 0.65
+  - 0.6
+  - 0.55
+  - 0.5
+  per_fold_selected_weight_374:
+  - 0.5
+  - 0.85
+  - 0.65
+  - 0.5
+  - 0.7
+  per_fold_fallback_to_pure_374:
+  - false
+  - false
+  - false
+  - false
+  - false
+  weight_range_across_folds: 0.35
+  weight_aggregation: mean_snap_to_grid
+  final_weight_374: 0.65
+  final_weight_459: 0.35
+outputs:
+  oof: oof/exp642_nested_blend_weight_exp374_exp459.csv
+  test_probability: preds/exp642_nested_blend_weight_exp374_exp459_test_proba.csv
+  submission: submissions/exp642_nested_blend_weight_exp374_exp459.csv
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 08:56:36) [Clang 18.1.8 ]
+  platform: macOS-26.5.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  uv_lock_sha256: bc7da4e6e1f133ee6b1f8c5cd4c86f9b87d336d686ceaacddbe20254b0771d23
+command: uv run python scripts/run_exp642_nested_blend_weight_exp374_exp459.py

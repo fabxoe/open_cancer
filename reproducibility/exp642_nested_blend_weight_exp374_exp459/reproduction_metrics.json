@@ -1,0 +1,16 @@
+{
+  "verification_type": "deterministic_nested_weight_blend",
+  "experiment_id": "EXP-642",
+  "data_hashes_match": true,
+  "original_submission_sha256": "d77529ec64d27228cd022f0ff38635c60182de94a20a43550bb5b39f02f7d3f7",
+  "reproduced_submission_sha256": "d77529ec64d27228cd022f0ff38635c60182de94a20a43550bb5b39f02f7d3f7",
+  "submission_sha256_match": true,
+  "oof_label_agreement": 1.0,
+  "test_label_agreement": 1.0,
+  "probability_max_abs_difference": 0.0,
+  "probability_atol": 1e-06,
+  "probability_rtol": 1e-06,
+  "weight_selection_matches": true,
+  "reproduced_final_weight_374": 0.65,
+  "passed": true
+}

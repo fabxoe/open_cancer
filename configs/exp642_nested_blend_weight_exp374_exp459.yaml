@@ -1,0 +1,59 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-642
+issue_number: 642
+slug: exp642_nested_blend_weight_exp374_exp459
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+ensemble:
+  method: nested_leave_one_fold_out_weight_search_with_test_like_stability_gate
+  weights_fixed_before_evaluation: true
+  components:
+    - experiment_id: EXP-374
+      oof_probability_path: oof/exp374_stop_notation_isoform_mask.csv
+      test_probability_path: preds/exp374_stop_notation_isoform_mask_test_proba.csv
+      metrics_path: reports/exp374_stop_isoform_residue_mask/metrics.json
+      resolved_config_path: reproducibility/exp374_stop_isoform_residue_mask/config.resolved.yaml
+      provenance_note: >-
+        Same reproduced-local-copy provenance as configs/exp484_exp374_exp459_blend.yaml
+        (canonical EXP-374 has no uploaded checkpoint; this OOF/test was
+        byte-verified against the recorded canonical OOF Macro F1
+        0.4267909268 during EXP-459/#484).
+    - experiment_id: EXP-459
+      oof_probability_path: oof/exp459_catboost_exp374.csv
+      test_probability_path: preds/exp459_catboost_exp374_test_proba.csv
+      metrics_path: reports/exp459_catboost_exp374/metrics.json
+      resolved_config_path: reproducibility/exp459_catboost_exp374/config.resolved.yaml
+  nested_weight_selection:
+    candidate_grid_weight_374: [0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5]
+    per_fold_selection_scope: other_four_outer_folds_only
+    test_like_propensity_source: reports/analysis/adversarial_validation/train_domain_propensity.csv
+    test_like_quantile: 0.75
+    stability_gate: >-
+      Among candidates maximizing inner (other-4-fold) full OOF Macro F1,
+      only those whose inner test-like-subset Macro F1 does not regress
+      vs pure EXP-374 (weight=1.0) on the same inner test-like rows are
+      eligible. If no candidate satisfies this, fall back to weight=1.0
+      for that fold (do not blend).
+    weight_aggregation: mean_snap_to_grid
+submission:
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
+acceptance:
+  comparison_experiment: EXP-484
+  minimum_macro_f1_delta: 0.001
+  maximum_fold_std_increase: 0.002
+  require_no_clear_log_loss_regression: true
+notes: >-
+  Issue #642. EXP-484(#484)의 0.7/0.3 고정 블렌드는 Task #482의 0.1 간격
+  test-like 스윕으로 사전 고정됐다. EXP-628(#628)이 같은 EXP-527+EXP-596
+  쌍에서 0.05 간격 nested search로 더 나은 지점(0.35)을 찾았던 것처럼,
+  이 실험은 EXP-374+EXP-459에도 더 세밀한 leave-one-outer-fold-out
+  nested search를 적용한다. EXP-628과의 핵심 차이는 이 실험이 순수 OOF만
+  최적화하지 않고, 각 fold의 inner test-like subset에서 EXP-374 단독
+  대비 악화되지 않는 후보로 제한한다는 점이다(오늘 EXP-628 Public 제출
+  결과, native 계보가 legacy보다 domain-shift에 훨씬 취약함이 실측으로
+  확인돼 이 트랙의 안정성 가치를 훼손하는 가중치를 배제해야 하기 때문).
+  Public LB와 test 분포는 가중치·안정성 게이트 선택에 사용하지 않는다.
