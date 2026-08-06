@@ -1,0 +1,50 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-614
+issue_number: 614
+slug: multitask_mlp
+parent_experiment: EXP-527
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  source: parser_v4_patient_semantic_vector
+  source_version: 1.0.0
+  selector:
+    fit_scope: outer_train_only_target_independent_support
+    output_dimension: 512
+    core_policy: keep_all_sample_parser_v4_columns
+    remaining_policy: gene_event_support_desc_then_name
+  transform:
+    log1p: true
+    standardization: outer_train_mean_std
+model:
+  architecture: shared_encoder_multitask_mlp
+  hidden_dim: 256
+  embedding_dim: 128
+  dropout: 0.20
+  main_head_classes: 26
+training:
+  optimizer: AdamW
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  batch_size: 256
+  max_epochs: 150
+  early_stopping_patience: 20
+  gradient_clip_norm: 1.0
+  balanced_main_class_weight: true
+  checkpoint_selection: validation_main_head_macro_f1
+  auxiliary_weight: 0.10
+  auxiliary_reduction: mean_available_heads
+  main_only_control: true
+inference:
+  head: main_26_class_only
+  auxiliary_heads_used: false
+notes: >-
+  Issue #614. The same fold-safe parser-v4 512-dimensional representation and
+  MLP architecture are trained twice per fold: an auxiliary-weight-zero
+  diagnostic control and the official hierarchical multi-task arm. Family BCE
+  heads see all rows; pair CE heads see only KIPAN/KIRC or GBMLGG/LGG rows.
+  Patient rows are never duplicated and auxiliary heads never rewrite final
+  26-class probabilities.
