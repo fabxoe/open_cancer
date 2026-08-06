@@ -1,0 +1,67 @@
+experiment:
+  issue_number: 623
+  experiment_id: EXP-623
+  branch: issue-623-exp527-exp596-fixed-blend
+  owner: 2heej
+  source_commit: 7f36cd382355754153a32c0bdac0ed96b4fa7cb6
+  dirty_worktree: false
+  started_at: '2026-08-06T07:36:59.810539+00:00'
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+class_order:
+- ACC
+- BLCA
+- BRCA
+- CESC
+- COAD
+- DLBC
+- GBMLGG
+- HNSC
+- KIPAN
+- KIRC
+- LAML
+- LGG
+- LIHC
+- LUAD
+- LUSC
+- OV
+- PAAD
+- PCPG
+- PRAD
+- SARC
+- SKCM
+- STES
+- TGCT
+- THCA
+- THYM
+- UCEC
+ensemble:
+  method: probability_mean
+  weights_fixed_before_evaluation: true
+  components:
+  - experiment_id: EXP-527
+    weight: 0.5
+    oof_probability_path: oof/exp527_parser_v4_class_cosine_loo.csv
+    test_probability_path: preds/exp527_parser_v4_class_cosine_loo_test_proba.csv
+    metrics_path: reports/exp527_parser_v4_class_cosine_loo/metrics.json
+    resolved_config_path: reproducibility/exp527_parser_v4_class_cosine_loo/config.resolved.yaml
+  - experiment_id: EXP-596
+    weight: 0.5
+    oof_probability_path: oof/exp596_random_forest_v1.csv
+    test_probability_path: preds/exp596_random_forest_v1_test_proba.csv
+    metrics_path: reports/exp596_random_forest_v1/metrics.json
+    resolved_config_path: reproducibility/exp596_random_forest_v1/config.resolved.yaml
+outputs:
+  oof: oof/exp623_exp527_exp596_fixed_blend.csv
+  test_probability: preds/exp623_exp527_exp596_fixed_blend_test_proba.csv
+  submission: submissions/exp623_exp527_exp596_fixed_blend.csv
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 08:56:36) [Clang 18.1.8 ]
+  platform: macOS-26.5.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  uv_lock_sha256: bc7da4e6e1f133ee6b1f8c5cd4c86f9b87d336d686ceaacddbe20254b0771d23
+command: uv run python scripts/run_exp623_exp527_exp596_fixed_blend.py
