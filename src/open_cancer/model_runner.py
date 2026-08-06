@@ -286,6 +286,37 @@ def lightgbm_macro_f1_metric(
     )
 
 
+class RandomForestAdapter:
+    """Bagged decision-tree ensemble, structurally distinct from boosting adapters."""
+
+    file_suffix = ".joblib"
+
+    def __init__(self, parameters: dict[str, Any], seed: int) -> None:
+        from sklearn.ensemble import RandomForestClassifier
+
+        defaults = {"n_estimators": 500, "n_jobs": 8}
+        self.model = RandomForestClassifier(random_state=seed, **{**defaults, **parameters})
+
+    def fit(self, x_train, y_train, x_valid, y_valid, sample_weight) -> None:
+        del x_valid, y_valid
+        self.model.fit(x_train, y_train, sample_weight=sample_weight)
+
+    def predict_proba(self, matrix) -> np.ndarray:
+        raw = self.model.predict_proba(matrix)
+        output = np.zeros((matrix.shape[0], len(CLASS_LABELS)), dtype=np.float64)
+        output[:, self.model.classes_.astype(int)] = raw
+        return output
+
+    def save(self, path: Path) -> None:
+        import joblib
+
+        joblib.dump(self.model, path)
+
+    @property
+    def best_iteration(self) -> None:
+        return None
+
+
 class CatBoostAdapter:
     file_suffix = ".cbm"
 
@@ -330,6 +361,7 @@ def create_model_adapter(name: str, parameters: dict[str, Any], seed: int) -> Mo
         "ovr_xgboost": OneVsRestXGBoostAdapter,
         "lightgbm": LightGBMAdapter,
         "catboost": CatBoostAdapter,
+        "random_forest": RandomForestAdapter,
     }
     _require(name in factories, f"지원하지 않는 모델입니다: {name}")
     return factories[name](dict(parameters), seed)
