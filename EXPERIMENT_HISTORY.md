@@ -4549,8 +4549,8 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
 - 실행자: fabxoe
 - Issue/브랜치: #545 / `issue-545-hierarchical-tfidf-linear`
 - 소스 commit: `eddbcdef3fc71a2711cdd68621899d3ac1e6731d`
-- 시작/종료: 2026-08-06T00:08:54.070043+00:00 /
-  2026-08-06T00:10:37.292418+00:00 (103.28초)
+- 시작/종료: 2026-08-06T00:11:02.826293+00:00 /
+  2026-08-06T00:12:50.901393+00:00 (108.13초)
 - Config: `configs/exp545_hierarchical_tfidf_linear.yaml`
 - Runner: `scripts/run_exp545_hierarchical_tfidf_linear.py`
 - Metrics/Report: `reports/exp545_hierarchical_tfidf_linear/`
