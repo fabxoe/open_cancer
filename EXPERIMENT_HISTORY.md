@@ -122,7 +122,7 @@
 | EXP-476 | COMPLETED | Gomin-art | #476 | Config 기반 fold-safe recurrent gene·26 class panel + nested Optuna·class weight XGBoost | 0.4223302641 | 0.3223948042 | INFERENCE_VERIFIED | fold std 0.0063799로 안정적이나 EXP-374 대비 Local -0.0044607·Public -0.0238211, 대표 제출 미변경·ARCHIVE | [보고서](reports/exp476_config_feature_pipeline/README.md) |
 | EXP-479 | COMPLETED | fabxoe | #479 | EXP-469 + HGVS-informed range_replacement·range_stop·range_no_change 상호 배타 의미 | 0.4087566023 | 미제출 | INFERENCE_VERIFIED | 고정 XGBoost에서 EXP-469 대비 -0.0030252·안정성/Log Loss 악화; 제출 보류, 의미는 유지하고 비튜닝 native semantic 기준선으로 동결 | [보고서](reports/exp479_parser_v4_native_semantic_range/README.md) |
 | EXP-484 | COMPLETED | 2heej | #484 | EXP-374+EXP-459 고정 0.7/0.3 확률 블렌드(#482 test-like propensity 스크리닝으로 비율 사전 고정) | 0.4320213767 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 +0.0052304·test-like subset도 +0.0022953으로 통과·Log Loss 개선·클래스 붕괴 없음. Fold std +0.0052388는 임계값 초과했으나 전 fold 개선(악화 없음)이 원인 — ADOPT_WITH_CAUTION, Public 제출은 팀 논의 후 | [보고서](reports/exp484_exp374_exp459_blend/README.md) |
-| EXP-517 | COMPLETED | Kangho Park | #517 | EXP-374 + 장(長)유전자 15종 passenger-adjusted burden 파생 컬럼 2개(additive-only, 기존 열 삭제 없음) | 0.4239028776 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0028880·fold std +0.0010549·Log Loss +0.0041858로 주 지표 gate 미달, LUSC -0.0175/STES +0.0034로 원 가설 미확인, ARCHIVE | [보고서](reports/exp517_passenger_adjusted_burden/README.md) |
+| EXP-517 | COMPLETED | Kangho Park | #517 | EXP-374 + 장(長)유전자 15종 passenger-adjusted burden 파생 컬럼 2개(additive-only, 기존 열 삭제 없음) | 0.4239028776 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0028880·fold std +0.0010549·Log Loss +0.0041858로 주 지표 gate 미달, LUSC -0.0175/STES +0.0034로 원 가설 미확인, ARCHIVE. 사후검증: 파생 열이 기존 total burden과 상관 0.77~0.9999로 사실상 재탕이었음을 확인, 같은 설계 방향 종결 | [보고서](reports/exp517_passenger_adjusted_burden/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -4391,3 +4391,17 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
 Nature)일 가능성이 있어, 이를 분리한 요약 burden이 잡음을 줄일 것으로
 기대했다. 실제로는 개선되지 않았고, 같은 방향의 추가 실험은 새 가설
 없이 반복하지 않는다.
+
+**사후 검증(root cause)**: `data/raw/train.csv`로 직접 재계산한 결과
+`corr(passenger_fraction, total_burden)=0.7665`,
+`corr(excl_passenger, total_burden)=0.9999`로 두 파생 열 모두 기존
+`sample__mutated_gene_count_log1p`의 노이즈 낀 재탕에 가까웠다. 클래스별
+평균도 암종 특이 신호가 아니라 그 암종의 원래 burden 수준을 그대로
+반영했고(SKCM/LUSC/LUAD/STES처럼 원래 burden 높은 클래스가 상위, LAML/THCA/
+PCPG처럼 낮은 클래스가 하위), 클래스 간 평균 표준편차(0.0642)가 클래스 내부
+표준편차(0.1232)의 절반뿐이라 통계적으로도 약한 신호였다. **장유전자
+passenger 그룹의 합산형 burden 파생 피처 방향은 이 결과로 종결**한다 —
+어떤 부분집합을 고르든 압축값이 기존 total burden feature의 변형에
+수렴하는 구조적 문제이기 때문에, 같은 설계(그룹 합산 count/fraction)로는
+재시도하지 않는다. 개별 유전자 가중치 조정이나 다른 모델 구조를 쓰는 시도는
+이 결론과 무관한 별도 가설이다.
