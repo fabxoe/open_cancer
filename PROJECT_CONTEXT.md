@@ -133,7 +133,32 @@ SKCM, STES, TGCT, THCA, THYM, UCEC
 - 외부 데이터를 사용할 경우 출처, 버전, 라이선스, 다운로드 일시와 파일 해시를
   반드시 기록한다.
 
-### Track B Ensembl annotation 한정 예외
+### 공개·정적 외부 annotation 기본 허용 정책
+
+2026-08-06 팀장 결정에 따라, 제공된 환자 변이값에서 파생 피처를 만드는 데
+사용하는 **공개·정적 annotation은 별도 팀장 승인 없이 기본 허용**한다. 마감 전
+협업 속도를 위해 매 실험마다 `PENDING_TEAM_LEAD_APPROVAL`을 두지 않되, 모든
+작업은 Issue·config·provenance manifest에서 사용 범위를 명시해야 한다.
+
+- 기본 허용: 공개 gene·transcript·protein·isoform·pathway·domain·hotspot·driver
+  및 암종 연관 정적 지식. 제공된 유전자·변이 token을 mapping·mask·grouping·count로
+  변환하는 파생 피처에 한한다.
+- 필수 기록: 출처, release/version, assembly, 라이선스, retrieval time, 원본 또는
+  immutable snapshot SHA-256, mapping 규칙과 외부 파일 보관 URI.
+- 누출 방지: competition SUBCLASS, test 분포, Public LB로 annotation 항목·threshold·
+  가중치·대표 isoform을 선택하거나 조정하지 않는다. train 통계가 필요한 gate는
+  outer-train에서만 fit하고 validation/test는 transform-only로 처리한다.
+- 계속 금지: 외부 환자 행을 train/validation/test에 추가하는 것, 외부 환자별
+  예측·임상 결과를 결합하는 것, 비공개·라이선스 불명 자료, test/Public 역최적화.
+- 별도 승인 필요: 외부 pretrained embedding·black-box score처럼 생성 계보를
+  고정하기 어렵거나, 환자 수준 자료·제한 라이선스가 포함될 가능성이 있는 경우.
+
+기본 허용은 annotation을 썼다는 이유만으로 성능이 검증됐다는 뜻이 아니다. 기존
+피처와의 semantic redundancy 감사 후, 실제 유용성은 별도 canonical 5-fold
+Experiment에서 판정한다. 과거 실험의 승인 manifest와 SHA-256은 소급 수정하지
+않고 당시 provenance로 보존한다.
+
+### Track B Ensembl annotation 과거 승인 기록
 
 2026-08-04 팀장 승인에 따라 Task Issue #311과 그 구현에서 파생되는 첫 번째
 불확실 residue-position mask 공식 실험에만 Ensembl release 116의 정적
@@ -169,8 +194,8 @@ token은 값 0과 observed indicator로 구분한다. 이 값은 실제 발현 t
 우선순위, bin 경계나 대표 sequence를 변경하지 않는다.
 
 resolved config에는 Ensembl release, assembly, manifest·annotation cache 경로와
-SHA-256, 승인 근거 Issue comment URL을 저장한다. 이 예외는 프로젝트의 기본값인
-`외부 데이터 사용 안 함`을 일반적으로 변경하지 않는다.
+SHA-256, 정책 또는 과거 승인 근거 URL을 저장한다. 위 항목은 2026-08-06 정책
+변경 이전 개별 승인의 역사적 기록이며 기존 manifest를 소급 변경하지 않는다.
 
 대회 원본 CSV와 여기서 직접 생성한 데이터 리포트는 주최측 정책에 따라 GitHub에
 올리지 않는다. 팀원은 주최측 공식 다운로드 또는 팀에서 승인한 비공개 전달
@@ -675,7 +700,7 @@ Issue를 만들 때 하이퍼파라미터를 일일이 작성하지 않는다. �
 | 클래스 순서 | 이 문서의 고정 26개 순서 |
 | 재현 상태 | `NOT_STARTED` |
 | 부모 실험·가설·사람이 작성한 변경 메모 | 없음 |
-| 외부 데이터 | 사용 안 함 |
+| 외부 데이터 | 미지정 시 사용 안 함; 공개·정적 annotation 사용 시 config·provenance 필수 |
 | 앙상블·TTA·threshold·후처리 | 사용 안 함 |
 
 모델별 기본 하이퍼파라미터는 config 또는 실행 코드에서 제공한다. 사용자가 일부
