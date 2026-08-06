@@ -1,0 +1,54 @@
+{
+  "issue": 607,
+  "rows": {
+    "train": 6201,
+    "test": 2546
+  },
+  "genes": 4384,
+  "non_wt_cells": 218893,
+  "scan": {
+    "legacy_seconds": 3.849333541991655,
+    "vectorized_seconds": 1.6916460409993306,
+    "speedup": 2.2754958476524334,
+    "coordinate_and_value_identity": true,
+    "cache_key": "f3955bdd85ed96a4319f2a4cb2c7495de1a31583b4b2b4937fa9c1477dffef9d",
+    "gene_columns_sha256": "fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff"
+  },
+  "semantic_counts": {
+    "legacy_seconds": 9.689695249981014,
+    "new_cold_seconds": 7.287537374999374,
+    "new_warm_seconds": 2.0645329169929028,
+    "legacy_new_warm_identity": true,
+    "matrix_sha256": "37f3cc895cce48c6a56533ff653b1957c1f32d3835d5e9b7005dbec35501358b"
+  },
+  "patient_semantic_vector": {
+    "train_cold_seconds": 7.5977862080035266,
+    "train_warm_seconds": 2.9039412080019247,
+    "test_warm_seconds": 6.848809582996182,
+    "cold_warm_identity": true,
+    "train_sha256": "7c9622b72a62ab5dc8381fdcf9c5b07813d6eadd865c3c5a9c88e3ada75a8fd0",
+    "test_sha256": "46a4fd9d8f16c17f566ea6eb123c25f5cbd32b67e9ad1e47ef00f04912aceea6",
+    "legacy_reference": {
+      "available": true,
+      "train_equal": true,
+      "test_equal": true,
+      "legacy_train_sha256": "7c9622b72a62ab5dc8381fdcf9c5b07813d6eadd865c3c5a9c88e3ada75a8fd0",
+      "legacy_test_sha256": "46a4fd9d8f16c17f566ea6eb123c25f5cbd32b67e9ad1e47ef00f04912aceea6"
+    }
+  },
+  "cache_info_after_warm_runs": {
+    "parser_contract_key": "normalizer=4.0.0|router=4.0.0|identity=1.0.0",
+    "token": {
+      "hits": 164178,
+      "misses": 189889,
+      "maxsize": 262144,
+      "currsize": 189889
+    },
+    "cell": {
+      "hits": 432185,
+      "misses": 204531,
+      "maxsize": 262144,
+      "currsize": 204531
+    }
+  }
+}

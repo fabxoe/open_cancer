@@ -147,7 +147,7 @@
 | EXP-592 | COMPLETED | fabxoe | #592 | EXP-589 + outer-train 전용 KIPAN/KIRC·GBMLGG/LGG binary specialist 확률 분할 | 0.4393703541 | 미제출 | INFERENCE_VERIFIED | EXP-589 대비 -0.0139947180·KIRC F1 0.0837359로 ARCHIVE; hard-routing 사후 진단도 0.4434467829로 부모 미달, 현재 specialist track 종료 | [보고서](reports/exp592_hierarchical_pair_specialists/README.md) |
 | EXP-610 | COMPLETED | fabxoe | #610 | EXP-527 26-class base + outer-train 전용 KIPAN/KIRC·GBMLGG/LGG gated binary specialist | 0.4298424283 | 미제출 | NOT_STARTED | EXP-527 대비 -0.0170298424·fold std/Log Loss 악화, KIRC·LGG F1 대폭 하락으로 ARCHIVE; 타 노트북식 hard gated reranker는 현재 강한 base에 재현되지 않음 | [보고서](reports/exp610_gated_pair_specialists/README.md) |
 | EXP-516 | COMPLETED | Kangho Park | #516 | EXP-374 + fold-train 하위 25% burden quantile 샘플에 balanced_sample_weight 1.5배 추가 곱(저burden 오분류 완화 가설) | 0.4221650046 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0046259222(게이트 +0.001 미달)·LUAD -0.0640/DLBC -0.0505 클래스 붕괴로 ARCHIVE; 표적 저burden 8클래스 중 4개만 개선(KIRC/LAML/THYM/KIPAN)·4개는 악화(GBMLGG/PRAD/PCPG/SARC)로 가설 부분 지지에 그침 | [보고서](reports/exp516_burden_weighted_sample_weight/README.md) |
-| EXP-596 | COMPLETED | 2heej | #596 | 동결 Feature Spec v1 + RandomForest (#505 스태킹 다양성 후보) | 0.4052772619 | 미제출 | INFERENCE_VERIFIED | CatBoost v1 최고 대비 -0.0141799675, Logistic v1보다는 높음; #505 S0 다양성 게이트 판정은 EXP-123/125/127 OOF 필요 — 판정 보류 | [보고서](reports/exp596_random_forest_v1/README.md) |
+| EXP-596 | COMPLETED | 2heej | #596 | 동결 Feature Spec v1 + RandomForest (#505 스태킹 다양성 후보) | 0.4052772619 | 미제출 | INFERENCE_VERIFIED | CatBoost v1 최고 대비 -0.0141799675로 품질 게이트 미달, 오류 상관 0.7281·라벨 불일치율 30.87%로 다양성 게이트 통과 — 단독 후보 아님, #505 스태킹 다양성 후보로 채택 | [보고서](reports/exp596_random_forest_v1/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5243,6 +5243,7 @@ Cycle #170/173, POLE #181/226, functional_role_burden #257)에 이어 이번
 - 클래스별 F1 최저: KIPAN 0.2022
 - Public LB: 미제출
 - 재현 상태: `INFERENCE_VERIFIED`
+
 - 판단: **판정 보류**. #505 S0 다양성 게이트는 "최고 기준 모델 대비 0.004
   이내 하락" 외에 "오류 상관 0.92 이하 또는 라벨 불일치율 10% 이상"도
   별도 통과 조건으로 인정하며, RandomForest는 구조적으로 boosting/선형
@@ -5271,3 +5272,15 @@ Cycle #170/173, POLE #181/226, functional_role_burden #257)에 이어 이번
 - 제출 상태: 미제출
 - 판단: Parser QC와 event span을 결합했지만 Parser QC 단독 대비 OOF Macro F1이 하락했고 Log Loss가 크게 악화되었다. 두 feature family의 신호 중복 가능성이 있으며, 결합 구성은 `REJECTED`로 기록한다. 후속 규제 안정성 실험은 EXP-611이 아니라 EXP-571 Parser QC arm을 부모로 사용한다.
 - 재현 상태: NOT_STARTED
+
+
+- 최종 판정(PR #608 `scripts/audit_exp596_random_forest_diversity.py`,
+  EXP-127 CatBoost OOF를 GitHub Release 재현 번들에서 확보해 실행):
+  품질 게이트(최고 기준 모델 대비 0.004 이내 하락)는 `macro_f1_delta
+  -0.0141799675`로 **미달**. 다양성 게이트(오류 상관 ≤0.92 또는 라벨
+  불일치율 ≥10%)는 `correctness_pearson 0.7280577163`,
+  `label_disagreement 0.3086598936`으로 **둘 다 통과**(EXP-125 LightGBM
+  대비도 `correctness_pearson 0.6654861621`로 유사하게 다양함). **판단:
+  단독 후보로는 미채택하되 #505 스태킹 다양성 후보로 채택**한다. 상세
+  결과는 `reports/analysis/exp596_random_forest_diversity_audit.json`.
+
