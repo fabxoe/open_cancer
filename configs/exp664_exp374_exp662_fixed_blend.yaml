@@ -1,0 +1,42 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-664
+issue_number: 664
+slug: exp374_exp662_fixed_blend
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+ensemble:
+  method: probability_mean
+  weights_fixed_before_evaluation: true
+  components:
+    - experiment_id: EXP-374
+      weight: 0.5
+      oof_probability_path: oof/exp374_stop_isoform_residue_mask.csv
+      test_probability_path: preds/exp374_stop_isoform_residue_mask_test_proba.csv
+      metrics_path: reports/exp374_stop_isoform_residue_mask/metrics.json
+      resolved_config_path: reproducibility/exp374_stop_isoform_residue_mask/config.resolved.yaml
+    - experiment_id: EXP-662
+      weight: 0.5
+      oof_probability_path: oof/exp662_hierarchical_tfidf_svc_sigmoid.csv
+      test_probability_path: preds/exp662_hierarchical_tfidf_svc_sigmoid_test_proba.csv
+      metrics_path: reports/exp662_hierarchical_tfidf_svc_sigmoid/metrics.json
+      resolved_config_path: reproducibility/exp662_hierarchical_tfidf_svc_sigmoid/config.resolved.yaml
+submission:
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
+acceptance:
+  comparison_experiment: EXP-662
+  minimum_macro_f1_delta: 0.0
+  maximum_log_loss_delta: 0.0
+  maximum_fold_std_delta: 0.002
+  maximum_per_class_regression: 0.05
+  test_like_propensity_path: reports/analysis/adversarial_validation/train_domain_propensity.csv
+  test_like_quantile: 0.75
+  minimum_test_like_macro_f1_delta: 0.0
+notes: >-
+  Issue #664. Fixed 0.5/0.5 arithmetic probability blend of Public-validated
+  legacy parser EXP-374 and independently parsed calibrated hierarchical
+  TF-IDF LinearSVC EXP-662. The only weight was fixed before evaluation; no
+  sweep, threshold, offset, test prevalence, or Public feedback is used.
