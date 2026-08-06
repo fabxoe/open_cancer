@@ -1,0 +1,12 @@
+{
+  "pathway_hotspot_gene_count": 170,
+  "unique_gene_token_pairs": 25479,
+  "direction_counts": {
+    "agree": 25472,
+    "legacy_only_truncating": 7
+  },
+  "v4_route_of_new_truncating": {},
+  "v4_route_of_lost_truncating": {
+    "unresolved:other_unmappable": 7
+  }
+}

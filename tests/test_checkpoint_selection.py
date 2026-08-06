@@ -133,6 +133,37 @@ def test_validation_audit_can_disagree_with_mlogloss_checkpoint() -> None:
     assert model.requested_ranges == [(0, 1), (0, 2), (0, 3)]
 
 
+def test_validation_audit_supports_merged_model_and_original_evaluation_spaces() -> None:
+    model_class_count = 2
+    targets_model = np.array([0, 0, 1, 1], dtype=np.int64)
+    targets_original = np.array([0, 1, 2, 3], dtype=np.int64)
+    probabilities = np.array(
+        [
+            [0.9, 0.1],
+            [0.9, 0.1],
+            [0.1, 0.9],
+            [0.1, 0.9],
+        ],
+        dtype=np.float64,
+    )
+    model = FakeXGBoostModel([probabilities], best_iteration=0)
+
+    result = audit_xgboost_validation_iterations(
+        model,
+        np.ones((4, 1), dtype=np.float32),
+        targets_model,
+        model_class_count=model_class_count,
+        evaluation_targets=targets_original,
+        prediction_evaluation_indices=np.array([0, 2], dtype=np.int64),
+        evaluation_class_count=4,
+    )
+
+    assert result["model_class_count"] == 2
+    assert result["evaluation_class_count"] == 4
+    assert result["evaluation_uses_prediction_mapping"] is True
+    assert result["selected_checkpoint"]["macro_f1"] == pytest.approx(1 / 3)
+
+
 def test_validation_audit_records_complete_rolling_median_history() -> None:
     targets = np.arange(len(CLASS_LABELS), dtype=np.int64)
     probabilities = probability_matrix(targets.tolist(), 0.7)

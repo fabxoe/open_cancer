@@ -1,0 +1,103 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-515
+issue_number: 515
+slug: scoped_pairwise_decision_offset
+parent_experiment: EXP-374
+component_experiments:
+  - EXP-233
+  - EXP-276
+  - EXP-374
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+baseline:
+  experiment_id: EXP-374
+  oof_path: oof/exp374_stop_isoform_residue_mask.csv
+  release_tag: exp-374-repro-v2
+inner_cross_fitting:
+  n_splits: 3
+  seed_base: 5000
+  note: >-
+    Same mechanism as EXP-233/276: seed for outer fold i is seed_base + i,
+    inner models trained only on that outer fold's train partition (never
+    its own validation rows), reusing the frozen Feature Spec v1 matrix and
+    XGBoost hyperparameters below as a fast honest-probability proxy for
+    offset search. KNOWN LIMITATION: this proxy is trained on Feature Spec
+    v1, not EXP-374's full custom feature pipeline (stop-notation parser,
+    pathway/hotspot families, Ensembl isoform residue mask) -- offsets are
+    an approximation, so this experiment is a diagnostic screen, not a
+    claim that the proxy exactly reproduces EXP-374's decision boundary.
+    Offset search itself never sees outer validation or test.
+scoped_pairs:
+  statistic: fixed_class_pair_membership
+  statistic_definition: >-
+    Unlike EXP-276's sample-count gate, eligibility here is fixed before
+    the run from the EXP-374 OOF confusion-pair audit: KIPAN<->KIRC (390
+    combined misclassifications, the largest single pair) and GBMLGG<->LGG
+    (288 combined, second largest) are the only two pairs whose classes are
+    allowed a non-zero offset. All other 22 classes are held at offset=0 and
+    excluded from coordinate search entirely -- this is a structural fix for
+    EXP-233/276's failure mode, where unrelated classes (DLBC in particular)
+    had their argmax competition disturbed by offsets meant for other
+    classes, even when DLBC's own offset was gated to zero.
+  eligible_class_pairs:
+    - [KIPAN, KIRC]
+    - [GBMLGG, LGG]
+  below_threshold_action: offset_fixed_at_zero
+offset_search:
+  candidate_grid_min: -1.0
+  candidate_grid_max: 1.0
+  candidate_grid_step: 0.1
+  regularization_lambda: 0.001
+  max_coordinate_passes: 5
+  application: multiplicative_renormalized
+  application_formula: "softmax(z + o) ∝ softmax(z) * exp(o), renormalized"
+  fit_scope: outer_fold_train_inner_cross_fit_only
+  applied_to_outer_validation: transform_only
+  applied_to_test: not_in_scope_this_experiment
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+official_selection:
+  rule: >-
+    Adopt if the single scoped-pair offset run improves 26-class OOF Macro
+    F1 over EXP-374 AND Log Loss does not regress AND fold-std does not
+    regress AND the 22 non-eligible classes' summed absolute F1 delta stays
+    below 0.01 (proof that unrelated classes were not disturbed). This rule
+    is fixed here, before seeing the run's results.
+  max_non_eligible_class_abs_f1_delta_sum: 0.01
+notes: >-
+  Issue #515, follow-up to #233/#276 (both rejected: 26-class offset search
+  improved Macro F1 but collapsed DLBC F1 by disturbing unrelated classes'
+  argmax competition). This experiment restricts offset search and
+  application to exactly the two class pairs identified as EXP-374's
+  largest confusion sources (KIPAN<->KIRC, GBMLGG<->LGG); every other class
+  is held at offset=0 and never searched, which structurally rules out
+  EXP-276's failure mode (gated classes were still disturbed by neighboring
+  classes' offsets) for classes outside the two target pairs.
+optimism_bias_disclosure: >-
+  Same as EXP-233/276: EXP-374 (baseline) selected each outer fold's
+  checkpoint iteration by maximizing Macro F1 on that same fold's
+  validation rows. This experiment's inner-fold early stopping reuses the
+  inner holdout as eval_set, the same established pattern used throughout
+  this project for outer-fold OOF generation. Promotion beyond a Local
+  diagnostic requires additional stability confirmation per
+  PROJECT_CONTEXT.md's checkpoint-selection policy; this experiment does
+  not claim that confirmation on its own.

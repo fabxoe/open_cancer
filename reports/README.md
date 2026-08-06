@@ -4,6 +4,10 @@
 색인입니다. 피처 개념, 변환 예시, 상세 해석과 긴 분석은 이 폴더의 실험별
 보고서에 작성합니다.
 
+새 공용 분석·피처 구현 문서:
+
+- [Fold-safe 유전자 residue-event 집중도 피처](analysis/residue_event_concentration/README.md)
+
 ## 경로
 
 Experiment Issue #12에서 파생된 `EXP-012` 보고서는 다음 형식을 사용합니다.
@@ -77,6 +81,8 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 프로젝트 전체에 영향을 주는 target-independent QC와 의미 감사는
 `reports/analysis/`에 둡니다. 이는 새 실험 점수를 만드는 폴더가 아니며 실제
 입력·산출물 해시와 해석 한계를 함께 기록합니다.
+
+- [Compact clinical mutation baseline 설계 감사](analysis/compact_clinical_baseline/README.md)
 
 - [Residue-position indicator 의미 감사](analysis/residue_position_semantics_qc.md)
 - [Vera EXP-094 후속 검토](analysis/vera_exp094_followup.md)

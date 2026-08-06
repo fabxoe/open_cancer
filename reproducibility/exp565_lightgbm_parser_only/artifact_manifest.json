@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-565",
+  "issue_number": 565,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "e58e0ac6ab32ff2c25c15b50811b978af24dc824",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp565_lightgbm_parser_only/data_manifest.json",
+  "environment": "reproducibility/exp565_lightgbm_parser_only/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-06T02:20:39.147940+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp565_lightgbm_parser_only/fold_00.txt",
+      "size_bytes": 15935989,
+      "sha256": "aacfeb932ca0023cf8a3604c8dbf048b8cf41f5738bf783037a9149ff1be7a04",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp565_lightgbm_parser_only/fold_01.txt",
+      "size_bytes": 9045031,
+      "sha256": "fffcda6fb774b4b8f519b04c0b575fd8d8579ed0afd73cc9986cd2f56f6f4b16",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp565_lightgbm_parser_only/fold_02.txt",
+      "size_bytes": 13467419,
+      "sha256": "c2ecfc596c307d5be8a6c91945093f7303a8861fb0248e4a00f83ca254209ce2",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp565_lightgbm_parser_only/fold_03.txt",
+      "size_bytes": 7835754,
+      "sha256": "94b3aec23f97082be2ee00b0f8ecd1e20d5897d76f64fc6dadf82c9a992c0158",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp565_lightgbm_parser_only/fold_04.txt",
+      "size_bytes": 10820007,
+      "sha256": "8c15119c7260af5750165ffecdc74d7d7f9958cfa6c9ce0ed3f5ba84ec6d3c3a",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp565_lightgbm_parser_only.csv",
+      "size_bytes": 3523673,
+      "sha256": "b4b2ee2ddcfe4e6e98e77a611447e22a97af5e74d1f79b8def50bc1958d844e0",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp565_lightgbm_parser_only_test_proba.csv",
+      "size_bytes": 1406360,
+      "sha256": "41b7d8a57f4f7dd0aa0e6c13783a5111d6b28e7d3dde94a322ab7cb90e874a6f",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp565_lightgbm_parser_only.csv",
+      "size_bytes": 38161,
+      "sha256": "056a9b449de8ed348ddc838ee4f671447b246cbaa4d6a49dc215b8403af52f16",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp565_lightgbm_parser_only/metrics.json",
+      "size_bytes": 11223,
+      "sha256": "456c53ccf6a683df56c0500d7cb4af14e4cace6a0b1ca5661cfb50edf5727002",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp565_lightgbm_parser_only/config.resolved.yaml",
+      "size_bytes": 6815,
+      "sha256": "80241a63e11ea9446c4b82596550fea4b04c6ff0d2e0e4bf5c9012c4fda0f63c",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

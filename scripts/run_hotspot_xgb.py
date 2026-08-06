@@ -114,6 +114,8 @@ def main(
     mutation_cell_parser: Any | None = None,
     mutation_parser_contract: dict[str, Any] | None = None,
     hotspot_token_normalizer: Any | None = None,
+    model_class_labels: tuple[str, ...] | None = None,
+    target_aliases: dict[str, str] | None = None,
 ) -> None:
     args = parse_args() if config_override is None else None
     started_at = datetime.now(timezone.utc)
@@ -121,6 +123,19 @@ def main(
     config_path = (args.config if args is not None else config_override).resolve()
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
+    active_class_labels = tuple(model_class_labels or CLASS_LABELS)
+    aliases = dict(target_aliases or {})
+    if len(active_class_labels) != len(set(active_class_labels)):
+        raise ValueError("모델 클래스 순서에 중복 라벨이 있습니다.")
+    if not set(active_class_labels) <= set(CLASS_LABELS):
+        raise ValueError("모델 클래스는 대회 고정 26개 라벨의 부분집합이어야 합니다.")
+    if not set(aliases) <= set(CLASS_LABELS) or not set(aliases.values()) <= set(
+        active_class_labels
+    ):
+        raise ValueError("target alias가 고정 대회/모델 클래스 범위를 벗어났습니다.")
+    active_probability_columns = tuple(
+        f"PROBA_{label}" for label in active_class_labels
+    )
 
     artifact_slug = f"exp{context.issue_number:03d}_{config['slug']}"
     split_path = ROOT / config["split"]["path"]
@@ -234,14 +249,22 @@ def main(
     if not feature_train_ids.equals(train["ID"]) or not feature_test_ids.equals(test_meta["ID"]):
         raise ValueError("피처 행렬 ID 순서가 원본과 다릅니다.")
 
-    label_encoder = LabelEncoder().fit(list(CLASS_LABELS))
-    if list(label_encoder.classes_) != list(CLASS_LABELS):
-        raise ValueError("고정 클래스 순서와 LabelEncoder 순서가 다릅니다.")
-    y = label_encoder.transform(train["SUBCLASS"]).astype(np.int32)
+    label_encoder = LabelEncoder().fit(list(active_class_labels))
+    if list(label_encoder.classes_) != list(active_class_labels):
+        raise ValueError("모델 클래스 순서와 LabelEncoder 순서가 다릅니다.")
+    model_targets = train["SUBCLASS"].replace(aliases)
+    if not set(model_targets.unique()) <= set(active_class_labels):
+        raise ValueError("alias 적용 후에도 모델 클래스에 없는 target이 있습니다.")
+    y = label_encoder.transform(model_targets).astype(np.int32)
+    evaluation_encoder = LabelEncoder().fit(list(CLASS_LABELS))
+    y_evaluation = evaluation_encoder.transform(train["SUBCLASS"]).astype(np.int32)
+    model_to_evaluation = evaluation_encoder.transform(active_class_labels).astype(
+        np.int32
+    )
 
     model_params = {
         **config["model"],
-        "num_class": len(CLASS_LABELS),
+        "num_class": len(active_class_labels),
     }
     resolved_config = {
         "experiment": {
@@ -263,6 +286,9 @@ def main(
                 "sha256": sha256_file(SAMPLE_SUBMISSION_PATH),
             },
             "class_order": list(CLASS_LABELS),
+            "model_class_order": list(active_class_labels),
+            "target_aliases": aliases,
+            "evaluation_class_order": list(CLASS_LABELS),
         },
         "split": {
             **config["split"],
@@ -321,8 +347,12 @@ def main(
     )
 
     n_splits = config["split"]["n_splits"]
-    oof_proba = np.full((len(train), len(CLASS_LABELS)), np.nan, dtype=np.float32)
-    test_proba = np.zeros((len(test_meta), len(CLASS_LABELS)), dtype=np.float32)
+    oof_proba = np.full(
+        (len(train), len(active_class_labels)), np.nan, dtype=np.float32
+    )
+    test_proba = np.zeros(
+        (len(test_meta), len(active_class_labels)), dtype=np.float32
+    )
     fold_metrics: list[dict[str, Any]] = []
     fold_test_matrices: list[sparse.csr_matrix] = []
     fold_feature_records: list[dict[str, Any]] = []
@@ -338,7 +368,7 @@ def main(
     if checkpoint_selection not in {"training_metric", *validation_checkpoint_policies}:
         raise ValueError(f"지원하지 않는 checkpoint selection: {checkpoint_selection}")
     training_metric_oof = (
-        np.full((len(train), len(CLASS_LABELS)), np.nan, dtype=np.float32)
+        np.full((len(train), len(active_class_labels)), np.nan, dtype=np.float32)
         if checkpoint_selection in validation_checkpoint_policies
         else None
     )
@@ -350,6 +380,7 @@ def main(
         valid_indices = np.flatnonzero(valid_mask)
         y_train = y[train_indices]
         y_valid = y[valid_indices]
+        y_valid_evaluation = y_evaluation[valid_indices]
         x_train_fold = x_all[train_indices]
         x_valid_fold = x_all[valid_indices]
         x_test_fold = x_test
@@ -375,6 +406,7 @@ def main(
                 x_test_fold,
                 all_feature_names,
                 extra.base_feature_names_to_drop,
+                allow_empty=bool(extra.feature_names),
             )
             x_train_fold = sparse.hstack(
                 [x_train_fold, extra.train], format="csr", dtype=np.float32
@@ -457,6 +489,10 @@ def main(
                 minimum_iteration=config["training"].get(
                     "checkpoint_min_iteration"
                 ),
+                model_class_count=len(active_class_labels),
+                evaluation_targets=y_valid_evaluation,
+                prediction_evaluation_indices=model_to_evaluation,
+                evaluation_class_count=len(CLASS_LABELS),
             )
             selected_iteration = int(
                 checkpoint_audit["selected_checkpoint"]["iteration"]
@@ -465,14 +501,23 @@ def main(
                 checkpoint_audit["training_metric_best"]["iteration"]
             )
             valid_proba = predict_xgboost_at_iteration(
-                model, x_valid_fold, selected_iteration
+                model,
+                x_valid_fold,
+                selected_iteration,
+                class_count=len(active_class_labels),
             ).astype(np.float32)
             fold_test_proba = predict_xgboost_at_iteration(
-                model, x_test_fold, selected_iteration
+                model,
+                x_test_fold,
+                selected_iteration,
+                class_count=len(active_class_labels),
             ).astype(np.float32)
             assert training_metric_oof is not None
             training_metric_oof[valid_indices] = predict_xgboost_at_iteration(
-                model, x_valid_fold, training_best_iteration
+                model,
+                x_valid_fold,
+                training_best_iteration,
+                class_count=len(active_class_labels),
             ).astype(np.float32)
             audit_path = model_dir / f"fold_{fold:02d}_checkpoint_audit.json"
             write_json(audit_path, checkpoint_audit)
@@ -488,11 +533,36 @@ def main(
         oof_proba[valid_indices] = valid_proba
         test_proba += fold_test_proba / n_splits
         valid_pred = valid_proba.argmax(axis=1)
+        valid_pred_evaluation = model_to_evaluation[valid_pred]
         result = {
             "fold": fold,
-            "macro_f1": float(f1_score(y_valid, valid_pred, average="macro")),
-            "accuracy": float(accuracy_score(y_valid, valid_pred)),
-            "log_loss": float(log_loss(y_valid, valid_proba, labels=np.arange(len(CLASS_LABELS)))),
+            "macro_f1": float(
+                f1_score(
+                    y_valid_evaluation,
+                    valid_pred_evaluation,
+                    labels=np.arange(len(CLASS_LABELS)),
+                    average="macro",
+                    zero_division=0,
+                )
+            ),
+            "merged_24_macro_f1": float(
+                f1_score(
+                    y_valid,
+                    valid_pred,
+                    labels=np.arange(len(active_class_labels)),
+                    average="macro",
+                    zero_division=0,
+                )
+            ),
+            "accuracy": float(accuracy_score(y_valid_evaluation, valid_pred_evaluation)),
+            "merged_24_accuracy": float(accuracy_score(y_valid, valid_pred)),
+            "log_loss": float(
+                log_loss(
+                    y_valid,
+                    valid_proba,
+                    labels=np.arange(len(active_class_labels)),
+                )
+            ),
             "best_iteration": (
                 None if selected_iteration is None else int(selected_iteration)
             ),
@@ -546,9 +616,10 @@ def main(
 
     oof_pred = oof_proba.argmax(axis=1)
     test_pred = test_proba.argmax(axis=1)
+    oof_pred_evaluation = model_to_evaluation[oof_pred]
     report = classification_report(
-        y,
-        oof_pred,
+        y_evaluation,
+        oof_pred_evaluation,
         labels=np.arange(len(CLASS_LABELS)),
         target_names=CLASS_LABELS,
         output_dict=True,
@@ -561,15 +632,16 @@ def main(
         {
             "ID": train["ID"],
             "SUBCLASS_TRUE": train["SUBCLASS"],
+            "SUBCLASS_TRUE_MERGED": model_targets,
             "SUBCLASS_PRED": label_encoder.inverse_transform(oof_pred),
             "FOLD": train["fold"].astype(int),
         }
     )
-    oof_frame.loc[:, list(PROBABILITY_COLUMNS)] = oof_proba
+    oof_frame.loc[:, list(active_probability_columns)] = oof_proba
     oof_frame.to_csv(oof_path, index=False, lineterminator="\n")
 
     test_probability_frame = pd.DataFrame({"ID": test_meta["ID"]})
-    test_probability_frame.loc[:, list(PROBABILITY_COLUMNS)] = test_proba
+    test_probability_frame.loc[:, list(active_probability_columns)] = test_proba
     test_probability_frame.to_csv(test_probability_path, index=False, lineterminator="\n")
 
     submission = sample_submission.copy()
@@ -591,19 +663,47 @@ def main(
         "split_id": relative_posix(split_path, ROOT),
         "folds": fold_metrics,
         "oof": {
-            "macro_f1": float(f1_score(y, oof_pred, average="macro")),
+            "macro_f1": float(
+                f1_score(
+                    y_evaluation,
+                    oof_pred_evaluation,
+                    labels=np.arange(len(CLASS_LABELS)),
+                    average="macro",
+                    zero_division=0,
+                )
+            ),
+            "merged_24_macro_f1": float(
+                f1_score(
+                    y,
+                    oof_pred,
+                    labels=np.arange(len(active_class_labels)),
+                    average="macro",
+                    zero_division=0,
+                )
+            ),
             "fold_mean": float(fold_scores.mean()),
             "fold_std": float(fold_scores.std()),
-            "accuracy": float(accuracy_score(y, oof_pred)),
-            "log_loss": float(log_loss(y, oof_proba, labels=np.arange(len(CLASS_LABELS)))),
+            "accuracy": float(accuracy_score(y_evaluation, oof_pred_evaluation)),
+            "merged_24_accuracy": float(accuracy_score(y, oof_pred)),
+            "log_loss": float(
+                log_loss(y, oof_proba, labels=np.arange(len(active_class_labels)))
+            ),
             "per_class_f1": {
                 label: float(report[label]["f1-score"]) for label in CLASS_LABELS
             },
             "confusion_matrix": confusion_matrix(
-                y,
-                oof_pred,
+                y_evaluation,
+                oof_pred_evaluation,
                 labels=np.arange(len(CLASS_LABELS)),
             ).tolist(),
+        },
+        "target_space": {
+            "training_class_count": len(active_class_labels),
+            "training_class_order": list(active_class_labels),
+            "aliases": aliases,
+            "primary_evaluation_class_count": len(CLASS_LABELS),
+            "primary_evaluation_class_order": list(CLASS_LABELS),
+            "primary_metric_penalizes_unpredicted_original_classes": True,
         },
         "leaderboard": None,
         "runtime": {
@@ -628,9 +728,10 @@ def main(
         if np.isnan(training_metric_oof).any():
             raise ValueError("training-metric 기준 OOF 확률이 완성되지 않았습니다.")
         training_metric_pred = training_metric_oof.argmax(axis=1)
+        training_metric_pred_evaluation = model_to_evaluation[training_metric_pred]
         training_metric_report = classification_report(
-            y,
-            training_metric_pred,
+            y_evaluation,
+            training_metric_pred_evaluation,
             labels=np.arange(len(CLASS_LABELS)),
             target_names=CLASS_LABELS,
             output_dict=True,
@@ -650,8 +751,8 @@ def main(
             "training_metric_best": {
                 "oof_macro_f1": float(
                     f1_score(
-                        y,
-                        training_metric_pred,
+                        y_evaluation,
+                        training_metric_pred_evaluation,
                         labels=np.arange(len(CLASS_LABELS)),
                         average="macro",
                         zero_division=0,
@@ -659,12 +760,14 @@ def main(
                 ),
                 "fold_mean": float(training_fold_scores.mean()),
                 "fold_std": float(training_fold_scores.std()),
-                "accuracy": float(accuracy_score(y, training_metric_pred)),
+                "accuracy": float(
+                    accuracy_score(y_evaluation, training_metric_pred_evaluation)
+                ),
                 "log_loss": float(
                     log_loss(
                         y,
                         training_metric_oof,
-                        labels=np.arange(len(CLASS_LABELS)),
+                        labels=np.arange(len(active_class_labels)),
                     )
                 ),
                 "per_class_f1": {
@@ -676,8 +779,8 @@ def main(
             "oof_macro_f1_delta": float(metrics["oof"]["macro_f1"])
             - float(
                 f1_score(
-                    y,
-                    training_metric_pred,
+                    y_evaluation,
+                    training_metric_pred_evaluation,
                     labels=np.arange(len(CLASS_LABELS)),
                     average="macro",
                     zero_division=0,
@@ -727,6 +830,8 @@ def main(
             for path in checkpoint_audit_paths
         ]
         + [("nested_optuna", path) for path in tuning_artifact_paths],
+        class_labels=active_class_labels,
+        probability_columns=active_probability_columns,
     )
     print(
         json.dumps(
@@ -746,10 +851,17 @@ def finalize_saved_run(
     *,
     runner_command: str,
     fold_feature_builder: Any | None = None,
+    model_class_labels: tuple[str, ...] | None = None,
+    target_aliases: dict[str, str] | None = None,
 ) -> None:
     """Validate and verify a completed run after post-processing interruption."""
     config_path = config_path.resolve()
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    active_class_labels = tuple(model_class_labels or CLASS_LABELS)
+    active_probability_columns = tuple(
+        f"PROBA_{label}" for label in active_class_labels
+    )
+    aliases = dict(target_aliases or {})
     context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
     artifact_slug = f"exp{context.issue_number:03d}_{config['slug']}"
     report_dir = ROOT / "reports" / artifact_slug
@@ -809,8 +921,10 @@ def finalize_saved_run(
         )
         if not train["ID"].equals(train_meta["ID"]) or train["fold"].isna().any():
             raise ValueError("finalize fold 병합 결과가 원본 train과 일치하지 않습니다.")
-        label_encoder = LabelEncoder().fit(list(CLASS_LABELS))
-        target = label_encoder.transform(train["SUBCLASS"]).astype(np.int32)
+        label_encoder = LabelEncoder().fit(list(active_class_labels))
+        target = label_encoder.transform(
+            train["SUBCLASS"].replace(aliases)
+        ).astype(np.int32)
         fold_test_features = rebuild_fold_test_features(
             fold_feature_builder=fold_feature_builder,
             fold_assignments=train["fold"].to_numpy(dtype=np.int32),
@@ -845,6 +959,8 @@ def finalize_saved_run(
         extra_artifact_paths=[
             ("checkpoint_iteration_audit", path) for path in audit_paths
         ],
+        class_labels=active_class_labels,
+        probability_columns=active_probability_columns,
     )
 
 
