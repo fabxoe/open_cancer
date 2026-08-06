@@ -4,6 +4,10 @@
 색인입니다. 피처 개념, 변환 예시, 상세 해석과 긴 분석은 이 폴더의 실험별
 보고서에 작성합니다.
 
+새 공용 분석·피처 구현 문서:
+
+- [Fold-safe 유전자 residue-event 집중도 피처](analysis/residue_event_concentration/README.md)
+
 ## 경로
 
 Experiment Issue #12에서 파생된 `EXP-012` 보고서는 다음 형식을 사용합니다.
