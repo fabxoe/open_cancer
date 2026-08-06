@@ -1,0 +1,61 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-639
+issue_number: 639
+slug: parser_v4_hotspot12
+parent_experiment: EXP-527
+component_experiments: []
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  parent: exp527_parser_v4_class_cosine_loo
+  parser_v4_hotspot12:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: outer_train_only
+    event_scope: substitution_missense_resolved_positive_position
+    output_dimension: 4387
+    window_width: 12
+    min_event_support: 5
+    min_window_fraction: 0.40
+    deduplication_unit: patient_gene_residue_position
+    fraction_denominator: eligible_missense_events_in_selected_genes
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - exp374_stop_isoform_residue_mask
+    - parser_v4_26_class_cosine_profile_leave_one_out
+    - parser_v4_fold_safe_hotspot12
+acceptance:
+  comparison_experiment: EXP-527
+  minimum_macro_f1_delta: 0.001
+  maximum_fold_std_increase: 0.002
+  maximum_class_f1_drop: 0.05
+  require_no_clear_log_loss_regression: true
+notes: >-
+  Issue #639 under roadmap #632. EXP-527 is frozen. The only change is the
+  outer-train-fitted parser-v4 Hotspot-12 family. Fixed thresholds are support
+  >=5 unique patient-gene-position events, inclusive width 12 and window
+  fraction >=0.40. Target, validation, test distribution and Public LB are not
+  used to select windows.
+comparison_metrics_path: reports/exp527_parser_v4_class_cosine_loo/metrics.json
