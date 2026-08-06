@@ -1,0 +1,107 @@
+{
+  "experiment_id": "EXP-596",
+  "issue_number": 596,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "2286c5d2d0d6addee008edd2061192084c877ce8",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp596_random_forest_v1/data_manifest.json",
+  "environment": "reproducibility/exp596_random_forest_v1/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp596_random_forest_v1/fold_00.joblib",
+      "size_bytes": 132823097,
+      "sha256": "c2100dcca4ff26cc9a1d60ab593e36717cdc5c94e31eae9e390677334d26c046",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp596_random_forest_v1/fold_01.joblib",
+      "size_bytes": 130620985,
+      "sha256": "3ad4d80afe8eed830eda81d121f0e2e2310b41b14543d8b77aec55a6b951a545",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp596_random_forest_v1/fold_02.joblib",
+      "size_bytes": 132646297,
+      "sha256": "e2f9b5591a367ae6f84161c88cda5eb47161431311d368356de95e39c3e7041e",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp596_random_forest_v1/fold_03.joblib",
+      "size_bytes": 132676217,
+      "sha256": "6aa32e1a0a50c9beee6cc88e104f70c750992927aa5053e5f64c044fd87aa315",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp596_random_forest_v1/fold_04.joblib",
+      "size_bytes": 133350233,
+      "sha256": "f1d1cd0c9722985975e036ea365e884a275b1273767bd8fb5b30bc3f6b5c8662",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_spec_manifest",
+      "path": "data/processed/exp596_random_forest_v1_features/feature_spec_manifest.json",
+      "size_bytes": 1848,
+      "sha256": "46963b90a065ef1de8d6e48b74fc2a833659f4aa34d9ab02fc6026805a920ec8",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof",
+      "path": "oof/exp596_random_forest_v1.csv",
+      "size_bytes": 3464148,
+      "sha256": "848e36c9e5ae78200e1b252d95a1b190bf4c410324ebce4554e4b8e8af4f5138",
+      "storage_uri": null
+    },
+    {
+      "kind": "report_metrics",
+      "path": "reports/exp596_random_forest_v1/metrics.json",
+      "size_bytes": 11466,
+      "sha256": "74abbb17177a4121e5ff3bfae02a14cd4a12529ade82225235295b16e49f2e4d",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp596_random_forest_v1.csv",
+      "size_bytes": 37921,
+      "sha256": "a764475bc7db9eb14c6b93a8ea1173d312ad7eeb75e1c4832299b2e38c4e9768",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp596_random_forest_v1_test_proba.csv",
+      "size_bytes": 1389505,
+      "sha256": "d5bd58fa4d80c040a43708710c40092faefdcea9265a10a1a6990482e66b5ddf",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp596_random_forest_v1/config.resolved.yaml",
+      "size_bytes": 3068,
+      "sha256": "4697bcad074a64131f237c6458b335dfb60fe12b5a19fe0ebb8156b9cdb95dd0",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp596_random_forest_v1/metrics.json",
+      "size_bytes": 11466,
+      "sha256": "74abbb17177a4121e5ff3bfae02a14cd4a12529ade82225235295b16e49f2e4d",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "oof_macro_f1_delta": 0.0,
+    "passed": true
+  }
+}
