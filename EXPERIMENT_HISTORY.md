@@ -7,13 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 130
+- 실제 실험 수: 131
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4533650721 (`EXP-589`, 원래 26-class 평가)
-- 최고 leakage-safe Local OOF Macro F1: 0.4533650721 (`EXP-589`)
+- 최고 Local OOF Macro F1: 0.4617833378 (`EXP-623`, 26-class 전부 예측)
+- 최고 leakage-safe Local OOF Macro F1: 0.4617833378 (`EXP-623`)
 - 최고 Public LB Macro F1: 0.346215922 (`EXP-374`)
-- 최고 재현 검증 모델: `EXP-589` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-623` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-06
 
 ## 실험 요약
@@ -150,6 +150,7 @@
 | EXP-596 | COMPLETED | 2heej | #596 | 동결 Feature Spec v1 + RandomForest (#505 스태킹 다양성 후보) | 0.4052772619 | 미제출 | INFERENCE_VERIFIED | CatBoost v1 최고 대비 -0.0141799675로 품질 게이트 미달, 오류 상관 0.7281·라벨 불일치율 30.87%로 다양성 게이트 통과 — 단독 후보 아님, #505 스태킹 다양성 후보로 채택 | [보고서](reports/exp596_random_forest_v1/README.md) |
 | EXP-604 | COMPLETED | Kangho-Park | #604 | EXP-374 OOF + KIPAN/KIRC·GBMLGG/LGG 쌍 내부 확률 재분배(재학습 없음, EXP-233/276/515 후속) | 0.4298798238 | 미제출 | NOT_STARTED | Macro F1 +0.0030889(5-fold 전부 개선)이나 Log Loss +0.0168970·fold std +0.0014154 악화·비대상 22클래스 절대 F1 변화 합 0.0223(허용치 1e-6)로 REJECTED — 확률 값은 대상 쌍 외 완전 불변이 검증됐지만(단위테스트) argmax 경쟁 때문에 분류 결과는 간접 영향받음을 확인, EXP-515(0.0994) 대비 손상은 4.5배 감소·DLBC는 완전 무영향 | [보고서](reports/exp604_pairwise_probability_redistribution/README.md) |
 | EXP-605 | COMPLETED | Kangho Park | #605 | EXP-374 + fold-train에서 train SUBCLASS가 저burden 8클래스(KIRC/KIPAN/GBMLGG/SARC/PRAD/PCPG/THYM/LAML)인 샘플에 balanced_sample_weight 1.2배 추가 곱(EXP-516 burden quantile 대신 클래스 멤버십 기준) | 0.4223194676 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0044714592(게이트 +0.001 미달)·fold std +0.0021112(EXP-516보다도 악화)·DLBC -0.0939 붕괴(EXP-516의 -0.0505보다 더 악화)로 ARCHIVE; "표적 8클래스만 직접 건드리면 LUAD/BLCA/DLBC는 안전할 것"이라는 원가설이 반증됨(LUAD -0.0518 여전히 하락, DLBC는 EXP-516보다 더 하락, BLCA만 개선) — 가중치 재분배의 zero-sum 성격 때문으로 추정 | [보고서](reports/exp605_class_scoped_sample_weight/README.md) |
+| EXP-623 | COMPLETED | 2heej | #623 | EXP-527 XGBoost + EXP-596 RandomForest 사전 고정 0.5/0.5 확률 평균 (#505 S1) | 0.4617833378 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0149110671·Log Loss 개선, 클래스 붕괴(-0.05) 없음; fold std는 +0.0057이나 5개 fold 중 4개 개선·1개(fold4) 사실상 동일로 붕괴형 불안정 아님 — `ADOPT_WITH_CAUTION`, 현재 26-class 전부 예측하는 최고 Local 후보 | [보고서](reports/exp623_exp527_exp596_fixed_blend/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5396,3 +5397,68 @@ additive 확장이며 `uv run pytest -q`로 회귀 여부를 재확인했다). "
 가중치" 축은 EXP-516·EXP-605 두 실험 모두 REJECTED/ARCHIVE로, 균일 고정
 배율 방식으로는 저burden/고오분류 클래스 문제를 해결하지 못했다는 결론이
 반복 확인됐다.
+
+### [EXP-623] EXP-527 XGBoost + EXP-596 RandomForest 고정 0.5/0.5 확률 평균
+
+- 상태/실행자: COMPLETED / 2heej
+- Issue/브랜치: #623 / `issue-623-exp527-exp596-fixed-blend`
+- Config/Runner: `configs/exp623_exp527_exp596_fixed_blend.yaml` /
+  `scripts/run_exp623_exp527_exp596_fixed_blend.py`
+- 부모: EXP-527(XGBoost, 26-class 전부 예측하는 최고 안전 단일 모델),
+  EXP-596(RandomForest, PR #617에서 diversity-gate PASS 확인:
+  CatBoost/LightGBM 대비 correctness_pearson 0.728, label_disagreement 0.309)
+- 배경: #505 스태킹 로드맵 S1(사전 고정 단순 평균) 단계. 직전
+  EXP-579(EXP-527 XGBoost + EXP-567 LightGBM 0.5/0.5)는 두 boosting 모델의
+  오류 상관이 높아 두 부모보다 낮은 점수로 ARCHIVE됐다. 이번 실험은 구조적으로
+  다른 오류를 만드는 RandomForest로 같은 S1 고정 블렌드를 재시도해, "모델을
+  다양화해도 단순 평균이 개선되지 않는다"는 이전 결론이 다양성이 실제로 확보된
+  조합에서도 성립하는지 확인한다.
+- 방법: 재학습 없음. `0.5 * EXP-527 확률 + 0.5 * EXP-596 확률` 산술 평균
+  (inference-only, EXP-075/135/253/484/579와 동일 패턴). 가중치는 평가 전에
+  고정했다. EXP-527의 로컬 OOF/test 확률이 없어(`oof/`·`preds/`는 Git
+  비추적) `scripts/run_exp527_parser_v4_class_cosine_loo.py`를 재실행해
+  결정론적으로 재생성했고(재현 macro_f1 0.4468722707131544 — History 기록값과
+  일치), History 인터페이스 계약(`ID,SUBCLASS_TRUE,SUBCLASS_PRED,FOLD,PROBA_*`)에
+  맞춰 최근 공용 러너가 추가한 `SUBCLASS_TRUE_MERGED` 열만 제거한 로컬 사본을
+  블렌드 입력으로 사용했다.
+- Fold Macro F1: 0.4537973768, 0.4560116314, 0.4835674278, 0.4670821609,
+  0.4502940139
+- OOF Macro F1 / fold 평균 / fold std: 0.4617833378 / 0.4621505222 /
+  0.0120916724
+- Accuracy / Log Loss: 0.4450895017 / 1.9898206493
+- EXP-527 대비: Macro F1 `+0.0149110671`, fold std `+0.0057123539`,
+  Accuracy `+0.0111272375`, Log Loss `-0.0376680592`(개선)
+- fold별 비교(EXP-527 → EXP-623): fold0 `+0.0194640726`, fold1
+  `+0.0053991767`, fold2 `+0.0348273296`, fold3 `+0.0169832459`, fold4
+  `-0.0008716539`. 5개 fold 중 4개가 뚜렷이 개선했고 나머지 1개(fold4)는
+  사실상 동일해, fold std 증가는 일부 fold 붕괴가 아니라 fold마다 다른
+  개선폭에서 비롯됐다(EXP-484와 같은 패턴).
+- 클래스별 비교(EXP-527 대비): 큰 개선 DLBC `+0.1144`, LGG `+0.0525`,
+  ACC `+0.0410`, SARC `+0.0295`, BLCA `+0.0297`; 큰 하락 COAD `-0.0312`,
+  KIPAN `-0.0253`, SKCM `-0.0200`. `-0.05` 붕괴 기준을 넘는 클래스는 없다.
+- 참고자료(비공식, RUN_MODE=explore, 파일 미저장): EXP-527 가중치를
+  1.0~0.3 구간에서 0.1 단위로 스윕한 결과 OOF Macro F1이 0.4/0.6에서
+  0.4639450817로 가장 높았고 0.5/0.5(0.4617833378)보다 근소하게 나았다.
+  이 값은 사후에 같은 OOF로 찾은 것이라 채택 근거로 쓰지 않으며, 별도
+  Issue에서 사전 고정 없이는 공식 실행하지 않는다.
+
+  | 가중치(527/596) | OOF Macro F1 | fold std |
+  |---|---:|---:|
+  | 1.0/0.0(EXP-527) | 0.4468722707 | 0.006379 |
+  | 0.8/0.2 | 0.4498244621 | 0.007286 |
+  | 0.7/0.3 | 0.4556128399 | 0.009528 |
+  | 0.6/0.4 | 0.4579544097 | 0.010240 |
+  | 0.5/0.5(EXP-623, 공식) | 0.4617833378 | 0.012092 |
+  | 0.4/0.6 | 0.4639450817 | 0.008534 |
+  | 0.3/0.7 | 0.4611393694 | 0.007931 |
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — 결정론적 블렌드 재계산으로 제출 SHA-256·
+  라벨·확률 일치 확인(최대 절대 오차 `1e-6` 이내)
+- 판단: **`ADOPT_WITH_CAUTION`**. OOF Macro F1·Accuracy·Log Loss가 모두
+  뚜렷이 개선했고 클래스 붕괴도 없다. fold std만 사전 설정 임계값(`+0.002`)을
+  초과했지만 EXP-484와 동일하게 fold 붕괴가 아니라 불균등한 개선폭이 원인임을
+  fold별 분해로 확인했다. EXP-579(boosting+boosting)의 실패와 대비해, 실제
+  오류 다양성이 확보된 모델(RandomForest)을 블렌드하면 단순 평균도 개선될 수
+  있음을 보여주는 사례로 #505 스태킹 로드맵의 첫 성공한 S1 결과다. 현재
+  26-class를 전부 예측하는 모델 중 Local 최고 후보로 기록하되, Public 제출은
+  팀 논의 후 진행한다.

@@ -1,0 +1,14 @@
+{
+  "verification_type": "deterministic_probability_blend",
+  "experiment_id": "EXP-623",
+  "data_hashes_match": true,
+  "original_submission_sha256": "f479665e82cce9262e409ee5f95057181a08141d598aa4143f397207016852aa",
+  "reproduced_submission_sha256": "f479665e82cce9262e409ee5f95057181a08141d598aa4143f397207016852aa",
+  "submission_sha256_match": true,
+  "oof_label_agreement": 1.0,
+  "test_label_agreement": 1.0,
+  "probability_max_abs_difference": 0.0,
+  "probability_atol": 1e-06,
+  "probability_rtol": 1e-06,
+  "passed": true
+}
