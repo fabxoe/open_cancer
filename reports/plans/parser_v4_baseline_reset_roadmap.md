@@ -150,7 +150,7 @@ semantic parser
 | N5 | Parser-native semantic baseline 동결 | #479 | EXP-479 | 미발급 | COMPLETED | 0.4087566023 | HGVS 의미 기준선 동결·성능 최적화는 후속 단계 | N4-S·SHAP 진행 |
 | N6 | isoform 독립 재검증 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N5 완료 대기 |
 | N7 | driver 독립 재검증 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N5 완료 대기 |
-| N8 | pathway·hotspot 재검증·Feature Spec 동결 | #587 | 해당 없음 | 미발급 | RUNNING | N/A | EXP-374는 stop 표기 버그는 이미 회피하지만 naive `.endswith("fs")` frameshift 판정·delins nonsense 누락은 여전히 legacy 경로 — 감사 스크립트로 실 영향 측정 중 | 스모크 결과 확인 후 COMPLETED 또는 재실행 Experiment 제안 |
+| N8 | pathway·hotspot 재검증·Feature Spec 동결 | #587 | 해당 없음 | #588 | COMPLETED | N/A | 25,479개 고유 (gene,token) 중 7건(0.027%)만 legacy-v4 truncating 판정 불일치, 전부 이미 문서화된 signed frameshift(`-NNNfs`, PTEN/TP53) `other_unmappable` 케이스 — legacy 과대계산 확인, v4가 정책대로 정확. N6 선례(2.14% 불일치도 OOF 무영향) 감안·마감 임박으로 재실행 미제안 | N9(nested Optuna)는 Feature Spec 동결 후 — 이 세션 스코프 밖 |
 | N9 | nested Optuna | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N8 동결 대기 |
 | N10 | 모델 다양화·앙상블·최종 재현 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N9 완료 대기 |
 

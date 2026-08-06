@@ -98,15 +98,43 @@ uv run python scripts/audit_pathway_hotspot_v4_truncating_diff.py
 (방향별 건수, v4 route/event_type 분포)과 `diffs.json`(불일치 토큰 전체
 목록)에 저장된다.
 
-## 다음 단계
+## 실행 결과(저장소 소유자 확인, 2026-08-06)
 
-이 README와 스크립트를 근거로 N8 Task Issue를 연다. 스모크 실행 결과
-(`summary.json`)를 확인한 뒤:
+```json
+{
+  "pathway_hotspot_gene_count": 170,
+  "unique_gene_token_pairs": 25479,
+  "direction_counts": {"agree": 25472, "legacy_only_truncating": 7},
+  "v4_route_of_new_truncating": {},
+  "v4_route_of_lost_truncating": {"unresolved:other_unmappable": 7}
+}
+```
 
-- 불일치가 미미하면(예: 0건 또는 한 자릿수) N7처럼 "재현·문서화만 하고
-  COMPLETED" 처리한다.
-- 불일치가 유의미하면 EXP-096/223/229/369/374 lineage 중 실제로 재실행할
-  가치가 있는 대표 모델(가장 유력한 후보: 현재 팀 최고 EXP-374 자체, 아직
-  frameshift/delins truncating 판정을 v4로 교체하지 않았으므로 이 버그의
-  대상이다)을 골라 별도 Experiment Issue로 재실행을 제안한다. N6(EXP-497)
-  선례처럼 NULL_RESULT일 수도 있다는 점을 미리 인지하고 접근한다.
+25,479개 고유 (gene, token) 쌍 중 **7건(0.027%)만 불일치**했고, 방향은 전부
+"legacy만 truncating"이다(v4가 legacy보다 더 truncating으로 판단하는 경우는
+0건). `diffs.json`을 열어보면 7건 전부 동일 패턴이다.
+
+```text
+PTEN -151fs   PTEN -46fs   PTEN -65fs   PTEN -74fs
+TP53 -222fs   TP53 -278fs   TP53 -347fs
+```
+
+전부 `-NNNfs` 형태의 **signed frameshift 표기**다. 이는 새로 발견한 버그가
+아니라 이미 문서화된 사례다 —
+[`reports/analysis/partial_terminal_semantics/README.md`](../partial_terminal_semantics/README.md)가
+`-762fs`류 signed 표기를 정상 protein residue 위치로 강제 해석하지 않고
+"기존 adapter에서는 계속 `other_unmappable`"로 유지한다고 명시한다(5'
+UTR/upstream 등 위치 자체가 모호하기 때문). 즉 여기서 legacy가 이 7개를
+truncating으로 세는 쪽이 실제로는 **과대 계산**이고, parser v4가 "확정 불가"로
+보수적으로 처리하는 쪽이 이미 결정된 올바른 설계다.
+
+## 결론
+
+- 불일치 규모가 극히 작다(0.027%, 2개 유전자, PTEN/TP53). N6(isoform, 2.14%
+  불일치)조차 OOF에 측정 가능한 영향이 없었던 선례를 감안하면, 이보다 훨씬
+  작은 규모의 diff가 OOF를 움직일 가능성은 낮다.
+- 이 불일치는 "고쳐야 할 버그"가 아니라 "legacy가 이미 알려진 모호 표기를
+  과대 계산하고 있었다"는 확인이며, parser v4 쪽 동작은 이미 팀이 결정한
+  정책과 일치한다.
+- 대회 마감(2026-08-07)이 임박한 점을 고려해, 재실행 Experiment는 제안하지
+  않고 이 감사 결과를 문서화하는 선에서 N8을 COMPLETED로 마무리한다.
