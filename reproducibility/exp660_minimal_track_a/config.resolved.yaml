@@ -1,0 +1,642 @@
+experiment:
+  record_role: official
+  issue_number: 660
+  experiment_id: EXP-660
+  component_experiments:
+  - EXP-479
+  - EXP-497
+  branch: issue-660-track-a
+  owner: Kangho Park
+  source_commit: 4ddbb0f2da81b05a651538cd0ff9bf8abef6ee60
+  dirty_worktree: false
+  started_at: '2026-08-06T13:01:22.505186+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+  model_class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+  target_aliases: {}
+  evaluation_class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features: []
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features:
+  - max_residue_position
+  position_missing_policy: zero
+  position_token_scope: include_complex
+  position_transform: raw
+  position_bin_width: null
+  position_semantics: protein residue indices explicitly written in source tokens;
+    no transcript, codon nucleotide, genomic coordinate, or protein-length inference
+  position_semantic_filter:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless frozen Ensembl annotation; no target or distribution fit
+    ensembl_release: 116
+    assembly: GRCh38
+    manifest_path: knowledge/ensembl_isoform_annotation_v1.json
+    manifest_sha256: 568ea31f5b7fc7ff47d181fe552d39f3b9185f8d0a76cbb2a49d06be022d5bc0
+    annotation_cache_path: data/external/ensembl_release_116/competition_gene_isoform_index.json
+    annotation_cache_sha256: b9565339f1755d5b07e782c39064207310fa6c254b2e915a15492f4f38903daa
+    trusted_categories:
+    - CANONICAL_MATCH
+    - MANE_MATCH
+    - OTHER_ISOFORM_MATCH
+    masked_categories:
+    - COMPLEX_OR_UNMAPPABLE
+    - OUTSIDE_ALL_KNOWN_ISOFORMS
+    - POSITION_VALID_REF_MISMATCH
+    team_lead_exception_reference: https://github.com/fabxoe/open_cancer/issues/311#issuecomment-5170121279
+    target_used: false
+    test_distribution_used_for_rule: false
+    public_leaderboard_used: false
+  co_mutation_pairs: []
+  co_mutation_semantics: fixed, literature-curated gene pairs (mutual exclusivity
+    or co-occurrence); gene-level 'any mutation' presence, not restricted to a specific
+    hotspot codon; not fit from this dataset's target or frequency
+  feature_factory_version: 1.1.0
+  feature_spec_sha256: cb80fa4a8ca028de228f5aa0c10b382d3cbdf60c9240a27eb662d8b1744f1ca8
+  hotspot_features: []
+  known_hotspots: []
+  hotspot_validation_note: The hotspot table is fixed before test transformation.
+    The original 19 and additional 15 positions are literature-defined; the config-driven
+    runner validates the additions using train rows only. Test data is not used to
+    select or filter the official list. A token counts only when both position and
+    reference AA match.
+  requested_families:
+    mutation_type:
+      enabled: true
+      parser:
+        name: stop_notation_invariant_v2
+        definition_version: 2.1.0
+        equivalent_stop_alternates:
+        - '*'
+        - X
+        - Ter
+    robust_aggregates: []
+    drop_all_sample_aggregates: true
+    residue_position:
+      enabled: true
+      aggregates:
+      - max
+      missing_policy: zero
+      complex_tokens: include
+      transform: raw
+      isoform_semantic_mask:
+        enabled: true
+        manifest_path: knowledge/ensembl_isoform_annotation_v1.json
+        manifest_sha256: 568ea31f5b7fc7ff47d181fe552d39f3b9185f8d0a76cbb2a49d06be022d5bc0
+        annotation_cache_path: data/external/ensembl_release_116/competition_gene_isoform_index.json
+        annotation_cache_sha256: b9565339f1755d5b07e782c39064207310fa6c254b2e915a15492f4f38903daa
+        trusted_categories:
+        - CANONICAL_MATCH
+        - MANE_MATCH
+        - OTHER_ISOFORM_MATCH
+        masked_categories:
+        - COMPLEX_OR_UNMAPPABLE
+        - OUTSIDE_ALL_KNOWN_ISOFORMS
+        - POSITION_VALID_REF_MISMATCH
+  hotspot_table: none
+  hotspot_evidence_scope: none
+  fold_train_hotspot_evidence:
+    '0': []
+    '1': []
+    '2': []
+    '3': []
+    '4': []
+  minimum_matching_train_rows: 1
+  selection_uses_test_data: false
+feature_outputs:
+  train_features.npz:
+    path: data/processed/exp660_minimal_track_a_features/train_features.npz
+    sha256: 139026dbea7f2c5f32fef560210e595f27d08b96076018bae84d1c033d611694
+  test_features.npz:
+    path: data/processed/exp660_minimal_track_a_features/test_features.npz
+    sha256: cf3f85369b7ee0fd8cb5ca9c22aa0393da6a801e6f069176850471fc9c2ff64f
+  feature_names.json:
+    path: data/processed/exp660_minimal_track_a_features/feature_names.json
+    sha256: 8ddde04496156f99dc831a656955098d0b5ecd1f4c5d1a0d17fdddd497847d64
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: per-gene missing indicators only; all sample aggregates removed
+  feature_types:
+  - mutation_presence
+  - parser_v4_native_v3_gene_consequence_presence
+  - ensembl_release_116_isoform_eligible_max_residue_position
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  command: uv run python scripts/run_exp660_minimal_track_a.py
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]
+  platform: Windows-10-10.0.26200-SP0
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: bc7da4e6e1f133ee6b1f8c5cd4c86f9b87d336d686ceaacddbe20254b0771d23
+fold_train_features:
+- fold: 0
+  feature_name_count: 30688
+  feature_names_sha256: 662a756ecb15aea005e70ab677caa0f687791e420948fec64a2faca4f69ea6a2
+  feature_name_preview:
+  - gene__A2M__native_v3_missense_any
+  - gene__A2M__native_v3_no_change_any
+  - gene__A2M__native_v3_nonsense_any
+  - gene__A2M__native_v3_frameshift_any
+  - gene__A2M__native_v3_range_replacement_any
+  - gene__ZYX__native_v3_nonsense_any
+  - gene__ZYX__native_v3_frameshift_any
+  - gene__ZYX__native_v3_range_replacement_any
+  - gene__ZYX__native_v3_range_stop_any
+  - gene__ZYX__native_v3_range_no_change_any
+  registry:
+    parser_v4_native_semantic_v3_range:
+      definition_version: 3.0.0
+      enabled: true
+      output_dimension: 30695
+      feature_names_sha256: f494a8b24e3a486306cd846271bc41812fd27c861075bfafe53c451d946a0242
+      fit_scope: stateless
+      external_knowledge: null
+      semantic_contract:
+        family: parser_v4_native_semantic_v3_range
+        version: 3.0.0
+        fit_scope: stateless
+        schema_sha256: 294df7b8735f1ea839a1fd8f2b0ab3ac4388321cac53b746087de290038f3906
+        output_dimension: 30695
+        feature_names_sha256: f494a8b24e3a486306cd846271bc41812fd27c861075bfafe53c451d946a0242
+        model_active_consequences:
+        - missense
+        - no_change
+        - nonsense
+        - frameshift
+        - range_replacement
+        - range_stop
+        - range_no_change
+        range_semantics:
+          ordinary: range_replacement
+          contains_stop: range_stop
+          protein_no_change: range_no_change
+          mutually_exclusive: true
+        gene_aggregation: consequence_presence
+        sample_aggregation: token_count
+        mutation_presence_policy: preserve_existing_base_feature
+        raw_provenance_policy: preserve_outside_model_matrix
+    parser_baseline_projection:
+      definition_version: 1.0.0
+      representation: native_v3_semantic_range
+      replaces_historical_five_family: true
+      preserves_mutation_presence: true
+      target_used: false
+      test_distribution_used_for_schema: false
+    minimal_track_a_projection:
+      definition_version: 1.0.0
+      sample_aggregates_removed: true
+      removed_native_sample_feature_count: 7
+      removed_base_sample_feature_count: 9
+      preserves_gene_mutation_presence: true
+      preserves_gene_missingness: true
+      target_used: false
+      test_distribution_used_for_schema: false
+  base_feature_names_to_drop_count: 21929
+  base_feature_names_to_drop_sha256: 3352f36654895dfd5c4c4cecb42d24637e4050b2998eb6e6b3a1cab912f6a0ea
+  base_feature_names_to_drop_preview:
+  - sample__missense_count
+  - sample__synonymous_count
+  - sample__nonsense_count
+  - sample__frameshift_count
+  - sample__complex_count
+  - ZYX__complex
+  - sample__mutated_gene_count
+  - sample__total_variant_count
+  - sample__multi_variant_gene_count
+  - sample__missing_gene_count
+  base_feature_names_after_drop_sha256: de2010abdf3fe97c8a27ec66feb54efdca855302702cbd015995d68934ff175d
+- fold: 1
+  feature_name_count: 30688
+  feature_names_sha256: 662a756ecb15aea005e70ab677caa0f687791e420948fec64a2faca4f69ea6a2
+  feature_name_preview:
+  - gene__A2M__native_v3_missense_any
+  - gene__A2M__native_v3_no_change_any
+  - gene__A2M__native_v3_nonsense_any
+  - gene__A2M__native_v3_frameshift_any
+  - gene__A2M__native_v3_range_replacement_any
+  - gene__ZYX__native_v3_nonsense_any
+  - gene__ZYX__native_v3_frameshift_any
+  - gene__ZYX__native_v3_range_replacement_any
+  - gene__ZYX__native_v3_range_stop_any
+  - gene__ZYX__native_v3_range_no_change_any
+  registry:
+    parser_v4_native_semantic_v3_range:
+      definition_version: 3.0.0
+      enabled: true
+      output_dimension: 30695
+      feature_names_sha256: f494a8b24e3a486306cd846271bc41812fd27c861075bfafe53c451d946a0242
+      fit_scope: stateless
+      external_knowledge: null
+      semantic_contract:
+        family: parser_v4_native_semantic_v3_range
+        version: 3.0.0
+        fit_scope: stateless
+        schema_sha256: 294df7b8735f1ea839a1fd8f2b0ab3ac4388321cac53b746087de290038f3906
+        output_dimension: 30695
+        feature_names_sha256: f494a8b24e3a486306cd846271bc41812fd27c861075bfafe53c451d946a0242
+        model_active_consequences:
+        - missense
+        - no_change
+        - nonsense
+        - frameshift
+        - range_replacement
+        - range_stop
+        - range_no_change
+        range_semantics:
+          ordinary: range_replacement
+          contains_stop: range_stop
+          protein_no_change: range_no_change
+          mutually_exclusive: true
+        gene_aggregation: consequence_presence
+        sample_aggregation: token_count
+        mutation_presence_policy: preserve_existing_base_feature
+        raw_provenance_policy: preserve_outside_model_matrix
+    parser_baseline_projection:
+      definition_version: 1.0.0
+      representation: native_v3_semantic_range
+      replaces_historical_five_family: true
+      preserves_mutation_presence: true
+      target_used: false
+      test_distribution_used_for_schema: false
+    minimal_track_a_projection:
+      definition_version: 1.0.0
+      sample_aggregates_removed: true
+      removed_native_sample_feature_count: 7
+      removed_base_sample_feature_count: 9
+      preserves_gene_mutation_presence: true
+      preserves_gene_missingness: true
+      target_used: false
+      test_distribution_used_for_schema: false
+  base_feature_names_to_drop_count: 21929
+  base_feature_names_to_drop_sha256: 3352f36654895dfd5c4c4cecb42d24637e4050b2998eb6e6b3a1cab912f6a0ea
+  base_feature_names_to_drop_preview:
+  - sample__missense_count
+  - sample__synonymous_count
+  - sample__nonsense_count
+  - sample__frameshift_count
+  - sample__complex_count
+  - ZYX__complex
+  - sample__mutated_gene_count
+  - sample__total_variant_count
+  - sample__multi_variant_gene_count
+  - sample__missing_gene_count
+  base_feature_names_after_drop_sha256: de2010abdf3fe97c8a27ec66feb54efdca855302702cbd015995d68934ff175d
+- fold: 2
+  feature_name_count: 30688
+  feature_names_sha256: 662a756ecb15aea005e70ab677caa0f687791e420948fec64a2faca4f69ea6a2
+  feature_name_preview:
+  - gene__A2M__native_v3_missense_any
+  - gene__A2M__native_v3_no_change_any
+  - gene__A2M__native_v3_nonsense_any
+  - gene__A2M__native_v3_frameshift_any
+  - gene__A2M__native_v3_range_replacement_any
+  - gene__ZYX__native_v3_nonsense_any
+  - gene__ZYX__native_v3_frameshift_any
+  - gene__ZYX__native_v3_range_replacement_any
+  - gene__ZYX__native_v3_range_stop_any
+  - gene__ZYX__native_v3_range_no_change_any
+  registry:
+    parser_v4_native_semantic_v3_range:
+      definition_version: 3.0.0
+      enabled: true
+      output_dimension: 30695
+      feature_names_sha256: f494a8b24e3a486306cd846271bc41812fd27c861075bfafe53c451d946a0242
+      fit_scope: stateless
+      external_knowledge: null
+      semantic_contract:
+        family: parser_v4_native_semantic_v3_range
+        version: 3.0.0
+        fit_scope: stateless
+        schema_sha256: 294df7b8735f1ea839a1fd8f2b0ab3ac4388321cac53b746087de290038f3906
+        output_dimension: 30695
+        feature_names_sha256: f494a8b24e3a486306cd846271bc41812fd27c861075bfafe53c451d946a0242
+        model_active_consequences:
+        - missense
+        - no_change
+        - nonsense
+        - frameshift
+        - range_replacement
+        - range_stop
+        - range_no_change
+        range_semantics:
+          ordinary: range_replacement
+          contains_stop: range_stop
+          protein_no_change: range_no_change
+          mutually_exclusive: true
+        gene_aggregation: consequence_presence
+        sample_aggregation: token_count
+        mutation_presence_policy: preserve_existing_base_feature
+        raw_provenance_policy: preserve_outside_model_matrix
+    parser_baseline_projection:
+      definition_version: 1.0.0
+      representation: native_v3_semantic_range
+      replaces_historical_five_family: true
+      preserves_mutation_presence: true
+      target_used: false
+      test_distribution_used_for_schema: false
+    minimal_track_a_projection:
+      definition_version: 1.0.0
+      sample_aggregates_removed: true
+      removed_native_sample_feature_count: 7
+      removed_base_sample_feature_count: 9
+      preserves_gene_mutation_presence: true
+      preserves_gene_missingness: true
+      target_used: false
+      test_distribution_used_for_schema: false
+  base_feature_names_to_drop_count: 21929
+  base_feature_names_to_drop_sha256: 3352f36654895dfd5c4c4cecb42d24637e4050b2998eb6e6b3a1cab912f6a0ea
+  base_feature_names_to_drop_preview:
+  - sample__missense_count
+  - sample__synonymous_count
+  - sample__nonsense_count
+  - sample__frameshift_count
+  - sample__complex_count
+  - ZYX__complex
+  - sample__mutated_gene_count
+  - sample__total_variant_count
+  - sample__multi_variant_gene_count
+  - sample__missing_gene_count
+  base_feature_names_after_drop_sha256: de2010abdf3fe97c8a27ec66feb54efdca855302702cbd015995d68934ff175d
+- fold: 3
+  feature_name_count: 30688
+  feature_names_sha256: 662a756ecb15aea005e70ab677caa0f687791e420948fec64a2faca4f69ea6a2
+  feature_name_preview:
+  - gene__A2M__native_v3_missense_any
+  - gene__A2M__native_v3_no_change_any
+  - gene__A2M__native_v3_nonsense_any
+  - gene__A2M__native_v3_frameshift_any
+  - gene__A2M__native_v3_range_replacement_any
+  - gene__ZYX__native_v3_nonsense_any
+  - gene__ZYX__native_v3_frameshift_any
+  - gene__ZYX__native_v3_range_replacement_any
+  - gene__ZYX__native_v3_range_stop_any
+  - gene__ZYX__native_v3_range_no_change_any
+  registry:
+    parser_v4_native_semantic_v3_range:
+      definition_version: 3.0.0
+      enabled: true
+      output_dimension: 30695
+      feature_names_sha256: f494a8b24e3a486306cd846271bc41812fd27c861075bfafe53c451d946a0242
+      fit_scope: stateless
+      external_knowledge: null
+      semantic_contract:
+        family: parser_v4_native_semantic_v3_range
+        version: 3.0.0
+        fit_scope: stateless
+        schema_sha256: 294df7b8735f1ea839a1fd8f2b0ab3ac4388321cac53b746087de290038f3906
+        output_dimension: 30695
+        feature_names_sha256: f494a8b24e3a486306cd846271bc41812fd27c861075bfafe53c451d946a0242
+        model_active_consequences:
+        - missense
+        - no_change
+        - nonsense
+        - frameshift
+        - range_replacement
+        - range_stop
+        - range_no_change
+        range_semantics:
+          ordinary: range_replacement
+          contains_stop: range_stop
+          protein_no_change: range_no_change
+          mutually_exclusive: true
+        gene_aggregation: consequence_presence
+        sample_aggregation: token_count
+        mutation_presence_policy: preserve_existing_base_feature
+        raw_provenance_policy: preserve_outside_model_matrix
+    parser_baseline_projection:
+      definition_version: 1.0.0
+      representation: native_v3_semantic_range
+      replaces_historical_five_family: true
+      preserves_mutation_presence: true
+      target_used: false
+      test_distribution_used_for_schema: false
+    minimal_track_a_projection:
+      definition_version: 1.0.0
+      sample_aggregates_removed: true
+      removed_native_sample_feature_count: 7
+      removed_base_sample_feature_count: 9
+      preserves_gene_mutation_presence: true
+      preserves_gene_missingness: true
+      target_used: false
+      test_distribution_used_for_schema: false
+  base_feature_names_to_drop_count: 21929
+  base_feature_names_to_drop_sha256: 3352f36654895dfd5c4c4cecb42d24637e4050b2998eb6e6b3a1cab912f6a0ea
+  base_feature_names_to_drop_preview:
+  - sample__missense_count
+  - sample__synonymous_count
+  - sample__nonsense_count
+  - sample__frameshift_count
+  - sample__complex_count
+  - ZYX__complex
+  - sample__mutated_gene_count
+  - sample__total_variant_count
+  - sample__multi_variant_gene_count
+  - sample__missing_gene_count
+  base_feature_names_after_drop_sha256: de2010abdf3fe97c8a27ec66feb54efdca855302702cbd015995d68934ff175d
+- fold: 4
+  feature_name_count: 30688
+  feature_names_sha256: 662a756ecb15aea005e70ab677caa0f687791e420948fec64a2faca4f69ea6a2
+  feature_name_preview:
+  - gene__A2M__native_v3_missense_any
+  - gene__A2M__native_v3_no_change_any
+  - gene__A2M__native_v3_nonsense_any
+  - gene__A2M__native_v3_frameshift_any
+  - gene__A2M__native_v3_range_replacement_any
+  - gene__ZYX__native_v3_nonsense_any
+  - gene__ZYX__native_v3_frameshift_any
+  - gene__ZYX__native_v3_range_replacement_any
+  - gene__ZYX__native_v3_range_stop_any
+  - gene__ZYX__native_v3_range_no_change_any
+  registry:
+    parser_v4_native_semantic_v3_range:
+      definition_version: 3.0.0
+      enabled: true
+      output_dimension: 30695
+      feature_names_sha256: f494a8b24e3a486306cd846271bc41812fd27c861075bfafe53c451d946a0242
+      fit_scope: stateless
+      external_knowledge: null
+      semantic_contract:
+        family: parser_v4_native_semantic_v3_range
+        version: 3.0.0
+        fit_scope: stateless
+        schema_sha256: 294df7b8735f1ea839a1fd8f2b0ab3ac4388321cac53b746087de290038f3906
+        output_dimension: 30695
+        feature_names_sha256: f494a8b24e3a486306cd846271bc41812fd27c861075bfafe53c451d946a0242
+        model_active_consequences:
+        - missense
+        - no_change
+        - nonsense
+        - frameshift
+        - range_replacement
+        - range_stop
+        - range_no_change
+        range_semantics:
+          ordinary: range_replacement
+          contains_stop: range_stop
+          protein_no_change: range_no_change
+          mutually_exclusive: true
+        gene_aggregation: consequence_presence
+        sample_aggregation: token_count
+        mutation_presence_policy: preserve_existing_base_feature
+        raw_provenance_policy: preserve_outside_model_matrix
+    parser_baseline_projection:
+      definition_version: 1.0.0
+      representation: native_v3_semantic_range
+      replaces_historical_five_family: true
+      preserves_mutation_presence: true
+      target_used: false
+      test_distribution_used_for_schema: false
+    minimal_track_a_projection:
+      definition_version: 1.0.0
+      sample_aggregates_removed: true
+      removed_native_sample_feature_count: 7
+      removed_base_sample_feature_count: 9
+      preserves_gene_mutation_presence: true
+      preserves_gene_missingness: true
+      target_used: false
+      test_distribution_used_for_schema: false
+  base_feature_names_to_drop_count: 21929
+  base_feature_names_to_drop_sha256: 3352f36654895dfd5c4c4cecb42d24637e4050b2998eb6e6b3a1cab912f6a0ea
+  base_feature_names_to_drop_preview:
+  - sample__missense_count
+  - sample__synonymous_count
+  - sample__nonsense_count
+  - sample__frameshift_count
+  - sample__complex_count
+  - ZYX__complex
+  - sample__mutated_gene_count
+  - sample__total_variant_count
+  - sample__multi_variant_gene_count
+  - sample__missing_gene_count
+  base_feature_names_after_drop_sha256: de2010abdf3fe97c8a27ec66feb54efdca855302702cbd015995d68934ff175d
