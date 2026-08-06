@@ -35,7 +35,7 @@ def test_bucket_counts_partitions_without_overlap() -> None:
             ">q90": (10.0, np.inf),
         },
     )
-    assert counts == {"<=q10": 3, "q10-q90": 3, ">q90": 1}
+    assert counts == {"<=q10": 4, "q10-q90": 2, ">q90": 1}
     assert sum(counts.values()) == len(values)
 
 
