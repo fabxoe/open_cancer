@@ -11,6 +11,7 @@ from scipy import sparse
 from open_cancer.canonical_mutation_events import parse_canonical_gene_cell
 from open_cancer.feature_family import FeatureFamilyDescriptor
 from open_cancer.parser_native_v2_features import native_v2_primary_family
+from open_cancer.sparse_gene_cells import extract_non_wt_gene_cells
 
 
 PATIENT_SEMANTIC_VECTOR_VERSION = "1.0.0"
@@ -117,7 +118,6 @@ class FittedPatientSemanticVector:
         if missing:
             raise ValueError(f"입력에 유전자 열이 없습니다: {missing[:5]}")
 
-        gene_index = {gene: index for index, gene in enumerate(self.gene_columns)}
         family_index = {family: index for index, family in enumerate(EVENT_FAMILIES)}
         aa_index = {aa: index for index, aa in enumerate(AMINO_ACIDS)}
         alt_index = {aa: index for index, aa in enumerate(ALTERNATE_SYMBOLS)}
@@ -128,44 +128,56 @@ class FittedPatientSemanticVector:
         inserted_offset = transition_offset + len(AMINO_ACIDS) * len(ALTERNATE_SYMBOLS)
 
         row_counts: list[dict[int, float]] = [{} for _ in range(len(frame))]
-        for gene in self.gene_columns:
-            values = frame[gene].to_numpy(dtype=object, copy=False)
-            for row_index, cell in enumerate(values):
-                counts = row_counts[row_index]
-                parsed = parse_canonical_gene_cell(cell)
-                for event in parsed.events:
-                    family = _family(event, gene_symbol=gene)
-                    column = gene_index[gene] * len(EVENT_FAMILIES) + family_index[family]
-                    counts[column] = counts.get(column, 0.0) + 1.0
+        cells = extract_non_wt_gene_cells(
+            frame, self.gene_columns, feature_version=self.descriptor.version
+        )
+        for row_index_raw, gene_index_raw, cell in zip(
+            cells.row_indices, cells.gene_indices, cells.values
+        ):
+            row_index = int(row_index_raw)
+            gene_index = int(gene_index_raw)
+            gene = self.gene_columns[gene_index]
+            counts = row_counts[row_index]
+            parsed = parse_canonical_gene_cell(cell)
+            for event in parsed.events:
+                family = _family(event, gene_symbol=gene)
+                column = gene_index * len(EVENT_FAMILIES) + family_index[family]
+                counts[column] = counts.get(column, 0.0) + 1.0
 
-                    reference = _reference_sequence(event)
-                    alternate = _alternate_sequence(event)
-                    for aa in reference:
-                        if aa in aa_index:
-                            key = reference_offset + aa_index[aa]
-                            counts[key] = counts.get(key, 0.0) + 1.0
+                reference = _reference_sequence(event)
+                alternate = _alternate_sequence(event)
+                for aa in reference:
+                    if aa in aa_index:
+                        key = reference_offset + aa_index[aa]
+                        counts[key] = counts.get(key, 0.0) + 1.0
+                for aa in alternate:
+                    symbol = "STOP" if aa == "*" else aa
+                    if symbol in alt_index:
+                        key = alternate_offset + alt_index[symbol]
+                        counts[key] = counts.get(key, 0.0) + 1.0
+
+                if (
+                    event.route == "substitution"
+                    and len(reference) == 1
+                    and len(alternate) == 1
+                ):
+                    alt_symbol = "STOP" if alternate == "*" else alternate
+                    if reference in aa_index and alt_symbol in alt_index:
+                        key = (
+                            transition_offset
+                            + aa_index[reference] * len(ALTERNATE_SYMBOLS)
+                            + alt_index[alt_symbol]
+                        )
+                        counts[key] = counts.get(key, 0.0) + 1.0
+
+                if event.route in {
+                    "insertion", "delins", "frameshift", "range_replacement"
+                }:
                     for aa in alternate:
                         symbol = "STOP" if aa == "*" else aa
                         if symbol in alt_index:
-                            key = alternate_offset + alt_index[symbol]
+                            key = inserted_offset + alt_index[symbol]
                             counts[key] = counts.get(key, 0.0) + 1.0
-
-                    if event.route == "substitution" and len(reference) == 1 and len(alternate) == 1:
-                        alt_symbol = "STOP" if alternate == "*" else alternate
-                        if reference in aa_index and alt_symbol in alt_index:
-                            key = (
-                                transition_offset
-                                + aa_index[reference] * len(ALTERNATE_SYMBOLS)
-                                + alt_index[alt_symbol]
-                            )
-                            counts[key] = counts.get(key, 0.0) + 1.0
-
-                    if event.route in {"insertion", "delins", "frameshift", "range_replacement"}:
-                        for aa in alternate:
-                            symbol = "STOP" if aa == "*" else aa
-                            if symbol in alt_index:
-                                key = inserted_offset + alt_index[symbol]
-                                counts[key] = counts.get(key, 0.0) + 1.0
         rows: list[int] = []
         columns: list[int] = []
         data: list[float] = []

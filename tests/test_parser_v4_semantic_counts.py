@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 
 from open_cancer.parser_v4_semantic_counts import (
@@ -24,3 +25,16 @@ def test_patient_semantic_counts_cover_all_parser_routes() -> None:
     assert counts["sample__parser_v4_insertion_count"] == 1
     assert counts["sample__parser_v4_range_stop_count"] == 1
     assert counts["sample__parser_v4_range_no_change_count"] == 1
+
+
+def test_vectorized_scan_keeps_whitespace_wt_and_row_values_stable() -> None:
+    frame = pd.DataFrame(
+        {
+            "G1": ["WT", " wt ", "R132H", None],
+            "G2": ["R132*", "", "E28del", "WQ288fs"],
+        }
+    )
+    fitted = ParserV4SemanticCountFamily(("G1", "G2")).fit(frame)
+    values = fitted.transform(frame).toarray()
+    total = FEATURE_NAMES.index("sample__parser_v4_total_token_count")
+    assert np.array_equal(values[:, total], np.asarray([1, 0, 2, 1]))

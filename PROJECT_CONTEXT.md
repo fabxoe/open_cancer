@@ -251,6 +251,10 @@ Residue-position과 문헌 기반 고정 co-mutation pair의 차이 및 위치 a
   기록한다.
 - 입력 데이터 해시, 유전자 순서와 Feature Spec 해시가 모두 같고 모든 캐시
   산출물 해시가 일치할 때만 `data/processed/` 캐시를 재사용한다.
+- parser-v4 의미 consumer는 공용 non-WT 희소 scan과 compiled token/cell
+  cache를 사용한다. cache key에는 parser contract, feature family version,
+  유전자 컬럼 순서 해시를 반드시 포함하며 하나라도 다르면 재사용하지 않는다.
+  raw token과 unresolved provenance는 캐시 최적화를 이유로 삭제하지 않는다.
 - family는 config에서 독립적으로 활성화하고, 실행값은 resolved config에
   자동 저장한다.
 - target이나 관측 빈도로 hotspot, vocabulary, co-mutation pair를 고르는 family는
