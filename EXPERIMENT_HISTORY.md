@@ -8,7 +8,7 @@
 ## 현재 상태
 
 - 실제 실험 수: 125
-
+- issue-571-exp-data-centric-features-parser-v4
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4533650721 (`EXP-589`, 원래 26-class 평가)
@@ -146,6 +146,7 @@
 | EXP-571 | COMPLETED | Gomin-art | #571 | Parser-v4 QC 요약 및 event span 피처 ablation | 0.4514285443 | 미제출 | INFERENCE_VERIFIED | Parser QC arm 채택, event span은 후속 조합 후보 | [보고서](reports/exp571_data_centric_features_parser_v4/README.md) |
 | EXP-589 | COMPLETED | fabxoe | #589 | EXP-527의 KIRC→KIPAN·LGG→GBMLGG 24-class 학습·class-cosine 재구성 | 0.4533650721 (원래 26-class 평가; 병합 24-class 0.5086284091) | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0064928014·fold std 개선; 두 원래 클래스 F1=0을 포함해도 Local 최고. 24-class 제출은 KIRC·LGG를 전혀 출력하지 않는 고위험 구조라 진단·다양성 후보로 보존 | [보고서](reports/exp589_merged_24class/README.md) |
 | EXP-592 | COMPLETED | fabxoe | #592 | EXP-589 + outer-train 전용 KIPAN/KIRC·GBMLGG/LGG binary specialist 확률 분할 | 0.4393703541 | 미제출 | INFERENCE_VERIFIED | EXP-589 대비 -0.0139947180·KIRC F1 0.0837359로 ARCHIVE; hard-routing 사후 진단도 0.4434467829로 부모 미달, 현재 specialist track 종료 | [보고서](reports/exp592_hierarchical_pair_specialists/README.md) |
+| EXP-516 | COMPLETED | Kangho Park | #516 | EXP-374 + fold-train 하위 25% burden quantile 샘플에 balanced_sample_weight 1.5배 추가 곱(저burden 오분류 완화 가설) | 0.4221650046 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0046259222(게이트 +0.001 미달)·LUAD -0.0640/DLBC -0.0505 클래스 붕괴로 ARCHIVE; 표적 저burden 8클래스 중 4개만 개선(KIRC/LAML/THYM/KIPAN)·4개는 악화(GBMLGG/PRAD/PCPG/SARC)로 가설 부분 지지에 그침 | [보고서](reports/exp516_burden_weighted_sample_weight/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5129,3 +5130,66 @@ glioma 그룹에서 기인하는지 분리 확인, (2) 이번 fold 표준편차 
   승격하지 않는다. `KIRC ⊂ KIPAN`, `LGG ⊂ GBMLGG`인 겹치는 라벨
   온톨로지 때문에 이는 순수 subtype 분류가 아니라 데이터셋의 상위/하위
   cohort 라벨 배정을 복원하는 문제라는 해석을 함께 보존한다.
+
+### [EXP-516] burden 기반 sample weight 보강 (저burden 오분류 완화)
+
+- 상태: COMPLETED
+- 실행자: Kangho Park
+- Issue/브랜치: #516 / `issue-516-burden-weighted-sample-weight`
+- 소스 commit: `17d36559576286705ef8619ab30b1c5454931886`
+- 시작/종료: 2026-08-06T04:39:20.547872+00:00 /
+  2026-08-06T05:04:07.226488+00:00 (1487.18초)
+
+#### 실행
+
+- Config: `configs/exp516_burden_weighted_sample_weight.yaml`
+- Metrics: `reports/exp516_burden_weighted_sample_weight/metrics.json`
+- Report: `reports/exp516_burden_weighted_sample_weight/README.md`
+- 부모: EXP-374(`configs/exp374_stop_isoform_residue_mask.yaml`)와 feature
+  set·모델 하이퍼파라미터·checkpoint 정책·fold·seed가 완전히 동일. 유일한
+  변경은 `scripts/run_hotspot_xgb.py`에 새로 추가한 `fold_sample_weight_multiplier`
+  훅으로, 각 fold의 **train 행에서만** 계산한 `sample__mutated_gene_count`
+  하위 25% quantile 샘플에 기존 `balanced_sample_weight`를 1.5배 추가로 곱한다.
+  배율(1.5x)과 quantile(25%)은 실행 전 사전 고정했고 결과를 본 뒤 조정하지
+  않았다.
+
+#### 결과
+
+- Fold Macro F1: 0.4169085778, 0.4117151405, 0.4155061175, 0.4291216267,
+  0.4371983779
+- OOF Macro F1: 0.4221650046 (fold 평균 0.4220899681, fold std 0.0095450428)
+- Accuracy / Log Loss: 0.4123528463 / 1.8675223589
+- EXP-374(0.4267909268) 대비: Macro F1 `-0.0046259222`, fold std
+  `+0.0010418259`, Log Loss `+0.0234575272`
+- 게이트(사전 고정): OOF Macro F1 ≥ +0.001 개선 **미달**; fold std 악화
+  <0.002는 통과; 클래스별 F1 `-0.05` 붕괴 없음 조건은 LUAD `-0.0640359640`,
+  DLBC `-0.0504926108`로 **위반**(BLCA `-0.0498084291`도 근접)
+- 가설 표적 저burden 8클래스(KIRC/KIPAN/GBMLGG/SARC/PRAD/PCPG/THYM/LAML) 개별
+  확인: KIRC `+0.0210618462`, LAML `+0.0180438945`, THYM `+0.0121120709`,
+  KIPAN `+0.0054204273`는 개선됐지만 GBMLGG `-0.0064316992`, PRAD
+  `-0.0013252172`, PCPG `-0.0019809932`, SARC `-0.0298091534`는 악화됐다 —
+  8개 중 4개만 가설과 일치
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — 저장 checkpoint로 재추론한 submission
+  SHA-256이 원본과 byte-level 일치, test 라벨 일치율 100%, 확률 최대 차이
+  `1.82e-7`
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp516_burden_weighted_sample_weight/metrics.json`,
+  `reports/exp516_burden_weighted_sample_weight/README.md`,
+  `reproducibility/exp516_burden_weighted_sample_weight/`
+- 결론: **ARCHIVE**. 주 지표(OOF Macro F1)와 클래스 붕괴 안전성 지표 모두
+  게이트를 통과하지 못했다. 저burden 표적 클래스에 대한 효과도 절반만
+  가설과 일치해 burden quartile 기반 균일 가중치 보강만으로는 저burden
+  오분류 문제를 해결하지 못했고, 오히려 LUAD·BLCA처럼 burden이 낮지 않은
+  클래스에 부작용을 일으켰다.
+
+#### 선택 메모
+
+`scripts/run_hotspot_xgb.py`의 `fold_sample_weight_multiplier` 훅은
+기본값 `None`이면 기존 모든 실험의 동작을 바꾸지 않는 additive 확장이며,
+`uv run pytest -q`로 회귀 여부를 확인했다. burden 기반 새 feature 축(Cell
+Cycle #170/173, POLE #181/226, functional_role_burden #257)에 이어 이번
+"학습 가중치" 축도 REJECTED로 마무리한다.

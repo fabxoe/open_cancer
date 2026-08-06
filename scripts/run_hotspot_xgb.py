@@ -114,6 +114,7 @@ def main(
     mutation_cell_parser: Any | None = None,
     mutation_parser_contract: dict[str, Any] | None = None,
     hotspot_token_normalizer: Any | None = None,
+    fold_sample_weight_multiplier: Any | None = None,
     model_class_labels: tuple[str, ...] | None = None,
     target_aliases: dict[str, str] | None = None,
 ) -> None:
@@ -357,6 +358,7 @@ def main(
     fold_test_matrices: list[sparse.csr_matrix] = []
     fold_feature_records: list[dict[str, Any]] = []
     fold_tuning_records: list[dict[str, Any]] = []
+    fold_sample_weight_records: list[dict[str, Any]] = []
     tuning_artifact_paths: list[Path] = []
     checkpoint_selection = config["training"].get(
         "checkpoint_selection", "training_metric"
@@ -465,6 +467,43 @@ def main(
             if config["training"]["balanced_sample_weight"]
             else None
         )
+        if fold_sample_weight_multiplier is not None:
+            base_sample_weight = (
+                sample_weight
+                if sample_weight is not None
+                else compute_sample_weight(class_weight="balanced", y=y_train)
+            )
+            multiplier = fold_sample_weight_multiplier(
+                fold=fold,
+                train_indices=train_indices,
+                y_train=y_train,
+                base_sample_weight=base_sample_weight,
+            )
+            sample_weight = (
+                base_sample_weight * multiplier
+                if multiplier is not None
+                else base_sample_weight
+            )
+            fold_sample_weight_records.append(
+                {
+                    "fold": fold,
+                    "applied": multiplier is not None,
+                    "multiplier_min": (
+                        float(np.min(multiplier)) if multiplier is not None else None
+                    ),
+                    "multiplier_max": (
+                        float(np.max(multiplier)) if multiplier is not None else None
+                    ),
+                    "multiplier_mean": (
+                        float(np.mean(multiplier)) if multiplier is not None else None
+                    ),
+                    "adjusted_sample_count": (
+                        int(np.sum(multiplier != 1.0))
+                        if multiplier is not None
+                        else 0
+                    ),
+                }
+            )
         model = xgb.XGBClassifier(
             **fold_model_params,
             random_state=config["seed"] + fold,
@@ -608,7 +647,13 @@ def main(
         resolved_config["fold_train_features"] = fold_feature_records
     if fold_model_tuner is not None:
         resolved_config["fold_model_tuning"] = fold_tuning_records
-    if fold_feature_builder is not None or fold_model_tuner is not None:
+    if fold_sample_weight_multiplier is not None:
+        resolved_config["fold_sample_weight_multiplier"] = fold_sample_weight_records
+    if (
+        fold_feature_builder is not None
+        or fold_model_tuner is not None
+        or fold_sample_weight_multiplier is not None
+    ):
         resolved_config_path.write_text(
             yaml.safe_dump(resolved_config, allow_unicode=True, sort_keys=False),
             encoding="utf-8",
