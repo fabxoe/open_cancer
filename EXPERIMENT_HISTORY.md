@@ -124,6 +124,7 @@
 | EXP-479 | COMPLETED | fabxoe | #479 | EXP-469 + HGVS-informed range_replacement·range_stop·range_no_change 상호 배타 의미 | 0.4087566023 | 미제출 | INFERENCE_VERIFIED | 고정 XGBoost에서 EXP-469 대비 -0.0030252·안정성/Log Loss 악화; 제출 보류, 의미는 유지하고 비튜닝 native semantic 기준선으로 동결 | [보고서](reports/exp479_parser_v4_native_semantic_range/README.md) |
 | EXP-484 | COMPLETED | 2heej | #484 | EXP-374+EXP-459 고정 0.7/0.3 확률 블렌드(#482 test-like propensity 스크리닝으로 비율 사전 고정) | 0.4320213767 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 +0.0052304·test-like subset도 +0.0022953으로 통과·Log Loss 개선·클래스 붕괴 없음. Fold std +0.0052388는 임계값 초과했으나 전 fold 개선(악화 없음)이 원인 — ADOPT_WITH_CAUTION, Public 제출은 팀 논의 후 | [보고서](reports/exp484_exp374_exp459_blend/README.md) |
 | EXP-487 | COMPLETED | fabxoe | #487 | EXP-479 native-v3 semantic schema + outer-train 전용 nested Optuna XGBoost tuning | 0.4228690293 | 미제출 | INFERENCE_VERIFIED | EXP-479 대비 +0.0141124로 native-v3 성능 회복 확인; EXP-374보다 -0.0039219로 낮아 대표 제출 후보는 아니며 튜닝된 native-v3 기준선·다양성 자산으로 보존 | [보고서](reports/exp487_native_v3_nested_xgb_tuning/README.md) |
+| EXP-497 | COMPLETED | 2heej | #497 | N6(#493/#495) isoform eligibility 수정 반영 EXP-374 재실행(EXP-392 재실행도 exploratory_ablation으로 병행) | 0.4267909268 | 미제출 | INFERENCE_VERIFIED | EXP-374·EXP-392 양쪽 모두와 OOF·confusion matrix·제출 SHA-256까지 bit-identical — eligibility 수정이 이 `residue_position(max)` 피처엔 측정 가능한 영향 없음, `NULL_RESULT`로 기록하고 EXP-374/392는 그대로 유지 | [보고서](reports/exp497_isoform_v4_eligibility_rerun/README.md) |
 | EXP-512 | COMPLETED | fabxoe | #512 | EXP-374 + parser v4 환자별 semantic token count 18개 | 0.4258183004 | 0.3329881004 | INFERENCE_VERIFIED | EXP-374 대비 OOF -0.0009726·Public -0.0132278·Log Loss 악화로 전역 count adapter ARCHIVE; parser v4 의미 체계 자체의 기각으로 해석하지 않음 | [보고서](reports/exp512_parser_v4_semantic_counts/README.md) |
 | EXP-521 | COMPLETED | fabxoe | #521 | EXP-374 + fold-safe parser-v4 26-class cosine semantic profile | 0.4479925392 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 +0.0212016124·fold std -0.0047146798로 현재 Local 최고; Log Loss는 +0.0670036077로 악화되어 Public 제출 전 주의 필요 | [보고서](reports/exp521_parser_v4_class_cosine/README.md) |
 | EXP-522 | COMPLETED | fabxoe | #522 | EXP-374 + fold-safe parser-v4 26-class smoothed mean log-likelihood profile | 0.4045242129 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0222667140·EXP-521 대비 -0.0434683264·Log Loss 큰 악화로 ARCHIVE; alpha=1 전체-vocabulary likelihood 종료 | [보고서](reports/exp522_parser_v4_class_likelihood/README.md) |
@@ -226,6 +227,7 @@
 | 2026-08-05T06:08:34.724720+00:00 | EXP-464 | Kangho-Park | `8068877c6eb96209c69ff4f5fed2d55067782dab` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp464_blend_ratio_sweep/comparison.json) |
 | 2026-08-05T06:20:33.889237+00:00 | EXP-465 | Kangho-Park | `2aaff58e5094162fe9d5fbcaccaf9dfa1e99df1a` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 0(XGBoost checkpoint 재로드 결정론), 제출 SHA-256 byte-level 일치 | 저장 checkpoint 재추론(Model A/B 각각) | INFERENCE_VERIFIED | [comparison](reproducibility/exp465_feature_subset_ensemble/comparison.json) |
 | 2026-08-05T06:46:14.485134+00:00 | EXP-459 | 2heej | `09430f2632c14ef459fb309915368bac561533f2` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.11e-16 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp459_catboost_exp374/comparison.json) |
+| 2026-08-05T10:38:40.130295+00:00 | EXP-497 | 2heej | `16c1e7346af6550c722a971b573a8a775336db58` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치(EXP-374와 byte-level 동일), test 라벨 100%, 확률 최대 차이 1.83e-07 | 미실행(부모와 feature/모델 config 동일 재실행) | INFERENCE_VERIFIED | [comparison](reproducibility/exp497_isoform_v4_eligibility_rerun/comparison.json) |
 | 2026-08-05T13:10:12.733299+00:00 | EXP-476 | Gomin-art | `ca1b4c6e4210e4eb98e1636818e0b7df8c12b852` / [`exp-476-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-476-repro-v1) | SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 2.98e-08, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp476_config_feature_pipeline/comparison.json) |
 | 2026-08-05T15:29:59.157313+00:00 | EXP-487 | fabxoe | `ea5278c0b9342e77d6552c2a3b4039ff550ff81a` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.43e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp487_native_v3_nested_xgb_tuning/comparison.json) |
 | 2026-08-05T18:22:27.697340+00:00 | EXP-521 | fabxoe | `eee39c928e60e12eb2c24fd56edbe0c025522da9` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.46e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp521_parser_v4_class_cosine/comparison.json) |
@@ -4350,6 +4352,57 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   fold 붕괴형 불안정과는 다르다고 판단해 `ADOPT_WITH_CAUTION`으로 기록한다.
   EXP-449(LightGBM) 계열 블렌드가 전부 실패했던 이전 결론("어떤 모델을
   블렌드해도 test-like gate에서 실패한다")에 대한 반례다.
+
+### [EXP-497] N6 isoform eligibility 수정 반영 EXP-374/392 재실행
+
+- 상태: COMPLETED
+- 실행자: 2heej
+- Issue/브랜치: #497 / `issue-497-exp374-392-isoform-rerun`
+- 부모: EXP-374(official config), EXP-392(exploratory_ablation config)
+- 배경: Issue #493(N6)/PR #495(commit `b054623`, 2026-08-05 병합)가 isoform
+  substitution eligibility 판정을 legacy 정규식(`mutation_features.
+  _SUBSTITUTION`)에서 parser v4(`mutation_parser_contract.
+  route_protein_mutation`)로 교체했다. Target-independent 감사에서 legacy
+  정규식이 stop 표기 `X`(예: `R507X`)를 alternate로 인식하지 못해 486,399개
+  고유 (gene, token)쌍 중 10,397건(2.14%)을 "complex"로 잘못 분류해 isoform
+  위치 매칭에서 누락시키고 있었음이 드러났다(336건(0.07%)은 반대 방향, M1
+  개시코돈 오매칭 legacy 버그를 v4가 올바르게 배제). 이 마스크는 EXP-374·
+  EXP-392가 그대로 쓰는 `isoform_position_mask.py`에 코드 변경 없이 자동으로
+  전파되므로, 실제 OOF 영향을 측정하기 위해 이 실험을 열었다.
+- Config: `configs/exp497_isoform_v4_eligibility_rerun.yaml`(official, EXP-374
+  파생) / `configs/exp497_exp392_isoform_v4_rerun.yaml`(exploratory_ablation,
+  EXP-392 파생) — 둘 다 identity 필드·notes를 제외하면 부모와 byte-identical.
+- Runner: `scripts/run_exp497_isoform_v4_eligibility_rerun.py` /
+  `scripts/run_exp497_exp392_isoform_v4_rerun.py`
+- Metrics/Report: `reports/exp497_isoform_v4_eligibility_rerun/`
+  (README 포함) / `reports/exp497_exp392_isoform_v4_rerun/`
+- 시작/종료(official): 2026-08-05T10:30:19.144616+00:00 /
+  2026-08-05T10:38:38.072564+00:00 (498.93초)
+- 시작/종료(ablation): 2026-08-05T10:42:30.990879+00:00 /
+  2026-08-05T10:54:49.660462+00:00 (738.67초)
+
+#### 결과와 판단
+
+- Official(EXP-374 재실행) OOF Macro F1: `0.4267909268459148` — EXP-374
+  원본과 fold별 점수·confusion matrix·per-class F1·제출 SHA-256까지
+  bit-identical.
+- Ablation(EXP-392 재실행) OOF Macro F1: `0.42904318881178166` — EXP-392
+  원본과 동일하게 bit-identical.
+- 코드가 실제로 수정 버전을 로드했는지 별도 확인(worktree venv에서
+  `resolve_substitution_eligibility` 존재 확인) — 세팅 오류가 아니라 실제
+  결과다.
+- 원인 추정: `residue_position`이 유전자별 `max` 집계라서, 새로 trusted된
+  10,397건이 해당 (sample, gene) 조합에서 기존에 이미 trusted였던 다른
+  토큰의 위치값을 넘어서는 경우가 이 데이터셋엔 없었던 것으로 보인다.
+- Public LB: 미제출(부모와 동일 결과라 제출 의미 없음)
+- 재현 상태: `INFERENCE_VERIFIED` — 프레임워크 자체 재현성 체크가
+  `comparison_metrics_path`로 지정한 부모 metrics와 독립적으로
+  submission SHA-256·라벨·확률 일치를 확인(둘 다 `passed: true`).
+- 판단: `NULL_RESULT`. N6 correctness 수정 자체는 유효하고 유지해야 하지만
+  (legacy가 `X` stop 표기를 놓친 명백한 버그), 이 feature 표현(gene-level
+  max 집계)으로는 그 수정의 효과가 드러나지 않는다. EXP-374/392는 그대로
+  최고 기록으로 유지, 재제출 불필요. 다른 집계 방식(count/presence)으로
+  효과가 드러나는지는 이 Issue 스코프 밖 — 필요하면 별도 Experiment Issue.
 
 ### [EXP-487] Parser native-v3 nested XGBoost tuning
 

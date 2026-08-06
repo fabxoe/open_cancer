@@ -1,0 +1,58 @@
+[
+  {
+    "gene": "PTEN",
+    "token": "-151fs",
+    "legacy_truncating": true,
+    "v4_truncating": false,
+    "v4_route": "unresolved",
+    "v4_event_type": "other_unmappable"
+  },
+  {
+    "gene": "PTEN",
+    "token": "-46fs",
+    "legacy_truncating": true,
+    "v4_truncating": false,
+    "v4_route": "unresolved",
+    "v4_event_type": "other_unmappable"
+  },
+  {
+    "gene": "PTEN",
+    "token": "-65fs",
+    "legacy_truncating": true,
+    "v4_truncating": false,
+    "v4_route": "unresolved",
+    "v4_event_type": "other_unmappable"
+  },
+  {
+    "gene": "PTEN",
+    "token": "-74fs",
+    "legacy_truncating": true,
+    "v4_truncating": false,
+    "v4_route": "unresolved",
+    "v4_event_type": "other_unmappable"
+  },
+  {
+    "gene": "TP53",
+    "token": "-222fs",
+    "legacy_truncating": true,
+    "v4_truncating": false,
+    "v4_route": "unresolved",
+    "v4_event_type": "other_unmappable"
+  },
+  {
+    "gene": "TP53",
+    "token": "-278fs",
+    "legacy_truncating": true,
+    "v4_truncating": false,
+    "v4_route": "unresolved",
+    "v4_event_type": "other_unmappable"
+  },
+  {
+    "gene": "TP53",
+    "token": "-347fs",
+    "legacy_truncating": true,
+    "v4_truncating": false,
+    "v4_route": "unresolved",
+    "v4_event_type": "other_unmappable"
+  }
+]
