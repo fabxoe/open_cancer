@@ -1,0 +1,1304 @@
+experiment:
+  record_role: official
+  issue_number: 603
+  experiment_id: EXP-603
+  component_experiments:
+  - EXP-374
+  - EXP-514
+  branch: issue-603-directional-lineage-burden
+  owner: Kangho Park
+  source_commit: ae30cd03e1b17178fb705091e00c1138a57db236
+  dirty_worktree: false
+  started_at: '2026-08-06T06:04:51.887253+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+  model_class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+  target_aliases: {}
+  evaluation_class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features:
+  - sample__mutated_gene_count_log1p
+  - sample__total_variant_count_log1p
+  - sample__multi_variant_gene_count_log1p
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features:
+  - max_residue_position
+  position_missing_policy: zero
+  position_token_scope: include_complex
+  position_transform: raw
+  position_bin_width: null
+  position_semantics: protein residue indices explicitly written in source tokens;
+    no transcript, codon nucleotide, genomic coordinate, or protein-length inference
+  position_semantic_filter:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless frozen Ensembl annotation; no target or distribution fit
+    ensembl_release: 116
+    assembly: GRCh38
+    manifest_path: knowledge/ensembl_isoform_annotation_v1.json
+    manifest_sha256: 568ea31f5b7fc7ff47d181fe552d39f3b9185f8d0a76cbb2a49d06be022d5bc0
+    annotation_cache_path: data/external/ensembl_release_116/competition_gene_isoform_index.json
+    annotation_cache_sha256: b9565339f1755d5b07e782c39064207310fa6c254b2e915a15492f4f38903daa
+    trusted_categories:
+    - CANONICAL_MATCH
+    - MANE_MATCH
+    - OTHER_ISOFORM_MATCH
+    masked_categories:
+    - COMPLEX_OR_UNMAPPABLE
+    - OUTSIDE_ALL_KNOWN_ISOFORMS
+    - POSITION_VALID_REF_MISMATCH
+    team_lead_exception_reference: https://github.com/fabxoe/open_cancer/issues/311#issuecomment-5170121279
+    target_used: false
+    test_distribution_used_for_rule: false
+    public_leaderboard_used: false
+  co_mutation_pairs: []
+  co_mutation_semantics: fixed, literature-curated gene pairs (mutual exclusivity
+    or co-occurrence); gene-level 'any mutation' presence, not restricted to a specific
+    hotspot codon; not fit from this dataset's target or frequency
+  feature_factory_version: 1.1.0
+  feature_spec_sha256: 3e3bf6f5aa71d20e01fa0f3115582dd59c105883e09bc72c3c17de7d755f28f9
+  hotspot_features:
+  - hotspot__BRAF_600
+  - hotspot__CTNNB1_37
+  - hotspot__CTNNB1_45
+  - hotspot__EGFR_790
+  - hotspot__EGFR_858
+  - hotspot__GNAS_201
+  - hotspot__HRAS_12
+  - hotspot__HRAS_13
+  - hotspot__HRAS_61
+  - hotspot__IDH1_132
+  - hotspot__IDH2_140
+  - hotspot__IDH2_172
+  - hotspot__PIK3CA_545
+  - hotspot__PIK3CA_1047
+  - hotspot__TP53_175
+  - hotspot__TP53_245
+  - hotspot__TP53_248
+  - hotspot__TP53_273
+  - hotspot__TP53_282
+  - hotspot__PIK3CA_542
+  - hotspot__PIK3CA_546
+  - hotspot__PIK3CA_345
+  - hotspot__PTEN_130
+  - hotspot__PTEN_233
+  - hotspot__FBXW7_505
+  - hotspot__AKT1_17
+  - hotspot__U2AF1_34
+  - hotspot__APC_1450
+  - hotspot__APC_876
+  - hotspot__POLE_286
+  - hotspot__POLE_411
+  - hotspot__KIT_816
+  - hotspot__FGFR3_249
+  - hotspot__RAC1_29
+  - hotspot__known_hotspot_total_count
+  known_hotspots:
+  - gene: BRAF
+    position: 600
+    reference_aa: V
+  - gene: CTNNB1
+    position: 37
+    reference_aa: S
+  - gene: CTNNB1
+    position: 45
+    reference_aa: S
+  - gene: EGFR
+    position: 790
+    reference_aa: T
+  - gene: EGFR
+    position: 858
+    reference_aa: L
+  - gene: GNAS
+    position: 201
+    reference_aa: R
+  - gene: HRAS
+    position: 12
+    reference_aa: G
+  - gene: HRAS
+    position: 13
+    reference_aa: G
+  - gene: HRAS
+    position: 61
+    reference_aa: Q
+  - gene: IDH1
+    position: 132
+    reference_aa: R
+  - gene: IDH2
+    position: 140
+    reference_aa: R
+  - gene: IDH2
+    position: 172
+    reference_aa: R
+  - gene: PIK3CA
+    position: 545
+    reference_aa: E
+  - gene: PIK3CA
+    position: 1047
+    reference_aa: H
+  - gene: TP53
+    position: 175
+    reference_aa: R
+  - gene: TP53
+    position: 245
+    reference_aa: G
+  - gene: TP53
+    position: 248
+    reference_aa: R
+  - gene: TP53
+    position: 273
+    reference_aa: R
+  - gene: TP53
+    position: 282
+    reference_aa: R
+  - gene: PIK3CA
+    position: 542
+    reference_aa: E
+  - gene: PIK3CA
+    position: 546
+    reference_aa: Q
+  - gene: PIK3CA
+    position: 345
+    reference_aa: N
+  - gene: PTEN
+    position: 130
+    reference_aa: R
+  - gene: PTEN
+    position: 233
+    reference_aa: R
+  - gene: FBXW7
+    position: 505
+    reference_aa: R
+  - gene: AKT1
+    position: 17
+    reference_aa: E
+  - gene: U2AF1
+    position: 34
+    reference_aa: S
+  - gene: APC
+    position: 1450
+    reference_aa: R
+  - gene: APC
+    position: 876
+    reference_aa: R
+  - gene: POLE
+    position: 286
+    reference_aa: P
+  - gene: POLE
+    position: 411
+    reference_aa: V
+  - gene: KIT
+    position: 816
+    reference_aa: D
+  - gene: FGFR3
+    position: 249
+    reference_aa: S
+  - gene: RAC1
+    position: 29
+    reference_aa: P
+  hotspot_validation_note: The hotspot table is fixed before test transformation.
+    The original 19 and additional 15 positions are literature-defined; the config-driven
+    runner validates the additions using train rows only. Test data is not used to
+    select or filter the official list. A token counts only when both position and
+    reference AA match.
+  requested_families:
+    mutation_type:
+      enabled: true
+      parser:
+        name: stop_notation_invariant_v2
+        definition_version: 2.1.0
+        equivalent_stop_alternates:
+        - '*'
+        - X
+        - Ter
+        other_v1_semantics_preserved: true
+    robust_aggregates:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+    residue_position:
+      enabled: true
+      aggregates:
+      - max
+      missing_policy: zero
+      complex_tokens: include
+      transform: raw
+      isoform_semantic_mask:
+        enabled: true
+        manifest_path: knowledge/ensembl_isoform_annotation_v1.json
+        manifest_sha256: 568ea31f5b7fc7ff47d181fe552d39f3b9185f8d0a76cbb2a49d06be022d5bc0
+        annotation_cache_path: data/external/ensembl_release_116/competition_gene_isoform_index.json
+        annotation_cache_sha256: b9565339f1755d5b07e782c39064207310fa6c254b2e915a15492f4f38903daa
+        trusted_categories:
+        - CANONICAL_MATCH
+        - MANE_MATCH
+        - OTHER_ISOFORM_MATCH
+        masked_categories:
+        - COMPLEX_OR_UNMAPPABLE
+        - OUTSIDE_ALL_KNOWN_ISOFORMS
+        - POSITION_VALID_REF_MISMATCH
+  hotspot_table: extended_34
+  hotspot_evidence_scope: additions_15
+  fold_train_hotspot_evidence:
+    '0':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 70
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 24
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 18
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 51
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 20
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 22
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 7
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 14
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 6
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 5
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 6
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 9
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 7
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 10
+      observed_reference_aas:
+      - P
+    '1':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 69
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 25
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 24
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 47
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 15
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 7
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 10
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 18
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 12
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 11
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 5
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 10
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 10
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 12
+      observed_reference_aas:
+      - P
+    '2':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 65
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 28
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 23
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 49
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 17
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 6
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 13
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 10
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 6
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 7
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 9
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 8
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 9
+      observed_reference_aas:
+      - P
+    '3':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 66
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 26
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 22
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 53
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 20
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 6
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 12
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 12
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 11
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 8
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 9
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 10
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 9
+      observed_reference_aas:
+      - P
+    '4':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 66
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 21
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 25
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 48
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 20
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 6
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 11
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 8
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 11
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 6
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 7
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 9
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 12
+      observed_reference_aas:
+      - P
+  minimum_matching_train_rows: 5
+  selection_uses_test_data: false
+feature_outputs:
+  train_features.npz:
+    path: data/processed/exp603_directional_lineage_burden_features/train_features.npz
+    sha256: a0de5cb5da621e8a2a8e653251d6857b4b6bc4f2cb80192f14ca624191f89512
+  test_features.npz:
+    path: data/processed/exp603_directional_lineage_burden_features/test_features.npz
+    sha256: 37980e0b4569b58a94209a5a731f4c0ced0056fc8534de2e139b273dbf5be3e9
+  feature_names.json:
+    path: data/processed/exp603_directional_lineage_burden_features/feature_names.json
+    sha256: 29645caacc5288e19c6762ec644e38a1d500b5b9cd8b2e087aafe3997aa1fd80
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+  - exp369_feature_spec_with_stop_notation_invariant_parser
+  - ensembl_release_116_residue_position_mask
+  - fixed_pathway_mutated_and_lof_gene_counts
+  - fixed_pathway_mutation_type_gene_counts
+  - kirc_kidney_glioma_directional_lineage_mutated_and_lof_gene_counts
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  command: uv run python scripts/run_exp603_directional_lineage_burden.py
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]
+  platform: Windows-10-10.0.26200-SP0
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: bc7da4e6e1f133ee6b1f8c5cd4c86f9b87d336d686ceaacddbe20254b0771d23
+fold_train_features:
+- fold: 0
+  feature_name_count: 70
+  feature_names_sha256: 7b65e40ae9f935be2cc3e7653a09ca8db82e8d1d8adee0ed2f2996342ed37c09
+  feature_name_preview:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__pathway_kipan_nonccrcc_lineage__lof_gene_count
+  - sample__pathway_lgg_idh_lineage__mutated_gene_count
+  - sample__pathway_lgg_idh_lineage__lof_gene_count
+  - sample__pathway_gbm_idh_wildtype_lineage__mutated_gene_count
+  - sample__pathway_gbm_idh_wildtype_lineage__lof_gene_count
+  registry:
+    fixed_pathway_burden:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    kirc_kidney_glioma_directional_lineage_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 8
+      feature_names_sha256: f55d257ea91c850d80d896b356c9cfb2dc44d479ec40226fd2d6b87c4470547d
+      fit_scope: stateless
+      external_knowledge:
+      - source: 'Manually curated from independent cancer-genetics literature, split
+          by molecular-subtype direction instead of by single anatomic/organ group
+          (unlike knowledge/kirc_kidney_glioma_lineage_v1.json, which pooled each
+          organ''s drivers into one undirected group). Four fixed gene lists: (1)
+          kirc_lineage (VHL, MTOR) - defining/associated ccRCC(KIRC) driver genes
+          on the VHL-HIF-mTOR axis; (2) kipan_nonccrcc_lineage (TSC1, TSC2, MET) -
+          drivers associated with non-clear-cell renal tumors that fall inside the
+          heterogeneous KIPAN superclass (papillary RCC''s defining MET driver; TSC1/TSC2-associated
+          non-ccRCC renal tumors); (3) lgg_idh_lineage (IDH1, IDH2, ATRX, TP53) -
+          WHO CNS5 IDH-mutant astrocytoma co-mutation signature; (4) gbm_idh_wildtype_lineage
+          (NF1, PTEN, EGFR) - WHO CNS5 / cIMPACT-NOW IDH-wildtype GBM molecular signature
+          (EGFR amplification/mutation, PTEN loss, NF1 loss). Gene-to-group assignment
+          is fixed from this independent literature, not from this competition''s
+          per-class mutation frequencies, SUBCLASS labels, or Public LB.'
+        version: 1.0.0
+        license: N/A - hand-curated gene-lineage membership derived from published
+          cancer-genetics literature (WHO CNS5 IDH-based glioma classification; WHO
+          renal tumor classification VHL/ccRCC and MET/papillary-RCC driver associations);
+          not extracted from a single licensed dataset file.
+        sha256: 466e1aeabe7e50a9ce2bafd1ff3e9ecec62349a1e8a247bb4257966975d3ed86
+        uri: 'N/A: hand-curated literature gene panel; no single downloadable source
+          file or repository commit to cite (same provenance pattern as knowledge/kirc_kidney_glioma_lineage_v1.json).'
+    pathway_mutation_type_composition:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 70
+      feature_names_sha256: 7b65e40ae9f935be2cc3e7653a09ca8db82e8d1d8adee0ed2f2996342ed37c09
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_count: ADAMTS5__complex
+        sample__pathway_hippo__complex_gene_count: TAOK2__complex
+        sample__pathway_myc__complex_gene_count: sample__missing_gene_count
+        sample__pathway_notch__complex_gene_count: CREBBP__complex
+        sample__pathway_nrf2__complex_gene_count: sample__missing_gene_count
+        sample__pathway_rtk_ras__complex_gene_count: GNG2__nonsense
+        sample__pathway_tgf_beta__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_count: ADAMTS5__complex
+  base_feature_names_to_drop_count: 0
+  base_feature_names_to_drop_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  base_feature_names_to_drop_preview: []
+  base_feature_names_after_drop_sha256: 8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf
+- fold: 1
+  feature_name_count: 71
+  feature_names_sha256: 647419520548dd631979068f50397e7bc03c01806625e10958994d5fb5797ee9
+  feature_name_preview:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__pathway_kipan_nonccrcc_lineage__lof_gene_count
+  - sample__pathway_lgg_idh_lineage__mutated_gene_count
+  - sample__pathway_lgg_idh_lineage__lof_gene_count
+  - sample__pathway_gbm_idh_wildtype_lineage__mutated_gene_count
+  - sample__pathway_gbm_idh_wildtype_lineage__lof_gene_count
+  registry:
+    fixed_pathway_burden:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    kirc_kidney_glioma_directional_lineage_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 8
+      feature_names_sha256: f55d257ea91c850d80d896b356c9cfb2dc44d479ec40226fd2d6b87c4470547d
+      fit_scope: stateless
+      external_knowledge:
+      - source: 'Manually curated from independent cancer-genetics literature, split
+          by molecular-subtype direction instead of by single anatomic/organ group
+          (unlike knowledge/kirc_kidney_glioma_lineage_v1.json, which pooled each
+          organ''s drivers into one undirected group). Four fixed gene lists: (1)
+          kirc_lineage (VHL, MTOR) - defining/associated ccRCC(KIRC) driver genes
+          on the VHL-HIF-mTOR axis; (2) kipan_nonccrcc_lineage (TSC1, TSC2, MET) -
+          drivers associated with non-clear-cell renal tumors that fall inside the
+          heterogeneous KIPAN superclass (papillary RCC''s defining MET driver; TSC1/TSC2-associated
+          non-ccRCC renal tumors); (3) lgg_idh_lineage (IDH1, IDH2, ATRX, TP53) -
+          WHO CNS5 IDH-mutant astrocytoma co-mutation signature; (4) gbm_idh_wildtype_lineage
+          (NF1, PTEN, EGFR) - WHO CNS5 / cIMPACT-NOW IDH-wildtype GBM molecular signature
+          (EGFR amplification/mutation, PTEN loss, NF1 loss). Gene-to-group assignment
+          is fixed from this independent literature, not from this competition''s
+          per-class mutation frequencies, SUBCLASS labels, or Public LB.'
+        version: 1.0.0
+        license: N/A - hand-curated gene-lineage membership derived from published
+          cancer-genetics literature (WHO CNS5 IDH-based glioma classification; WHO
+          renal tumor classification VHL/ccRCC and MET/papillary-RCC driver associations);
+          not extracted from a single licensed dataset file.
+        sha256: 466e1aeabe7e50a9ce2bafd1ff3e9ecec62349a1e8a247bb4257966975d3ed86
+        uri: 'N/A: hand-curated literature gene panel; no single downloadable source
+          file or repository commit to cite (same provenance pattern as knowledge/kirc_kidney_glioma_lineage_v1.json).'
+    pathway_mutation_type_composition:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 71
+      feature_names_sha256: 647419520548dd631979068f50397e7bc03c01806625e10958994d5fb5797ee9
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_count: TP53__complex
+        sample__pathway_hippo__complex_gene_count: LCK__nonsense
+        sample__pathway_myc__complex_gene_count: sample__missing_gene_count
+        sample__pathway_nrf2__complex_gene_count: sample__missing_gene_count
+        sample__pathway_pi3k__complex_gene_count: CLDN11__nonsense
+        sample__pathway_tgf_beta__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_count: TP53__complex
+  base_feature_names_to_drop_count: 0
+  base_feature_names_to_drop_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  base_feature_names_to_drop_preview: []
+  base_feature_names_after_drop_sha256: 8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf
+- fold: 2
+  feature_name_count: 71
+  feature_names_sha256: e6c7ed535b3df5c42d421cb17d1eeeacb9e89dfa6e7581ccc12bd5b085a941fb
+  feature_name_preview:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__pathway_kipan_nonccrcc_lineage__lof_gene_count
+  - sample__pathway_lgg_idh_lineage__mutated_gene_count
+  - sample__pathway_lgg_idh_lineage__lof_gene_count
+  - sample__pathway_gbm_idh_wildtype_lineage__mutated_gene_count
+  - sample__pathway_gbm_idh_wildtype_lineage__lof_gene_count
+  registry:
+    fixed_pathway_burden:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    kirc_kidney_glioma_directional_lineage_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 8
+      feature_names_sha256: f55d257ea91c850d80d896b356c9cfb2dc44d479ec40226fd2d6b87c4470547d
+      fit_scope: stateless
+      external_knowledge:
+      - source: 'Manually curated from independent cancer-genetics literature, split
+          by molecular-subtype direction instead of by single anatomic/organ group
+          (unlike knowledge/kirc_kidney_glioma_lineage_v1.json, which pooled each
+          organ''s drivers into one undirected group). Four fixed gene lists: (1)
+          kirc_lineage (VHL, MTOR) - defining/associated ccRCC(KIRC) driver genes
+          on the VHL-HIF-mTOR axis; (2) kipan_nonccrcc_lineage (TSC1, TSC2, MET) -
+          drivers associated with non-clear-cell renal tumors that fall inside the
+          heterogeneous KIPAN superclass (papillary RCC''s defining MET driver; TSC1/TSC2-associated
+          non-ccRCC renal tumors); (3) lgg_idh_lineage (IDH1, IDH2, ATRX, TP53) -
+          WHO CNS5 IDH-mutant astrocytoma co-mutation signature; (4) gbm_idh_wildtype_lineage
+          (NF1, PTEN, EGFR) - WHO CNS5 / cIMPACT-NOW IDH-wildtype GBM molecular signature
+          (EGFR amplification/mutation, PTEN loss, NF1 loss). Gene-to-group assignment
+          is fixed from this independent literature, not from this competition''s
+          per-class mutation frequencies, SUBCLASS labels, or Public LB.'
+        version: 1.0.0
+        license: N/A - hand-curated gene-lineage membership derived from published
+          cancer-genetics literature (WHO CNS5 IDH-based glioma classification; WHO
+          renal tumor classification VHL/ccRCC and MET/papillary-RCC driver associations);
+          not extracted from a single licensed dataset file.
+        sha256: 466e1aeabe7e50a9ce2bafd1ff3e9ecec62349a1e8a247bb4257966975d3ed86
+        uri: 'N/A: hand-curated literature gene panel; no single downloadable source
+          file or repository commit to cite (same provenance pattern as knowledge/kirc_kidney_glioma_lineage_v1.json).'
+    pathway_mutation_type_composition:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 71
+      feature_names_sha256: e6c7ed535b3df5c42d421cb17d1eeeacb9e89dfa6e7581ccc12bd5b085a941fb
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_count: CD8A__nonsense
+        sample__pathway_hippo__complex_gene_count: sample__missing_gene_count
+        sample__pathway_myc__complex_gene_count: sample__missing_gene_count
+        sample__pathway_nrf2__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tgf_beta__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_count: CD8A__nonsense
+        sample__pathway_wnt__complex_gene_count: LUC7L3__synonymous
+  base_feature_names_to_drop_count: 0
+  base_feature_names_to_drop_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  base_feature_names_to_drop_preview: []
+  base_feature_names_after_drop_sha256: 8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf
+- fold: 3
+  feature_name_count: 71
+  feature_names_sha256: ea53162da7cf926acb13f0c4f6ec785c13b2da977b82522b6b9da36b59621400
+  feature_name_preview:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__pathway_kipan_nonccrcc_lineage__lof_gene_count
+  - sample__pathway_lgg_idh_lineage__mutated_gene_count
+  - sample__pathway_lgg_idh_lineage__lof_gene_count
+  - sample__pathway_gbm_idh_wildtype_lineage__mutated_gene_count
+  - sample__pathway_gbm_idh_wildtype_lineage__lof_gene_count
+  registry:
+    fixed_pathway_burden:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    kirc_kidney_glioma_directional_lineage_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 8
+      feature_names_sha256: f55d257ea91c850d80d896b356c9cfb2dc44d479ec40226fd2d6b87c4470547d
+      fit_scope: stateless
+      external_knowledge:
+      - source: 'Manually curated from independent cancer-genetics literature, split
+          by molecular-subtype direction instead of by single anatomic/organ group
+          (unlike knowledge/kirc_kidney_glioma_lineage_v1.json, which pooled each
+          organ''s drivers into one undirected group). Four fixed gene lists: (1)
+          kirc_lineage (VHL, MTOR) - defining/associated ccRCC(KIRC) driver genes
+          on the VHL-HIF-mTOR axis; (2) kipan_nonccrcc_lineage (TSC1, TSC2, MET) -
+          drivers associated with non-clear-cell renal tumors that fall inside the
+          heterogeneous KIPAN superclass (papillary RCC''s defining MET driver; TSC1/TSC2-associated
+          non-ccRCC renal tumors); (3) lgg_idh_lineage (IDH1, IDH2, ATRX, TP53) -
+          WHO CNS5 IDH-mutant astrocytoma co-mutation signature; (4) gbm_idh_wildtype_lineage
+          (NF1, PTEN, EGFR) - WHO CNS5 / cIMPACT-NOW IDH-wildtype GBM molecular signature
+          (EGFR amplification/mutation, PTEN loss, NF1 loss). Gene-to-group assignment
+          is fixed from this independent literature, not from this competition''s
+          per-class mutation frequencies, SUBCLASS labels, or Public LB.'
+        version: 1.0.0
+        license: N/A - hand-curated gene-lineage membership derived from published
+          cancer-genetics literature (WHO CNS5 IDH-based glioma classification; WHO
+          renal tumor classification VHL/ccRCC and MET/papillary-RCC driver associations);
+          not extracted from a single licensed dataset file.
+        sha256: 466e1aeabe7e50a9ce2bafd1ff3e9ecec62349a1e8a247bb4257966975d3ed86
+        uri: 'N/A: hand-curated literature gene panel; no single downloadable source
+          file or repository commit to cite (same provenance pattern as knowledge/kirc_kidney_glioma_lineage_v1.json).'
+    pathway_mutation_type_composition:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 71
+      feature_names_sha256: ea53162da7cf926acb13f0c4f6ec785c13b2da977b82522b6b9da36b59621400
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_count: TP53__complex
+        sample__pathway_hippo__complex_gene_count: TAOK2__complex
+        sample__pathway_myc__complex_gene_count: sample__missing_gene_count
+        sample__pathway_nrf2__complex_gene_count: sample__missing_gene_count
+        sample__pathway_rtk_ras__complex_gene_count: PEX14__frameshift
+        sample__pathway_tgf_beta__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_count: TP53__complex
+  base_feature_names_to_drop_count: 0
+  base_feature_names_to_drop_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  base_feature_names_to_drop_preview: []
+  base_feature_names_after_drop_sha256: 8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf
+- fold: 4
+  feature_name_count: 70
+  feature_names_sha256: 1da1f6c8b4986776c99822b2cac346d41da132104c0342632863ea81caaa227d
+  feature_name_preview:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__pathway_kipan_nonccrcc_lineage__lof_gene_count
+  - sample__pathway_lgg_idh_lineage__mutated_gene_count
+  - sample__pathway_lgg_idh_lineage__lof_gene_count
+  - sample__pathway_gbm_idh_wildtype_lineage__mutated_gene_count
+  - sample__pathway_gbm_idh_wildtype_lineage__lof_gene_count
+  registry:
+    fixed_pathway_burden:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    kirc_kidney_glioma_directional_lineage_burden:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 8
+      feature_names_sha256: f55d257ea91c850d80d896b356c9cfb2dc44d479ec40226fd2d6b87c4470547d
+      fit_scope: stateless
+      external_knowledge:
+      - source: 'Manually curated from independent cancer-genetics literature, split
+          by molecular-subtype direction instead of by single anatomic/organ group
+          (unlike knowledge/kirc_kidney_glioma_lineage_v1.json, which pooled each
+          organ''s drivers into one undirected group). Four fixed gene lists: (1)
+          kirc_lineage (VHL, MTOR) - defining/associated ccRCC(KIRC) driver genes
+          on the VHL-HIF-mTOR axis; (2) kipan_nonccrcc_lineage (TSC1, TSC2, MET) -
+          drivers associated with non-clear-cell renal tumors that fall inside the
+          heterogeneous KIPAN superclass (papillary RCC''s defining MET driver; TSC1/TSC2-associated
+          non-ccRCC renal tumors); (3) lgg_idh_lineage (IDH1, IDH2, ATRX, TP53) -
+          WHO CNS5 IDH-mutant astrocytoma co-mutation signature; (4) gbm_idh_wildtype_lineage
+          (NF1, PTEN, EGFR) - WHO CNS5 / cIMPACT-NOW IDH-wildtype GBM molecular signature
+          (EGFR amplification/mutation, PTEN loss, NF1 loss). Gene-to-group assignment
+          is fixed from this independent literature, not from this competition''s
+          per-class mutation frequencies, SUBCLASS labels, or Public LB.'
+        version: 1.0.0
+        license: N/A - hand-curated gene-lineage membership derived from published
+          cancer-genetics literature (WHO CNS5 IDH-based glioma classification; WHO
+          renal tumor classification VHL/ccRCC and MET/papillary-RCC driver associations);
+          not extracted from a single licensed dataset file.
+        sha256: 466e1aeabe7e50a9ce2bafd1ff3e9ecec62349a1e8a247bb4257966975d3ed86
+        uri: 'N/A: hand-curated literature gene panel; no single downloadable source
+          file or repository commit to cite (same provenance pattern as knowledge/kirc_kidney_glioma_lineage_v1.json).'
+    pathway_mutation_type_composition:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 70
+      feature_names_sha256: 1da1f6c8b4986776c99822b2cac346d41da132104c0342632863ea81caaa227d
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_count: TP53__complex
+        sample__pathway_hippo__complex_gene_count: GLRX2__nonsense
+        sample__pathway_myc__complex_gene_count: sample__missing_gene_count
+        sample__pathway_notch__complex_gene_count: NOTCH2__complex
+        sample__pathway_nrf2__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tgf_beta__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_count: TP53__complex
+        sample__pathway_wnt__complex_gene_count: TLE4__complex
+  base_feature_names_to_drop_count: 0
+  base_feature_names_to_drop_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  base_feature_names_to_drop_preview: []
+  base_feature_names_after_drop_sha256: 8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf

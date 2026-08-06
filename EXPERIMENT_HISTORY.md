@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 128
+- 실제 실험 수: 129
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4533650721 (`EXP-589`, 원래 26-class 평가)
@@ -148,6 +148,7 @@
 | EXP-610 | COMPLETED | fabxoe | #610 | EXP-527 26-class base + outer-train 전용 KIPAN/KIRC·GBMLGG/LGG gated binary specialist | 0.4298424283 | 미제출 | NOT_STARTED | EXP-527 대비 -0.0170298424·fold std/Log Loss 악화, KIRC·LGG F1 대폭 하락으로 ARCHIVE; 타 노트북식 hard gated reranker는 현재 강한 base에 재현되지 않음 | [보고서](reports/exp610_gated_pair_specialists/README.md) |
 | EXP-516 | COMPLETED | Kangho Park | #516 | EXP-374 + fold-train 하위 25% burden quantile 샘플에 balanced_sample_weight 1.5배 추가 곱(저burden 오분류 완화 가설) | 0.4221650046 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0046259222(게이트 +0.001 미달)·LUAD -0.0640/DLBC -0.0505 클래스 붕괴로 ARCHIVE; 표적 저burden 8클래스 중 4개만 개선(KIRC/LAML/THYM/KIPAN)·4개는 악화(GBMLGG/PRAD/PCPG/SARC)로 가설 부분 지지에 그침 | [보고서](reports/exp516_burden_weighted_sample_weight/README.md) |
 | EXP-596 | COMPLETED | 2heej | #596 | 동결 Feature Spec v1 + RandomForest (#505 스태킹 다양성 후보) | 0.4052772619 | 미제출 | INFERENCE_VERIFIED | CatBoost v1 최고 대비 -0.0141799675, Logistic v1보다는 높음; #505 S0 다양성 게이트 판정은 EXP-123/125/127 OOF 필요 — 판정 보류 | [보고서](reports/exp596_random_forest_v1/README.md) |
+| EXP-603 | COMPLETED | Kangho Park | #603 | EXP-514(pooled kidney/glioma 2그룹) 리페어: 같은 14개 유전자를 방향 일치 4그룹(kirc_lineage/kipan_nonccrcc_lineage/lgg_idh_lineage/gbm_idh_wildtype_lineage)으로 재분리한 burden 8열, FH 제외·kidney-context PTEN 제외 | 0.4249849883 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0018059386(OOF 하락, 게이트 실패)로 ARCHIVE; 방향 100% 일치 재구성에도 GBMLGG -0.0152로 EXP-514의 -0.0167과 거의 동일하게 악화되어 "그룹 내 방향 상쇄" 원 가설 반증 | [보고서](reports/exp603_directional_lineage_burden/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5250,3 +5251,89 @@ Cycle #170/173, POLE #181/226, functional_role_burden #257)에 이어 이번
   시점에는 오류 상관·라벨 불일치율을 계산하지 못했다. EXP-123/125/127 중
   하나 이상의 OOF를 확보해 오류 다양성을 확인한 뒤 최종 채택/기각을
   판정한다.
+
+### [EXP-603] KIRC/KIPAN·GBMLGG/LGG lineage burden 방향성 분리 리페어
+
+- 상태: COMPLETED
+- 실행자: Kangho Park
+- Issue/브랜치: #603 / `issue-603-directional-lineage-burden`
+- 소스 commit: `aae9d3c` (병합 전 결과 커밋)
+- 시작/종료: 2026-08-06T06:04:51Z / 2026-08-06T06:45:53Z (약 41분, 5-fold XGBoost)
+
+#### 실행
+- Config: `configs/exp603_directional_lineage_burden.yaml`
+- Metrics: `reports/exp603_directional_lineage_burden/metrics.json`
+- Report: `reports/exp603_directional_lineage_burden/README.md`
+- 부모: EXP-374 (컴포넌트: EXP-374, EXP-514)
+- 배경: EXP-514(#514, ARCHIVE, main 병합됨)는 kidney 7유전자·glioma 7유전자를
+  각각 하나의 pooled 그룹으로 합산해 KIRC(+0.0278)·LGG(+0.0172)를 개선했지만
+  GBMLGG(-0.0167)가 상쇄해 OOF 개선폭(+0.0001756)이 게이트(+0.001) 미달로
+  기각됐다. `data/raw/train.csv` 클래스별 변이율 재확인 결과 두 pooled
+  그룹 모두 내부에 방향이 반대인 유전자가 섞여 있었다(glioma:
+  IDH1/IDH2/ATRX/TP53은 LGG favoring, NF1/PTEN/EGFR은 GBMLGG favoring;
+  kidney: VHL/MTOR은 KIRC favoring, TSC1/TSC2/MET은 KIPAN favoring, FH는
+  zero-variance). 이는 독립적인 WHO CNS5 IDH 기반 glioma 분류·WHO 신장종양
+  분류 문헌과 일치하며, train.csv 확인은 group 선택이 아니라 이 알려진
+  생물학이 실제 대회 패널에 반영되는지 검증하는 용도로만 사용했다.
+- 가설: 같은 14개 유전자를 방향이 일치하는 4개 그룹
+  (`kirc_lineage`: VHL,MTOR / `kipan_nonccrcc_lineage`: TSC1,TSC2,MET /
+  `lgg_idh_lineage`: IDH1,IDH2,ATRX,TP53 / `gbm_idh_wildtype_lineage`:
+  NF1,PTEN,EGFR, FH는 zero-variance로 완전 제외, kidney-context PTEN은
+  noise 수준 차이(KIPAN 0.0369/KIRC 0.0359)로 kidney 두 그룹 어디에도
+  넣지 않음)로 재분리하면 GBMLGG 상쇄가 해소돼 순효과가 개선될 것이라는
+  가설이었다.
+- 방법: 새 지식 파일 `knowledge/kirc_kidney_glioma_directional_lineage_v1.json`을
+  만들고, EXP-514와 동일한 `open_cancer.abc_c_features.fixed_pathway_burden_family`
+  로직을 재사용해 `mutated_gene_count`/`lof_gene_count` 8열(4그룹×2값)을
+  계산했다(`scripts/run_exp603_directional_lineage_burden.py`의
+  `DirectionalLineageFoldBuilder`, EXP-514의 `KidneyGliomaLineageFoldBuilder`
+  패턴을 그대로 따름). EXP-374의 stop 표기 무관 파서, hotspot-34, Ensembl
+  residue-position mask, canonical pathway-20 burden, pathway 변이유형 조성
+  50열은 전부 그대로 유지한 단일 family ablation이며, EXP-514의 4열은
+  재사용하지 않았다(EXP-374에 대한 독립 ablation).
+- 의미 중복 사전점검: 신규 8열을 기존 pathway-burden 20열 + 조성 50열(총
+  70열)과 6,201개 train 행 전체에서 byte-level 전수 비교한 결과 완전히
+  동일한 열은 없었다. 전체 출력은
+  `reports/exp603_directional_lineage_burden/semantic_redundancy_precheck.txt`에
+  보존했다.
+
+#### 결과
+- Fold Macro F1: 0.4232310016, 0.4188328455, 0.4190743900, 0.4221126377,
+  0.4431288505
+- OOF Macro F1: 0.4249849883 (EXP-374 대비 `-0.0018059386`, EXP-514 대비
+  `-0.0019815379`, 게이트 기준 `+0.001` 미달·오히려 하락)
+- Fold 표준편차: 0.0090872147 (EXP-374 대비 `+0.0005839979`, 게이트 기준
+  `0.002` 이내로 통과)
+- Accuracy / Log Loss: 0.4112239961 / 1.8725479841 (EXP-374 대비 Log Loss
+  `+0.0284831524`)
+- 가설 타겟 클래스 F1(EXP-374 → EXP-514(pooled) → EXP-603(방향분리)): KIPAN
+  0.2214983713 → 0.2252252253 → 0.2234513274(+0.0019529561), KIRC
+  0.1759530792 → 0.2037037037 → 0.1990811639(+0.0231280847), GBMLGG
+  0.3197831978 → 0.3031123139 → 0.3045822102(**-0.0152009876**, EXP-514의
+  -0.0166708839과 거의 동일한 폭으로 여전히 악화), LGG 0.4186046512 →
+  0.4358523726 → 0.4330985915(+0.0144939404)
+- 클래스 F1 붕괴: `-0.05` 이상 붕괴 없음(최대 하락 PAAD `-0.0482`, 게이트
+  임계값 근접)
+- Public LB: 미제출
+
+#### 산출물과 결론
+- Metrics/Report/Reproduction: `reports/exp603_directional_lineage_burden/metrics.json`,
+  `reports/exp603_directional_lineage_burden/README.md`,
+  `reproducibility/exp603_directional_lineage_burden/`
+- 재현 상태: `INFERENCE_VERIFIED`(checkpoint 재추론 submission SHA-256
+  byte-level 일치, test 라벨 100% 일치, 확률 최대 차이 `1.46e-7`)
+- 결론: **ARCHIVE**. OOF Macro F1이 EXP-374 대비 하락해 핵심 게이트를
+  충족하지 못했다. 원 가설("그룹 내 방향 반대 유전자가 GBMLGG를
+  상쇄시킨다")은 방향 100% 일치 재구성에서도 GBMLGG가 거의 같은 폭으로
+  악화되어 반증됐다.
+
+#### 선택 메모
+GBMLGG 악화가 방향 분리로도 해소되지 않는다는 사실은 "신호 상쇄"보다 다른
+메커니즘(예: 4,400+ 기존 feature가 있는 상태에서 `colsample_bytree=0.8`
+XGBoost가 매 트리 80% feature만 샘플링하는데, 새 열 추가 자체가 기존
+feature들의 분기 선택 확률을 미세하게 희석시켜 GBMLGG 결정 경계에
+불리하게 작용했을 가능성)을 시사할 수 있다. 확정적 결론이 아니며, placebo
+ablation(무작위 노이즈 8열)이나 `colsample_bytree=1.0` 통제 비교 등 별도
+Experiment Issue의 후속 검증이 필요하다. EXP-514/EXP-603 두 번의 연속
+ARCHIVE로, 이 14개 유전자를 burden 열로 추가하는 접근 자체(pooled든 방향
+분리든)의 우선순위를 낮추는 것이 합리적이다.
