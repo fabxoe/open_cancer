@@ -7,6 +7,7 @@
 새 공용 분석·피처 구현 문서:
 
 - [Fold-safe 유전자 residue-event 집중도 피처](analysis/residue_event_concentration/README.md)
+- [Parser-v4 Hotspot-12 fold support 감사](analysis/parser_v4_hotspot12_support_audit/README.md)
 
 ## 경로
 
@@ -57,6 +58,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 
 현재 장기 계획:
 
+- [Parser-v4 fold-safe Hotspot-12 로드맵](plans/parser_v4_hotspot12_roadmap.md)
 - [최우선: Parser v4-native semantic baseline 재정립 로드맵](plans/parser_v4_baseline_reset_roadmap.md)
 - [Annotation-invariant parser·robust representation 로드맵](plans/annotation_invariant_parser_roadmap.md)
 - [고정 암종 표지 패널·isoform 의미 검증 로드맵](plans/domain_marker_isoform_semantics_roadmap.md)
