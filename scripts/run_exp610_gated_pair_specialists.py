@@ -207,7 +207,7 @@ def main() -> None:
     sample = pd.read_csv(SAMPLE, dtype=str)
     submission = pd.DataFrame({"ID": sample["ID"], "SUBCLASS": encoder.inverse_transform(test_pred)})
     submission.to_csv(submission_path, index=False)
-    validate_submission(submission_path, SAMPLE, CLASS_LABELS)
+    validate_submission(submission_path, TEST, expected_classes=CLASS_LABELS)
     write_json(report_dir / "metrics.json", metrics)
     (repro_dir / "config.resolved.yaml").write_text(yaml.safe_dump(config, sort_keys=False), encoding="utf-8")
     write_json(repro_dir / "original_metrics.json", metrics)
