@@ -1,0 +1,60 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-652
+issue_number: 652
+slug: range_replacement_any_exp527
+parent_experiment: EXP-527
+component_experiments: []
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  parent: exp527_parser_v4_class_cosine_loo
+  ordinary_range_replacement_gene_indicator:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: fold_train
+    support_family: range_replacement:range_replacement
+    train_support: 101
+    reused_from: EXP-409 (src/open_cancer/range_replacement_features.py, unchanged)
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - exp374_stop_isoform_residue_mask
+    - parser_v4_26_class_cosine_profile_leave_one_out
+    - ordinary_range_replacement_gene_indicator
+acceptance:
+  comparison_experiment: EXP-527
+  minimum_macro_f1_delta: 0.001
+  maximum_fold_std_increase: 0.002
+  require_no_clear_log_loss_regression: true
+notes: >-
+  Issue #652. EXP-527 is frozen. The only change is a fold-safe gene-level
+  ordinary range_replacement indicator (support-gate #407/#410 candidate,
+  train support 101 samples), reusing the unchanged EXP-409 implementation
+  from src/open_cancer/range_replacement_features.py. EXP-409 tested the same
+  family on the older EXP-369 parent (pre isoform-mask, pre class-cosine) and
+  saw Macro F1 +0.0019418 but Log Loss +0.1327703 (large regression), ARCHIVE.
+  This experiment checks whether the same feature interacts differently with
+  the current strongest parent. Target, validation, test distribution and
+  Public LB are not used to fit the gene indicator.
+comparison_metrics_path: reports/exp527_parser_v4_class_cosine_loo/metrics.json

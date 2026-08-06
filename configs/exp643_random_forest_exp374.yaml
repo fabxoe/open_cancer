@@ -1,0 +1,32 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-643
+issue_number: 643
+slug: random_forest_exp374
+parent_experiment: EXP-374
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+model:
+  name: random_forest
+  parameters:
+    n_estimators: 500
+    max_depth: null
+    min_samples_leaf: 2
+    max_features: sqrt
+    n_jobs: 8
+training:
+  balanced_sample_weight: true
+notes: >-
+  Issue #643. EXP-374의 build_fold_features()(stop-notation-invariant v2
+  parser + Ensembl isoform mask + pathway families + hotspot-34, 약
+  35,119차원)를 EXP-459와 동일하게 재사용하고 모델만 RandomForest로 교체.
+  하이퍼파라미터는 EXP-596(native frozen Feature Spec v1, 비슷한 35,119
+  차원, 같은 하드웨어에서 5-fold 전체 62초)과 동일하게 그대로 재사용 —
+  이미 이 규모 sparse 입력에서 검증된 설정이라 별도 preflight 측정 없이
+  진행한다. class_weight는 RandomForestClassifier 자체에는 설정하지 않고
+  공통 balanced_sample_weight만 적용해 다른 모든 v1/legacy adapter와
+  맞춘다. 목적은 legacy 계보의 두 번째 오류-다양성 후보 확보(EXP-459에
+  이어)이며, 단독 리더보드 후보가 아니라 이후 3-way 블렌드/nested weight
+  search 재료다.
