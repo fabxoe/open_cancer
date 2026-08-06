@@ -1,0 +1,46 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-647
+issue_number: 647
+slug: exp647_lightgbm_class_cosine_offset_removed
+parent_experiment: EXP-567
+component_experiments: []
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mode: parser_v4_parent_plus_class_cosine_26_offset_removed
+model:
+  name: lightgbm
+  parameters:
+    n_estimators: 1200
+    learning_rate: 0.03
+    num_leaves: 31
+    max_depth: -1
+    min_child_samples: 20
+    subsample: 0.8
+    subsample_freq: 1
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    early_stopping_rounds: 60
+    checkpoint_selection: macro_f1_validation
+    n_jobs: 8
+    verbosity: -1
+    deterministic: true
+    force_col_wise: true
+training:
+  balanced_sample_weight: true
+notes: >-
+  Issue #647. EXP-645(EXP-527/XGBoost)와 동일한 단일변수 ablation을
+  EXP-567(LightGBM)에서 재확인한다. EXP-645 결과는 Macro F1 -0.0083(악화)
+  이나 fold std -0.0011·Log Loss -0.0220(둘 다 개선)로, 공통 offset이
+  순수 노이즈가 아니라 판별 신호도 포함하고 있었음을 시사했다. 트리 성장
+  방식이 다른 LightGBM(leaf-wise, EXP-527의 level-wise XGBoost와 대비)
+  에서도 같은 패턴이 재현되는지 확인한다. 다른 조건은 EXP-567과 완전히
+  동일(같은 하이퍼파라미터·같은 parser-v4 parent feature)하며, 26개 raw
+  cosine 점수만 row-wise mean centering(EXP-645와 동일 구현)으로
+  추가 처리한다. 채택 여부는 canonical OOF Macro F1로만 판단하며 test
+  AUC·Public LB는 사용하지 않는다.
+comparison_metrics_path: reports/exp567_lightgbm_parser_cosine/metrics.json
