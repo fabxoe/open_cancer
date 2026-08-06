@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 138
+- 실제 실험 수: 139
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4647479423 (`EXP-628`, 26-class 전부 예측)
@@ -158,6 +158,7 @@
 | EXP-621 | COMPLETED | Kangho-Park | #621 | EXP-604와 동일 쌍 내부 확률 재분배(재학습 없음), `regularization_lambda` 0.001→0.02로 강화(EXP-604 후속) | 0.4280073811 | 미제출 | NOT_STARTED | EXP-374 대비 Macro F1 +0.0012164543(게이트 +0.001 근소 통과)·fold std -0.0005200278(개선)·Log Loss +0.0023699809(근소 악화)·비대상 22클래스 절대 F1 변화 합 0.0172821978(게이트 0.015 초과)로 REJECTED — δ 크기는 EXP-604 대비 3분의 1~2분의 1로 줄었으나 collateral·Log Loss 두 게이트를 여전히 통과 못함 | [보고서](reports/exp621_pairwise_redistribution_regularized/README.md) |
 | EXP-643 | COMPLETED | 2heej | #643 | EXP-374 legacy 피처 + RandomForest(EXP-596과 동일 하이퍼파라미터, legacy 계보 두 번째 모델 다양성 후보) | 0.3999667430 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0268241839로 단독 품질 게이트 미달(wildcard 허용치도 초과)이나 다양성 게이트 명확히 통과(vs EXP-374 오류상관 0.6488·불일치 34.83%, vs EXP-459 오류상관 0.7606·불일치 28.79%) — EXP-459와 동일하게 blend/stacking 자산으로 보존, 단독 채택 아님 | [보고서](reports/exp643_random_forest_exp374/README.md) |
 | EXP-652 | COMPLETED | 2heej | #652 | EXP-527 + fold-safe ordinary range_replacement 유전자 indicator(EXP-409 구현 재사용, 부모만 EXP-369→EXP-527로 교체) | 0.4481375742 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0012653035(게이트 통과)·fold std -0.0035635578(개선)·클래스 붕괴(-0.05) 없음(최대 하락 PAAD -0.0392)이나 Log Loss +0.0177605152 소폭 악화 — `ADOPT_WITH_CAUTION`; 같은 feature가 더 약한 부모 EXP-369에서는 Log Loss +0.1327703(EXP-409, ARCHIVE)였던 것과 달리 class-cosine이 있는 EXP-527에서는 악화폭이 7분의 1로 줄어듦 | [보고서](reports/exp652_range_replacement_any_exp527/README.md) |
+| EXP-656 | COMPLETED | 2heej | #656 | EXP-374(legacy) + 격리 MMR 유전자(MLH1/MSH2/PMS2) proxy(EXP-653과 동일 panel, 부모만 EXP-527→EXP-374로 교체) | 0.4280917838 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 Macro F1 +0.0013008570(게이트 통과)·클래스 붕괴 없음(LGG -0.0015·KIRC -0.0028로 EXP-653의 -0.1304/-0.1071 붕괴가 사라짐, fragility가 class-cosine 부모 특이적임을 확인)이나 **test-like subset(#292 상위 25%)에서 EXP-374(0.4283785968)보다 낮음(0.4239727456, shift_gap +0.0041)** — `REJECTED`(EXP-464·EXP-496과 동일 기준) | [보고서](reports/exp656_mmr_gene_proxy_exp374/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5764,3 +5765,45 @@ additive 확장이며 `uv run pytest -q`로 회귀 여부를 재확인했다). "
   보존한다. 최근 Local-Public 격차 조사(EXP-628 Public 제출 실패 사례)
   이후 팀 방침에 따라 Local gate 통과만으로 바로 제출하지 않고
   test-like subset 점검을 먼저 한다.
+
+### [EXP-656] EXP-374(legacy) 격리 MMR 유전자(MLH1/MSH2/PMS2) proxy — REJECTED
+
+- 상태/실행자: COMPLETED / 2heej
+- Issue/브랜치: #656 / `issue-656-mmr-gene-proxy-exp374`
+- Config/Runner: `configs/exp656_mmr_gene_proxy_exp374.yaml` /
+  `scripts/run_exp656_mmr_gene_proxy_exp374.py`
+- 부모: EXP-374; EXP-653(부모 EXP-527)이 LGG -0.1304·KIRC -0.1071 붕괴로
+  ARCHIVE된 것과 완전히 같은 MMR panel(`knowledge/mmr_gene_proxy_v1.json`,
+  MLH1/MSH2/MSH6/PMS2)을 부모만 legacy로 바꿔 재검증
+- 가설: KIPAN/KIRC·GBMLGG/LGG 계보 혼동 붕괴는 MMR panel 자체가 아니라
+  class-cosine이 낀 EXP-527 계보의 fragility(EXP-639, EXP-645에서도
+  무관한 feature 추가마다 같은 축이 붕괴)에서 비롯된다는 가설을 검증
+- `ObservableMarkerFamily`(EXP-302/653와 동일 구현, 코드 변경 없음) 재사용,
+  fold-safe semantic equivalence 검사(raw base 대비)에서 중복 열 0개
+- Fold Macro F1: 0.4272791303, 0.4248413444, 0.4187580396, 0.4258070869,
+  0.4417174277
+- OOF Macro F1 / fold 평균 / fold std: 0.4280917838 / 0.4276806058 /
+  0.0075944351
+- Accuracy / Log Loss: 0.4133204322 / 1.8447273970
+- EXP-374 대비: Macro F1 +0.0013008570(게이트 `≥0.001` 통과), fold std
+  -0.0009087818(개선), Log Loss +0.0006625653(거의 무변화)
+- 클래스별: 최대 하락 LUSC -0.0252, LUAD -0.0227, GBMLGG -0.0127 — **LGG
+  -0.0015, KIRC -0.0028로 EXP-653의 붕괴(-0.1304/-0.1071)가 완전히
+  사라짐**. 최대 개선 LAML +0.0365, PAAD +0.0238, STES +0.0159
+- 가설 검증 결과: **class-cosine 부모 fragility 가설 확인됨** — 같은
+  feature가 legacy 부모에서는 KIPAN/KIRC·GBMLGG/LGG 축을 전혀 건드리지
+  않았다
+- test-like subset 점검(#292 adversarial validation, 상위 25%
+  quantile): EXP-374 전체 OOF `0.4267909268`/test-like
+  `0.4283785968`(shift_gap `-0.0016`) vs EXP-656 전체 OOF
+  `0.4280917838`/test-like `0.4239727456`(shift_gap `+0.0041`) —
+  **test-like subset에서 EXP-374보다 낮음**. 참고로 재계산한 EXP-527
+  shift_gap `+0.0095`, EXP-653 shift_gap `+0.0321`(native 계보가 이
+  기준으로도 가장 불안정)
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+- 판단: `REJECTED`. 전체 OOF gate 통과·클래스 붕괴 없음에도 test-like
+  subset에서 부모보다 낮아 일반화 개선으로 보기 어렵다(EXP-464, EXP-496과
+  동일 기준 적용). class-cosine fragility 가설은 확인돼 방법론적으로는
+  유용하지만, MMR panel 자체는 EXP-302·EXP-653에 이어 세 번째로 기각되며
+  이 형태로는 추가 탐색하지 않는다.
