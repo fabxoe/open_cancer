@@ -12,7 +12,9 @@ outer-train에서만 학습하고, 환자별 네 개의 저차원 값으로 요�
 
 ## 고정 정의
 
-- 위치: parser-v4가 `complete`로 판정하고 position-eligible인 양의 residue만 사용
+- 위치: parser-v4가 `unresolved`/`not_applicable`가 아니며 position-eligible인
+  양의 residue만 사용한다. 종료 거리를 모르는 `SDEL133fs` 같은 partial
+  frameshift도 양의 anchor 위치가 유효하면 포함한다.
 - bin: 1번 residue부터 고정 폭 50-aa, `bin=(position-1)//50`
 - 중복 제거: 한 환자의 같은 유전자·같은 bin은 사건 수와 관계없이 1회
 - gene gate: outer-train의 unique patient-gene-bin support 20 이상, bin 2개 이상
