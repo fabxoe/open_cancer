@@ -1,0 +1,66 @@
+experiment:
+  issue_number: 634
+  experiment_id: EXP-634
+  branch: issue-634-cross-fitted-stacking-exp527-exp596
+  owner: 2heej
+  source_commit: 53031ffbae5adb042e0d7d4efafe0c1b7ff41079
+  dirty_worktree: false
+  started_at: '2026-08-06T08:30:42.352763+00:00'
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+class_order:
+- ACC
+- BLCA
+- BRCA
+- CESC
+- COAD
+- DLBC
+- GBMLGG
+- HNSC
+- KIPAN
+- KIRC
+- LAML
+- LGG
+- LIHC
+- LUAD
+- LUSC
+- OV
+- PAAD
+- PCPG
+- PRAD
+- SARC
+- SKCM
+- STES
+- TGCT
+- THCA
+- THYM
+- UCEC
+base_experiments:
+- experiment_id: EXP-527
+  oof_probability_path: oof/exp527_parser_v4_class_cosine_loo.csv
+  test_probability_path: preds/exp527_parser_v4_class_cosine_loo_test_proba.csv
+- experiment_id: EXP-596
+  oof_probability_path: oof/exp596_random_forest_v1.csv
+  test_probability_path: preds/exp596_random_forest_v1_test_proba.csv
+meta_model:
+  class: sklearn.linear_model.LogisticRegression
+  multi_class: multinomial
+  C: 0.2
+  max_iter: 1000
+  class_weight: null
+  random_state: 42
+outputs:
+  oof: oof/exp634_cross_fitted_stacking_exp527_exp596.csv
+  test_probability: preds/exp634_cross_fitted_stacking_exp527_exp596_test_proba.csv
+  submission: submissions/exp634_cross_fitted_stacking_exp527_exp596.csv
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 08:56:36) [Clang 18.1.8 ]
+  platform: macOS-26.5.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  joblib: 1.5.3
+  uv_lock_sha256: bc7da4e6e1f133ee6b1f8c5cd4c86f9b87d336d686ceaacddbe20254b0771d23
+command: uv run python scripts/run_exp634_cross_fitted_stacking_exp527_exp596.py

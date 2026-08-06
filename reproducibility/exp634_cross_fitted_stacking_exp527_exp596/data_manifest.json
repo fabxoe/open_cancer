@@ -1,0 +1,40 @@
+{
+  "verified_at": "2026-08-06T08:30:43.260941+00:00",
+  "files": [
+    {
+      "path": "data/splits/stratified_5fold_seed42.csv",
+      "size_bytes": 80621,
+      "sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf"
+    },
+    {
+      "path": "data/raw/test.csv",
+      "size_bytes": 35068585,
+      "sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+    },
+    {
+      "path": "data/raw/sample_submission.csv",
+      "size_bytes": 35656,
+      "sha256": "1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84"
+    },
+    {
+      "path": "oof/exp527_parser_v4_class_cosine_loo.csv",
+      "size_bytes": 2046450,
+      "sha256": "994716ad2c91789a9d9307957c21c1472b8a3d4254dfd52679dfda8477c0e094"
+    },
+    {
+      "path": "preds/exp527_parser_v4_class_cosine_loo_test_proba.csv",
+      "size_bytes": 802337,
+      "sha256": "8439a1347be6f8a611b71a1f564b3f88efc078fd43f103f961069ed699dc911e"
+    },
+    {
+      "path": "oof/exp596_random_forest_v1.csv",
+      "size_bytes": 3464148,
+      "sha256": "848e36c9e5ae78200e1b252d95a1b190bf4c410324ebce4554e4b8e8af4f5138"
+    },
+    {
+      "path": "preds/exp596_random_forest_v1_test_proba.csv",
+      "size_bytes": 1389505,
+      "sha256": "d5bd58fa4d80c040a43708710c40092faefdcea9265a10a1a6990482e66b5ddf"
+    }
+  ]
+}
