@@ -1,0 +1,49 @@
+experiment:
+  id: LOCAL-DATA-DISTRIBUTION-V1
+  slug: data_distribution_xgb
+  seed: 42
+
+data:
+  train_path: data/raw/train.csv
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
+  canonical_split_path: data/splits/stratified_5fold_seed42.csv
+  canonical_split_sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  id_column: ID
+  target_column: SUBCLASS
+  fold_column: fold
+  expected_train_rows: 6201
+  expected_test_rows: 2546
+  expected_classes: 26
+
+features:
+  minimum_fold_train_support: 3
+  include_gene_presence: true
+  include_gene_event_count: true
+  include_gene_truncating_presence: true
+  include_gene_multi_event_presence: true
+  count_clip: 9
+  # 원문 token one-hot과 target encoding은 사용하지 않는다.
+  # 문자열 표기 관습이 달라져도 비교적 유지되는 분포 통계만 사용한다.
+
+training:
+  class_weight_power: 0.75
+  n_estimators: 1200
+  learning_rate: 0.035
+  max_depth: 4
+  min_child_weight: 5.0
+  subsample: 0.8
+  colsample_bytree: 0.7
+  reg_alpha: 0.5
+  reg_lambda: 5.0
+  gamma: 0.0
+  early_stopping_rounds: 75
+  n_jobs: 8
+  tree_method: hist
+  device: cpu
+
+output:
+  report_dir: reports/local_data_distribution_xgb
+  model_dir: models/local_data_distribution_xgb
+  submission_path: submissions/local_data_distribution_xgb.csv
+
