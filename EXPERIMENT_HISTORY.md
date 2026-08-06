@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 126
+- 실제 실험 수: 127
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4533650721 (`EXP-589`, 원래 26-class 평가)
@@ -144,6 +144,7 @@
 | EXP-579 | COMPLETED | fabxoe | #579 | EXP-527 XGBoost + EXP-567 LightGBM 사전 고정 0.5/0.5 확률 평균 | 0.4431736484 | 미제출 | INFERENCE_VERIFIED | 최고 부모 EXP-567 대비 -0.0045680·Log Loss 악화로 ARCHIVE; 모델 다양성이 단순 평균 개선으로 이어지지 않음 | [보고서](reports/exp579_exp527_exp567_fixed_blend/README.md) |
 | EXP-589 | COMPLETED | fabxoe | #589 | EXP-527의 KIRC→KIPAN·LGG→GBMLGG 24-class 학습·class-cosine 재구성 | 0.4533650721 (원래 26-class 평가; 병합 24-class 0.5086284091) | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0064928014·fold std 개선; 두 원래 클래스 F1=0을 포함해도 Local 최고. 24-class 제출은 KIRC·LGG를 전혀 출력하지 않는 고위험 구조라 진단·다양성 후보로 보존 | [보고서](reports/exp589_merged_24class/README.md) |
 | EXP-592 | COMPLETED | fabxoe | #592 | EXP-589 + outer-train 전용 KIPAN/KIRC·GBMLGG/LGG binary specialist 확률 분할 | 0.4393703541 | 미제출 | INFERENCE_VERIFIED | EXP-589 대비 -0.0139947180·KIRC F1 0.0837359로 ARCHIVE; hard-routing 사후 진단도 0.4434467829로 부모 미달, 현재 specialist track 종료 | [보고서](reports/exp592_hierarchical_pair_specialists/README.md) |
+| EXP-610 | COMPLETED | fabxoe | #610 | EXP-527 26-class base + outer-train 전용 KIPAN/KIRC·GBMLGG/LGG gated binary specialist | 0.4298424283 | 미제출 | NOT_STARTED | EXP-527 대비 -0.0170298424·fold std/Log Loss 악화, KIRC·LGG F1 대폭 하락으로 ARCHIVE; 타 노트북식 hard gated reranker는 현재 강한 base에 재현되지 않음 | [보고서](reports/exp610_gated_pair_specialists/README.md) |
 | EXP-516 | COMPLETED | Kangho Park | #516 | EXP-374 + fold-train 하위 25% burden quantile 샘플에 balanced_sample_weight 1.5배 추가 곱(저burden 오분류 완화 가설) | 0.4221650046 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0046259222(게이트 +0.001 미달)·LUAD -0.0640/DLBC -0.0505 클래스 붕괴로 ARCHIVE; 표적 저burden 8클래스 중 4개만 개선(KIRC/LAML/THYM/KIPAN)·4개는 악화(GBMLGG/PRAD/PCPG/SARC)로 가설 부분 지지에 그침 | [보고서](reports/exp516_burden_weighted_sample_weight/README.md) |
 | EXP-596 | COMPLETED | 2heej | #596 | 동결 Feature Spec v1 + RandomForest (#505 스태킹 다양성 후보) | 0.4052772619 | 미제출 | INFERENCE_VERIFIED | CatBoost v1 최고 대비 -0.0141799675, Logistic v1보다는 높음; #505 S0 다양성 게이트 판정은 EXP-123/125/127 OOF 필요 — 판정 보류 | [보고서](reports/exp596_random_forest_v1/README.md) |
 
@@ -1554,7 +1555,8 @@
 - Log Loss: 2.0729362413 (보조 지표, `+0.2329989120`)
 - DLBC F1: 0.0930232558 (클래스별 최악 변화 `-0.2843352348`)
 - Public LB: 미제출
-- 재현 상태: `MANIFEST_COMPLETE`
+- 재현 상태: `NOT_STARTED` — 결과·resolved config는 기록했으나 독립
+  checkpoint 재추론은 수행하지 않았다.
 
 #### 결론
 
@@ -5120,6 +5122,31 @@ glioma 그룹에서 기인하는지 분리 확인, (2) 이번 fold 표준편차 
   승격하지 않는다. `KIRC ⊂ KIPAN`, `LGG ⊂ GBMLGG`인 겹치는 라벨
   온톨로지 때문에 이는 순수 subtype 분류가 아니라 데이터셋의 상위/하위
   cohort 라벨 배정을 복원하는 문제라는 해석을 함께 보존한다.
+
+### [EXP-610] EXP-527 26-class gated pair specialists
+
+- 상태/실행자: COMPLETED / fabxoe
+- Issue/브랜치: #610 / `issue-610-gated-pair-specialists`
+- 모델 소스 commit: `971ea3d`
+- 부모: EXP-527
+- Config/Runner: `configs/exp610_gated_pair_specialists.yaml` /
+  `scripts/run_exp610_gated_pair_specialists.py`
+- 고정: EXP-527 26-class fold checkpoint와 parser-v4 LOO class-cosine 피처.
+  각 outer-train의 KIPAN/KIRC 및 GBMLGG/LGG 행만 사용해 binary XGBoost를
+  학습하고, base top-1이 해당 쌍일 때만 specialist를 적용했다.
+- 결합: specialist가 base top-1과 다르면 두 pair 확률을 교환해 pair mass,
+  나머지 24개 확률 및 최종 top-1 계약을 함께 보존했다.
+- OOF Macro F1 / fold std: 0.4298424283 / 0.0123849202
+- Accuracy / Log Loss: 0.4123528463 / 2.0343379974
+- EXP-527 대비: Macro F1 `-0.0170298424`, fold std `+0.0060056017`,
+  Log Loss `+0.0068492889`
+- 혼돈쌍 F1: KIPAN 0.2142857143, KIRC 0.0890302067, GBMLGG
+  0.2933673469, LGG 0.2264957265
+- Public LB: 미제출
+- 재현 상태: `MANIFEST_COMPLETE`
+- 판단: 모든 fold에서 하락하고 KIRC·LGG가 크게 붕괴해 `ARCHIVE`한다.
+  타 노트북에서 개선된 hard gated reranker는 이미 강한 EXP-527 base에는
+  재현되지 않았으며 Public·threshold·specialist tuning을 진행하지 않는다.
 
 ### [EXP-516] burden 기반 sample weight 보강 (저burden 오분류 완화)
 
