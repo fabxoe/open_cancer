@@ -1,112 +1,196 @@
-"""Task #557: fetch Ensembl release 116 Pfam protein-domain annotations for every
-representative protein already selected by the frozen competition isoform index.
+"""Task #557: fetch Ensembl release 116 Pfam protein-domain annotations for the
+representative protein each trusted isoform-matched (gene, token) pair in
+train+test actually resolves to.
 
-Target-independent: SUBCLASS and Public LB are not used. Reuses the same Ensembl
-release 116 protein IDs already frozen in
-`data/external/ensembl_release_116/competition_gene_isoform_index.json`
-(Track B team-lead exception lineage, see PROJECT_CONTEXT.md and Issue #557) so no
-new UniProt/Ensembl identity mapping is introduced. Queries the Ensembl REST
-`overlap/translation` endpoint per protein ID (Pfam feature type only) and caches
-the raw response per protein plus a provenance manifest mirroring the schema of
-`knowledge/ensembl_isoform_annotation_v1.json`.
+Target-independent: SUBCLASS and Public LB are not used. Reuses the same
+representative-isoform selection `isoform_relative_position.py` uses (MANE
+Select > canonical > other-isoform, tie-broken by transcript/protein ID) so no
+new isoform-choice logic is introduced -- only that already-frozen pick is
+queried for domain annotation. This is a small, bounded set: each gene's
+`competition_gene_isoform_index.json` entry lists every known isoform (avg ~26
+per gene, up to 300), but only the single representative actually used by
+EXP-374/392's residue-position feature per trusted token matters here.
 
-This is a long-running network fetch (one call per distinct protein ID, several
-thousand total) -- run it yourself with:
+Uses the Ensembl BioMart bulk export (`hsapiens_gene_ensembl` dataset,
+`ensembl_peptide_id` filter, `pfam`/`pfam_start`/`pfam_end` attributes) in
+batches, since one row-per-ID REST call for ~12-13k proteins is needlessly
+slow -- BioMart returns ~500 proteins' domain calls in a single ~8s request
+(measured), vs one call per protein via the row-by-row REST endpoint.
+
+Run yourself with:
 
     uv run python scripts/fetch_ensembl_pfam_domain_catalog.py
 
-Safe to interrupt and re-run: already-cached per-protein response files are
-skipped on resume.
+Safe to interrupt and re-run: batches whose protein IDs are already present in
+the combined output are skipped.
 """
 
 from __future__ import annotations
 
 import json
-import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+import pandas as pd
 import requests
 
 from open_cancer.hashing import sha256_file
-from open_cancer.isoform_semantics import load_annotation_index
+from open_cancer.isoform_position_mask import TRUSTED_POSITION_CATEGORIES
+from open_cancer.isoform_semantics import (
+    classify_token_semantics,
+    load_annotation_index,
+    resolve_substitution_eligibility,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 ANNOTATION_CACHE = (
     ROOT / "data/external/ensembl_release_116/competition_gene_isoform_index.json"
 )
-RAW_DIR = ROOT / "data/external/ensembl_release_116/domain_features"
+OUTPUT_DIR = ROOT / "data/external/ensembl_release_116/domain_features"
+RAW_BATCH_DIR = OUTPUT_DIR / "raw_batches"
+COMBINED_PATH = OUTPUT_DIR / "pfam_domains_by_protein.json"
 MANIFEST_PATH = ROOT / "knowledge/ensembl_protein_domain_annotation_v1.json"
 
-REST_URL_TEMPLATE = (
-    "https://rest.ensembl.org/overlap/translation/{protein_id}"
-    "?type=Pfam;content-type=application/json"
-)
-REQUEST_INTERVAL_SECONDS = 0.15
-MAX_RETRIES = 3
+BIOMART_URL = "https://www.ensembl.org/biomart/martservice"
+BIOMART_DATASET = "hsapiens_gene_ensembl"
+BATCH_SIZE = 400
+QUERY_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Query>
+<Query virtualSchemaName="default" formatter="TSV" header="0" uniqueRows="1" count="" datasetConfigVersion="0.6">
+<Dataset name="{dataset}" interface="default">
+<Filter name="ensembl_peptide_id" value="{ids}"/>
+<Attribute name="ensembl_peptide_id"/>
+<Attribute name="pfam"/>
+<Attribute name="pfam_start"/>
+<Attribute name="pfam_end"/>
+</Dataset>
+</Query>"""
 
 
-def _fetch_one(protein_id: str) -> list[dict]:
-    url = REST_URL_TEMPLATE.format(protein_id=protein_id)
-    last_error: Exception | None = None
-    for attempt in range(MAX_RETRIES):
-        try:
-            response = requests.get(url, timeout=20)
-            if response.status_code == 200:
-                payload = response.json()
-                return [item for item in payload if item.get("type") == "Pfam"]
-            if response.status_code == 404:
-                return []
-            last_error = RuntimeError(f"HTTP {response.status_code} for {protein_id}")
-        except requests.RequestException as exc:  # network hiccup, retry
-            last_error = exc
-        time.sleep(1.0 + attempt)
-    raise RuntimeError(f"{protein_id} 조회 실패 (최대 재시도 초과): {last_error}")
+def _collect_gene_tokens(csv_path: Path) -> dict[str, set[str]]:
+    frame = pd.read_csv(csv_path, dtype=str, keep_default_na=False)
+    genes = [column for column in frame.columns if column not in {"ID", "SUBCLASS"}]
+    gene_tokens: dict[str, set[str]] = {}
+    for gene in genes:
+        tokens: set[str] = set()
+        for cell in frame[gene]:
+            cell = cell.strip()
+            if not cell or cell == "WT":
+                continue
+            for raw_token in cell.split():
+                if raw_token != "WT":
+                    tokens.add(raw_token)
+        if tokens:
+            gene_tokens[gene] = tokens
+    return gene_tokens
+
+
+def _needed_representative_protein_ids(annotation_index) -> set[str]:
+    """The exact representative protein_id set the audit script will need --
+    one per trusted (gene, token) pair, mirroring
+    IsoformRelativePositionTransformer's selection so domain lookups line up
+    with the existing relative-position bin feature 1:1."""
+
+    train_tokens = _collect_gene_tokens(ROOT / "data/raw/train.csv")
+    test_tokens = _collect_gene_tokens(ROOT / "data/raw/test.csv")
+    merged: dict[str, set[str]] = {}
+    for source in (train_tokens, test_tokens):
+        for gene, tokens in source.items():
+            merged.setdefault(gene, set()).update(tokens)
+
+    needed: set[str] = set()
+    for gene, tokens in merged.items():
+        annotations = annotation_index.get(gene, ())
+        for raw_token in tokens:
+            category = classify_token_semantics(gene, raw_token, annotations).category
+            if category not in TRUSTED_POSITION_CATEGORIES:
+                continue
+            eligibility = resolve_substitution_eligibility(raw_token)
+            if eligibility is None:
+                continue
+            position, reference = eligibility
+            matches = tuple(
+                annotation
+                for annotation in annotations
+                if 1 <= position <= len(annotation.sequence)
+                and annotation.sequence[position - 1] == reference
+            )
+            if not matches:
+                continue
+            if any(item.is_mane_select for item in matches):
+                matches = tuple(item for item in matches if item.is_mane_select)
+            elif any(item.is_canonical for item in matches):
+                matches = tuple(item for item in matches if item.is_canonical)
+            else:
+                matches = tuple(
+                    item
+                    for item in matches
+                    if not item.is_mane_select and not item.is_canonical
+                )
+            representative = min(matches, key=lambda item: (item.transcript_id, item.protein_id))
+            needed.add(representative.protein_id)
+    return needed
+
+
+def _parse_batch_tsv(raw_text: str) -> dict[str, list[dict]]:
+    by_protein: dict[str, list[dict]] = {}
+    for line in raw_text.splitlines():
+        if not line.strip():
+            continue
+        parts = line.split("\t")
+        if len(parts) != 4:
+            continue
+        protein_id, pfam_id, start, end = parts
+        by_protein.setdefault(protein_id, [])
+        if pfam_id and start and end:
+            by_protein[protein_id].append(
+                {"pfam_id": pfam_id, "start": int(start), "end": int(end)}
+            )
+    return by_protein
 
 
 def main() -> None:
     annotation_index = load_annotation_index(ANNOTATION_CACHE)
-    protein_ids = sorted(
-        {annotation.protein_id for entries in annotation_index.values() for annotation in entries}
-    )
+    needed_protein_ids = sorted(_needed_representative_protein_ids(annotation_index))
+    print(f"실제 필요한 대표 protein_id 수: {len(needed_protein_ids)}")
 
-    RAW_DIR.mkdir(parents=True, exist_ok=True)
-    fetched = 0
-    skipped_cached = 0
-    failed_protein_ids: list[str] = []
-    for protein_id in protein_ids:
-        cache_path = RAW_DIR / f"{protein_id}.json"
-        if cache_path.is_file():
-            skipped_cached += 1
-            continue
-        try:
-            features = _fetch_one(protein_id)
-        except RuntimeError as exc:
-            print(f"실패, 건너뜀: {protein_id} ({exc})")
-            failed_protein_ids.append(protein_id)
-            continue
-        cache_path.write_text(
-            json.dumps(features, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    RAW_BATCH_DIR.mkdir(parents=True, exist_ok=True)
+
+    combined: dict[str, list[dict]] = {}
+    if COMBINED_PATH.is_file():
+        combined = json.loads(COMBINED_PATH.read_text(encoding="utf-8"))
+        print(f"기존 결과 재사용: {len(combined)}건 이미 확보됨")
+
+    pending = [pid for pid in needed_protein_ids if pid not in combined]
+    batches = [pending[i : i + BATCH_SIZE] for i in range(0, len(pending), BATCH_SIZE)]
+    print(f"남은 배치 수: {len(batches)} (배치당 최대 {BATCH_SIZE}개)")
+
+    for batch_index, batch_ids in enumerate(batches, start=1):
+        query = QUERY_TEMPLATE.format(dataset=BIOMART_DATASET, ids=",".join(batch_ids))
+        response = requests.post(BIOMART_URL, data={"query": query}, timeout=60)
+        response.raise_for_status()
+        raw_text = response.text
+        (RAW_BATCH_DIR / f"batch_{batch_index:04d}.tsv").write_text(raw_text, encoding="utf-8")
+
+        parsed = _parse_batch_tsv(raw_text)
+        missing = set(batch_ids) - set(parsed)
+        for protein_id in missing:
+            parsed.setdefault(protein_id, [])
+        combined.update(parsed)
+
+        COMBINED_PATH.write_text(
+            json.dumps(combined, indent=2, ensure_ascii=False, sort_keys=True) + "\n",
+            encoding="utf-8",
         )
-        fetched += 1
-        if fetched % 200 == 0:
-            print(f"...{fetched}건 신규 조회, {skipped_cached}건 캐시 재사용, {len(failed_protein_ids)}건 실패")
-        time.sleep(REQUEST_INTERVAL_SECONDS)
+        print(
+            f"배치 {batch_index}/{len(batches)} 완료 "
+            f"({len(batch_ids)}개 요청, {len(missing)}개 응답 누락 -> 0-domain 처리)"
+        )
 
-    print(
-        f"완료: 전체 protein {len(protein_ids)}개, 신규 조회 {fetched}건, "
-        f"캐시 재사용 {skipped_cached}건, 실패 {len(failed_protein_ids)}건"
-    )
-    if failed_protein_ids:
-        print("실패한 protein_id는 스크립트를 다시 실행하면 캐시된 나머지는 건너뛰고 재시도됩니다.")
-
-    domain_count_by_protein = {}
-    for protein_id in protein_ids:
-        cache_path = RAW_DIR / f"{protein_id}.json"
-        if not cache_path.is_file():
-            continue
-        features = json.loads(cache_path.read_text(encoding="utf-8"))
-        domain_count_by_protein[protein_id] = len(features)
+    proteins_with_zero = sum(1 for domains in combined.values() if not domains)
+    proteins_with_any = len(combined) - proteins_with_zero
+    total_domain_features = sum(len(domains) for domains in combined.values())
 
     manifest = {
         "schema_version": "1.0.0",
@@ -125,13 +209,18 @@ def main() -> None:
         "semantic redundancy precheck (Issue #557)",
         "source": {
             "role": "protein_domain_features",
-            "endpoint": "https://rest.ensembl.org/overlap/translation/:id?type=Pfam",
-            "documentation_url": "https://rest.ensembl.org/documentation/info/overlap_translation",
+            "service": "Ensembl BioMart martservice",
+            "url": BIOMART_URL,
+            "dataset": BIOMART_DATASET,
+            "filter": "ensembl_peptide_id",
+            "attributes": ["ensembl_peptide_id", "pfam", "pfam_start", "pfam_end"],
             "protein_id_source": str(ANNOTATION_CACHE.relative_to(ROOT)),
-            "protein_id_count": len(protein_ids),
-            "protein_id_cached_count": len(domain_count_by_protein),
-            "protein_id_failed_this_run": failed_protein_ids,
-            "raw_response_dir": str(RAW_DIR.relative_to(ROOT)),
+            "protein_id_selection": "representative isoform per trusted (gene, token) pair in "
+            "train+test, mirroring IsoformRelativePositionTransformer's MANE>canonical>other "
+            "selection -- not every isoform listed in competition_gene_isoform_index.json",
+            "protein_id_count": len(needed_protein_ids),
+            "raw_batch_dir": str(RAW_BATCH_DIR.relative_to(ROOT)),
+            "combined_output_path": str(COMBINED_PATH.relative_to(ROOT)),
         },
         "license": {
             "data_terms": "Ensembl data generated by project members are available without "
@@ -145,23 +234,16 @@ def main() -> None:
             "SUBCLASS, test distribution, or Public LB.",
         ],
         "domain_count_by_protein_summary": {
-            "proteins_with_zero_domains": sum(
-                1 for count in domain_count_by_protein.values() if count == 0
-            ),
-            "proteins_with_at_least_one_domain": sum(
-                1 for count in domain_count_by_protein.values() if count > 0
-            ),
-            "total_domain_features": sum(domain_count_by_protein.values()),
+            "proteins_with_zero_domains": proteins_with_zero,
+            "proteins_with_at_least_one_domain": proteins_with_any,
+            "total_domain_features": total_domain_features,
         },
-        "raw_response_files_sha256": {
-            protein_id: sha256_file(RAW_DIR / f"{protein_id}.json")
-            for protein_id in domain_count_by_protein
-        },
+        "combined_output_sha256": sha256_file(COMBINED_PATH),
     }
     MANIFEST_PATH.write_text(
         json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
-    print(f"manifest 저장: {MANIFEST_PATH.relative_to(ROOT)}")
+    print(f"완료: protein {len(combined)}개, manifest 저장: {MANIFEST_PATH.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

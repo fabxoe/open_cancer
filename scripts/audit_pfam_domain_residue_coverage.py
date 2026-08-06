@@ -8,8 +8,8 @@ uses, so both the domain check and the existing relative-position bin are
 computed from the identical representative protein and position per token.
 
 Depends on `knowledge/ensembl_protein_domain_annotation_v1.json` and
-`data/external/ensembl_release_116/domain_features/*.json`, produced by
-`scripts/fetch_ensembl_pfam_domain_catalog.py` -- run that first.
+`data/external/ensembl_release_116/domain_features/pfam_domains_by_protein.json`,
+produced by `scripts/fetch_ensembl_pfam_domain_catalog.py` -- run that first.
 
 SUBCLASS and Public LB are not used anywhere in this script.
 """
@@ -35,7 +35,9 @@ ROOT = Path(__file__).resolve().parents[1]
 ANNOTATION_CACHE = (
     ROOT / "data/external/ensembl_release_116/competition_gene_isoform_index.json"
 )
-DOMAIN_RAW_DIR = ROOT / "data/external/ensembl_release_116/domain_features"
+DOMAIN_COMBINED_PATH = (
+    ROOT / "data/external/ensembl_release_116/domain_features/pfam_domains_by_protein.json"
+)
 DOMAIN_MANIFEST = ROOT / "knowledge/ensembl_protein_domain_annotation_v1.json"
 OUTPUT_DIR = ROOT / "reports/analysis/pfam_domain_residue_coverage_precheck"
 BIN_COUNT = 5
@@ -99,12 +101,11 @@ def _representative(
 
 
 def _load_domain_intervals() -> dict[str, list[tuple[int, int]]]:
-    intervals: dict[str, list[tuple[int, int]]] = {}
-    for cache_path in DOMAIN_RAW_DIR.glob("*.json"):
-        protein_id = cache_path.stem
-        features = json.loads(cache_path.read_text(encoding="utf-8"))
-        intervals[protein_id] = [(item["start"], item["end"]) for item in features]
-    return intervals
+    combined = json.loads(DOMAIN_COMBINED_PATH.read_text(encoding="utf-8"))
+    return {
+        protein_id: [(item["start"], item["end"]) for item in features]
+        for protein_id, features in combined.items()
+    }
 
 
 def _in_domain(position: int, intervals: list[tuple[int, int]]) -> bool:
@@ -112,7 +113,7 @@ def _in_domain(position: int, intervals: list[tuple[int, int]]) -> bool:
 
 
 def main() -> None:
-    if not DOMAIN_MANIFEST.is_file() or not DOMAIN_RAW_DIR.is_dir():
+    if not DOMAIN_MANIFEST.is_file() or not DOMAIN_COMBINED_PATH.is_file():
         raise SystemExit(
             "먼저 uv run python scripts/fetch_ensembl_pfam_domain_catalog.py 를 실행하세요."
         )
