@@ -11,6 +11,7 @@ import pandas as pd
 from sklearn.metrics import f1_score, log_loss
 
 from open_cancer.constants import CLASS_LABELS, PROBABILITY_COLUMNS
+from open_cancer.hashing import sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -97,7 +98,13 @@ def main() -> None:
     }
     ranked_delta = sorted(class_delta.items(), key=lambda item: (-item[1], item[0]))
     result = {
-        "inputs": {name: str(path.relative_to(ROOT)) for name, path in INPUTS.items()},
+        "inputs": {
+            name: {
+                "path": str(path.relative_to(ROOT)),
+                "sha256": sha256_file(path),
+            }
+            for name, path in INPUTS.items()
+        },
         "summaries": summaries,
         "pairwise": pairs,
         "exp541_minus_exp539_per_class_f1": dict(ranked_delta),

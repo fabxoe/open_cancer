@@ -1,8 +1,17 @@
 {
   "inputs": {
-    "EXP-527": "oof/exp527_parser_v4_class_cosine_loo.csv",
-    "EXP-539": "oof/exp539_hierarchical_raw_linear.csv",
-    "EXP-541": "oof/exp541_hierarchical_row_l2_linear.csv"
+    "EXP-527": {
+      "path": "oof/exp527_parser_v4_class_cosine_loo.csv",
+      "sha256": "994716ad2c91789a9d9307957c21c1472b8a3d4254dfd52679dfda8477c0e094"
+    },
+    "EXP-539": {
+      "path": "oof/exp539_hierarchical_raw_linear.csv",
+      "sha256": "4a651c1a7ffceeb4029353b04ab5c21f3df308e847fcce119b10ebd1cce5a61a"
+    },
+    "EXP-541": {
+      "path": "oof/exp541_hierarchical_row_l2_linear.csv",
+      "sha256": "3c8212bbaca511ca416ace89b21fcac4ba13da03eed30ddb5efed52e44d33ac9"
+    }
   },
   "summaries": {
     "EXP-527": {
