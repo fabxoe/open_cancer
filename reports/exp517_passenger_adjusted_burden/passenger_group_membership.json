@@ -1,0 +1,54 @@
+{
+  "knowledge_file": "knowledge\\long_gene_passenger_candidates_v1.json",
+  "knowledge_sha256": "de2b7d96dd9d2e2323ddb683abbb54f3fe472f71a31cf5368c6fa9f387e95150",
+  "source": "Manually curated list of 15 genes recurring across multiple unrelated OOF confusion pairs in EXP-374 error analysis (e.g. LUSC<->STES). All 15 are established very long human genes / large-protein-coding genes per general molecular biology knowledge (DMD is the longest human gene; RYR2, SYNE1, PCLO, AHNAK encode very large proteins), consistent with the long-gene passenger-mutation phenomenon described in Lawrence MS et al. 2013, Nature, 'Mutational heterogeneity in cancer and its origin in replication timing and gene expression' (background/passenger mutation rate scales with gene length, independent of driver status). The DOI for that article is not verified here and is deliberately omitted rather than guessed.",
+  "source_url": "not applicable: no single external downloadable dataset was used for this list; see 'source', 'extraction_policy', and 'selection_policy' for full provenance instead of a URL",
+  "extraction_policy": "The 15 gene symbols are exactly the competition CSV gene columns identified in the EXP-374 OOF error analysis as passenger-like (recurring across multiple unrelated confusion pairs). No genes were added or removed based on this competition's SUBCLASS distribution or test data; membership was fixed before this experiment's OOF was computed.",
+  "selection_policy": "Genes were selected purely because they are established long genes/large proteins (an objective, target-independent property), not because of any observed association with SUBCLASS, class frequency, test prevalence, or Public leaderboard score. The list is fixed for this experiment and is not retuned afterward.",
+  "organizer_approval_reference": "https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180 (same 'fixed external gene-group, competition-CSV-only computed values' category already covered by this comment for pathway burden families)",
+  "competition_gene_count": 4384,
+  "derived_feature_names": [
+    "sample__mutated_gene_count_excl_passenger",
+    "sample__passenger_gene_fraction"
+  ],
+  "passenger_gene_denominator": 15,
+  "groups": {
+    "long_gene_passenger_candidates": {
+      "source_gene_nodes": [
+        "RYR2",
+        "SYNE1",
+        "PCLO",
+        "DST",
+        "SPTA1",
+        "DMD",
+        "PKHD1",
+        "COL11A1",
+        "COL6A3",
+        "COL12A1",
+        "MYH2",
+        "RYR1",
+        "AHNAK",
+        "VWF",
+        "PDE4DIP"
+      ],
+      "panel_intersection": [
+        "RYR2",
+        "SYNE1",
+        "PCLO",
+        "DST",
+        "SPTA1",
+        "DMD",
+        "PKHD1",
+        "COL11A1",
+        "COL6A3",
+        "COL12A1",
+        "MYH2",
+        "RYR1",
+        "AHNAK",
+        "VWF",
+        "PDE4DIP"
+      ],
+      "excluded_non_panel_nodes": []
+    }
+  }
+}
