@@ -1,0 +1,95 @@
+{
+  "propensity_source": "reports/analysis/adversarial_validation/train_domain_propensity.csv",
+  "exp484_oof_source": "oof/exp484_exp374_exp459_blend.csv",
+  "exp628_oof_source": "oof/exp628_nested_blend_weight_exp527_exp596.csv",
+  "test_like_quantile": 0.75,
+  "test_like_threshold": 0.2500581443309784,
+  "test_like_row_count": 1666,
+  "total_row_count": 6201,
+  "exp484_baseline_full_oof_macro_f1": 0.43202137668386986,
+  "exp484_baseline_test_like_macro_f1": 0.430673899705243,
+  "exp628_baseline_full_oof_macro_f1": 0.4647479422909872,
+  "exp628_baseline_test_like_macro_f1": 0.44409606830758125,
+  "gate_definition": "a ratio passes only if the test-like subset does not regress vs EITHER parent (EXP-484 and EXP-628), not just the weaker one",
+  "ratios": [
+    {
+      "weight_exp484": 0.9,
+      "weight_exp628": 0.1,
+      "full_oof_macro_f1": 0.43372928922112586,
+      "full_oof_delta_vs_exp484": 0.0017079125372559956,
+      "full_oof_delta_vs_exp628": -0.031018653069861346,
+      "test_like_macro_f1": 0.4294886956763006,
+      "test_like_delta_vs_exp484": -0.0011852040289423993,
+      "test_like_delta_vs_exp628": -0.014607372631280646,
+      "test_like_gate_pass": false
+    },
+    {
+      "weight_exp484": 0.8,
+      "weight_exp628": 0.2,
+      "full_oof_macro_f1": 0.43645963143411354,
+      "full_oof_delta_vs_exp484": 0.004438254750243675,
+      "full_oof_delta_vs_exp628": -0.028288310856873666,
+      "test_like_macro_f1": 0.4318303266726714,
+      "test_like_delta_vs_exp484": 0.0011564269674284033,
+      "test_like_delta_vs_exp628": -0.012265741634909844,
+      "test_like_gate_pass": false
+    },
+    {
+      "weight_exp484": 0.7,
+      "weight_exp628": 0.3,
+      "full_oof_macro_f1": 0.4384492019844446,
+      "full_oof_delta_vs_exp484": 0.00642782530057473,
+      "full_oof_delta_vs_exp628": -0.026298740306542612,
+      "test_like_macro_f1": 0.43294317763559104,
+      "test_like_delta_vs_exp484": 0.002269277930348035,
+      "test_like_delta_vs_exp628": -0.011152890671990212,
+      "test_like_gate_pass": false
+    },
+    {
+      "weight_exp484": 0.6,
+      "weight_exp628": 0.4,
+      "full_oof_macro_f1": 0.43984356362906485,
+      "full_oof_delta_vs_exp484": 0.007822186945194987,
+      "full_oof_delta_vs_exp628": -0.024904378661922355,
+      "test_like_macro_f1": 0.43259957948645583,
+      "test_like_delta_vs_exp484": 0.0019256797812128301,
+      "test_like_delta_vs_exp628": -0.011496488821125417,
+      "test_like_gate_pass": false
+    },
+    {
+      "weight_exp484": 0.5,
+      "weight_exp628": 0.5,
+      "full_oof_macro_f1": 0.44643041265471467,
+      "full_oof_delta_vs_exp484": 0.014409035970844808,
+      "full_oof_delta_vs_exp628": -0.018317529636272534,
+      "test_like_macro_f1": 0.43945385462962844,
+      "test_like_delta_vs_exp484": 0.008779954924385436,
+      "test_like_delta_vs_exp628": -0.004642213677952811,
+      "test_like_gate_pass": false
+    },
+    {
+      "weight_exp484": 0.4,
+      "weight_exp628": 0.6,
+      "full_oof_macro_f1": 0.4501741751205667,
+      "full_oof_delta_vs_exp484": 0.018152798436696815,
+      "full_oof_delta_vs_exp628": -0.014573767170420526,
+      "test_like_macro_f1": 0.4403026972290615,
+      "test_like_delta_vs_exp484": 0.00962879752381851,
+      "test_like_delta_vs_exp628": -0.003793371078519736,
+      "test_like_gate_pass": false
+    },
+    {
+      "weight_exp484": 0.3,
+      "weight_exp628": 0.7,
+      "full_oof_macro_f1": 0.45573660416050016,
+      "full_oof_delta_vs_exp484": 0.023715227476630296,
+      "full_oof_delta_vs_exp628": -0.009011338130487045,
+      "test_like_macro_f1": 0.43826509069281033,
+      "test_like_delta_vs_exp484": 0.007591190987567331,
+      "test_like_delta_vs_exp628": -0.005830977614770916,
+      "test_like_gate_pass": false
+    }
+  ],
+  "any_ratio_passes_test_like_gate": false,
+  "recommendation": "no ratio passes the test-like gate -- do not pursue further EXP-484+EXP-628 (legacy+native) blend attempts"
+}
