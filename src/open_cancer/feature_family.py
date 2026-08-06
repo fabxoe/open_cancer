@@ -160,6 +160,8 @@ def drop_named_base_features(
     test: sparse.spmatrix,
     feature_names: tuple[str, ...] | list[str],
     names_to_drop: tuple[str, ...] | list[str],
+    *,
+    allow_empty: bool = False,
 ) -> tuple[sparse.csr_matrix, sparse.csr_matrix, sparse.csr_matrix, tuple[str, ...]]:
     """Apply one deterministic base-column mask to all three partitions."""
 
@@ -182,7 +184,7 @@ def drop_named_base_features(
         )
     dropped_set = set(dropped)
     keep = [index for index, name in enumerate(names) if name not in dropped_set]
-    _require(bool(keep), "모든 base feature를 제거할 수 없습니다.")
+    _require(bool(keep) or allow_empty, "모든 base feature를 제거할 수 없습니다.")
     kept_names = tuple(names[index] for index in keep)
     return (
         sparse.csr_matrix(train[:, keep]),

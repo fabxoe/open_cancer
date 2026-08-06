@@ -375,6 +375,7 @@ def main(
                 x_test_fold,
                 all_feature_names,
                 extra.base_feature_names_to_drop,
+                allow_empty=bool(extra.feature_names),
             )
             x_train_fold = sparse.hstack(
                 [x_train_fold, extra.train], format="csr", dtype=np.float32

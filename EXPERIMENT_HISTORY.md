@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 112
+- 실제 실험 수: 113
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4479925392 (`EXP-521`, train self-inclusion 탐색 결과)
@@ -132,6 +132,7 @@
 | EXP-541 | COMPLETED | fabxoe | #541 | EXP-539 hierarchical 입력에 row-L2 normalization만 적용 | 0.3723738759 | 미제출 | NOT_STARTED | EXP-539 대비 +0.0061336698이고 수렴 경고는 해소됐으나 Log Loss가 +0.3033132553 악화되어 단독 제출 제외 | [보고서](reports/exp541_hierarchical_row_l2_linear/README.md) |
 | EXP-545 | COMPLETED | fabxoe | #545 | EXP-541 hierarchical vocabulary에 outer-train TF-IDF + row-L2 적용 | 0.4396775272 | 미제출 | NOT_STARTED | EXP-541 대비 +0.0673036513, EXP-527 대비 -0.0071947435, fold std 0.0038151877; 확률 보정 전 다양성 후보 | [보고서](reports/exp545_hierarchical_tfidf_linear/README.md) |
 | EXP-550 | COMPLETED | fabxoe | #550 | EXP-545 TF-IDF 입력 + multinomial Logistic Regression predict_proba | 0.4324730859 | 미제출 | NOT_STARTED | EXP-545 대비 -0.0072044·fold std 악화, EXP-527보다 F1·Log Loss 열세로 단독 확률 모델 ARCHIVE | [보고서](reports/exp550_hierarchical_tfidf_logistic/README.md) |
+| EXP-558 | COMPLETED | fabxoe | #558 | parser-v4 compact clinical features + XGBoost | 0.4133226110 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 +0.0089430·fold std 개선으로 새 compact baseline 채택, 최근 최고보다 낮아 제출 보류 | [보고서](reports/exp558_compact_clinical_xgb/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -4606,3 +4607,37 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   단독 확률 모델은 `ARCHIVE`한다. TF-IDF sparse representation과 EXP-545의
   오류 다양성은 유지하며, 후속은 LinearSVC 경계를 outer-train 내부에서만
   sigmoid calibration하는 별도 실험으로 제한한다.
+
+### [EXP-558] Parser-v4 compact clinical feature XGBoost baseline
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #558 / `issue-558-compact-clinical-xgb`
+- 소스 commit: `704d7d4df868b487bf52033b38abe2bb855d02ad`
+- 시작/종료: 2026-08-06T01:30:56.701172+00:00 /
+  2026-08-06T01:37:31.481040+00:00 (395.13초)
+- Config: `configs/exp558_compact_clinical_xgb.yaml`
+- Runner: `scripts/run_exp558_compact_clinical_xgb.py`
+- Metrics/Report: `reports/exp558_compact_clinical_xgb/`
+- 부모/비교: EXP-005, EXP-003
+- 피처: parser-v4를 의미 판정기로 사용한 fold-train observed mutation
+  presence, truncating presence, 환자 support 5 이상 exact recurrent
+  missense의 유전자 presence, 14개 compact patient summary. 공통 runner의
+  기존 base 피처는 전부 제거했다.
+- Fold별 feature dimension: 7,785, 7,815, 7,786, 7,851, 7,831
+- Fold Macro F1: 0.4111242643, 0.4175693659, 0.4009731443,
+  0.4133951038, 0.4173161316
+- OOF Macro F1: 0.4133226110 (EXP-005 대비 `+0.0089429523`)
+- Fold 평균/표준편차: 0.4120756020 / 0.0060589651
+- Accuracy / Log Loss: 0.4033220448 / 1.9797550440
+- Checkpoint 비교: mlogloss-best OOF 0.4076253653 대비 Macro-F1-best
+  `+0.0056972457`. fold 2가 iteration 19를 선택해 Log Loss가 크게 악화된
+  점은 validation checkpoint 낙관 편향 경고로 기록한다.
+- Public LB: 미제출
+- Submission: `submissions/exp558_compact_clinical_xgb.csv`
+  (`c2c4128c7b50db68a5d0e298f2d78cc1eb94a4d75c43bfde90821ab516dbe0c2`)
+- 재현 상태: `INFERENCE_VERIFIED`
+- 판단: 공유 문서의 compact architecture는 독립 baseline으로 유효하며
+  EXP-005보다 성능과 fold 안정성이 개선됐다. 다만 EXP-512·최근 최고 모델보다
+  낮고 Log Loss가 악화되어 단독 제출은 보류한다. mutated→truncating→summary→
+  recurrent→ref-AA×consequence ablation으로 실제 기여를 분리한다.
