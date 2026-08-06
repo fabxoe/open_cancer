@@ -1,0 +1,159 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-603
+issue_number: 603
+slug: directional_lineage_burden
+parent_experiment: EXP-374
+component_experiments: [EXP-374, EXP-514]
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mutation_type:
+    enabled: true
+    parser:
+      name: stop_notation_invariant_v2
+      definition_version: 2.1.0
+      equivalent_stop_alternates: ["*", X, Ter]
+      other_v1_semantics_preserved: true
+  robust_aggregates:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+  residue_position:
+    enabled: true
+    aggregates: [max]
+    missing_policy: zero
+    complex_tokens: include
+    transform: raw
+    isoform_semantic_mask:
+      enabled: true
+      manifest_path: knowledge/ensembl_isoform_annotation_v1.json
+      manifest_sha256: 568ea31f5b7fc7ff47d181fe552d39f3b9185f8d0a76cbb2a49d06be022d5bc0
+      annotation_cache_path: data/external/ensembl_release_116/competition_gene_isoform_index.json
+      annotation_cache_sha256: b9565339f1755d5b07e782c39064207310fa6c254b2e915a15492f4f38903daa
+      trusted_categories:
+        - CANONICAL_MATCH
+        - MANE_MATCH
+        - OTHER_ISOFORM_MATCH
+      masked_categories:
+        - COMPLEX_OR_UNMAPPABLE
+        - OUTSIDE_ALL_KNOWN_ISOFORMS
+        - POSITION_VALID_REF_MISMATCH
+hotspots:
+  table: extended_34
+  evidence_scope: additions_15
+  minimum_matching_train_rows: 5
+  stop_notation_normalization: true
+external_knowledge:
+  - group: canonical_pathways
+    file: knowledge/canonical_pathways_sanchez_vega_v1.json
+    organizer_approval_reference: https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180
+    source_commit: 7d29965de6ac8d0c6ec18c383f6dff8a48d562e7
+    source_sha256: a625675d03fa314eb27f3ab731524de13621a35aecd8edb7c67878f2d89ae07a
+  - group: kirc_kidney_glioma_directional_lineage
+    file: knowledge/kirc_kidney_glioma_directional_lineage_v1.json
+    organizer_approval_reference: https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180
+    source_commit: null
+    source_sha256: null
+    notes: >-
+      Hand-curated literature gene panel (no single downloadable source
+      file/commit to cite), covered by the same organizer-approved fixed
+      external gene-group-membership pattern as canonical_pathways above.
+      Successor of EXP-514's knowledge/kirc_kidney_glioma_lineage_v1.json:
+      the same 14 driver genes are re-split into four directionally
+      consistent groups (kirc_lineage, kipan_nonccrcc_lineage,
+      lgg_idh_lineage, gbm_idh_wildtype_lineage) instead of two pooled
+      groups, and zero-variance FH is dropped.
+abc_families:
+  fixed_pathway_burden:
+    enabled: true
+    definition_version: 2.1.0
+    fit_scope: stateless
+    groups: 10
+    values: [mutated_gene_count, lof_gene_count]
+    stop_notation_normalization: true
+    output_dimension: 20
+  pathway_mutation_type_composition:
+    enabled: true
+    definition_version: 2.1.0
+    fit_scope: stateless
+    groups: 10
+    values:
+      - missense_gene_count
+      - synonymous_gene_count
+      - nonsense_gene_count
+      - frameshift_gene_count
+      - complex_gene_count
+    stop_notation_normalization: true
+    candidate_output_dimension: 50
+    semantic_equivalence_filter: fold_train_against_feature_spec_v1
+  kirc_kidney_glioma_directional_lineage_burden:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    knowledge_file: knowledge/kirc_kidney_glioma_directional_lineage_v1.json
+    groups: 4
+    values: [mutated_gene_count, lof_gene_count]
+    stop_notation_normalization: true
+    output_dimension: 8
+    semantic_equivalence_filter: fold_train_against_feature_spec_v1
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - exp369_feature_spec_with_stop_notation_invariant_parser
+    - ensembl_release_116_residue_position_mask
+    - fixed_pathway_mutated_and_lof_gene_counts
+    - fixed_pathway_mutation_type_gene_counts
+    - kirc_kidney_glioma_directional_lineage_mutated_and_lof_gene_counts
+notes: >-
+  Issue #603. EXP-514 (Issue #514, ARCHIVE, already merged to main) added a
+  single pooled kidney group (VHL, MTOR, TSC1, TSC2, PTEN, MET, FH) and a
+  single pooled glioma group (IDH1, IDH2, ATRX, TP53, NF1, PTEN, EGFR) as
+  mutated/LOF gene-count burden columns on top of EXP-374. It improved
+  KIRC (+0.0278) and LGG (+0.0172) but GBMLGG (-0.0167) offset the gain,
+  leaving the OOF Macro F1 improvement (+0.0001756) below the +0.001 gate.
+  Direct data/raw/train.csv verification of per-class mutation rates found
+  that both pooled groups mixed genes with opposite class-favoring
+  direction: in glioma, IDH1/IDH2/ATRX/TP53 favor LGG while NF1/PTEN/EGFR
+  favor GBMLGG; in kidney, VHL/MTOR favor KIRC while TSC1/TSC2/MET favor
+  KIPAN, and FH is zero-variance (0 mutated samples in both KIPAN and KIRC)
+  so it carries no information. This matches independent literature (WHO
+  CNS5 IDH-mutant astrocytoma vs IDH-wildtype GBM molecular classification;
+  WHO renal tumor classification's VHL-ccRCC/KIRC and MET-papillary-RCC
+  driver associations) rather than being mined from SUBCLASS. This
+  experiment re-splits the same 14-gene literature panel (minus
+  zero-variance FH, minus noise-level kidney-context PTEN) into four
+  directionally consistent groups instead of two pooled groups
+  (kirc_lineage: VHL, MTOR; kipan_nonccrcc_lineage: TSC1, TSC2, MET;
+  lgg_idh_lineage: IDH1, IDH2, ATRX, TP53; gbm_idh_wildtype_lineage: NF1,
+  PTEN, EGFR), producing 8 burden columns (4 groups x mutated/LOF gene
+  count) instead of EXP-514's 4. EXP-514's own 4 columns are NOT reused in
+  this experiment; this is a fresh ablation against EXP-374, not a stack of
+  EXP-514 on top of EXP-374. EXP-374's stop-notation parser, hotspot-34,
+  Ensembl residue-position isoform mask, canonical pathway-20 burden and
+  pathway mutation-type composition candidate (50 columns, deduplicated
+  against the base feature matrix) are all held fixed and unchanged. Target,
+  test distribution, and Public LB do not define or select the gene groups
+  or their split.
+comparison_metrics_path: reports/exp374_stop_isoform_residue_mask/metrics.json
+comparison_metrics_path_secondary: reports/exp514_kidney_glioma_lineage_burden/metrics.json
