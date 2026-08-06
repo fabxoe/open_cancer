@@ -1,0 +1,27 @@
+{
+  "experiment_id": "EXP-571",
+  "fixed_parent": "EXP-567",
+  "arms": {
+    "base": {
+      "metrics": "reports/exp571_data_centric_features_parser_v4_base/metrics.json",
+      "macro_f1": 0.4477416384457121,
+      "fold_std": 0.004598462538707524,
+      "accuracy": 0.436381228834059,
+      "log_loss": 1.8136045027862335
+    },
+    "parser_qc": {
+      "metrics": "reports/exp571_data_centric_features_parser_v4_parser_qc/metrics.json",
+      "macro_f1": 0.4514285443273454,
+      "fold_std": 0.007865595508288166,
+      "accuracy": 0.44009030801483634,
+      "log_loss": 1.8353693599999081
+    },
+    "event_span": {
+      "metrics": "reports/exp571_data_centric_features_parser_v4_event_span/metrics.json",
+      "macro_f1": 0.45083279723591196,
+      "fold_std": 0.006528276372192101,
+      "accuracy": 0.4392839864537978,
+      "log_loss": 1.832006920341758
+    }
+  }
+}
