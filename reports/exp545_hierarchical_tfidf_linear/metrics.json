@@ -987,7 +987,7 @@
     "seconds": 108.13137658298365,
     "hardware": "local CPU"
   },
-  "decision": "PENDING_SPARSE_LINEAR_GATE",
+  "decision": "DIVERSITY_CANDIDATE_REQUIRES_CALIBRATION",
   "artifacts": {
     "config": "configs/exp545_hierarchical_tfidf_linear.yaml",
     "oof": "oof/exp545_hierarchical_tfidf_linear.csv",
