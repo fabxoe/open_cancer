@@ -98,6 +98,12 @@ def replay_saved_model(
             test_probability = np.asarray(
                 model.predict_proba(test_features), dtype=np.float64
             )
+        elif model_name == "random_forest":
+            model = joblib.load(path)
+            valid_probability = np.zeros((valid.sum(), len(CLASS_LABELS)), dtype=np.float64)
+            test_probability = np.zeros((test_features.shape[0], len(CLASS_LABELS)), dtype=np.float64)
+            valid_probability[:, model.classes_.astype(int)] = model.predict_proba(train_features[valid])
+            test_probability[:, model.classes_.astype(int)] = model.predict_proba(test_features)
         elif model_name == "ovr_xgboost":
             payload = joblib.load(path)
             models = payload["models"]
@@ -354,7 +360,7 @@ def main(
             "model_library": model_name,
             "model_library_version": importlib.metadata.version(
                 "scikit-learn"
-                if model_name == "logistic_regression"
+                if model_name in {"logistic_regression", "random_forest"}
                 else "xgboost"
                 if model_name == "ovr_xgboost"
                 else model_name

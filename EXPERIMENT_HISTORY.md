@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 125
+- 실제 실험 수: 126
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4533650721 (`EXP-589`, 원래 26-class 평가)
@@ -145,6 +145,7 @@
 | EXP-589 | COMPLETED | fabxoe | #589 | EXP-527의 KIRC→KIPAN·LGG→GBMLGG 24-class 학습·class-cosine 재구성 | 0.4533650721 (원래 26-class 평가; 병합 24-class 0.5086284091) | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0064928014·fold std 개선; 두 원래 클래스 F1=0을 포함해도 Local 최고. 24-class 제출은 KIRC·LGG를 전혀 출력하지 않는 고위험 구조라 진단·다양성 후보로 보존 | [보고서](reports/exp589_merged_24class/README.md) |
 | EXP-592 | COMPLETED | fabxoe | #592 | EXP-589 + outer-train 전용 KIPAN/KIRC·GBMLGG/LGG binary specialist 확률 분할 | 0.4393703541 | 미제출 | INFERENCE_VERIFIED | EXP-589 대비 -0.0139947180·KIRC F1 0.0837359로 ARCHIVE; hard-routing 사후 진단도 0.4434467829로 부모 미달, 현재 specialist track 종료 | [보고서](reports/exp592_hierarchical_pair_specialists/README.md) |
 | EXP-516 | COMPLETED | Kangho Park | #516 | EXP-374 + fold-train 하위 25% burden quantile 샘플에 balanced_sample_weight 1.5배 추가 곱(저burden 오분류 완화 가설) | 0.4221650046 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0046259222(게이트 +0.001 미달)·LUAD -0.0640/DLBC -0.0505 클래스 붕괴로 ARCHIVE; 표적 저burden 8클래스 중 4개만 개선(KIRC/LAML/THYM/KIPAN)·4개는 악화(GBMLGG/PRAD/PCPG/SARC)로 가설 부분 지지에 그침 | [보고서](reports/exp516_burden_weighted_sample_weight/README.md) |
+| EXP-596 | COMPLETED | 2heej | #596 | 동결 Feature Spec v1 + RandomForest (#505 스태킹 다양성 후보) | 0.4052772619 | 미제출 | INFERENCE_VERIFIED | CatBoost v1 최고 대비 -0.0141799675, Logistic v1보다는 높음; #505 S0 다양성 게이트 판정은 EXP-123/125/127 OOF 필요 — 판정 보류 | [보고서](reports/exp596_random_forest_v1/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5182,3 +5183,33 @@ glioma 그룹에서 기인하는지 분리 확인, (2) 이번 fold 표준편차 
 `uv run pytest -q`로 회귀 여부를 확인했다. burden 기반 새 feature 축(Cell
 Cycle #170/173, POLE #181/226, functional_role_burden #257)에 이어 이번
 "학습 가중치" 축도 REJECTED로 마무리한다.
+
+### [EXP-596] 동결 Feature Spec v1 + RandomForest
+
+- 상태/실행자: COMPLETED / 2heej
+- Issue/브랜치: #596 / `issue-596-random-forest-v1`
+- Config/Runner: `configs/exp596_random_forest_v1.yaml` /
+  `scripts/run_exp596_random_forest_v1.py`
+- 목적: #505 스태킹 로드맵 S0 다양성 감사 후보 확보. 동결 Feature Spec v1
+  (EXP-094와 동일 입력, EXP-123/125/127과 동일 조건)에서 지금까지의 모든
+  v1 모델이 boosting 또는 선형 계열이었던 것과 달리 bagging 기반
+  `RandomForestClassifier`(n_estimators=500, min_samples_leaf=2,
+  max_features=sqrt)를 시도했다.
+- Fold Macro F1: 0.4090, 0.3975, 0.4041, 0.3867, 0.4298
+- OOF Macro F1 / fold std: 0.4052772619 / 0.0142867463
+- Accuracy / Log Loss: 0.4059022738 / 2.0593712417
+- v1 계열 비교: EXP-123(Logistic) 0.3763324825, EXP-125(LightGBM)
+  0.4189078364, EXP-127(CatBoost) 0.4194572294 대비 EXP-596은 Logistic보다
+  높고 CatBoost 최고 대비 `-0.0141799675`. fold std(0.0143)는 v1 계열
+  다른 모델(0.004~0.006대)보다 뚜렷하게 높다.
+- 클래스별 F1 최저: KIPAN 0.2022
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+- 판단: **판정 보류**. #505 S0 다양성 게이트는 "최고 기준 모델 대비 0.004
+  이내 하락" 외에 "오류 상관 0.92 이하 또는 라벨 불일치율 10% 이상"도
+  별도 통과 조건으로 인정하며, RandomForest는 구조적으로 boosting/선형
+  계열과 다른 오류를 만들 가능성이 있다. 다만 이를 확인할 EXP-123/125/127의
+  실제 OOF(row 단위 예측)가 로컬에 없어(`oof/`는 Git 비추적) 이번 기록
+  시점에는 오류 상관·라벨 불일치율을 계산하지 못했다. EXP-123/125/127 중
+  하나 이상의 OOF를 확보해 오류 다양성을 확인한 뒤 최종 채택/기각을
+  판정한다.

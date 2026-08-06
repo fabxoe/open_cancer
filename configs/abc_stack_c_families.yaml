@@ -1,7 +1,8 @@
 # C-family defaults. Families stay off unless an official Experiment config enables one.
 base_feature_spec:
   experiment_id: EXP-094
-  sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+  # Re-pinned 2026-08-06 (#596/#597); see frozen_feature_specs.py
+  sha256: 8f564cc18b3bcef8c59879144f19ff0d62ac3d5ee13ea6887ce59d265d8f843a
 
 external_knowledge:
   fixed_pathway_file: knowledge/canonical_pathways_sanchez_vega_v1.json
