@@ -1,0 +1,120 @@
+experiment:
+  record_role: official
+  issue_number: 592
+  experiment_id: EXP-592
+  branch: issue-592-hierarchical-specialist
+  owner: fabxoe
+  source_commit: 2adfde5ccd7edab73654977a8f1b3c6c3c96b57a
+  dirty_worktree: false
+  started_at: '2026-08-06T04:59:47.560324+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+parent:
+  experiment_id: EXP-589
+  model_paths:
+  - models/exp589_merged_24class/fold_00.json
+  - models/exp589_merged_24class/fold_01.json
+  - models/exp589_merged_24class/fold_02.json
+  - models/exp589_merged_24class/fold_03.json
+  - models/exp589_merged_24class/fold_04.json
+  feature_dir: data/processed/exp589_merged_24class_features
+fold_features:
+- fold: 0
+  feature_count: 30818
+  base_feature_names_after_drop_sha256: 6b30e52c3eb76533c96876c3c18c3948eb26a8ddd8b81d94f5de1ba80d21cf49
+  extra_feature_names_sha256: 67179001d88119998c396c171098c6b6593a64fa09f4521db5c45c6b1aa8f98e
+- fold: 1
+  feature_count: 30819
+  base_feature_names_after_drop_sha256: 6b30e52c3eb76533c96876c3c18c3948eb26a8ddd8b81d94f5de1ba80d21cf49
+  extra_feature_names_sha256: 1b8c7c1f544267a25693f0af343e13ca55b9a856725d02765f74e76d01a00cba
+- fold: 2
+  feature_count: 30819
+  base_feature_names_after_drop_sha256: 6b30e52c3eb76533c96876c3c18c3948eb26a8ddd8b81d94f5de1ba80d21cf49
+  extra_feature_names_sha256: 0024b7639aa15ddf96fbdb90322b3f0c005aaf95f5b4770e4aecbee11e27d7c0
+- fold: 3
+  feature_count: 30819
+  base_feature_names_after_drop_sha256: 6b30e52c3eb76533c96876c3c18c3948eb26a8ddd8b81d94f5de1ba80d21cf49
+  extra_feature_names_sha256: 33ce21c1664b9889b972037243423d7599bd46df8ba30cceb8439250aa25bdef
+- fold: 4
+  feature_count: 30818
+  base_feature_names_after_drop_sha256: 6b30e52c3eb76533c96876c3c18c3948eb26a8ddd8b81d94f5de1ba80d21cf49
+  extra_feature_names_sha256: f48444ea48f795077ba7bc12be6563281ec74029f2030e828c929ee43b1d62ee
+specialists:
+  probability_contract: conditional_mass_preserving
+  pairs:
+  - - KIPAN
+    - KIRC
+  - - GBMLGG
+    - LGG
+  model:
+    objective: binary:logistic
+    n_estimators: 300
+    learning_rate: 0.05
+    max_depth: 4
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+  fit_scope: outer_train_pair_rows_only
+  checkpoint_policy: fixed_300_trees_no_outer_validation_tuning
+training:
+  command: uv run python scripts/run_exp592_hierarchical_pair_specialists.py
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  test_or_public_used_for_selection: false
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 08:56:36) [Clang 18.1.8 ]
+  platform: macOS-26.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: bc7da4e6e1f133ee6b1f8c5cd4c86f9b87d336d686ceaacddbe20254b0771d23

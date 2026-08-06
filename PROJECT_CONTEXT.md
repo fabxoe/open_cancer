@@ -1148,13 +1148,19 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
    ```
 
 7. base가 `main`인 PR을 만들고 첫 부분에 `Closes #12`를 작성한다.
-8. 관련 팀원을 reviewer 또는 mention으로 알린다.
-9. PR 작성자가 아닌 팀원 최소 한 명이 Approve한다.
-10. 새 커밋이 추가되면 기존 승인이 취소되므로 다시 검토받는다. 최근 push를
-    수행한 사람도 PR 작성자가 아니라면 승인할 수 있다.
-11. main이 변경되면 `origin/main`을 작업 브랜치에 merge하고 전체 테스트를 재실행한다.
-12. CI 통과와 모든 대화 해결 후 GitHub의 merge commit 방식으로 병합한다.
-13. main과 공유 브랜치에 force push하지 않는다.
+8. 관련 팀원을 reviewer 또는 mention으로 알려 가시성을 확보한다. 2026-08-06부터
+   main ruleset의 `required_approving_review_count`가 `0`으로 설정되어
+   있어 GitHub은 별도 팀원 Approve를 강제하지 않는다(과거에는 비작성자
+   승인 1개가 필수였다). PR 작성자 본인이 병합할 수 있지만, 그렇다고
+   리뷰를 생략해도 된다는 뜻은 아니다 — 특히 공유 코드(`scripts/`,
+   `src/open_cancer/`)를 바꾸거나 재현성·History 계약에 영향을 주는
+   변경은 가능하면 다른 팀원의 확인을 받은 뒤 병합한다.
+9. 새 커밋을 push해도 GitHub이 기존 승인을 강제로 무효화하지 않으므로,
+   실제로 받은 리뷰 코멘트에 대응했는지는 작성자가 스스로 확인한다.
+10. main이 변경되면 `origin/main`을 작업 브랜치에 merge하고 전체 테스트를 재실행한다.
+11. CI(`quality` status check) 통과와 모든 대화 해결 후 GitHub의 merge
+    commit 방식으로 병합한다. 팀원 승인 없이도 병합할 수 있다.
+12. main과 공유 브랜치에 force push하지 않는다.
 
 ### PR 필수 내용
 
@@ -1168,10 +1174,15 @@ History는 실제 사실만 기록한다. 이 절의 자리표시자를 실제 �
 
 ### main 보호 규칙
 
+GitHub main-protection ruleset(`required_approving_review_count: 0`,
+2026-08-06 기준 실제 조회값)을 단일 원본으로 삼는다. 아래 항목이 실제
+ruleset과 어긋나면 문서가 아니라 ruleset이 맞다 — Issue #34, #593처럼 별도
+Task Issue에서 문서를 다시 동기화한다.
+
 - PR 없이 변경 금지
-- PR 작성자가 아닌 팀원 승인 최소 1개
-- 새 커밋 push 시 기존 승인 취소 및 재검토
-- 최근 push 수행자에 대한 별도 승인 제한은 적용하지 않음
+- 팀원 Approve는 GitHub이 강제하지 않는다(승인 0건도 병합 가능, PR
+  작성자 본인 병합 포함). 다만 공유 코드나 재현성·History 계약에 영향을
+  주는 변경은 팀 관례상 가능하면 리뷰를 받고 병합한다.
 - 모든 대화 해결
 - `quality` status check 통과
 - merge 전 main 최신 상태
