@@ -80,7 +80,17 @@
             "minimum": 0,
             "maximum": 1
           },
+          "merged_24_macro_f1": {
+            "type": ["number", "null"],
+            "minimum": 0,
+            "maximum": 1
+          },
           "accuracy": {
+            "type": ["number", "null"],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "merged_24_accuracy": {
             "type": ["number", "null"],
             "minimum": 0,
             "maximum": 1
@@ -126,6 +136,11 @@
           "minimum": 0,
           "maximum": 1
         },
+        "merged_24_macro_f1": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
         "fold_mean": {
           "type": "number",
           "minimum": 0,
@@ -136,6 +151,11 @@
           "minimum": 0
         },
         "accuracy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "merged_24_accuracy": {
           "type": "number",
           "minimum": 0,
           "maximum": 1
@@ -211,6 +231,10 @@
       "type": "string"
     },
     "checkpoint_comparison": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "target_space": {
       "type": "object",
       "additionalProperties": true
     },
