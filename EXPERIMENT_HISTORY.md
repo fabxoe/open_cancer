@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 136
+- 실제 실험 수: 137
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4647479423 (`EXP-628`, 26-class 전부 예측)
@@ -156,6 +156,7 @@
 | EXP-634 | COMPLETED | 2heej | #634 | EXP-527+EXP-596 cross-fitted L2 Logistic Regression 스태킹, `class_weight=null`(#505 S2) | 0.3274295444 | 미제출 | INFERENCE_VERIFIED | EXP-628 대비 -0.1373183979 폭락, fold std +0.0333528273 악화, DLBC·SARC·THYM F1=0 등 소수 클래스 6개 붕괴(Log Loss는 -0.00002로 거의 불변) — EXP-137과 같은 실패 패턴이 더 심하게 재현됨, `ARCHIVE`; `class_weight="balanced"` 재시도가 유력한 다음 수 | [보고서](reports/exp634_cross_fitted_stacking_exp527_exp596/README.md) |
 | EXP-639 | COMPLETED | fabxoe | #639 | EXP-527 + parser-v4 fold-safe Hotspot-12 유전자 indicator·sample 요약 3개 | 0.4546505201 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0077782494·Log Loss 개선이나 fold std +0.0048500, LGG -0.1123·KIRC -0.0512 붕괴로 `ARCHIVE_AS_PRIMARY`; 정보 다양성·앙상블 후보로 보존 | [보고서](reports/exp639_parser_v4_hotspot12/README.md) |
 | EXP-621 | COMPLETED | Kangho-Park | #621 | EXP-604와 동일 쌍 내부 확률 재분배(재학습 없음), `regularization_lambda` 0.001→0.02로 강화(EXP-604 후속) | 0.4280073811 | 미제출 | NOT_STARTED | EXP-374 대비 Macro F1 +0.0012164543(게이트 +0.001 근소 통과)·fold std -0.0005200278(개선)·Log Loss +0.0023699809(근소 악화)·비대상 22클래스 절대 F1 변화 합 0.0172821978(게이트 0.015 초과)로 REJECTED — δ 크기는 EXP-604 대비 3분의 1~2분의 1로 줄었으나 collateral·Log Loss 두 게이트를 여전히 통과 못함 | [보고서](reports/exp621_pairwise_redistribution_regularized/README.md) |
+| EXP-643 | COMPLETED | 2heej | #643 | EXP-374 legacy 피처 + RandomForest(EXP-596과 동일 하이퍼파라미터, legacy 계보 두 번째 모델 다양성 후보) | 0.3999667430 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0268241839로 단독 품질 게이트 미달(wildcard 허용치도 초과)이나 다양성 게이트 명확히 통과(vs EXP-374 오류상관 0.6488·불일치 34.83%, vs EXP-459 오류상관 0.7606·불일치 28.79%) — EXP-459와 동일하게 blend/stacking 자산으로 보존, 단독 채택 아님 | [보고서](reports/exp643_random_forest_exp374/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5691,3 +5692,35 @@ additive 확장이며 `uv run pytest -q`로 회귀 여부를 재확인했다). "
   Log Loss 개선은 residue hotspot 정보가 있음을 보여주지만, fold 변동성과
   LGG·KIRC 붕괴 때문에 단독 주력 모델 채택 기준은 실패했다. 임계값을
   사후 조정하지 않고 OOF 오류 상관을 확인한 후 다양성·블렌드 후보로만 보존한다.
+
+### [EXP-643] EXP-374 legacy 피처 + RandomForest (legacy 모델 다양성)
+
+- 상태/실행자: COMPLETED / 2heej
+- Issue/브랜치: #643 / `issue-643-random-forest-exp374`
+- Config/Runner: `configs/exp643_random_forest_exp374.yaml` /
+  `scripts/run_exp643_random_forest_exp374.py`(EXP-459 runner 골격 +
+  `RandomForestAdapter`)
+- 부모: EXP-374; EXP-459(CatBoost)에 이은 legacy 계보 두 번째 모델
+  다양성 후보
+- 배경: native 계보가 XGBoost(EXP-527)+RandomForest(EXP-596) 조합으로
+  성공(EXP-623/628)했던 것과 같은 구조를 legacy에도 확보. 하이퍼파라미터는
+  EXP-596이 같은 하드웨어·비슷한 35,119차원 sparse 입력에서 5-fold 전체
+  62초로 끝난 전례를 그대로 재사용해 preflight 없이 진행(실제 108초 완료).
+- Fold Macro F1: 0.4067, 0.3864, 0.4081, 0.3991, 0.4059
+- OOF Macro F1 / fold std: 0.3999667430 / 0.0080176704
+- Accuracy / Log Loss: 0.3975165296 / 2.0756178206
+- EXP-374 대비: Macro F1 `-0.0268241839`(단독 품질 게이트 미달,
+  ABC-Stack 로드맵 wildcard 허용치 `-0.010`도 초과)
+- 다양성 게이트: vs EXP-374 오류(정오답) 상관 `0.6487891390`(≤0.92 통과),
+  라벨 불일치율 `34.83%`(≥10% 통과); vs EXP-459 오류상관
+  `0.7606003270`(통과), 라벨 불일치율 `28.79%`(통과)
+- 약한 클래스: SARC `0.1772`, KIPAN `0.1963`, PAAD `0.2353` — 완전
+  붕괴(F1=0)는 없음
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — 저장 checkpoint 추론으로 제출
+  SHA-256·라벨·확률 완전 일치
+- 판단: 단독 성능은 EXP-374 미달로 quality gate 실패(RandomForest가
+  35,119차원 매우 희소한 legacy 피처에서 boosting만큼 신호를 못 뽑음 —
+  native 쪽 EXP-596도 같은 패턴). 다양성 게이트는 명확히 통과해
+  EXP-459와 동일하게 blend/stacking 자산으로 보존한다. 단독 채택은
+  하지 않는다.

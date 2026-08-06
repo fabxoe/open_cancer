@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-643",
+  "issue_number": 643,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "aff5431dfa4b05d8e73d4e9077955777f773dadc",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp643_random_forest_exp374/data_manifest.json",
+  "environment": "reproducibility/exp643_random_forest_exp374/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp643_random_forest_exp374/fold_00.joblib",
+      "size_bytes": 128856249,
+      "sha256": "3fcc213236377f2b1f23f65ed2152a74c2b545924db7493c6b9d147ee197531c",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp643_random_forest_exp374/fold_01.joblib",
+      "size_bytes": 128307353,
+      "sha256": "52834c5a8e094424296e630fdc11930719e59d7607b5eb5b0eb614835cdf3ac2",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp643_random_forest_exp374/fold_02.joblib",
+      "size_bytes": 129945337,
+      "sha256": "a1ed0013553cb4d40b5952f6f0f41dbdf143bcbe34fc10d364d0e67577e04430",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp643_random_forest_exp374/fold_03.joblib",
+      "size_bytes": 129178841,
+      "sha256": "82664865330b5f9a4581ae1e1f2f7afa6738ad026bab5c24545799f2c30a4559",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp643_random_forest_exp374/fold_04.joblib",
+      "size_bytes": 130073721,
+      "sha256": "2da5347933d2fb0d7194312790f822d35fc3823680fa4fd19d22ffec8e8f48d5",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp643_random_forest_exp374.csv",
+      "size_bytes": 3464049,
+      "sha256": "88ed5391c3e95184ea8e74a61cdc23c68d361ac02fdf55c8557923357e89b520",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp643_random_forest_exp374.csv",
+      "size_bytes": 37953,
+      "sha256": "15bcec33f8188324f1cec19e689a904bd029ca668e662113281353ecb919d8ed",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp643_random_forest_exp374_test_proba.csv",
+      "size_bytes": 1391034,
+      "sha256": "2cb0ebd8395c2b48da0943cb16f08a5b0fcc157c4b978593d49cf82b30d72151",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp643_random_forest_exp374/config.resolved.yaml",
+      "size_bytes": 6561,
+      "sha256": "66bbba8c186c72388cd692e4443fe607804ac8e1e8adf43ffd1c62a74586bd8f",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp643_random_forest_exp374/metrics.json",
+      "size_bytes": 11853,
+      "sha256": "b7fd70663b9ec430fe498392ba93cb7ec0dd9256b7eab192202299e0ef76047b",
+      "storage_uri": null
+    }
+  ],
+  "verifier": "2heej",
+  "verified_at": "2026-08-06T09:14:32.851364+00:00",
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
