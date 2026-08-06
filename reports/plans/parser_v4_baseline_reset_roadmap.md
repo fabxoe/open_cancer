@@ -150,7 +150,7 @@ semantic parser
 | N5 | Parser-native semantic baseline 동결 | #479 | EXP-479 | 미발급 | COMPLETED | 0.4087566023 | HGVS 의미 기준선 동결·성능 최적화는 후속 단계 | N4-S·SHAP 진행 |
 | N6 | isoform 독립 재검증 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N5 완료 대기 |
 | N7 | driver 독립 재검증 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N5 완료 대기 |
-| N8 | pathway·hotspot 재검증·Feature Spec 동결 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N6·N7 판단 |
+| N8 | pathway·hotspot 재검증·Feature Spec 동결 | #587 | 해당 없음 | 미발급 | RUNNING | N/A | EXP-374는 stop 표기 버그는 이미 회피하지만 naive `.endswith("fs")` frameshift 판정·delins nonsense 누락은 여전히 legacy 경로 — 감사 스크립트로 실 영향 측정 중 | 스모크 결과 확인 후 COMPLETED 또는 재실행 Experiment 제안 |
 | N9 | nested Optuna | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N8 동결 대기 |
 | N10 | 모델 다양화·앙상블·최종 재현 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N9 완료 대기 |
 
