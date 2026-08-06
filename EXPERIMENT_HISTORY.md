@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 135
+- 실제 실험 수: 136
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4647479423 (`EXP-628`, 26-class 전부 예측)
@@ -155,6 +155,7 @@
 | EXP-628 | COMPLETED | 2heej | #628 | EXP-527+EXP-596 확률 블렌드 가중치 leave-one-outer-fold-out nested 선택(0.05 간격 grid, look-ahead 없음) | 0.4647479423 | 미제출 | INFERENCE_VERIFIED | EXP-623(0.5/0.5) 대비 +0.0029646045·fold std -0.0027327243(개선)·클래스 붕괴 없음; 5개 fold 전부 독립적으로 동일 가중치(0.35/0.65) 선택 — `ADOPT_WITH_CAUTION`, 현재 26-class 전부 예측하는 최고 Local 후보 | [보고서](reports/exp628_nested_blend_weight_exp527_exp596/README.md) |
 | EXP-634 | COMPLETED | 2heej | #634 | EXP-527+EXP-596 cross-fitted L2 Logistic Regression 스태킹, `class_weight=null`(#505 S2) | 0.3274295444 | 미제출 | INFERENCE_VERIFIED | EXP-628 대비 -0.1373183979 폭락, fold std +0.0333528273 악화, DLBC·SARC·THYM F1=0 등 소수 클래스 6개 붕괴(Log Loss는 -0.00002로 거의 불변) — EXP-137과 같은 실패 패턴이 더 심하게 재현됨, `ARCHIVE`; `class_weight="balanced"` 재시도가 유력한 다음 수 | [보고서](reports/exp634_cross_fitted_stacking_exp527_exp596/README.md) |
 | EXP-639 | COMPLETED | fabxoe | #639 | EXP-527 + parser-v4 fold-safe Hotspot-12 유전자 indicator·sample 요약 3개 | 0.4546505201 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0077782494·Log Loss 개선이나 fold std +0.0048500, LGG -0.1123·KIRC -0.0512 붕괴로 `ARCHIVE_AS_PRIMARY`; 정보 다양성·앙상블 후보로 보존 | [보고서](reports/exp639_parser_v4_hotspot12/README.md) |
+| EXP-621 | COMPLETED | Kangho-Park | #621 | EXP-604와 동일 쌍 내부 확률 재분배(재학습 없음), `regularization_lambda` 0.001→0.02로 강화(EXP-604 후속) | 0.4280073811 | 미제출 | NOT_STARTED | EXP-374 대비 Macro F1 +0.0012164543(게이트 +0.001 근소 통과)·fold std -0.0005200278(개선)·Log Loss +0.0023699809(근소 악화)·비대상 22클래스 절대 F1 변화 합 0.0172821978(게이트 0.015 초과)로 REJECTED — δ 크기는 EXP-604 대비 3분의 1~2분의 1로 줄었으나 collateral·Log Loss 두 게이트를 여전히 통과 못함 | [보고서](reports/exp621_pairwise_redistribution_regularized/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5591,6 +5592,73 @@ additive 확장이며 `uv run pytest -q`로 회귀 여부를 재확인했다). "
   프로젝트 기본 정책(`balanced_sample_weight`)에 맞춰 `class_weight="balanced"`로
   재시도하는 것이 유력한 다음 수 — 단, 예측이 달라지므로 이 EXP-ID를
   재사용하지 않고 별도 Experiment Issue가 필요하다.
+
+### [EXP-621] 쌍 내부 확률 재분배 정규화 강화판 — 기각(ARCHIVE)
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #621 / `issue-621-pairwise-redistribution-regularized`
+- 부모: EXP-374(재학습 없음, 저장된 OOF transform만), 직접 부모는
+  EXP-604(같은 메커니즘, 정규화만 강화)
+- Config: `configs/exp621_pairwise_redistribution_regularized.yaml`
+- Runner: `scripts/run_exp621_pairwise_redistribution_regularized.py`
+- Metrics/Report: `reports/exp621_pairwise_redistribution_regularized/`
+- 배경: EXP-604는 KIPAN/KIRC·GBMLGG/LGG 두 쌍의 확률 합을 고정하고 내부
+  비율만 재분배하는 메커니즘으로 Macro F1 `+0.0031`(5-fold 전부 개선)을
+  냈지만, 탐색된 δ가 grid 경계(`-0.8`~`-1.0`)로 쏠려 Log Loss(`+0.0169`)·
+  fold 표준편차(`+0.0014`)가 악화되고 비대상 22클래스 절대 F1 변화 합이
+  `0.0223`(게이트 `1e-6`)까지 벌어져 REJECTED됐다. 이 실험은 메커니즘
+  코드는 전혀 바꾸지 않고 `regularization_lambda`만 `0.001 → 0.02`로 올려
+  δ 탐색 자체가 더 작은 값을 선호하도록 했다.
+- 사전 근거: 실행 전 EXP-604의 실제 δ를 스케일링만 해서 시뮬레이션한
+  delta scale sweep 진단(재탐색 아님)에서 25% 스케일이 Macro F1
+  `+0.0016`·Log Loss `+0.0030`·collateral `0.0149`를 낼 것으로 예측했고,
+  이를 근거로 `max_non_eligible_class_abs_f1_delta_sum` 게이트도 `1e-6`
+  에서 `0.015`로 함께 완화했다(둘 다 실행 전 고정, 결과를 보고 조정하지
+  않음).
+- Fold Macro F1: 0.4276003809, 0.4230462101, 0.4202558188, 0.4245067174,
+  0.4429112596 — 5-fold 전부 개선(EXP-604와 동일하게 5/5).
+- OOF Macro F1: 0.4280073811 (EXP-374 대비 `+0.0012164543`, 게이트
+  `+0.001`을 근소하게 통과, EXP-604 `+0.0030888970`의 약 39%)
+- Fold 표준편차: 0.0079831891 (EXP-374 대비 `-0.0005200278`, **개선** —
+  EXP-604는 `+0.0014154453`로 악화됐던 것과 대조적)
+- Log Loss: 1.8464348703 (EXP-374 대비 `+0.0023699809`, 근소 악화이나
+  EXP-604 `+0.0168969669`의 약 14% 수준)
+- 표적 4클래스 F1 delta(EXP-604 대비 비율): KIRC `+0.0196`(35%), LGG
+  `+0.0212`(32%), GBMLGG `-0.0076`(50%), KIPAN `-0.0098`(39%) — 정규화
+  강화로 이동량 자체가 EXP-604의 3분의 1~2분의 1로 줄었다.
+- 비대상 22클래스 절대 F1 변화 합: **0.0172821978**(완화 게이트 `0.015`을
+  `0.0022822` 초과). 0이 아닌 클래스는 6개(EXP-604는 11개)로 줄었으나 CESC
+  `+0.0056`, LIHC `+0.0057`처럼 EXP-604에서 안 움직였던 클래스가 새로
+  흔들리는 등 "건드리는 클래스 집합 자체는 예측 불가능"함이 재확인됐다.
+- Fold별 탐색 δ(EXP-604는 전 fold `-0.8`~`-1.0`이었던 것과 대조): fold0
+  KIPAN/KIRC `-0.2`·GBMLGG/LGG `-0.2`; fold1 `0.0`·`-0.1`; fold2
+  `-0.1`·`0.0`; fold3 `0.0`·`-0.1`; fold4 `-0.1`·`0.0` — 사전 예측대로
+  정규화가 δ를 grid 경계에서 확실히 끌어내렸다.
+- **별도 진단과의 관계**: 같은 날 "δ 크기 축소"(이 실험)와는 다른 축인
+  "δ 적용 행 범위 축소"(대상 쌍 중 하나가 그 행의 현재 argmax인 행에만
+  적용) 게이트를 EXP-604의 저장된 δ에 재학습 없이 사후 적용해 진단했다.
+  결과: collateral `0.0223 → 0.0158`(-29%)·Log Loss 악화 `+0.0169 →
+  +0.0131`(-22%)까지 줄이면서 Macro F1 이득은 거의 유지(`+0.0031 →
+  +0.0029`)했으나, 건드린 행 수를 89% 줄였음에도 collateral은 29%만 줄어
+  **collateral이 KIRC/LGG를 살리는 데 필요한 행 자체에서 발생**함을
+  확인했다. fold 표준편차는 이 게이트로도 개선되지 않았다 — 이 실험
+  (정규화)이 fold 표준편차는 잘 억제하지만 F1 이득이 너무 작아지고, 그
+  게이트 진단은 collateral·Log Loss는 더 줄이지만 fold 표준편차는 그대로인
+  상보적 관계다.
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`(일반 Local 진단 실험, 리더보드 미제출)
+- 판단: 사전 고정한 4개 채택 조건(Macro F1 `≥+0.001` AND Log Loss 비악화
+  AND fold-std 비악화 AND 비대상 22클래스 절대 F1 변화 합 `≤0.015`) 중
+  Log Loss·collateral 두 조건이 위반돼 **REJECTED**. 정규화 강화가 fold
+  표준편차 악화를 완전히 뒤집고(오히려 개선) Log Loss 악화를 EXP-604의
+  14% 수준까지 줄였다는 점에서 방향은 옳았지만, collateral 게이트를 넘기지
+  못했고 그 대가로 Macro F1 이득도 39% 수준으로 축소됐다. 같은 날 진행한
+  "적용 행 범위 축소" 진단과 결합(게이트 + 완화된 정규화)하면 이 실험
+  단독보다 나은 트레이드오프가 나올 가능성이 있으나, 새 Experiment Issue로
+  게이트·정규화 값을 함께 사전 고정해야 한다. 이 실험을 끝으로 Track 2
+  (post-hoc pairwise offset) 계열은 EXP-233/276/515/604/621 다섯 번 모두
+  REJECTED/ARCHIVE로 현재 스코프에서 종료한다.
 
 ### [EXP-639] Parser-v4 fold-safe Hotspot-12
 
