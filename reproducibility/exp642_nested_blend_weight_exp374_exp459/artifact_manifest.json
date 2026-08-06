@@ -1,0 +1,66 @@
+{
+  "experiment_id": "EXP-642",
+  "issue_number": 642,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "a5a777c9cd4014c1ef181a6d79adf44a97bb720b",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp642_nested_blend_weight_exp374_exp459/data_manifest.json",
+  "environment": "reproducibility/exp642_nested_blend_weight_exp374_exp459/environment.json",
+  "release_url": null,
+  "verifier": "2heej",
+  "verified_at": "2026-08-06T09:01:52.112075+00:00",
+  "artifacts": [
+    {
+      "kind": "submission",
+      "path": "submissions/exp642_nested_blend_weight_exp374_exp459.csv",
+      "size_bytes": 38077,
+      "sha256": "d77529ec64d27228cd022f0ff38635c60182de94a20a43550bb5b39f02f7d3f7",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp642_nested_blend_weight_exp374_exp459.csv",
+      "size_bytes": 3507425,
+      "sha256": "34d2a80da2401aff66c23868118e60309c11e762e52a58a3be089e1b9d214684",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp642_nested_blend_weight_exp374_exp459_test_proba.csv",
+      "size_bytes": 1407519,
+      "sha256": "7640768e089903f1a5d0f782ac696c17c43b7bdb36696ab3e0b8f36075a1aee3",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp642_nested_blend_weight_exp374_exp459/metrics.json",
+      "size_bytes": 24353,
+      "sha256": "3ada0df1f53e8bff61ac242be3d5149a6a4f0e99ff9ca3e6f876f3e834f7885e",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp642_nested_blend_weight_exp374_exp459/config.resolved.yaml",
+      "size_bytes": 3446,
+      "sha256": "a981e31ec1417433bfacb699234d91645a1d63560f0acc83975d91e0f72bfc8d",
+      "storage_uri": null
+    },
+    {
+      "kind": "comparison",
+      "path": "reproducibility/exp642_nested_blend_weight_exp374_exp459/comparison.json",
+      "size_bytes": 552,
+      "sha256": "1afbfa24b2109f812ef0522a8b145f7846a8634e3cd99b985f547894a7befda4",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

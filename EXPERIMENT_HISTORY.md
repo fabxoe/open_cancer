@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 135
+- 실제 실험 수: 136
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4647479423 (`EXP-628`, 26-class 전부 예측)
@@ -155,6 +155,7 @@
 | EXP-628 | COMPLETED | 2heej | #628 | EXP-527+EXP-596 확률 블렌드 가중치 leave-one-outer-fold-out nested 선택(0.05 간격 grid, look-ahead 없음) | 0.4647479423 | 미제출 | INFERENCE_VERIFIED | EXP-623(0.5/0.5) 대비 +0.0029646045·fold std -0.0027327243(개선)·클래스 붕괴 없음; 5개 fold 전부 독립적으로 동일 가중치(0.35/0.65) 선택 — `ADOPT_WITH_CAUTION`, 현재 26-class 전부 예측하는 최고 Local 후보 | [보고서](reports/exp628_nested_blend_weight_exp527_exp596/README.md) |
 | EXP-634 | COMPLETED | 2heej | #634 | EXP-527+EXP-596 cross-fitted L2 Logistic Regression 스태킹, `class_weight=null`(#505 S2) | 0.3274295444 | 미제출 | INFERENCE_VERIFIED | EXP-628 대비 -0.1373183979 폭락, fold std +0.0333528273 악화, DLBC·SARC·THYM F1=0 등 소수 클래스 6개 붕괴(Log Loss는 -0.00002로 거의 불변) — EXP-137과 같은 실패 패턴이 더 심하게 재현됨, `ARCHIVE`; `class_weight="balanced"` 재시도가 유력한 다음 수 | [보고서](reports/exp634_cross_fitted_stacking_exp527_exp596/README.md) |
 | EXP-639 | COMPLETED | fabxoe | #639 | EXP-527 + parser-v4 fold-safe Hotspot-12 유전자 indicator·sample 요약 3개 | 0.4546505201 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0077782494·Log Loss 개선이나 fold std +0.0048500, LGG -0.1123·KIRC -0.0512 붕괴로 `ARCHIVE_AS_PRIMARY`; 정보 다양성·앙상블 후보로 보존 | [보고서](reports/exp639_parser_v4_hotspot12/README.md) |
+| EXP-642 | COMPLETED | 2heej | #642 | EXP-374+EXP-459 블렌드 가중치 leave-one-outer-fold-out nested 선택, test-like 안정성 게이트 적용(#489/#628 후속) | 0.4278840047 | 미제출 | INFERENCE_VERIFIED | EXP-484(0.7/0.3 고정) 대비 -0.0041373720·fold std +0.0018433750 악화; fold별 선택 가중치가 0.50~0.85로 크게 흩어짐(EXP-628의 5-fold 만장일치 0.35와 대비)—이 쌍에는 안정적 최적 가중치가 없다는 뜻 — `ARCHIVE`, EXP-484 0.7/0.3 유지 | [보고서](reports/exp642_nested_blend_weight_exp374_exp459/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5623,3 +5624,43 @@ additive 확장이며 `uv run pytest -q`로 회귀 여부를 재확인했다). "
   Log Loss 개선은 residue hotspot 정보가 있음을 보여주지만, fold 변동성과
   LGG·KIRC 붕괴 때문에 단독 주력 모델 채택 기준은 실패했다. 임계값을
   사후 조정하지 않고 OOF 오류 상관을 확인한 후 다양성·블렌드 후보로만 보존한다.
+
+### [EXP-642] EXP-374+EXP-459 블렌드 가중치 nested 선택(test-like 안정성 게이트)
+
+- 상태/실행자: COMPLETED / 2heej
+- Issue/브랜치: #642 / `issue-642-nested-blend-weight-exp374-exp459`
+- Config/Runner: `configs/exp642_nested_blend_weight_exp374_exp459.yaml` /
+  `scripts/run_exp642_nested_blend_weight_exp374_exp459.py`
+- 부모: EXP-374, EXP-459; 비교 기준: EXP-484(0.7/0.3 고정, 현재 legacy
+  대표 후보)
+- 배경: EXP-628이 EXP-527+EXP-596에서 0.05 간격 leave-one-outer-fold-out
+  nested search로 0.1 간격 스윕이 놓친 더 나은 지점을 찾았던 것과 같은
+  방법을 legacy 계보(EXP-374+EXP-459)에 적용. 단 이 트랙은 test-like
+  subset 안정성이 핵심 가치이므로(오늘 EXP-628 Public 제출로 native가
+  legacy보다 domain-shift에 훨씬 취약함이 실측 확인됨), 각 fold의 후보
+  가중치가 inner test-like subset에서 순수 EXP-374(가중치 1.0) 대비
+  악화되면 제외하는 안정성 게이트를 추가했다.
+- 방법: 재학습 없음. `0.50~0.95`(0.05 간격) grid에서 각 outer fold의
+  가중치를 나머지 4-fold OOF로만, 안정성 게이트를 통과하는 후보 중 inner
+  full OOF Macro F1 최대화로 선택.
+- fold별 선택 가중치(EXP-374 기준): fold0 `0.50`, fold1 `0.85`, fold2
+  `0.65`, fold3 `0.50`, fold4 `0.70`(fallback 없음, 전부 게이트 통과
+  후보 중 선택). `weight_range_across_folds = 0.35` — EXP-628의 5-fold
+  만장일치(0.35 고정)와 뚜렷이 대비된다.
+- 최종 배포 가중치: EXP-374 `0.65` / EXP-459 `0.35`
+- OOF Macro F1 / fold std: 0.4278840047 / 0.0155853635
+- Accuracy / Log Loss: 0.4160619255 / 1.8393414029
+- EXP-484 대비: Macro F1 `-0.0041373720`, fold std `+0.0018433750`(악화),
+  Accuracy `-0.0024189647`, Log Loss `+0.0056505581`(소폭 악화)
+- fold별 비교(EXP-484 → EXP-642): fold0 `-0.0084`, fold1 `-0.0029`, fold2
+  `+0.0008`, fold3 `-0.0089`, fold4 `0.0000`(우연히 같은 0.70 선택).
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — 결정론적 재계산으로 가중치 선택·
+  확률·제출 SHA-256 완전 일치
+- 판단: **`ARCHIVE`**. EXP-484보다 전반적으로 낮고 fold std도 악화됐다.
+  핵심 원인은 fold별 선택 가중치가 크게 흩어진다는 것 — 이 모델 쌍에는
+  EXP-527+EXP-596 같은 안정적인 "진짜 최적 가중치"가 존재하지 않고,
+  fold별 patchwork가 Task #482가 전체 test-like subset을 종합해 고른
+  단일 고정값(0.7)보다 못하다. "더 세밀한 grid의 nested search가 항상
+  낫다"는 EXP-628의 교훈은 모든 모델 쌍에 일반화되지 않는다. EXP-484의
+  0.7/0.3을 그대로 legacy 계보 대표 후보로 유지한다.
