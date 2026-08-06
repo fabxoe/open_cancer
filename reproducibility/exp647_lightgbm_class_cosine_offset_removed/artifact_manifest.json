@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-647",
+  "issue_number": 647,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "8044b256e2b0bc3a9a0bc9373940706908272567",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp647_lightgbm_class_cosine_offset_removed/data_manifest.json",
+  "environment": "reproducibility/exp647_lightgbm_class_cosine_offset_removed/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp647_lightgbm_class_cosine_offset_removed/fold_00.txt",
+      "size_bytes": 3872362,
+      "sha256": "39942d4a37f69db6a9a1f31f9962c3908d92982c142a43cdd7fccf7eece02d96",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp647_lightgbm_class_cosine_offset_removed/fold_01.txt",
+      "size_bytes": 5429150,
+      "sha256": "8821bcc183507d1845cb68f5f61a2f17dba65422d9fcae2f6afea085221ec2b9",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp647_lightgbm_class_cosine_offset_removed/fold_02.txt",
+      "size_bytes": 9986851,
+      "sha256": "5b8be86ad6cab03f971e53dbcfd4f1c6b3aefb2814c5b0988140f144516affe2",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp647_lightgbm_class_cosine_offset_removed/fold_03.txt",
+      "size_bytes": 6797216,
+      "sha256": "decfa81890d54b46ff34cb7894267d0cdd82e511a827d6545c8c27b9b1e077e2",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp647_lightgbm_class_cosine_offset_removed/fold_04.txt",
+      "size_bytes": 9363328,
+      "sha256": "59ac7d9b0e8d75126188e4849162a4eec99d423b69ab64b9b4823335413678e7",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp647_lightgbm_class_cosine_offset_removed.csv",
+      "size_bytes": 3488889,
+      "sha256": "67204c3c2eea8575c3eb8bcf5096ce70433349b8a0c40770f67151decebd52ab",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp647_lightgbm_class_cosine_offset_removed.csv",
+      "size_bytes": 38122,
+      "sha256": "aacf1b42fc4824caece78f2c5f2ed41c3225d7f1aaf55ca1f1522a79029ddd6a",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp647_lightgbm_class_cosine_offset_removed_test_proba.csv",
+      "size_bytes": 1393652,
+      "sha256": "b2d9679b17087999335057e2b9b98b61590412271b138a6de6fde55948c58741",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp647_lightgbm_class_cosine_offset_removed/config.resolved.yaml",
+      "size_bytes": 6848,
+      "sha256": "55785759133b7e8cd1a26a3b3e6845f3bbb89605d12852544e703aaa3bd53b6c",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp647_lightgbm_class_cosine_offset_removed/metrics.json",
+      "size_bytes": 11905,
+      "sha256": "a4e94bd7d02879ae636c23e785ee8efaddf1f13b803e9fa42c23691ff3e2520f",
+      "storage_uri": null
+    }
+  ],
+  "verifier": "2heej",
+  "verified_at": "2026-08-06T09:54:27.256835+00:00",
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

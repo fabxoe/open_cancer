@@ -40,6 +40,7 @@ from open_cancer.hashing import sha256_file
 from open_cancer.hotspot_features import build_hotspot_augmented_features, resolve_hotspot_config
 from open_cancer.isoform_position_mask import resolve_isoform_position_mask_from_config
 from open_cancer.isoform_relative_position import resolve_isoform_relative_position_from_config
+from open_cancer.model_artifacts import write_model_run_records
 from open_cancer.model_runner import LightGBMAdapter
 from open_cancer.mutation_features import (
     resolve_position_features_from_config,
@@ -378,16 +379,43 @@ def main() -> None:
     }
     comparison["passed"] = comparison["submission_sha256_match"] and max_diff <= 1e-6
     write_json(reproducibility_dir / "comparison.json", comparison)
-    manifest = {
-        "experiment_id": expected_experiment_id,
-        "issue_number": int(config["issue_number"]),
-        "reproducibility_status": "INFERENCE_VERIFIED" if comparison["passed"] else "FAILED",
-        "source_commit": source_commit,
-        "verified_at": comparison["verified_at"],
-        "verifier": owner,
-        "verification": comparison,
+
+    write_model_run_records(
+        root=ROOT,
+        output_dir=reproducibility_dir,
+        experiment_id=expected_experiment_id,
+        issue_number=int(config["issue_number"]),
+        source_commit=source_commit,
+        resolved_config=resolved_config,
+        metrics=metrics,
+        data_files={
+            "train": TRAIN_PATH,
+            "test": TEST_PATH,
+            "sample_submission": SAMPLE_SUBMISSION_PATH,
+            "split": ROOT / config["split"]["path"],
+        },
+        artifacts={
+            **{f"checkpoint_fold_{fold}": model_dir / f"fold_{fold:02d}.txt" for fold in range(n_splits)},
+            "oof_probabilities": oof_path,
+            "test_probabilities": test_probability_path,
+            "submission": submission_path,
+        },
+    )
+    manifest_path = reproducibility_dir / "artifact_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["reproducibility_status"] = "INFERENCE_VERIFIED" if comparison["passed"] else "FAILED"
+    manifest["verifier"] = owner
+    manifest["verified_at"] = comparison["verified_at"]
+    manifest["verification"] = {
+        "data_hashes_match": comparison["data_hashes_match"],
+        "submission_sha256_match": comparison["submission_sha256_match"],
+        "test_label_agreement": comparison["test_label_agreement"],
+        "probability_atol": comparison["probability_atol"],
+        "probability_rtol": comparison["probability_rtol"],
+        "passed": comparison["passed"],
     }
-    write_json(reproducibility_dir / "artifact_manifest.json", manifest)
+    write_json(manifest_path, manifest)
+    validate_json_document(manifest_path, ROOT / "schemas" / "reproducibility_manifest.schema.json")
 
     print(
         json.dumps(
