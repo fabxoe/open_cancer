@@ -125,7 +125,8 @@ def main() -> None:
                 ),
                 "best_iteration": None,
                 "model_parameters": dict(config["model"]),
-                "optimizer": {
+                "checkpoint_selection": {
+                    "policy": "fitted_probability_model",
                     "n_iter_per_class": model.n_iter_.tolist(),
                     "converged": bool(np.max(model.n_iter_) < parameters["max_iter"]),
                 },

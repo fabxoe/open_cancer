@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 111
+- 실제 실험 수: 112
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4479925392 (`EXP-521`, train self-inclusion 탐색 결과)
@@ -131,6 +131,7 @@
 | EXP-539 | COMPLETED | fabxoe | #539 | parser-v4 hierarchical detail/global raw-count + LinearSVC | 0.3662402061 | 미제출 | NOT_STARTED | row-L2 효과를 분리하기 위한 raw-count 기준선; 전 fold 수렴 경고와 낮은 성능으로 단독 제출 제외 | [보고서](reports/exp539_hierarchical_raw_linear/README.md) |
 | EXP-541 | COMPLETED | fabxoe | #541 | EXP-539 hierarchical 입력에 row-L2 normalization만 적용 | 0.3723738759 | 미제출 | NOT_STARTED | EXP-539 대비 +0.0061336698이고 수렴 경고는 해소됐으나 Log Loss가 +0.3033132553 악화되어 단독 제출 제외 | [보고서](reports/exp541_hierarchical_row_l2_linear/README.md) |
 | EXP-545 | COMPLETED | fabxoe | #545 | EXP-541 hierarchical vocabulary에 outer-train TF-IDF + row-L2 적용 | 0.4396775272 | 미제출 | NOT_STARTED | EXP-541 대비 +0.0673036513, EXP-527 대비 -0.0071947435, fold std 0.0038151877; 확률 보정 전 다양성 후보 | [보고서](reports/exp545_hierarchical_tfidf_linear/README.md) |
+| EXP-550 | COMPLETED | fabxoe | #550 | EXP-545 TF-IDF 입력 + multinomial Logistic Regression predict_proba | 0.4324730859 | 미제출 | NOT_STARTED | EXP-545 대비 -0.0072044·fold std 악화, EXP-527보다 F1·Log Loss 열세로 단독 확률 모델 ARCHIVE | [보고서](reports/exp550_hierarchical_tfidf_logistic/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -4573,3 +4574,35 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   사용하지 않는다. EXP-527과 예측 라벨 불일치율 `50.7983%`, 정오답 상관
   `0.487465`로 다양성 gate를 통과했으며, 별도의 fold-safe calibration 또는
   Logistic Regression 후보로 이어간다.
+
+### [EXP-550] Parser-v4 hierarchical TF-IDF multinomial Logistic Regression
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #550 / `issue-550-parser-v4-tfidf-logreg`
+- 소스 commit: `7161caa39e893531c1c796c7f270bcbdd3e6396b`
+- 시작/종료: 2026-08-06T00:24:03.083214+00:00 /
+  2026-08-06T00:25:56.203182+00:00 (113.18초)
+- Config: `configs/exp550_hierarchical_tfidf_logistic.yaml`
+- Runner: `scripts/run_exp550_hierarchical_tfidf_logistic.py`
+- Metrics/Report: `reports/exp550_hierarchical_tfidf_logistic/`
+- 부모: EXP-545
+- 유일한 변경: tokenizer·hierarchical vocabulary·support threshold·outer-train
+  TF-IDF·canonical split·class weight를 유지하고 `LinearSVC(C=1)`만
+  L2 multinomial `LogisticRegression(C=1, solver=lbfgs)`로 교체했다.
+  OOF와 test에는 임의 softmax가 아니라 `predict_proba`를 저장했다.
+- Fold Macro F1: 0.4055176766, 0.4282710635, 0.4500994258,
+  0.4330492830, 0.4370160072
+- OOF Macro F1: 0.4324730859 (EXP-545 대비 `-0.0072044413`,
+  EXP-527 대비 `-0.0143991848`)
+- Fold 평균/표준편차: 0.4307906912 / 0.0145722806
+- Accuracy / predict_proba Log Loss: 0.4191259474 / 2.3007948399
+  (EXP-527 대비 Log Loss `+0.2733061607`)
+- 최적화: 모든 fold가 31~34 iteration에서 수렴했다.
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+- 판단: EXP-545의 hard-label 성능을 유지하지 못했고 fold 변동성이 크게
+  증가했으며, 적법한 확률을 산출했음에도 EXP-527보다 Log Loss가 나쁘다.
+  단독 확률 모델은 `ARCHIVE`한다. TF-IDF sparse representation과 EXP-545의
+  오류 다양성은 유지하며, 후속은 LinearSVC 경계를 outer-train 내부에서만
+  sigmoid calibration하는 별도 실험으로 제한한다.
