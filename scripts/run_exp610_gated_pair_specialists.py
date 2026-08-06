@@ -165,11 +165,17 @@ def main() -> None:
         adjusted_pred = valid_adjusted.argmax(axis=1)
         fold_records.append({
             "fold": fold,
-            "base_macro_f1": float(f1_score(valid_target, base_pred, labels=np.arange(26), average="macro", zero_division=0)),
-            "adjusted_macro_f1": float(f1_score(valid_target, adjusted_pred, labels=np.arange(26), average="macro", zero_division=0)),
-            "valid_counts": valid_counts,
-            "test_counts": test_counts,
-            "specialists": specialist_records,
+            "macro_f1": float(f1_score(valid_target, adjusted_pred, labels=np.arange(26), average="macro", zero_division=0)),
+            "accuracy": float(accuracy_score(valid_target, adjusted_pred)),
+            "log_loss": float(log_loss(valid_target, valid_adjusted, labels=np.arange(26))),
+            "best_iteration": None,
+            "model_parameters": params,
+            "resampling": {
+                "base_macro_f1": float(f1_score(valid_target, base_pred, labels=np.arange(26), average="macro", zero_division=0)),
+                "valid_gate_counts": valid_counts,
+                "test_gate_counts": test_counts,
+                "specialists": specialist_records,
+            },
         })
 
     if np.isnan(oof).any():
@@ -182,9 +188,12 @@ def main() -> None:
     metrics = {
         "experiment_id": config["experiment_id"],
         "issue_number": context.issue_number,
+        "owner": "fabxoe",
+        "record_role": config["record_role"],
         "parent_experiment": config["parent_experiment"],
         "status": "COMPLETED",
-        "primary_metric": "oof_macro_f1",
+        "primary_metric": "macro_f1",
+        "split_id": config["split"]["path"],
         "started_at": started.isoformat(),
         "finished_at": datetime.now(timezone.utc).isoformat(),
         "git_commit": git("rev-parse", "HEAD"),
@@ -192,13 +201,20 @@ def main() -> None:
             "macro_f1": macro,
             "accuracy": float(accuracy_score(target, oof_pred)),
             "log_loss": float(log_loss(target, oof, labels=np.arange(26))),
-            "fold_mean": float(np.mean([row["adjusted_macro_f1"] for row in fold_records])),
-            "fold_std": float(np.std([row["adjusted_macro_f1"] for row in fold_records])),
+            "fold_mean": float(np.mean([row["macro_f1"] for row in fold_records])),
+            "fold_std": float(np.std([row["macro_f1"] for row in fold_records])),
             "per_class_f1": {label: float(report[label]["f1-score"]) for label in CLASS_LABELS},
             "confusion_matrix": confusion_matrix(target, oof_pred, labels=np.arange(26)).tolist(),
         },
         "folds": fold_records,
-        "runtime": {"total_seconds": time.perf_counter() - started_perf},
+        "runtime": {"seconds": time.perf_counter() - started_perf, "hardware": "local-cpu"},
+        "artifacts": {
+            "resolved_config": str(resolved_path.relative_to(ROOT)),
+            "oof": str(oof_path.relative_to(ROOT)),
+            "test_probability": str(pred_path.relative_to(ROOT)),
+            "submission": str(submission_path.relative_to(ROOT)),
+            "models": str(output_model_dir.relative_to(ROOT)),
+        },
         "notes": config["notes"],
     }
 
@@ -208,6 +224,7 @@ def main() -> None:
     submission = pd.DataFrame({"ID": sample["ID"], "SUBCLASS": encoder.inverse_transform(test_pred)})
     submission.to_csv(submission_path, index=False)
     validate_submission(submission_path, TEST, expected_classes=CLASS_LABELS)
+    metrics["artifacts"]["submission_sha256"] = sha256_file(submission_path)
     write_json(report_dir / "metrics.json", metrics)
     (repro_dir / "config.resolved.yaml").write_text(yaml.safe_dump(config, sort_keys=False), encoding="utf-8")
     write_json(repro_dir / "original_metrics.json", metrics)
@@ -215,7 +232,7 @@ def main() -> None:
         "submission_sha256": sha256_file(submission_path),
         "probability_row_sum_max_abs_error": float(np.max(np.abs(test_probability.sum(axis=1) - 1.0))),
     })
-    print(json.dumps({"macro_f1": macro, "runtime_seconds": metrics["runtime"]["total_seconds"], "submission": str(submission_path)}, ensure_ascii=False, indent=2))
+    print(json.dumps({"macro_f1": macro, "runtime_seconds": metrics["runtime"]["seconds"], "submission": str(submission_path)}, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":
