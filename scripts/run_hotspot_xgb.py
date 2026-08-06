@@ -851,10 +851,17 @@ def finalize_saved_run(
     *,
     runner_command: str,
     fold_feature_builder: Any | None = None,
+    model_class_labels: tuple[str, ...] | None = None,
+    target_aliases: dict[str, str] | None = None,
 ) -> None:
     """Validate and verify a completed run after post-processing interruption."""
     config_path = config_path.resolve()
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    active_class_labels = tuple(model_class_labels or CLASS_LABELS)
+    active_probability_columns = tuple(
+        f"PROBA_{label}" for label in active_class_labels
+    )
+    aliases = dict(target_aliases or {})
     context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
     artifact_slug = f"exp{context.issue_number:03d}_{config['slug']}"
     report_dir = ROOT / "reports" / artifact_slug
@@ -914,8 +921,10 @@ def finalize_saved_run(
         )
         if not train["ID"].equals(train_meta["ID"]) or train["fold"].isna().any():
             raise ValueError("finalize fold 병합 결과가 원본 train과 일치하지 않습니다.")
-        label_encoder = LabelEncoder().fit(list(CLASS_LABELS))
-        target = label_encoder.transform(train["SUBCLASS"]).astype(np.int32)
+        label_encoder = LabelEncoder().fit(list(active_class_labels))
+        target = label_encoder.transform(
+            train["SUBCLASS"].replace(aliases)
+        ).astype(np.int32)
         fold_test_features = rebuild_fold_test_features(
             fold_feature_builder=fold_feature_builder,
             fold_assignments=train["fold"].to_numpy(dtype=np.int32),
@@ -950,6 +959,8 @@ def finalize_saved_run(
         extra_artifact_paths=[
             ("checkpoint_iteration_audit", path) for path in audit_paths
         ],
+        class_labels=active_class_labels,
+        probability_columns=active_probability_columns,
     )
 
 
