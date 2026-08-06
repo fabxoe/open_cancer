@@ -42,24 +42,32 @@ class MmrGeneProxyFoldBuilder:
         registry_record["catalog_panels"] = self.fitted.catalog_panels
         registry_record["competition_intersections"] = self.fitted.intersections
         registry_record["missing_catalog_genes"] = self.fitted.missing_catalog_genes
-        bundle = FoldFeatureBundle(
-            train=sparse.hstack(
-                [parent.train, self.train_features[train_indices]], format="csr"
-            ),
-            validation=sparse.hstack(
-                [parent.validation, self.train_features[valid_indices]], format="csr"
-            ),
-            test=sparse.hstack([parent.test, self.test_features], format="csr"),
-            fitted_families=parent.fitted_families + (self.fitted,),
-            feature_names=parent.feature_names + self.fitted.descriptor.feature_names,
-            registry={
-                **parent.registry,
-                self.fitted.descriptor.name: registry_record,
-            },
-            base_feature_names_to_drop=parent.base_feature_names_to_drop,
+
+        # Check only the new MMR-only candidate columns against the parent
+        # feature set. Checking the already-merged bundle against itself
+        # would trivially flag every parent column as its own duplicate.
+        candidate = FoldFeatureBundle(
+            train=self.train_features[train_indices],
+            validation=self.train_features[valid_indices],
+            test=self.test_features,
+            fitted_families=(self.fitted,),
+            feature_names=self.fitted.descriptor.feature_names,
+            registry={self.fitted.descriptor.name: registry_record},
         )
-        bundle, equivalents = remove_semantically_equivalent_features(
-            bundle, parent.train, parent.feature_names
+        candidate, equivalents = remove_semantically_equivalent_features(
+            candidate, parent.train, parent.feature_names
+        )
+
+        bundle = FoldFeatureBundle(
+            train=sparse.hstack([parent.train, candidate.train], format="csr"),
+            validation=sparse.hstack(
+                [parent.validation, candidate.validation], format="csr"
+            ),
+            test=sparse.hstack([parent.test, candidate.test], format="csr"),
+            fitted_families=parent.fitted_families + candidate.fitted_families,
+            feature_names=parent.feature_names + candidate.feature_names,
+            registry={**parent.registry, **candidate.registry},
+            base_feature_names_to_drop=parent.base_feature_names_to_drop,
         )
         if equivalents:
             bundle.registry["mmr_semantic_equivalence_filter"] = {
