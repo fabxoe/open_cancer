@@ -28,6 +28,7 @@ the combined output are skipped.
 from __future__ import annotations
 
 import json
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -54,6 +55,12 @@ MANIFEST_PATH = ROOT / "knowledge/ensembl_protein_domain_annotation_v1.json"
 BIOMART_URL = "https://www.ensembl.org/biomart/martservice"
 BIOMART_DATASET = "hsapiens_gene_ensembl"
 BATCH_SIZE = 400
+BATCH_INTERVAL_SECONDS = 1.0
+MAX_BATCH_RETRIES = 4
+REQUEST_HEADERS = {
+    "User-Agent": "open_cancer-research-script/1.0 (Task #557 Pfam domain precheck; "
+    "target-independent, non-commercial competition research)"
+}
 QUERY_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Query>
 <Query virtualSchemaName="default" formatter="TSV" header="0" uniqueRows="1" count="" datasetConfigVersion="0.6">
@@ -65,6 +72,27 @@ QUERY_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"?>
 <Attribute name="pfam_end"/>
 </Dataset>
 </Query>"""
+
+
+def _post_batch(query: str) -> str | None:
+    """POST one BioMart query with retry/backoff. Returns None (caller skips
+    this batch and retries it on the next script run) if every attempt fails,
+    rather than raising and aborting the remaining batches."""
+
+    last_error: Exception | None = None
+    for attempt in range(MAX_BATCH_RETRIES):
+        try:
+            response = requests.post(
+                BIOMART_URL, data={"query": query}, headers=REQUEST_HEADERS, timeout=60
+            )
+            if response.status_code == 200:
+                return response.text
+            last_error = requests.HTTPError(f"HTTP {response.status_code}: {response.text[:200]}")
+        except requests.RequestException as exc:
+            last_error = exc
+        time.sleep(2.0 * (attempt + 1))
+    print(f"배치 요청 {MAX_BATCH_RETRIES}회 재시도 후 실패, 건너뜀: {last_error}")
+    return None
 
 
 def _collect_gene_tokens(csv_path: Path) -> dict[str, set[str]]:
@@ -166,11 +194,14 @@ def main() -> None:
     batches = [pending[i : i + BATCH_SIZE] for i in range(0, len(pending), BATCH_SIZE)]
     print(f"남은 배치 수: {len(batches)} (배치당 최대 {BATCH_SIZE}개)")
 
+    failed_batches = 0
     for batch_index, batch_ids in enumerate(batches, start=1):
         query = QUERY_TEMPLATE.format(dataset=BIOMART_DATASET, ids=",".join(batch_ids))
-        response = requests.post(BIOMART_URL, data={"query": query}, timeout=60)
-        response.raise_for_status()
-        raw_text = response.text
+        raw_text = _post_batch(query)
+        if raw_text is None:
+            failed_batches += 1
+            time.sleep(BATCH_INTERVAL_SECONDS)
+            continue
         (RAW_BATCH_DIR / f"batch_{batch_index:04d}.tsv").write_text(raw_text, encoding="utf-8")
 
         parsed = _parse_batch_tsv(raw_text)
@@ -187,6 +218,14 @@ def main() -> None:
             f"배치 {batch_index}/{len(batches)} 완료 "
             f"({len(batch_ids)}개 요청, {len(missing)}개 응답 누락 -> 0-domain 처리)"
         )
+        time.sleep(BATCH_INTERVAL_SECONDS)
+
+    if failed_batches:
+        print(f"{failed_batches}개 배치 실패 -> 스크립트를 다시 실행하면 해당 배치만 재시도됩니다.")
+
+    if not combined:
+        print("성공한 배치가 없어 manifest를 만들지 않습니다. 다시 실행해주세요.")
+        return
 
     proteins_with_zero = sum(1 for domains in combined.values() if not domains)
     proteins_with_any = len(combined) - proteins_with_zero
