@@ -1,0 +1,9 @@
+{
+  "verified_at": "2026-08-06T05:00:44.069702+00:00",
+  "verification_type": "base_and_specialist_checkpoint_inference",
+  "test_probability_allclose": true,
+  "test_probability_max_abs_diff": 0.0,
+  "submission_sha256": "d37944dbc616d194d33e9b85966242ffe1e1f61ae770c070f031e803cd7dd001",
+  "test_label_agreement": 1.0,
+  "passed": true
+}

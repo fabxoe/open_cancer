@@ -143,6 +143,7 @@
 | EXP-567 | COMPLETED | fabxoe | #567 | EXP-527 parser-v4 부모 피처 + fold-safe LOO class-cosine 26개를 LightGBM에 입력 | 0.4477416384 | 미제출 | INFERENCE_VERIFIED | parser-only 대비 +0.0204890896·EXP-527 대비 +0.0008693677; cosine은 중복 노이즈가 아닌 보조 지도 압축으로 판정, Local 후보 채택 | [보고서](reports/exp567_lightgbm_parser_cosine/README.md) |
 | EXP-579 | COMPLETED | fabxoe | #579 | EXP-527 XGBoost + EXP-567 LightGBM 사전 고정 0.5/0.5 확률 평균 | 0.4431736484 | 미제출 | INFERENCE_VERIFIED | 최고 부모 EXP-567 대비 -0.0045680·Log Loss 악화로 ARCHIVE; 모델 다양성이 단순 평균 개선으로 이어지지 않음 | [보고서](reports/exp579_exp527_exp567_fixed_blend/README.md) |
 | EXP-589 | COMPLETED | fabxoe | #589 | EXP-527의 KIRC→KIPAN·LGG→GBMLGG 24-class 학습·class-cosine 재구성 | 0.4533650721 (원래 26-class 평가; 병합 24-class 0.5086284091) | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0064928014·fold std 개선; 두 원래 클래스 F1=0을 포함해도 Local 최고. 24-class 제출은 KIRC·LGG를 전혀 출력하지 않는 고위험 구조라 진단·다양성 후보로 보존 | [보고서](reports/exp589_merged_24class/README.md) |
+| EXP-592 | COMPLETED | fabxoe | #592 | EXP-589 + outer-train 전용 KIPAN/KIRC·GBMLGG/LGG binary specialist 확률 분할 | 0.4393703541 | 미제출 | INFERENCE_VERIFIED | EXP-589 대비 -0.0139947180·KIRC F1 0.0837359로 ARCHIVE; hard-routing 사후 진단도 0.4434467829로 부모 미달, 현재 specialist track 종료 | [보고서](reports/exp592_hierarchical_pair_specialists/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5078,3 +5079,42 @@ glioma 그룹에서 기인하는지 분리 확인, (2) 이번 fold 표준편차 
   않으므로 단독 대표 모델로 즉시 채택하지 않는다. 후속은 24-class 출력을
   KIPAN/KIRC·GBMLGG/LGG로 다시 나누는 fold-safe 2단계 specialist 또는
   EXP-589와 정상 26-class 모델의 오류 다양성 검증으로 제한한다.
+
+### [EXP-592] EXP-589 혼돈쌍 fold-safe binary specialist
+
+- 상태/실행자: COMPLETED / fabxoe
+- Issue/브랜치: #592 / `issue-592-hierarchical-specialist`
+- 모델 소스 commit: `2adfde5ccd7edab73654977a8f1b3c6c3c96b57a`
+- 시작/종료: 2026-08-06T04:59:47.560324+00:00 /
+  2026-08-06T05:00:43.650960+00:00 (56.50초)
+- 부모: EXP-589
+- Config/Runner: `configs/exp592_hierarchical_pair_specialists.yaml` /
+  `scripts/run_exp592_hierarchical_pair_specialists.py`
+- 고정: EXP-589 fold 피처·24-class checkpoint·canonical 5-fold. 각 outer
+  fold의 train 중 해당 혼돈쌍 행만 사용해 KIPAN/KIRC와 GBMLGG/LGG
+  binary XGBoost를 각각 학습했다. outer validation·test·Public은 specialist
+  학습이나 선택에 사용하지 않았다.
+- 결합: EXP-589의 KIPAN 또는 GBMLGG 확률 질량을 각 binary specialist의
+  조건부 확률로 나누고, 나머지 22개 클래스 확률은 유지했다.
+- Fold Macro F1: 0.4228800434, 0.4421422383, 0.4412556107,
+  0.4413113491, 0.4452549251
+- OOF Macro F1 / fold std: 0.4393703541 / 0.0079793651
+- Accuracy / Log Loss: 0.4273504274 / 1.7712100744
+- EXP-589 대비: Macro F1 `-0.0139947180`, fold std `+0.0034703057`
+- 혼돈쌍 F1: KIPAN 0.2103049422, KIRC 0.0837359098, GBMLGG
+  0.3093270366, LGG 0.2125000000
+- 사후 hard-routing 진단(공식 결과 아님): 먼저 EXP-589 24-class argmax를
+  정한 뒤 선택된 family 안에서만 specialist를 적용해도 Macro F1은
+  0.4434467829였다. 확률 분할보다 낫지만 EXP-589에는 미달했다.
+- Submission: `submissions/exp592_hierarchical_pair_specialists.csv`
+  (`d37944dbc616d194d33e9b85966242ffe1e1f61ae770c070f031e803cd7dd001`)
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — 저장한 EXP-589·specialist checkpoint를
+  재로딩해 test 확률 최대 절대 차이 0, 제출 SHA-256 byte-level 일치
+- 판단: merged superclass의 질량을 단순 binary specialist로 나누면 네 원래
+  클래스의 경계를 충분히 회복하지 못한다. 특히 KIRC가 붕괴했으며 전체
+  Macro F1과 fold 안정성이 모두 악화됐다. 이 probability-split 구현은
+  `ARCHIVE`하고, 같은 specialist의 hard-routing을 별도 공식 실험으로
+  승격하지 않는다. `KIRC ⊂ KIPAN`, `LGG ⊂ GBMLGG`인 겹치는 라벨
+  온톨로지 때문에 이는 순수 subtype 분류가 아니라 데이터셋의 상위/하위
+  cohort 라벨 배정을 복원하는 문제라는 해석을 함께 보존한다.
