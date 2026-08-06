@@ -7,13 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 117
+- 실제 실험 수: 118
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4479925392 (`EXP-521`, train self-inclusion 탐색 결과)
-- 최고 leakage-safe Local OOF Macro F1: 0.4477416384 (`EXP-567`)
+- 최고 Local OOF Macro F1: 0.4533650721 (`EXP-589`, 원래 26-class 평가)
+- 최고 leakage-safe Local OOF Macro F1: 0.4533650721 (`EXP-589`)
 - 최고 Public LB Macro F1: 0.346215922 (`EXP-374`)
-- 최고 재현 검증 모델: `EXP-567` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-589` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-06
 
 ## 실험 요약
@@ -137,6 +137,7 @@
 | EXP-566 | COMPLETED | fabxoe | #566 | EXP-527 fold-safe LOO class-cosine 26개만 LightGBM에 입력(parser 부모 피처 제외) | 0.2674060456 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 -0.1794662251; cosine-only는 parser 표현을 대체하지 못해 ARCHIVE | [보고서](reports/exp566_lightgbm_cosine_only/README.md) |
 | EXP-567 | COMPLETED | fabxoe | #567 | EXP-527 parser-v4 부모 피처 + fold-safe LOO class-cosine 26개를 LightGBM에 입력 | 0.4477416384 | 미제출 | INFERENCE_VERIFIED | parser-only 대비 +0.0204890896·EXP-527 대비 +0.0008693677; cosine은 중복 노이즈가 아닌 보조 지도 압축으로 판정, Local 후보 채택 | [보고서](reports/exp567_lightgbm_parser_cosine/README.md) |
 | EXP-579 | COMPLETED | fabxoe | #579 | EXP-527 XGBoost + EXP-567 LightGBM 사전 고정 0.5/0.5 확률 평균 | 0.4431736484 | 미제출 | INFERENCE_VERIFIED | 최고 부모 EXP-567 대비 -0.0045680·Log Loss 악화로 ARCHIVE; 모델 다양성이 단순 평균 개선으로 이어지지 않음 | [보고서](reports/exp579_exp527_exp567_fixed_blend/README.md) |
+| EXP-589 | COMPLETED | fabxoe | #589 | EXP-527의 KIRC→KIPAN·LGG→GBMLGG 24-class 학습·class-cosine 재구성 | 0.4533650721 (원래 26-class 평가; 병합 24-class 0.5086284091) | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0064928014·fold std 개선; 두 원래 클래스 F1=0을 포함해도 Local 최고. 24-class 제출은 KIRC·LGG를 전혀 출력하지 않는 고위험 구조라 진단·다양성 후보로 보존 | [보고서](reports/exp589_merged_24class/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -4749,3 +4750,39 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
 - 판단: fold 안정성은 개선됐지만 두 부모보다 Macro F1이 낮고 최고 부모보다
   Log Loss도 악화되어 `ARCHIVE`. 고정 0.5/0.5 블렌드 트랙은 종료하고
   Public/test 기반 가중치 재탐색은 하지 않는다.
+
+### [EXP-589] KIRC→KIPAN·LGG→GBMLGG 24-class XGBoost
+
+- 상태/실행자: COMPLETED / fabxoe
+- Issue/브랜치: #589 / `issue-589-merged-24class`
+- 모델 소스 commit: `010770392e0c09b2cc283a02a04ae64de7fb43f6`
+- 시작/종료: 2026-08-06T04:29:31.090025+00:00 /
+  2026-08-06T04:40:47.566955+00:00 (676.79초)
+- 부모: EXP-527
+- Config/Runner: `configs/exp589_merged_24class.yaml` /
+  `scripts/run_exp589_merged_24class.py`
+- 유일한 개념 변경: 학습 target과 fold-safe class-cosine 중심에서
+  `KIRC→KIPAN`, `LGG→GBMLGG`를 적용해 24개 클래스로 학습했다. 나머지
+  EXP-527 피처·XGBoost·split·seed·sample weight는 유지했다.
+- 체크포인트 선택·History 주 지표는 병합된 24-class가 아니라 원래 26-class
+  Macro F1이다. KIRC와 LGG는 예측 불가능하므로 두 클래스 F1=0을 포함한다.
+- Fold 26-class Macro F1: 0.4435180697, 0.4544213437, 0.4534737659,
+  0.4557821054, 0.4548683533
+- OOF 26-class Macro F1 / fold std: 0.4533650721 / 0.0045090594
+- OOF merged 24-class Macro F1: 0.5086284091
+- 26-class Accuracy / merged 24-class Accuracy / 24-class Log Loss:
+  0.4841154652 / 0.5603934849 / 1.4916671515
+- EXP-527 대비: 26-class Macro F1 `+0.0064928014`, fold std
+  `-0.0018702591`
+- KIRC 334명 중 261명은 KIPAN으로, LGG 229명 중 212명은 GBMLGG로
+  분류됐다. test 제출은 KIRC·LGG 라벨을 한 건도 생성하지 않는다.
+- Submission: `submissions/exp589_merged_24class.csv`
+  (`33cfd8a525a5a885cff64602953939b1112d917d4642bbe54bc6d905d6a8e39a`)
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — 저장 checkpoint 확률 allclose,
+  제출 SHA-256 byte-level 일치, test label agreement 100%
+- 판단: 혼돈쌍 병합으로 나머지 경계와 fold 안정성이 개선됐다는 강한 진단
+  근거다. 그러나 대회는 26-class이고 이 제출은 KIRC·LGG를 절대 예측하지
+  않으므로 단독 대표 모델로 즉시 채택하지 않는다. 후속은 24-class 출력을
+  KIPAN/KIRC·GBMLGG/LGG로 다시 나누는 fold-safe 2단계 specialist 또는
+  EXP-589와 정상 26-class 모델의 오류 다양성 검증으로 제한한다.
