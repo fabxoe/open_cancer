@@ -1,0 +1,42 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-610
+issue_number: 610
+slug: gated_pair_specialists
+parent_experiment: EXP-527
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+base:
+  experiment_id: EXP-527
+  artifact_slug: exp527_parser_v4_class_cosine_loo
+specialists:
+  gate: base_top1_in_pair_only
+  probability_update: swap_pair_probabilities_when_specialist_disagrees
+  pairs:
+  - - KIPAN
+    - KIRC
+  - - GBMLGG
+    - LGG
+  model:
+    objective: binary:logistic
+    n_estimators: 300
+    learning_rate: 0.05
+    max_depth: 4
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+  fit_scope: outer_train_pair_rows_only
+  checkpoint_policy: fixed_300_trees_no_outer_validation_tuning
+notes: 'Issue #610. Keep EXP-527''s original 26-class model fixed. Fit two binary
+  specialists on each outer-train pair only. Apply a specialist only when the base
+  top-1 label is already inside that pair. When it disagrees, swap the two pair probabilities;
+  this preserves all probability mass, leaves the other 24 probabilities unchanged,
+  and makes the specialist label the final top-1.'
