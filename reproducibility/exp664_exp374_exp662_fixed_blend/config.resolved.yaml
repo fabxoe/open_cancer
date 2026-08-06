@@ -1,0 +1,67 @@
+experiment:
+  issue_number: 664
+  experiment_id: EXP-664
+  branch: issue-664-exp374-exp662-blend
+  owner: Kangho Park
+  source_commit: a5ff038dbbe6571ee5459f31ec9ed6d43221c6f4
+  dirty_worktree: false
+  started_at: '2026-08-06T15:24:00.340127+00:00'
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+class_order:
+- ACC
+- BLCA
+- BRCA
+- CESC
+- COAD
+- DLBC
+- GBMLGG
+- HNSC
+- KIPAN
+- KIRC
+- LAML
+- LGG
+- LIHC
+- LUAD
+- LUSC
+- OV
+- PAAD
+- PCPG
+- PRAD
+- SARC
+- SKCM
+- STES
+- TGCT
+- THCA
+- THYM
+- UCEC
+ensemble:
+  method: probability_mean
+  weights_fixed_before_evaluation: true
+  components:
+  - experiment_id: EXP-374
+    weight: 0.5
+    oof_probability_path: oof/exp374_stop_isoform_residue_mask.csv
+    test_probability_path: preds/exp374_stop_isoform_residue_mask_test_proba.csv
+    metrics_path: reports/exp374_stop_isoform_residue_mask/metrics.json
+    resolved_config_path: reproducibility/exp374_stop_isoform_residue_mask/config.resolved.yaml
+  - experiment_id: EXP-662
+    weight: 0.5
+    oof_probability_path: oof/exp662_hierarchical_tfidf_svc_sigmoid.csv
+    test_probability_path: preds/exp662_hierarchical_tfidf_svc_sigmoid_test_proba.csv
+    metrics_path: reports/exp662_hierarchical_tfidf_svc_sigmoid/metrics.json
+    resolved_config_path: reproducibility/exp662_hierarchical_tfidf_svc_sigmoid/config.resolved.yaml
+outputs:
+  oof: oof/exp664_exp374_exp662_fixed_blend.csv
+  test_probability: preds/exp664_exp374_exp662_fixed_blend_test_proba.csv
+  submission: submissions/exp664_exp374_exp662_fixed_blend.csv
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]
+  platform: Windows-10-10.0.26200-SP0
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  uv_lock_sha256: bc7da4e6e1f133ee6b1f8c5cd4c86f9b87d336d686ceaacddbe20254b0771d23
+command: uv run python scripts/run_exp664_exp374_exp662_fixed_blend.py

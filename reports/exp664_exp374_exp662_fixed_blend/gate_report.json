@@ -1,0 +1,62 @@
+{
+  "experiment_id": "EXP-664",
+  "comparison_experiment": "EXP-662",
+  "weights": {
+    "EXP-374": 0.5,
+    "EXP-662": 0.5
+  },
+  "parent_diversity": {
+    "label_disagreement": 0.5279793581680374,
+    "correctness_pearson": 0.46396851259797467,
+    "exp374_only_correct": 0.12110949846798903,
+    "exp662_only_correct": 0.14078374455732948
+  },
+  "macro_f1_delta": 0.03026783443193909,
+  "log_loss_delta": -0.13729326876844805,
+  "fold_std_delta": 0.010810078605715182,
+  "minimum_per_class_f1_delta": -0.12557900154400414,
+  "per_class_f1_delta": {
+    "ACC": 0.023376623376623384,
+    "BLCA": 0.11460712654179983,
+    "BRCA": 0.04682236694363351,
+    "CESC": 0.14944237918215614,
+    "COAD": -0.0024747763182942917,
+    "DLBC": -0.12557900154400414,
+    "GBMLGG": -0.05338692319740507,
+    "HNSC": 0.01801410219260119,
+    "KIPAN": 4.2207317654613385e-05,
+    "KIRC": 0.09504182258419547,
+    "LAML": 0.006376089663760909,
+    "LGG": 0.20177238188632932,
+    "LIHC": 0.00031038687506929064,
+    "LUAD": 0.06196931636529718,
+    "LUSC": -0.01304927447059423,
+    "OV": 0.06974707339998293,
+    "PAAD": 0.020000833368057025,
+    "PCPG": 0.07418445244263083,
+    "PRAD": 0.025233321811268583,
+    "SARC": 0.115625,
+    "SKCM": -0.005880422201876123,
+    "STES": -0.009049905427033322,
+    "TGCT": -0.07447165380744725,
+    "THCA": 0.010872519706441985,
+    "THYM": -0.007397720904165905,
+    "UCEC": 0.04481536944373421
+  },
+  "test_like": {
+    "propensity_quantile": 0.75,
+    "threshold": 0.2500581443309784,
+    "rows": 1666,
+    "parent_macro_f1": 0.40650876962485893,
+    "blend_macro_f1": 0.45402740357935,
+    "delta": 0.047518633954491074
+  },
+  "gate_results": {
+    "macro_f1_non_degradation": true,
+    "log_loss_non_degradation": true,
+    "test_like_macro_f1_non_degradation": true,
+    "fold_std_regression_limit": false,
+    "per_class_regression_limit": false
+  },
+  "passed": false
+}

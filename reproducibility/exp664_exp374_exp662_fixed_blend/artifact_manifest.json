@@ -1,0 +1,66 @@
+{
+  "experiment_id": "EXP-664",
+  "issue_number": 664,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "a5ff038dbbe6571ee5459f31ec9ed6d43221c6f4",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp664_exp374_exp662_fixed_blend/data_manifest.json",
+  "environment": "reproducibility/exp664_exp374_exp662_fixed_blend/environment.json",
+  "release_url": null,
+  "verifier": "Kangho Park",
+  "verified_at": "2026-08-06T15:24:01.315307+00:00",
+  "artifacts": [
+    {
+      "kind": "submission",
+      "path": "submissions/exp664_exp374_exp662_fixed_blend.csv",
+      "size_bytes": 38268,
+      "sha256": "ac39569b9e3d266334d6be793e67f195c6e04e1740e92e3f6af92108a802b899",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp664_exp374_exp662_fixed_blend.csv",
+      "size_bytes": 3344958,
+      "sha256": "7a83063e8403b8f00d6bd47917e514100251c8f1947949f0002486c118b677f3",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp664_exp374_exp662_fixed_blend_test_proba.csv",
+      "size_bytes": 1339819,
+      "sha256": "730db76a73248e4752f69dcb0ad561b6af433a156652cefb02b8e3bc3cbbcc3e",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp664_exp374_exp662_fixed_blend/metrics.json",
+      "size_bytes": 12051,
+      "sha256": "76a2e4492802262873ce6415b4d74a1e0db89e33a8e9ee11a46338b23ab31612",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp664_exp374_exp662_fixed_blend/config.resolved.yaml",
+      "size_bytes": 2011,
+      "sha256": "d1401141bc92943fbd50f59e6d5aefe0b560d6ccf0a5c39d6b412fec5a03cd03",
+      "storage_uri": null
+    },
+    {
+      "kind": "comparison",
+      "path": "reproducibility/exp664_exp374_exp662_fixed_blend/comparison.json",
+      "size_bytes": 490,
+      "sha256": "b641c1c095f4fa83d9639fc86aec923cb8c80d81a886c4b8d59bc978ce88950f",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
