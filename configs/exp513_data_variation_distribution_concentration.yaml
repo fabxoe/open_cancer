@@ -1,6 +1,16 @@
+experiment_id: EXP-513
+run_mode: experiment
+record_role: official
+slug: exp513_data_variation_distribution_concentration
+parent_experiment: null
+issue_number: 513
+owner: Gomin-art
+branch: issue-513-exp-data-variation-distribution-concentration
+seed: 42
+
 experiment:
-  id: LOCAL-DATA-DISTRIBUTION-V1
-  slug: data_distribution_xgb
+  id: EXP-513
+  slug: exp513_data_variation_distribution_concentration
   seed: 42
 
 data:
@@ -43,7 +53,7 @@ training:
   device: cpu
 
 output:
-  report_dir: reports/local_data_distribution_xgb
-  model_dir: models/local_data_distribution_xgb
-  submission_path: submissions/local_data_distribution_xgb.csv
+  report_dir: reports/exp513_data_variation_distribution_concentration
+  model_dir: models/exp513_data_variation_distribution_concentration
+  submission_path: submissions/exp513_data_variation_distribution_concentration.csv
 

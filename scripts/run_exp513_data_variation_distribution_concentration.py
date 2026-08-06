@@ -31,6 +31,7 @@ from xgboost import XGBClassifier
 
 
 NO_EVENT = {"", "WT", "WILDTYPE", "WILD_TYPE", "NA", "N/A", "NAN", "NONE"}
+EXPECTED_EXPERIMENT_ID = "EXP-513"
 FAMILIES = ("FRAMESHIFT", "STOP", "SPLICE", "SYNONYMOUS", "INDEL", "MISSENSE", "OTHER")
 TRUNCATING = {"FRAMESHIFT", "STOP", "SPLICE"}
 AA = "ACDEFGHIKLMNPQRSTVWY"
@@ -280,6 +281,24 @@ def make_model(config: dict[str, Any], num_class: int, seed: int) -> XGBClassifi
 
 def main(config_path: Path) -> None:
     config = load_config(config_path)
+
+    declared_experiment_id = config.get("experiment_id")
+    runtime_experiment_id = config.get("experiment", {}).get("id")
+
+    if declared_experiment_id != EXPECTED_EXPERIMENT_ID:
+        raise ValueError(
+            "config experiment_id가 runner와 다릅니다: "
+            f"{declared_experiment_id!r} != "
+            f"{EXPECTED_EXPERIMENT_ID!r}"
+        )
+
+    if runtime_experiment_id != EXPECTED_EXPERIMENT_ID:
+        raise ValueError(
+            "config experiment.id가 runner와 다릅니다: "
+            f"{runtime_experiment_id!r} != "
+            f"{EXPECTED_EXPERIMENT_ID!r}"
+        )
+
     root = Path.cwd()
     data_cfg, feature_cfg = config["data"], config["features"]
     train_path, test_path = root / data_cfg["train_path"], root / data_cfg["test_path"]
