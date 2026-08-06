@@ -10,7 +10,6 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Iterable, Iterator, Mapping, Sequence, TextIO
 
-from open_cancer.mutation_features import ParsedMutationToken, parse_mutation_token
 
 
 ISOFORM_CATEGORIES = (
@@ -203,6 +202,34 @@ def load_gene_biotypes(
     return result
 
 
+def resolve_substitution_eligibility(raw_token: str) -> tuple[int, str] | None:
+    """Return the (position, reference_residue) parser v4 recognises as an
+    eligible simple substitution, or ``None`` otherwise.
+
+    Eligible only for a fully resolved substitution (route == "substitution",
+    parse_status == "complete") classified as missense, no-change, or
+    nonsense. Excludes start-codon (``M1``) and unknown-reference (leading
+    ``X``) tokens that the legacy lexical parser (``mutation_features``) did
+    not distinguish from ordinary substitutions.
+    """
+
+    # Deferred: mutation_parser_contract -> protein_duplication_semantics imports
+    # TranscriptAnnotation back from this module, so a module-level import here
+    # would be circular.
+    from open_cancer.mutation_parser_contract import route_protein_mutation
+
+    routed = route_protein_mutation(raw_token)
+    if routed.route != "substitution" or routed.parse_status != "complete":
+        return None
+    if routed.event_type not in {"missense", "no_change", "nonsense"}:
+        return None
+    reference = routed.payload.get("reference_residue")
+    position = routed.payload.get("position")
+    if position is None or reference is None or len(reference) != 1:
+        return None
+    return position, reference
+
+
 def classify_token_semantics(
     gene_symbol: str,
     raw_token: str,
@@ -210,13 +237,12 @@ def classify_token_semantics(
 ) -> TokenSemanticResult:
     """Classify a simple residue token against all known protein isoforms."""
 
-    parsed = parse_mutation_token(raw_token)
-    if not _is_simple_reference_token(parsed) or not annotations:
-        return _semantic_result("COMPLEX_OR_UNMAPPABLE", gene_symbol, parsed, ())
+    stripped = raw_token.strip()
+    eligibility = resolve_substitution_eligibility(stripped)
+    if eligibility is None or not annotations:
+        return _semantic_result("COMPLEX_OR_UNMAPPABLE", gene_symbol, stripped, None, None, ())
 
-    position = parsed.residue_positions[0]
-    reference = parsed.reference_amino_acid
-    assert reference is not None
+    position, reference = eligibility
     position_valid = tuple(item for item in annotations if position <= len(item.sequence))
     matches = tuple(
         item for item in position_valid if item.sequence[position - 1] == reference
@@ -228,47 +254,40 @@ def classify_token_semantics(
     )
 
     if mane_matches:
-        return _semantic_result("MANE_MATCH", gene_symbol, parsed, mane_matches)
+        return _semantic_result(
+            "MANE_MATCH", gene_symbol, stripped, position, reference, mane_matches
+        )
     if canonical_matches:
         return _semantic_result(
-            "CANONICAL_MATCH", gene_symbol, parsed, canonical_matches
+            "CANONICAL_MATCH", gene_symbol, stripped, position, reference, canonical_matches
         )
     if other_matches:
         return _semantic_result(
-            "OTHER_ISOFORM_MATCH", gene_symbol, parsed, other_matches
+            "OTHER_ISOFORM_MATCH", gene_symbol, stripped, position, reference, other_matches
         )
     if position_valid:
         return _semantic_result(
-            "POSITION_VALID_REF_MISMATCH", gene_symbol, parsed, position_valid
+            "POSITION_VALID_REF_MISMATCH", gene_symbol, stripped, position, reference, position_valid
         )
     return _semantic_result(
-        "OUTSIDE_ALL_KNOWN_ISOFORMS", gene_symbol, parsed, annotations
-    )
-
-
-def _is_simple_reference_token(parsed: ParsedMutationToken) -> bool:
-    return (
-        parsed.token_shape == "substitution"
-        and len(parsed.residue_positions) == 1
-        and parsed.reference_amino_acid is not None
-        and len(parsed.reference_amino_acid) == 1
+        "OUTSIDE_ALL_KNOWN_ISOFORMS", gene_symbol, stripped, position, reference, annotations
     )
 
 
 def _semantic_result(
     category: str,
     gene_symbol: str,
-    parsed: ParsedMutationToken,
+    raw_token: str,
+    position: int | None,
+    reference_amino_acid: str | None,
     matches: Sequence[TranscriptAnnotation],
 ) -> TokenSemanticResult:
     return TokenSemanticResult(
         category=category,
         gene_symbol=gene_symbol,
-        raw_token=parsed.raw,
-        position=parsed.residue_positions[0]
-        if len(parsed.residue_positions) == 1
-        else None,
-        reference_amino_acid=parsed.reference_amino_acid,
+        raw_token=raw_token,
+        position=position,
+        reference_amino_acid=reference_amino_acid,
         matched_transcript_ids=tuple(item.transcript_id for item in matches),
         matched_protein_ids=tuple(item.protein_id for item in matches),
     )
@@ -283,6 +302,10 @@ def audit_mutation_csv(
     token_output_path: Path | None = None,
 ) -> dict[str, object]:
     """Stream one competition CSV and aggregate target-independent token semantics."""
+
+    # Deferred: see resolve_substitution_eligibility for why this can't be a
+    # module-level import.
+    from open_cancer.mutation_parser_contract import route_protein_mutation
 
     category_counts: Counter[str] = Counter()
     gene_category_counts: dict[str, Counter[str]] = defaultdict(Counter)
@@ -350,7 +373,7 @@ def audit_mutation_csv(
                         )
                         cell_results.append(result)
                         tokens_total += 1
-                        if parse_mutation_token(raw_token).token_shape == "substitution":
+                        if route_protein_mutation(raw_token).route == "substitution":
                             simple_tokens += 1
                         category_counts[result.category] += 1
                         gene_category_counts[gene][result.category] += 1

@@ -72,6 +72,23 @@ def test_transformer_maps_unsupported_or_mismatched_tokens_to_unobserved() -> No
     assert transformer("UNKNOWN", parse_mutation_token("R2H")) == ()
 
 
+def test_transformer_excludes_start_codon_and_unknown_reference() -> None:
+    # N6: eligibility now routes through parser v4, which distinguishes M1
+    # start-codon and leading-X unknown-reference tokens from ordinary
+    # substitutions -- the legacy lexical parser treated both as plain
+    # single-letter substitutions.
+    annotation = _annotation("ENST1", 10, mane=True)
+    sequence_starting_with_m = TranscriptAnnotation(
+        **{**annotation.__dict__, "sequence": "M" + "R" * 9}
+    )
+    transformer = IsoformRelativePositionTransformer(
+        {"GENE1": (sequence_starting_with_m,)}
+    )
+    assert transformer("GENE1", parse_mutation_token("M1V")) == ()
+    assert transformer("GENE1", parse_mutation_token("X2R")) == ()
+    assert transformer("GENE1", parse_mutation_token("R2H")) == (1.0,)
+
+
 def _config(root: Path, manifest: Path, cache: Path) -> dict[str, object]:
     return {
         "features": {

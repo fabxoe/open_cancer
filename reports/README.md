@@ -4,6 +4,10 @@
 색인입니다. 피처 개념, 변환 예시, 상세 해석과 긴 분석은 이 폴더의 실험별
 보고서에 작성합니다.
 
+새 공용 분석·피처 구현 문서:
+
+- [Fold-safe 유전자 residue-event 집중도 피처](analysis/residue_event_concentration/README.md)
+
 ## 경로
 
 Experiment Issue #12에서 파생된 `EXP-012` 보고서는 다음 형식을 사용합니다.
@@ -78,6 +82,8 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 `reports/analysis/`에 둡니다. 이는 새 실험 점수를 만드는 폴더가 아니며 실제
 입력·산출물 해시와 해석 한계를 함께 기록합니다.
 
+- [Compact clinical mutation baseline 설계 감사](analysis/compact_clinical_baseline/README.md)
+
 - [Residue-position indicator 의미 감사](analysis/residue_position_semantics_qc.md)
 - [Vera EXP-094 후속 검토](analysis/vera_exp094_followup.md)
 - [ABC-Stack OOF 포트폴리오 감사](analysis/abc_oof_portfolio_audit.md)
@@ -90,6 +96,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 - [변이 표기 정규화·의미 동등성 계약 감사](analysis/mutation_notation_semantic_contract/README.md)
 - [Stop 표기 교란 parser·feature 불변성 감사](analysis/stop_notation_invariance/README.md)
 - [Parser native v3 분포·상관·adversarial AUC·TreeSHAP 진단](analysis/parser_native_v3_generalization/README.md)
+- [Parser v4 gene-event TF-IDF 단일-fold screening](analysis/tfidf_gene_event_screening/README.md)
 
 ## 역할 구분
 

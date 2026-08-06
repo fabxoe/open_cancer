@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-566",
+  "issue_number": 566,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "b52ce135da21c534724b9f01472c4e1549c5670b",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp566_lightgbm_cosine_only/data_manifest.json",
+  "environment": "reproducibility/exp566_lightgbm_cosine_only/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-06T02:26:08.729393+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp566_lightgbm_cosine_only/fold_00.txt",
+      "size_bytes": 2795753,
+      "sha256": "15b429e5865a1a38b967c9041c38eecdec69550c804b5c3407c01007120b1936",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp566_lightgbm_cosine_only/fold_01.txt",
+      "size_bytes": 5742752,
+      "sha256": "e4f7ad1c8ae7077f349f9a437d7513083132f6217020afbc7faa2c0fbcdad597",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp566_lightgbm_cosine_only/fold_02.txt",
+      "size_bytes": 1433171,
+      "sha256": "06cf778352bfc5848a37ba36296b572bba114d61f574a3ae3b75193df3ccbf71",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp566_lightgbm_cosine_only/fold_03.txt",
+      "size_bytes": 8094653,
+      "sha256": "db51bf0f28b5e94407a94f4a19f133ab3c101a6dd8727975bae868f6fbbfa98e",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp566_lightgbm_cosine_only/fold_04.txt",
+      "size_bytes": 7659371,
+      "sha256": "47b8bad7103c1b12644f07e1555cc85c18fb054ded8e6e7ad98f74dc84f9d8f3",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp566_lightgbm_cosine_only.csv",
+      "size_bytes": 3462042,
+      "sha256": "cc34fb0b79f83e03395bd02647512293294d59f6ec94e4e8489fb94d0a52b30f",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp566_lightgbm_cosine_only_test_proba.csv",
+      "size_bytes": 1383673,
+      "sha256": "36ab50eeaccf126fa8aad5945b037b4e20a695d7cdb610945e9dc02123e6065b",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp566_lightgbm_cosine_only.csv",
+      "size_bytes": 38481,
+      "sha256": "f2c569f4785403b3cf4d3c3f2488f42f7388fedd290cc2f92a592c7f876d26e8",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp566_lightgbm_cosine_only/metrics.json",
+      "size_bytes": 11223,
+      "sha256": "aa104214ad687967cb8cb076a56263c29eb85277065441817bba3a273ce6b992",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp566_lightgbm_cosine_only/config.resolved.yaml",
+      "size_bytes": 6815,
+      "sha256": "ea9be079f3cae329f0cd8a2d748823aa57100ae0e80caeb60123103583e53818",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

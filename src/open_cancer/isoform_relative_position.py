@@ -9,7 +9,11 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 from open_cancer.hashing import sha256_file
-from open_cancer.isoform_semantics import TranscriptAnnotation, load_annotation_index
+from open_cancer.isoform_semantics import (
+    TranscriptAnnotation,
+    load_annotation_index,
+    resolve_substitution_eligibility,
+)
 from open_cancer.mutation_features import ParsedMutationToken, PositionTokenTransformer
 
 
@@ -27,16 +31,11 @@ class IsoformRelativePositionTransformer:
     def __call__(
         self, gene_symbol: str, token: ParsedMutationToken
     ) -> tuple[float, ...]:
-        if (
-            token.token_shape != "substitution"
-            or len(token.residue_positions) != 1
-            or token.reference_amino_acid is None
-            or len(token.reference_amino_acid) != 1
-        ):
+        eligibility = resolve_substitution_eligibility(token.raw)
+        if eligibility is None:
             return ()
 
-        position = token.residue_positions[0]
-        reference = token.reference_amino_acid
+        position, reference = eligibility
         matches = tuple(
             annotation
             for annotation in self.annotation_index.get(gene_symbol, ())

@@ -201,3 +201,19 @@ def test_drop_named_base_features_rejects_missing_or_duplicate_names() -> None:
         drop_named_base_features(matrix, matrix, matrix, ("a", "b"), ("missing",))
     with pytest.raises(FeatureContractError, match="중복"):
         drop_named_base_features(matrix, matrix, matrix, ("a", "b"), ("a", "a"))
+
+
+def test_drop_named_base_features_allows_empty_with_explicit_opt_in() -> None:
+    matrix = sparse.csr_matrix([[1, 2], [3, 4]], dtype=np.float32)
+    with pytest.raises(FeatureContractError, match="모든 base feature"):
+        drop_named_base_features(matrix, matrix, matrix, ("a", "b"), ("a", "b"))
+    train, validation, test, names = drop_named_base_features(
+        matrix,
+        matrix,
+        matrix,
+        ("a", "b"),
+        ("a", "b"),
+        allow_empty=True,
+    )
+    assert names == ()
+    assert train.shape == validation.shape == test.shape == (2, 0)

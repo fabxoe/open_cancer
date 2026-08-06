@@ -1,0 +1,36 @@
+{
+  "actual_blank_cells": 237,
+  "affected_rows": 128,
+  "causal_interpretation_allowed": false,
+  "note": "Association-only: no checkpoint counterfactual blank-to-WT inference was run.",
+  "affected": {
+    "rows": 128,
+    "exp374": {
+      "mean_max_probability": 0.514784482109375,
+      "mean_margin": 0.378776128109375,
+      "mean_entropy": 1.7754905528219525
+    },
+    "exp527": {
+      "mean_max_probability": 0.3746160281640625,
+      "mean_margin": 0.26886737437499997,
+      "mean_entropy": 2.484379971618436
+    },
+    "mean_absolute_exp527_minus_exp374_probability_delta": 0.02510653353333233,
+    "prediction_disagreement_ratio": 0.28125
+  },
+  "unaffected": {
+    "rows": 2418,
+    "exp374": {
+      "mean_max_probability": 0.4441907598333333,
+      "mean_margin": 0.28870448877799837,
+      "mean_entropy": 1.884628947082647
+    },
+    "exp527": {
+      "mean_max_probability": 0.321439655688172,
+      "mean_margin": 0.21750078697477254,
+      "mean_entropy": 2.588673672607315
+    },
+    "mean_absolute_exp527_minus_exp374_probability_delta": 0.0260820211987489,
+    "prediction_disagreement_ratio": 0.3829611248966088
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "source_document_claim": {
+    "mutated_gene_count": 4230,
+    "truncating_gene_count": 3671,
+    "recurrent_missense_gene_count": 91,
+    "recurrent_missense_key_count": 230,
+    "feature_count": 8005
+  },
+  "parser_v4_full_train": {
+    "version": "1.0.0",
+    "fit_scope": "fold_train",
+    "hotspot_min_patient_count": 5,
+    "mutated_gene_count": 4230,
+    "truncating_gene_count": 3663,
+    "recurrent_missense_gene_count": 91,
+    "recurrent_missense_key_count": 230,
+    "feature_count": 7998,
+    "feature_names_sha256": "d17892fb7c535a356a5093487b48146cf153167f0c9ca3118eae586995fbc979",
+    "test_distribution_used_for_fit": false,
+    "target_used_for_fit": false
+  },
+  "parser_v4_fold_train": [
+    {
+      "fold": 0,
+      "version": "1.0.0",
+      "fit_scope": "fold_train",
+      "hotspot_min_patient_count": 5,
+      "mutated_gene_count": 4230,
+      "truncating_gene_count": 3481,
+      "recurrent_missense_gene_count": 60,
+      "recurrent_missense_key_count": 151,
+      "feature_count": 7785,
+      "feature_names_sha256": "f05ba4e2e3c2a2049659f2f61ee7f4217b4e1d5dc9f84071a61cc598f8d31fae",
+      "test_distribution_used_for_fit": false,
+      "target_used_for_fit": false
+    },
+    {
+      "fold": 1,
+      "version": "1.0.0",
+      "fit_scope": "fold_train",
+      "hotspot_min_patient_count": 5,
+      "mutated_gene_count": 4229,
+      "truncating_gene_count": 3501,
+      "recurrent_missense_gene_count": 71,
+      "recurrent_missense_key_count": 178,
+      "feature_count": 7815,
+      "feature_names_sha256": "5455e0320e9874abe1e0a5bb76d1578280f8cb9e72cc5d1a07d81aff064c5294",
+      "test_distribution_used_for_fit": false,
+      "target_used_for_fit": false
+    },
+    {
+      "fold": 2,
+      "version": "1.0.0",
+      "fit_scope": "fold_train",
+      "hotspot_min_patient_count": 5,
+      "mutated_gene_count": 4230,
+      "truncating_gene_count": 3477,
+      "recurrent_missense_gene_count": 65,
+      "recurrent_missense_key_count": 172,
+      "feature_count": 7786,
+      "feature_names_sha256": "1192005419e390b5fda69ef1df1ed3d45b280e49bfa8196c75b55064e373a374",
+      "test_distribution_used_for_fit": false,
+      "target_used_for_fit": false
+    },
+    {
+      "fold": 3,
+      "version": "1.0.0",
+      "fit_scope": "fold_train",
+      "hotspot_min_patient_count": 5,
+      "mutated_gene_count": 4228,
+      "truncating_gene_count": 3545,
+      "recurrent_missense_gene_count": 64,
+      "recurrent_missense_key_count": 173,
+      "feature_count": 7851,
+      "feature_names_sha256": "d45cabe313d6d6d43027403795c046f38746c39899ca46f82a17e7a342ef15d1",
+      "test_distribution_used_for_fit": false,
+      "target_used_for_fit": false
+    },
+    {
+      "fold": 4,
+      "version": "1.0.0",
+      "fit_scope": "fold_train",
+      "hotspot_min_patient_count": 5,
+      "mutated_gene_count": 4226,
+      "truncating_gene_count": 3519,
+      "recurrent_missense_gene_count": 72,
+      "recurrent_missense_key_count": 179,
+      "feature_count": 7831,
+      "feature_names_sha256": "c870e54dde1a55d7cff24265a083e414fbc1f6f3a068f5fef6f74cae7b44864f",
+      "test_distribution_used_for_fit": false,
+      "target_used_for_fit": false
+    }
+  ],
+  "interpretation": "Feature architecture is reproduced, while parser-v4 semantics are authoritative; source regex-parser counts are not forced."
+}

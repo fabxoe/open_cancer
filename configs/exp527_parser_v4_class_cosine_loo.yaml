@@ -1,0 +1,57 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-527
+issue_number: 527
+slug: parser_v4_class_cosine_loo
+parent_experiment: EXP-521
+component_experiments: []
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  parent: exp374_stop_isoform_residue_mask
+  parser_v4_patient_semantic_vector:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    include_directly_in_model: false
+  class_profile:
+    enabled: true
+    definition_version: 1.0.0
+    method: cosine
+    fit_scope: outer_train_only
+    train_transform: leave_one_out_target_class
+    validation_test_transform: full_outer_train_centroid
+    output_dimension: 26
+    zero_vector_policy: all_zero_scores
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - exp374_stop_isoform_residue_mask
+    - parser_v4_26_class_cosine_profile_leave_one_out
+notes: >-
+  Issue #527. EXP-521 conditions are fixed except that each outer-train row's
+  target-class cosine uses a leave-one-out centroid excluding that row. Scores
+  against the other classes and all outer-validation/test scores use full
+  outer-train centroids. A singleton target class receives zero for its own LOO
+  score. This removes train-only self-inclusion without changing the test path.
+comparison_metrics_path: reports/exp521_parser_v4_class_cosine/metrics.json
