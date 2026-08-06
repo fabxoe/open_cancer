@@ -37,8 +37,9 @@ N6(#493/PR #495)까지 오며 확보된 `competition_gene_isoform_index.json`(�
 ## 결과
 
 - 대상 trusted (gene, token) 쌍: **437,784건**(train+test 고유 쌍)
-- 도메인 catalog 커버리지: **100%**(437,784/437,784) — 대표 protein_id
-  전량 BioMart 조회 성공
+- 도메인 catalog resolution coverage: **100%**(437,784/437,784) — 요청한
+  (gene, token)이 선택한 대표 protein_id가 catalog에 모두 존재한다는 뜻이다.
+  모든 residue가 Pfam domain 내부라는 의미는 아니다.
 - 도메인 내부 적중률: **54.9%**(240,443/437,784)
 
 ### 기존 residue-position bin과의 교차표(중복성 검사)
@@ -57,19 +58,26 @@ N6(#493/PR #495)까지 오며 확보된 `competition_gene_isoform_index.json`(�
 중간부(2~4)가 말단부(1, 5)보다 도메인일 확률이 다소 높은 생물학적으로
 합리적인 경향은 있지만 결정적이지 않음). Issue #241(PIK3CA helical/kinase
 도메인)이 기존 position-level hotspot 컬럼과 완전 중복이라 보류됐던 것과는
-다른 패턴이다 — **기존 bin 피처로 예측되지 않는 신규 정보가 있다고 판단한다.**
+다른 패턴이다. 따라서 **Pfam 여부가 기존 5-bin 하나로 완전히 결정되지는
+않는다**고 판단한다. 이것은 신규 예측 신호나 Macro F1 개선을 증명한 결과가
+아니며, 그 유용성은 별도 canonical 5-fold ablation에서만 판정한다.
 
 ## 판단
 
 두 완료 조건(커버리지 확보, 기존 피처와의 중복성 배제)을 모두 통과했다.
 `in_functional_domain` 잔기 단위 indicator를 EXP-374 위 단독 ablation
-Experiment 후보로 제안할 근거가 마련됐다고 판단한다.
+Experiment 후보로 제안할 최소 조건이 마련됐다고 판단한다. 이 사전 감사는
+feature 채택이나 성능 개선을 뜻하지 않는다.
 
 ## 다음 단계
 
-- [ ] 팀장 승인(Track B 예외 확장, #557 참고) 확보
+- [x] 공개·정적 annotation 기본 허용 정책과 Pfam 사용 승인 확보 — [Issue #581](https://github.com/fabxoe/open_cancer/issues/581)
 - [ ] 승인 후 별도 Experiment Issue에서 EXP-374 대비 canonical 5-fold 단독
       ablation 실행
+
+2026-08-06 정책 변경으로 공개·정적 annotation은 별도 팀장 승인 없이 사용할 수
+있다. 다만 외부 환자 자료와 test/Public 기반 선택은 계속 금지되며, 이 보고서는
+Pfam 피처의 예측 유용성을 증명하지 않는다.
 
 ## 산출물
 
