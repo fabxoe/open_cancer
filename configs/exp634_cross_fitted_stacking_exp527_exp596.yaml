@@ -1,0 +1,31 @@
+run_mode: experiment
+slug: cross_fitted_stacking_exp527_exp596
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+base_experiments:
+  - experiment_id: EXP-527
+    oof_probability_path: oof/exp527_parser_v4_class_cosine_loo.csv
+    test_probability_path: preds/exp527_parser_v4_class_cosine_loo_test_proba.csv
+  - experiment_id: EXP-596
+    oof_probability_path: oof/exp596_random_forest_v1.csv
+    test_probability_path: preds/exp596_random_forest_v1_test_proba.csv
+meta_model:
+  class: sklearn.linear_model.LogisticRegression
+  multi_class: multinomial
+  C: 0.2
+  max_iter: 1000
+  class_weight: null
+  random_state: 42
+submission:
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
+notes: >-
+  Issue #634. #505 Cross-fitted Stacking 로드맵의 S2 단계. base는 EXP-527
+  (XGBoost)과 EXP-596(RandomForest, #505가 정의한 "오류 다양성이 검증된"
+  후보) OOF/test 확률만 사용하고 재학습하지 않는다. 메타모델은 #505가 정한
+  L2 Multinomial Logistic Regression(강하게 규제, C=0.2)이며
+  `configs/exp137_cross_fitted_stacking.yaml`과 동일한 기본값을 그대로
+  재사용했다. 비교 기준은 EXP-628(nested-selected 0.35/0.65 고정 블렌드,
+  현재 Local 최고).
