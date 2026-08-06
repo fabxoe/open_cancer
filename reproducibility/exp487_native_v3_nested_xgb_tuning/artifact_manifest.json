@@ -1,0 +1,198 @@
+{
+  "experiment_id": "EXP-487",
+  "issue_number": 487,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "ea5278c0b9342e77d6552c2a3b4039ff550ff81a",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp487_native_v3_nested_xgb_tuning/data_manifest.json",
+  "environment": "reproducibility/exp487_native_v3_nested_xgb_tuning/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-05T15:29:59.157313+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp487_native_v3_nested_xgb_tuning/fold_00.json",
+      "size_bytes": 15945358,
+      "sha256": "0421553e02c0e3b1bb5f27bd6738f082de84a52c16970c28502ce188075eaea9",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp487_native_v3_nested_xgb_tuning/fold_01.json",
+      "size_bytes": 15496108,
+      "sha256": "99ce15dc057114aa9e7eecc6041c705097ca76e217ac71293c179fd790b15936",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp487_native_v3_nested_xgb_tuning/fold_02.json",
+      "size_bytes": 10181508,
+      "sha256": "a140a9b9a23e785a0b7f429961d4ce3f4419020f1399c12bb106fb278afa2229",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp487_native_v3_nested_xgb_tuning/fold_03.json",
+      "size_bytes": 8327176,
+      "sha256": "18305af40c91bb8b77d78c1ba5fd8fc0d6b39dac8db245a3a7a3fd1fb7f45509",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp487_native_v3_nested_xgb_tuning/fold_04.json",
+      "size_bytes": 7386492,
+      "sha256": "2d4f37039023d17137679a0aa281be6fdd5fe5d6e5c58e824ed1147102156a26",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp487_native_v3_nested_xgb_tuning.csv",
+      "size_bytes": 38008,
+      "sha256": "446daa39ae8d0cf8737960d28f47072493944ceab7258a4b66bb7231ce8c3cc4",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp487_native_v3_nested_xgb_tuning.csv",
+      "size_bytes": 2118714,
+      "sha256": "8856f303d4b2e2f790f517045754797db1bcc6368844e25a625707bc419efce7",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp487_native_v3_nested_xgb_tuning_test_proba.csv",
+      "size_bytes": 834641,
+      "sha256": "43620621fcfc99fd26b77afdfb8c32235365d69cdef4caca4ac49db352095a04",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp487_native_v3_nested_xgb_tuning/metrics.json",
+      "size_bytes": 45533,
+      "sha256": "6eb874216f8923a9964cf170e02cdc961ffe3a109308cb13b117cb5159a552fc",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp487_native_v3_nested_xgb_tuning/config.resolved.yaml",
+      "size_bytes": 112284,
+      "sha256": "5e7b1bf69e9438ec9781caaf55eb63aacb5f3a075f0b02f67deb5e4a56db81ca",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp487_native_v3_nested_xgb_tuning/fold_00_checkpoint_audit.json",
+      "size_bytes": 56617,
+      "sha256": "3322213671e83b1bdc79a36e67712bb099c2a0a2a589d532133d3d30dba2bc21",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp487_native_v3_nested_xgb_tuning/fold_01_checkpoint_audit.json",
+      "size_bytes": 56622,
+      "sha256": "a7addb2396f1ebc3f68b1afcfd6a42e1c6005a4dfd77090e122e688f4a0483ae",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp487_native_v3_nested_xgb_tuning/fold_02_checkpoint_audit.json",
+      "size_bytes": 56635,
+      "sha256": "510dfb5a99fd2894d397efa0a294eda3f5cd0e434b333381a3841382a4f30e5c",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp487_native_v3_nested_xgb_tuning/fold_03_checkpoint_audit.json",
+      "size_bytes": 41718,
+      "sha256": "d61df7ead71f9e970113fb2e99212d1c7b6c782ac15016833a912cc86d92c333",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp487_native_v3_nested_xgb_tuning/fold_04_checkpoint_audit.json",
+      "size_bytes": 45624,
+      "sha256": "7be7a1970e8bfe5049b7a5ae5dc544305e08c9d57b640f64780850a5cd520e61",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "models/exp487_native_v3_nested_xgb_tuning/optuna/outer_00.sqlite3",
+      "size_bytes": 163840,
+      "sha256": "f0822ac02d4c912f711e97edb9feeb29860112e5051ed36541e44f7d36b0d3f0",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "reports/exp487_native_v3_nested_xgb_tuning/optuna_outer_00.json",
+      "size_bytes": 23953,
+      "sha256": "ebece6f6f737563f4f9761a8223957f2accd195f53a5cc42c28e2ae31f084885",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "models/exp487_native_v3_nested_xgb_tuning/optuna/outer_01.sqlite3",
+      "size_bytes": 163840,
+      "sha256": "56704f4acfc6a47ce7c7c3d951d181327d10f901bc6601b2307fd3ceda49d672",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "reports/exp487_native_v3_nested_xgb_tuning/optuna_outer_01.json",
+      "size_bytes": 23976,
+      "sha256": "853a04cca924adf91671f8a3cb3626c3255ee1a6e80a1d05057c59758d8f3a40",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "models/exp487_native_v3_nested_xgb_tuning/optuna/outer_02.sqlite3",
+      "size_bytes": 163840,
+      "sha256": "406ecc80a54b47701b65479666b07b012c3f4893c83858f31f324c1784397af4",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "reports/exp487_native_v3_nested_xgb_tuning/optuna_outer_02.json",
+      "size_bytes": 23918,
+      "sha256": "6e0ab16d924e557016c31862abb6361e4f7df348aff2c5666563f6aec019962b",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "models/exp487_native_v3_nested_xgb_tuning/optuna/outer_03.sqlite3",
+      "size_bytes": 163840,
+      "sha256": "fd8ceca1a6ac6bf19e4c4bf27afd82c535b9c1ce66dc01b4666ce636abc4edf9",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "reports/exp487_native_v3_nested_xgb_tuning/optuna_outer_03.json",
+      "size_bytes": 23944,
+      "sha256": "8081a744d802fa31966caea55e80cc2fee5d31f9cb3c40660d7f1b5ba11f5904",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "models/exp487_native_v3_nested_xgb_tuning/optuna/outer_04.sqlite3",
+      "size_bytes": 163840,
+      "sha256": "fc59c6bf955efa7ce9068a0cba9d2807ebd829fac192affcd22025da55fb49b2",
+      "storage_uri": null
+    },
+    {
+      "kind": "nested_optuna",
+      "path": "reports/exp487_native_v3_nested_xgb_tuning/optuna_outer_04.json",
+      "size_bytes": 23913,
+      "sha256": "9e0429fa0d4b2ccada0d3112654b92138a0e163d0db9085c60ee133fc05af271",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

@@ -1,0 +1,336 @@
+experiment:
+  record_role: official
+  issue_number: 558
+  experiment_id: EXP-558
+  component_experiments:
+  - EXP-003
+  - EXP-005
+  branch: issue-558-compact-clinical-xgb
+  owner: fabxoe
+  source_commit: 704d7d4df868b487bf52033b38abe2bb855d02ad
+  dirty_worktree: false
+  started_at: '2026-08-06T01:30:56.701172+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features: []
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features: []
+  position_missing_policy: zero
+  position_token_scope: include_complex
+  position_transform: raw
+  position_bin_width: null
+  position_semantics: protein residue indices explicitly written in source tokens;
+    no transcript, codon nucleotide, genomic coordinate, or protein-length inference
+  position_semantic_filter: null
+  co_mutation_pairs: []
+  co_mutation_semantics: fixed, literature-curated gene pairs (mutual exclusivity
+    or co-occurrence); gene-level 'any mutation' presence, not restricted to a specific
+    hotspot codon; not fit from this dataset's target or frequency
+  feature_factory_version: 1.1.0
+  feature_spec_sha256: d3e766217707ae9467375416d6cadccda329d03c606b870467d1efcb99326600
+  hotspot_features: []
+  known_hotspots: []
+  hotspot_validation_note: The hotspot table is fixed before test transformation.
+    The original 19 and additional 15 positions are literature-defined; the config-driven
+    runner validates the additions using train rows only. Test data is not used to
+    select or filter the official list. A token counts only when both position and
+    reference AA match.
+  requested_families:
+    mutation_type:
+      enabled: true
+    robust_aggregates: []
+    residue_position:
+      enabled: false
+  hotspot_table: none
+  hotspot_evidence_scope: none
+  fold_train_hotspot_evidence:
+    '0': []
+    '1': []
+    '2': []
+    '3': []
+    '4': []
+  minimum_matching_train_rows: 1
+  selection_uses_test_data: false
+feature_outputs:
+  train_features.npz:
+    path: data/processed/exp558_compact_clinical_xgb_features/train_features.npz
+    sha256: 4a196b662887ec77918548405f39302b6a4b084c991a917e90a7c6980c798650
+  test_features.npz:
+    path: data/processed/exp558_compact_clinical_xgb_features/test_features.npz
+    sha256: b423030c90cfac74a02b6215a5abee2c56c0b9c6751508fb82f6b74d09323489
+  feature_names.json:
+    path: data/processed/exp558_compact_clinical_xgb_features/feature_names.json
+    sha256: b4c9d5e68bf179bece3bf39bec88c015c6878b51cf83e67b83372da1e4ecd0f3
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: non_string_or_blank_is_unobserved_not_wt
+  feature_types:
+  - compact_clinical_mutation
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  command: uv run python scripts/run_exp558_compact_clinical_xgb.py
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 08:56:36) [Clang 18.1.8 ]
+  platform: macOS-26.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: bc7da4e6e1f133ee6b1f8c5cd4c86f9b87d336d686ceaacddbe20254b0771d23
+fold_train_features:
+- fold: 0
+  feature_name_count: 7785
+  feature_names_sha256: 53de332da273f335b0dbb1f7c557344c62da21e9ddc175325c203cbc169453a3
+  feature_name_preview:
+  - mutated__A2M
+  - mutated__AAAS
+  - mutated__AADAT
+  - mutated__ABAT
+  - mutated__ABCA1
+  - summary__delins_event_count
+  - summary__insertion_event_count
+  - summary__duplication_candidate_event_count
+  - summary__range_replacement_event_count
+  - summary__other_event_count
+  registry:
+    compact_clinical_mutation:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 7785
+      feature_names_sha256: 53de332da273f335b0dbb1f7c557344c62da21e9ddc175325c203cbc169453a3
+      fit_scope: fold_train
+      external_knowledge: null
+  base_feature_names_to_drop_count: 30697
+  base_feature_names_to_drop_sha256: a52489aebcc6f50b48d93067c84063c009ea4a370444d8cfa3e8a390b420be2d
+  base_feature_names_to_drop_preview:
+  - sample__mutated_gene_count
+  - sample__total_variant_count
+  - sample__multi_variant_gene_count
+  - sample__missing_gene_count
+  - sample__missense_count
+  - ZYX__synonymous
+  - ZYX__nonsense
+  - ZYX__frameshift
+  - ZYX__complex
+  - ZYX__missing
+  base_feature_names_after_drop_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+- fold: 1
+  feature_name_count: 7815
+  feature_names_sha256: dcb6cf09bb570683bef1109614b98aa8f13cbb1e2c0368ae363877d6a898b8d2
+  feature_name_preview:
+  - mutated__A2M
+  - mutated__AAAS
+  - mutated__AADAT
+  - mutated__ABAT
+  - mutated__ABCA1
+  - summary__delins_event_count
+  - summary__insertion_event_count
+  - summary__duplication_candidate_event_count
+  - summary__range_replacement_event_count
+  - summary__other_event_count
+  registry:
+    compact_clinical_mutation:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 7815
+      feature_names_sha256: dcb6cf09bb570683bef1109614b98aa8f13cbb1e2c0368ae363877d6a898b8d2
+      fit_scope: fold_train
+      external_knowledge: null
+  base_feature_names_to_drop_count: 30697
+  base_feature_names_to_drop_sha256: a52489aebcc6f50b48d93067c84063c009ea4a370444d8cfa3e8a390b420be2d
+  base_feature_names_to_drop_preview:
+  - sample__mutated_gene_count
+  - sample__total_variant_count
+  - sample__multi_variant_gene_count
+  - sample__missing_gene_count
+  - sample__missense_count
+  - ZYX__synonymous
+  - ZYX__nonsense
+  - ZYX__frameshift
+  - ZYX__complex
+  - ZYX__missing
+  base_feature_names_after_drop_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+- fold: 2
+  feature_name_count: 7786
+  feature_names_sha256: 1bbc3b175e1ee8dce3ee0f261cd10c35de985e3fa485a0eb6b034767530fd73e
+  feature_name_preview:
+  - mutated__A2M
+  - mutated__AAAS
+  - mutated__AADAT
+  - mutated__ABAT
+  - mutated__ABCA1
+  - summary__delins_event_count
+  - summary__insertion_event_count
+  - summary__duplication_candidate_event_count
+  - summary__range_replacement_event_count
+  - summary__other_event_count
+  registry:
+    compact_clinical_mutation:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 7786
+      feature_names_sha256: 1bbc3b175e1ee8dce3ee0f261cd10c35de985e3fa485a0eb6b034767530fd73e
+      fit_scope: fold_train
+      external_knowledge: null
+  base_feature_names_to_drop_count: 30697
+  base_feature_names_to_drop_sha256: a52489aebcc6f50b48d93067c84063c009ea4a370444d8cfa3e8a390b420be2d
+  base_feature_names_to_drop_preview:
+  - sample__mutated_gene_count
+  - sample__total_variant_count
+  - sample__multi_variant_gene_count
+  - sample__missing_gene_count
+  - sample__missense_count
+  - ZYX__synonymous
+  - ZYX__nonsense
+  - ZYX__frameshift
+  - ZYX__complex
+  - ZYX__missing
+  base_feature_names_after_drop_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+- fold: 3
+  feature_name_count: 7851
+  feature_names_sha256: 55543b1f2cd9029468f0ca31f38983a8600f2e3a2ab18e830b368b6032cba652
+  feature_name_preview:
+  - mutated__A2M
+  - mutated__AAAS
+  - mutated__AADAT
+  - mutated__ABAT
+  - mutated__ABCA1
+  - summary__delins_event_count
+  - summary__insertion_event_count
+  - summary__duplication_candidate_event_count
+  - summary__range_replacement_event_count
+  - summary__other_event_count
+  registry:
+    compact_clinical_mutation:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 7851
+      feature_names_sha256: 55543b1f2cd9029468f0ca31f38983a8600f2e3a2ab18e830b368b6032cba652
+      fit_scope: fold_train
+      external_knowledge: null
+  base_feature_names_to_drop_count: 30697
+  base_feature_names_to_drop_sha256: a52489aebcc6f50b48d93067c84063c009ea4a370444d8cfa3e8a390b420be2d
+  base_feature_names_to_drop_preview:
+  - sample__mutated_gene_count
+  - sample__total_variant_count
+  - sample__multi_variant_gene_count
+  - sample__missing_gene_count
+  - sample__missense_count
+  - ZYX__synonymous
+  - ZYX__nonsense
+  - ZYX__frameshift
+  - ZYX__complex
+  - ZYX__missing
+  base_feature_names_after_drop_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+- fold: 4
+  feature_name_count: 7831
+  feature_names_sha256: 4c64f1d1908d9fbaa1609b626ab0b02cde0131f26731aaa101c4209f8c2f5ec2
+  feature_name_preview:
+  - mutated__A2M
+  - mutated__AAAS
+  - mutated__AADAT
+  - mutated__ABAT
+  - mutated__ABCA1
+  - summary__delins_event_count
+  - summary__insertion_event_count
+  - summary__duplication_candidate_event_count
+  - summary__range_replacement_event_count
+  - summary__other_event_count
+  registry:
+    compact_clinical_mutation:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 7831
+      feature_names_sha256: 4c64f1d1908d9fbaa1609b626ab0b02cde0131f26731aaa101c4209f8c2f5ec2
+      fit_scope: fold_train
+      external_knowledge: null
+  base_feature_names_to_drop_count: 30697
+  base_feature_names_to_drop_sha256: a52489aebcc6f50b48d93067c84063c009ea4a370444d8cfa3e8a390b420be2d
+  base_feature_names_to_drop_preview:
+  - sample__mutated_gene_count
+  - sample__total_variant_count
+  - sample__multi_variant_gene_count
+  - sample__missing_gene_count
+  - sample__missense_count
+  - ZYX__synonymous
+  - ZYX__nonsense
+  - ZYX__frameshift
+  - ZYX__complex
+  - ZYX__missing
+  base_feature_names_after_drop_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855

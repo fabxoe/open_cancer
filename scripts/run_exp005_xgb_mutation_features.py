@@ -256,11 +256,13 @@ def verify_saved_inference(
     fold_feature_indices: list[list[int]] | None = None,
     fold_test_features: list[sparse.csr_matrix] | None = None,
     extra_artifact_paths: list[tuple[str, Path]] | None = None,
+    class_labels: tuple[str, ...] = CLASS_LABELS,
+    probability_columns: tuple[str, ...] = PROBABILITY_COLUMNS,
 ) -> None:
     """Reload checkpoints and automatically create inference reproducibility evidence."""
     fold_count = config["split"]["n_splits"]
     reproduced_proba = np.zeros(
-        (len(test_ids), len(CLASS_LABELS)), dtype=np.float32
+        (len(test_ids), len(class_labels)), dtype=np.float32
     )
     model_paths = [
         model_dir / f"fold_{fold:02d}.json" for fold in range(fold_count)
@@ -282,7 +284,7 @@ def verify_saved_inference(
         ) / fold_count
 
     original_probability = pd.read_csv(test_probability_path)
-    original_proba = original_probability[list(PROBABILITY_COLUMNS)].to_numpy()
+    original_proba = original_probability[list(probability_columns)].to_numpy()
     probability_match = bool(
         np.allclose(reproduced_proba, original_proba, atol=1e-6, rtol=1e-6)
     )
@@ -294,7 +296,7 @@ def verify_saved_inference(
         SAMPLE_SUBMISSION_PATH, dtype=str, keep_default_na=False
     )
     reproduced_submission = sample_submission.copy()
-    reproduced_submission["SUBCLASS"] = np.asarray(CLASS_LABELS)[
+    reproduced_submission["SUBCLASS"] = np.asarray(class_labels)[
         reproduced_proba.argmax(axis=1)
     ]
     temporary_prefix = artifact_slug.replace("/", "_").replace("\\", "_")

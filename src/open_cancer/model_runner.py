@@ -206,21 +206,45 @@ class LightGBMAdapter:
             ) from error
         self.lgb = lgb
         self.early_stopping_rounds = int(parameters.pop("early_stopping_rounds", 50))
+        self.checkpoint_selection = str(
+            parameters.pop("checkpoint_selection", "log_loss_validation")
+        )
+        _require(
+            self.checkpoint_selection
+            in {"log_loss_validation", "macro_f1_validation"},
+            "지원하지 않는 LightGBM checkpoint 선택 정책입니다: "
+            f"{self.checkpoint_selection}",
+        )
         defaults = {
             "objective": "multiclass",
             "num_class": len(CLASS_LABELS),
             "random_state": seed,
         }
+        if self.checkpoint_selection == "macro_f1_validation":
+            # Disable LightGBM's default multi_logloss so early stopping sees
+            # only the competition-aligned custom metric below.
+            defaults["metric"] = "None"
         self.model = lgb.LGBMClassifier(**{**defaults, **parameters})
 
     def fit(self, x_train, y_train, x_valid, y_valid, sample_weight) -> None:
+        fit_options: dict[str, Any] = {}
+        if self.checkpoint_selection == "macro_f1_validation":
+            fit_options["eval_metric"] = lightgbm_macro_f1_metric
         self.model.fit(
             x_train,
             y_train,
             sample_weight=sample_weight,
             eval_X=x_valid,
             eval_y=y_valid,
-            callbacks=[self.lgb.early_stopping(self.early_stopping_rounds, verbose=False)],
+            callbacks=[
+                self.lgb.early_stopping(
+                    self.early_stopping_rounds,
+                    first_metric_only=self.checkpoint_selection
+                    == "macro_f1_validation",
+                    verbose=False,
+                )
+            ],
+            **fit_options,
         )
 
     def predict_proba(self, matrix) -> np.ndarray:
@@ -233,6 +257,33 @@ class LightGBMAdapter:
     def best_iteration(self) -> int | None:
         value = getattr(self.model, "best_iteration_", None)
         return None if value is None else int(value)
+
+
+def lightgbm_macro_f1_metric(
+    targets: np.ndarray,
+    probabilities: np.ndarray,
+) -> tuple[str, float, bool]:
+    """Competition-aligned LightGBM validation metric (higher is better)."""
+
+    target_array = np.asarray(targets, dtype=np.int32)
+    probability_array = np.asarray(probabilities)
+    if probability_array.ndim == 1:
+        _require(
+            probability_array.size % target_array.size == 0,
+            "LightGBM 예측 확률을 행 단위로 복원할 수 없습니다.",
+        )
+        probability_array = probability_array.reshape(target_array.size, -1)
+    _require(
+        probability_array.shape
+        == (target_array.size, len(CLASS_LABELS)),
+        "LightGBM Macro F1 확률 shape가 26-class 계약과 다릅니다.",
+    )
+    predictions = probability_array.argmax(axis=1)
+    return (
+        "macro_f1",
+        float(f1_score(target_array, predictions, average="macro", zero_division=0)),
+        True,
+    )
 
 
 class CatBoostAdapter:

@@ -1,0 +1,51 @@
+{
+  "trusted_gene_token_pairs": 437784,
+  "pairs_with_domain_catalog_coverage": 437784,
+  "pairs_missing_domain_catalog_coverage": 0,
+  "domain_catalog_coverage_rate": 1.0,
+  "in_domain_count": 240443,
+  "in_domain_rate_among_covered": 0.5492274729090145,
+  "relative_position_bin_vs_in_domain_crosstab": {
+    "bin_1": {
+      "in_domain": 36301,
+      "not_in_domain": 40736
+    },
+    "bin_2": {
+      "in_domain": 50951,
+      "not_in_domain": 33138
+    },
+    "bin_3": {
+      "in_domain": 52151,
+      "not_in_domain": 36244
+    },
+    "bin_4": {
+      "in_domain": 54363,
+      "not_in_domain": 36985
+    },
+    "bin_5": {
+      "in_domain": 46677,
+      "not_in_domain": 50238
+    }
+  },
+  "examples_in_domain": [
+    "A2M:L1217R",
+    "A2M:I175F",
+    "A2M:N1038T",
+    "A2M:R1122H",
+    "A2M:R174H",
+    "A2M:S276F",
+    "A2M:P759T",
+    "A2M:D953G"
+  ],
+  "examples_not_in_domain": [
+    "A2M:L846V",
+    "A2M:S873S",
+    "A2M:Y53Y",
+    "A2M:G852R",
+    "A2M:G706G",
+    "A2M:R853R",
+    "A2M:S1368N",
+    "A2M:E56D"
+  ],
+  "interpretation_note": "각 bin 안에 in_domain True/False가 모두 상당수 섞여 있으면 기존 isoform_relative_position bin으로 예측 불가능한 신규 정보가 있다는 뜻이다. 반대로 bin 값이 in_domain을 거의 결정한다면(한쪽으로 쏠리면) #241 PIK3CA 사례처럼 기존 피처와 중복일 가능성이 높다."
+}
