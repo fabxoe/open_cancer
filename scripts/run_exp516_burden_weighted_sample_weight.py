@@ -40,8 +40,14 @@ from run_hotspot_xgb import ROOT, TRAIN_PATH, main
 
 
 CONFIG = ROOT / "configs" / "exp516_burden_weighted_sample_weight.yaml"
+# NOTE: intentionally NOT reports/exp374_stop_isoform_residue_mask/... --
+# that is EXP-374's own committed provenance file. Pointing MEMBERSHIP at it
+# makes every run of this script dirty (and eventually overwrite) EXP-374's
+# committed report as a side effect, which then fails this script's own
+# clean-worktree check on the next invocation (this is what caused this
+# experiment's repeated stalls). Use an EXP-516-local path instead.
 MEMBERSHIP = (
-    ROOT / "reports" / "exp374_stop_isoform_residue_mask" / "pathway_membership.json"
+    ROOT / "reports" / "exp516_burden_weighted_sample_weight" / "pathway_membership.json"
 )
 GENE_START_COLUMN = 2  # train.csv columns: ID, SUBCLASS, gene_0, gene_1, ...
 
