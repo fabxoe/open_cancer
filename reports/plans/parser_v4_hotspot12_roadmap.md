@@ -15,10 +15,10 @@ EXP-563은 50-aa bin의 평균 HHI·normalized entropy 등 연속형 집중도 4
 | 단계 | 작업 | Issue | EXP | PR | 상태 | 결과 | 다음 행동 |
 |---|---|---:|---|---:|---|---|---|
 | A | Parser-v4 support audit | #632 | 해당 없음 | - | COMPLETED | fold당 223~241 genes, 평균 Jaccard 0.3237 | [감사 보고서](../analysis/parser_v4_hotspot12_support_audit/README.md) |
-| B | Fold-safe Hotspot-12 transformer | #632 | 해당 없음 | - | IN_PROGRESS | N/A | 구현·테스트 완료 후 PR |
-| C | 공용 구현 병합 | #632 | 해당 없음 | - | PLANNED | N/A | CI 통과 후 merge |
-| D | EXP-527 + Hotspot-12 공식 5-fold | 미발급 | 미발급 | - | PLANNED | N/A | C 병합 후 Experiment Issue 생성 |
-| E | 채택·기각 및 후속 family 결정 | 미발급 | 미발급 | - | PLANNED | N/A | D의 실제 결과로 판단 |
+| B | Fold-safe Hotspot-12 transformer | #632 | 해당 없음 | #638 | COMPLETED | 652 tests passed | 구현 완료 |
+| C | 공용 구현 병합 | #632 | 해당 없음 | #638 | MERGED | CI 통과 | 공식 실험 진행 |
+| D | EXP-527 + Hotspot-12 공식 5-fold | #639 | EXP-639 | - | COMPLETED | OOF 0.4546505201, INFERENCE_VERIFIED | [보고서](../exp639_parser_v4_hotspot12/README.md) |
+| E | 채택·기각 및 후속 family 결정 | #639 | EXP-639 | - | COMPLETED | Macro F1·Log Loss 개선, 안정성·클래스 gate 실패 | 단독 ARCHIVE, 앙상블 다양성 감사 후보 |
 
 작업 상태는 `PLANNED → IN_PROGRESS → PR_OPEN → MERGED → COMPLETED`를 사용하며, 중단 시 `BLOCKED` 또는 `REJECTED`로 기록합니다. 이는 실험 재현 상태와 구분합니다.
 

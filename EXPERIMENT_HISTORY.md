@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 134
+- 실제 실험 수: 135
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4647479423 (`EXP-628`, 26-class 전부 예측)
@@ -154,6 +154,7 @@
 | EXP-623 | COMPLETED | 2heej | #623 | EXP-527 XGBoost + EXP-596 RandomForest 사전 고정 0.5/0.5 확률 평균 (#505 S1) | 0.4617833378 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0149110671·Log Loss 개선, 클래스 붕괴(-0.05) 없음; fold std는 +0.0057이나 5개 fold 중 4개 개선·1개(fold4) 사실상 동일로 붕괴형 불안정 아님 — `ADOPT_WITH_CAUTION`, 현재 26-class 전부 예측하는 최고 Local 후보 | [보고서](reports/exp623_exp527_exp596_fixed_blend/README.md) |
 | EXP-628 | COMPLETED | 2heej | #628 | EXP-527+EXP-596 확률 블렌드 가중치 leave-one-outer-fold-out nested 선택(0.05 간격 grid, look-ahead 없음) | 0.4647479423 | 미제출 | INFERENCE_VERIFIED | EXP-623(0.5/0.5) 대비 +0.0029646045·fold std -0.0027327243(개선)·클래스 붕괴 없음; 5개 fold 전부 독립적으로 동일 가중치(0.35/0.65) 선택 — `ADOPT_WITH_CAUTION`, 현재 26-class 전부 예측하는 최고 Local 후보 | [보고서](reports/exp628_nested_blend_weight_exp527_exp596/README.md) |
 | EXP-634 | COMPLETED | 2heej | #634 | EXP-527+EXP-596 cross-fitted L2 Logistic Regression 스태킹, `class_weight=null`(#505 S2) | 0.3274295444 | 미제출 | INFERENCE_VERIFIED | EXP-628 대비 -0.1373183979 폭락, fold std +0.0333528273 악화, DLBC·SARC·THYM F1=0 등 소수 클래스 6개 붕괴(Log Loss는 -0.00002로 거의 불변) — EXP-137과 같은 실패 패턴이 더 심하게 재현됨, `ARCHIVE`; `class_weight="balanced"` 재시도가 유력한 다음 수 | [보고서](reports/exp634_cross_fitted_stacking_exp527_exp596/README.md) |
+| EXP-639 | COMPLETED | fabxoe | #639 | EXP-527 + parser-v4 fold-safe Hotspot-12 유전자 indicator·sample 요약 3개 | 0.4546505201 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0077782494·Log Loss 개선이나 fold std +0.0048500, LGG -0.1123·KIRC -0.0512 붕괴로 `ARCHIVE_AS_PRIMARY`; 정보 다양성·앙상블 후보로 보존 | [보고서](reports/exp639_parser_v4_hotspot12/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5590,3 +5591,35 @@ additive 확장이며 `uv run pytest -q`로 회귀 여부를 재확인했다). "
   프로젝트 기본 정책(`balanced_sample_weight`)에 맞춰 `class_weight="balanced"`로
   재시도하는 것이 유력한 다음 수 — 단, 예측이 달라지므로 이 EXP-ID를
   재사용하지 않고 별도 Experiment Issue가 필요하다.
+
+### [EXP-639] Parser-v4 fold-safe Hotspot-12
+
+- 상태/실행자: COMPLETED / fabxoe
+- Issue/브랜치: #639 / `issue-639-exp-hotspot12`
+- Config/Runner: `configs/exp639_parser_v4_hotspot12.yaml` /
+  `scripts/run_exp639_parser_v4_hotspot12.py`
+- 부모: EXP-527
+- 유일한 변경: outer-train의 parser-v4 missense residue 사건에서
+  patient-gene-position을 중복 제거하고, support 5 이상·폭 12·창 비율 40%
+  이상인 대표 창을 유전자별로 학습. 유전자별 hit indicator 4,384개와 sample
+  hotspot gene/event count·fraction 3개를 additive하게 추가했다.
+- 누수 방지: label·validation·test distribution·Public LB는 창 선택에 사용하지
+  않았으며 validation/test에는 fold-train에서 동결한 창만 적용했다.
+- 사전 support audit: fold별 223~241 genes 선택, pairwise Jaccard 평균
+  0.3236954807, 5-fold 공통 35 genes, 정확한 창까지 공통 16 genes.
+- Fold Macro F1: 0.4385802599, 0.4572089860, 0.4724204513,
+  0.4476187367, 0.4522269760
+- OOF Macro F1 / fold 평균 / fold std: 0.4546505201 / 0.4536110820 /
+  0.0112293085
+- Accuracy / Log Loss: 0.4375100790 / 1.8732490540
+- EXP-527 대비: Macro F1 +0.0077782494, fold std +0.0048499900(악화),
+  Log Loss -0.1542396545(개선)
+- 클래스 하락: LGG -0.1122892545, KIRC -0.0512497272, PAAD
+  -0.0344795082. 사전 -0.05 붕괴 기준을 LGG·KIRC가 위반했다.
+- Public LB: 미제출
+- 재현 상태: INFERENCE_VERIFIED — 제출 SHA-256 완전 일치, label agreement
+  1.0, 확률 최대 절대 오차 1.47e-7
+- 판단: **ARCHIVE_AS_PRIMARY / KEEP_ENSEMBLE_CANDIDATE**. 전역 Macro F1과
+  Log Loss 개선은 residue hotspot 정보가 있음을 보여주지만, fold 변동성과
+  LGG·KIRC 붕괴 때문에 단독 주력 모델 채택 기준은 실패했다. 임계값을
+  사후 조정하지 않고 OOF 오류 상관을 확인한 후 다양성·블렌드 후보로만 보존한다.
