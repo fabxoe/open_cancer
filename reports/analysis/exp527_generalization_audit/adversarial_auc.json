@@ -1,0 +1,120 @@
+{
+  "analysis_only": true,
+  "subclass_used": false,
+  "public_lb_used": false,
+  "domain_target": "OOF-train=0,test=1",
+  "overall_auc": 0.6470150013814513,
+  "fold_auc": [
+    0.6352068884178264,
+    0.6559558823529411,
+    0.6499564294315229,
+    0.6410133722035618,
+    0.6592393370936054
+  ],
+  "top_gain": [
+    {
+      "feature": "class_cosine__KIPAN",
+      "mean_gain": 15.638716316223144
+    },
+    {
+      "feature": "class_cosine__BLCA",
+      "mean_gain": 15.322843933105469
+    },
+    {
+      "feature": "class_cosine__KIRC",
+      "mean_gain": 14.012043952941895
+    },
+    {
+      "feature": "class_cosine__LIHC",
+      "mean_gain": 13.263670539855957
+    },
+    {
+      "feature": "class_cosine__CESC",
+      "mean_gain": 11.073702144622803
+    },
+    {
+      "feature": "class_cosine__OV",
+      "mean_gain": 9.690213775634765
+    },
+    {
+      "feature": "class_cosine__SKCM",
+      "mean_gain": 9.264983558654786
+    },
+    {
+      "feature": "class_cosine__TGCT",
+      "mean_gain": 9.12714672088623
+    },
+    {
+      "feature": "class_cosine__LUAD",
+      "mean_gain": 8.970401763916016
+    },
+    {
+      "feature": "class_cosine__ACC",
+      "mean_gain": 8.386971187591552
+    },
+    {
+      "feature": "class_cosine__LUSC",
+      "mean_gain": 8.302878475189209
+    },
+    {
+      "feature": "class_cosine__BRCA",
+      "mean_gain": 8.087011241912842
+    },
+    {
+      "feature": "class_cosine__PCPG",
+      "mean_gain": 8.05691556930542
+    },
+    {
+      "feature": "class_cosine__DLBC",
+      "mean_gain": 8.045580196380616
+    },
+    {
+      "feature": "class_cosine__STES",
+      "mean_gain": 7.640467262268066
+    },
+    {
+      "feature": "class_cosine__PRAD",
+      "mean_gain": 7.63628511428833
+    },
+    {
+      "feature": "class_cosine__SARC",
+      "mean_gain": 7.381353855133057
+    },
+    {
+      "feature": "class_cosine__COAD",
+      "mean_gain": 7.319808673858643
+    },
+    {
+      "feature": "class_cosine__LGG",
+      "mean_gain": 7.299129581451416
+    },
+    {
+      "feature": "class_cosine__THCA",
+      "mean_gain": 7.2922547340393065
+    },
+    {
+      "feature": "class_cosine__PAAD",
+      "mean_gain": 7.140452766418457
+    },
+    {
+      "feature": "class_cosine__GBMLGG",
+      "mean_gain": 7.015145778656006
+    },
+    {
+      "feature": "class_cosine__THYM",
+      "mean_gain": 6.941379261016846
+    },
+    {
+      "feature": "class_cosine__UCEC",
+      "mean_gain": 6.828630065917968
+    },
+    {
+      "feature": "class_cosine__HNSC",
+      "mean_gain": 6.6901191711425785
+    },
+    {
+      "feature": "class_cosine__LAML",
+      "mean_gain": 6.4644598960876465
+    }
+  ]
+}

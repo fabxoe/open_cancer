@@ -1,0 +1,713 @@
+{
+  "audit_type": "parser_v4_canonical_event_token_support_oov",
+  "tokenizer_version": "1.0.0",
+  "position_bin_width": 100,
+  "inputs": {
+    "train": {
+      "rows": 6201,
+      "sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab"
+    },
+    "test": {
+      "rows": 2546,
+      "sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+    },
+    "split": {
+      "rows": 6201,
+      "sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf"
+    },
+    "gene_count": 4384
+  },
+  "train_summary": {
+    "patient_count": 6201,
+    "source_event_count": 255164,
+    "token_occurrence_count": 1032917,
+    "unique_token_count": 201247,
+    "blank_gene_cell_count": 0,
+    "wt_gene_cell_count": 26966291,
+    "partial_event_count": 9835,
+    "unresolved_event_count": 177,
+    "vocabulary_sha256": "b5bac4e4b399d05ab09bfb838ccd90c7f785196ba3ac1371f5ac3618ab3d73fd",
+    "tokenizer_version": "1.0.0"
+  },
+  "test_summary": {
+    "patient_count": 2546,
+    "source_event_count": 337512,
+    "token_occurrence_count": 1447794,
+    "unique_token_count": 189729,
+    "blank_gene_cell_count": 237,
+    "wt_gene_cell_count": 10962497,
+    "partial_event_count": 25878,
+    "unresolved_event_count": 458,
+    "vocabulary_sha256": "ec5397d95c114f7f456a172f2e961d2263e963c2525f98923a5fc83bbb56942d",
+    "tokenizer_version": "1.0.0"
+  },
+  "full_train_vocabulary_sha256": "b5bac4e4b399d05ab09bfb838ccd90c7f785196ba3ac1371f5ac3618ab3d73fd",
+  "full_train_vocabulary_test_oov": {
+    "patient_count": 2546,
+    "token_occurrences": 1447794,
+    "oov_occurrences": 305894,
+    "oov_occurrence_rate": 0.21128282062227086,
+    "patients_with_oov": 2223,
+    "patient_oov_rate": 0.8731343283582089,
+    "unique_tokens": 189729,
+    "unique_oov_tokens": 86266
+  },
+  "lengths": {
+    "train_source_events": {
+      "count": 6201,
+      "min": 0,
+      "p50": 14.0,
+      "p90": 70.0,
+      "p95": 129.0,
+      "p99": 444.0,
+      "max": 9972
+    },
+    "test_source_events": {
+      "count": 2546,
+      "min": 0,
+      "p50": 34.0,
+      "p90": 155.0,
+      "p95": 640.75,
+      "p99": 1997.800000000003,
+      "max": 5008
+    },
+    "train_token_occurrences": {
+      "count": 6201,
+      "min": 0,
+      "p50": 57.0,
+      "p90": 284.0,
+      "p95": 520.0,
+      "p99": 1800.0,
+      "max": 39977
+    },
+    "test_token_occurrences": {
+      "count": 2546,
+      "min": 0,
+      "p50": 138.5,
+      "p90": 651.0,
+      "p95": 2833.75,
+      "p99": 9898.900000000014,
+      "max": 20245
+    },
+    "train_unique_tokens": {
+      "count": 6201,
+      "min": 0,
+      "p50": 56.0,
+      "p90": 279.0,
+      "p95": 508.0,
+      "p99": 1753.0,
+      "max": 15198
+    },
+    "test_unique_tokens": {
+      "count": 2546,
+      "min": 0,
+      "p50": 119.5,
+      "p90": 402.0,
+      "p95": 1668.0,
+      "p99": 5045.950000000045,
+      "max": 12054
+    }
+  },
+  "thresholds": {
+    "1": {
+      "vocabulary_size": 201247,
+      "train": {
+        "patient_count": 6201,
+        "token_occurrences": 1032917,
+        "oov_occurrences": 0,
+        "oov_occurrence_rate": 0.0,
+        "patients_with_oov": 0,
+        "patient_oov_rate": 0.0,
+        "unique_tokens": 201247,
+        "unique_oov_tokens": 0
+      },
+      "test": {
+        "patient_count": 2546,
+        "token_occurrences": 1447794,
+        "oov_occurrences": 305894,
+        "oov_occurrence_rate": 0.21128282062227086,
+        "patients_with_oov": 2223,
+        "patient_oov_rate": 0.8731343283582089,
+        "unique_tokens": 189729,
+        "unique_oov_tokens": 86266
+      }
+    },
+    "2": {
+      "vocabulary_size": 100451,
+      "train": {
+        "patient_count": 6201,
+        "token_occurrences": 1032917,
+        "oov_occurrences": 103015,
+        "oov_occurrence_rate": 0.09973211787587967,
+        "patients_with_oov": 4913,
+        "patient_oov_rate": 0.7922915658764715,
+        "unique_tokens": 201247,
+        "unique_oov_tokens": 100796
+      },
+      "test": {
+        "patient_count": 2546,
+        "token_occurrences": 1447794,
+        "oov_occurrences": 383892,
+        "oov_occurrence_rate": 0.2651565070721387,
+        "patients_with_oov": 2461,
+        "patient_oov_rate": 0.9666142969363708,
+        "unique_tokens": 189729,
+        "unique_oov_tokens": 114481
+      }
+    },
+    "5": {
+      "vocabulary_size": 46521,
+      "train": {
+        "patient_count": 6201,
+        "token_occurrences": 1032917,
+        "oov_occurrences": 245592,
+        "oov_occurrence_rate": 0.23776547389577285,
+        "patients_with_oov": 6013,
+        "patient_oov_rate": 0.9696823093049508,
+        "unique_tokens": 201247,
+        "unique_oov_tokens": 154726
+      },
+      "test": {
+        "patient_count": 2546,
+        "token_occurrences": 1447794,
+        "oov_occurrences": 518440,
+        "oov_occurrence_rate": 0.3580896177218582,
+        "patients_with_oov": 2492,
+        "patient_oov_rate": 0.9787902592301649,
+        "unique_tokens": 189729,
+        "unique_oov_tokens": 144729
+      }
+    },
+    "10": {
+      "vocabulary_size": 24101,
+      "train": {
+        "patient_count": 6201,
+        "token_occurrences": 1032917,
+        "oov_occurrences": 403238,
+        "oov_occurrence_rate": 0.39038761100843533,
+        "patients_with_oov": 6052,
+        "patient_oov_rate": 0.9759716174810514,
+        "unique_tokens": 201247,
+        "unique_oov_tokens": 177146
+      },
+      "test": {
+        "patient_count": 2546,
+        "token_occurrences": 1447794,
+        "oov_occurrences": 728331,
+        "oov_occurrence_rate": 0.5030625903961475,
+        "patients_with_oov": 2497,
+        "patient_oov_rate": 0.9807541241162608,
+        "unique_tokens": 189729,
+        "unique_oov_tokens": 165712
+      }
+    },
+    "20": {
+      "vocabulary_size": 8542,
+      "train": {
+        "patient_count": 6201,
+        "token_occurrences": 1032917,
+        "oov_occurrences": 618526,
+        "oov_occurrence_rate": 0.5988148128068373,
+        "patients_with_oov": 6073,
+        "patient_oov_rate": 0.9793581680374133,
+        "unique_tokens": 201247,
+        "unique_oov_tokens": 192705
+      },
+      "test": {
+        "patient_count": 2546,
+        "token_occurrences": 1447794,
+        "oov_occurrences": 968883,
+        "oov_occurrence_rate": 0.669213299682137,
+        "patients_with_oov": 2507,
+        "patient_oov_rate": 0.9846818538884525,
+        "unique_tokens": 189729,
+        "unique_oov_tokens": 181189
+      }
+    },
+    "50": {
+      "vocabulary_size": 1955,
+      "train": {
+        "patient_count": 6201,
+        "token_occurrences": 1032917,
+        "oov_occurrences": 827582,
+        "oov_occurrence_rate": 0.8012086159875382,
+        "patients_with_oov": 6081,
+        "patient_oov_rate": 0.980648282535075,
+        "unique_tokens": 201247,
+        "unique_oov_tokens": 199292
+      },
+      "test": {
+        "patient_count": 2546,
+        "token_occurrences": 1447794,
+        "oov_occurrences": 1225901,
+        "oov_occurrence_rate": 0.8467371739349658,
+        "patients_with_oov": 2511,
+        "patient_oov_rate": 0.9862529457973291,
+        "unique_tokens": 189729,
+        "unique_oov_tokens": 187774
+      }
+    }
+  },
+  "canonical_folds": [
+    {
+      "fold": 0,
+      "thresholds": {
+        "1": {
+          "vocabulary_size": 179674,
+          "validation": {
+            "patient_count": 1241,
+            "token_occurrences": 205111,
+            "oov_occurrences": 23396,
+            "oov_occurrence_rate": 0.11406506720751203,
+            "patients_with_oov": 1028,
+            "patient_oov_rate": 0.8283642224012893,
+            "unique_tokens": 83889,
+            "unique_oov_tokens": 21573
+          }
+        },
+        "2": {
+          "vocabulary_size": 87090,
+          "validation": {
+            "patient_count": 1241,
+            "token_occurrences": 205111,
+            "oov_occurrences": 37566,
+            "oov_occurrence_rate": 0.18314961167367913,
+            "patients_with_oov": 1187,
+            "patient_oov_rate": 0.9564867042707494,
+            "unique_tokens": 83889,
+            "unique_oov_tokens": 33522
+          }
+        },
+        "5": {
+          "vocabulary_size": 39860,
+          "validation": {
+            "patient_count": 1241,
+            "token_occurrences": 205111,
+            "oov_occurrences": 62884,
+            "oov_occurrence_rate": 0.30658521483489426,
+            "patients_with_oov": 1212,
+            "patient_oov_rate": 0.9766317485898469,
+            "unique_tokens": 83889,
+            "unique_oov_tokens": 50063
+          }
+        },
+        "10": {
+          "vocabulary_size": 17861,
+          "validation": {
+            "patient_count": 1241,
+            "token_occurrences": 205111,
+            "oov_occurrences": 99546,
+            "oov_occurrence_rate": 0.4853274568404425,
+            "patients_with_oov": 1216,
+            "patient_oov_rate": 0.9798549556809025,
+            "unique_tokens": 83889,
+            "unique_oov_tokens": 66942
+          }
+        },
+        "20": {
+          "vocabulary_size": 6222,
+          "validation": {
+            "patient_count": 1241,
+            "token_occurrences": 205111,
+            "oov_occurrences": 135352,
+            "oov_occurrence_rate": 0.6598963488062561,
+            "patients_with_oov": 1222,
+            "patient_oov_rate": 0.984689766317486,
+            "unique_tokens": 83889,
+            "unique_oov_tokens": 77685
+          }
+        },
+        "50": {
+          "vocabulary_size": 1234,
+          "validation": {
+            "patient_count": 1241,
+            "token_occurrences": 205111,
+            "oov_occurrences": 173440,
+            "oov_occurrence_rate": 0.8455909239387454,
+            "patients_with_oov": 1222,
+            "patient_oov_rate": 0.984689766317486,
+            "unique_tokens": 83889,
+            "unique_oov_tokens": 82655
+          }
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "thresholds": {
+        "1": {
+          "vocabulary_size": 178217,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 238515,
+            "oov_occurrences": 26647,
+            "oov_occurrence_rate": 0.11172043686979855,
+            "patients_with_oov": 1021,
+            "patient_oov_rate": 0.8233870967741935,
+            "unique_tokens": 87183,
+            "unique_oov_tokens": 23030
+          }
+        },
+        "2": {
+          "vocabulary_size": 86205,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 238515,
+            "oov_occurrences": 42952,
+            "oov_occurrence_rate": 0.18008091734272477,
+            "patients_with_oov": 1184,
+            "patient_oov_rate": 0.9548387096774194,
+            "unique_tokens": 87183,
+            "unique_oov_tokens": 35709
+          }
+        },
+        "5": {
+          "vocabulary_size": 39412,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 238515,
+            "oov_occurrences": 72292,
+            "oov_occurrence_rate": 0.30309204871810996,
+            "patients_with_oov": 1207,
+            "patient_oov_rate": 0.9733870967741935,
+            "unique_tokens": 87183,
+            "unique_oov_tokens": 53135
+          }
+        },
+        "10": {
+          "vocabulary_size": 17462,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 238515,
+            "oov_occurrences": 115321,
+            "oov_occurrence_rate": 0.48349579691004757,
+            "patients_with_oov": 1211,
+            "patient_oov_rate": 0.9766129032258064,
+            "unique_tokens": 87183,
+            "unique_oov_tokens": 70404
+          }
+        },
+        "20": {
+          "vocabulary_size": 6067,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 238515,
+            "oov_occurrences": 157906,
+            "oov_occurrence_rate": 0.6620380269584722,
+            "patients_with_oov": 1216,
+            "patient_oov_rate": 0.9806451612903225,
+            "unique_tokens": 87183,
+            "unique_oov_tokens": 81126
+          }
+        },
+        "50": {
+          "vocabulary_size": 1208,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 238515,
+            "oov_occurrences": 202309,
+            "oov_occurrence_rate": 0.8482024191350649,
+            "patients_with_oov": 1217,
+            "patient_oov_rate": 0.9814516129032258,
+            "unique_tokens": 87183,
+            "unique_oov_tokens": 85975
+          }
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "thresholds": {
+        "1": {
+          "vocabulary_size": 177386,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 217132,
+            "oov_occurrences": 25751,
+            "oov_occurrence_rate": 0.11859606138201646,
+            "patients_with_oov": 1027,
+            "patient_oov_rate": 0.8282258064516129,
+            "unique_tokens": 88347,
+            "unique_oov_tokens": 23861
+          }
+        },
+        "2": {
+          "vocabulary_size": 86139,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 217132,
+            "oov_occurrences": 40879,
+            "oov_occurrence_rate": 0.18826796602988044,
+            "patients_with_oov": 1189,
+            "patient_oov_rate": 0.9588709677419355,
+            "unique_tokens": 88347,
+            "unique_oov_tokens": 36614
+          }
+        },
+        "5": {
+          "vocabulary_size": 39254,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 217132,
+            "oov_occurrences": 68394,
+            "oov_occurrence_rate": 0.31498811782694397,
+            "patients_with_oov": 1209,
+            "patient_oov_rate": 0.975,
+            "unique_tokens": 88347,
+            "unique_oov_tokens": 54294
+          }
+        },
+        "10": {
+          "vocabulary_size": 17508,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 217132,
+            "oov_occurrences": 107587,
+            "oov_occurrence_rate": 0.49549122192951756,
+            "patients_with_oov": 1213,
+            "patient_oov_rate": 0.978225806451613,
+            "unique_tokens": 88347,
+            "unique_oov_tokens": 71600
+          }
+        },
+        "20": {
+          "vocabulary_size": 6131,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 217132,
+            "oov_occurrences": 145017,
+            "oov_occurrence_rate": 0.6678748411104766,
+            "patients_with_oov": 1213,
+            "patient_oov_rate": 0.978225806451613,
+            "unique_tokens": 88347,
+            "unique_oov_tokens": 82231
+          }
+        },
+        "50": {
+          "vocabulary_size": 1209,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 217132,
+            "oov_occurrences": 184916,
+            "oov_occurrence_rate": 0.851629423576442,
+            "patients_with_oov": 1215,
+            "patient_oov_rate": 0.9798387096774194,
+            "unique_tokens": 88347,
+            "unique_oov_tokens": 87138
+          }
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "thresholds": {
+        "1": {
+          "vocabulary_size": 183491,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 172193,
+            "oov_occurrences": 18951,
+            "oov_occurrence_rate": 0.11005673865952739,
+            "patients_with_oov": 1016,
+            "patient_oov_rate": 0.8193548387096774,
+            "unique_tokens": 74759,
+            "unique_oov_tokens": 17756
+          }
+        },
+        "2": {
+          "vocabulary_size": 89427,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 172193,
+            "oov_occurrences": 30413,
+            "oov_occurrence_rate": 0.17662158159739363,
+            "patients_with_oov": 1191,
+            "patient_oov_rate": 0.9604838709677419,
+            "unique_tokens": 74759,
+            "unique_oov_tokens": 27821
+          }
+        },
+        "5": {
+          "vocabulary_size": 41181,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 172193,
+            "oov_occurrences": 50360,
+            "oov_occurrence_rate": 0.29246252751273283,
+            "patients_with_oov": 1207,
+            "patient_oov_rate": 0.9733870967741935,
+            "unique_tokens": 74759,
+            "unique_oov_tokens": 41997
+          }
+        },
+        "10": {
+          "vocabulary_size": 18853,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 172193,
+            "oov_occurrences": 80270,
+            "oov_occurrence_rate": 0.4661629682972014,
+            "patients_with_oov": 1210,
+            "patient_oov_rate": 0.9758064516129032,
+            "unique_tokens": 74759,
+            "unique_oov_tokens": 57421
+          }
+        },
+        "20": {
+          "vocabulary_size": 6501,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 172193,
+            "oov_occurrences": 111547,
+            "oov_occurrence_rate": 0.6478021754659017,
+            "patients_with_oov": 1214,
+            "patient_oov_rate": 0.9790322580645161,
+            "unique_tokens": 74759,
+            "unique_oov_tokens": 68315
+          }
+        },
+        "50": {
+          "vocabulary_size": 1306,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 172193,
+            "oov_occurrences": 144042,
+            "oov_occurrence_rate": 0.8365148409052633,
+            "patients_with_oov": 1215,
+            "patient_oov_rate": 0.9798387096774194,
+            "unique_tokens": 74759,
+            "unique_oov_tokens": 73453
+          }
+        }
+      }
+    },
+    {
+      "fold": 4,
+      "thresholds": {
+        "1": {
+          "vocabulary_size": 179847,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 199966,
+            "oov_occurrences": 23043,
+            "oov_occurrence_rate": 0.11523458988027965,
+            "patients_with_oov": 1041,
+            "patient_oov_rate": 0.839516129032258,
+            "unique_tokens": 83706,
+            "unique_oov_tokens": 21400
+          }
+        },
+        "2": {
+          "vocabulary_size": 87382,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 199966,
+            "oov_occurrences": 36714,
+            "oov_occurrence_rate": 0.18360121220607503,
+            "patients_with_oov": 1178,
+            "patient_oov_rate": 0.95,
+            "unique_tokens": 83706,
+            "unique_oov_tokens": 33142
+          }
+        },
+        "5": {
+          "vocabulary_size": 39957,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 199966,
+            "oov_occurrences": 61518,
+            "oov_occurrence_rate": 0.30764229919086244,
+            "patients_with_oov": 1201,
+            "patient_oov_rate": 0.9685483870967742,
+            "unique_tokens": 83706,
+            "unique_oov_tokens": 49845
+          }
+        },
+        "10": {
+          "vocabulary_size": 18073,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 199966,
+            "oov_occurrences": 97099,
+            "oov_occurrence_rate": 0.48557754818319115,
+            "patients_with_oov": 1207,
+            "patient_oov_rate": 0.9733870967741935,
+            "unique_tokens": 83706,
+            "unique_oov_tokens": 66620
+          }
+        },
+        "20": {
+          "vocabulary_size": 6206,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 199966,
+            "oov_occurrences": 132527,
+            "oov_occurrence_rate": 0.6627476671034076,
+            "patients_with_oov": 1211,
+            "patient_oov_rate": 0.9766129032258064,
+            "unique_tokens": 83706,
+            "unique_oov_tokens": 77529
+          }
+        },
+        "50": {
+          "vocabulary_size": 1255,
+          "validation": {
+            "patient_count": 1240,
+            "token_occurrences": 199966,
+            "oov_occurrences": 169511,
+            "oov_occurrence_rate": 0.8476991088485042,
+            "patients_with_oov": 1212,
+            "patient_oov_rate": 0.9774193548387097,
+            "unique_tokens": 83706,
+            "unique_oov_tokens": 82451
+          }
+        }
+      }
+    }
+  ],
+  "token_key_document_frequency": {
+    "train": {
+      "aa_transition": 237014,
+      "deleted_length": 3,
+      "family": 230483,
+      "frameshift_first_new_aa": 831,
+      "frameshift_grammar": 9536,
+      "parse_status": 9632,
+      "position_bin": 243143,
+      "position_span": 232,
+      "range_alternate_aa": 359,
+      "range_alternate_length": 233,
+      "range_reference_aa": 448,
+      "range_reference_length": 232,
+      "subfamily": 230551,
+      "unresolved_structure": 167
+    },
+    "test": {
+      "aa_transition": 186679,
+      "deleted_length": 1488,
+      "family": 200516,
+      "frameshift_first_new_aa": 10938,
+      "frameshift_grammar": 13423,
+      "inserted_aa": 1713,
+      "inserted_length": 686,
+      "net_length_change": 256,
+      "parse_status": 13630,
+      "position_bin": 249643,
+      "position_span": 1388,
+      "provenance": 237,
+      "range_alternate_aa": 66,
+      "range_alternate_length": 40,
+      "range_reference_aa": 76,
+      "range_reference_length": 40,
+      "replaced_length": 256,
+      "replacement_aa": 1214,
+      "replacement_length": 256,
+      "subfamily": 200613,
+      "unresolved_structure": 34
+    }
+  },
+  "vocabulary_safety": {
+    "maximum_token_length": 65,
+    "tokens_over_200_characters": []
+  }
+}

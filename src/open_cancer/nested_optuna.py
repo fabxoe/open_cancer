@@ -19,6 +19,17 @@ from open_cancer.checkpoint_selection import (
 from open_cancer.constants import CLASS_LABELS
 
 
+DEFAULT_XGBOOST_SEARCH_SPACE: dict[str, list[Any]] = {
+    "max_depth": [4, 8],
+    "min_child_weight": [1.0, 10.0],
+    "subsample": [0.5, 0.9],
+    "colsample_bytree": [0.5, 0.9],
+    "reg_alpha": [0.0, 1.0],
+    "reg_lambda": [0.5, 5.0],
+    "learning_rate": [0.02, 0.08, "log"],
+}
+
+
 class TrialLike(Protocol):
     number: int
 
@@ -38,20 +49,70 @@ class FoldTuningResult:
     artifact_paths: tuple[Path, ...]
 
 
-def suggest_xgboost_parameters(trial: TrialLike) -> dict[str, Any]:
-    """Return the pre-registered EXP-229 Optuna search space."""
+def validate_xgboost_search_space(
+    search_space: dict[str, list[Any]],
+) -> dict[str, list[Any]]:
+    """Validate and normalize one pre-registered XGBoost search space."""
 
-    return {
-        "max_depth": trial.suggest_int("max_depth", 4, 8),
-        "min_child_weight": trial.suggest_float("min_child_weight", 1.0, 10.0),
-        "subsample": trial.suggest_float("subsample", 0.5, 0.9),
-        "colsample_bytree": trial.suggest_float("colsample_bytree", 0.5, 0.9),
-        "reg_alpha": trial.suggest_float("reg_alpha", 0.0, 1.0),
-        "reg_lambda": trial.suggest_float("reg_lambda", 0.5, 5.0),
-        "learning_rate": trial.suggest_float(
-            "learning_rate", 0.02, 0.08, log=True
-        ),
+    expected = {
+        "max_depth",
+        "min_child_weight",
+        "subsample",
+        "colsample_bytree",
+        "reg_alpha",
+        "reg_lambda",
+        "learning_rate",
     }
+    optional = {"gamma"}
+    if set(search_space) - expected - optional or expected - set(search_space):
+        raise ValueError("nested Optuna search-space keys do not match the contract")
+    normalized: dict[str, list[Any]] = {}
+    for name, bounds in search_space.items():
+        if not isinstance(bounds, list) or len(bounds) not in {2, 3}:
+            raise ValueError(f"invalid search-space bounds for {name}")
+        low, high = bounds[:2]
+        if float(low) > float(high):
+            raise ValueError(f"search-space lower bound exceeds upper bound for {name}")
+        if len(bounds) == 3 and bounds[2] != "log":
+            raise ValueError(f"unsupported search-space scale for {name}")
+        normalized[name] = list(bounds)
+    return normalized
+
+
+def suggest_xgboost_parameters(
+    trial: TrialLike,
+    search_space: dict[str, list[Any]] | None = None,
+) -> dict[str, Any]:
+    """Suggest parameters from one explicit, pre-registered search space."""
+
+    space = validate_xgboost_search_space(
+        DEFAULT_XGBOOST_SEARCH_SPACE if search_space is None else search_space
+    )
+
+    parameters: dict[str, Any] = {
+        "max_depth": trial.suggest_int(
+            "max_depth", int(space["max_depth"][0]), int(space["max_depth"][1])
+        )
+    }
+    for name in (
+        "min_child_weight",
+        "subsample",
+        "colsample_bytree",
+        "reg_alpha",
+        "reg_lambda",
+        "learning_rate",
+        "gamma",
+    ):
+        if name not in space:
+            continue
+        bounds = space[name]
+        parameters[name] = trial.suggest_float(
+            name,
+            float(bounds[0]),
+            float(bounds[1]),
+            log=len(bounds) == 3 and bounds[2] == "log",
+        )
+    return parameters
 
 
 def inner_splits(
@@ -92,6 +153,8 @@ class NestedOptunaFoldTuner:
         seed: int = 42,
         balanced_sample_weight: bool = True,
         timeout_seconds: int | None = None,
+        search_space: dict[str, list[Any]] | None = None,
+        tie_break_inner_std: bool = False,
     ) -> None:
         self.artifact_slug = artifact_slug
         self.root = root
@@ -100,6 +163,10 @@ class NestedOptunaFoldTuner:
         self.seed = seed
         self.balanced_sample_weight = balanced_sample_weight
         self.timeout_seconds = timeout_seconds
+        self.search_space = validate_xgboost_search_space(
+            DEFAULT_XGBOOST_SEARCH_SPACE if search_space is None else search_space
+        )
+        self.tie_break_inner_std = tie_break_inner_std
         self.study_dir = root / "models" / artifact_slug / "optuna"
         self.report_dir = root / "reports" / artifact_slug
         self.records: list[dict[str, Any]] = []
@@ -143,7 +210,7 @@ class NestedOptunaFoldTuner:
         fixed_parameters = dict(base_model_parameters)
 
         def objective(trial: Any) -> float:
-            candidate = suggest_xgboost_parameters(trial)
+            candidate = suggest_xgboost_parameters(trial, self.search_space)
             fold_scores: list[float] = []
             selected_iterations: list[int] = []
             for inner_fold, (train_indices, valid_indices) in enumerate(splits):
@@ -210,6 +277,21 @@ class NestedOptunaFoldTuner:
                 f"outer fold {fold} completed only {len(completed_trials)}/"
                 f"{self.n_trials} Optuna trials; rerun the same study to resume"
             )
+        selected_trial = study.best_trial
+        if self.tie_break_inner_std:
+            best_value = max(float(trial.value) for trial in completed_trials)
+            tied = [
+                trial
+                for trial in completed_trials
+                if abs(float(trial.value) - best_value) <= 1e-12
+            ]
+            selected_trial = min(
+                tied,
+                key=lambda trial: (
+                    float(trial.user_attrs["inner_macro_f1_std"]),
+                    int(trial.number),
+                ),
+            )
 
         trials = []
         for trial in study.trials:
@@ -234,18 +316,15 @@ class NestedOptunaFoldTuner:
             "completed_trials": sum(
                 trial.state.name == "COMPLETE" for trial in study.trials
             ),
-            "best_trial": int(study.best_trial.number),
-            "best_value": float(study.best_value),
-            "best_parameters": dict(study.best_params),
-            "search_space": {
-                "max_depth": [4, 8],
-                "min_child_weight": [1.0, 10.0],
-                "subsample": [0.5, 0.9],
-                "colsample_bytree": [0.5, 0.9],
-                "reg_alpha": [0.0, 1.0],
-                "reg_lambda": [0.5, 5.0],
-                "learning_rate": [0.02, 0.08, "log"],
-            },
+            "best_trial": int(selected_trial.number),
+            "best_value": float(selected_trial.value),
+            "best_parameters": dict(selected_trial.params),
+            "best_trial_tie_break": (
+                "minimum_inner_macro_f1_std_then_trial_number"
+                if self.tie_break_inner_std
+                else "optuna_default"
+            ),
+            "search_space": self.search_space,
             "database_path": str(database_path.relative_to(self.root)),
             "trials": trials,
         }
@@ -256,7 +335,7 @@ class NestedOptunaFoldTuner:
         self.records.append(record)
         self.artifact_paths.extend((database_path, summary_path))
         return FoldTuningResult(
-            parameters=dict(study.best_params),
+            parameters=dict(selected_trial.params),
             record=record,
             artifact_paths=(database_path, summary_path),
         )

@@ -61,6 +61,8 @@ TRAIN_PATH = ROOT / "data" / "raw" / "train.csv"
 TEST_PATH = ROOT / "data" / "raw" / "test.csv"
 SAMPLE_SUBMISSION_PATH = ROOT / "data" / "raw" / "sample_submission.csv"
 SLUG = "exp449_lightgbm_exp374"
+FOLD_BUILDER_FACTORY = build_fold_features
+RUNNER_COMMAND = "uv run python scripts/run_exp449_lightgbm_exp374.py"
 
 
 def git(*args: str) -> str:
@@ -113,8 +115,12 @@ def main() -> None:
     exp374_config = yaml.safe_load(EXP374_CONFIG_PATH.read_text(encoding="utf-8"))
     context = resolve_experiment_context(config["run_mode"], cwd=ROOT)
     dirty = git("status", "--porcelain")
-    if context.experiment_id != "EXP-449" or dirty:
-        raise RuntimeError("EXP-449는 clean issue-449 브랜치에서만 실행해야 합니다.\n" + dirty)
+    expected_experiment_id = str(config["experiment_id"])
+    if context.experiment_id != expected_experiment_id or dirty:
+        raise RuntimeError(
+            f"{expected_experiment_id}는 연결된 clean Issue 브랜치에서만 실행해야 합니다.\n"
+            + dirty
+        )
 
     feature_dir = ROOT / "data" / "processed" / f"{SLUG}_features"
     model_dir = ROOT / "models" / SLUG
@@ -143,7 +149,7 @@ def main() -> None:
     n_splits = config["split"]["n_splits"]
     seed = config["seed"]
 
-    fold_builder = build_fold_features()
+    fold_builder = FOLD_BUILDER_FACTORY()
     model_params = dict(config["model"]["parameters"])
 
     oof_proba = np.full((len(train), len(CLASS_LABELS)), np.nan, dtype=np.float64)
@@ -169,7 +175,12 @@ def main() -> None:
             target=y_train,
         )
         x_train_dropped, x_valid_dropped, x_test_dropped, _ = drop_named_base_features(
-            x_train_base, x_valid_base, x_test, all_feature_names, extra.base_feature_names_to_drop
+            x_train_base,
+            x_valid_base,
+            x_test,
+            all_feature_names,
+            extra.base_feature_names_to_drop,
+            allow_empty=bool(extra.feature_names),
         )
         x_train_fold = sparse.hstack([x_train_dropped, extra.train], format="csr", dtype=np.float32)
         x_valid_fold = sparse.hstack([x_valid_dropped, extra.validation], format="csr", dtype=np.float32)
@@ -257,7 +268,7 @@ def main() -> None:
         "model": {"class": "lightgbm.LGBMClassifier", "parameters": model_params},
         "training": {
             **config["training"],
-            "command": "uv run python scripts/run_exp449_lightgbm_exp374.py",
+            "command": RUNNER_COMMAND,
         },
         "environment": {
             "python": sys.version,
@@ -275,12 +286,12 @@ def main() -> None:
     )
 
     metrics = {
-        "experiment_id": "EXP-449",
+        "experiment_id": expected_experiment_id,
         "record_role": "official",
         "status": "COMPLETED",
         "owner": owner,
-        "issue_number": 449,
-        "parent_experiment": "EXP-374",
+        "issue_number": int(config["issue_number"]),
+        "parent_experiment": config.get("parent_experiment"),
         "git_commit": source_commit,
         "started_at": started.isoformat(),
         "finished_at": finished.isoformat(),
@@ -333,7 +344,12 @@ def main() -> None:
             target=y[train_indices],
         )
         _, _, x_test_dropped, _ = drop_named_base_features(
-            x_all[train_indices], x_all[valid_indices], x_test, all_feature_names, extra.base_feature_names_to_drop
+            x_all[train_indices],
+            x_all[valid_indices],
+            x_test,
+            all_feature_names,
+            extra.base_feature_names_to_drop,
+            allow_empty=bool(extra.feature_names),
         )
         x_test_fold = sparse.hstack([x_test_dropped, extra.test], format="csr", dtype=np.float32)
         booster = lgb.Booster(model_file=str(model_dir / f"fold_{fold:02d}.txt"))
@@ -363,8 +379,8 @@ def main() -> None:
     comparison["passed"] = comparison["submission_sha256_match"] and max_diff <= 1e-6
     write_json(reproducibility_dir / "comparison.json", comparison)
     manifest = {
-        "experiment_id": "EXP-449",
-        "issue_number": 449,
+        "experiment_id": expected_experiment_id,
+        "issue_number": int(config["issue_number"]),
         "reproducibility_status": "INFERENCE_VERIFIED" if comparison["passed"] else "FAILED",
         "source_commit": source_commit,
         "verified_at": comparison["verified_at"],

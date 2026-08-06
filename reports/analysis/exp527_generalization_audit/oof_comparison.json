@@ -1,0 +1,23 @@
+{
+  "rows": 6201,
+  "error_indicator_correlation": 0.6338189829403867,
+  "both_correct": 2070,
+  "exp374_only_correct": 490,
+  "exp527_only_correct": 621,
+  "both_wrong": 3020,
+  "prediction_changed": 2371,
+  "prediction_changed_ratio": 0.3823576842444767,
+  "mean_absolute_probability_delta": 0.0258632352508648,
+  "exp374_prediction": {
+    "mean_max_probability": 0.459966951311724,
+    "mean_margin": 0.3093793761160764,
+    "mean_entropy": 1.8243516135201165
+  },
+  "exp527_prediction": {
+    "mean_max_probability": 0.3189967387681019,
+    "mean_margin": 0.2067299021269634,
+    "mean_entropy": 2.5282053444185215
+  },
+  "exp374_oof_sha256": "4d4f9182fca8e6023d775b77ace463cad3a80144206f82f9653d98b11345da9a",
+  "exp527_oof_sha256": "994716ad2c91789a9d9307957c21c1472b8a3d4254dfd52679dfda8477c0e094"
+}

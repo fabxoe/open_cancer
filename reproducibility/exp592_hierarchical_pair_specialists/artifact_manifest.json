@@ -1,0 +1,163 @@
+{
+  "experiment_id": "EXP-592",
+  "issue_number": 592,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "2adfde5ccd7edab73654977a8f1b3c6c3c96b57a",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp592_hierarchical_pair_specialists/data_manifest.json",
+  "environment": "reproducibility/exp592_hierarchical_pair_specialists/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-06T05:00:44.069702+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp592_hierarchical_pair_specialists/base_fold_00.json",
+      "size_bytes": 17111420,
+      "sha256": "27d03d377b879a6f91bf8f6a50c56e6abcd194ee0e0b073f8026a1e34dc9cfe4",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp592_hierarchical_pair_specialists/kipan_kirc_fold_00.json",
+      "size_bytes": 467118,
+      "sha256": "713882c2c1e01dacf76c42da357a2f53f5d8c9b47d4afb069e301683b4a2ac5a",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp592_hierarchical_pair_specialists/gbmlgg_lgg_fold_00.json",
+      "size_bytes": 512733,
+      "sha256": "410b9501fc5763eb5291d3b1cf98cabadb4d8ed941d8dd30cc429b05caedb580",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp592_hierarchical_pair_specialists/base_fold_01.json",
+      "size_bytes": 18217919,
+      "sha256": "95e92f70e9042f2d93421e5880cfdf0d05baf3f79e46ef1843eb63a90a5c208b",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp592_hierarchical_pair_specialists/kipan_kirc_fold_01.json",
+      "size_bytes": 487850,
+      "sha256": "b4b2181c9cfe2a48119781df8a2ee9b0ef1f13f0a6da1adbfce5d9c66f6091a5",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp592_hierarchical_pair_specialists/gbmlgg_lgg_fold_01.json",
+      "size_bytes": 510229,
+      "sha256": "4f735c444d5de180c82a5c2eea35c41cd851f779749e84258c00ef4f9ff64d86",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp592_hierarchical_pair_specialists/base_fold_02.json",
+      "size_bytes": 14617842,
+      "sha256": "5d7a337de3a5f94b9f80e6860b909920c6bc4e46e608042c7a25c060be5aefcf",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp592_hierarchical_pair_specialists/kipan_kirc_fold_02.json",
+      "size_bytes": 471346,
+      "sha256": "2f72f7cab95a63c8990ec1b180ad318e5a536bf2772576de5ee498a70a328429",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp592_hierarchical_pair_specialists/gbmlgg_lgg_fold_02.json",
+      "size_bytes": 490365,
+      "sha256": "02b4ec96a103c5becdd836ada4ce854b1d39c08a60b4acd930baaf130302e951",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp592_hierarchical_pair_specialists/base_fold_03.json",
+      "size_bytes": 17288079,
+      "sha256": "15eb42828e18ab2d1492e2bc11621cfd60deb192a6201f8a50aee7d39e2182e4",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp592_hierarchical_pair_specialists/kipan_kirc_fold_03.json",
+      "size_bytes": 481749,
+      "sha256": "b1b0e1ebc34ef111f416f41a9f6b4c7809f1b0798088e1b025a1404aad286c3c",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp592_hierarchical_pair_specialists/gbmlgg_lgg_fold_03.json",
+      "size_bytes": 507334,
+      "sha256": "5be6cde27cb2df02faeae0c3adf3f4d45c4421cf6aa91257d61dcd6521d0ad29",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp592_hierarchical_pair_specialists/base_fold_04.json",
+      "size_bytes": 10538678,
+      "sha256": "4c0b6e6cd31075cb58fbcff1fcc2cfceae62eeea2169cffbeb2aa7457439c7ca",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp592_hierarchical_pair_specialists/kipan_kirc_fold_04.json",
+      "size_bytes": 459808,
+      "sha256": "627e6866bbb35f90e41a544cad11c81eacbbb45ac74755df02d3329999459855",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp592_hierarchical_pair_specialists/gbmlgg_lgg_fold_04.json",
+      "size_bytes": 504946,
+      "sha256": "47853ccdb721b0c6eb706919486138828312798e7174b6d08c750cb2dbf25933",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp592_hierarchical_pair_specialists.csv",
+      "size_bytes": 2171354,
+      "sha256": "65e301ec22b30767188e7765ffcb436fff62eafd5f7216f07c957ccd7ab41197",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp592_hierarchical_pair_specialists_test_proba.csv",
+      "size_bytes": 854242,
+      "sha256": "1f8dae12b5f39e53d399012f2c7d06848a3c317cb134575588e43debc6746e30",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp592_hierarchical_pair_specialists.csv",
+      "size_bytes": 38321,
+      "sha256": "d37944dbc616d194d33e9b85966242ffe1e1f61ae770c070f031e803cd7dd001",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp592_hierarchical_pair_specialists/metrics.json",
+      "size_bytes": 17109,
+      "sha256": "c93546a2cf9a56d7fdd58e7c33228c6b8718cf2a59d0ae7f6b6cc8fb5147a5ed",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp592_hierarchical_pair_specialists/config.resolved.yaml",
+      "size_bytes": 3510,
+      "sha256": "adebb36146fecccf9f6095d6f977e77c71b1946c64d5d5750074133256ba5c98",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
