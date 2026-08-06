@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 122
+- 실제 실험 수: 123
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4533650721 (`EXP-589`, 원래 26-class 평가)
@@ -123,6 +123,7 @@
 | EXP-476 | COMPLETED | Gomin-art | #476 | Config 기반 fold-safe recurrent gene·26 class panel + nested Optuna·class weight XGBoost | 0.4223302641 | 0.3223948042 | INFERENCE_VERIFIED | fold std 0.0063799로 안정적이나 EXP-374 대비 Local -0.0044607·Public -0.0238211, 대표 제출 미변경·ARCHIVE | [보고서](reports/exp476_config_feature_pipeline/README.md) |
 | EXP-479 | COMPLETED | fabxoe | #479 | EXP-469 + HGVS-informed range_replacement·range_stop·range_no_change 상호 배타 의미 | 0.4087566023 | 미제출 | INFERENCE_VERIFIED | 고정 XGBoost에서 EXP-469 대비 -0.0030252·안정성/Log Loss 악화; 제출 보류, 의미는 유지하고 비튜닝 native semantic 기준선으로 동결 | [보고서](reports/exp479_parser_v4_native_semantic_range/README.md) |
 | EXP-484 | COMPLETED | 2heej | #484 | EXP-374+EXP-459 고정 0.7/0.3 확률 블렌드(#482 test-like propensity 스크리닝으로 비율 사전 고정) | 0.4320213767 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 +0.0052304·test-like subset도 +0.0022953으로 통과·Log Loss 개선·클래스 붕괴 없음. Fold std +0.0052388는 임계값 초과했으나 전 fold 개선(악화 없음)이 원인 — ADOPT_WITH_CAUTION, Public 제출은 팀 논의 후 | [보고서](reports/exp484_exp374_exp459_blend/README.md) |
+| EXP-517 | COMPLETED | Kangho Park | #517 | EXP-374 + 장(長)유전자 15종 passenger-adjusted burden 파생 컬럼 2개(additive-only, 기존 열 삭제 없음) | 0.4239028776 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0028880·fold std +0.0010549·Log Loss +0.0041858로 주 지표 gate 미달, LUSC -0.0175/STES +0.0034로 원 가설 미확인, ARCHIVE. 사후검증: 파생 열이 기존 total burden과 상관 0.77~0.9999로 사실상 재탕이었음을 확인, 같은 설계 방향 종결 | [보고서](reports/exp517_passenger_adjusted_burden/README.md) |
 | EXP-514 | COMPLETED | Kangho-Park | #514 | EXP-374 + KIRC/KIPAN·GBMLGG/LGG 계통 특이 fixed driver 유전자 burden 4열(단일 family ablation) | 0.4269665262 | 미제출 | INFERENCE_VERIFIED | OOF +0.0001756(게이트 +0.001 미달)·fold std +0.0023869(게이트 0.002 초과 악화)로 ARCHIVE; 클래스 붕괴는 없음. 가설 타겟 KIPAN +0.0037/KIRC +0.0278/LGG +0.0172 개선, GBMLGG -0.0167 악화로 순효과 상쇄 | [보고서](reports/exp514_kidney_glioma_lineage_burden/README.md) |
 | EXP-496 | COMPLETED | Kangho-Park | #496 | EXP-374 + robust non-simple event gene count(sample__complex_count → gene-level count, EXP-355 R1 재사용) | 0.4273962190 | 미제출 | INFERENCE_VERIFIED | 전체 OOF +0.0006052921(게이트 미달)이나 **test-like 서브셋 -0.0035398863**·Log Loss +0.0475932367 악화로 REJECTED — EXP-355의 Local 전용 REJECT를 test-like 기준으로 재확인 | [보고서](reports/exp496_robust_complex_count_exp374/README.md) |
 | EXP-515 | COMPLETED | Kangho-Park | #515 | EXP-374 OOF + KIPAN/KIRC·GBMLGG/LGG 한정 post-hoc decision offset(재학습 없음, EXP-233/276 후속) | 0.4296769353 | 미제출 | NOT_STARTED | Macro F1 +0.0028860(게이트 미달)이나 Log Loss +0.0285328 악화·비대상 22클래스 절대 F1 변화 합 0.0993876(허용치 0.01의 약 9.9배)로 REJECTED — 재정규화가 26클래스를 zero-sum으로 묶어 탐색 대상을 좁혀도 다른 클래스 보호 불가함을 확인 | [보고서](reports/exp515_scoped_pairwise_decision_offset/README.md) |
@@ -238,6 +239,7 @@
 | 2026-08-05T18:37:03.224031+00:00 | EXP-522 | fabxoe | `cfe6ec6793491dc55b2eb36896909c658e81ae66` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.22e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp522_parser_v4_class_likelihood/comparison.json) |
 | 2026-08-05T18:57:52.107245+00:00 | EXP-527 | fabxoe | `3cc84bca12b6a2767a35e979248e1fdb468c3114` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 8.56e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp527_parser_v4_class_cosine_loo/comparison.json) |
 | 2026-08-06T03:16:20.112263+00:00 | EXP-579 | fabxoe | `7f02fdab69b04cd1868de4e2ab313cb297d8ec80` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp579_exp527_exp567_fixed_blend/comparison.json) |
+| 2026-08-06T04:03:00.878478+00:00 | EXP-517 | Kangho Park | `2734a27c236ce9b16962792ea056a1b7e4426e05` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.49e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp517_passenger_adjusted_burden/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -4356,6 +4358,81 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   fold 붕괴형 불안정과는 다르다고 판단해 `ADOPT_WITH_CAUTION`으로 기록한다.
   EXP-449(LightGBM) 계열 블렌드가 전부 실패했던 이전 결론("어떤 모델을
   블렌드해도 test-like gate에서 실패한다")에 대한 반례다.
+
+### [EXP-517] 장(長)유전자 passenger 다운웨이트 파생 burden 추가
+
+- 상태: COMPLETED
+- 실행자: Kangho Park
+- Issue/브랜치: #517 / `issue-517-passenger-adjusted-burden`
+- 소스 commit: `2734a27c236ce9b16962792ea056a1b7e4426e05`
+- 시작/종료: 2026-08-06T02:20:56+00:00 / 2026-08-06T04:02:55+00:00
+
+#### 실행
+- Config: `configs/exp517_passenger_adjusted_burden.yaml`
+- Metrics: `reports/exp517_passenger_adjusted_burden/metrics.json`
+- Report: `reports/exp517_passenger_adjusted_burden/README.md`
+- 부모: EXP-374 (component: EXP-374)
+- EXP-374의 모든 피처(stop 정규화 parser, hotspot, Ensembl residue-position
+  mask, 고정 Sanchez-Vega pathway family)를 그대로 유지하고, 오답노트에서
+  반복 등장한 15개 장유전자(RYR2, SYNE1, PCLO, DST, SPTA1, DMD, PKHD1,
+  COL11A1, COL6A3, COL12A1, MYH2, RYR1, AHNAK, VWF, PDE4DIP) 기반 파생
+  컬럼 2개(`sample__mutated_gene_count_excl_passenger`,
+  `sample__passenger_gene_fraction`)만 추가했다. 기존 `GENE__mutated` 열은
+  하나도 제거·대체하지 않는 순수 additive 실험이다(지식 파일
+  `knowledge/long_gene_passenger_candidates_v1.json`, Issue #96 승인 범위
+  재사용).
+- 사전 점검: 15개 유전자 모두 `data/raw/train.csv`에 실제 컬럼으로 존재하고
+  zero-variance가 아님을 확인(254~643개 샘플에서 변이 관찰). 실행 중 fold 0
+  에서 `find_semantically_equivalent_features`로 새 2개 열을 base feature +
+  EXP-374 pathway family 출력 전체와 비교한 의미 중복 검사 결과 중복 없음.
+
+#### 결과
+- Fold Macro F1: 0.4219458077, 0.4218129231, 0.4102358800, 0.4241394848,
+  0.4400918775
+- OOF Macro F1: 0.4239028776 (EXP-374 대비 `-0.0028880493`)
+- Fold 표준편차: 0.0095581646 (EXP-374 대비 `+0.0010549477`)
+- Accuracy: 0.4110627318 (EXP-374 대비 `-0.0017739074`)
+- Log Loss: 1.8482506275 (EXP-374 대비 `+0.0041857958`)
+- 최대 클래스 하락/상승: BLCA `-0.0362` / LAML `+0.0303` (`-0.05` 붕괴 없음)
+- LUSC F1: 0.4577114428 (EXP-374 `0.4752` 대비 `-0.0175`)
+- STES F1: 0.4303797468 (EXP-374 `0.4270` 대비 `+0.0034`)
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+
+#### 산출물과 결론
+- Metrics/Report/Reproduction:
+  `reports/exp517_passenger_adjusted_burden/metrics.json`,
+  `reports/exp517_passenger_adjusted_burden/README.md`,
+  `reproducibility/exp517_passenger_adjusted_burden/comparison.json`
+  (제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.49e-07)
+- 결론: 사전 고정 게이트(OOF Macro F1 +0.001 이상) 미달로 `ARCHIVE`. fold
+  std·클래스 붕괴 gate는 통과했지만 주 지표가 이미 실패했다. 이전 5건의
+  컬럼 제거/가지치기 계열 REJECTED(EXP-188/189/190/192/355/359/496)와 달리
+  이번은 기존 열을 전혀 삭제하지 않은 순수 추가였음에도 개선되지 않아,
+  실패 원인이 "정보 손실"만은 아니라는 것을 보여준다. 원 가설 대상이었던
+  LUSC/STES 혼동쌍도 함께 개선되는 패턴은 관측되지 않았다(LUSC 악화,
+  STES만 미미하게 개선).
+
+#### 선택 메모
+가설: EXP-374 오답노트에서 LUSC/STES 등 여러 무관한 혼동쌍에 반복 등장한
+15개 대형 유전자는 gene-length passenger 변이(Lawrence et al. 2013,
+Nature)일 가능성이 있어, 이를 분리한 요약 burden이 잡음을 줄일 것으로
+기대했다. 실제로는 개선되지 않았고, 같은 방향의 추가 실험은 새 가설
+없이 반복하지 않는다.
+
+**사후 검증(root cause)**: `data/raw/train.csv`로 직접 재계산한 결과
+`corr(passenger_fraction, total_burden)=0.7665`,
+`corr(excl_passenger, total_burden)=0.9999`로 두 파생 열 모두 기존
+`sample__mutated_gene_count_log1p`의 노이즈 낀 재탕에 가까웠다. 클래스별
+평균도 암종 특이 신호가 아니라 그 암종의 원래 burden 수준을 그대로
+반영했고(SKCM/LUSC/LUAD/STES처럼 원래 burden 높은 클래스가 상위, LAML/THCA/
+PCPG처럼 낮은 클래스가 하위), 클래스 간 평균 표준편차(0.0642)가 클래스 내부
+표준편차(0.1232)의 절반뿐이라 통계적으로도 약한 신호였다. **장유전자
+passenger 그룹의 합산형 burden 파생 피처 방향은 이 결과로 종결**한다 —
+어떤 부분집합을 고르든 압축값이 기존 total burden feature의 변형에
+수렴하는 구조적 문제이기 때문에, 같은 설계(그룹 합산 count/fraction)로는
+재시도하지 않는다. 개별 유전자 가중치 조정이나 다른 모델 구조를 쓰는 시도는
+이 결론과 무관한 별도 가설이다.
 
 ### [EXP-514] KIRC/KIPAN·GBMLGG/LGG 계통 특이 driver 유전자 고정 패널
 
