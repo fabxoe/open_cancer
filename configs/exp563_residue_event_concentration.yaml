@@ -1,0 +1,57 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-563
+issue_number: 563
+slug: residue_event_concentration
+parent_experiment: EXP-527
+component_experiments: []
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  parent: exp527_parser_v4_class_cosine_loo
+  residue_event_concentration:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: outer_train_only
+    output_dimension: 4
+    bin_width: 50
+    min_patient_bin_support: 20
+    minimum_observed_bins_per_gene: 2
+    deduplication_unit: patient_gene_bin
+    position_source: parser_v4_position_eligible_only
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - exp374_stop_isoform_residue_mask
+    - parser_v4_26_class_cosine_profile_leave_one_out
+    - residue_event_concentration_4
+acceptance:
+  comparison_experiment: EXP-527
+  minimum_macro_f1_delta: 0.001
+  maximum_fold_std_increase: 0.002
+  require_no_clear_log_loss_regression: true
+notes: >-
+  Issue #563. EXP-527 is frozen. The only change is four fold-train-fitted
+  parser-v4 residue-event concentration summaries. Target, validation, test
+  distribution and Public LB are not used to fit the gene-bin profiles.
+comparison_metrics_path: reports/exp527_parser_v4_class_cosine_loo/metrics.json
