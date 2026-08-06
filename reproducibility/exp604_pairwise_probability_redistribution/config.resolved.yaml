@@ -1,0 +1,168 @@
+experiment:
+  record_role: official
+  issue_number: 604
+  experiment_id: EXP-604
+  component_experiments:
+  - EXP-233
+  - EXP-276
+  - EXP-515
+  - EXP-374
+  branch: issue-604-pairwise-probability-redistribution
+  owner: Kangho Park
+  source_commit: 65b5389b5bb78b4f66cc538636ddd9e6ab807f39
+  dirty_worktree: false
+  started_at: '2026-08-06T06:04:44.663284+00:00'
+baseline:
+  experiment_id: EXP-374
+  oof_path: oof/exp374_stop_isoform_residue_mask.csv
+  release_tag: exp-374-repro-v2
+  oof_sha256: 4d4f9182fca8e6023d775b77ace463cad3a80144206f82f9653d98b11345da9a
+  oof_macro_f1: 0.4267909268459148
+  log_loss: 1.8440648894063352
+  fold_std: 0.008503216870558973
+  per_class_f1:
+    ACC: 0.8656716417910447
+    BLCA: 0.4942528735632184
+    BRCA: 0.5403158769742311
+    CESC: 0.26366559485530544
+    COAD: 0.714975845410628
+    DLBC: 0.4642857142857143
+    GBMLGG: 0.31978319783197834
+    HNSC: 0.31100478468899523
+    KIPAN: 0.22149837133550487
+    KIRC: 0.17595307917888564
+    LAML: 0.541095890410959
+    LGG: 0.4186046511627907
+    LIHC: 0.2983050847457627
+    LUAD: 0.36923076923076925
+    LUSC: 0.4752475247524752
+    OV: 0.38248175182481753
+    PAAD: 0.24066390041493776
+    PCPG: 0.2987551867219917
+    PRAD: 0.31098430813124106
+    SARC: 0.24228028503562946
+    SKCM: 0.75
+    STES: 0.42696629213483145
+    TGCT: 0.33569739952718675
+    THCA: 0.6996336996336996
+    THYM: 0.3146853146853147
+    UCEC: 0.6205250596658711
+base_feature_spec:
+  name: exp374_reconstructed
+  note: Inner-cross-fit proxy uses EXP-374's own feature pipeline (stop-notation parser,
+    pathway-20, hotspot-34, Ensembl isoform residue mask), rebuilt via build_exp374_train_matrix()
+    in this script -- not the frozen Feature Spec v1 used by EXP-233/276, since EXP-374's
+    baseline is not a v1 model.
+  train_shape:
+  - 6201
+  - 35183
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+inner_cross_fitting:
+  n_splits: 3
+  seed_base: 5000
+  note: 'Same mechanism as EXP-233/276/515: seed for outer fold i is seed_base + i,
+    inner models trained only on that outer fold''s train partition. Reuses EXP-374''s
+    own reconstructed feature pipeline (not frozen Feature Spec v1) as the inner-cross-fit
+    proxy, same approach as EXP-515''s build_exp374_train_matrix().'
+pairwise_redistribution:
+  statistic_definition: 'EXP-515 found that apply_class_offset''s softmax(z)*exp(o)
+    followed by full 26-class row renormalization coupled all classes into a zero-sum
+    competition, so restricting the *eligible* (searchable) classes to 4 did not protect
+    the other 22 -- their absolute F1 delta sum was 0.0994 against a 0.01 gate. This
+    experiment replaces the mechanism itself: for each pair, the pair''s own probability
+    mass s = p_a + p_b is held fixed and only the internal split ratio r = p_a / s
+    is shifted in logit space (r'' = sigmoid(logit(r) + delta)); every other class''s
+    raw probability is left mathematically untouched (row sum is trivially conserved
+    since only two entries that already summed to s are redistributed within that
+    same sum).'
+  eligible_class_pairs:
+  - - KIPAN
+    - KIRC
+  - - GBMLGG
+    - LGG
+  application_formula: p_a' = s * sigmoid(logit(p_a/s) + delta); p_b' = s - p_a';
+    all other classes unchanged
+offset_search:
+  candidate_grid_min: -1.0
+  candidate_grid_max: 1.0
+  candidate_grid_step: 0.1
+  regularization_lambda: 0.001
+  fit_scope: outer_fold_train_inner_cross_fit_only
+  applied_to_outer_validation: transform_only
+  applied_to_test: not_in_scope_this_experiment
+  note: Each pair's delta is searched independently (single scalar grid search per
+    pair, no coordinate descent needed) since the two pairs touch disjoint classes
+    and do not interact through renormalization.
+  candidate_grid:
+  - -1.0
+  - -0.9
+  - -0.8
+  - -0.7
+  - -0.6
+  - -0.5
+  - -0.4
+  - -0.3
+  - -0.2
+  - -0.1
+  - -0.0
+  - 0.1
+  - 0.2
+  - 0.3
+  - 0.4
+  - 0.5
+  - 0.6
+  - 0.7
+  - 0.8
+  - 0.9
+  - 1.0
+official_selection:
+  max_non_eligible_class_abs_f1_delta_sum: 1.0e-06
+  rule: Adopt if the single pairwise-redistribution run improves 26-class OOF Macro
+    F1 over EXP-374 AND Log Loss does not regress AND fold-std does not regress AND
+    the 22 non-eligible classes' summed absolute F1 delta is (as designed) approximately
+    zero -- this is a structural guarantee of the transform, not just an empirical
+    target, so the run must additionally verify this numerically (expected to be exactly
+    0.0 modulo floating point, since those classes' raw probabilities are never modified).
+    This rule is fixed here, before seeing the run's results.
+verdict: ARCHIVE
+non_eligible_class_abs_f1_delta_sum: 0.022327996203487438
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+optimism_bias_disclosure: 'Same as EXP-233/276/515: EXP-374 (baseline) selected each
+  outer fold''s checkpoint iteration by maximizing Macro F1 on that same fold''s validation
+  rows. This experiment''s inner-fold early stopping reuses the inner holdout as eval_set,
+  the same established pattern used throughout this project. Promotion beyond a Local
+  diagnostic requires additional stability confirmation per PROJECT_CONTEXT.md''s
+  checkpoint-selection policy; this experiment does not claim that confirmation on
+  its own.'
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]
+  platform: Windows-10-10.0.26200-SP0
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: bc7da4e6e1f133ee6b1f8c5cd4c86f9b87d336d686ceaacddbe20254b0771d23
+command: uv run python scripts/run_exp604_pairwise_probability_redistribution.py

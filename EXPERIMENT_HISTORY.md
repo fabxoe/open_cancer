@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 128
+- 실제 실험 수: 129
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4533650721 (`EXP-589`, 원래 26-class 평가)
@@ -148,6 +148,7 @@
 | EXP-610 | COMPLETED | fabxoe | #610 | EXP-527 26-class base + outer-train 전용 KIPAN/KIRC·GBMLGG/LGG gated binary specialist | 0.4298424283 | 미제출 | NOT_STARTED | EXP-527 대비 -0.0170298424·fold std/Log Loss 악화, KIRC·LGG F1 대폭 하락으로 ARCHIVE; 타 노트북식 hard gated reranker는 현재 강한 base에 재현되지 않음 | [보고서](reports/exp610_gated_pair_specialists/README.md) |
 | EXP-516 | COMPLETED | Kangho Park | #516 | EXP-374 + fold-train 하위 25% burden quantile 샘플에 balanced_sample_weight 1.5배 추가 곱(저burden 오분류 완화 가설) | 0.4221650046 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0046259222(게이트 +0.001 미달)·LUAD -0.0640/DLBC -0.0505 클래스 붕괴로 ARCHIVE; 표적 저burden 8클래스 중 4개만 개선(KIRC/LAML/THYM/KIPAN)·4개는 악화(GBMLGG/PRAD/PCPG/SARC)로 가설 부분 지지에 그침 | [보고서](reports/exp516_burden_weighted_sample_weight/README.md) |
 | EXP-596 | COMPLETED | 2heej | #596 | 동결 Feature Spec v1 + RandomForest (#505 스태킹 다양성 후보) | 0.4052772619 | 미제출 | INFERENCE_VERIFIED | CatBoost v1 최고 대비 -0.0141799675로 품질 게이트 미달, 오류 상관 0.7281·라벨 불일치율 30.87%로 다양성 게이트 통과 — 단독 후보 아님, #505 스태킹 다양성 후보로 채택 | [보고서](reports/exp596_random_forest_v1/README.md) |
+| EXP-604 | COMPLETED | Kangho-Park | #604 | EXP-374 OOF + KIPAN/KIRC·GBMLGG/LGG 쌍 내부 확률 재분배(재학습 없음, EXP-233/276/515 후속) | 0.4298798238 | 미제출 | NOT_STARTED | Macro F1 +0.0030889(5-fold 전부 개선)이나 Log Loss +0.0168970·fold std +0.0014154 악화·비대상 22클래스 절대 F1 변화 합 0.0223(허용치 1e-6)로 REJECTED — 확률 값은 대상 쌍 외 완전 불변이 검증됐지만(단위테스트) argmax 경쟁 때문에 분류 결과는 간접 영향받음을 확인, EXP-515(0.0994) 대비 손상은 4.5배 감소·DLBC는 완전 무영향 | [보고서](reports/exp604_pairwise_probability_redistribution/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5251,3 +5252,58 @@ Cycle #170/173, POLE #181/226, functional_role_burden #257)에 이어 이번
   대비도 `correctness_pearson 0.6654861621`로 유사하게 다양함). **판단:
   단독 후보로는 미채택하되 #505 스태킹 다양성 후보로 채택**한다. 상세
   결과는 `reports/analysis/exp596_random_forest_diversity_audit.json`.
+
+### [EXP-604] KIPAN/KIRC·GBMLGG/LGG 쌍 내부 확률 재분배 — 기각(ARCHIVE)
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #604 / `issue-604-pairwise-probability-redistribution`
+- 부모: EXP-374(재학습 없음, 저장된 OOF transform만)
+- Config: `configs/exp604_pairwise_probability_redistribution.yaml`
+- Runner: `scripts/run_exp604_pairwise_probability_redistribution.py`
+- Metrics/Report: `reports/exp604_pairwise_probability_redistribution/`
+- 배경: EXP-233(전체 26클래스 offset)/EXP-276(표본 게이트)/EXP-515(대상
+  클래스 4개로 축소)가 전부 기각됐다. 공통 원인은 `softmax(z)·exp(o)` 후
+  **행 전체를 재정규화**하는 방식이라 26개 클래스가 zero-sum으로 묶인
+  것이었다(EXP-515는 비대상 22클래스 절대 F1 변화 합 `0.0994`). 이 실험은
+  재분배 메커니즘 자체를 바꿔, 대상 쌍의 확률 합만 고정하고 그 안에서만
+  비율을 재분배한다.
+- 방법: `open_cancer.nested_decision_offset`에 신규 공용 함수
+  `apply_pairwise_redistribution`(대상 쌍 `(a,b)`의 `s=p_a+p_b`를 고정,
+  내부 비율을 logit 공간에서 이동, 다른 24개 컬럼은 입력 그대로 반환)과
+  `search_pairwise_delta`(inner cross-fit에서 쌍별 독립 1차원 grid
+  search)를 추가했다(단위 테스트 7개로 "다른 컬럼 완전 불변" 등 검증,
+  `tests/test_nested_decision_offset.py`). Inner cross-fit 프록시는
+  EXP-515와 동일하게 EXP-374 자체 feature 파이프라인 재구성을 사용(캐시
+  공유로 재계산 생략). Grid `[-1.0, 1.0]` step 0.1,
+  `regularization_lambda=0.001` — EXP-233/276/515와 동일.
+- Fold Macro F1(재분배 적용 후): 0.4283023993, 0.4228941455,
+  0.4212315400, 0.4260568868, 0.4486476439 — **5-fold 전부 개선**(EXP-515는
+  4/5).
+- OOF Macro F1: 0.4298798238 (EXP-374 대비 `+0.0030888970`)
+- Fold 표준편차: 0.0099186621 (EXP-374 대비 `+0.0014154453`, **악화**)
+- Log Loss: 1.8609618563 (EXP-374 대비 `+0.0168969669`, **악화**)
+- 표적 4클래스 F1 delta: KIRC `+0.0565`, LGG `+0.0657`, GBMLGG `-0.0154`,
+  KIPAN `-0.0253` — EXP-515(KIRC +0.0925/LGG +0.0854/GBMLGG -0.0298/KIPAN
+  -0.0478) 대비 네 클래스 모두 변화 폭이 거의 절반으로 줄었다(확률 합을
+  유지한 채 내부 비율만 미는 더 보수적인 조정이기 때문).
+- 비대상 22클래스 절대 F1 변화 합: **0.0223279962**(허용치 `1e-6`의 약
+  22,328배, EXP-515의 `0.0994` 대비는 **약 4.5배 감소**). 22개 중 11개는
+  delta가 정확히 `0.0000`(BLCA, COAD, DLBC, HNSC, LAML, LIHC, LUAD, LUSC,
+  PCPG, THCA, THYM 포함 — **DLBC는 완전 무영향**, EXP-233의 핵심 실패
+  클래스였다). 나머지 11개만 소폭 이동(최대 ACC `+0.0065`, TGCT
+  `-0.0056`), `-0.05` 이상 붕괴는 없다.
+- Public LB: 미제출(게이트 미달)
+- 재현 상태: `NOT_STARTED`(일반 Local 진단 실험, 리더보드 미제출)
+- 판단: 사전 고정한 4개 채택 조건(Macro F1 개선 AND Log Loss 비악화 AND
+  fold-std 비악화 AND 비대상 22클래스 절대 F1 변화 합 `≤1e-6`) 중 셋이
+  위반돼 **REJECTED**. **핵심 발견**: "대상 쌍 외 클래스의 raw 확률 값은
+  수학적으로 절대 안 바뀐다"는 이 실험 설계의 전제는 단위 테스트로 실제
+  참으로 검증됐지만, "그래서 그 클래스들의 F1도 안 바뀐다"는 결론은
+  틀렸다 — argmax는 26개 확률의 경쟁이라 대상 쌍의 확률이 바뀌면 다른
+  클래스가 그 경쟁에서 이기거나 지는 결과가 간접적으로 달라질 수 있다.
+  이는 EXP-515가 찾은 문제(재정규화 자체의 zero-sum 결합)와는 다른, 다중
+  클래스 argmax 구조 자체에서 오는 훨씬 약한 형태의 부작용이다. 그럼에도
+  이전 세 실험보다 뚜렷이 개선됐다(비대상 손상 4.5배 감소, DLBC 완전
+  보존, fold 개선 수 5/5) — 메커니즘 방향 자체는 옳고, `regularization_lambda`를
+  키우거나 grid를 좁히는 후속 조정으로 남은 손상을 더 줄일 여지가 있다.
