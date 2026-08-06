@@ -9,7 +9,6 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-import lightgbm as lgb
 import numpy as np
 import pandas as pd
 from scipy import sparse
@@ -111,6 +110,15 @@ def _load_contract(artifact_root: Path):
 
 
 def main() -> None:
+    try:
+        import lightgbm as lgb
+    except ModuleNotFoundError as error:
+        raise ModuleNotFoundError(
+            "This audit requires the experiment dependencies. "
+            "Run it with `uv run --group experiment python "
+            "scripts/audit_exp567_lightgbm_feature_importance.py`."
+        ) from error
+
     args = parse_args()
     if args.permutation_repeats < 1:
         raise ValueError("permutation-repeats must be positive")
