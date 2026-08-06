@@ -58,3 +58,15 @@ def test_multiletter_frameshift_candidate_is_not_counted_as_confirmed_peptide() 
         column = names.index(f"sample__parser_v4_inserted_or_new_aa_count__{aa}")
         assert float(matrix[0, column]) == 0.0
         assert float(matrix[1, column]) == (1.0 if aa == "Q" else 0.0)
+
+
+def test_vectorized_scan_preserves_empty_and_mixed_case_wt_rows() -> None:
+    genes = ("TP53", "IDH1")
+    frame = pd.DataFrame(
+        {"TP53": [" wt ", "R582X", None], "IDH1": ["", "WT", "R132H"]}
+    )
+    fitted = PatientSemanticVectorFamily(genes).fit(frame)
+    matrix = fitted.transform(frame)
+    assert matrix[0].nnz == 0
+    assert matrix[1].nnz > 0
+    assert matrix[2].nnz > 0

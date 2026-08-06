@@ -1,0 +1,206 @@
+{
+  "baseline_oof_macro_f1": 0.4267909268459148,
+  "baseline_log_loss": 1.8440648894063352,
+  "baseline_fold_std": 0.008503216870558973,
+  "adjusted_oof_macro_f1": 0.42987982377676026,
+  "adjusted_log_loss": 1.8609618562913437,
+  "adjusted_fold_std": 0.0099186621285547,
+  "verdict": "ARCHIVE",
+  "eligible_class_pairs": [
+    [
+      "KIPAN",
+      "KIRC"
+    ],
+    [
+      "GBMLGG",
+      "LGG"
+    ]
+  ],
+  "per_class_f1_before": {
+    "ACC": 0.8656716417910447,
+    "BLCA": 0.4942528735632184,
+    "BRCA": 0.5403158769742311,
+    "CESC": 0.26366559485530544,
+    "COAD": 0.714975845410628,
+    "DLBC": 0.4642857142857143,
+    "GBMLGG": 0.31978319783197834,
+    "HNSC": 0.31100478468899523,
+    "KIPAN": 0.22149837133550487,
+    "KIRC": 0.17595307917888564,
+    "LAML": 0.541095890410959,
+    "LGG": 0.4186046511627907,
+    "LIHC": 0.2983050847457627,
+    "LUAD": 0.36923076923076925,
+    "LUSC": 0.4752475247524752,
+    "OV": 0.38248175182481753,
+    "PAAD": 0.24066390041493776,
+    "PCPG": 0.2987551867219917,
+    "PRAD": 0.31098430813124106,
+    "SARC": 0.24228028503562946,
+    "SKCM": 0.75,
+    "STES": 0.42696629213483145,
+    "TGCT": 0.33569739952718675,
+    "THCA": 0.6996336996336996,
+    "THYM": 0.3146853146853147,
+    "UCEC": 0.6205250596658711
+  },
+  "per_class_f1_after": {
+    "ACC": 0.8721804511278195,
+    "BLCA": 0.4942528735632184,
+    "BRCA": 0.5386533665835411,
+    "CESC": 0.2645161290322581,
+    "COAD": 0.714975845410628,
+    "DLBC": 0.4642857142857143,
+    "GBMLGG": 0.30434782608695654,
+    "HNSC": 0.31100478468899523,
+    "KIPAN": 0.19617224880382775,
+    "KIRC": 0.23243933588761176,
+    "LAML": 0.541095890410959,
+    "LGG": 0.4843492586490939,
+    "LIHC": 0.2983050847457627,
+    "LUAD": 0.36923076923076925,
+    "LUSC": 0.4752475247524752,
+    "OV": 0.3813682678311499,
+    "PAAD": 0.24166666666666667,
+    "PCPG": 0.2987551867219917,
+    "PRAD": 0.3127690100430416,
+    "SARC": 0.24271844660194175,
+    "SKCM": 0.7486631016042781,
+    "STES": 0.426367461430575,
+    "TGCT": 0.33014354066985646,
+    "THCA": 0.6996336996336996,
+    "THYM": 0.3146853146853147,
+    "UCEC": 0.6190476190476191
+  },
+  "per_class_f1_delta": {
+    "ACC": 0.006508809336774779,
+    "BLCA": 0.0,
+    "BRCA": -0.0016625103906899863,
+    "CESC": 0.0008505341769526331,
+    "COAD": 0.0,
+    "DLBC": 0.0,
+    "GBMLGG": -0.015435371745021798,
+    "HNSC": 0.0,
+    "KIPAN": -0.025326122531677125,
+    "KIRC": 0.05648625670872612,
+    "LAML": 0.0,
+    "LGG": 0.06574460748630317,
+    "LIHC": 0.0,
+    "LUAD": 0.0,
+    "LUSC": 0.0,
+    "OV": -0.0011134839936676189,
+    "PAAD": 0.0010027662517289038,
+    "PCPG": 0.0,
+    "PRAD": 0.0017847019118005236,
+    "SARC": 0.0004381615663122951,
+    "SKCM": -0.0013368983957219305,
+    "STES": -0.0005988307042564256,
+    "TGCT": -0.005553858857330285,
+    "THCA": 0.0,
+    "THYM": 0.0,
+    "UCEC": -0.0014774406182520572
+  },
+  "non_eligible_class_abs_f1_delta_sum": 0.022327996203487438,
+  "fold_records": [
+    {
+      "outer_fold": 0,
+      "eligible_class_pairs": [
+        [
+          "KIPAN",
+          "KIRC"
+        ],
+        [
+          "GBMLGG",
+          "LGG"
+        ]
+      ],
+      "pair_deltas": {
+        "KIPAN/KIRC": -0.8,
+        "GBMLGG/LGG": -0.2
+      },
+      "outer_validation_macro_f1_before_offset": 0.4243902235533087,
+      "outer_validation_macro_f1_after_offset": 0.4283023993082643,
+      "outer_validation_macro_f1_delta": 0.003912175754955616
+    },
+    {
+      "outer_fold": 1,
+      "eligible_class_pairs": [
+        [
+          "KIPAN",
+          "KIRC"
+        ],
+        [
+          "GBMLGG",
+          "LGG"
+        ]
+      ],
+      "pair_deltas": {
+        "KIPAN/KIRC": -0.3,
+        "GBMLGG/LGG": -0.9
+      },
+      "outer_validation_macro_f1_before_offset": 0.4214466889609302,
+      "outer_validation_macro_f1_after_offset": 0.42289414550637355,
+      "outer_validation_macro_f1_delta": 0.0014474565454433708
+    },
+    {
+      "outer_fold": 2,
+      "eligible_class_pairs": [
+        [
+          "KIPAN",
+          "KIRC"
+        ],
+        [
+          "GBMLGG",
+          "LGG"
+        ]
+      ],
+      "pair_deltas": {
+        "KIPAN/KIRC": -0.3,
+        "GBMLGG/LGG": -0.8
+      },
+      "outer_validation_macro_f1_before_offset": 0.4201172028781823,
+      "outer_validation_macro_f1_after_offset": 0.4212315400281725,
+      "outer_validation_macro_f1_delta": 0.0011143371499901522
+    },
+    {
+      "outer_fold": 3,
+      "eligible_class_pairs": [
+        [
+          "KIPAN",
+          "KIRC"
+        ],
+        [
+          "GBMLGG",
+          "LGG"
+        ]
+      ],
+      "pair_deltas": {
+        "KIPAN/KIRC": 0.1,
+        "GBMLGG/LGG": -0.3
+      },
+      "outer_validation_macro_f1_before_offset": 0.4239068711010362,
+      "outer_validation_macro_f1_after_offset": 0.42605688684398135,
+      "outer_validation_macro_f1_delta": 0.002150015742945155
+    },
+    {
+      "outer_fold": 4,
+      "eligible_class_pairs": [
+        [
+          "KIPAN",
+          "KIRC"
+        ],
+        [
+          "GBMLGG",
+          "LGG"
+        ]
+      ],
+      "pair_deltas": {
+        "KIPAN/KIRC": -0.1,
+        "GBMLGG/LGG": -1.0
+      },
+      "outer_validation_macro_f1_before_offset": 0.4433574969593849,
+      "outer_validation_macro_f1_after_offset": 0.44864764389801415,
+      "outer_validation_macro_f1_delta": 0.0052901469386292255
+    }
+  ]
+}

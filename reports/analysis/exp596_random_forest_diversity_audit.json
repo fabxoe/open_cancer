@@ -1,0 +1,126 @@
+{
+  "generated_at": "2026-08-06T07:05:31.809037+00:00",
+  "issue": 505,
+  "run_mode": "explore",
+  "score_role": "diagnostic_existing_oof_only",
+  "baseline": "EXP-127",
+  "selection_policy": {
+    "quality_macro_f1_delta_min": -0.004,
+    "diversity_correctness_pearson_max": 0.92,
+    "diversity_label_disagreement_min": 0.1
+  },
+  "record": {
+    "experiment_id": "EXP-596",
+    "oof_path": "/Users/mac/Documents/Project/open_cancer/oof/exp596_random_forest_v1.csv",
+    "oof_sha256": "848e36c9e5ae78200e1b252d95a1b190bf4c410324ebce4554e4b8e8af4f5138",
+    "metrics": {
+      "macro_f1": 0.40527726194179226,
+      "fold_scores": [
+        0.4090103315464304,
+        0.3974572345232844,
+        0.40412397488468144,
+        0.38669791355025124,
+        0.4297523643836679
+      ],
+      "fold_mean": 0.4054083637776631,
+      "fold_std": 0.0142867462794935,
+      "accuracy": 0.4059022738268021,
+      "log_loss": 2.0593712417010157,
+      "mean_confidence": 0.24468736978023428,
+      "mean_entropy": 2.5708474637460625,
+      "ece_15": 0.16121490404656783,
+      "per_class_f1": {
+        "ACC": 0.7083333333333334,
+        "BLCA": 0.42528735632183906,
+        "BRCA": 0.5102389078498294,
+        "CESC": 0.20553359683794467,
+        "COAD": 0.6306695464362851,
+        "DLBC": 0.5287356321839081,
+        "GBMLGG": 0.2257495590828924,
+        "HNSC": 0.3002680965147453,
+        "KIPAN": 0.2021978021978022,
+        "KIRC": 0.3816793893129771,
+        "LAML": 0.5427509293680297,
+        "LGG": 0.5723172628304821,
+        "LIHC": 0.33454545454545453,
+        "LUAD": 0.2656826568265683,
+        "LUSC": 0.41509433962264153,
+        "OV": 0.38386308068459657,
+        "PAAD": 0.25,
+        "PCPG": 0.30017452006980805,
+        "PRAD": 0.26788990825688075,
+        "SARC": 0.23295454545454544,
+        "SKCM": 0.6612377850162866,
+        "STES": 0.2673992673992674,
+        "TGCT": 0.41025641025641024,
+        "THCA": 0.6812386156648452,
+        "THYM": 0.2616822429906542,
+        "UCEC": 0.5714285714285714
+      }
+    },
+    "versus_exp094": {
+      "macro_f1_delta": -0.014179967427508322,
+      "fold_std_delta": 0.0006730999175186686,
+      "log_loss_delta": 0.19687785923073364,
+      "label_agreement": 0.6913401064344461,
+      "label_disagreement": 0.30865989356555396,
+      "error_state_agreement": 0.8682470569263022,
+      "correctness_pearson": 0.7280577162814713,
+      "probability_pearson": 0.8940073905880989,
+      "probability_spearman": 0.8589007573359291,
+      "improved_class_count": 8,
+      "per_class_f1_delta": {
+        "ACC": -0.0106209150326797,
+        "BLCA": 0.023225500651735953,
+        "BRCA": 0.01246113007205163,
+        "CESC": -0.035430258583742075,
+        "COAD": -0.09702998408014674,
+        "DLBC": 0.1757944557133198,
+        "GBMLGG": -0.10026924969453704,
+        "HNSC": -0.004816649247966598,
+        "KIPAN": -0.0264454138825998,
+        "KIRC": -0.014662074101657041,
+        "LAML": -0.029768154601435892,
+        "LGG": -0.005240492945095432,
+        "LIHC": 0.023168209036472487,
+        "LUAD": -0.08627265043600157,
+        "LUSC": -0.02211496270293989,
+        "OV": -0.01211970267264878,
+        "PAAD": 0.018595041322314043,
+        "PCPG": 0.004174520069808063,
+        "PRAD": -0.029053323184167312,
+        "SARC": 0.02782634032634032,
+        "SKCM": -0.09298360335144318,
+        "STES": -0.1067729180311962,
+        "TGCT": 0.11674105189463552,
+        "THCA": -0.012247974373468917,
+        "THYM": -0.030328776293092385,
+        "UCEC": -0.05448829898707652
+      }
+    },
+    "gates": {
+      "quality": false,
+      "wildcard": false,
+      "diversity": true,
+      "ensemble_quality_eligible": false
+    }
+  },
+  "secondary_pairwise_vs_exp596": {
+    "EXP-125": {
+      "label_agreement": 0.6577971294952427,
+      "label_disagreement": 0.3422028705047573,
+      "error_state_agreement": 0.8380906305434608,
+      "correctness_pearson": 0.6654861620942688,
+      "probability_pearson": 0.8469245647522944,
+      "probability_spearman": 0.772023782804168
+    },
+    "EXP-123": {
+      "skipped": "oof file not present locally"
+    }
+  },
+  "verdict": {
+    "quality_gate": false,
+    "diversity_gate": true,
+    "s0_stacking_candidate": true
+  }
+}

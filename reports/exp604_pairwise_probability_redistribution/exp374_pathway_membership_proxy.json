@@ -1,0 +1,432 @@
+{
+  "knowledge_file": "knowledge\\canonical_pathways_sanchez_vega_v1.json",
+  "knowledge_sha256": "fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f",
+  "source_url": "https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json",
+  "source_commit": "7d29965de6ac8d0c6ec18c383f6dff8a48d562e7",
+  "source_sha256": "a625675d03fa314eb27f3ab731524de13621a35aecd8edb7c67878f2d89ae07a",
+  "extraction_policy": "All unique NODE_TYPE=GENE node names from the ten canonical templates; competition panel intersection is applied at runtime",
+  "organizer_approval_reference": "https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180",
+  "competition_gene_count": 4384,
+  "pathways": {
+    "cell_cycle": {
+      "source_gene_nodes": [
+        "ATM",
+        "CCND1",
+        "CCNE1",
+        "CDKN1A",
+        "CDKN2A",
+        "E2F3",
+        "FBXW7",
+        "MDM2",
+        "TP53"
+      ],
+      "panel_intersection": [
+        "CCND1",
+        "CCNE1",
+        "CDKN1A",
+        "CDKN2A",
+        "E2F3",
+        "FBXW7",
+        "MDM2",
+        "TP53"
+      ],
+      "excluded_non_panel_nodes": [
+        "ATM"
+      ]
+    },
+    "hippo": {
+      "source_gene_nodes": [
+        "CRB1",
+        "CRB2",
+        "CSNK1D",
+        "CSNK1E",
+        "DCHS1",
+        "DCHS2",
+        "FAT1",
+        "FAT2",
+        "FAT3",
+        "FAT4",
+        "LATS1",
+        "LATS2",
+        "MOB1A",
+        "MOB1B",
+        "NF2",
+        "PTPN14",
+        "SAV1",
+        "STK3",
+        "STK4",
+        "TAOK1",
+        "TAOK2",
+        "TAOK3",
+        "TAZ",
+        "TEAD2",
+        "WWC1",
+        "YAP1"
+      ],
+      "panel_intersection": [
+        "CSNK1D",
+        "CSNK1E",
+        "LATS1",
+        "LATS2",
+        "NF2",
+        "PTPN14",
+        "TAOK2",
+        "WWC1"
+      ],
+      "excluded_non_panel_nodes": [
+        "CRB1",
+        "CRB2",
+        "DCHS1",
+        "DCHS2",
+        "FAT1",
+        "FAT2",
+        "FAT3",
+        "FAT4",
+        "MOB1A",
+        "MOB1B",
+        "SAV1",
+        "STK3",
+        "STK4",
+        "TAOK1",
+        "TAOK3",
+        "TAZ",
+        "TEAD2",
+        "YAP1"
+      ]
+    },
+    "myc": {
+      "source_gene_nodes": [
+        "MAX",
+        "MGA",
+        "MLX",
+        "MLXIP",
+        "MLXIPL",
+        "MNT",
+        "MXD1",
+        "MXD3",
+        "MXD4",
+        "MXI1",
+        "MYC",
+        "MYCL",
+        "MYCN"
+      ],
+      "panel_intersection": [
+        "MXD1",
+        "MXD3",
+        "MXD4",
+        "MXI1",
+        "MYC",
+        "MYCN"
+      ],
+      "excluded_non_panel_nodes": [
+        "MAX",
+        "MGA",
+        "MLX",
+        "MLXIP",
+        "MLXIPL",
+        "MNT",
+        "MYCL"
+      ]
+    },
+    "notch": {
+      "source_gene_nodes": [
+        "ARRDC1",
+        "CNTN6",
+        "CREBBP",
+        "CUL1",
+        "DNER",
+        "EP300",
+        "FBXW7",
+        "HES-X",
+        "HEY-X",
+        "JAG2",
+        "KAT2B",
+        "KDM5A",
+        "MALM3",
+        "NCOR1",
+        "NCOR2",
+        "NOTCH1",
+        "NOTCH2",
+        "NOTCH3",
+        "NOTCH4",
+        "NOV",
+        "NRARP",
+        "PSEN2",
+        "SPEN"
+      ],
+      "panel_intersection": [
+        "CREBBP",
+        "CUL1",
+        "FBXW7",
+        "JAG2",
+        "KAT2B",
+        "NCOR2",
+        "NOTCH1",
+        "NOTCH2",
+        "NOTCH3",
+        "NOTCH4",
+        "PSEN2"
+      ],
+      "excluded_non_panel_nodes": [
+        "ARRDC1",
+        "CNTN6",
+        "DNER",
+        "EP300",
+        "HES-X",
+        "HEY-X",
+        "KDM5A",
+        "MALM3",
+        "NCOR1",
+        "NOV",
+        "NRARP",
+        "SPEN"
+      ]
+    },
+    "nrf2": {
+      "source_gene_nodes": [
+        "CUL3",
+        "KEAP1",
+        "NFE2L2"
+      ],
+      "panel_intersection": [
+        "CUL3",
+        "NFE2L2"
+      ],
+      "excluded_non_panel_nodes": [
+        "KEAP1"
+      ]
+    },
+    "pi3k": {
+      "source_gene_nodes": [
+        "AKT1",
+        "AKT2",
+        "AKT3",
+        "INPP4B",
+        "MTOR",
+        "PIK3CA",
+        "PIK3R1",
+        "PIK3R2",
+        "PIK3R3",
+        "PPP2R1A",
+        "PTEN",
+        "RHEB",
+        "RICTOR",
+        "RPTOR",
+        "STK11",
+        "TSC1",
+        "TSC2"
+      ],
+      "panel_intersection": [
+        "AKT1",
+        "AKT2",
+        "AKT3",
+        "INPP4B",
+        "MTOR",
+        "PIK3CA",
+        "PIK3R3",
+        "PTEN",
+        "RICTOR",
+        "RPTOR",
+        "TSC1",
+        "TSC2"
+      ],
+      "excluded_non_panel_nodes": [
+        "PIK3R1",
+        "PIK3R2",
+        "PPP2R1A",
+        "RHEB",
+        "STK11"
+      ]
+    },
+    "rtk_ras": {
+      "source_gene_nodes": [
+        "ALK",
+        "ARAF",
+        "BRAF",
+        "CBL",
+        "EGFR",
+        "ERBB2",
+        "ERBB3",
+        "ERBB4",
+        "ERRFI1",
+        "FGFR1",
+        "FGFR2",
+        "FGFR3",
+        "FGFR4",
+        "FLT3",
+        "HRAS",
+        "IGF1R",
+        "KIT",
+        "KRAS",
+        "MAP2K1",
+        "MAP2K2",
+        "MAPK1",
+        "MET",
+        "NF1",
+        "NRAS",
+        "NTRK1",
+        "NTRK2",
+        "PDGFRA",
+        "PTPN11",
+        "RAC1",
+        "RAF1",
+        "RASA1",
+        "RET",
+        "RIT1",
+        "ROS1",
+        "SOS1"
+      ],
+      "panel_intersection": [
+        "ARAF",
+        "BRAF",
+        "CBL",
+        "EGFR",
+        "ERBB2",
+        "ERBB3",
+        "ERRFI1",
+        "FGFR1",
+        "FGFR3",
+        "HRAS",
+        "IGF1R",
+        "KIT",
+        "MAPK1",
+        "MET",
+        "NF1",
+        "PTPN11",
+        "RAC1",
+        "RAF1",
+        "RASA1",
+        "RET",
+        "RIT1",
+        "ROS1",
+        "SOS1"
+      ],
+      "excluded_non_panel_nodes": [
+        "ALK",
+        "ERBB4",
+        "FGFR2",
+        "FGFR4",
+        "FLT3",
+        "KRAS",
+        "MAP2K1",
+        "MAP2K2",
+        "NRAS",
+        "NTRK1",
+        "NTRK2",
+        "PDGFRA"
+      ]
+    },
+    "tgf_beta": {
+      "source_gene_nodes": [
+        "ACVR2A",
+        "ACVR2B",
+        "Activin ligands",
+        "SMAD2",
+        "SMAD3",
+        "SMAD4",
+        "TGFB ligands",
+        "TGFBR1",
+        "TGFBR2"
+      ],
+      "panel_intersection": [
+        "ACVR2A",
+        "SMAD2",
+        "SMAD3",
+        "TGFBR1",
+        "TGFBR2"
+      ],
+      "excluded_non_panel_nodes": [
+        "ACVR2B",
+        "Activin ligands",
+        "SMAD4",
+        "TGFB ligands"
+      ]
+    },
+    "tp53": {
+      "source_gene_nodes": [
+        "ATM",
+        "CDKN2A",
+        "CHEK2",
+        "MDM2",
+        "MDM4",
+        "RPS6KA3",
+        "TP53"
+      ],
+      "panel_intersection": [
+        "CDKN2A",
+        "CHEK2",
+        "MDM2",
+        "RPS6KA3",
+        "TP53"
+      ],
+      "excluded_non_panel_nodes": [
+        "ATM",
+        "MDM4"
+      ]
+    },
+    "wnt": {
+      "source_gene_nodes": [
+        "AMER1",
+        "APC",
+        "AXIN1",
+        "AXIN2",
+        "CTNNB1",
+        "DKK1",
+        "DKK2",
+        "DKK3",
+        "DKK4",
+        "FZDs",
+        "GSK3B",
+        "LRP5",
+        "LRP6",
+        "RNF43",
+        "SFRP1",
+        "SFRP2",
+        "SFRP3",
+        "SFRP4",
+        "SFRP5",
+        "TCF7",
+        "TCF7L1",
+        "TCF7L2",
+        "TLE1",
+        "TLE2",
+        "TLE3",
+        "TLE4",
+        "WIF1",
+        "WNT ligands"
+      ],
+      "panel_intersection": [
+        "APC",
+        "AXIN1",
+        "AXIN2",
+        "CTNNB1",
+        "DKK1",
+        "DKK4",
+        "GSK3B",
+        "SFRP1",
+        "SFRP4",
+        "TCF7",
+        "TCF7L1",
+        "TCF7L2",
+        "TLE1",
+        "TLE3",
+        "TLE4"
+      ],
+      "excluded_non_panel_nodes": [
+        "AMER1",
+        "DKK2",
+        "DKK3",
+        "FZDs",
+        "LRP5",
+        "LRP6",
+        "RNF43",
+        "SFRP2",
+        "SFRP3",
+        "SFRP5",
+        "TLE2",
+        "WIF1",
+        "WNT ligands"
+      ]
+    }
+  }
+}

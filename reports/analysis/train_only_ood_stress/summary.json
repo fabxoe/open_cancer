@@ -1,0 +1,603 @@
+{
+  "record_role": "explore",
+  "issue": 606,
+  "parent_roadmap_issue": 502,
+  "roadmap_item": "B0",
+  "target_used": false,
+  "test_distribution_used": false,
+  "public_lb_used": false,
+  "min_usable_positive_rows": 5,
+  "contract": "reports/analysis/train_only_ood_stress/subgroup_contract.json",
+  "per_fold": {
+    "0": {
+      "mutation_burden": {
+        "n_outer_train": 4960,
+        "q10": 3.0,
+        "q90": 67.0,
+        "bucket_counts": {
+          "<=q10": 552,
+          "q10-q90": 3914,
+          ">q90": 494
+        }
+      },
+      "all_wt_low_mutation": {
+        "n_outer_train": 4960,
+        "bucket_counts": {
+          "all_wt": 78,
+          "1-4": 679,
+          ">=5": 4203
+        }
+      },
+      "missingness": {
+        "n_outer_train": 4960,
+        "bucket_counts": {
+          "==0": 4960,
+          ">0": 0
+        },
+        "usable": false
+      },
+      "complex_unresolved": {
+        "n_outer_train": 4960,
+        "bucket_counts": {
+          "==0": 4839,
+          ">0": 121
+        },
+        "usable": true
+      },
+      "nonstandard_notation": {
+        "n_outer_train": 4960,
+        "bucket_counts": {
+          "==0": 4842,
+          ">0": 118
+        },
+        "usable": true
+      },
+      "parser_semantic_family_support": {
+        "sample__parser_v4_total_token_count": {
+          "positive_rows": 4882,
+          "usable": true
+        },
+        "sample__parser_v4_missense_count": {
+          "positive_rows": 4807,
+          "usable": true
+        },
+        "sample__parser_v4_no_change_count": {
+          "positive_rows": 4202,
+          "usable": true
+        },
+        "sample__parser_v4_nonsense_count": {
+          "positive_rows": 2582,
+          "usable": true
+        },
+        "sample__parser_v4_start_codon_affected_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_unknown_reference_substitution_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_nonstandard_stop_reference_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_frameshift_count": {
+          "positive_rows": 2630,
+          "usable": true
+        },
+        "sample__parser_v4_deletion_count": {
+          "positive_rows": 2,
+          "usable": false
+        },
+        "sample__parser_v4_delins_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_insertion_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_duplication_candidate_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_range_replacement_count": {
+          "positive_rows": 90,
+          "usable": true
+        },
+        "sample__parser_v4_range_stop_count": {
+          "positive_rows": 44,
+          "usable": true
+        },
+        "sample__parser_v4_range_no_change_count": {
+          "positive_rows": 42,
+          "usable": true
+        },
+        "sample__parser_v4_unresolved_count": {
+          "positive_rows": 121,
+          "usable": true
+        },
+        "sample__parser_v4_complete_parse_count": {
+          "positive_rows": 4861,
+          "usable": true
+        },
+        "sample__parser_v4_partial_parse_count": {
+          "positive_rows": 2630,
+          "usable": true
+        }
+      }
+    },
+    "1": {
+      "mutation_burden": {
+        "n_outer_train": 4961,
+        "q10": 3.0,
+        "q90": 65.0,
+        "bucket_counts": {
+          "<=q10": 544,
+          "q10-q90": 3926,
+          ">q90": 491
+        }
+      },
+      "all_wt_low_mutation": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "all_wt": 74,
+          "1-4": 675,
+          ">=5": 4212
+        }
+      },
+      "missingness": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "==0": 4961,
+          ">0": 0
+        },
+        "usable": false
+      },
+      "complex_unresolved": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "==0": 4842,
+          ">0": 119
+        },
+        "usable": true
+      },
+      "nonstandard_notation": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "==0": 4845,
+          ">0": 116
+        },
+        "usable": true
+      },
+      "parser_semantic_family_support": {
+        "sample__parser_v4_total_token_count": {
+          "positive_rows": 4887,
+          "usable": true
+        },
+        "sample__parser_v4_missense_count": {
+          "positive_rows": 4809,
+          "usable": true
+        },
+        "sample__parser_v4_no_change_count": {
+          "positive_rows": 4207,
+          "usable": true
+        },
+        "sample__parser_v4_nonsense_count": {
+          "positive_rows": 2604,
+          "usable": true
+        },
+        "sample__parser_v4_start_codon_affected_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_unknown_reference_substitution_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_nonstandard_stop_reference_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_frameshift_count": {
+          "positive_rows": 2623,
+          "usable": true
+        },
+        "sample__parser_v4_deletion_count": {
+          "positive_rows": 3,
+          "usable": false
+        },
+        "sample__parser_v4_delins_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_insertion_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_duplication_candidate_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_range_replacement_count": {
+          "positive_rows": 79,
+          "usable": true
+        },
+        "sample__parser_v4_range_stop_count": {
+          "positive_rows": 44,
+          "usable": true
+        },
+        "sample__parser_v4_range_no_change_count": {
+          "positive_rows": 38,
+          "usable": true
+        },
+        "sample__parser_v4_unresolved_count": {
+          "positive_rows": 119,
+          "usable": true
+        },
+        "sample__parser_v4_complete_parse_count": {
+          "positive_rows": 4867,
+          "usable": true
+        },
+        "sample__parser_v4_partial_parse_count": {
+          "positive_rows": 2624,
+          "usable": true
+        }
+      }
+    },
+    "2": {
+      "mutation_burden": {
+        "n_outer_train": 4961,
+        "q10": 3.0,
+        "q90": 68.0,
+        "bucket_counts": {
+          "<=q10": 542,
+          "q10-q90": 3929,
+          ">q90": 490
+        }
+      },
+      "all_wt_low_mutation": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "all_wt": 77,
+          "1-4": 654,
+          ">=5": 4230
+        }
+      },
+      "missingness": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "==0": 4961,
+          ">0": 0
+        },
+        "usable": false
+      },
+      "complex_unresolved": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "==0": 4834,
+          ">0": 127
+        },
+        "usable": true
+      },
+      "nonstandard_notation": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "==0": 4837,
+          ">0": 124
+        },
+        "usable": true
+      },
+      "parser_semantic_family_support": {
+        "sample__parser_v4_total_token_count": {
+          "positive_rows": 4884,
+          "usable": true
+        },
+        "sample__parser_v4_missense_count": {
+          "positive_rows": 4817,
+          "usable": true
+        },
+        "sample__parser_v4_no_change_count": {
+          "positive_rows": 4217,
+          "usable": true
+        },
+        "sample__parser_v4_nonsense_count": {
+          "positive_rows": 2634,
+          "usable": true
+        },
+        "sample__parser_v4_start_codon_affected_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_unknown_reference_substitution_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_nonstandard_stop_reference_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_frameshift_count": {
+          "positive_rows": 2608,
+          "usable": true
+        },
+        "sample__parser_v4_deletion_count": {
+          "positive_rows": 3,
+          "usable": false
+        },
+        "sample__parser_v4_delins_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_insertion_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_duplication_candidate_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_range_replacement_count": {
+          "positive_rows": 78,
+          "usable": true
+        },
+        "sample__parser_v4_range_stop_count": {
+          "positive_rows": 41,
+          "usable": true
+        },
+        "sample__parser_v4_range_no_change_count": {
+          "positive_rows": 32,
+          "usable": true
+        },
+        "sample__parser_v4_unresolved_count": {
+          "positive_rows": 127,
+          "usable": true
+        },
+        "sample__parser_v4_complete_parse_count": {
+          "positive_rows": 4867,
+          "usable": true
+        },
+        "sample__parser_v4_partial_parse_count": {
+          "positive_rows": 2609,
+          "usable": true
+        }
+      }
+    },
+    "3": {
+      "mutation_burden": {
+        "n_outer_train": 4961,
+        "q10": 3.0,
+        "q90": 68.0,
+        "bucket_counts": {
+          "<=q10": 549,
+          "q10-q90": 3921,
+          ">q90": 491
+        }
+      },
+      "all_wt_low_mutation": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "all_wt": 73,
+          "1-4": 672,
+          ">=5": 4216
+        }
+      },
+      "missingness": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "==0": 4961,
+          ">0": 0
+        },
+        "usable": false
+      },
+      "complex_unresolved": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "==0": 4845,
+          ">0": 116
+        },
+        "usable": true
+      },
+      "nonstandard_notation": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "==0": 4845,
+          ">0": 116
+        },
+        "usable": true
+      },
+      "parser_semantic_family_support": {
+        "sample__parser_v4_total_token_count": {
+          "positive_rows": 4888,
+          "usable": true
+        },
+        "sample__parser_v4_missense_count": {
+          "positive_rows": 4816,
+          "usable": true
+        },
+        "sample__parser_v4_no_change_count": {
+          "positive_rows": 4194,
+          "usable": true
+        },
+        "sample__parser_v4_nonsense_count": {
+          "positive_rows": 2632,
+          "usable": true
+        },
+        "sample__parser_v4_start_codon_affected_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_unknown_reference_substitution_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_nonstandard_stop_reference_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_frameshift_count": {
+          "positive_rows": 2627,
+          "usable": true
+        },
+        "sample__parser_v4_deletion_count": {
+          "positive_rows": 2,
+          "usable": false
+        },
+        "sample__parser_v4_delins_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_insertion_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_duplication_candidate_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_range_replacement_count": {
+          "positive_rows": 77,
+          "usable": true
+        },
+        "sample__parser_v4_range_stop_count": {
+          "positive_rows": 51,
+          "usable": true
+        },
+        "sample__parser_v4_range_no_change_count": {
+          "positive_rows": 41,
+          "usable": true
+        },
+        "sample__parser_v4_unresolved_count": {
+          "positive_rows": 116,
+          "usable": true
+        },
+        "sample__parser_v4_complete_parse_count": {
+          "positive_rows": 4867,
+          "usable": true
+        },
+        "sample__parser_v4_partial_parse_count": {
+          "positive_rows": 2628,
+          "usable": true
+        }
+      }
+    },
+    "4": {
+      "mutation_burden": {
+        "n_outer_train": 4961,
+        "q10": 3.0,
+        "q90": 67.0,
+        "bucket_counts": {
+          "<=q10": 545,
+          "q10-q90": 3920,
+          ">q90": 496
+        }
+      },
+      "all_wt_low_mutation": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "all_wt": 74,
+          "1-4": 672,
+          ">=5": 4215
+        }
+      },
+      "missingness": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "==0": 4961,
+          ">0": 0
+        },
+        "usable": false
+      },
+      "complex_unresolved": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "==0": 4836,
+          ">0": 125
+        },
+        "usable": true
+      },
+      "nonstandard_notation": {
+        "n_outer_train": 4961,
+        "bucket_counts": {
+          "==0": 4839,
+          ">0": 122
+        },
+        "usable": true
+      },
+      "parser_semantic_family_support": {
+        "sample__parser_v4_total_token_count": {
+          "positive_rows": 4887,
+          "usable": true
+        },
+        "sample__parser_v4_missense_count": {
+          "positive_rows": 4819,
+          "usable": true
+        },
+        "sample__parser_v4_no_change_count": {
+          "positive_rows": 4184,
+          "usable": true
+        },
+        "sample__parser_v4_nonsense_count": {
+          "positive_rows": 2612,
+          "usable": true
+        },
+        "sample__parser_v4_start_codon_affected_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_unknown_reference_substitution_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_nonstandard_stop_reference_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_frameshift_count": {
+          "positive_rows": 2608,
+          "usable": true
+        },
+        "sample__parser_v4_deletion_count": {
+          "positive_rows": 2,
+          "usable": false
+        },
+        "sample__parser_v4_delins_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_insertion_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_duplication_candidate_count": {
+          "positive_rows": 0,
+          "usable": false
+        },
+        "sample__parser_v4_range_replacement_count": {
+          "positive_rows": 80,
+          "usable": true
+        },
+        "sample__parser_v4_range_stop_count": {
+          "positive_rows": 44,
+          "usable": true
+        },
+        "sample__parser_v4_range_no_change_count": {
+          "positive_rows": 35,
+          "usable": true
+        },
+        "sample__parser_v4_unresolved_count": {
+          "positive_rows": 125,
+          "usable": true
+        },
+        "sample__parser_v4_complete_parse_count": {
+          "positive_rows": 4870,
+          "usable": true
+        },
+        "sample__parser_v4_partial_parse_count": {
+          "positive_rows": 2609,
+          "usable": true
+        }
+      }
+    }
+  }
+}
