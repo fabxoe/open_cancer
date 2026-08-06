@@ -1,0 +1,29 @@
+run_mode: experiment
+record_role: official
+slug: random_forest_v1
+parent_experiment: EXP-094
+seed: 42
+feature_spec:
+  name: v1
+  frozen_manifest: configs/abc_stack_feature_spec_v2.yaml
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+model:
+  name: random_forest
+  parameters:
+    n_estimators: 500
+    max_depth: null
+    min_samples_leaf: 2
+    max_features: sqrt
+    n_jobs: 8
+training:
+  balanced_sample_weight: true
+notes: >-
+  Frozen Feature Spec v1 and canonical folds are held fixed while the model
+  family changes from boosting (XGBoost/LightGBM/CatBoost) or linear
+  (Logistic Regression) to a bagged tree ensemble. class_weight is left unset
+  on the RandomForestClassifier itself so only the common runner's
+  balanced_sample_weight applies, matching every other v1 adapter. Purpose is
+  a new diversity candidate for the #505 SAINT/TF-IDF stacking roadmap's S0
+  audit, not a standalone leaderboard candidate.
