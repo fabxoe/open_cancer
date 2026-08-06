@@ -7,13 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 103
+- 실제 실험 수: 104
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
 - 최고 Public LB Macro F1: 0.346215922 (`EXP-374`)
 - 최고 재현 검증 모델: `EXP-334` (`INFERENCE_VERIFIED`)
-- 최종 갱신일: 2026-08-05
+- 최종 갱신일: 2026-08-06
 
 ## 실험 요약
 
@@ -122,6 +122,7 @@
 | EXP-476 | COMPLETED | Gomin-art | #476 | Config 기반 fold-safe recurrent gene·26 class panel + nested Optuna·class weight XGBoost | 0.4223302641 | 0.3223948042 | INFERENCE_VERIFIED | fold std 0.0063799로 안정적이나 EXP-374 대비 Local -0.0044607·Public -0.0238211, 대표 제출 미변경·ARCHIVE | [보고서](reports/exp476_config_feature_pipeline/README.md) |
 | EXP-479 | COMPLETED | fabxoe | #479 | EXP-469 + HGVS-informed range_replacement·range_stop·range_no_change 상호 배타 의미 | 0.4087566023 | 미제출 | INFERENCE_VERIFIED | 고정 XGBoost에서 EXP-469 대비 -0.0030252·안정성/Log Loss 악화; 제출 보류, 의미는 유지하고 비튜닝 native semantic 기준선으로 동결 | [보고서](reports/exp479_parser_v4_native_semantic_range/README.md) |
 | EXP-484 | COMPLETED | 2heej | #484 | EXP-374+EXP-459 고정 0.7/0.3 확률 블렌드(#482 test-like propensity 스크리닝으로 비율 사전 고정) | 0.4320213767 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 +0.0052304·test-like subset도 +0.0022953으로 통과·Log Loss 개선·클래스 붕괴 없음. Fold std +0.0052388는 임계값 초과했으나 전 fold 개선(악화 없음)이 원인 — ADOPT_WITH_CAUTION, Public 제출은 팀 논의 후 | [보고서](reports/exp484_exp374_exp459_blend/README.md) |
+| EXP-515 | COMPLETED | Kangho-Park | #515 | EXP-374 OOF + KIPAN/KIRC·GBMLGG/LGG 한정 post-hoc decision offset(재학습 없음, EXP-233/276 후속) | 0.4296769353 | 미제출 | NOT_STARTED | Macro F1 +0.0028860(게이트 미달)이나 Log Loss +0.0285328 악화·비대상 22클래스 절대 F1 변화 합 0.0993876(허용치 0.01의 약 9.9배)로 REJECTED — 재정규화가 26클래스를 zero-sum으로 묶어 탐색 대상을 좁혀도 다른 클래스 보호 불가함을 확인 | [보고서](reports/exp515_scoped_pairwise_decision_offset/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -4328,3 +4329,51 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   fold 붕괴형 불안정과는 다르다고 판단해 `ADOPT_WITH_CAUTION`으로 기록한다.
   EXP-449(LightGBM) 계열 블렌드가 전부 실패했던 이전 결론("어떤 모델을
   블렌드해도 test-like gate에서 실패한다")에 대한 반례다.
+
+### [EXP-515] KIPAN/KIRC·GBMLGG/LGG 한정 post-hoc decision offset — 기각(ARCHIVE)
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #515 / `issue-515-scoped-pairwise-decision-offset`
+- 부모: EXP-374(재학습 없음, 저장된 OOF transform만)
+- Config: `configs/exp515_scoped_pairwise_decision_offset.yaml`
+- Runner: `scripts/run_exp515_scoped_pairwise_decision_offset.py`
+- Metrics/Report: `reports/exp515_scoped_pairwise_decision_offset/`
+- 배경: EXP-374 OOF 오답노트 분석에서 최대 혼동쌍이 KIPAN↔KIRC(390건 합산),
+  GBMLGG↔LGG(288건 합산)로 확인됐다. EXP-233(전체 26클래스 post-hoc
+  class-wise logit offset)/EXP-276(표본 게이트 추가)은 둘 다 Macro F1은
+  개선했지만 DLBC 등 무관한 클래스의 argmax 경쟁을 왜곡해 기각됐다. 이
+  실험은 offset 탐색·적용 대상을 위 두 혼동쌍 4개 클래스로만 한정해 그
+  실패 메커니즘을 구조적으로 차단하려 했다.
+- 방법: `open_cancer.nested_decision_offset.search_class_offsets`의
+  `eligible_classes`를 KIPAN·KIRC·GBMLGG·LGG로 고정, 나머지 22개는
+  offset=0 하드 고정(좌표하강 탐색 자체에서 제외). Inner cross-fit
+  프록시는 EXP-233/276이 쓰던 frozen Feature Spec v1이 아니라 **EXP-374
+  자체 feature 파이프라인을 재구성**(`build_exp374_train_matrix()`)해
+  사용 — EXP-374 baseline이 v1 모델이 아니기 때문. Grid
+  `[-1.0, 1.0]` step 0.1, `regularization_lambda=0.001`, 최대 5 pass —
+  EXP-233/276과 동일.
+- Fold Macro F1(offset 적용 후): 0.4254118992, 0.4227508734,
+  0.4282044104, 0.4266683254, 0.4421254595
+- OOF Macro F1: 0.4296769353 (EXP-374 대비 `+0.0028860085`, 5개 fold 중
+  4개 개선)
+- Fold 표준편차: 0.0067862836 (EXP-374 대비 `-0.0017169333`, 개선)
+- Log Loss: 1.8725976665 (EXP-374 대비 `+0.0285327771`, **악화**)
+- 표적 4클래스 F1 delta: KIPAN `-0.0478`, KIRC `+0.0925`, GBMLGG `-0.0298`,
+  LGG `+0.0854` — 쌍 안에서 한쪽으로 확률 질량이 쏠렸을 뿐 두 클래스
+  동시 개선은 아니었다.
+- 비대상 22클래스 |F1| 변화 합계: **0.0993875903**(허용치 `0.01`의 약
+  9.9배). 최대 이동: SARC `-0.0321`, TGCT `+0.0169`, CESC `-0.0085`,
+  DLBC `+0.0084`(EXP-233과 달리 이번엔 DLBC가 개선됐다), HNSC `+0.0048`.
+- Public LB: 미제출(게이트 미달)
+- 재현 상태: `NOT_STARTED`(일반 Local 진단 실험, 리더보드 미제출)
+- 판단: 사전 고정한 4개 채택 조건(Macro F1 개선 AND Log Loss 비악화 AND
+  fold-std 비악화 AND 비대상 22클래스 |F1| 변화 합 `≤0.01`) 중 Log
+  Loss와 비대상 클래스 조건 둘 다 위반해 **REJECTED**. 핵심 발견:
+  `apply_class_offset`의 `softmax(z)·exp(o)` 후 **행 전체 재정규화**가
+  26개 클래스를 하나의 zero-sum 경쟁으로 묶기 때문에, 탐색 대상 클래스
+  수를 줄여도(이번 4개) 나머지 클래스의 offset이 정확히 0이어도 상대
+  확률은 강제로 바뀐다 — EXP-276의 "게이트해도 보호 안 됨" 발견을 한
+  단계 더 일반화한다. 다음 시도는 대상 쌍 내부에서만 확률 질량을
+  재분배(나머지 24클래스 raw 확률은 완전히 불변)하는 방식이 필요해
+  보이며, 이번 실험은 그 설계를 다루지 않았다.
