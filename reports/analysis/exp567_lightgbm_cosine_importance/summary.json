@@ -1,0 +1,1354 @@
+{
+  "analysis_role": "validation_only_feature_importance",
+  "issue_number": 576,
+  "experiment": "EXP-567",
+  "training_or_selection_use": false,
+  "test_or_public_lb_use": false,
+  "importance": {
+    "supported": [
+      "gain",
+      "split"
+    ],
+    "unsupported": [
+      "cover"
+    ],
+    "cover_note": "LightGBM Booster does not expose XGBoost-style cover importance."
+  },
+  "permutation": {
+    "method": "joint row permutation of every column in one feature family",
+    "repeats_per_fold": 3,
+    "seed": 42,
+    "positive_delta_means_family_is_useful": true
+  },
+  "data": {
+    "train_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+    "split_sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf",
+    "base_feature_names_sha256": "8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf",
+    "final_feature_names_sha256": [
+      "55c58853d0d8d7bf36a68a3a3d9ff979a2e0d5b430e517612f72259639e2eb74",
+      "a145c4168db4b6ca696e9bbf9cd3408783276fd8776deddf4571eb9d7aa8a9ae",
+      "a28a7717d7c1aec1dd1df44c4673ba385eb16e76999b08e4fbf2aa99d0f5e14f",
+      "bd1e88059b60c428c9a3f30b07bb360c7385926a4369b54ac449a649a7f3413e",
+      "f952320961f777e30c5b310ac5bc98937cde43b33650df103c37b4a9dbcebe7f"
+    ],
+    "artifact_root": "runtime argument; absolute local path not persisted",
+    "feature_cache": "data/processed/exp567_lightgbm_parser_cosine_features"
+  },
+  "folds": [
+    {
+      "fold": 0,
+      "validation_rows": 1241,
+      "baseline_macro_f1": 0.44569563075875956,
+      "feature_count": 35207,
+      "feature_names_sha256": "55c58853d0d8d7bf36a68a3a3d9ff979a2e0d5b430e517612f72259639e2eb74",
+      "checkpoint": "models/exp567_lightgbm_parser_cosine/fold_00.txt",
+      "checkpoint_sha256": "1664d59d76d4aec204ef2841b435259f7c378166e237b4e1a01cb05d10683fde",
+      "family_permutation_delta": {
+        "class_cosine": [
+          0.19851599555479638,
+          0.2032979534426829,
+          0.1865581574476015
+        ],
+        "fixed_hotspot": [
+          0.03160784783996423,
+          0.03295061984409714,
+          0.025777822125385763
+        ],
+        "fixed_pathway": [
+          0.0409210873780525,
+          0.03882734459678189,
+          0.04175630458790269
+        ],
+        "gene_complex": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gene_frameshift": [
+          3.112513892700175e-05,
+          -0.0008664871294239984,
+          -0.0016690421146670076
+        ],
+        "gene_max_residue_position": [
+          0.039078620609239945,
+          0.03066030489109428,
+          0.032407257672925405
+        ],
+        "gene_missense": [
+          0.011908528937884688,
+          0.02115222461520805,
+          0.018500733994561813
+        ],
+        "gene_missing": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gene_mutated": [
+          0.05057819001068481,
+          0.06139173072066417,
+          0.0704174045036714
+        ],
+        "gene_nonsense": [
+          -0.001378510522760834,
+          -0.0013073203971687986,
+          -0.0019187417235136395
+        ],
+        "gene_synonymous": [
+          0.006720646848415612,
+          0.007654640042912331,
+          0.009270439503580918
+        ],
+        "sample_aggregate": [
+          0.0663241722676674,
+          0.09838236424624042,
+          0.09289048276436601
+        ]
+      }
+    },
+    {
+      "fold": 1,
+      "validation_rows": 1240,
+      "baseline_macro_f1": 0.45053345691104585,
+      "feature_count": 35208,
+      "feature_names_sha256": "f952320961f777e30c5b310ac5bc98937cde43b33650df103c37b4a9dbcebe7f",
+      "checkpoint": "models/exp567_lightgbm_parser_cosine/fold_01.txt",
+      "checkpoint_sha256": "b0e03ce65fd65f1d4cf6fbf32a78071306a438b6046defd03b456562cf9ae191",
+      "family_permutation_delta": {
+        "class_cosine": [
+          0.2192373823347038,
+          0.1979596001489114,
+          0.20895569091643837
+        ],
+        "fixed_hotspot": [
+          0.05137116969832067,
+          0.04619610521571965,
+          0.04324690580611701
+        ],
+        "fixed_pathway": [
+          0.04615398869696624,
+          0.04059947625460364,
+          0.03909801619425518
+        ],
+        "gene_complex": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gene_frameshift": [
+          0.004676707335510288,
+          0.0041268292784605864,
+          0.004685658856850516
+        ],
+        "gene_max_residue_position": [
+          0.026547317575942975,
+          0.04247331393026438,
+          0.03236350211310135
+        ],
+        "gene_missense": [
+          0.017551488549694072,
+          0.013164144769987951,
+          0.005040387078880215
+        ],
+        "gene_missing": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gene_mutated": [
+          0.06675230242343694,
+          0.055525258602518224,
+          0.062270978828817436
+        ],
+        "gene_nonsense": [
+          0.00261725652556577,
+          0.00261725652556577,
+          0.00261725652556577
+        ],
+        "gene_synonymous": [
+          0.014399600147435465,
+          0.015573150538165936,
+          0.012082663469694666
+        ],
+        "sample_aggregate": [
+          0.07024181253734263,
+          0.08498490916055751,
+          0.09665361536712347
+        ]
+      }
+    },
+    {
+      "fold": 2,
+      "validation_rows": 1240,
+      "baseline_macro_f1": 0.4447714953834423,
+      "feature_count": 35208,
+      "feature_names_sha256": "a28a7717d7c1aec1dd1df44c4673ba385eb16e76999b08e4fbf2aa99d0f5e14f",
+      "checkpoint": "models/exp567_lightgbm_parser_cosine/fold_02.txt",
+      "checkpoint_sha256": "3ff0cae017975d24d18aeab6a7eb0437c8fed7d53af94f8689f3822b9375aa1e",
+      "family_permutation_delta": {
+        "class_cosine": [
+          0.19446517822148024,
+          0.1841277005351043,
+          0.18948172022961435
+        ],
+        "fixed_hotspot": [
+          0.0361848758473709,
+          0.04839787844476301,
+          0.05288408829336555
+        ],
+        "fixed_pathway": [
+          0.038899190383660076,
+          0.031596531352792,
+          0.03968807685843234
+        ],
+        "gene_complex": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gene_frameshift": [
+          0.003968960568162816,
+          0.0004855837576931421,
+          0.001903695212130574
+        ],
+        "gene_max_residue_position": [
+          0.04028602307996676,
+          0.029207248980546774,
+          0.040606971537391956
+        ],
+        "gene_missense": [
+          0.009240217354639035,
+          0.011986044440489951,
+          0.010124492863232526
+        ],
+        "gene_missing": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gene_mutated": [
+          0.05313408021130239,
+          0.06287404249047257,
+          0.05561076363258416
+        ],
+        "gene_nonsense": [
+          -0.0031396819851292612,
+          -0.0021318952079881215,
+          -0.0031289621858507366
+        ],
+        "gene_synonymous": [
+          0.010270050197845937,
+          0.00968810061614328,
+          0.007389984184752785
+        ],
+        "sample_aggregate": [
+          0.09920461875944686,
+          0.08604256441937802,
+          0.09124103420061075
+        ]
+      }
+    },
+    {
+      "fold": 3,
+      "validation_rows": 1240,
+      "baseline_macro_f1": 0.45374364869487144,
+      "feature_count": 35208,
+      "feature_names_sha256": "a145c4168db4b6ca696e9bbf9cd3408783276fd8776deddf4571eb9d7aa8a9ae",
+      "checkpoint": "models/exp567_lightgbm_parser_cosine/fold_03.txt",
+      "checkpoint_sha256": "dc5d14604b9ea7ff291cd878e1654831d8758b323a07a73dcf3f53d4be34c99f",
+      "family_permutation_delta": {
+        "class_cosine": [
+          0.2296094591972527,
+          0.22048125145096562,
+          0.21756452540715354
+        ],
+        "fixed_hotspot": [
+          0.024750922116306695,
+          0.03114247224581429,
+          0.03356632279510707
+        ],
+        "fixed_pathway": [
+          0.034261794255991684,
+          0.02414915073570828,
+          0.03154061181293771
+        ],
+        "gene_complex": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gene_frameshift": [
+          0.005960613122014291,
+          0.006141368612151421,
+          0.003989873195285432
+        ],
+        "gene_max_residue_position": [
+          0.03734865587529068,
+          0.034200017662465554,
+          0.03369100034550332
+        ],
+        "gene_missense": [
+          0.018987072699122143,
+          0.01632654994061039,
+          0.016381347179478367
+        ],
+        "gene_missing": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gene_mutated": [
+          0.09197809447086419,
+          0.07244875519863331,
+          0.06472080753960863
+        ],
+        "gene_nonsense": [
+          0.0025856588372754064,
+          0.0020895796246244713,
+          0.00270898447463791
+        ],
+        "gene_synonymous": [
+          0.0034579521496481136,
+          0.003409163924906644,
+          0.0011599455682603232
+        ],
+        "sample_aggregate": [
+          0.10362140289672511,
+          0.09338766532834109,
+          0.10945917696450469
+        ]
+      }
+    },
+    {
+      "fold": 4,
+      "validation_rows": 1240,
+      "baseline_macro_f1": 0.44058739086599313,
+      "feature_count": 35207,
+      "feature_names_sha256": "bd1e88059b60c428c9a3f30b07bb360c7385926a4369b54ac449a649a7f3413e",
+      "checkpoint": "models/exp567_lightgbm_parser_cosine/fold_04.txt",
+      "checkpoint_sha256": "f01a56f32159895587c46b17b9eead3fb2d8a3e3f74e0bcc810fcc0623296e21",
+      "family_permutation_delta": {
+        "class_cosine": [
+          0.21311682679621738,
+          0.20087049706627397,
+          0.18994278320058805
+        ],
+        "fixed_hotspot": [
+          0.034198865002342094,
+          0.03322824879812458,
+          0.021722582116306455
+        ],
+        "fixed_pathway": [
+          0.032296785724097776,
+          0.027634369127761516,
+          0.019518262220716842
+        ],
+        "gene_complex": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gene_frameshift": [
+          0.006419498633066845,
+          0.004772213509083967,
+          0.005681713541101863
+        ],
+        "gene_max_residue_position": [
+          0.02883205418253687,
+          0.03296213303842077,
+          0.02777682296365641
+        ],
+        "gene_missense": [
+          0.011691857918566417,
+          0.009812577996329508,
+          0.013202792716240863
+        ],
+        "gene_missing": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gene_mutated": [
+          0.06081295150481547,
+          0.06557126713641742,
+          0.05313040856481055
+        ],
+        "gene_nonsense": [
+          0.010044054894969068,
+          0.008990063950924498,
+          0.008677358599052665
+        ],
+        "gene_synonymous": [
+          0.011853603325121809,
+          0.0084505174922338,
+          0.008074891774985715
+        ],
+        "sample_aggregate": [
+          0.09979748418040951,
+          0.08528210882549131,
+          0.09566977030947982
+        ]
+      }
+    }
+  ],
+  "family_importance": [
+    {
+      "family": "class_cosine",
+      "feature_count": 26,
+      "gain": 937618.1849004442,
+      "gain_share": 0.46067073939148434,
+      "split_count": 178529,
+      "split_share": 0.5454831554053642,
+      "permutation_macro_f1_delta_mean": 0.20361231479665234,
+      "permutation_macro_f1_delta_std": 0.013476753551866194,
+      "permutation_macro_f1_delta_min": 0.1841277005351043,
+      "permutation_macro_f1_delta_max": 0.2296094591972527,
+      "permutation_evaluations": 15
+    },
+    {
+      "family": "sample_aggregate",
+      "feature_count": 12,
+      "gain": 251174.2236700338,
+      "gain_share": 0.12340696586046097,
+      "split_count": 32266,
+      "split_share": 0.098586557322953,
+      "permutation_macro_f1_delta_mean": 0.09154554548184564,
+      "permutation_macro_f1_delta_std": 0.011228360526041344,
+      "permutation_macro_f1_delta_min": 0.0663241722676674,
+      "permutation_macro_f1_delta_max": 0.10945917696450469,
+      "permutation_evaluations": 15
+    },
+    {
+      "family": "gene_mutated",
+      "feature_count": 4384,
+      "gain": 210504.18683383102,
+      "gain_share": 0.10342495586734035,
+      "split_count": 22285,
+      "split_share": 0.0680902941158474,
+      "permutation_macro_f1_delta_mean": 0.06314780238928679,
+      "permutation_macro_f1_delta_std": 0.009915602857081488,
+      "permutation_macro_f1_delta_min": 0.05057819001068481,
+      "permutation_macro_f1_delta_max": 0.09197809447086419,
+      "permutation_evaluations": 15
+    },
+    {
+      "family": "fixed_hotspot",
+      "feature_count": 35,
+      "gain": 102465.01200828276,
+      "gain_share": 0.050343128582371596,
+      "split_count": 4519,
+      "split_share": 0.01380749558490128,
+      "permutation_macro_f1_delta_mean": 0.036481781745940335,
+      "permutation_macro_f1_delta_std": 0.009423366251650923,
+      "permutation_macro_f1_delta_min": 0.021722582116306455,
+      "permutation_macro_f1_delta_max": 0.05288408829336555,
+      "permutation_evaluations": 15
+    },
+    {
+      "family": "fixed_pathway",
+      "feature_count": 64,
+      "gain": 111432.30672169477,
+      "gain_share": 0.054748941473476614,
+      "split_count": 11599,
+      "split_share": 0.03543995160196282,
+      "permutation_macro_f1_delta_mean": 0.03512939934537736,
+      "permutation_macro_f1_delta_std": 0.007061285763862343,
+      "permutation_macro_f1_delta_min": 0.019518262220716842,
+      "permutation_macro_f1_delta_max": 0.04615398869696624,
+      "permutation_evaluations": 15
+    },
+    {
+      "family": "gene_max_residue_position",
+      "feature_count": 4384,
+      "gain": 280405.0668597926,
+      "gain_share": 0.13776866912317354,
+      "split_count": 60888,
+      "split_share": 0.18603912174673085,
+      "permutation_macro_f1_delta_mean": 0.03389608296388983,
+      "permutation_macro_f1_delta_std": 0.004853430517541663,
+      "permutation_macro_f1_delta_min": 0.026547317575942975,
+      "permutation_macro_f1_delta_max": 0.04247331393026438,
+      "permutation_evaluations": 15
+    },
+    {
+      "family": "gene_missense",
+      "feature_count": 4384,
+      "gain": 72205.70194585714,
+      "gain_share": 0.03547611878625318,
+      "split_count": 11974,
+      "split_share": 0.03658573846727441,
+      "permutation_macro_f1_delta_mean": 0.0136713640703284,
+      "permutation_macro_f1_delta_std": 0.004234263009308792,
+      "permutation_macro_f1_delta_min": 0.005040387078880215,
+      "permutation_macro_f1_delta_max": 0.02115222461520805,
+      "permutation_evaluations": 15
+    },
+    {
+      "family": "gene_synonymous",
+      "feature_count": 4384,
+      "gain": 45781.12978152558,
+      "gain_share": 0.022493193120899403,
+      "split_count": 2735,
+      "split_share": 0.008356605537664251,
+      "permutation_macro_f1_delta_mean": 0.008630356652273555,
+      "permutation_macro_f1_delta_std": 0.0038670532057770955,
+      "permutation_macro_f1_delta_min": 0.0011599455682603232,
+      "permutation_macro_f1_delta_max": 0.015573150538165936,
+      "permutation_evaluations": 15
+    },
+    {
+      "family": "gene_frameshift",
+      "feature_count": 4384,
+      "gain": 17123.4729436785,
+      "gain_share": 0.008413107882236759,
+      "split_count": 1694,
+      "split_share": 0.005175901199562463,
+      "permutation_macro_f1_delta_mean": 0.0033538874344231826,
+      "permutation_macro_f1_delta_std": 0.0025911325759137996,
+      "permutation_macro_f1_delta_min": -0.0016690421146670076,
+      "permutation_macro_f1_delta_max": 0.006419498633066845,
+      "permutation_evaluations": 15
+    },
+    {
+      "family": "gene_nonsense",
+      "feature_count": 4384,
+      "gain": 6623.338540546596,
+      "gain_share": 0.0032541799123037346,
+      "split_count": 797,
+      "split_share": 0.002435179017739835,
+      "permutation_macro_f1_delta_mean": 0.0019961571957179958,
+      "permutation_macro_f1_delta_std": 0.004224182654250891,
+      "permutation_macro_f1_delta_min": -0.0031396819851292612,
+      "permutation_macro_f1_delta_max": 0.010044054894969068,
+      "permutation_evaluations": 15
+    },
+    {
+      "family": "gene_complex",
+      "feature_count": 4384,
+      "gain": 0.0,
+      "gain_share": 0.0,
+      "split_count": 0,
+      "split_share": 0.0,
+      "permutation_macro_f1_delta_mean": 0.0,
+      "permutation_macro_f1_delta_std": 0.0,
+      "permutation_macro_f1_delta_min": 0.0,
+      "permutation_macro_f1_delta_max": 0.0,
+      "permutation_evaluations": 15
+    },
+    {
+      "family": "gene_missing",
+      "feature_count": 4384,
+      "gain": 0.0,
+      "gain_share": 0.0,
+      "split_count": 0,
+      "split_share": 0.0,
+      "permutation_macro_f1_delta_mean": 0.0,
+      "permutation_macro_f1_delta_std": 0.0,
+      "permutation_macro_f1_delta_min": 0.0,
+      "permutation_macro_f1_delta_max": 0.0,
+      "permutation_evaluations": 15
+    }
+  ],
+  "top_features": [
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__SKCM",
+      "family": "class_cosine",
+      "gain": 104294.40139046905,
+      "gain_share": 0.05124194451075099,
+      "split_count": 11688,
+      "split_share": 0.03571188501799649
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__CESC",
+      "family": "class_cosine",
+      "gain": 67016.27119315369,
+      "gain_share": 0.03292644671251588,
+      "split_count": 9240,
+      "split_share": 0.028232188361249792
+    },
+    {
+      "feature": "sample__total_variant_count",
+      "family": "sample_aggregate",
+      "gain": 56299.69632810168,
+      "gain_share": 0.027661177174946174,
+      "split_count": 4777,
+      "split_share": 0.014595796948234877
+    },
+    {
+      "feature": "sample__mutated_gene_count",
+      "family": "sample_aggregate",
+      "gain": 55307.799949686276,
+      "gain_share": 0.027173838463514424,
+      "split_count": 5898,
+      "split_share": 0.018020935817602952
+    },
+    {
+      "feature": "hotspot__IDH1_132",
+      "family": "fixed_hotspot",
+      "gain": 52662.985308378935,
+      "gain_share": 0.025874387646555447,
+      "split_count": 648,
+      "split_share": 0.001979919703256479
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__BLCA",
+      "family": "class_cosine",
+      "gain": 47609.78438515391,
+      "gain_share": 0.02339164803774232,
+      "split_count": 8000,
+      "split_share": 0.0244434531266232
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__LAML",
+      "family": "class_cosine",
+      "gain": 47120.02995572984,
+      "gain_share": 0.02315102180122474,
+      "split_count": 9514,
+      "split_share": 0.029069376630836637
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__TGCT",
+      "family": "class_cosine",
+      "gain": 42308.367803019006,
+      "gain_share": 0.020786955065651903,
+      "split_count": 7891,
+      "split_share": 0.024110411077772956
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__PRAD",
+      "family": "class_cosine",
+      "gain": 42185.6009849966,
+      "gain_share": 0.020726637249997414,
+      "split_count": 7997,
+      "split_share": 0.024434286831700715
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__THCA",
+      "family": "class_cosine",
+      "gain": 41445.59130536567,
+      "gain_share": 0.020363055557830648,
+      "split_count": 11082,
+      "split_share": 0.033860293443654786
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__LGG",
+      "family": "class_cosine",
+      "gain": 41116.043751564226,
+      "gain_share": 0.020201142192967224,
+      "split_count": 9539,
+      "split_share": 0.029145762421857336
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__LUAD",
+      "family": "class_cosine",
+      "gain": 37070.65626979264,
+      "gain_share": 0.018213561669930923,
+      "split_count": 5074,
+      "split_share": 0.015503260145560763
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__PAAD",
+      "family": "class_cosine",
+      "gain": 36008.692395234044,
+      "gain_share": 0.01769179738338192,
+      "split_count": 6828,
+      "split_share": 0.0208624872435729
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__COAD",
+      "family": "class_cosine",
+      "gain": 35873.0625011455,
+      "gain_share": 0.01762515967882418,
+      "split_count": 6560,
+      "split_share": 0.020043631563831023
+    },
+    {
+      "feature": "sample__frameshift_count",
+      "family": "sample_aggregate",
+      "gain": 35117.392924674554,
+      "gain_share": 0.01725388396325614,
+      "split_count": 4900,
+      "split_share": 0.014971615040056709
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__LIHC",
+      "family": "class_cosine",
+      "gain": 34722.68694247934,
+      "gain_share": 0.01705995694734676,
+      "split_count": 5367,
+      "split_share": 0.01639850161632334
+    },
+    {
+      "feature": "VHL__mutated",
+      "family": "gene_mutated",
+      "gain": 33145.10004392266,
+      "gain_share": 0.01628485666162695,
+      "split_count": 743,
+      "split_share": 0.0022701857091351296
+    },
+    {
+      "feature": "sample__pathway_wnt__lof_gene_count",
+      "family": "fixed_pathway",
+      "gain": 32340.81306720525,
+      "gain_share": 0.015889694236010502,
+      "split_count": 333,
+      "split_share": 0.0010174587363956907
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__UCEC",
+      "family": "class_cosine",
+      "gain": 32073.020499002538,
+      "gain_share": 0.015758122342051782,
+      "split_count": 6668,
+      "split_share": 0.020373618181040436
+    },
+    {
+      "feature": "sample__synonymous_count",
+      "family": "sample_aggregate",
+      "gain": 31072.57553673559,
+      "gain_share": 0.01526658353882674,
+      "split_count": 4638,
+      "split_share": 0.014171091950159798
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__KIRC",
+      "family": "class_cosine",
+      "gain": 30906.494528825977,
+      "gain_share": 0.015184984587414841,
+      "split_count": 5189,
+      "split_share": 0.015854634784255972
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__GBMLGG",
+      "family": "class_cosine",
+      "gain": 30564.408712027827,
+      "gain_share": 0.0150169109208653,
+      "split_count": 6873,
+      "split_share": 0.020999981667410156
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__BRCA",
+      "family": "class_cosine",
+      "gain": 28370.046074958926,
+      "gain_share": 0.01393877626563897,
+      "split_count": 5630,
+      "split_share": 0.017202080137861075
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__PCPG",
+      "family": "class_cosine",
+      "gain": 28138.087931089103,
+      "gain_share": 0.013824810547647127,
+      "split_count": 7764,
+      "split_share": 0.023722371259387812
+    },
+    {
+      "feature": "sample__missense_count",
+      "family": "sample_aggregate",
+      "gain": 28034.244651067595,
+      "gain_share": 0.013773790248170508,
+      "split_count": 5168,
+      "split_share": 0.015790470719798586
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__ACC",
+      "family": "class_cosine",
+      "gain": 27558.270826518885,
+      "gain_share": 0.013539934700979805,
+      "split_count": 7272,
+      "split_share": 0.022219098892100487
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__SARC",
+      "family": "class_cosine",
+      "gain": 27269.168636099843,
+      "gain_share": 0.013397892959506778,
+      "split_count": 5446,
+      "split_share": 0.01663988071594874
+    },
+    {
+      "feature": "TP53__mutated",
+      "family": "gene_mutated",
+      "gain": 27084.821449384093,
+      "gain_share": 0.013307319465757719,
+      "split_count": 1915,
+      "split_share": 0.005851151592185428
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__THYM",
+      "family": "class_cosine",
+      "gain": 27044.638957086485,
+      "gain_share": 0.013287576996237147,
+      "split_count": 6831,
+      "split_share": 0.020871653538495384
+    },
+    {
+      "feature": "PTEN__mutated",
+      "family": "gene_mutated",
+      "gain": 26923.04944702983,
+      "gain_share": 0.013227837615749347,
+      "split_count": 531,
+      "split_share": 0.0016224342012796148
+    },
+    {
+      "feature": "hotspot__BRAF_600",
+      "family": "fixed_hotspot",
+      "gain": 24241.83710990101,
+      "gain_share": 0.011910503876171919,
+      "split_count": 693,
+      "split_share": 0.0021174141270937346
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__STES",
+      "family": "class_cosine",
+      "gain": 24034.668423342984,
+      "gain_share": 0.01180871771891476,
+      "split_count": 4836,
+      "split_share": 0.014776067415043724
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__DLBC",
+      "family": "class_cosine",
+      "gain": 23257.003554183524,
+      "gain_share": 0.01142663527208966,
+      "split_count": 6011,
+      "split_share": 0.018366199593016507
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__LUSC",
+      "family": "class_cosine",
+      "gain": 22265.732607783284,
+      "gain_share": 0.010939603848030856,
+      "split_count": 4238,
+      "split_share": 0.01294891929382864
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__HNSC",
+      "family": "class_cosine",
+      "gain": 20341.31171715213,
+      "gain_share": 0.009994097021409737,
+      "split_count": 4747,
+      "split_share": 0.01450413399901004
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__KIPAN",
+      "family": "class_cosine",
+      "gain": 20041.781679593492,
+      "gain_share": 0.009846931868158418,
+      "split_count": 4051,
+      "split_share": 0.012377553576993822
+    },
+    {
+      "feature": "hotspot__known_hotspot_total_count",
+      "family": "fixed_hotspot",
+      "gain": 19465.475542261673,
+      "gain_share": 0.009563781030561675,
+      "split_count": 2300,
+      "split_share": 0.00702749277390417
+    },
+    {
+      "feature": "sample__parser_v4_class_profile_cosine__OV",
+      "family": "class_cosine",
+      "gain": 18982.361874675844,
+      "gain_share": 0.00932641753437423,
+      "split_count": 4193,
+      "split_share": 0.012811424869991383
+    },
+    {
+      "feature": "sample__pathway_cell_cycle__mutated_gene_count",
+      "family": "fixed_pathway",
+      "gain": 15128.180966205895,
+      "gain_share": 0.007432780660168429,
+      "split_count": 1596,
+      "split_share": 0.004876468898761328
+    },
+    {
+      "feature": "sample__pathway_tp53__mutated_gene_count",
+      "family": "fixed_pathway",
+      "gain": 14977.131849363446,
+      "gain_share": 0.007358567180245757,
+      "split_count": 1225,
+      "split_share": 0.003742903760014177
+    },
+    {
+      "feature": "sample__multi_variant_gene_count",
+      "family": "sample_aggregate",
+      "gain": 13124.81295220973,
+      "gain_share": 0.006448485518347076,
+      "split_count": 2457,
+      "split_share": 0.00750719554151415
+    },
+    {
+      "feature": "APC__mutated",
+      "family": "gene_mutated",
+      "gain": 12325.348916940391,
+      "gain_share": 0.006055692701211675,
+      "split_count": 295,
+      "split_share": 0.0009013523340442304
+    },
+    {
+      "feature": "SOWAHC__synonymous",
+      "family": "gene_synonymous",
+      "gain": 12048.22848366201,
+      "gain_share": 0.005919537838865021,
+      "split_count": 185,
+      "split_share": 0.0005652548535531615
+    },
+    {
+      "feature": "PLEC__synonymous",
+      "family": "gene_synonymous",
+      "gain": 11938.486315645278,
+      "gain_share": 0.005865619296651529,
+      "split_count": 134,
+      "split_share": 0.00040942783987093855
+    },
+    {
+      "feature": "TP53__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 10961.024421120965,
+      "gain_share": 0.005385372538505165,
+      "split_count": 2977,
+      "split_share": 0.009096019994744657
+    },
+    {
+      "feature": "PIK3CA__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 10431.466730130836,
+      "gain_share": 0.00512519015617992,
+      "split_count": 1098,
+      "split_share": 0.003354863941629034
+    },
+    {
+      "feature": "sample__mutated_gene_count_log1p",
+      "family": "sample_aggregate",
+      "gain": 10344.603268260136,
+      "gain_share": 0.005082512384086231,
+      "split_count": 950,
+      "split_share": 0.002902660058786505
+    },
+    {
+      "feature": "sample__total_variant_count_log1p",
+      "family": "sample_aggregate",
+      "gain": 10069.099389681593,
+      "gain_share": 0.0049471517676926025,
+      "split_count": 830,
+      "split_share": 0.0025360082618871567
+    },
+    {
+      "feature": "sample__nonsense_count",
+      "family": "sample_aggregate",
+      "gain": 8961.752191316104,
+      "gain_share": 0.004403089738127463,
+      "split_count": 2066,
+      "split_share": 0.006312521769950441
+    },
+    {
+      "feature": "BRAF__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 8720.86202507466,
+      "gain_share": 0.004284735537257984,
+      "split_count": 402,
+      "split_share": 0.0012282835196128156
+    },
+    {
+      "feature": "BTG2__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 8698.46130824089,
+      "gain_share": 0.004273729612935166,
+      "split_count": 150,
+      "split_share": 0.000458314746124185
+    },
+    {
+      "feature": "sample__pathway_pi3k__mutated_gene_count",
+      "family": "fixed_pathway",
+      "gain": 8004.1290917424485,
+      "gain_share": 0.00393259018037219,
+      "split_count": 923,
+      "split_share": 0.0028201634044841516
+    },
+    {
+      "feature": "IDH1__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 7712.500581011176,
+      "gain_share": 0.003789307206737802,
+      "split_count": 103,
+      "split_share": 0.00031470945900527366
+    },
+    {
+      "feature": "CTNNB1__missense",
+      "family": "gene_missense",
+      "gain": 7129.430705010891,
+      "gain_share": 0.003502833207812032,
+      "split_count": 373,
+      "split_share": 0.0011396760020288067
+    },
+    {
+      "feature": "PTEN__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 6272.737710997462,
+      "gain_share": 0.003081922648120216,
+      "split_count": 495,
+      "split_share": 0.0015124386622098105
+    },
+    {
+      "feature": "IDH1__missense",
+      "family": "gene_missense",
+      "gain": 5608.272373229265,
+      "gain_share": 0.0027554574159189132,
+      "split_count": 137,
+      "split_share": 0.00041859413479342224
+    },
+    {
+      "feature": "NPM1__mutated",
+      "family": "gene_mutated",
+      "gain": 5541.50474126637,
+      "gain_share": 0.0027226531306788274,
+      "split_count": 377,
+      "split_share": 0.0011518977285921183
+    },
+    {
+      "feature": "sample__pathway_pi3k__missense_gene_count",
+      "family": "fixed_pathway",
+      "gain": 5506.134891076013,
+      "gain_share": 0.002705275209365273,
+      "split_count": 675,
+      "split_share": 0.0020624163575588324
+    },
+    {
+      "feature": "sample__pathway_tp53__lof_gene_count",
+      "family": "fixed_pathway",
+      "gain": 5401.353209538385,
+      "gain_share": 0.002653793854282823,
+      "split_count": 283,
+      "split_share": 0.0008646871543542957
+    },
+    {
+      "feature": "NPM1__frameshift",
+      "family": "gene_frameshift",
+      "gain": 5168.989430859685,
+      "gain_share": 0.0025396288397219312,
+      "split_count": 77,
+      "split_share": 0.0002352682363437483
+    },
+    {
+      "feature": "IDH1__mutated",
+      "family": "gene_mutated",
+      "gain": 5162.839294999838,
+      "gain_share": 0.0025366071538379113,
+      "split_count": 427,
+      "split_share": 0.001304669310633513
+    },
+    {
+      "feature": "BTG2__mutated",
+      "family": "gene_mutated",
+      "gain": 5070.184912741184,
+      "gain_share": 0.002491084185672051,
+      "split_count": 70,
+      "split_share": 0.000213880214857953
+    },
+    {
+      "feature": "CMPK2__synonymous",
+      "family": "gene_synonymous",
+      "gain": 5050.812082290649,
+      "gain_share": 0.002481565923045029,
+      "split_count": 94,
+      "split_share": 0.0002872105742378226
+    },
+    {
+      "feature": "LRIG1__missense",
+      "family": "gene_missense",
+      "gain": 4780.220720361918,
+      "gain_share": 0.0023486189252370747,
+      "split_count": 148,
+      "split_share": 0.00045220388284252915
+    },
+    {
+      "feature": "sample__pathway_wnt__mutated_gene_count",
+      "family": "fixed_pathway",
+      "gain": 4705.910316896625,
+      "gain_share": 0.002312108724112434,
+      "split_count": 796,
+      "split_share": 0.0024321235860990083
+    },
+    {
+      "feature": "VHL__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 4428.854798525572,
+      "gain_share": 0.00217598575577001,
+      "split_count": 306,
+      "split_share": 0.0009349620820933373
+    },
+    {
+      "feature": "EGFR__missense",
+      "family": "gene_missense",
+      "gain": 4232.091748218983,
+      "gain_share": 0.0020793120976334793,
+      "split_count": 309,
+      "split_share": 0.000944128377015821
+    },
+    {
+      "feature": "RYR2__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 4201.994821988046,
+      "gain_share": 0.0020645248702913723,
+      "split_count": 889,
+      "split_share": 0.0027162787286960028
+    },
+    {
+      "feature": "B2M__mutated",
+      "family": "gene_mutated",
+      "gain": 4197.305033892393,
+      "gain_share": 0.0020622206827399722,
+      "split_count": 102,
+      "split_share": 0.0003116540273644458
+    },
+    {
+      "feature": "sample__pathway_rtk_ras__mutated_gene_count",
+      "family": "fixed_pathway",
+      "gain": 4124.436846718192,
+      "gain_share": 0.002026419071589245,
+      "split_count": 1016,
+      "split_share": 0.003104318547081146
+    },
+    {
+      "feature": "PLEC__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 4114.349844044074,
+      "gain_share": 0.002021463123576544,
+      "split_count": 430,
+      "split_share": 0.0013138356055559968
+    },
+    {
+      "feature": "BTG1__mutated",
+      "family": "gene_mutated",
+      "gain": 3878.3996408581734,
+      "gain_share": 0.0019055360262658608,
+      "split_count": 101,
+      "split_share": 0.0003085985957236179
+    },
+    {
+      "feature": "KIT__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 3716.225239135325,
+      "gain_share": 0.0018258564693255602,
+      "split_count": 366,
+      "split_share": 0.0011182879805430113
+    },
+    {
+      "feature": "MYC__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 3580.1359924674034,
+      "gain_share": 0.0017589930755738722,
+      "split_count": 72,
+      "split_share": 0.00021999107813960877
+    },
+    {
+      "feature": "APC__nonsense",
+      "family": "gene_nonsense",
+      "gain": 3414.274401552975,
+      "gain_share": 0.001677501928160482,
+      "split_count": 129,
+      "split_share": 0.0003941506816667991
+    },
+    {
+      "feature": "PCLO__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 3329.867659684038,
+      "gain_share": 0.0016360311921907885,
+      "split_count": 668,
+      "split_share": 0.002041028336073037
+    },
+    {
+      "feature": "PIK3CA__missense",
+      "family": "gene_missense",
+      "gain": 3320.447118639946,
+      "gain_share": 0.0016314026902289687,
+      "split_count": 293,
+      "split_share": 0.0008952414707625746
+    },
+    {
+      "feature": "KMT2D__mutated",
+      "family": "gene_mutated",
+      "gain": 3301.8297803085297,
+      "gain_share": 0.001622255616129136,
+      "split_count": 312,
+      "split_share": 0.0009532946719383047
+    },
+    {
+      "feature": "CTNNB1__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 3212.9024797054008,
+      "gain_share": 0.0015785638384091018,
+      "split_count": 355,
+      "split_share": 0.0010846782324939045
+    },
+    {
+      "feature": "ATRX__mutated",
+      "family": "gene_mutated",
+      "gain": 3130.6222616285086,
+      "gain_share": 0.001538137906500796,
+      "split_count": 471,
+      "split_share": 0.0014391083028299407
+    },
+    {
+      "feature": "EGFR__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 3069.6658509522676,
+      "gain_share": 0.0015081887915741733,
+      "split_count": 518,
+      "split_share": 0.001582713589948852
+    },
+    {
+      "feature": "NFKB2__synonymous",
+      "family": "gene_synonymous",
+      "gain": 2838.127222329378,
+      "gain_share": 0.0013944291898907628,
+      "split_count": 104,
+      "split_share": 0.0003177648906461016
+    },
+    {
+      "feature": "SYNE1__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 2756.931896178052,
+      "gain_share": 0.0013545362872832525,
+      "split_count": 714,
+      "split_share": 0.0021815781915511204
+    },
+    {
+      "feature": "sample__pathway_rtk_ras__missense_gene_count",
+      "family": "fixed_pathway",
+      "gain": 2724.23739862442,
+      "gain_share": 0.0013384728207201933,
+      "split_count": 642,
+      "split_share": 0.001961587113411512
+    },
+    {
+      "feature": "SPTA1__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 2663.0869746310636,
+      "gain_share": 0.001308428383134852,
+      "split_count": 630,
+      "split_share": 0.0019249219337215768
+    },
+    {
+      "feature": "hotspot__PIK3CA_1047",
+      "family": "fixed_hotspot",
+      "gain": 2600.9148666858673,
+      "gain_share": 0.0012778819716020148,
+      "split_count": 134,
+      "split_share": 0.00040942783987093855
+    },
+    {
+      "feature": "sample__pathway_cell_cycle__lof_gene_count",
+      "family": "fixed_pathway",
+      "gain": 2559.558317966759,
+      "gain_share": 0.0012575626644640732,
+      "split_count": 329,
+      "split_share": 0.001005237009832379
+    },
+    {
+      "feature": "CDKN1A__mutated",
+      "family": "gene_mutated",
+      "gain": 2541.1811425983906,
+      "gain_share": 0.0012485335872755028,
+      "split_count": 191,
+      "split_share": 0.0005835874433981289
+    },
+    {
+      "feature": "KMT2D__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 2536.639854597859,
+      "gain_share": 0.0012463023608182038,
+      "split_count": 477,
+      "split_share": 0.0014574408926749081
+    },
+    {
+      "feature": "TNFAIP3__mutated",
+      "family": "gene_mutated",
+      "gain": 2510.9555501937866,
+      "gain_share": 0.0012336831436452389,
+      "split_count": 59,
+      "split_share": 0.0001802704668088461
+    },
+    {
+      "feature": "DST__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 2492.527535535395,
+      "gain_share": 0.0012246290880873257,
+      "split_count": 584,
+      "split_share": 0.0017843720782434935
+    },
+    {
+      "feature": "MAP1B__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 2367.1402611732483,
+      "gain_share": 0.001163023789341092,
+      "split_count": 251,
+      "split_share": 0.0007669133418478028
+    },
+    {
+      "feature": "sample__multi_variant_gene_count_log1p",
+      "family": "sample_aggregate",
+      "gain": 2335.9224313870072,
+      "gain_share": 0.0011476858394576306,
+      "split_count": 471,
+      "split_share": 0.0014391083028299407
+    },
+    {
+      "feature": "GATA3__frameshift",
+      "family": "gene_frameshift",
+      "gain": 2265.190356016159,
+      "gain_share": 0.0011129337431517738,
+      "split_count": 261,
+      "split_share": 0.0007974676582560819
+    },
+    {
+      "feature": "IDH2__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 2132.466435134411,
+      "gain_share": 0.0010477238018855176,
+      "split_count": 300,
+      "split_share": 0.00091662949224837
+    },
+    {
+      "feature": "FBXW7__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 2118.3665146902204,
+      "gain_share": 0.0010407962263745158,
+      "split_count": 341,
+      "split_share": 0.0010419021895223138
+    },
+    {
+      "feature": "CDH1__mutated",
+      "family": "gene_mutated",
+      "gain": 2110.098051249981,
+      "gain_share": 0.001036733763393328,
+      "split_count": 256,
+      "split_share": 0.0007821905000519423
+    },
+    {
+      "feature": "LRIG1__max_residue_position",
+      "family": "gene_max_residue_position",
+      "gain": 2081.9438730180264,
+      "gain_share": 0.0010229010473560944,
+      "split_count": 56,
+      "split_share": 0.0001711041718863624
+    },
+    {
+      "feature": "SPOP__mutated",
+      "family": "gene_mutated",
+      "gain": 2066.404344290495,
+      "gain_share": 0.0010152661632380274,
+      "split_count": 166,
+      "split_share": 0.0005072016523774314
+    },
+    {
+      "feature": "BRAF__missense",
+      "family": "gene_missense",
+      "gain": 2065.6120089292526,
+      "gain_share": 0.0010148768728823288,
+      "split_count": 85,
+      "split_share": 0.00025971168947037146
+    }
+  ]
+}
