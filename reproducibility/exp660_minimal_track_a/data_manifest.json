@@ -1,0 +1,47 @@
+{
+  "verified_at": "2026-08-06T13:31:46.888591+00:00",
+  "files": [
+    {
+      "path": "data/raw/train.csv",
+      "size_bytes": 82568501,
+      "sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+      "expected_sha256": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab"
+    },
+    {
+      "path": "data/raw/test.csv",
+      "size_bytes": 35068585,
+      "sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0",
+      "expected_sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+    },
+    {
+      "path": "data/raw/sample_submission.csv",
+      "size_bytes": 35656,
+      "sha256": "1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84",
+      "expected_sha256": "1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84"
+    },
+    {
+      "path": "data/splits/stratified_5fold_seed42.csv",
+      "size_bytes": 80621,
+      "sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf",
+      "expected_sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf"
+    },
+    {
+      "path": "data/processed/exp660_minimal_track_a_features/train_features.npz",
+      "size_bytes": 1655823,
+      "sha256": "139026dbea7f2c5f32fef560210e595f27d08b96076018bae84d1c033d611694",
+      "expected_sha256": "139026dbea7f2c5f32fef560210e595f27d08b96076018bae84d1c033d611694"
+    },
+    {
+      "path": "data/processed/exp660_minimal_track_a_features/test_features.npz",
+      "size_bytes": 1396393,
+      "sha256": "cf3f85369b7ee0fd8cb5ca9c22aa0393da6a801e6f069176850471fc9c2ff64f",
+      "expected_sha256": "cf3f85369b7ee0fd8cb5ca9c22aa0393da6a801e6f069176850471fc9c2ff64f"
+    },
+    {
+      "path": "data/processed/exp660_minimal_track_a_features/feature_names.json",
+      "size_bytes": 723150,
+      "sha256": "8ddde04496156f99dc831a656955098d0b5ecd1f4c5d1a0d17fdddd497847d64",
+      "expected_sha256": "8ddde04496156f99dc831a656955098d0b5ecd1f4c5d1a0d17fdddd497847d64"
+    }
+  ]
+}
