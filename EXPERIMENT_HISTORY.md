@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 129
+- 실제 실험 수: 130
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4533650721 (`EXP-589`, 원래 26-class 평가)
@@ -149,6 +149,7 @@
 | EXP-516 | COMPLETED | Kangho Park | #516 | EXP-374 + fold-train 하위 25% burden quantile 샘플에 balanced_sample_weight 1.5배 추가 곱(저burden 오분류 완화 가설) | 0.4221650046 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0046259222(게이트 +0.001 미달)·LUAD -0.0640/DLBC -0.0505 클래스 붕괴로 ARCHIVE; 표적 저burden 8클래스 중 4개만 개선(KIRC/LAML/THYM/KIPAN)·4개는 악화(GBMLGG/PRAD/PCPG/SARC)로 가설 부분 지지에 그침 | [보고서](reports/exp516_burden_weighted_sample_weight/README.md) |
 | EXP-596 | COMPLETED | 2heej | #596 | 동결 Feature Spec v1 + RandomForest (#505 스태킹 다양성 후보) | 0.4052772619 | 미제출 | INFERENCE_VERIFIED | CatBoost v1 최고 대비 -0.0141799675로 품질 게이트 미달, 오류 상관 0.7281·라벨 불일치율 30.87%로 다양성 게이트 통과 — 단독 후보 아님, #505 스태킹 다양성 후보로 채택 | [보고서](reports/exp596_random_forest_v1/README.md) |
 | EXP-604 | COMPLETED | Kangho-Park | #604 | EXP-374 OOF + KIPAN/KIRC·GBMLGG/LGG 쌍 내부 확률 재분배(재학습 없음, EXP-233/276/515 후속) | 0.4298798238 | 미제출 | NOT_STARTED | Macro F1 +0.0030889(5-fold 전부 개선)이나 Log Loss +0.0168970·fold std +0.0014154 악화·비대상 22클래스 절대 F1 변화 합 0.0223(허용치 1e-6)로 REJECTED — 확률 값은 대상 쌍 외 완전 불변이 검증됐지만(단위테스트) argmax 경쟁 때문에 분류 결과는 간접 영향받음을 확인, EXP-515(0.0994) 대비 손상은 4.5배 감소·DLBC는 완전 무영향 | [보고서](reports/exp604_pairwise_probability_redistribution/README.md) |
+| EXP-605 | COMPLETED | Kangho Park | #605 | EXP-374 + fold-train에서 train SUBCLASS가 저burden 8클래스(KIRC/KIPAN/GBMLGG/SARC/PRAD/PCPG/THYM/LAML)인 샘플에 balanced_sample_weight 1.2배 추가 곱(EXP-516 burden quantile 대신 클래스 멤버십 기준) | 0.4223194676 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0044714592(게이트 +0.001 미달)·fold std +0.0021112(EXP-516보다도 악화)·DLBC -0.0939 붕괴(EXP-516의 -0.0505보다 더 악화)로 ARCHIVE; "표적 8클래스만 직접 건드리면 LUAD/BLCA/DLBC는 안전할 것"이라는 원가설이 반증됨(LUAD -0.0518 여전히 하락, DLBC는 EXP-516보다 더 하락, BLCA만 개선) — 가중치 재분배의 zero-sum 성격 때문으로 추정 | [보고서](reports/exp605_class_scoped_sample_weight/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5307,3 +5308,91 @@ Cycle #170/173, POLE #181/226, functional_role_burden #257)에 이어 이번
   이전 세 실험보다 뚜렷이 개선됐다(비대상 손상 4.5배 감소, DLBC 완전
   보존, fold 개선 수 5/5) — 메커니즘 방향 자체는 옳고, `regularization_lambda`를
   키우거나 grid를 좁히는 후속 조정으로 남은 손상을 더 줄일 여지가 있다.
+
+### [EXP-605] 저burden 클래스 한정 sample weight 리페어 (클래스 멤버십 기준) — 기각(ARCHIVE)
+
+- 상태: COMPLETED
+- 실행자: Kangho Park
+- Issue/브랜치: #605 / `issue-605-class-scoped-sample-weight`
+- 소스 commit: `cc96de4bd84cd9272a4d1645d653f591389af75c`
+- 시작/종료: 2026-08-06T07:12:42.869155+00:00 /
+  2026-08-06T07:34:08.077254+00:00 (1285.63초)
+
+#### 실행
+
+- Config: `configs/exp605_class_scoped_sample_weight.yaml`
+- Metrics: `reports/exp605_class_scoped_sample_weight/metrics.json`
+- Report: `reports/exp605_class_scoped_sample_weight/README.md`
+- 부모: EXP-374(`configs/exp374_stop_isoform_residue_mask.yaml`)와 feature
+  set·모델 하이퍼파라미터·checkpoint 정책·fold·seed가 완전히 동일. EXP-516
+  (ARCHIVE)의 후속으로, `scripts/run_hotspot_xgb.py`의 기존
+  `fold_sample_weight_multiplier` 훅을 재사용하되 대상 선정 기준을 burden
+  quantile(클래스 무관)에서 **train SUBCLASS 클래스 멤버십**으로 바꿨다.
+  fold-train에서 라벨이 EXP-374 OOF 오답노트가 확정한 8개 저burden/고오분류
+  클래스(KIRC, KIPAN, GBMLGG, SARC, PRAD, PCPG, THYM, LAML) 중 하나인 샘플에만
+  기존 `balanced_sample_weight`를 1.2배(EXP-516의 1.5배보다 낮춤) 추가로
+  곱한다. 8개 클래스 목록과 1.2배 배율은 실행 전 사전 고정했고 결과를 본 뒤
+  조정하지 않았다.
+
+#### 결과
+
+- Fold Macro F1: 0.4130788120, 0.4130249943, 0.4210030633, 0.4193294509,
+  0.4418902046
+- OOF Macro F1: 0.4223194676 (fold 평균 0.4216653050, fold std 0.0106143692)
+- Accuracy / Log Loss: 0.4123528463 / 1.8581582308
+- EXP-374(0.4267909268) 대비: Macro F1 `-0.0044714592`, fold std
+  `+0.0021111524`, Log Loss `+0.0140933990`
+- EXP-516(0.4221650046) 대비: Macro F1 `+0.0001544630`(거의 동일), fold std
+  `+0.0010693264`(**EXP-516보다도 악화**), Log Loss `-0.0093641281`(개선)
+- 게이트(사전 고정): OOF Macro F1 ≥ +0.001 개선 **미달**; fold std 악화
+  <0.002 조건도 **위반**(EXP-374 대비 +0.0021112, EXP-516의 +0.0010418보다
+  악화); 클래스별 F1 `-0.05` 붕괴 없음 조건도 DLBC `-0.0939152683`로
+  **위반**
+- **DLBC/ACC F1 delta(필수 리포트 항목)**: DLBC EXP-374 대비
+  `-0.0939152683`(이번 실험에서 가장 크게 무너진 클래스, EXP-516의
+  `-0.0504926108`보다 거의 두 배 악화), ACC EXP-374 대비 `-0.0064123825`
+  (EXP-516의 `+0.0038935756`과 반대 방향이나 정도는 작음)
+- **LUAD/BLCA/DLBC 안정성(원가설 직접 검증)**: 8개 표적 클래스에 LUAD·BLCA·
+  DLBC가 없으므로 "직접 영향을 안 받을 것"이 설계 의도였으나, LUAD는
+  EXP-374 대비 여전히 `-0.0517704518` 하락(EXP-516의 `-0.0640359640`보다는
+  완화), DLBC는 `-0.0939152683`로 **EXP-516보다 더 악화**, BLCA만
+  `-0.0138059462`로 EXP-516의 `-0.0498084291`보다 뚜렷이 개선됐다. 3개 중
+  1개(BLCA)만 설계 의도대로 완화됐고 나머지 2개(특히 DLBC)는 오히려
+  EXP-516과 비슷하거나 더 나빴다 — **원가설 반증**
+- 가설 표적 저burden 8클래스(KIRC/KIPAN/GBMLGG/SARC/PRAD/PCPG/THYM/LAML)
+  개별 확인: SARC `+0.0201631539`(EXP-516에서는 `-0.0298091534`로 가장
+  크게 악화됐던 클래스가 완전히 반전), KIPAN `+0.0035279168`, PRAD
+  `+0.0011544202`, KIRC `+0.0005175091`(거의 0)는 개선; PCPG
+  `-0.0003680899`(거의 0), LAML `-0.0033909724`, GBMLGG `-0.0151474362`,
+  THYM `-0.0250301423`(EXP-516에서는 `+0.0121120709`로 개선이었던 클래스가
+  반전)는 악화 — EXP-516과 동일하게 8개 중 4개만 가설과 일치하지만, 개별
+  클래스의 방향은 SARC·THYM에서 완전히 뒤바뀌었다
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — 저장 checkpoint로 재추론한 submission
+  SHA-256이 원본과 byte-level 일치(`3d04f11160af7ad3b6e7c55aa9eb77c7cc54ca0967baf35bca8103da1da0edb8`),
+  test 라벨 일치율 100%, 확률 최대 차이 `1.46e-7`
+
+#### 산출물과 결론
+
+- Metrics/Report/Reproduction:
+  `reports/exp605_class_scoped_sample_weight/metrics.json`,
+  `reports/exp605_class_scoped_sample_weight/README.md`,
+  `reproducibility/exp605_class_scoped_sample_weight/`
+- 결론: **ARCHIVE**. 주 지표(OOF Macro F1), fold 안정성, 클래스 붕괴 방지
+  게이트가 모두 실패했고, EXP-516의 원인 분석에서 나온 "burden quantile
+  대신 클래스 멤버십을 쓰면 LUAD/BLCA/DLBC가 안전할 것"이라는 핵심 가설도
+  반증됐다 — DLBC는 목록에서 뺐음에도 EXP-516보다 더 크게 무너졌다.
+  `balanced_sample_weight`에 곱하는 배율을 부분집합(fold-train의 약 35%)에만
+  적용해도, 손실 함수 안에서 나머지 클래스들의 상대적 가중치 비중이
+  자동으로 줄어드는 zero-sum 구조 때문으로 추정된다(EXP-604의 확률
+  재정규화 zero-sum 문제와 같은 계열).
+
+#### 선택 메모
+
+`scripts/run_hotspot_xgb.py`의 `fold_sample_weight_multiplier` 훅은
+EXP-516이 이미 추가했고 이번 실험은 콜백 로직만 클래스 멤버십 기준으로
+교체해 재사용했다(기본값 `None`이면 기존 모든 실험의 동작을 바꾸지 않는
+additive 확장이며 `uv run pytest -q`로 회귀 여부를 재확인했다). "학습
+가중치" 축은 EXP-516·EXP-605 두 실험 모두 REJECTED/ARCHIVE로, 균일 고정
+배율 방식으로는 저burden/고오분류 클래스 문제를 해결하지 못했다는 결론이
+반복 확인됐다.
