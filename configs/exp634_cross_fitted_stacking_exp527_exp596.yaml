@@ -1,4 +1,7 @@
 run_mode: experiment
+record_role: official
+experiment_id: EXP-634
+issue_number: 634
 slug: cross_fitted_stacking_exp527_exp596
 seed: 42
 split:
