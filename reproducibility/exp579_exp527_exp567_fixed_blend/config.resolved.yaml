@@ -1,0 +1,67 @@
+experiment:
+  issue_number: 579
+  experiment_id: EXP-579
+  branch: issue-579-exp527-exp567-fixed-blend
+  owner: fabxoe
+  source_commit: 7f02fdab69b04cd1868de4e2ab313cb297d8ec80
+  dirty_worktree: false
+  started_at: '2026-08-06T03:16:19.427027+00:00'
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+class_order:
+- ACC
+- BLCA
+- BRCA
+- CESC
+- COAD
+- DLBC
+- GBMLGG
+- HNSC
+- KIPAN
+- KIRC
+- LAML
+- LGG
+- LIHC
+- LUAD
+- LUSC
+- OV
+- PAAD
+- PCPG
+- PRAD
+- SARC
+- SKCM
+- STES
+- TGCT
+- THCA
+- THYM
+- UCEC
+ensemble:
+  method: probability_mean
+  weights_fixed_before_evaluation: true
+  components:
+  - experiment_id: EXP-527
+    weight: 0.5
+    oof_probability_path: oof/exp527_parser_v4_class_cosine_loo.csv
+    test_probability_path: preds/exp527_parser_v4_class_cosine_loo_test_proba.csv
+    metrics_path: reports/exp527_parser_v4_class_cosine_loo/metrics.json
+    resolved_config_path: reproducibility/exp527_parser_v4_class_cosine_loo/config.resolved.yaml
+  - experiment_id: EXP-567
+    weight: 0.5
+    oof_probability_path: oof/exp567_lightgbm_parser_cosine.csv
+    test_probability_path: preds/exp567_lightgbm_parser_cosine_test_proba.csv
+    metrics_path: reports/exp567_lightgbm_parser_cosine/metrics.json
+    resolved_config_path: reproducibility/exp567_lightgbm_parser_cosine/config.resolved.yaml
+outputs:
+  oof: oof/exp579_exp527_exp567_fixed_blend.csv
+  test_probability: preds/exp579_exp527_exp567_fixed_blend_test_proba.csv
+  submission: submissions/exp579_exp527_exp567_fixed_blend.csv
+environment:
+  python: 3.11.10 (main, Oct 11 2024, 15:45:30) [Clang 15.0.0 (clang-1500.3.9.4)]
+  platform: macOS-26.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  uv_lock_sha256: bc7da4e6e1f133ee6b1f8c5cd4c86f9b87d336d686ceaacddbe20254b0771d23
+command: uv run python scripts/run_exp579_exp527_exp567_fixed_blend.py
