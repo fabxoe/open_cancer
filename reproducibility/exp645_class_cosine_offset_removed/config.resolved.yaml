@@ -1,0 +1,1522 @@
+experiment:
+  record_role: official
+  issue_number: 645
+  experiment_id: EXP-645
+  component_experiments: []
+  branch: issue-645-class-cosine-offset-removal
+  owner: 2heej
+  source_commit: 70831c143ce9fdc3b60650619f67856e7a8a675e
+  dirty_worktree: false
+  started_at: '2026-08-06T09:33:34.417139+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  sample_submission:
+    path: data/raw/sample_submission.csv
+    sha256: 1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+  model_class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+  target_aliases: {}
+  evaluation_class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+  method: StratifiedKFold
+  shuffle: true
+  seed: 42
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features: []
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features: []
+  position_missing_policy: zero
+  position_token_scope: include_complex
+  position_transform: raw
+  position_bin_width: null
+  position_semantics: protein residue indices explicitly written in source tokens;
+    no transcript, codon nucleotide, genomic coordinate, or protein-length inference
+  position_semantic_filter: null
+  co_mutation_pairs: []
+  co_mutation_semantics: fixed, literature-curated gene pairs (mutual exclusivity
+    or co-occurrence); gene-level 'any mutation' presence, not restricted to a specific
+    hotspot codon; not fit from this dataset's target or frequency
+  feature_factory_version: 1.1.0
+  feature_spec_sha256: b57037ced9412f2d37e2e52a74b7363f9550f4983530b489ddc8dad844468ab7
+  hotspot_features:
+  - hotspot__BRAF_600
+  - hotspot__CTNNB1_37
+  - hotspot__CTNNB1_45
+  - hotspot__EGFR_790
+  - hotspot__EGFR_858
+  - hotspot__GNAS_201
+  - hotspot__HRAS_12
+  - hotspot__HRAS_13
+  - hotspot__HRAS_61
+  - hotspot__IDH1_132
+  - hotspot__IDH2_140
+  - hotspot__IDH2_172
+  - hotspot__PIK3CA_545
+  - hotspot__PIK3CA_1047
+  - hotspot__TP53_175
+  - hotspot__TP53_245
+  - hotspot__TP53_248
+  - hotspot__TP53_273
+  - hotspot__TP53_282
+  - hotspot__PIK3CA_542
+  - hotspot__PIK3CA_546
+  - hotspot__PIK3CA_345
+  - hotspot__PTEN_130
+  - hotspot__PTEN_233
+  - hotspot__FBXW7_505
+  - hotspot__AKT1_17
+  - hotspot__U2AF1_34
+  - hotspot__APC_1450
+  - hotspot__APC_876
+  - hotspot__POLE_286
+  - hotspot__POLE_411
+  - hotspot__KIT_816
+  - hotspot__FGFR3_249
+  - hotspot__RAC1_29
+  - hotspot__known_hotspot_total_count
+  known_hotspots:
+  - gene: BRAF
+    position: 600
+    reference_aa: V
+  - gene: CTNNB1
+    position: 37
+    reference_aa: S
+  - gene: CTNNB1
+    position: 45
+    reference_aa: S
+  - gene: EGFR
+    position: 790
+    reference_aa: T
+  - gene: EGFR
+    position: 858
+    reference_aa: L
+  - gene: GNAS
+    position: 201
+    reference_aa: R
+  - gene: HRAS
+    position: 12
+    reference_aa: G
+  - gene: HRAS
+    position: 13
+    reference_aa: G
+  - gene: HRAS
+    position: 61
+    reference_aa: Q
+  - gene: IDH1
+    position: 132
+    reference_aa: R
+  - gene: IDH2
+    position: 140
+    reference_aa: R
+  - gene: IDH2
+    position: 172
+    reference_aa: R
+  - gene: PIK3CA
+    position: 545
+    reference_aa: E
+  - gene: PIK3CA
+    position: 1047
+    reference_aa: H
+  - gene: TP53
+    position: 175
+    reference_aa: R
+  - gene: TP53
+    position: 245
+    reference_aa: G
+  - gene: TP53
+    position: 248
+    reference_aa: R
+  - gene: TP53
+    position: 273
+    reference_aa: R
+  - gene: TP53
+    position: 282
+    reference_aa: R
+  - gene: PIK3CA
+    position: 542
+    reference_aa: E
+  - gene: PIK3CA
+    position: 546
+    reference_aa: Q
+  - gene: PIK3CA
+    position: 345
+    reference_aa: N
+  - gene: PTEN
+    position: 130
+    reference_aa: R
+  - gene: PTEN
+    position: 233
+    reference_aa: R
+  - gene: FBXW7
+    position: 505
+    reference_aa: R
+  - gene: AKT1
+    position: 17
+    reference_aa: E
+  - gene: U2AF1
+    position: 34
+    reference_aa: S
+  - gene: APC
+    position: 1450
+    reference_aa: R
+  - gene: APC
+    position: 876
+    reference_aa: R
+  - gene: POLE
+    position: 286
+    reference_aa: P
+  - gene: POLE
+    position: 411
+    reference_aa: V
+  - gene: KIT
+    position: 816
+    reference_aa: D
+  - gene: FGFR3
+    position: 249
+    reference_aa: S
+  - gene: RAC1
+    position: 29
+    reference_aa: P
+  hotspot_validation_note: The hotspot table is fixed before test transformation.
+    The original 19 and additional 15 positions are literature-defined; the config-driven
+    runner validates the additions using train rows only. Test data is not used to
+    select or filter the official list. A token counts only when both position and
+    reference AA match.
+  requested_families:
+    parent: exp374_stop_isoform_residue_mask
+    parser_v4_patient_semantic_vector:
+      enabled: true
+      definition_version: 1.0.0
+      fit_scope: stateless
+      include_directly_in_model: false
+    class_profile:
+      enabled: true
+      definition_version: 1.0.0
+      method: cosine
+      fit_scope: outer_train_only
+      train_transform: leave_one_out_target_class
+      validation_test_transform: full_outer_train_centroid
+      output_dimension: 26
+      zero_vector_policy: all_zero_scores
+      common_offset_removal:
+        enabled: true
+        method: row_wise_mean_centering
+        description: After computing the 26 raw cosine scores per row (identical to
+          EXP-527), subtract that row's own mean across the 26 scores before feeding
+          them to the model. This is a deterministic per-row transform with no fitted
+          parameters and no cross-row statistics, so it cannot leak across folds or
+          between train/validation/test.
+  hotspot_table: extended_34
+  hotspot_evidence_scope: additions_15
+  fold_train_hotspot_evidence:
+    '0':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 70
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 24
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 18
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 51
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 20
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 22
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 7
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 14
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 6
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 5
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 6
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 9
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 7
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 10
+      observed_reference_aas:
+      - P
+    '1':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 69
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 25
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 24
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 47
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 15
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 7
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 10
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 18
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 12
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 11
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 5
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 10
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 10
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 12
+      observed_reference_aas:
+      - P
+    '2':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 65
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 28
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 23
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 49
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 17
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 6
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 13
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 10
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 6
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 7
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 9
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 8
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 9
+      observed_reference_aas:
+      - P
+    '3':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 66
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 26
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 22
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 53
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 20
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 6
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 12
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 12
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 11
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 8
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 9
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 10
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 9
+      observed_reference_aas:
+      - P
+    '4':
+    - gene: PIK3CA
+      position: 542
+      expected_reference_aa: E
+      matching_train_rows: 66
+      observed_reference_aas:
+      - E
+    - gene: PIK3CA
+      position: 546
+      expected_reference_aa: Q
+      matching_train_rows: 21
+      observed_reference_aas:
+      - Q
+    - gene: PIK3CA
+      position: 345
+      expected_reference_aa: N
+      matching_train_rows: 25
+      observed_reference_aas:
+      - N
+    - gene: PTEN
+      position: 130
+      expected_reference_aa: R
+      matching_train_rows: 48
+      observed_reference_aas:
+      - R
+    - gene: PTEN
+      position: 233
+      expected_reference_aa: R
+      matching_train_rows: 16
+      observed_reference_aas:
+      - R
+    - gene: FBXW7
+      position: 505
+      expected_reference_aa: R
+      matching_train_rows: 20
+      observed_reference_aas:
+      - R
+    - gene: AKT1
+      position: 17
+      expected_reference_aa: E
+      matching_train_rows: 6
+      observed_reference_aas:
+      - E
+    - gene: U2AF1
+      position: 34
+      expected_reference_aa: S
+      matching_train_rows: 11
+      observed_reference_aas:
+      - S
+    - gene: APC
+      position: 1450
+      expected_reference_aa: R
+      matching_train_rows: 19
+      observed_reference_aas:
+      - R
+    - gene: APC
+      position: 876
+      expected_reference_aa: R
+      matching_train_rows: 8
+      observed_reference_aas:
+      - R
+    - gene: POLE
+      position: 286
+      expected_reference_aa: P
+      matching_train_rows: 11
+      observed_reference_aas:
+      - P
+    - gene: POLE
+      position: 411
+      expected_reference_aa: V
+      matching_train_rows: 6
+      observed_reference_aas:
+      - V
+    - gene: KIT
+      position: 816
+      expected_reference_aa: D
+      matching_train_rows: 7
+      observed_reference_aas:
+      - D
+    - gene: FGFR3
+      position: 249
+      expected_reference_aa: S
+      matching_train_rows: 9
+      observed_reference_aas:
+      - S
+    - gene: RAC1
+      position: 29
+      expected_reference_aa: P
+      matching_train_rows: 12
+      observed_reference_aas:
+      - P
+  minimum_matching_train_rows: 5
+  selection_uses_test_data: false
+feature_outputs:
+  train_features.npz:
+    path: data/processed/exp645_class_cosine_offset_removed_features/train_features.npz
+    sha256: 4c0349096a3117724951423c3a988f0348c7d2ccf7d612d6e7ca9137daba4541
+  test_features.npz:
+    path: data/processed/exp645_class_cosine_offset_removed_features/test_features.npz
+    sha256: 7b3ae75ec94b01d3f87070020ba14acc7936fa8d0033d481defe85aabe8df14e
+  feature_names.json:
+    path: data/processed/exp645_class_cosine_offset_removed_features/feature_names.json
+    sha256: 1975883276533b359c75cdff7f578ce115eeb613531fc80d1c3b4fefe8f7f17a
+model:
+  class: xgboost.XGBClassifier
+  parameters:
+    objective: multi:softprob
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    eval_metric: mlogloss
+    early_stopping_rounds: 30
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+    num_class: 26
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+  - exp374_stop_isoform_residue_mask
+  - parser_v4_26_class_cosine_profile_leave_one_out_offset_removed
+  fold_seeds:
+  - 42
+  - 43
+  - 44
+  - 45
+  - 46
+  command: uv run python scripts/run_exp645_class_cosine_offset_removed.py
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 08:56:36) [Clang 18.1.8 ]
+  platform: macOS-26.5.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: bc7da4e6e1f133ee6b1f8c5cd4c86f9b87d336d686ceaacddbe20254b0771d23
+fold_train_features:
+- fold: 0
+  feature_name_count: 88
+  feature_names_sha256: 7675757fe06b282da7c2b30f8a058065322817824d0f64f7835d2a240848b3b5
+  feature_name_preview:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__parser_v4_class_profile_cosine__STES__offset_removed
+  - sample__parser_v4_class_profile_cosine__TGCT__offset_removed
+  - sample__parser_v4_class_profile_cosine__THCA__offset_removed
+  - sample__parser_v4_class_profile_cosine__THYM__offset_removed
+  - sample__parser_v4_class_profile_cosine__UCEC__offset_removed
+  registry:
+    fixed_pathway_burden:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    pathway_mutation_type_composition:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 62
+      feature_names_sha256: 8e3d36fa136a0e8ae16654974565891578c4e3bcc58a87857b7913f98e60cfc7
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_count: ADAMTS5__complex
+        sample__pathway_hippo__complex_gene_count: TAOK2__complex
+        sample__pathway_myc__complex_gene_count: sample__missing_gene_count
+        sample__pathway_notch__complex_gene_count: CREBBP__complex
+        sample__pathway_nrf2__complex_gene_count: sample__missing_gene_count
+        sample__pathway_rtk_ras__complex_gene_count: GNG2__nonsense
+        sample__pathway_tgf_beta__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_count: ADAMTS5__complex
+    parser_v4_patient_semantic_vector:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 66242
+      feature_names_sha256: 6dc4d6b06401fa777a3225d544fcb390ad7e916ba8868002e2fdd0e6ee5dc2d7
+      fit_scope: stateless
+      external_knowledge: null
+      included_directly_in_model: false
+    parser_v4_class_profile_cosine:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 26
+      feature_names_sha256: 24aad664928896bfc7018310595d0d8b6ebf1f55128afd619f1af32feb2e1b21
+      fit_scope: fold_train
+      external_knowledge: null
+      profile_audit:
+        definition_version: 1.0.0
+        method: cosine
+        class_labels:
+        - ACC
+        - BLCA
+        - BRCA
+        - CESC
+        - COAD
+        - DLBC
+        - GBMLGG
+        - HNSC
+        - KIPAN
+        - KIRC
+        - LAML
+        - LGG
+        - LIHC
+        - LUAD
+        - LUSC
+        - OV
+        - PAAD
+        - PCPG
+        - PRAD
+        - SARC
+        - SKCM
+        - STES
+        - TGCT
+        - THCA
+        - THYM
+        - UCEC
+        class_support:
+          ACC: 58
+          BLCA: 83
+          BRCA: 629
+          CESC: 124
+          COAD: 178
+          DLBC: 30
+          GBMLGG: 369
+          HNSC: 179
+          KIPAN: 412
+          KIRC: 267
+          LAML: 127
+          LGG: 183
+          LIHC: 126
+          LUAD: 148
+          LUSC: 142
+          OV: 202
+          PAAD: 96
+          PCPG: 117
+          PRAD: 213
+          SARC: 158
+          SKCM: 221
+          STES: 303
+          TGCT: 99
+          THCA: 259
+          THYM: 79
+          UCEC: 158
+        input_dimension: 66242
+        output_dimension: 26
+        alpha: 1.0
+        include_class_prior: false
+        profile_sha256: ca85b155a9dba2fb2640cd04d0b433f2f1189ee19106fd5fb80c8be7195d6cf7
+        feature_names_sha256: 24aad664928896bfc7018310595d0d8b6ebf1f55128afd619f1af32feb2e1b21
+        train_transform: leave_one_out_target_class
+        validation_test_transform: full_outer_train_centroid
+        post_transform: row_wise_mean_centering
+  base_feature_names_to_drop_count: 0
+  base_feature_names_to_drop_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  base_feature_names_to_drop_preview: []
+  base_feature_names_after_drop_sha256: 6b30e52c3eb76533c96876c3c18c3948eb26a8ddd8b81d94f5de1ba80d21cf49
+- fold: 1
+  feature_name_count: 89
+  feature_names_sha256: f1e7d9a01c106fb50d22550383fbecc7f5bbdfe94a5e49d687ec795caa3a970a
+  feature_name_preview:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__parser_v4_class_profile_cosine__STES__offset_removed
+  - sample__parser_v4_class_profile_cosine__TGCT__offset_removed
+  - sample__parser_v4_class_profile_cosine__THCA__offset_removed
+  - sample__parser_v4_class_profile_cosine__THYM__offset_removed
+  - sample__parser_v4_class_profile_cosine__UCEC__offset_removed
+  registry:
+    fixed_pathway_burden:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    pathway_mutation_type_composition:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 63
+      feature_names_sha256: deb41bedd295c9323f60959e4096814a72bafd90f6a31a45719fac991e95b84f
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_count: TP53__complex
+        sample__pathway_hippo__complex_gene_count: LCK__nonsense
+        sample__pathway_myc__complex_gene_count: sample__missing_gene_count
+        sample__pathway_nrf2__complex_gene_count: sample__missing_gene_count
+        sample__pathway_pi3k__complex_gene_count: CLDN11__nonsense
+        sample__pathway_tgf_beta__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_count: TP53__complex
+    parser_v4_patient_semantic_vector:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 66242
+      feature_names_sha256: 6dc4d6b06401fa777a3225d544fcb390ad7e916ba8868002e2fdd0e6ee5dc2d7
+      fit_scope: stateless
+      external_knowledge: null
+      included_directly_in_model: false
+    parser_v4_class_profile_cosine:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 26
+      feature_names_sha256: 24aad664928896bfc7018310595d0d8b6ebf1f55128afd619f1af32feb2e1b21
+      fit_scope: fold_train
+      external_knowledge: null
+      profile_audit:
+        definition_version: 1.0.0
+        method: cosine
+        class_labels:
+        - ACC
+        - BLCA
+        - BRCA
+        - CESC
+        - COAD
+        - DLBC
+        - GBMLGG
+        - HNSC
+        - KIPAN
+        - KIRC
+        - LAML
+        - LGG
+        - LIHC
+        - LUAD
+        - LUSC
+        - OV
+        - PAAD
+        - PCPG
+        - PRAD
+        - SARC
+        - SKCM
+        - STES
+        - TGCT
+        - THCA
+        - THYM
+        - UCEC
+        class_support:
+          ACC: 58
+          BLCA: 83
+          BRCA: 629
+          CESC: 124
+          COAD: 178
+          DLBC: 31
+          GBMLGG: 369
+          HNSC: 178
+          KIPAN: 412
+          KIRC: 267
+          LAML: 126
+          LGG: 183
+          LIHC: 127
+          LUAD: 147
+          LUSC: 143
+          OV: 202
+          PAAD: 96
+          PCPG: 117
+          PRAD: 213
+          SARC: 158
+          SKCM: 221
+          STES: 303
+          TGCT: 99
+          THCA: 259
+          THYM: 79
+          UCEC: 159
+        input_dimension: 66242
+        output_dimension: 26
+        alpha: 1.0
+        include_class_prior: false
+        profile_sha256: 1fc6a4812a7a6acf6f248623077e12b88c9bd7d67270f6e8f5c4a150fd27e770
+        feature_names_sha256: 24aad664928896bfc7018310595d0d8b6ebf1f55128afd619f1af32feb2e1b21
+        train_transform: leave_one_out_target_class
+        validation_test_transform: full_outer_train_centroid
+        post_transform: row_wise_mean_centering
+  base_feature_names_to_drop_count: 0
+  base_feature_names_to_drop_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  base_feature_names_to_drop_preview: []
+  base_feature_names_after_drop_sha256: 6b30e52c3eb76533c96876c3c18c3948eb26a8ddd8b81d94f5de1ba80d21cf49
+- fold: 2
+  feature_name_count: 89
+  feature_names_sha256: da4cd9dbbdb96f31fd8e2899653f8e78fbb63764bc6be62a673c4c3fd4cb2ff3
+  feature_name_preview:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__parser_v4_class_profile_cosine__STES__offset_removed
+  - sample__parser_v4_class_profile_cosine__TGCT__offset_removed
+  - sample__parser_v4_class_profile_cosine__THCA__offset_removed
+  - sample__parser_v4_class_profile_cosine__THYM__offset_removed
+  - sample__parser_v4_class_profile_cosine__UCEC__offset_removed
+  registry:
+    fixed_pathway_burden:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    pathway_mutation_type_composition:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 63
+      feature_names_sha256: c2484d90c3f81d2d6b29994ad1bd07056a8dd8b6403ff5ff7cc5660bf2780796
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_count: CD8A__nonsense
+        sample__pathway_hippo__complex_gene_count: sample__missing_gene_count
+        sample__pathway_myc__complex_gene_count: sample__missing_gene_count
+        sample__pathway_nrf2__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tgf_beta__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_count: CD8A__nonsense
+        sample__pathway_wnt__complex_gene_count: LUC7L3__synonymous
+    parser_v4_patient_semantic_vector:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 66242
+      feature_names_sha256: 6dc4d6b06401fa777a3225d544fcb390ad7e916ba8868002e2fdd0e6ee5dc2d7
+      fit_scope: stateless
+      external_knowledge: null
+      included_directly_in_model: false
+    parser_v4_class_profile_cosine:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 26
+      feature_names_sha256: 24aad664928896bfc7018310595d0d8b6ebf1f55128afd619f1af32feb2e1b21
+      fit_scope: fold_train
+      external_knowledge: null
+      profile_audit:
+        definition_version: 1.0.0
+        method: cosine
+        class_labels:
+        - ACC
+        - BLCA
+        - BRCA
+        - CESC
+        - COAD
+        - DLBC
+        - GBMLGG
+        - HNSC
+        - KIPAN
+        - KIRC
+        - LAML
+        - LGG
+        - LIHC
+        - LUAD
+        - LUSC
+        - OV
+        - PAAD
+        - PCPG
+        - PRAD
+        - SARC
+        - SKCM
+        - STES
+        - TGCT
+        - THCA
+        - THYM
+        - UCEC
+        class_support:
+          ACC: 57
+          BLCA: 83
+          BRCA: 629
+          CESC: 124
+          COAD: 179
+          DLBC: 31
+          GBMLGG: 369
+          HNSC: 178
+          KIPAN: 412
+          KIRC: 267
+          LAML: 126
+          LGG: 183
+          LIHC: 127
+          LUAD: 147
+          LUSC: 143
+          OV: 203
+          PAAD: 96
+          PCPG: 118
+          PRAD: 212
+          SARC: 158
+          SKCM: 221
+          STES: 303
+          TGCT: 99
+          THCA: 259
+          THYM: 78
+          UCEC: 159
+        input_dimension: 66242
+        output_dimension: 26
+        alpha: 1.0
+        include_class_prior: false
+        profile_sha256: 2b20191010d7c062cfb1af52108bf283a4aed665133eab2c7d51806385442792
+        feature_names_sha256: 24aad664928896bfc7018310595d0d8b6ebf1f55128afd619f1af32feb2e1b21
+        train_transform: leave_one_out_target_class
+        validation_test_transform: full_outer_train_centroid
+        post_transform: row_wise_mean_centering
+  base_feature_names_to_drop_count: 0
+  base_feature_names_to_drop_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  base_feature_names_to_drop_preview: []
+  base_feature_names_after_drop_sha256: 6b30e52c3eb76533c96876c3c18c3948eb26a8ddd8b81d94f5de1ba80d21cf49
+- fold: 3
+  feature_name_count: 89
+  feature_names_sha256: 8d831c2225d4ff08fa7eda30a61844d8de4d7a8673be4e69c90bbb1ff36b31be
+  feature_name_preview:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__parser_v4_class_profile_cosine__STES__offset_removed
+  - sample__parser_v4_class_profile_cosine__TGCT__offset_removed
+  - sample__parser_v4_class_profile_cosine__THCA__offset_removed
+  - sample__parser_v4_class_profile_cosine__THYM__offset_removed
+  - sample__parser_v4_class_profile_cosine__UCEC__offset_removed
+  registry:
+    fixed_pathway_burden:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    pathway_mutation_type_composition:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 63
+      feature_names_sha256: 2f8cc4c2843177494427f4e47067b0e00e6eb3fcf5a8fc6737163b5de36ca34d
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_count: TP53__complex
+        sample__pathway_hippo__complex_gene_count: TAOK2__complex
+        sample__pathway_myc__complex_gene_count: sample__missing_gene_count
+        sample__pathway_nrf2__complex_gene_count: sample__missing_gene_count
+        sample__pathway_rtk_ras__complex_gene_count: PEX14__frameshift
+        sample__pathway_tgf_beta__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_count: TP53__complex
+    parser_v4_patient_semantic_vector:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 66242
+      feature_names_sha256: 6dc4d6b06401fa777a3225d544fcb390ad7e916ba8868002e2fdd0e6ee5dc2d7
+      fit_scope: stateless
+      external_knowledge: null
+      included_directly_in_model: false
+    parser_v4_class_profile_cosine:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 26
+      feature_names_sha256: 24aad664928896bfc7018310595d0d8b6ebf1f55128afd619f1af32feb2e1b21
+      fit_scope: fold_train
+      external_knowledge: null
+      profile_audit:
+        definition_version: 1.0.0
+        method: cosine
+        class_labels:
+        - ACC
+        - BLCA
+        - BRCA
+        - CESC
+        - COAD
+        - DLBC
+        - GBMLGG
+        - HNSC
+        - KIPAN
+        - KIRC
+        - LAML
+        - LGG
+        - LIHC
+        - LUAD
+        - LUSC
+        - OV
+        - PAAD
+        - PCPG
+        - PRAD
+        - SARC
+        - SKCM
+        - STES
+        - TGCT
+        - THCA
+        - THYM
+        - UCEC
+        class_support:
+          ACC: 57
+          BLCA: 83
+          BRCA: 628
+          CESC: 124
+          COAD: 179
+          DLBC: 30
+          GBMLGG: 368
+          HNSC: 178
+          KIPAN: 412
+          KIRC: 268
+          LAML: 126
+          LGG: 184
+          LIHC: 126
+          LUAD: 147
+          LUSC: 142
+          OV: 203
+          PAAD: 96
+          PCPG: 118
+          PRAD: 213
+          SARC: 159
+          SKCM: 220
+          STES: 304
+          TGCT: 100
+          THCA: 260
+          THYM: 78
+          UCEC: 158
+        input_dimension: 66242
+        output_dimension: 26
+        alpha: 1.0
+        include_class_prior: false
+        profile_sha256: f69bd3b64818bde82fd99231b425b6dbadedd1c896dd650093d83e48939ff173
+        feature_names_sha256: 24aad664928896bfc7018310595d0d8b6ebf1f55128afd619f1af32feb2e1b21
+        train_transform: leave_one_out_target_class
+        validation_test_transform: full_outer_train_centroid
+        post_transform: row_wise_mean_centering
+  base_feature_names_to_drop_count: 0
+  base_feature_names_to_drop_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  base_feature_names_to_drop_preview: []
+  base_feature_names_after_drop_sha256: 6b30e52c3eb76533c96876c3c18c3948eb26a8ddd8b81d94f5de1ba80d21cf49
+- fold: 4
+  feature_name_count: 88
+  feature_names_sha256: 2ef6e8126235fa564e00ccc94642fc851b1377bd48d19fe18d6de916c9d56233
+  feature_name_preview:
+  - sample__pathway_cell_cycle__mutated_gene_count
+  - sample__pathway_cell_cycle__lof_gene_count
+  - sample__pathway_hippo__mutated_gene_count
+  - sample__pathway_hippo__lof_gene_count
+  - sample__pathway_myc__mutated_gene_count
+  - sample__parser_v4_class_profile_cosine__STES__offset_removed
+  - sample__parser_v4_class_profile_cosine__TGCT__offset_removed
+  - sample__parser_v4_class_profile_cosine__THCA__offset_removed
+  - sample__parser_v4_class_profile_cosine__THYM__offset_removed
+  - sample__parser_v4_class_profile_cosine__UCEC__offset_removed
+  registry:
+    fixed_pathway_burden:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 20
+      feature_names_sha256: 215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    pathway_mutation_type_composition:
+      definition_version: 2.1.0
+      enabled: true
+      output_dimension: 50
+      feature_names_sha256: df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d
+      fit_scope: stateless
+      external_knowledge:
+      - source: PathwayMapper canonical pathway templates derived from Sanchez-Vega
+          et al., Cell 2018
+        version: pathway-mapper-7d29965
+        license: AGPL-3.0
+        sha256: fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f
+        uri: https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json
+    semantic_equivalence_filter:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 62
+      feature_names_sha256: cb4d9ce6876469b9e6c8441f933ecfdd82c24cf062802272886be2f1c44e3f5e
+      fit_scope: fold_train
+      external_knowledge: null
+      dropped:
+        sample__pathway_cell_cycle__complex_gene_count: TP53__complex
+        sample__pathway_hippo__complex_gene_count: GLRX2__nonsense
+        sample__pathway_myc__complex_gene_count: sample__missing_gene_count
+        sample__pathway_notch__complex_gene_count: NOTCH2__complex
+        sample__pathway_nrf2__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tgf_beta__complex_gene_count: sample__missing_gene_count
+        sample__pathway_tp53__complex_gene_count: TP53__complex
+        sample__pathway_wnt__complex_gene_count: TLE4__complex
+    parser_v4_patient_semantic_vector:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 66242
+      feature_names_sha256: 6dc4d6b06401fa777a3225d544fcb390ad7e916ba8868002e2fdd0e6ee5dc2d7
+      fit_scope: stateless
+      external_knowledge: null
+      included_directly_in_model: false
+    parser_v4_class_profile_cosine:
+      definition_version: 1.0.0
+      enabled: true
+      output_dimension: 26
+      feature_names_sha256: 24aad664928896bfc7018310595d0d8b6ebf1f55128afd619f1af32feb2e1b21
+      fit_scope: fold_train
+      external_knowledge: null
+      profile_audit:
+        definition_version: 1.0.0
+        method: cosine
+        class_labels:
+        - ACC
+        - BLCA
+        - BRCA
+        - CESC
+        - COAD
+        - DLBC
+        - GBMLGG
+        - HNSC
+        - KIPAN
+        - KIRC
+        - LAML
+        - LGG
+        - LIHC
+        - LUAD
+        - LUSC
+        - OV
+        - PAAD
+        - PCPG
+        - PRAD
+        - SARC
+        - SKCM
+        - STES
+        - TGCT
+        - THCA
+        - THYM
+        - UCEC
+        class_support:
+          ACC: 58
+          BLCA: 84
+          BRCA: 629
+          CESC: 124
+          COAD: 178
+          DLBC: 30
+          GBMLGG: 369
+          HNSC: 179
+          KIPAN: 412
+          KIRC: 267
+          LAML: 127
+          LGG: 183
+          LIHC: 126
+          LUAD: 147
+          LUSC: 142
+          OV: 202
+          PAAD: 96
+          PCPG: 118
+          PRAD: 213
+          SARC: 159
+          SKCM: 221
+          STES: 303
+          TGCT: 99
+          THCA: 259
+          THYM: 78
+          UCEC: 158
+        input_dimension: 66242
+        output_dimension: 26
+        alpha: 1.0
+        include_class_prior: false
+        profile_sha256: bfc4dd40318fe64555605b8d315a0f6543a34588ecb789473ef06e1b5da3ac5c
+        feature_names_sha256: 24aad664928896bfc7018310595d0d8b6ebf1f55128afd619f1af32feb2e1b21
+        train_transform: leave_one_out_target_class
+        validation_test_transform: full_outer_train_centroid
+        post_transform: row_wise_mean_centering
+  base_feature_names_to_drop_count: 0
+  base_feature_names_to_drop_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  base_feature_names_to_drop_preview: []
+  base_feature_names_after_drop_sha256: 6b30e52c3eb76533c96876c3c18c3948eb26a8ddd8b81d94f5de1ba80d21cf49
