@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 110
+- 실제 실험 수: 111
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4479925392 (`EXP-521`, train self-inclusion 탐색 결과)
@@ -130,6 +130,7 @@
 | EXP-527 | COMPLETED | fabxoe | #527 | EXP-521 class cosine의 outer-train target-class centroid에 leave-one-out 적용 | 0.4468722707 | 미제출 | INFERENCE_VERIFIED | EXP-521 대비 -0.0011202685이나 EXP-374 대비 +0.0200813439 유지; self-inclusion 제거한 leakage-safe 공식 기준선 채택 | [보고서](reports/exp527_parser_v4_class_cosine_loo/README.md) |
 | EXP-539 | COMPLETED | fabxoe | #539 | parser-v4 hierarchical detail/global raw-count + LinearSVC | 0.3662402061 | 미제출 | NOT_STARTED | row-L2 효과를 분리하기 위한 raw-count 기준선; 전 fold 수렴 경고와 낮은 성능으로 단독 제출 제외 | [보고서](reports/exp539_hierarchical_raw_linear/README.md) |
 | EXP-541 | COMPLETED | fabxoe | #541 | EXP-539 hierarchical 입력에 row-L2 normalization만 적용 | 0.3723738759 | 미제출 | NOT_STARTED | EXP-539 대비 +0.0061336698이고 수렴 경고는 해소됐으나 Log Loss가 +0.3033132553 악화되어 단독 제출 제외 | [보고서](reports/exp541_hierarchical_row_l2_linear/README.md) |
+| EXP-545 | COMPLETED | fabxoe | #545 | EXP-541 hierarchical vocabulary에 outer-train TF-IDF + row-L2 적용 | 0.4396775272 | 미제출 | NOT_STARTED | EXP-541 대비 +0.0673036513, EXP-527 대비 -0.0071947435, fold std 0.0038151877; 확률 보정 전 다양성 후보 | [보고서](reports/exp545_hierarchical_tfidf_linear/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -4541,3 +4542,33 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
 - 판단: row-L2는 hard-label Macro F1과 최적화 수렴을 개선했지만 확률
   품질을 크게 악화했다. 단독 제출 후보에서는 제외하고, 계층형 표현의
   오류 구조·확률 보정 가능성을 진단하는 비교 자산으로 보존한다.
+
+### [EXP-545] Parser-v4 hierarchical TF-IDF row-L2 LinearSVC
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #545 / `issue-545-hierarchical-tfidf-linear`
+- 소스 commit: `fbeafe19d9fe75da4a13649f20872441d810ba35`
+- 시작/종료: 2026-08-06T00:08:54.070043+00:00 /
+  2026-08-06T00:10:37.292418+00:00 (103.28초)
+- Config: `configs/exp545_hierarchical_tfidf_linear.yaml`
+- Runner: `scripts/run_exp545_hierarchical_tfidf_linear.py`
+- Metrics/Report: `reports/exp545_hierarchical_tfidf_linear/`
+- 부모: EXP-541
+- 유일한 변경: hierarchical count 행렬에 outer-train-only
+  `TfidfTransformer(norm=l2, smooth_idf=true, sublinear_tf=false)`를 fit.
+  validation/test는 transform-only이며 vocabulary·모델·split은 동일.
+- Fold Macro F1: 0.4336844768, 0.4425497381, 0.4444567044,
+  0.4414751591, 0.4379133188
+- OOF Macro F1: 0.4396775272 (EXP-541 대비 `+0.0673036513`,
+  EXP-527 대비 `-0.0071947435`)
+- Fold 평균/표준편차: 0.4400158794 / 0.0038151877
+- Accuracy / decision-score softmax Log Loss: 0.4279954846 /
+  2.7787079811
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+- 판단: 사전 정의된 sparse-linear 종료 기준을 통과했다. TF-IDF가 단순
+  row-L2보다 핵심적인 개선 요소이며 fold 안정성도 좋다. 다만 LinearSVC
+  decision score의 softmax 확률은 보정되지 않아 단독 확률 앙상블에 바로
+  사용하지 않는다. EXP-527·tree 계열과 OOF 다양성을 감사하고 별도의
+  fold-safe calibration 또는 Logistic Regression 후보로 이어간다.
