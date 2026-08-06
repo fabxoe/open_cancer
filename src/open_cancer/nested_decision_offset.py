@@ -239,3 +239,112 @@ def min_class_count_per_inner_fold(
         for class_index in range(n_classes):
             counts[inner_fold, class_index] = int(np.sum(targets[mask] == class_index))
     return counts.min(axis=0)
+
+
+def apply_pairwise_redistribution(
+    probabilities: np.ndarray,
+    pair_indices: tuple[int, int],
+    delta: float,
+    *,
+    eps: float = 1e-9,
+) -> np.ndarray:
+    """Transform-only: shift probability mass within one class pair's own sub-budget.
+
+    Issue #604, follow-up to #233/#276/#515. Those experiments applied
+    `softmax(z)*exp(o)` then renormalized over all 26 classes, which
+    coupled every class's probability into a shared zero-sum competition
+    even when only a few classes had non-zero offsets (#515 measured a
+    0.0994 absolute F1 delta across the 22 "untouched" classes against a
+    0.01 gate). This function instead holds `s = p[a] + p[b]` fixed for
+    one row and only redistributes *within* that pair: every other
+    column is returned byte-identical to the input, and the row's total
+    sum is trivially conserved since the pair's two entries still sum to
+    `s`. `delta` shifts the pair's internal split ratio in logit space:
+    `r' = sigmoid(logit(p[a]/s) + delta)`.
+    """
+    probabilities = np.asarray(probabilities, dtype=np.float64)
+    _require(probabilities.ndim == 2, "확률은 2차원이어야 합니다.")
+    _require(
+        probabilities.shape[1] == len(CLASS_LABELS),
+        "확률의 클래스 수가 고정 26개 순서와 다릅니다.",
+    )
+    _require(np.isfinite(probabilities).all(), "확률에 NaN 또는 무한대가 있습니다.")
+    _require((probabilities >= 0).all(), "확률에 음수가 있습니다.")
+    index_a, index_b = pair_indices
+    _require(
+        0 <= index_a < len(CLASS_LABELS) and 0 <= index_b < len(CLASS_LABELS) and index_a != index_b,
+        "pair_indices가 유효한 서로 다른 클래스 인덱스 쌍이어야 합니다.",
+    )
+    result = probabilities.copy()
+    p_a = probabilities[:, index_a]
+    p_b = probabilities[:, index_b]
+    s = p_a + p_b
+    has_mass = s > eps
+    ratio = np.where(has_mass, p_a / np.where(has_mass, s, 1.0), 0.5)
+    ratio_clipped = np.clip(ratio, eps, 1.0 - eps)
+    logit_ratio = np.log(ratio_clipped / (1.0 - ratio_clipped))
+    shifted_ratio = 1.0 / (1.0 + np.exp(-(logit_ratio + delta)))
+    new_p_a = s * shifted_ratio
+    new_p_b = s - new_p_a
+    result[:, index_a] = np.where(has_mass, new_p_a, p_a)
+    result[:, index_b] = np.where(has_mass, new_p_b, p_b)
+    return result
+
+
+def _regularized_macro_f1_pairwise(
+    probabilities: np.ndarray,
+    targets: np.ndarray,
+    pair_indices: tuple[int, int],
+    delta: float,
+    *,
+    regularization_lambda: float,
+) -> float:
+    adjusted = apply_pairwise_redistribution(probabilities, pair_indices, delta)
+    predictions = adjusted.argmax(axis=1)
+    score = f1_score(
+        targets,
+        predictions,
+        labels=np.arange(len(CLASS_LABELS)),
+        average="macro",
+        zero_division=0,
+    )
+    return float(score) - regularization_lambda * (delta**2)
+
+
+def search_pairwise_delta(
+    probabilities: np.ndarray,
+    targets: np.ndarray,
+    pair_indices: tuple[int, int],
+    *,
+    candidate_grid: tuple[float, ...] = CANDIDATE_OFFSET_GRID,
+    regularization_lambda: float = REGULARIZATION_LAMBDA,
+) -> dict[str, Any]:
+    """Single-scalar grid search for one pair's redistribution `delta`.
+
+    Only ever called on an inner-cross-fitted (honest) probability set --
+    never on outer validation or test. Unlike `search_class_offsets`, this
+    needs no coordinate descent: a pair's delta only affects that pair's
+    own two columns, so pairs never interact and each is searched
+    independently over the fixed candidate grid.
+    """
+    targets = np.asarray(targets, dtype=np.int64)
+    _require(probabilities.shape[0] == len(targets), "확률/target 행 수가 다릅니다.")
+    _require(len(candidate_grid) > 0, "candidate_grid가 비어 있습니다.")
+    best_delta = 0.0
+    best_score = _regularized_macro_f1_pairwise(
+        probabilities, targets, pair_indices, 0.0, regularization_lambda=regularization_lambda
+    )
+    trace: list[dict[str, Any]] = []
+    for candidate in candidate_grid:
+        score = _regularized_macro_f1_pairwise(
+            probabilities, targets, pair_indices, candidate, regularization_lambda=regularization_lambda
+        )
+        trace.append({"delta": candidate, "regularized_score": score})
+        if score > best_score:
+            best_score = score
+            best_delta = candidate
+    return {
+        "delta": best_delta,
+        "final_regularized_score": best_score,
+        "trace": trace,
+    }

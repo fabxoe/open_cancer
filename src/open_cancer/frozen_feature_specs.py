@@ -28,7 +28,17 @@ from open_cancer.mutation_features import (
 )
 
 FeatureSpecName = Literal["v1", "v2-performance", "v2-diversity"]
-FROZEN_BASE_SHA256 = "1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3"
+# Re-pinned 2026-08-06 (#596/#597): live materialization of EXP-094's base
+# feature spec against the current codebase no longer reproduces the
+# original 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+# hash -- mutation-type/hotspot token classification changed underneath it
+# from the parser semantic fixes landed after EXP-094 (see PROJECT_CONTEXT.md
+# "Parser lineage 계약"). Raw train/test SHA-256 still match data/README.md
+# canonical values, so the drift is in code, not data. EXP-094/123/125/127's
+# own saved reproducibility manifests are untouched (historical provenance is
+# never retroactively edited); this constant only gates *new* materializations
+# going forward.
+FROZEN_BASE_SHA256 = "8f564cc18b3bcef8c59879144f19ff0d62ac3d5ee13ea6887ce59d265d8f843a"
 
 
 class FrozenFeatureSpecError(ValueError):

@@ -1,0 +1,128 @@
+{
+  "experiment_id": "EXP-517",
+  "issue_number": 517,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "2734a27c236ce9b16962792ea056a1b7e4426e05",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp517_passenger_adjusted_burden/data_manifest.json",
+  "environment": "reproducibility/exp517_passenger_adjusted_burden/environment.json",
+  "release_url": null,
+  "verifier": "Kangho Park",
+  "verified_at": "2026-08-06T04:03:00.878478+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp517_passenger_adjusted_burden/fold_00.json",
+      "size_bytes": 10853373,
+      "sha256": "0d6217ec75f727dbadb159a5f0c469a5e22c4cd829163c97d4d50292cd824823",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp517_passenger_adjusted_burden/fold_01.json",
+      "size_bytes": 10218391,
+      "sha256": "c026f8205f9073b1cdcb9a62ec84b2d4e2af6a40b2c1fae0242f5678000da3fc",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp517_passenger_adjusted_burden/fold_02.json",
+      "size_bytes": 7728296,
+      "sha256": "644c178f95162a8d567a7cbcf2db8b88cff515a470304d8b60550312f6275258",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp517_passenger_adjusted_burden/fold_03.json",
+      "size_bytes": 9140042,
+      "sha256": "7cda0bd9a7bfbccc3164596a5042238ddb33c01722b36a61035efcd3a58b8774",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp517_passenger_adjusted_burden/fold_04.json",
+      "size_bytes": 9823782,
+      "sha256": "9a8f62f7894f36ed5118a6bf5dfe29dd3d111fbc7e3093302cb45c3f6bfd2026",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp517_passenger_adjusted_burden.csv",
+      "size_bytes": 38118,
+      "sha256": "66467087bb1462533dc3918b3c3042ab72e67b216a8e3843b58f138fb936fa33",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp517_passenger_adjusted_burden.csv",
+      "size_bytes": 2117923,
+      "sha256": "dea68017e0a736e32b7182b985930432374b1bfe56a05ea0e36b27ae5b62f3fa",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp517_passenger_adjusted_burden_test_proba.csv",
+      "size_bytes": 834111,
+      "sha256": "7e26b5e36944b6d39b70032cf4b28170c634030a54bc6550f900465cc2007de1",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp517_passenger_adjusted_burden/metrics.json",
+      "size_bytes": 43323,
+      "sha256": "2381afa0e52acd69f4d3238e05c7674c62ba446a8aebfcabe66b19dfef20a9ab",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp517_passenger_adjusted_burden/config.resolved.yaml",
+      "size_bytes": 43669,
+      "sha256": "45d7451754d177bc1096e0eb40f9fb9f5748465e18d0d3c3a2ae4062674c6d5c",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp517_passenger_adjusted_burden/fold_00_checkpoint_audit.json",
+      "size_bytes": 26850,
+      "sha256": "bade7fdf15920940da2c289943996498a022f59bf9f1e94420d809ec95fb6fad",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp517_passenger_adjusted_burden/fold_01_checkpoint_audit.json",
+      "size_bytes": 31998,
+      "sha256": "116430ed79848fcdd1d8333467c246e11717fcad5a7867125afa51d77d75baa8",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp517_passenger_adjusted_burden/fold_02_checkpoint_audit.json",
+      "size_bytes": 30253,
+      "sha256": "87f60e12308b5cab9b7a6eddcef2ae2e2cfc2bdf52070af231043a89a747af37",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp517_passenger_adjusted_burden/fold_03_checkpoint_audit.json",
+      "size_bytes": 27308,
+      "sha256": "5dec67a3edc1c8d4eed601330d85547396ed75f742621dd7bd6a249789844717",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp517_passenger_adjusted_burden/fold_04_checkpoint_audit.json",
+      "size_bytes": 28608,
+      "sha256": "922ab62b91b2a8dab119f5c2b6aca12361a783daa9c1b347fdb630daad3e6178",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

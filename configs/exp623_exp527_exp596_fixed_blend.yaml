@@ -1,0 +1,43 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-623
+issue_number: 623
+slug: exp527_exp596_fixed_blend
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+ensemble:
+  method: probability_mean
+  weights_fixed_before_evaluation: true
+  components:
+    - experiment_id: EXP-527
+      weight: 0.5
+      oof_probability_path: oof/exp527_parser_v4_class_cosine_loo.csv
+      test_probability_path: preds/exp527_parser_v4_class_cosine_loo_test_proba.csv
+      metrics_path: reports/exp527_parser_v4_class_cosine_loo/metrics.json
+      resolved_config_path: reproducibility/exp527_parser_v4_class_cosine_loo/config.resolved.yaml
+    - experiment_id: EXP-596
+      weight: 0.5
+      oof_probability_path: oof/exp596_random_forest_v1.csv
+      test_probability_path: preds/exp596_random_forest_v1_test_proba.csv
+      metrics_path: reports/exp596_random_forest_v1/metrics.json
+      resolved_config_path: reproducibility/exp596_random_forest_v1/config.resolved.yaml
+submission:
+  test_path: data/raw/test.csv
+  sample_submission_path: data/raw/sample_submission.csv
+acceptance:
+  comparison_experiment: EXP-527
+  minimum_macro_f1_delta: 0.001
+  maximum_fold_std_increase: 0.002
+  require_no_clear_log_loss_regression: true
+notes: >-
+  Issue #623. Fixed 0.5/0.5 arithmetic probability mean of EXP-527 XGBoost
+  (best single 26-class-safe model) and EXP-596 RandomForest (diversity-gate
+  PASS per PR #617: correctness_pearson 0.728, label_disagreement 0.309 vs
+  CatBoost/LightGBM). The single weight pair was fixed before the official
+  run; EXP-579 already showed that blending two highly-correlated boosting
+  models (EXP-527 + EXP-567 LightGBM) underperforms both parents, so this
+  run tests whether a structurally diverse bagging model changes that
+  outcome. Test distribution and Public LB do not select or adjust the
+  weight.

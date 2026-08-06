@@ -1,0 +1,66 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-589
+issue_number: 589
+slug: merged_24class
+parent_experiment: EXP-527
+component_experiments: []
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+target_space:
+  aliases:
+    KIRC: KIPAN
+    LGG: GBMLGG
+  model_class_count: 24
+  checkpoint_and_primary_evaluation: original_26_class_macro_f1
+features:
+  parent: exp527_parser_v4_class_cosine_loo
+  parser_v4_patient_semantic_vector:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    include_directly_in_model: false
+  class_profile:
+    enabled: true
+    definition_version: 1.0.0
+    method: cosine
+    fit_scope: outer_train_only
+    train_transform: leave_one_out_target_class
+    validation_test_transform: full_outer_train_centroid
+    output_dimension: 24
+    target_aliases:
+      KIRC: KIPAN
+      LGG: GBMLGG
+    zero_vector_policy: all_zero_scores
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - exp527_parser_v4_class_cosine_loo
+    - merged_24class_target_and_class_profiles
+notes: >-
+  Issue #589. EXP-527 settings are fixed except for one target-space change:
+  KIRC is merged into KIPAN and LGG into GBMLGG for training, prediction and
+  outer-train class cosine profiles. Checkpoints and the History primary score
+  use the original 26-class Macro F1, so KIRC and LGG remain explicit missed
+  classes. The merged 24-class Macro F1 is reported only as a secondary metric.
+comparison_metrics_path: reports/exp527_parser_v4_class_cosine_loo/metrics.json

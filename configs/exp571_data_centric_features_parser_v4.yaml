@@ -1,0 +1,65 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-571
+issue_number: 571
+slug: exp571_data_centric_features_parser_v4
+parent_experiment: EXP-567
+component_experiments:
+  - EXP-567
+seed: 42
+
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+
+features:
+  fixed_parent: exp567_lightgbm_parser_cosine
+  parser_contract: v4
+  arms:
+    - name: base
+      added_family: none
+    - name: parser_qc
+      added_family: parser_status_ratios
+    - name: event_span
+      added_family: parser_event_span_summary
+  excluded:
+    - raw_token_tfidf
+    - cross_gene_absolute_position_variance
+    - residue_concentration
+
+model:
+  name: lightgbm
+  parameters:
+    n_estimators: 1200
+    learning_rate: 0.03
+    num_leaves: 31
+    max_depth: -1
+    min_child_samples: 20
+    subsample: 0.8
+    subsample_freq: 1
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    early_stopping_rounds: 60
+    checkpoint_selection: macro_f1_validation
+    n_jobs: 8
+    verbosity: -1
+    deterministic: true
+    force_col_wise: true
+
+training:
+  balanced_sample_weight: true
+
+comparison_metrics_path: reports/exp567_lightgbm_parser_cosine/metrics.json
+
+control_gate:
+  expected_base_oof_macro_f1: 0.4477416384
+  absolute_tolerance: 1.0e-8
+  abort_before_ablation_on_failure: true
+
+notes: >-
+  EXP-571 is a preregistered three-arm ablation on the fixed EXP-567 parent.
+  Base reproduces EXP-567. Arm A adds only row-level parser-v4 parse-status QC
+  ratios. Arm B adds only within-event residue span summaries. Raw-token TF-IDF,
+  cross-gene absolute-position variance, and residue concentration are excluded
+  because they are either leakage-prone or already covered by Issues #545/#560.

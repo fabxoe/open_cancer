@@ -1,0 +1,43 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-592
+issue_number: 592
+slug: hierarchical_pair_specialists
+parent_experiment: EXP-589
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+base:
+  experiment_id: EXP-589
+  artifact_slug: exp589_merged_24class
+  target_aliases:
+    KIRC: KIPAN
+    LGG: GBMLGG
+specialists:
+  probability_contract: conditional_mass_preserving
+  pairs:
+    - [KIPAN, KIRC]
+    - [GBMLGG, LGG]
+  model:
+    objective: binary:logistic
+    n_estimators: 300
+    learning_rate: 0.05
+    max_depth: 4
+    min_child_weight: 1.0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    tree_method: hist
+    device: cpu
+    n_jobs: 8
+    verbosity: 0
+  fit_scope: outer_train_pair_rows_only
+  checkpoint_policy: fixed_300_trees_no_outer_validation_tuning
+notes: >-
+  Issue #592. EXP-589 fold checkpoints and feature matrices are fixed. Two
+  binary specialists are fit only on the corresponding outer-train pair rows.
+  Their conditional probabilities split the two merged superclass masses into
+  the original 26 labels; all other probabilities remain byte-identical before
+  float serialization. Test and Public LB are never used for selection.

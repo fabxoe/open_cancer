@@ -35,6 +35,8 @@ def predict_xgboost_at_iteration(
     model: XGBoostIterationModel,
     matrix: Any,
     iteration: int,
+    *,
+    class_count: int = len(CLASS_LABELS),
 ) -> np.ndarray:
     """Predict with trees through one zero-based boosting iteration."""
     _require(isinstance(iteration, int) and iteration >= 0, "iteration은 0 이상의 정수여야 합니다.")
@@ -44,8 +46,8 @@ def predict_xgboost_at_iteration(
     )
     _require(probabilities.ndim == 2, "XGBoost 확률은 2차원이어야 합니다.")
     _require(
-        probabilities.shape[1] == len(CLASS_LABELS),
-        "XGBoost 확률의 클래스 수가 고정 26개 순서와 다릅니다.",
+        probabilities.shape[1] == class_count,
+        "XGBoost 확률의 클래스 수가 지정된 모델 클래스 순서와 다릅니다.",
     )
     _require(np.isfinite(probabilities).all(), "XGBoost 확률에 NaN 또는 무한대가 있습니다.")
     _require((probabilities >= 0).all(), "XGBoost 확률에 음수가 있습니다.")
@@ -188,6 +190,10 @@ def audit_xgboost_validation_iterations(
     selection_policy: str = "macro_f1_validation",
     rolling_window_size: int | None = None,
     minimum_iteration: int | None = None,
+    model_class_count: int = len(CLASS_LABELS),
+    evaluation_targets: np.ndarray | None = None,
+    prediction_evaluation_indices: np.ndarray | None = None,
+    evaluation_class_count: int | None = None,
 ) -> dict[str, Any]:
     """Compare validation Macro-F1 and training-metric checkpoint choices.
 
@@ -200,9 +206,35 @@ def audit_xgboost_validation_iterations(
     _require(len(targets) == validation_features.shape[0], "validation feature/target 행이 다릅니다.")
     _require(len(targets) > 0, "validation fold가 비어 있습니다.")
     _require(
-        ((targets >= 0) & (targets < len(CLASS_LABELS))).all(),
-        "validation target이 고정 26개 클래스 범위를 벗어났습니다.",
+        ((targets >= 0) & (targets < model_class_count)).all(),
+        "validation target이 지정된 모델 클래스 범위를 벗어났습니다.",
     )
+    score_targets = targets
+    score_class_count = model_class_count
+    prediction_mapping: np.ndarray | None = None
+    if evaluation_targets is not None or prediction_evaluation_indices is not None:
+        _require(
+            evaluation_targets is not None
+            and prediction_evaluation_indices is not None
+            and evaluation_class_count is not None,
+            "대체 평가 공간에는 target, prediction mapping, class count가 모두 필요합니다.",
+        )
+        score_targets = np.asarray(evaluation_targets, dtype=np.int64)
+        prediction_mapping = np.asarray(prediction_evaluation_indices, dtype=np.int64)
+        score_class_count = int(evaluation_class_count)
+        _require(score_targets.shape == targets.shape, "대체 평가 target 형상이 다릅니다.")
+        _require(
+            prediction_mapping.shape == (model_class_count,),
+            "모델→평가 클래스 mapping 길이가 다릅니다.",
+        )
+        _require(
+            ((score_targets >= 0) & (score_targets < score_class_count)).all(),
+            "대체 평가 target이 평가 클래스 범위를 벗어났습니다.",
+        )
+        _require(
+            ((prediction_mapping >= 0) & (prediction_mapping < score_class_count)).all(),
+            "모델→평가 클래스 mapping 값이 평가 클래스 범위를 벗어났습니다.",
+        )
 
     trained_rounds = int(model.get_booster().num_boosted_rounds())
     _require(trained_rounds > 0, "학습된 boosting round가 없습니다.")
@@ -218,22 +250,29 @@ def audit_xgboost_validation_iterations(
 
     records: list[dict[str, float | int]] = []
     for iteration in iterations:
-        probabilities = predict_xgboost_at_iteration(model, validation_features, iteration)
-        predictions = probabilities.argmax(axis=1)
+        probabilities = predict_xgboost_at_iteration(
+            model, validation_features, iteration, class_count=model_class_count
+        )
+        model_predictions = probabilities.argmax(axis=1)
+        predictions = (
+            prediction_mapping[model_predictions]
+            if prediction_mapping is not None
+            else model_predictions
+        )
         records.append(
             {
                 "iteration": iteration,
                 "macro_f1": float(
                     f1_score(
-                        targets,
+                        score_targets,
                         predictions,
-                        labels=np.arange(len(CLASS_LABELS)),
+                        labels=np.arange(score_class_count),
                         average="macro",
                         zero_division=0,
                     )
                 ),
                 "log_loss": float(
-                    log_loss(targets, probabilities, labels=np.arange(len(CLASS_LABELS)))
+                    log_loss(targets, probabilities, labels=np.arange(model_class_count))
                 ),
             }
         )
@@ -277,21 +316,30 @@ def audit_xgboost_validation_iterations(
     by_iteration = {int(record["iteration"]): record for record in records}
     if training_best_iteration not in by_iteration:
         probabilities = predict_xgboost_at_iteration(
-            model, validation_features, training_best_iteration
+            model,
+            validation_features,
+            training_best_iteration,
+            class_count=model_class_count,
+        )
+        training_model_predictions = probabilities.argmax(axis=1)
+        training_predictions = (
+            prediction_mapping[training_model_predictions]
+            if prediction_mapping is not None
+            else training_model_predictions
         )
         training_record: dict[str, float | int] = {
             "iteration": training_best_iteration,
             "macro_f1": float(
                 f1_score(
-                    targets,
-                    probabilities.argmax(axis=1),
-                    labels=np.arange(len(CLASS_LABELS)),
+                    score_targets,
+                    training_predictions,
+                    labels=np.arange(score_class_count),
                     average="macro",
                     zero_division=0,
                 )
             ),
             "log_loss": float(
-                log_loss(targets, probabilities, labels=np.arange(len(CLASS_LABELS)))
+                log_loss(targets, probabilities, labels=np.arange(model_class_count))
             ),
         }
     else:
@@ -302,6 +350,9 @@ def audit_xgboost_validation_iterations(
         "selection_policy": selection_policy,
         "primary_metric": "macro_f1",
         "training_metric": "mlogloss",
+        "model_class_count": model_class_count,
+        "evaluation_class_count": score_class_count,
+        "evaluation_uses_prediction_mapping": prediction_mapping is not None,
         "trained_rounds": trained_rounds,
         "tie_break": tie_break,
         "training_metric_best": training_record,

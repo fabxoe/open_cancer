@@ -2,7 +2,11 @@ status: FROZEN
 task_issue: 119
 baseline:
   experiment_id: EXP-094
-  feature_spec_sha256: 1fba3a7dac9f9b2a76deb5bec4c1099f650153b82c64d48e476dc1f2f84f3ed3
+  # Re-pinned 2026-08-06 (#596/#597): see the comment above FROZEN_BASE_SHA256
+  # in src/open_cancer/frozen_feature_specs.py for why the live-materialized
+  # hash no longer matches EXP-094's original 1fba3a7d... value. EXP-094's own
+  # reproducibility manifest keeps the original hash unmodified.
+  feature_spec_sha256: 8f564cc18b3bcef8c59879144f19ff0d62ac3d5ee13ea6887ce59d265d8f843a
 v2_performance:
   evidence_experiment: EXP-096
   base: EXP-094

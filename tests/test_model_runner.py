@@ -136,6 +136,28 @@ def test_ovr_xgboost_trains_one_binary_model_per_class(monkeypatch) -> None:
     assert adapter.best_iteration == 3
 
 
+def test_random_forest_adapter_pads_missing_classes() -> None:
+    adapter = create_model_adapter(
+        "random_forest",
+        {"n_estimators": 5, "max_depth": 2, "n_jobs": 1},
+        42,
+    )
+    # Only classes 0 and 1 are present in this fold's training rows.
+    targets = np.array([0, 0, 1, 1], dtype=np.int32)
+    train_matrix = sparse.csr_matrix(
+        np.array([[1, 0], [1, 0], [0, 1], [0, 1]], dtype=np.float32)
+    )
+    adapter.fit(train_matrix, targets, train_matrix, targets, sample_weight=None)
+
+    probabilities = adapter.predict_proba(train_matrix)
+
+    assert probabilities.shape == (4, len(CLASS_LABELS))
+    assert np.allclose(probabilities.sum(axis=1), 1.0)
+    unseen_classes = [index for index in range(len(CLASS_LABELS)) if index not in {0, 1}]
+    assert np.allclose(probabilities[:, unseen_classes], 0.0)
+    assert adapter.best_iteration is None
+
+
 def test_common_runner_writes_canonical_artifacts(tmp_path) -> None:
     targets = np.tile(np.arange(len(CLASS_LABELS)), 5)
     folds = np.repeat(np.arange(5), len(CLASS_LABELS))
