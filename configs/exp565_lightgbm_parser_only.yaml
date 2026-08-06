@@ -1,0 +1,40 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-565
+issue_number: 565
+slug: exp565_lightgbm_parser_only
+parent_experiment: EXP-527
+component_experiments: []
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mode: parser_v4_parent_only
+  excluded: class_cosine_26
+model:
+  name: lightgbm
+  parameters:
+    n_estimators: 1200
+    learning_rate: 0.03
+    num_leaves: 31
+    max_depth: -1
+    min_child_samples: 20
+    subsample: 0.8
+    subsample_freq: 1
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    early_stopping_rounds: 60
+    checkpoint_selection: macro_f1_validation
+    n_jobs: 8
+    verbosity: -1
+    deterministic: true
+    force_col_wise: true
+training:
+  balanced_sample_weight: true
+notes: >-
+  Issue #565, Task #564. EXP-527 parser-v4 parent features only; the 26
+  class-cosine scores are excluded. LightGBM settings are fixed across
+  EXP-565/566/567 and validation Macro F1 selects the checkpoint.
+comparison_metrics_path: reports/exp527_parser_v4_class_cosine_loo/metrics.json
