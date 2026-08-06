@@ -92,6 +92,38 @@ class LogisticRegressionAdapter:
         return None
 
 
+class BernoulliNaiveBayesAdapter:
+    """Generative baseline, structurally distinct from every discriminative v1 adapter."""
+
+    file_suffix = ".joblib"
+
+    def __init__(self, parameters: dict[str, Any], seed: int) -> None:
+        from sklearn.naive_bayes import BernoulliNB
+
+        del seed
+        defaults = {"alpha": 1.0}
+        self.model = BernoulliNB(**{**defaults, **parameters})
+
+    def fit(self, x_train, y_train, x_valid, y_valid, sample_weight) -> None:
+        del x_valid, y_valid
+        self.model.fit(x_train, y_train, sample_weight=sample_weight)
+
+    def predict_proba(self, matrix) -> np.ndarray:
+        raw = self.model.predict_proba(matrix)
+        output = np.zeros((matrix.shape[0], len(CLASS_LABELS)), dtype=np.float64)
+        output[:, self.model.classes_.astype(int)] = raw
+        return output
+
+    def save(self, path: Path) -> None:
+        import joblib
+
+        joblib.dump(self.model, path)
+
+    @property
+    def best_iteration(self) -> None:
+        return None
+
+
 class XGBoostAdapter:
     file_suffix = ".json"
 
@@ -362,6 +394,7 @@ def create_model_adapter(name: str, parameters: dict[str, Any], seed: int) -> Mo
         "lightgbm": LightGBMAdapter,
         "catboost": CatBoostAdapter,
         "random_forest": RandomForestAdapter,
+        "bernoulli_naive_bayes": BernoulliNaiveBayesAdapter,
     }
     _require(name in factories, f"지원하지 않는 모델입니다: {name}")
     return factories[name](dict(parameters), seed)
