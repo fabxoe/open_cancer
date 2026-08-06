@@ -1,0 +1,108 @@
+{
+  "experiment_id": "EXP-634",
+  "issue_number": 634,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "53031ffbae5adb042e0d7d4efafe0c1b7ff41079",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp634_cross_fitted_stacking_exp527_exp596/data_manifest.json",
+  "environment": "reproducibility/exp634_cross_fitted_stacking_exp527_exp596/environment.json",
+  "release_url": null,
+  "verifier": "2heej",
+  "verified_at": "2026-08-06T08:30:43.260941+00:00",
+  "artifacts": [
+    {
+      "kind": "submission",
+      "path": "submissions/exp634_cross_fitted_stacking_exp527_exp596.csv",
+      "size_bytes": 38719,
+      "sha256": "60ed6128ea0b41e0860098618fe7c5cec0943cd2d2fded9306a13463d0b3c5c9",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp634_cross_fitted_stacking_exp527_exp596.csv",
+      "size_bytes": 3459724,
+      "sha256": "4f6b634a389f02af9f5bddf28c45cfd89ca414bcf9a9ce8f38a4b4bb402655ac",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp634_cross_fitted_stacking_exp527_exp596_test_proba.csv",
+      "size_bytes": 1385055,
+      "sha256": "adca5bd1dda2e5be28181dbd82f78700f0c8277546f3009d16afed17520ebcd2",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp634_cross_fitted_stacking_exp527_exp596/metrics.json",
+      "size_bytes": 12231,
+      "sha256": "2094165a8184793a1a049506c154d580560fc6654050037047eceee3e437da94",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp634_cross_fitted_stacking_exp527_exp596/config.resolved.yaml",
+      "size_bytes": 1666,
+      "sha256": "962de15d972bc77c650eed9e9e65cd47cfa4da1d732625b727e08ef65fe3ee17",
+      "storage_uri": null
+    },
+    {
+      "kind": "comparison",
+      "path": "reproducibility/exp634_cross_fitted_stacking_exp527_exp596/comparison.json",
+      "size_bytes": 477,
+      "sha256": "7b8616513ecacb6ec91f185c4e03e97c787967faebd2b7769f7df73f6019f422",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp634_cross_fitted_stacking_exp527_exp596/fold_0.joblib",
+      "size_bytes": 12183,
+      "sha256": "c605d131a642f65c8d0c27b06d929d05cc6790ad4f0072e94dad528a02344297",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp634_cross_fitted_stacking_exp527_exp596/fold_1.joblib",
+      "size_bytes": 12183,
+      "sha256": "31c23dcff2de9e5cb735056239d510ea2d359e5bfa5b55d1e9cba0e119edc673",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp634_cross_fitted_stacking_exp527_exp596/fold_2.joblib",
+      "size_bytes": 12183,
+      "sha256": "99184d569951737da1f5ae4e63d3134d59c6b6713b7c744a58fdc3e3ab552fd4",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp634_cross_fitted_stacking_exp527_exp596/fold_3.joblib",
+      "size_bytes": 12183,
+      "sha256": "a533c569399c69888d0a9ad396ecb02a84773928e2f607156a87e3cfbc726f1a",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp634_cross_fitted_stacking_exp527_exp596/fold_4.joblib",
+      "size_bytes": 12183,
+      "sha256": "7e747bfe4006259e296687c1d3a360c553903ece665222dbb446984c86ea8308",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp634_cross_fitted_stacking_exp527_exp596/final.joblib",
+      "size_bytes": 12183,
+      "sha256": "4eda8d2cf3bef326cb345573198d38ff6d42102c55b393392c8c61d5f95f24cb",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

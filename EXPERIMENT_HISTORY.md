@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 133
+- 실제 실험 수: 134
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4647479423 (`EXP-628`, 26-class 전부 예측)
@@ -153,6 +153,7 @@
 | EXP-605 | COMPLETED | Kangho Park | #605 | EXP-374 + fold-train에서 train SUBCLASS가 저burden 8클래스(KIRC/KIPAN/GBMLGG/SARC/PRAD/PCPG/THYM/LAML)인 샘플에 balanced_sample_weight 1.2배 추가 곱(EXP-516 burden quantile 대신 클래스 멤버십 기준) | 0.4223194676 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0044714592(게이트 +0.001 미달)·fold std +0.0021112(EXP-516보다도 악화)·DLBC -0.0939 붕괴(EXP-516의 -0.0505보다 더 악화)로 ARCHIVE; "표적 8클래스만 직접 건드리면 LUAD/BLCA/DLBC는 안전할 것"이라는 원가설이 반증됨(LUAD -0.0518 여전히 하락, DLBC는 EXP-516보다 더 하락, BLCA만 개선) — 가중치 재분배의 zero-sum 성격 때문으로 추정 | [보고서](reports/exp605_class_scoped_sample_weight/README.md) |
 | EXP-623 | COMPLETED | 2heej | #623 | EXP-527 XGBoost + EXP-596 RandomForest 사전 고정 0.5/0.5 확률 평균 (#505 S1) | 0.4617833378 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0149110671·Log Loss 개선, 클래스 붕괴(-0.05) 없음; fold std는 +0.0057이나 5개 fold 중 4개 개선·1개(fold4) 사실상 동일로 붕괴형 불안정 아님 — `ADOPT_WITH_CAUTION`, 현재 26-class 전부 예측하는 최고 Local 후보 | [보고서](reports/exp623_exp527_exp596_fixed_blend/README.md) |
 | EXP-628 | COMPLETED | 2heej | #628 | EXP-527+EXP-596 확률 블렌드 가중치 leave-one-outer-fold-out nested 선택(0.05 간격 grid, look-ahead 없음) | 0.4647479423 | 미제출 | INFERENCE_VERIFIED | EXP-623(0.5/0.5) 대비 +0.0029646045·fold std -0.0027327243(개선)·클래스 붕괴 없음; 5개 fold 전부 독립적으로 동일 가중치(0.35/0.65) 선택 — `ADOPT_WITH_CAUTION`, 현재 26-class 전부 예측하는 최고 Local 후보 | [보고서](reports/exp628_nested_blend_weight_exp527_exp596/README.md) |
+| EXP-634 | COMPLETED | 2heej | #634 | EXP-527+EXP-596 cross-fitted L2 Logistic Regression 스태킹, `class_weight=null`(#505 S2) | 0.3274295444 | 미제출 | INFERENCE_VERIFIED | EXP-628 대비 -0.1373183979 폭락, fold std +0.0333528273 악화, DLBC·SARC·THYM F1=0 등 소수 클래스 6개 붕괴(Log Loss는 -0.00002로 거의 불변) — EXP-137과 같은 실패 패턴이 더 심하게 재현됨, `ARCHIVE`; `class_weight="balanced"` 재시도가 유력한 다음 수 | [보고서](reports/exp634_cross_fitted_stacking_exp527_exp596/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5542,3 +5543,50 @@ additive 확장이며 `uv run pytest -q`로 회귀 여부를 재확인했다). "
   신호라는 강한 증거다. Log Loss만 소폭 악화됐으나 참고 임계값 미만이다.
   현재 26-class를 전부 예측하는 모델 중 Local 최고 후보로 EXP-623을
   대체하되, Public 제출은 팀 논의 후 진행한다.
+
+### [EXP-634] EXP-527+EXP-596 cross-fitted L2 Logistic Regression 스태킹
+
+- 상태/실행자: COMPLETED / 2heej
+- Issue/브랜치: #634 / `issue-634-cross-fitted-stacking-exp527-exp596`
+- Config/Runner: `configs/exp634_cross_fitted_stacking_exp527_exp596.yaml` /
+  `scripts/run_exp634_cross_fitted_stacking_exp527_exp596.py`
+  (`scripts/run_exp137_cross_fitted_stacking.py`의 canonical 5-fold
+  cross-fitting 패턴 그대로 재사용)
+- 부모: EXP-527, EXP-596; 비교 기준: EXP-628(현재 Local 최고)
+- 배경: #505 Cross-fitted Stacking 로드맵 S2 단계. EXP-628의 전역 스칼라
+  가중치(0.35/0.65) 대신 클래스별로 다른 가중치를 학습하는 메타모델이
+  더 나은지 확인. EXP-137(EXP-094+EXP-125, 동일 하이퍼파라미터)이 이미
+  "소수 클래스 F1 붕괴"로 기각된 전례가 있었지만, #505가 첫 메타모델로
+  이 설정(`C=0.2`, `class_weight=null` L2 Multinomial Logistic Regression)을
+  명시적으로 지정해 그대로 실행했다.
+- 방법: 재학습 없음. base(EXP-527, EXP-596) OOF 확률(52차원)만 입력으로
+  outer canonical 5-fold에서 meta learner를 cross-fit.
+- Fold Macro F1: 0.2917690967, 0.3734454412, 0.2855175653, 0.3721510089,
+  0.2804831677
+- OOF Macro F1 / fold 평균 / fold std: 0.3274295444 / 0.3206732559 /
+  0.0427117754
+- Accuracy / Log Loss: 0.4296081277 / 1.9979459458
+- EXP-628 대비: Macro F1 `-0.1373183979`(폭락), fold std
+  `+0.0333528273`(대폭 악화), Accuracy `-0.0190291889`, Log Loss
+  `-0.0000213199`(사실상 동일)
+- 클래스별 붕괴: DLBC·SARC·THYM F1 `0.0000`, PAAD `0.0164`, LGG `0.0173`,
+  PCPG `0.0267` — `-0.05` 붕괴 기준을 압도적으로 넘는 클래스 6개. 다수
+  클래스(SKCM 0.8795, ACC 0.7833, COAD 0.7550)는 EXP-628과 큰 차이 없어
+  메타모델이 소수 클래스 신호만 체계적으로 무시했음을 보여준다.
+- 진단: fold별 계수는 안정적(`coef_abs_max` 5.24~5.47)이라 발산이 원인이
+  아니다. `class_weight=null` 다항 로지스틱 회귀가 20배 불균형 클래스
+  (DLBC 38개 vs BRCA 786개)에서 L2 규제와 결합해 소수 클래스 방향
+  계수를 체계적으로 축소시켰다. EXP-137도 같은 설정에서 같은 방향
+  (DLBC·PAAD·SARC)의 실패를 보였지만 이번이 훨씬 심각하다. Log Loss가
+  거의 변하지 않은 것은 다수 클래스가 표본 대부분을 차지해 평균 손실에
+  소수 클래스 붕괴가 거의 드러나지 않기 때문 — Macro F1을 1차 지표로
+  쓰는 정책이 정확히 이런 실패를 잡아내기 위한 것임을 보여준다.
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — 저장 checkpoint 추론으로 제출
+  SHA-256·라벨·확률 완전 일치(결정론적, cross-fitting 구현 결함이 아님을
+  확인)
+- 판단: **`ARCHIVE`**. #505 학습형 메타모델 채택 기준(`+0.002` 이상)에
+  압도적으로 미달. 근본 원인은 클래스 불균형이지 구현 결함이 아니므로,
+  프로젝트 기본 정책(`balanced_sample_weight`)에 맞춰 `class_weight="balanced"`로
+  재시도하는 것이 유력한 다음 수 — 단, 예측이 달라지므로 이 EXP-ID를
+  재사용하지 않고 별도 Experiment Issue가 필요하다.
