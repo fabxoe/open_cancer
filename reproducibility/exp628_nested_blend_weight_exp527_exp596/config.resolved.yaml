@@ -1,0 +1,127 @@
+experiment:
+  issue_number: 628
+  experiment_id: EXP-628
+  branch: issue-628-nested-blend-weight-exp527-exp596
+  owner: 2heej
+  source_commit: d96fcdf4a2b70b6ce773da481507814e3878b1bc
+  dirty_worktree: false
+  started_at: '2026-08-06T08:11:24.632697+00:00'
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+class_order:
+- ACC
+- BLCA
+- BRCA
+- CESC
+- COAD
+- DLBC
+- GBMLGG
+- HNSC
+- KIPAN
+- KIRC
+- LAML
+- LGG
+- LIHC
+- LUAD
+- LUSC
+- OV
+- PAAD
+- PCPG
+- PRAD
+- SARC
+- SKCM
+- STES
+- TGCT
+- THCA
+- THYM
+- UCEC
+ensemble:
+  method: nested_leave_one_fold_out_weight_search
+  weights_fixed_before_evaluation: true
+  components:
+  - experiment_id: EXP-527
+    oof_probability_path: oof/exp527_parser_v4_class_cosine_loo.csv
+    test_probability_path: preds/exp527_parser_v4_class_cosine_loo_test_proba.csv
+    metrics_path: reports/exp527_parser_v4_class_cosine_loo/metrics.json
+    resolved_config_path: reproducibility/exp527_parser_v4_class_cosine_loo/config.resolved.yaml
+  - experiment_id: EXP-596
+    oof_probability_path: oof/exp596_random_forest_v1.csv
+    test_probability_path: preds/exp596_random_forest_v1_test_proba.csv
+    metrics_path: reports/exp596_random_forest_v1/metrics.json
+    resolved_config_path: reproducibility/exp596_random_forest_v1/config.resolved.yaml
+  nested_weight_selection:
+    candidate_grid_weight_527:
+    - 0.0
+    - 0.05
+    - 0.1
+    - 0.15
+    - 0.2
+    - 0.25
+    - 0.3
+    - 0.35
+    - 0.4
+    - 0.45
+    - 0.5
+    - 0.55
+    - 0.6
+    - 0.65
+    - 0.7
+    - 0.75
+    - 0.8
+    - 0.85
+    - 0.9
+    - 0.95
+    - 1.0
+    per_fold_selection_scope: other_four_outer_folds_only
+    weight_aggregation: mean_snap_to_grid
+    instability_threshold_range: 0.3
+ensemble_weight_selection_result:
+  method: leave_one_fold_out_nested_weight_search
+  candidate_grid_weight_527:
+  - 0.0
+  - 0.05
+  - 0.1
+  - 0.15
+  - 0.2
+  - 0.25
+  - 0.3
+  - 0.35
+  - 0.4
+  - 0.45
+  - 0.5
+  - 0.55
+  - 0.6
+  - 0.65
+  - 0.7
+  - 0.75
+  - 0.8
+  - 0.85
+  - 0.9
+  - 0.95
+  - 1.0
+  per_fold_selected_weight_527:
+  - 0.35
+  - 0.35
+  - 0.35
+  - 0.35
+  - 0.35
+  weight_range_across_folds: 0.0
+  instability_threshold_range: 0.3
+  unstable: false
+  weight_aggregation: mean_snap_to_grid
+  final_weight_527: 0.35
+  final_weight_596: 0.65
+outputs:
+  oof: oof/exp628_nested_blend_weight_exp527_exp596.csv
+  test_probability: preds/exp628_nested_blend_weight_exp527_exp596_test_proba.csv
+  submission: submissions/exp628_nested_blend_weight_exp527_exp596.csv
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 08:56:36) [Clang 18.1.8 ]
+  platform: macOS-26.5.2-arm64-arm-64bit
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  uv_lock_sha256: bc7da4e6e1f133ee6b1f8c5cd4c86f9b87d336d686ceaacddbe20254b0771d23
+command: uv run python scripts/run_exp628_nested_blend_weight_exp527_exp596.py

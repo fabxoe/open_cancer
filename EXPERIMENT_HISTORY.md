@@ -7,13 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 131
+- 실제 실험 수: 132
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4617833378 (`EXP-623`, 26-class 전부 예측)
-- 최고 leakage-safe Local OOF Macro F1: 0.4617833378 (`EXP-623`)
+- 최고 Local OOF Macro F1: 0.4647479423 (`EXP-628`, 26-class 전부 예측)
+- 최고 leakage-safe Local OOF Macro F1: 0.4647479423 (`EXP-628`)
 - 최고 Public LB Macro F1: 0.346215922 (`EXP-374`)
-- 최고 재현 검증 모델: `EXP-623` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-628` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-06
 
 ## 실험 요약
@@ -151,6 +151,7 @@
 | EXP-604 | COMPLETED | Kangho-Park | #604 | EXP-374 OOF + KIPAN/KIRC·GBMLGG/LGG 쌍 내부 확률 재분배(재학습 없음, EXP-233/276/515 후속) | 0.4298798238 | 미제출 | NOT_STARTED | Macro F1 +0.0030889(5-fold 전부 개선)이나 Log Loss +0.0168970·fold std +0.0014154 악화·비대상 22클래스 절대 F1 변화 합 0.0223(허용치 1e-6)로 REJECTED — 확률 값은 대상 쌍 외 완전 불변이 검증됐지만(단위테스트) argmax 경쟁 때문에 분류 결과는 간접 영향받음을 확인, EXP-515(0.0994) 대비 손상은 4.5배 감소·DLBC는 완전 무영향 | [보고서](reports/exp604_pairwise_probability_redistribution/README.md) |
 | EXP-605 | COMPLETED | Kangho Park | #605 | EXP-374 + fold-train에서 train SUBCLASS가 저burden 8클래스(KIRC/KIPAN/GBMLGG/SARC/PRAD/PCPG/THYM/LAML)인 샘플에 balanced_sample_weight 1.2배 추가 곱(EXP-516 burden quantile 대신 클래스 멤버십 기준) | 0.4223194676 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0044714592(게이트 +0.001 미달)·fold std +0.0021112(EXP-516보다도 악화)·DLBC -0.0939 붕괴(EXP-516의 -0.0505보다 더 악화)로 ARCHIVE; "표적 8클래스만 직접 건드리면 LUAD/BLCA/DLBC는 안전할 것"이라는 원가설이 반증됨(LUAD -0.0518 여전히 하락, DLBC는 EXP-516보다 더 하락, BLCA만 개선) — 가중치 재분배의 zero-sum 성격 때문으로 추정 | [보고서](reports/exp605_class_scoped_sample_weight/README.md) |
 | EXP-623 | COMPLETED | 2heej | #623 | EXP-527 XGBoost + EXP-596 RandomForest 사전 고정 0.5/0.5 확률 평균 (#505 S1) | 0.4617833378 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0149110671·Log Loss 개선, 클래스 붕괴(-0.05) 없음; fold std는 +0.0057이나 5개 fold 중 4개 개선·1개(fold4) 사실상 동일로 붕괴형 불안정 아님 — `ADOPT_WITH_CAUTION`, 현재 26-class 전부 예측하는 최고 Local 후보 | [보고서](reports/exp623_exp527_exp596_fixed_blend/README.md) |
+| EXP-628 | COMPLETED | 2heej | #628 | EXP-527+EXP-596 확률 블렌드 가중치 leave-one-outer-fold-out nested 선택(0.05 간격 grid, look-ahead 없음) | 0.4647479423 | 미제출 | INFERENCE_VERIFIED | EXP-623(0.5/0.5) 대비 +0.0029646045·fold std -0.0027327243(개선)·클래스 붕괴 없음; 5개 fold 전부 독립적으로 동일 가중치(0.35/0.65) 선택 — `ADOPT_WITH_CAUTION`, 현재 26-class 전부 예측하는 최고 Local 후보 | [보고서](reports/exp628_nested_blend_weight_exp527_exp596/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5462,3 +5463,53 @@ additive 확장이며 `uv run pytest -q`로 회귀 여부를 재확인했다). "
   있음을 보여주는 사례로 #505 스태킹 로드맵의 첫 성공한 S1 결과다. 현재
   26-class를 전부 예측하는 모델 중 Local 최고 후보로 기록하되, Public 제출은
   팀 논의 후 진행한다.
+
+### [EXP-628] EXP-527+EXP-596 블렌드 가중치 leave-one-outer-fold-out nested 선택
+
+- 상태/실행자: COMPLETED / 2heej
+- Issue/브랜치: #628 / `issue-628-nested-blend-weight-exp527-exp596`
+- Config/Runner: `configs/exp628_nested_blend_weight_exp527_exp596.yaml` /
+  `scripts/run_exp628_nested_blend_weight_exp527_exp596.py`
+- 부모: EXP-527(XGBoost), EXP-596(RandomForest); 비교 기준: EXP-623(0.5/0.5
+  고정 블렌드, 현재 채택 후보)
+- 배경: EXP-623 보고서의 explore-mode 참고 스윕(0.1 간격)이 EXP-527 가중치
+  0.4/0.6에서 0.4639450817로 공식 0.5/0.5(0.4617833378)보다 근소하게 높은
+  값을 찾았지만, 같은 OOF에서 사후에 찾은 값이라 채택 근거로 쓰지 않았다.
+  이 실험은 look-ahead 없이 같은 결론을 재현할 수 있는지 확인한다.
+- 방법: 재학습 없음. 기존 5-fold canonical split을 outer split으로 쓰고,
+  각 outer fold의 가중치를 나머지 4개 fold의 OOF만으로 사전 고정 grid
+  (`0.00~1.00`, `0.05` 간격, EXP-527 가중치 기준)에서 Macro F1 최대화로
+  선택한다. fold 자신의 라벨은 그 fold의 가중치 선택에 전혀 쓰지 않는다.
+  5개 fold의 nested 예측을 이어 붙인 것이 공식 OOF다. 배포용 최종 가중치는
+  5개 fold가 선택한 값의 평균을 grid에 스냅한 값이며, 이 집계 규칙은 실행
+  전 config에 고정했다.
+- fold별 선택 가중치(EXP-527 기준, 전부 나머지 4-fold OOF만으로 독립 선택):
+  fold0 `0.35`, fold1 `0.35`, fold2 `0.35`, fold3 `0.35`, fold4 `0.35`
+  (`weight_range_across_folds = 0.0`, 사전 설정 불안정 임계값 `0.30` 대비
+  매우 안정).
+- 최종 배포 가중치: EXP-527 `0.35` / EXP-596 `0.65`
+- OOF Macro F1 / fold 평균 / fold std: 0.4647479423 / 0.4654638314 /
+  0.0093589481
+- Accuracy / Log Loss: 0.4486373166 / 1.9979672657
+- EXP-623 대비: Macro F1 `+0.0029646045`, fold std `-0.0027327243`(개선),
+  Accuracy `+0.0035478149`, Log Loss `+0.0081466164`(소폭 악화, ABC-Stack
+  로드맵 G3의 참고 임계값 `0.01` 미만)
+- 클래스별 비교(EXP-623 대비): 큰 개선 DLBC `+0.0497`, BLCA `+0.0372`,
+  TGCT `+0.0273`, LGG `+0.0197`, KIRC `+0.0197`; 큰 하락 COAD `-0.0298`,
+  CESC `-0.0272`, SKCM `-0.0269`, ACC `-0.0166`. `-0.05` 붕괴 기준을 넘는
+  클래스는 없다.
+- 참고: 이번 nested 값 `0.35`는 EXP-623 explore 스윕의 `0.4`와 다르다.
+  원래 스윕은 `0.1` 간격이라 `0.3`~`0.4` 사이를 시도하지 않았는데, `0.05`
+  간격 grid가 그 사이의 더 나은 지점을 찾았다. nested(정직한) 추정치
+  `0.4647479423`가 원래 peeking 스윕의 `0.4/0.6` 값 `0.4639450817`보다도
+  높아, 사후 peeking이 최적점을 과대평가한 게 아니라 거친 격자 때문에 원래
+  스윕이 진짜 최적점을 놓쳤을 뿐임을 보여준다.
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — 결정론적 재계산으로 fold별 가중치
+  선택·확률·제출 SHA-256이 완전히 일치(확률 최대 절대 오차 `0.0`)
+- 판단: **`ADOPT_WITH_CAUTION`**. OOF Macro F1·Accuracy가 개선하고 fold
+  std는 오히려 감소했으며 클래스 붕괴도 없다. 5개 fold가 서로 다른 fold
+  조합에서 독립적으로 동일한 가중치를 선택한 것은 노이즈가 아닌 안정적
+  신호라는 강한 증거다. Log Loss만 소폭 악화됐으나 참고 임계값 미만이다.
+  현재 26-class를 전부 예측하는 모델 중 Local 최고 후보로 EXP-623을
+  대체하되, Public 제출은 팀 논의 후 진행한다.
