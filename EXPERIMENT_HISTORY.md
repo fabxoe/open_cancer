@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 139
+- 실제 실험 수: 140
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4647479423 (`EXP-628`, 26-class 전부 예측)
@@ -159,6 +159,7 @@
 | EXP-643 | COMPLETED | 2heej | #643 | EXP-374 legacy 피처 + RandomForest(EXP-596과 동일 하이퍼파라미터, legacy 계보 두 번째 모델 다양성 후보) | 0.3999667430 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0268241839로 단독 품질 게이트 미달(wildcard 허용치도 초과)이나 다양성 게이트 명확히 통과(vs EXP-374 오류상관 0.6488·불일치 34.83%, vs EXP-459 오류상관 0.7606·불일치 28.79%) — EXP-459와 동일하게 blend/stacking 자산으로 보존, 단독 채택 아님 | [보고서](reports/exp643_random_forest_exp374/README.md) |
 | EXP-652 | COMPLETED | 2heej | #652 | EXP-527 + fold-safe ordinary range_replacement 유전자 indicator(EXP-409 구현 재사용, 부모만 EXP-369→EXP-527로 교체) | 0.4481375742 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0012653035(게이트 통과)·fold std -0.0035635578(개선)·클래스 붕괴(-0.05) 없음(최대 하락 PAAD -0.0392)이나 Log Loss +0.0177605152 소폭 악화 — `ADOPT_WITH_CAUTION`; 같은 feature가 더 약한 부모 EXP-369에서는 Log Loss +0.1327703(EXP-409, ARCHIVE)였던 것과 달리 class-cosine이 있는 EXP-527에서는 악화폭이 7분의 1로 줄어듦 | [보고서](reports/exp652_range_replacement_any_exp527/README.md) |
 | EXP-660 | COMPLETED | Kangho-Park | #660 | raw-first #658 후속 minimal Track A: mutation presence·missingness + parser-v4 native v3 gene consequence + isoform-eligible max residue, 모든 sample aggregate 제거 | 0.3627988723 | 미제출 | INFERENCE_VERIFIED | EXP-433 대비 Macro F1 -0.0504774177·Log Loss +0.1478596926·Accuracy -0.0478955007, LUSC/THYM/PAAD 등 다수 클래스 붕괴로 공동 gate 실패 — `ARCHIVE`; sample aggregate 전부 제거가 암종 신호까지 제거했으며 parser correctness·isoform mask 자체의 기각 근거는 아님 | [보고서](reports/exp660_minimal_track_a/README.md) |
+| EXP-662 | COMPLETED | codex | #662 | EXP-545 parser-v4 hierarchical TF-IDF LinearSVC + outer-train 내부 3-fold sigmoid calibration | 0.4397109834 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0000334562·Log Loss -0.8892080836·fold std +0.0006569779이나 LGG -0.2347548349 등 class-collapse gate 실패로 단독 모델 `ARCHIVE`; calibrated probability는 후속 사전고정 blend 후보로 보존 | [보고서](reports/exp662_hierarchical_tfidf_svc_sigmoid/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5796,3 +5797,36 @@ additive 확장이며 `uv run pytest -q`로 회귀 여부를 재확인했다). "
   노출뿐 아니라 암종 신호까지 제거했다. parser correctness와 isoform mask는
   유지하며 같은 전면 제거를 튜닝·재제출하지 않는다.
 - Report: `reports/exp660_minimal_track_a/README.md`
+
+### [EXP-662] Outer-train calibrated hierarchical TF-IDF LinearSVC
+
+- 상태/실행자: COMPLETED / codex
+- Issue/브랜치: #662 / `issue-662-calibrated-track-b`
+- 소스 commit: `f4082da`
+- Config/Runner: `configs/exp662_hierarchical_tfidf_svc_sigmoid.yaml` /
+  `scripts/run_exp662_hierarchical_tfidf_svc_sigmoid.py`
+- 부모: EXP-545
+- 방법: EXP-545의 parser-v4 hierarchical detail/global vocabulary, outer-train
+  TF-IDF, LinearSVC 설정을 고정하고 각 outer-train 내부에만 3-fold sigmoid
+  calibration을 추가했다. Outer validation/test는 transform-only다.
+- Fold Macro F1: 0.4348774940, 0.4404814045, 0.4442402867,
+  0.4437178880, 0.4333736384
+- OOF Macro F1 / fold 평균 / fold std: 0.4397109834 / 0.4393381423 /
+  0.0044719779
+- Accuracy / Log Loss: 0.4325108853 / 1.8895009704
+- EXP-545 대비: Macro F1 +0.0000334562, Log Loss -0.8892080836,
+  fold std +0.0006569779
+- 클래스 변화: GBMLGG +0.0909, SKCM +0.0763, ACC +0.0599인 반면
+  LGG -0.2348, KIRC -0.0742, CESC -0.0662, BRCA -0.0515로 사전
+  -0.05 class-collapse gate를 위반했다.
+- Runtime: 160.38초
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — submission SHA-256 완전 일치,
+  label agreement 1.0, 확률 최대 절대 오차 0.0
+- 판단: **ARCHIVE_GATE_FAILED**. Macro F1 비악화와 Log Loss 개선은 모두
+  통과했지만 class-collapse gate 실패로 단독 모델은 채택하지 않는다.
+  다만 Log Loss가 크게 개선된 calibrated probability/checkpoint는 후속
+  사전고정 blend 재료로 보존한다. EXP-527 OOF 원본은 저장 정책상 현재
+  worktree에 없어 새 pairwise 다양성 수치는 만들지 않았으며, EXP-545에서
+  검증된 계보 다양성을 그대로 주장하지 않는다.
+- Report: `reports/exp662_hierarchical_tfidf_svc_sigmoid/README.md`

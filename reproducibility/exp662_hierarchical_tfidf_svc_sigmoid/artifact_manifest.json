@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-662",
+  "issue_number": 662,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "f4082daf778f6dc3c500737de761a622621e0474",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp662_hierarchical_tfidf_svc_sigmoid/data_manifest.json",
+  "environment": "reproducibility/exp662_hierarchical_tfidf_svc_sigmoid/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp662_hierarchical_tfidf_svc_sigmoid/fold_00.joblib",
+      "size_bytes": 32186102,
+      "sha256": "900f21490aafd8d99cd347ebe069b92c328ef9f738a75ec630ca9fe9815b4080",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp662_hierarchical_tfidf_svc_sigmoid/fold_01.joblib",
+      "size_bytes": 31721701,
+      "sha256": "e4a788d775cc2cac9fa61e2707dd85e364eaf0f675977df828a3077a9391f1d5",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp662_hierarchical_tfidf_svc_sigmoid/fold_02.joblib",
+      "size_bytes": 31722091,
+      "sha256": "a656fe8c7b66ce15c6c27860c0c566e8d127a91e30d7cc41f0fe150906001cdf",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp662_hierarchical_tfidf_svc_sigmoid/fold_03.joblib",
+      "size_bytes": 33053935,
+      "sha256": "8d583501a2d3574ace26da57f9412b2c3de9c5d83e6902689e9e6d2cf7f86c5b",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp662_hierarchical_tfidf_svc_sigmoid/fold_04.joblib",
+      "size_bytes": 32261449,
+      "sha256": "3326bec0fe12d607d514eb919d249ff6342d3cc8b0d011299dc6040fee201c88",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp662_hierarchical_tfidf_svc_sigmoid.csv",
+      "size_bytes": 3495549,
+      "sha256": "a8d2cf582f3d185c27dabffeb6ac353487ac0d49a13dd8b53cf3c80a4756b27d",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp662_hierarchical_tfidf_svc_sigmoid.csv",
+      "size_bytes": 38358,
+      "sha256": "f4f4f2a20077ca875e5fa6e0473691e21f4ef6530144c0a2c98ffd5d19fe8473",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp662_hierarchical_tfidf_svc_sigmoid_test_proba.csv",
+      "size_bytes": 1404078,
+      "sha256": "a4e4ee25fc794c65d1b5fe873fb85d8f1c5644e04bbed1502546fd9294bb7365",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp662_hierarchical_tfidf_svc_sigmoid/config.resolved.yaml",
+      "size_bytes": 1566,
+      "sha256": "48d9df04ce69e345148c4a00048ce2a752cdd23c1535259de30ed8805b70bc77",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp662_hierarchical_tfidf_svc_sigmoid/metrics.json",
+      "size_bytes": 19971,
+      "sha256": "214fb62df282383158a24b09399c2ce6c7d612d6dff33fd3d9197e287e722602",
+      "storage_uri": null
+    }
+  ],
+  "verifier": "codex",
+  "verified_at": "2026-08-06T14:27:35.378997+00:00",
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-12,
+    "probability_rtol": 1e-12,
+    "passed": true
+  }
+}
