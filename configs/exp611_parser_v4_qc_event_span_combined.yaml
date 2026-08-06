@@ -1,0 +1,68 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-611
+issue_number: 611
+slug: exp611_parser_v4_qc_event_span_combined
+parent_experiment: EXP-571
+component_experiments:
+  - EXP-571
+  - EXP-567
+seed: 42
+
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+
+features:
+  fixed_parent: exp571_data_centric_features_parser_v4_parser_qc
+  parser_contract: v4
+  added_family: parser_event_span_summary
+  combined_families:
+    - parser_status_ratios
+    - parser_event_span_summary
+  excluded:
+    - raw_token_tfidf
+    - cross_gene_absolute_position_variance
+    - residue_concentration
+
+model:
+  name: lightgbm
+  parameters:
+    n_estimators: 1200
+    learning_rate: 0.03
+    num_leaves: 31
+    max_depth: -1
+    min_child_samples: 20
+    subsample: 0.8
+    subsample_freq: 1
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    early_stopping_rounds: 60
+    checkpoint_selection: macro_f1_validation
+    n_jobs: 8
+    verbosity: -1
+    deterministic: true
+    force_col_wise: true
+
+training:
+  balanced_sample_weight: true
+
+comparison_metrics_path: >-
+  reports/exp571_data_centric_features_parser_v4_parser_qc/metrics.json
+
+acceptance:
+  minimum_macro_f1_delta: 0.0
+  recommended_macro_f1_delta: 0.001
+  minimum_accuracy_delta: -0.002
+  maximum_log_loss_delta: 0.01
+  maximum_fold_std_delta: 0.002
+  minimum_per_class_f1_delta: -0.05
+
+notes: >-
+  EXP-611 changes exactly one factor relative to the adopted EXP-571 Parser QC
+  arm: it appends the already preregistered stateless Parser-v4 event-span
+  summary family. The EXP-567 parent representation, fold-safe LOO class cosine,
+  LightGBM parameters, canonical split, class weighting, and checkpoint policy
+  remain fixed. Test rows are transformed only after the feature definitions are
+  frozen and are never used for model or feature selection.
