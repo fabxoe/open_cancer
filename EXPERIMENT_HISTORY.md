@@ -4921,4 +4921,6 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   클래스의 경계를 충분히 회복하지 못한다. 특히 KIRC가 붕괴했으며 전체
   Macro F1과 fold 안정성이 모두 악화됐다. 이 probability-split 구현은
   `ARCHIVE`하고, 같은 specialist의 hard-routing을 별도 공식 실험으로
-  승격하지 않는다.
+  승격하지 않는다. `KIRC ⊂ KIPAN`, `LGG ⊂ GBMLGG`인 겹치는 라벨
+  온톨로지 때문에 이는 순수 subtype 분류가 아니라 데이터셋의 상위/하위
+  cohort 라벨 배정을 복원하는 문제라는 해석을 함께 보존한다.

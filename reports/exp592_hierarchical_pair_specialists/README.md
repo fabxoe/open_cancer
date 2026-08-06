@@ -6,6 +6,21 @@ EXP-589가 합친 `KIPAN/KIRC`와 `GBMLGG/LGG` 두 family를 outer-train 전용
 binary specialist로 다시 나누면, 24-class 모델의 장점을 유지하면서 원래
 26-class 라벨을 복원할 수 있는가?
 
+## 라벨 온톨로지 주의
+
+이 두 쌍은 단순한 형제 암종이 아니다.
+
+- `KIPAN = KIRC ∪ KIRP ∪ KICH`이므로 `KIRC ⊂ KIPAN`이다.
+- `GBMLGG = GBM ∪ LGG`이므로 `LGG ⊂ GBMLGG`이다.
+
+즉 대회 표의 26개 라벨은 생물학적으로 완전히 상호 배타적인 분류 체계가
+아니다. 다만 각 학습 행에는 하나의 `SUBCLASS`만 주어지므로 모델은 평가상
+상호 배타적인 단일 라벨을 출력해야 한다. 따라서 이 실험의 specialist는
+순수하게 두 생물학적 subtype을 구분하는 모델이 아니라, 겹치는 온톨로지의
+환자를 데이터셋이 상위 cohort 라벨과 하위 라벨 중 어디에 배정했는지까지
+학습하는 모델이다. 원자료의 cohort 구성 규칙이 입력 변이만으로 충분히
+식별되지 않으면 이 단계에는 구조적인 성능 상한이 생긴다.
+
 ## 실험 계약
 
 - 부모: EXP-589
@@ -47,6 +62,11 @@ EXP-589에서는 하나의 superclass가 큰 확률 질량을 가진다. EXP-592
 질량을 두 원래 클래스에 나누므로 각 클래스의 절대 확률이 낮아지고, 전혀
 다른 제3 클래스가 전체 argmax를 가져갈 수 있다. 동시에 binary specialist
 자체도 KIRC와 LGG를 충분히 분리하지 못했다.
+
+또한 두 출력이 상위집합과 부분집합 라벨이기 때문에, binary specialist의
+낮은 성능을 곧바로 “KIRC와 KIPAN의 생물학적 차이가 없다”라고 해석하면 안
+된다. 이 결과는 현재 피처와 fold에서 **대회가 부여한 겹치는 cohort 라벨을
+복원하지 못했다**는 뜻이다.
 
 이를 구분하기 위해 사후 분석으로 먼저 24-class argmax를 고른 뒤, 그
 argmax가 두 merged family일 때만 specialist 라벨을 적용하는 hard routing을
