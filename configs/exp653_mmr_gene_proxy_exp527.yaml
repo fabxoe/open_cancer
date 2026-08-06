@@ -1,0 +1,67 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-653
+issue_number: 653
+slug: mmr_gene_proxy_exp527
+parent_experiment: EXP-527
+component_experiments: []
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  parent: exp527_parser_v4_class_cosine_loo
+  observable_marker_proxies:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    knowledge_file: knowledge/mmr_gene_proxy_v1.json
+    panels: 1
+    panel_genes_catalog: [MLH1, MSH2, MSH6, PMS2]
+    panel_genes_in_panel: [MLH1, MSH2, PMS2]
+    output_dimension: 4
+    reused_from: EXP-302 (src/open_cancer/observable_marker_features.py, unchanged; isolated single-panel knowledge file)
+    semantic_equivalence_filter: fold_train_against_exp527_parent
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - exp374_stop_isoform_residue_mask
+    - parser_v4_26_class_cosine_profile_leave_one_out
+    - fixed_observable_cancer_marker_proxies_mmr_only
+acceptance:
+  comparison_experiment: EXP-527
+  minimum_macro_f1_delta: 0.001
+  maximum_fold_std_increase: 0.002
+  require_no_clear_log_loss_regression: true
+notes: >-
+  Issue #653. EXP-527 is frozen. The only change is a stateless observable
+  marker mutation proxy isolated to the four core MMR genes (MLH1, MSH2,
+  MSH6, PMS2), reusing the unchanged ObservableMarkerFamily implementation
+  from src/open_cancer/observable_marker_features.py with a new single-panel
+  knowledge file (knowledge/mmr_gene_proxy_v1.json). MSH6 is absent from the
+  4,384-gene competition panel (matches EXP-302's finding), so only MLH1,
+  MSH2, PMS2 are effectively used. EXP-302 tested the same four genes bundled
+  with KRAS/NRAS/BRAF inside a 7-gene colorectal panel and the whole
+  18-feature marker set was archived (Macro F1 -0.0017 vs EXP-229); this
+  experiment isolates whether the MMR subset alone carries independent
+  signal once the non-MMR genes and the confounding panel are removed.
+  Target, test distribution and Public LB are not used to define the panel.
+comparison_metrics_path: reports/exp527_parser_v4_class_cosine_loo/metrics.json

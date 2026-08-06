@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "created_at": "2026-08-06",
+  "license": "Curated factual gene-set summary; source terms apply",
+  "source": "Isolated DNA mismatch-repair (MMR) gene mutation proxy panel curated before model execution",
+  "source_url": "https://ascopubs.org/doi/10.1200/JOP.2017.022152",
+  "sources": [
+    {
+      "scope": "colorectal / Lynch-associated MMR genes",
+      "organization": "ASCP/CAP/AMP/ASCO",
+      "url": "https://ascopubs.org/doi/10.1200/JOP.2017.022152"
+    }
+  ],
+  "input_contract": {
+    "observable": "Per-gene protein mutation strings supplied by the competition",
+    "not_observable": [
+      "gene fusion or rearrangement",
+      "copy-number amplification",
+      "gene expression or immunohistochemistry",
+      "MSI or dMMR assay status",
+      "germline versus somatic origin",
+      "clinical treatment eligibility"
+    ]
+  },
+  "panels": {
+    "mmr_deficiency_proxy": {
+      "genes": ["MLH1", "MSH2", "MSH6", "PMS2"],
+      "interpretation": "Observed core MMR-gene variant proxy, isolated from the bundled colorectal panel used in EXP-302 (which also mixed in KRAS/NRAS/BRAF); not MSI-H or dMMR assay status"
+    }
+  },
+  "deferred_capture_items": {
+    "bundled_with_in_exp302": ["KRAS", "NRAS", "BRAF"],
+    "reason": "EXP-302 tested MLH1/MSH2/MSH6/PMS2 only as part of a 7-gene colorectal panel that also included non-MMR RAS/BRAF genes, so an MMR-only signal was never isolated"
+  },
+  "feature_policy": {
+    "fit_scope": "stateless",
+    "target_used": false,
+    "test_distribution_used": false,
+    "public_leaderboard_used": false,
+    "per_panel_outputs": [
+      "any_mutated",
+      "any_nonsynonymous",
+      "any_lof",
+      "multi_gene_mutated"
+    ]
+  },
+  "interpretation_limit": "These features are mutation proxies for a classification experiment. They do not reproduce clinical MSI/dMMR biomarker assays, establish cancer causality, diagnose Lynch syndrome, or determine treatment eligibility."
+}
