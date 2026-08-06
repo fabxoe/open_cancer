@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 113
+- 실제 실험 수: 114
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4479925392 (`EXP-521`, train self-inclusion 탐색 결과)
@@ -133,6 +133,7 @@
 | EXP-545 | COMPLETED | fabxoe | #545 | EXP-541 hierarchical vocabulary에 outer-train TF-IDF + row-L2 적용 | 0.4396775272 | 미제출 | NOT_STARTED | EXP-541 대비 +0.0673036513, EXP-527 대비 -0.0071947435, fold std 0.0038151877; 확률 보정 전 다양성 후보 | [보고서](reports/exp545_hierarchical_tfidf_linear/README.md) |
 | EXP-550 | COMPLETED | fabxoe | #550 | EXP-545 TF-IDF 입력 + multinomial Logistic Regression predict_proba | 0.4324730859 | 미제출 | NOT_STARTED | EXP-545 대비 -0.0072044·fold std 악화, EXP-527보다 F1·Log Loss 열세로 단독 확률 모델 ARCHIVE | [보고서](reports/exp550_hierarchical_tfidf_logistic/README.md) |
 | EXP-558 | COMPLETED | fabxoe | #558 | parser-v4 compact clinical features + XGBoost | 0.4133226110 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 +0.0089430·fold std 개선으로 새 compact baseline 채택, 최근 최고보다 낮아 제출 보류 | [보고서](reports/exp558_compact_clinical_xgb/README.md) |
+| EXP-565 | COMPLETED | fabxoe | #565 | EXP-527 parser-v4 부모 피처만 LightGBM에 입력(class-cosine 제외) | 0.4272525489 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 -0.0196197218·fold std 악화; 3-arm 중 parser-only L1 기준점, 단독 ARCHIVE | [보고서](reports/exp565_lightgbm_parser_only/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -4641,3 +4642,26 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   EXP-005보다 성능과 fold 안정성이 개선됐다. 다만 EXP-512·최근 최고 모델보다
   낮고 Log Loss가 악화되어 단독 제출은 보류한다. mutated→truncating→summary→
   recurrent→ref-AA×consequence ablation으로 실제 기여를 분리한다.
+
+### [EXP-565] LightGBM parser-v4 parent only
+
+- 상태/실행자: COMPLETED / fabxoe
+- Issue/브랜치: #565 / `issue-565-lightgbm-parser-only`
+- 소스 commit: `e58e0ac6ab32ff2c25c15b50811b978af24dc824`
+- 시작/종료: 2026-08-06T02:15:19.633007+00:00 /
+  2026-08-06T02:20:37.026960+00:00
+- 부모: EXP-527
+- Config/Runner: `configs/exp565_lightgbm_parser_only.yaml` /
+  `scripts/run_exp565_lightgbm_parser_only.py`
+- 단일 arm: EXP-527의 parser-v4 부모 피처만 유지하고 26개 class-cosine은
+  제외. 세 LightGBM arm 공통 설정과 validation Macro F1 checkpoint 사용.
+- Fold Macro F1: 0.4129549238, 0.4284829407, 0.4192353662,
+  0.4209726006, 0.4548071621
+- OOF Macro F1 / fold std: 0.4272525489 / 0.0146212064
+- Accuracy / Log Loss: 0.4236413482 / 1.8319022146
+- EXP-527 대비: F1 `-0.0196197218`, 라벨 불일치율 `40.0903%`,
+  정오답 상관 `0.6196193`
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+- 판단: parser-only LightGBM은 EXP-527보다 낮고 불안정하여 단독
+  `ARCHIVE`. class-cosine 추가 효과를 판정하는 L1 기준으로 보존한다.
