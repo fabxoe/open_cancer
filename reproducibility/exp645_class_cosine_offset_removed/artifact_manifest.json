@@ -1,0 +1,128 @@
+{
+  "experiment_id": "EXP-645",
+  "issue_number": 645,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "70831c143ce9fdc3b60650619f67856e7a8a675e",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp645_class_cosine_offset_removed/data_manifest.json",
+  "environment": "reproducibility/exp645_class_cosine_offset_removed/environment.json",
+  "release_url": null,
+  "verifier": "2heej",
+  "verified_at": "2026-08-06T09:39:26.182537+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp645_class_cosine_offset_removed/fold_00.json",
+      "size_bytes": 14534839,
+      "sha256": "69d94f84571c227cad90f63a6a09c7b3da0a6497281d6c353e52a32e0d983b82",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp645_class_cosine_offset_removed/fold_01.json",
+      "size_bytes": 9772507,
+      "sha256": "a33bb595f3dbb0dd57f679548974409a216112a86ac17a411f33b5b68ae004dd",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp645_class_cosine_offset_removed/fold_02.json",
+      "size_bytes": 1540669,
+      "sha256": "ab7b33cbc7a2d610bd7edba35fc2e14612f76cf9965505902690196a13e05466",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp645_class_cosine_offset_removed/fold_03.json",
+      "size_bytes": 1061273,
+      "sha256": "d68c03631c1acaca22b7e5532e8e0a86d53ae736681c37968a999a039b3082c1",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp645_class_cosine_offset_removed/fold_04.json",
+      "size_bytes": 13725720,
+      "sha256": "2a793d60ea227a9f3fea0ea4a2f86cb9b6179bf306af27bd9de893f34a72d4b8",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp645_class_cosine_offset_removed.csv",
+      "size_bytes": 38233,
+      "sha256": "d99392f6189722121cda2d09a3cab51f609701ad794cb79be8f6716943b59160",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp645_class_cosine_offset_removed.csv",
+      "size_bytes": 2124918,
+      "sha256": "79e457c9acf6142a38627936df22f4965178b4a2a9d59d1cc25f2b15377450cb",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp645_class_cosine_offset_removed_test_proba.csv",
+      "size_bytes": 804731,
+      "sha256": "5fd46043ab424e13ab4b0175cd6bf497532539e0e86f41f46d51bd0f3abce44b",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp645_class_cosine_offset_removed/metrics.json",
+      "size_bytes": 42502,
+      "sha256": "d3e83aeb23b30a39cd80308bf6f5ce001bd80825ea91f67f493b912faae7576d",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp645_class_cosine_offset_removed/config.resolved.yaml",
+      "size_bytes": 45054,
+      "sha256": "58acf2a54d90aaad2f039ddb62f0407190b8b796563403f5838f7d7cd17386b3",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp645_class_cosine_offset_removed/fold_00_checkpoint_audit.json",
+      "size_bytes": 23786,
+      "sha256": "0f7af093bbae6dad8d019118ec7ea4f59af92682d9f9b9c197c7493a5ce36829",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp645_class_cosine_offset_removed/fold_01_checkpoint_audit.json",
+      "size_bytes": 22087,
+      "sha256": "bb28b8e1d8a2e508ef481349867c85c2427b047151d1a1d204c1af520e858f08",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp645_class_cosine_offset_removed/fold_02_checkpoint_audit.json",
+      "size_bytes": 25353,
+      "sha256": "c82b1af6cc5108a8249884d92d2252d99622ae18bcca1b2909d7557f3c44557b",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp645_class_cosine_offset_removed/fold_03_checkpoint_audit.json",
+      "size_bytes": 23346,
+      "sha256": "76b748b0995cfa2f7b8fbea28bc4358edf51d3f4dfa51bd9114e6182c22a476e",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp645_class_cosine_offset_removed/fold_04_checkpoint_audit.json",
+      "size_bytes": 22772,
+      "sha256": "b11a45788d9cefb514af08954b42b9b8ad31588ae3964a05282201ebfd89d0da",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

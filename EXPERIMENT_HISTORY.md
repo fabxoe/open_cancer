@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 136
+- 실제 실험 수: 137
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4647479423 (`EXP-628`, 26-class 전부 예측)
@@ -156,6 +156,7 @@
 | EXP-634 | COMPLETED | 2heej | #634 | EXP-527+EXP-596 cross-fitted L2 Logistic Regression 스태킹, `class_weight=null`(#505 S2) | 0.3274295444 | 미제출 | INFERENCE_VERIFIED | EXP-628 대비 -0.1373183979 폭락, fold std +0.0333528273 악화, DLBC·SARC·THYM F1=0 등 소수 클래스 6개 붕괴(Log Loss는 -0.00002로 거의 불변) — EXP-137과 같은 실패 패턴이 더 심하게 재현됨, `ARCHIVE`; `class_weight="balanced"` 재시도가 유력한 다음 수 | [보고서](reports/exp634_cross_fitted_stacking_exp527_exp596/README.md) |
 | EXP-639 | COMPLETED | fabxoe | #639 | EXP-527 + parser-v4 fold-safe Hotspot-12 유전자 indicator·sample 요약 3개 | 0.4546505201 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0077782494·Log Loss 개선이나 fold std +0.0048500, LGG -0.1123·KIRC -0.0512 붕괴로 `ARCHIVE_AS_PRIMARY`; 정보 다양성·앙상블 후보로 보존 | [보고서](reports/exp639_parser_v4_hotspot12/README.md) |
 | EXP-621 | COMPLETED | Kangho-Park | #621 | EXP-604와 동일 쌍 내부 확률 재분배(재학습 없음), `regularization_lambda` 0.001→0.02로 강화(EXP-604 후속) | 0.4280073811 | 미제출 | NOT_STARTED | EXP-374 대비 Macro F1 +0.0012164543(게이트 +0.001 근소 통과)·fold std -0.0005200278(개선)·Log Loss +0.0023699809(근소 악화)·비대상 22클래스 절대 F1 변화 합 0.0172821978(게이트 0.015 초과)로 REJECTED — δ 크기는 EXP-604 대비 3분의 1~2분의 1로 줄었으나 collateral·Log Loss 두 게이트를 여전히 통과 못함 | [보고서](reports/exp621_pairwise_redistribution_regularized/README.md) |
+| EXP-645 | COMPLETED | 2heej | #645 | EXP-527 class-cosine 26개 점수 공통 offset 제거(row-wise mean centering, #530 후속 단일변수 ablation) | 0.4385364091 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 Macro F1 -0.0083358616(악화)·fold std -0.0011358681·Log Loss -0.0220236778(둘 다 개선) — 공통 offset이 순수 노이즈가 아니라 판별 신호도 포함, LGG -0.1235·KIRC -0.0550 붕괴(KIPAN/KIRC·GBMLGG/LGG 계보 축과 겹침)로 `ARCHIVE` | [보고서](reports/exp645_class_cosine_offset_removed/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5691,3 +5692,40 @@ additive 확장이며 `uv run pytest -q`로 회귀 여부를 재확인했다). "
   Log Loss 개선은 residue hotspot 정보가 있음을 보여주지만, fold 변동성과
   LGG·KIRC 붕괴 때문에 단독 주력 모델 채택 기준은 실패했다. 임계값을
   사후 조정하지 않고 OOF 오류 상관을 확인한 후 다양성·블렌드 후보로만 보존한다.
+
+### [EXP-645] EXP-527 class-cosine 공통 offset 제거(row-mean centering)
+
+- 상태/실행자: COMPLETED / 2heej
+- Issue/브랜치: #645 / `issue-645-class-cosine-offset-removal`
+- Config/Runner: `configs/exp645_class_cosine_offset_removed.yaml` /
+  `scripts/run_exp645_class_cosine_offset_removed.py`
+- 부모: EXP-527(비교 기준도 EXP-527, canonical OOF만으로 판단)
+- 배경: Issue #530의 EXP-527 일반화 감사가 26개 class-cosine 점수 전부가
+  test에서 공통 상승한다는 것을 발견했다(domain classifier OOF AUC
+  0.647015). PROJECT_CONTEXT에 이미 기록된 train(35.30)/test(78.13) 평균
+  non-WT 변이 수 차이와 결합해, semantic token 밀도 차이가 공통 offset을
+  만든다는 가설을 세우고 단일변수 ablation으로 검증했다.
+- 방법: 재학습 있음(XGBoost, EXP-527과 완전히 동일한 하이퍼파라미터·
+  parent feature). 유일한 차이는 fold-safe한 row-wise mean centering —
+  각 환자 자신의 26개 cosine 점수 평균을 빼는 결정론적 연산으로, 다른
+  행이나 fold 통계를 전혀 참조하지 않아 leakage 위험이 없다.
+- OOF Macro F1 / fold std: 0.4385364091 / 0.0052434504
+- Accuracy / Log Loss: 0.4273504274 / 2.0054650307
+- EXP-527 대비: Macro F1 `-0.0083358616`(악화), fold std
+  `-0.0011358681`(개선), Log Loss `-0.0220236778`(개선)
+- fold별 비교(EXP-527 → EXP-645): fold0만 개선(`0.4343→0.4380`), 나머지
+  4개 fold는 전부 하락(fold1 `0.4506→0.4291`이 가장 큰 하락).
+- 클래스별 비교(EXP-527 대비): 큰 하락 LGG `-0.1235`, KIRC `-0.0550`,
+  BLCA `-0.0493`; 큰 개선 LUAD `+0.0783`, TGCT `+0.0441`, BRCA
+  `+0.0315`. `-0.05` 붕괴 기준을 LGG·KIRC 2개가 위반 — 이 저장소에서
+  반복적으로 문제가 됐던 KIPAN/KIRC·GBMLGG/LGG 계보 혼동 축과 겹친다.
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+- 판단: **`ARCHIVE`**. 원가설("공통 offset은 순수 노이즈")은 부분적으로만
+  맞았다 — fold std·Log Loss는 개선됐지만 canonical OOF Macro F1은
+  악화됐다. 공통 offset이 신호와 노이즈가 섞인 성분이었고, 단순
+  row-mean centering은 둘을 함께 제거해 순 손실이 났다. 채택 기준
+  (canonical OOF)에 따라 test-like propensity 등으로 재평가하지 않는다
+  — parser/feature 의미 결정은 블렌드 가중치 선택과 달리 test 분포 기반
+  선택이 명시적으로 금지된다. 같은 ablation을 LightGBM(EXP-567)에서도
+  재확인하는 EXP-647을 후속으로 진행한다.
