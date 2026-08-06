@@ -1,0 +1,66 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-620
+issue_number: 620
+slug: exp620_lightgbm_regularization_multiseed
+parent_experiment: EXP-571
+component_experiments:
+  - EXP-567
+  - EXP-571
+seed: 42
+
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+
+features:
+  fixed_parent: exp571_data_centric_features_parser_v4_parser_qc
+  parser_contract: v4
+  added_family: parser_status_ratios
+  event_span_enabled: false
+  feature_changes_from_parent: none
+
+model:
+  name: lightgbm
+  preset: preregistered_conservative_regularization_v1
+  parameters:
+    n_estimators: 1200
+    learning_rate: 0.03
+    num_leaves: 23
+    max_depth: 7
+    min_child_samples: 30
+    subsample: 0.8
+    subsample_freq: 1
+    colsample_bytree: 0.8
+    reg_alpha: 0.2
+    reg_lambda: 3.0
+    early_stopping_rounds: 60
+    checkpoint_selection: macro_f1_validation
+    n_jobs: 8
+    verbosity: -1
+    deterministic: true
+    force_col_wise: true
+
+training:
+  balanced_sample_weight: true
+  official_seed: 42
+  diagnostic_seeds:
+    - 142
+    - 242
+  test_used_for_fit: false
+  public_lb_used_for_selection: false
+
+comparison:
+  parent_metrics: reports/exp571_data_centric_features_parser_v4_parser_qc/metrics.json
+  parent_oof_macro_f1: 0.4514285443273454
+  parent_log_loss: 1.8353693599999081
+  parent_fold_std: 0.007865595508288166
+  minimum_recommended_macro_f1_gain: 0.001
+  maximum_per_class_f1_drop: 0.05
+
+notes: >-
+  EXP-620 freezes EXP-571 Parser QC features and the canonical stratified
+  five-fold split. Only one preregistered conservative LightGBM regularization
+  preset is evaluated. Seed 42 is the official parent comparison; seeds 142
+  and 242 are robustness diagnostics on the exact same folds. Test data and
+  Public LB results do not select features, hyperparameters, or seeds.
