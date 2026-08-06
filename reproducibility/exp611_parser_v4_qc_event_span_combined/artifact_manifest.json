@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-611",
+  "issue_number": 611,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "d5da9e91f6226dddcb81c6d0095ab76f21e125ff",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp611_parser_v4_qc_event_span_combined/data_manifest.json",
+  "environment": "reproducibility/exp611_parser_v4_qc_event_span_combined/environment.json",
+  "release_url": null,
+  "verifier": "Gomin-art",
+  "verified_at": "2026-08-06T07:18:53.197279+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp611_parser_v4_qc_event_span_combined/fold_00.txt",
+      "size_bytes": 7291333,
+      "sha256": "0d97adfb16374c4dd8150e75cf88a8493a19cae214914242ccda8cd3ed70c839",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp611_parser_v4_qc_event_span_combined/fold_01.txt",
+      "size_bytes": 7756501,
+      "sha256": "3533c3ae15a33734b1c3ad5b94310af343bc4048d207ac51efafba9ea478d22d",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp611_parser_v4_qc_event_span_combined/fold_02.txt",
+      "size_bytes": 4310474,
+      "sha256": "f5d5bb085af4ec362c803c2f795850170250b267c4ddf690228404d1b5d0340c",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp611_parser_v4_qc_event_span_combined/fold_03.txt",
+      "size_bytes": 24107060,
+      "sha256": "31487ff614652334729fbb1566f8375ce12adea36e8c2d1b0d839f60a5a0afb7",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp611_parser_v4_qc_event_span_combined/fold_04.txt",
+      "size_bytes": 4303867,
+      "sha256": "4464e26420ebebea5d21a44fd7a6d6a17cc1e4e51e83774fd14fca24d658539e",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp611_parser_v4_qc_event_span_combined.csv",
+      "size_bytes": 3501063,
+      "sha256": "426261d17cf9acfa78fdc2bc4f373e5e1a8a2df49a4d11ef90ad083699a03f0b",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp611_parser_v4_qc_event_span_combined_test_proba.csv",
+      "size_bytes": 1394308,
+      "sha256": "8c36c2a52af76e2bf8ae26d40b128ae57b28e93899859e3b3110a1cfb0df8655",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp611_parser_v4_qc_event_span_combined.csv",
+      "size_bytes": 38292,
+      "sha256": "b74f35c76c7cf86266cb7fd369861504c56f5edd58a96ce21d2be11d55bff686",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp611_parser_v4_qc_event_span_combined/metrics.json",
+      "size_bytes": 11537,
+      "sha256": "b0cb2a3126806e57d3364794660d2ad9b30ceaf7853ae7eec02e7ab0cf88b66c",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp611_parser_v4_qc_event_span_combined/config.resolved.yaml",
+      "size_bytes": 6881,
+      "sha256": "4206acac0e29e0e5795c69fcc8a014f3f8205b9ffae845b61537608e24a61818",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

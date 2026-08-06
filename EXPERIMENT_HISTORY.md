@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 128
+- 실제 실험 수: 129
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4533650721 (`EXP-589`, 원래 26-class 평가)
@@ -245,6 +245,7 @@
 | 2026-08-05T18:57:52.107245+00:00 | EXP-527 | fabxoe | `3cc84bca12b6a2767a35e979248e1fdb468c3114` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 8.56e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp527_parser_v4_class_cosine_loo/comparison.json) |
 | 2026-08-06T03:16:20.112263+00:00 | EXP-579 | fabxoe | `7f02fdab69b04cd1868de4e2ab313cb297d8ec80` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp579_exp527_exp567_fixed_blend/comparison.json) |
 | 2026-08-06T04:03:00.878478+00:00 | EXP-517 | Kangho Park | `2734a27c236ce9b16962792ea056a1b7e4426e05` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.49e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp517_passenger_adjusted_burden/comparison.json) |
+| EXP-611 | COMPLETED | Gomin-art | #611 | EXP-571 Parser QC + event span 결합 ablation | 0.4510079660 | 미제출 | NOT_STARTED | Parser QC 단독 대비 OOF 하락·Log Loss 악화로 REJECTED | [보고서](reports/exp611_parser_v4_qc_event_span_combined/README.md) |
 
 ## 상세 실험 로그
 
@@ -5250,3 +5251,23 @@ Cycle #170/173, POLE #181/226, functional_role_burden #257)에 이어 이번
   시점에는 오류 상관·라벨 불일치율을 계산하지 못했다. EXP-123/125/127 중
   하나 이상의 OOF를 확보해 오류 다양성을 확인한 뒤 최종 채택/기각을
   판정한다.
+
+### [EXP-611] Parser-v4 QC + event span 결합 ablation (Parent: EXP-571)
+
+- 담당자: Gomin-art
+- Issue/브랜치: #611 / `issue-611-exp-parser-v4-qc-event-span-combined`
+- Parent: EXP-571 Parser QC arm
+- 상태: COMPLETED
+- canonical split: stratified 5-fold, seed 42
+- OOF Macro F1: `0.4510079660`
+- Fold Macro F1: `[0.4393915164, 0.4492104205, 0.4455627087, 0.4555237109, 0.4573914120]`
+- Fold mean: `0.4494159537`
+- Fold std: `0.0065771075`
+- Accuracy: `0.4392839865`
+- Log Loss: `1.8720815334`
+- EXP-571 Base 대비 Macro F1: `+0.0032663275`
+- EXP-571 Parser QC 대비 Macro F1: `-0.0004205784`
+- EXP-571 Event span 대비 Macro F1: `+0.0001751687`
+- 제출 상태: 미제출
+- 판단: Parser QC와 event span을 결합했지만 Parser QC 단독 대비 OOF Macro F1이 하락했고 Log Loss가 크게 악화되었다. 두 feature family의 신호 중복 가능성이 있으며, 결합 구성은 `REJECTED`로 기록한다. 후속 규제 안정성 실험은 EXP-611이 아니라 EXP-571 Parser QC arm을 부모로 사용한다.
+- 재현 상태: NOT_STARTED

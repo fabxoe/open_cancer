@@ -1,0 +1,52 @@
+{
+  "experiment_id": "EXP-611",
+  "parent_experiment": "EXP-571",
+  "parent_arm": "parser_qc",
+  "parent_metrics": "reports/exp571_data_centric_features_parser_v4_parser_qc/metrics.json",
+  "current_metrics": "reports/exp611_parser_v4_qc_event_span_combined/metrics.json",
+  "deltas": {
+    "macro_f1": -0.00042057835865877413,
+    "accuracy": -0.0008063215610385477,
+    "log_loss": 0.03671217336234811,
+    "fold_std": -0.0012884879772937369
+  },
+  "per_class_f1_delta": {
+    "ACC": -0.036664002131628015,
+    "BLCA": 0.026950162513542764,
+    "BRCA": -0.01282720560817363,
+    "CESC": -0.01500012975890791,
+    "COAD": 0.0034937739855772643,
+    "DLBC": -0.019589552238805985,
+    "GBMLGG": 0.010842087327832317,
+    "HNSC": 0.004019840616845682,
+    "KIPAN": 0.010855881425417852,
+    "KIRC": -0.02471132245347507,
+    "LAML": 0.02413261067373501,
+    "LGG": -0.012055201068407795,
+    "LIHC": 0.013400677996951271,
+    "LUAD": 0.005733274905054042,
+    "LUSC": 0.0074554109078396325,
+    "OV": 0.004239656993950847,
+    "PAAD": -0.007407407407407418,
+    "PCPG": -0.012180989091275518,
+    "PRAD": 0.0072003115197817324,
+    "SARC": -0.012327661503421877,
+    "SKCM": -0.005946043816766222,
+    "STES": -0.004186562126476279,
+    "TGCT": -0.005546623794212169,
+    "THCA": 0.0069624352331606465,
+    "THYM": 0.01990692484989065,
+    "UCEC": 0.012314614724253214
+  },
+  "worst_class": "ACC",
+  "worst_class_f1_delta": -0.036664002131628015,
+  "gates": {
+    "macro_f1_non_decreasing": false,
+    "macro_f1_recommended_gain": false,
+    "accuracy_gate": true,
+    "log_loss_gate": false,
+    "fold_std_gate": true,
+    "per_class_f1_gate": true
+  },
+  "decision": "REJECT"
+}

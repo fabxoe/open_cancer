@@ -1,0 +1,271 @@
+experiment:
+  issue_number: 611
+  experiment_id: EXP-611
+  branch: issue-611-exp-parser-v4-qc-event-span-combined
+  owner: Gomin-art
+  source_commit: d5da9e91f6226dddcb81c6d0095ab76f21e125ff
+  dirty_worktree: false
+  started_at: '2026-08-06T06:58:50.268313+00:00'
+data:
+  train:
+    path: data/raw/train.csv
+    sha256: 92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab
+  test:
+    path: data/raw/test.csv
+    sha256: e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0
+  class_order:
+  - ACC
+  - BLCA
+  - BRCA
+  - CESC
+  - COAD
+  - DLBC
+  - GBMLGG
+  - HNSC
+  - KIPAN
+  - KIRC
+  - LAML
+  - LGG
+  - LIHC
+  - LUAD
+  - LUSC
+  - OV
+  - PAAD
+  - PCPG
+  - PRAD
+  - SARC
+  - SKCM
+  - STES
+  - TGCT
+  - THCA
+  - THYM
+  - UCEC
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+  sha256: 1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf
+features:
+  target_used_for_features: false
+  gene_count: 4384
+  gene_order_sha256: fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff
+  mutation_types:
+  - missense
+  - synonymous
+  - nonsense
+  - frameshift
+  - complex
+  robust_aggregate_features:
+  - sample__mutated_gene_count_log1p
+  - sample__total_variant_count_log1p
+  - sample__multi_variant_gene_count_log1p
+  missing_policy: separate per-gene and per-sample missing indicators
+  position_features:
+  - max_residue_position
+  position_missing_policy: zero
+  position_token_scope: include_complex
+  position_transform: raw
+  position_bin_width: null
+  position_semantics: protein residue indices explicitly written in source tokens;
+    no transcript, codon nucleotide, genomic coordinate, or protein-length inference
+  position_semantic_filter:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless frozen Ensembl annotation; no target or distribution fit
+    ensembl_release: 116
+    assembly: GRCh38
+    manifest_path: knowledge/ensembl_isoform_annotation_v1.json
+    manifest_sha256: 568ea31f5b7fc7ff47d181fe552d39f3b9185f8d0a76cbb2a49d06be022d5bc0
+    annotation_cache_path: data/external/ensembl_release_116/competition_gene_isoform_index.json
+    annotation_cache_sha256: b9565339f1755d5b07e782c39064207310fa6c254b2e915a15492f4f38903daa
+    trusted_categories:
+    - CANONICAL_MATCH
+    - MANE_MATCH
+    - OTHER_ISOFORM_MATCH
+    masked_categories:
+    - COMPLEX_OR_UNMAPPABLE
+    - OUTSIDE_ALL_KNOWN_ISOFORMS
+    - POSITION_VALID_REF_MISMATCH
+    team_lead_exception_reference: https://github.com/fabxoe/open_cancer/issues/311#issuecomment-5170121279
+    target_used: false
+    test_distribution_used_for_rule: false
+    public_leaderboard_used: false
+  co_mutation_pairs: []
+  co_mutation_semantics: fixed, literature-curated gene pairs (mutual exclusivity
+    or co-occurrence); gene-level 'any mutation' presence, not restricted to a specific
+    hotspot codon; not fit from this dataset's target or frequency
+  feature_factory_version: 1.1.0
+  feature_spec_sha256: 3e3bf6f5aa71d20e01fa0f3115582dd59c105883e09bc72c3c17de7d755f28f9
+  hotspot_features:
+  - hotspot__BRAF_600
+  - hotspot__CTNNB1_37
+  - hotspot__CTNNB1_45
+  - hotspot__EGFR_790
+  - hotspot__EGFR_858
+  - hotspot__GNAS_201
+  - hotspot__HRAS_12
+  - hotspot__HRAS_13
+  - hotspot__HRAS_61
+  - hotspot__IDH1_132
+  - hotspot__IDH2_140
+  - hotspot__IDH2_172
+  - hotspot__PIK3CA_545
+  - hotspot__PIK3CA_1047
+  - hotspot__TP53_175
+  - hotspot__TP53_245
+  - hotspot__TP53_248
+  - hotspot__TP53_273
+  - hotspot__TP53_282
+  - hotspot__PIK3CA_542
+  - hotspot__PIK3CA_546
+  - hotspot__PIK3CA_345
+  - hotspot__PTEN_130
+  - hotspot__PTEN_233
+  - hotspot__FBXW7_505
+  - hotspot__AKT1_17
+  - hotspot__U2AF1_34
+  - hotspot__APC_1450
+  - hotspot__APC_876
+  - hotspot__POLE_286
+  - hotspot__POLE_411
+  - hotspot__KIT_816
+  - hotspot__FGFR3_249
+  - hotspot__RAC1_29
+  - hotspot__known_hotspot_total_count
+  known_hotspots:
+  - gene: BRAF
+    position: 600
+    reference_aa: V
+  - gene: CTNNB1
+    position: 37
+    reference_aa: S
+  - gene: CTNNB1
+    position: 45
+    reference_aa: S
+  - gene: EGFR
+    position: 790
+    reference_aa: T
+  - gene: EGFR
+    position: 858
+    reference_aa: L
+  - gene: GNAS
+    position: 201
+    reference_aa: R
+  - gene: HRAS
+    position: 12
+    reference_aa: G
+  - gene: HRAS
+    position: 13
+    reference_aa: G
+  - gene: HRAS
+    position: 61
+    reference_aa: Q
+  - gene: IDH1
+    position: 132
+    reference_aa: R
+  - gene: IDH2
+    position: 140
+    reference_aa: R
+  - gene: IDH2
+    position: 172
+    reference_aa: R
+  - gene: PIK3CA
+    position: 545
+    reference_aa: E
+  - gene: PIK3CA
+    position: 1047
+    reference_aa: H
+  - gene: TP53
+    position: 175
+    reference_aa: R
+  - gene: TP53
+    position: 245
+    reference_aa: G
+  - gene: TP53
+    position: 248
+    reference_aa: R
+  - gene: TP53
+    position: 273
+    reference_aa: R
+  - gene: TP53
+    position: 282
+    reference_aa: R
+  - gene: PIK3CA
+    position: 542
+    reference_aa: E
+  - gene: PIK3CA
+    position: 546
+    reference_aa: Q
+  - gene: PIK3CA
+    position: 345
+    reference_aa: N
+  - gene: PTEN
+    position: 130
+    reference_aa: R
+  - gene: PTEN
+    position: 233
+    reference_aa: R
+  - gene: FBXW7
+    position: 505
+    reference_aa: R
+  - gene: AKT1
+    position: 17
+    reference_aa: E
+  - gene: U2AF1
+    position: 34
+    reference_aa: S
+  - gene: APC
+    position: 1450
+    reference_aa: R
+  - gene: APC
+    position: 876
+    reference_aa: R
+  - gene: POLE
+    position: 286
+    reference_aa: P
+  - gene: POLE
+    position: 411
+    reference_aa: V
+  - gene: KIT
+    position: 816
+    reference_aa: D
+  - gene: FGFR3
+    position: 249
+    reference_aa: S
+  - gene: RAC1
+    position: 29
+    reference_aa: P
+  hotspot_validation_note: The hotspot table is fixed before test transformation.
+    The original 19 and additional 15 positions are literature-defined; the config-driven
+    runner validates the additions using train rows only. Test data is not used to
+    select or filter the official list. A token counts only when both position and
+    reference AA match.
+model:
+  class: lightgbm.LGBMClassifier
+  parameters:
+    n_estimators: 1200
+    learning_rate: 0.03
+    num_leaves: 31
+    max_depth: -1
+    min_child_samples: 20
+    subsample: 0.8
+    subsample_freq: 1
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    early_stopping_rounds: 60
+    checkpoint_selection: macro_f1_validation
+    n_jobs: 8
+    verbosity: -1
+    deterministic: true
+    force_col_wise: true
+training:
+  balanced_sample_weight: true
+  command: uv run python scripts/run_exp611_parser_v4_qc_event_span_combined.py
+environment:
+  python: 3.11.10 (main, Oct 16 2024, 04:38:48) [Clang 18.1.8 ]
+  platform: Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39
+  numpy: 2.4.6
+  pandas: 3.0.5
+  scikit_learn: 1.9.0
+  xgboost: 3.2.0
+  uv_lock_sha256: bc7da4e6e1f133ee6b1f8c5cd4c86f9b87d336d686ceaacddbe20254b0771d23
