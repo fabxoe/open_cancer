@@ -1,0 +1,196 @@
+{
+  "baseline_oof_macro_f1": 0.4267909268459148,
+  "baseline_log_loss": 1.8440648894063352,
+  "baseline_fold_std": 0.008503216870558973,
+  "adjusted_oof_macro_f1": 0.42967693530294315,
+  "adjusted_log_loss": 1.8725976665258532,
+  "adjusted_fold_std": 0.006786283585457259,
+  "verdict": "ARCHIVE",
+  "eligible_class_pairs": [
+    [
+      "KIPAN",
+      "KIRC"
+    ],
+    [
+      "GBMLGG",
+      "LGG"
+    ]
+  ],
+  "per_class_f1_before": {
+    "ACC": 0.8656716417910447,
+    "BLCA": 0.4942528735632184,
+    "BRCA": 0.5403158769742311,
+    "CESC": 0.26366559485530544,
+    "COAD": 0.714975845410628,
+    "DLBC": 0.4642857142857143,
+    "GBMLGG": 0.31978319783197834,
+    "HNSC": 0.31100478468899523,
+    "KIPAN": 0.22149837133550487,
+    "KIRC": 0.17595307917888564,
+    "LAML": 0.541095890410959,
+    "LGG": 0.4186046511627907,
+    "LIHC": 0.2983050847457627,
+    "LUAD": 0.36923076923076925,
+    "LUSC": 0.4752475247524752,
+    "OV": 0.38248175182481753,
+    "PAAD": 0.24066390041493776,
+    "PCPG": 0.2987551867219917,
+    "PRAD": 0.31098430813124106,
+    "SARC": 0.24228028503562946,
+    "SKCM": 0.75,
+    "STES": 0.42696629213483145,
+    "TGCT": 0.33569739952718675,
+    "THCA": 0.6996336996336996,
+    "THYM": 0.3146853146853147,
+    "UCEC": 0.6205250596658711
+  },
+  "per_class_f1_after": {
+    "ACC": 0.8656716417910447,
+    "BLCA": 0.49142857142857144,
+    "BRCA": 0.5360134003350083,
+    "CESC": 0.25517241379310346,
+    "COAD": 0.714975845410628,
+    "DLBC": 0.4727272727272727,
+    "GBMLGG": 0.29003021148036257,
+    "HNSC": 0.3157894736842105,
+    "KIPAN": 0.17369093231162197,
+    "KIRC": 0.2684310018903592,
+    "LAML": 0.5448275862068965,
+    "LGG": 0.5039619651347068,
+    "LIHC": 0.29577464788732394,
+    "LUAD": 0.367601246105919,
+    "LUSC": 0.4752475247524752,
+    "OV": 0.3819241982507289,
+    "PAAD": 0.23728813559322035,
+    "PCPG": 0.30062630480167013,
+    "PRAD": 0.3086053412462908,
+    "SARC": 0.21022727272727273,
+    "SKCM": 0.7513416815742398,
+    "STES": 0.4231311706629055,
+    "TGCT": 0.35260115606936415,
+    "THCA": 0.6996336996336996,
+    "THYM": 0.3146853146853147,
+    "UCEC": 0.6201923076923077
+  },
+  "per_class_f1_delta": {
+    "ACC": 0.0,
+    "BLCA": -0.002824302134646961,
+    "BRCA": -0.004302476639222785,
+    "CESC": -0.008493181062201982,
+    "COAD": 0.0,
+    "DLBC": 0.008441558441558417,
+    "GBMLGG": -0.029752986351615773,
+    "HNSC": 0.0047846889952152805,
+    "KIPAN": -0.0478074390238829,
+    "KIRC": 0.09247792271147354,
+    "LAML": 0.003731695795937573,
+    "LGG": 0.0853573139719161,
+    "LIHC": -0.0025304368584387893,
+    "LUAD": -0.0016295231248502628,
+    "LUSC": 0.0,
+    "OV": -0.0005575535740886539,
+    "PAAD": -0.0033757648217174197,
+    "PCPG": 0.0018711180796784355,
+    "PRAD": -0.002378966884950262,
+    "SARC": -0.03205301230835672,
+    "SKCM": 0.0013416815742397503,
+    "STES": -0.0038351214719259397,
+    "TGCT": 0.016903756542177406,
+    "THCA": 0.0,
+    "THYM": 0.0,
+    "UCEC": -0.00033275197356341657
+  },
+  "non_eligible_class_abs_f1_delta_sum": 0.09938759028277006,
+  "fold_records": [
+    {
+      "outer_fold": 0,
+      "eligible_classes": [
+        "GBMLGG",
+        "KIPAN",
+        "KIRC",
+        "LGG"
+      ],
+      "offset": {
+        "GBMLGG": 0.1,
+        "KIPAN": -0.3,
+        "KIRC": 0.9,
+        "LGG": 0.3
+      },
+      "outer_validation_macro_f1_before_offset": 0.4243902235533087,
+      "outer_validation_macro_f1_after_offset": 0.4254118992377896,
+      "outer_validation_macro_f1_delta": 0.001021675684480916
+    },
+    {
+      "outer_fold": 1,
+      "eligible_classes": [
+        "GBMLGG",
+        "KIPAN",
+        "KIRC",
+        "LGG"
+      ],
+      "offset": {
+        "GBMLGG": -0.3,
+        "KIPAN": 0.2,
+        "KIRC": 0.2,
+        "LGG": 0.6
+      },
+      "outer_validation_macro_f1_before_offset": 0.4214466889609302,
+      "outer_validation_macro_f1_after_offset": 0.4227508733656306,
+      "outer_validation_macro_f1_delta": 0.0013041844047004258
+    },
+    {
+      "outer_fold": 2,
+      "eligible_classes": [
+        "GBMLGG",
+        "KIPAN",
+        "KIRC",
+        "LGG"
+      ],
+      "offset": {
+        "GBMLGG": -0.5,
+        "KIPAN": -0.5,
+        "KIRC": 0.3,
+        "LGG": 0.8
+      },
+      "outer_validation_macro_f1_before_offset": 0.4201172028781823,
+      "outer_validation_macro_f1_after_offset": 0.428204410364984,
+      "outer_validation_macro_f1_delta": 0.008087207486801695
+    },
+    {
+      "outer_fold": 3,
+      "eligible_classes": [
+        "GBMLGG",
+        "KIPAN",
+        "KIRC",
+        "LGG"
+      ],
+      "offset": {
+        "GBMLGG": 0.1,
+        "KIPAN": 0.5,
+        "KIRC": 0.8,
+        "LGG": 0.4
+      },
+      "outer_validation_macro_f1_before_offset": 0.4239068711010362,
+      "outer_validation_macro_f1_after_offset": 0.4266683253884481,
+      "outer_validation_macro_f1_delta": 0.002761454287411924
+    },
+    {
+      "outer_fold": 4,
+      "eligible_classes": [
+        "GBMLGG",
+        "KIPAN",
+        "KIRC",
+        "LGG"
+      ],
+      "offset": {
+        "GBMLGG": -0.4,
+        "KIPAN": -0.2,
+        "KIRC": 0.5,
+        "LGG": 1.0
+      },
+      "outer_validation_macro_f1_before_offset": 0.4433574969593849,
+      "outer_validation_macro_f1_after_offset": 0.4421254594779131,
+      "outer_validation_macro_f1_delta": -0.001232037481471826
+    }
+  ]
+}
