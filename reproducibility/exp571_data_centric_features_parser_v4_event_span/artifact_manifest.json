@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-571",
+  "issue_number": 571,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "ea211379af6486d46636f96afa6e4af027504e05",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp571_data_centric_features_parser_v4_event_span/data_manifest.json",
+  "environment": "reproducibility/exp571_data_centric_features_parser_v4_event_span/environment.json",
+  "release_url": null,
+  "verifier": "Gomin-art",
+  "verified_at": "2026-08-06T05:19:51.671890+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp571_data_centric_features_parser_v4_event_span/fold_00.txt",
+      "size_bytes": 7389817,
+      "sha256": "d5ea9a448920669ce4337ac1538ca7f33bde61053c18ec9e03d74a84ee676e38",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp571_data_centric_features_parser_v4_event_span/fold_01.txt",
+      "size_bytes": 5758981,
+      "sha256": "9843033e7107670dfb4c6a1f1ee00925427b3cb0cad305dad7950ddf6e851a4b",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp571_data_centric_features_parser_v4_event_span/fold_02.txt",
+      "size_bytes": 11619768,
+      "sha256": "f20f2ff7ec046e28f8645274c37f66fd3c601ccfba7b14d3ac9e3813b9ef6dea",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp571_data_centric_features_parser_v4_event_span/fold_03.txt",
+      "size_bytes": 7732587,
+      "sha256": "f049d09346b0e09a5faec765e769f693b72e23acd1ad753941c382449c7e36fd",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp571_data_centric_features_parser_v4_event_span/fold_04.txt",
+      "size_bytes": 3962098,
+      "sha256": "6e6d061f7617f1fe8dd0a7638560eab2eb97f59140a53a05ec51658275e5fadc",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp571_data_centric_features_parser_v4_event_span.csv",
+      "size_bytes": 3491713,
+      "sha256": "4d13512f6bf6338470e073a00d6309c41ac9c60559a521da41c7fef7a68b5a35",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp571_data_centric_features_parser_v4_event_span_test_proba.csv",
+      "size_bytes": 1394350,
+      "sha256": "990a2ccbc95eb19eb252a88e4feb0d7593bf5a16c762edf68df30c75e52e30ea",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp571_data_centric_features_parser_v4_event_span.csv",
+      "size_bytes": 38240,
+      "sha256": "28f151e1a139254ad9e5958e357f724dc20e0392b95acae97ca398ec79ee33e7",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp571_data_centric_features_parser_v4_event_span/metrics.json",
+      "size_bytes": 11554,
+      "sha256": "5caaacb7e5b9a2d0ca5cfbb4f158bf681ff1a57383491078f3fc1ec28b1385f3",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp571_data_centric_features_parser_v4_event_span/config.resolved.yaml",
+      "size_bytes": 6879,
+      "sha256": "7da4dff3e8384469830750f657abb6ae82fadcce06d6c68424b573e0a705e786",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
