@@ -97,6 +97,7 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 - [Stop 표기 교란 parser·feature 불변성 감사](analysis/stop_notation_invariance/README.md)
 - [Parser native v3 분포·상관·adversarial AUC·TreeSHAP 진단](analysis/parser_native_v3_generalization/README.md)
 - [Parser v4 gene-event TF-IDF 단일-fold screening](analysis/tfidf_gene_event_screening/README.md)
+- [LightGBM focal loss·혼동쌍 재분류 2×2 비정규 split 비교](analysis/lgbm_focal_pair_rerank_2x2/README.md)
 
 ## 역할 구분
 
