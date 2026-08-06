@@ -86,6 +86,7 @@ def main() -> None:
     oof_path = ROOT / "oof" / f"{slug}.csv"
     pred_path = ROOT / "preds" / f"{slug}_test_proba.csv"
     submission_path = ROOT / "submissions" / f"{slug}.csv"
+    resolved_path = repro_dir / "config.resolved.yaml"
     for path in (report_dir, repro_dir, output_model_dir, oof_path.parent, pred_path.parent, submission_path.parent):
         path.mkdir(parents=True, exist_ok=True)
 
