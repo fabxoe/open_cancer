@@ -7,13 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 140
+- 실제 실험 수: 141
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4647479423 (`EXP-628`, 26-class 전부 예측)
-- 최고 leakage-safe Local OOF Macro F1: 0.4647479423 (`EXP-628`)
+- 최고 Local OOF Macro F1: 0.4699788178 (`EXP-664`, 26-class 전부 예측)
+- 최고 leakage-safe Local OOF Macro F1: 0.4699788178 (`EXP-664`)
 - 최고 Public LB Macro F1: 0.346215922 (`EXP-374`)
-- 최고 재현 검증 모델: `EXP-628` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-664` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-06
 
 ## 실험 요약
@@ -160,6 +160,7 @@
 | EXP-652 | COMPLETED | 2heej | #652 | EXP-527 + fold-safe ordinary range_replacement 유전자 indicator(EXP-409 구현 재사용, 부모만 EXP-369→EXP-527로 교체) | 0.4481375742 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0012653035(게이트 통과)·fold std -0.0035635578(개선)·클래스 붕괴(-0.05) 없음(최대 하락 PAAD -0.0392)이나 Log Loss +0.0177605152 소폭 악화 — `ADOPT_WITH_CAUTION`; 같은 feature가 더 약한 부모 EXP-369에서는 Log Loss +0.1327703(EXP-409, ARCHIVE)였던 것과 달리 class-cosine이 있는 EXP-527에서는 악화폭이 7분의 1로 줄어듦 | [보고서](reports/exp652_range_replacement_any_exp527/README.md) |
 | EXP-660 | COMPLETED | Kangho-Park | #660 | raw-first #658 후속 minimal Track A: mutation presence·missingness + parser-v4 native v3 gene consequence + isoform-eligible max residue, 모든 sample aggregate 제거 | 0.3627988723 | 미제출 | INFERENCE_VERIFIED | EXP-433 대비 Macro F1 -0.0504774177·Log Loss +0.1478596926·Accuracy -0.0478955007, LUSC/THYM/PAAD 등 다수 클래스 붕괴로 공동 gate 실패 — `ARCHIVE`; sample aggregate 전부 제거가 암종 신호까지 제거했으며 parser correctness·isoform mask 자체의 기각 근거는 아님 | [보고서](reports/exp660_minimal_track_a/README.md) |
 | EXP-662 | COMPLETED | codex | #662 | EXP-545 parser-v4 hierarchical TF-IDF LinearSVC + outer-train 내부 3-fold sigmoid calibration | 0.4397109834 | 미제출 | INFERENCE_VERIFIED | Macro F1 +0.0000334562·Log Loss -0.8892080836·fold std +0.0006569779이나 LGG -0.2347548349 등 class-collapse gate 실패로 단독 모델 `ARCHIVE`; calibrated probability는 후속 사전고정 blend 후보로 보존 | [보고서](reports/exp662_hierarchical_tfidf_svc_sigmoid/README.md) |
+| EXP-664 | COMPLETED | Kangho-Park | #664 | Public 검증 legacy EXP-374 + 독립 calibrated hierarchical TF-IDF EXP-662 사전 고정 0.5/0.5 확률 평균 | 0.4699788178 | 미제출 | INFERENCE_VERIFIED | 새 Local 최고·Log Loss 1.7522077016·test-like +0.0475186340·5/5 fold 개선이나 fold std +0.0108100786와 DLBC -0.1255790015로 사전 공동 gate 실패 — `ARCHIVE_AS_PRIMARY / KEEP_GENERALIZATION_CANDIDATE`; 비율 재탐색·Public 제출 없음 | [보고서](reports/exp664_exp374_exp662_fixed_blend/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5830,3 +5831,39 @@ additive 확장이며 `uv run pytest -q`로 회귀 여부를 재확인했다). "
   worktree에 없어 새 pairwise 다양성 수치는 만들지 않았으며, EXP-545에서
   검증된 계보 다양성을 그대로 주장하지 않는다.
 - Report: `reports/exp662_hierarchical_tfidf_svc_sigmoid/README.md`
+
+### [EXP-664] EXP-374 + calibrated EXP-662 fixed 0.5/0.5 blend
+
+- 상태/실행자: COMPLETED / Kangho-Park
+- Issue/브랜치: #664 / `issue-664-exp374-exp662-blend`
+- 소스 commit: `a5ff038`
+- Config/Runner: `configs/exp664_exp374_exp662_fixed_blend.yaml` /
+  `scripts/run_exp664_exp374_exp662_fixed_blend.py`
+- 부모: EXP-374(Public 최고 legacy parser) + EXP-662(독립 hierarchical
+  TF-IDF LinearSVC, outer-train sigmoid calibration)
+- 방법: 평가 전에 고정한 `0.5 * EXP-374 + 0.5 * EXP-662` 확률 평균.
+  비율 스윕, threshold/offset, test prevalence, Public feedback는 사용하지 않았다.
+- Parent 다양성: label disagreement 0.5279793582, correctness Pearson
+  0.4639685126, EXP-374만 정답 12.1110%, EXP-662만 정답 14.0784%
+- Fold Macro F1: 0.4548500780, 0.4583645979, 0.4803716639,
+  0.4585171038, 0.4938059210
+- OOF Macro F1 / fold 평균 / fold std: 0.4699788178 / 0.4691818729 /
+  0.0152820565
+- Accuracy / Log Loss: 0.4481535236 / 1.7522077016
+- EXP-662 대비: Macro F1 +0.0302678344, Log Loss -0.1372932688,
+  fold std +0.0108100786. 5개 fold 모두 +0.0148~+0.0604 개선했으나 개선폭
+  불균등으로 사전 fold-std gate를 위반했다.
+- Test-like top quartile(1,666행): Macro F1 0.4540274036,
+  EXP-662 대비 +0.0475186340으로 비악화 gate 통과
+- 클래스 변화: LGG +0.2018, CESC +0.1494, SARC +0.1156, BLCA +0.1146,
+  KIRC +0.0950 등이 개선됐지만 DLBC -0.1256, TGCT -0.0745,
+  GBMLGG -0.0534로 사전 -0.05 class-collapse gate 위반
+- Runtime: 0.87초(inference-only blend)
+- Public LB: 미제출(Issue 범위 밖)
+- 재현 상태: `INFERENCE_VERIFIED` — 결정론적 재계산 submission SHA-256
+  완전 일치, OOF/test label agreement 1.0, 확률 최대 절대 오차 0.0
+- 판단: **ARCHIVE_AS_PRIMARY / KEEP_GENERALIZATION_CANDIDATE**. Macro F1,
+  Log Loss, test-like 및 5/5 fold 방향은 강하지만 사전 fold-std·class gate를
+  어겼으므로 주력 채택과 Public 제출을 하지 않는다. 결과를 보고 0.5/0.5
+  비율을 바꾸거나 클래스별 보정을 추가하지 않는다.
+- Report: `reports/exp664_exp374_exp662_fixed_blend/README.md`

@@ -1,0 +1,60 @@
+{
+  "verified_at": "2026-08-06T15:24:01.315307+00:00",
+  "files": [
+    {
+      "path": "data/splits/stratified_5fold_seed42.csv",
+      "size_bytes": 80621,
+      "sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf"
+    },
+    {
+      "path": "data/raw/test.csv",
+      "size_bytes": 35068585,
+      "sha256": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0"
+    },
+    {
+      "path": "data/raw/sample_submission.csv",
+      "size_bytes": 35656,
+      "sha256": "1d0e9fe0b5ab5c763eab8c97130a06712e2ac2b428299481109b447d8f2b4d84"
+    },
+    {
+      "path": "oof/exp374_stop_isoform_residue_mask.csv",
+      "size_bytes": 2122619,
+      "sha256": "4d4f9182fca8e6023d775b77ace463cad3a80144206f82f9653d98b11345da9a"
+    },
+    {
+      "path": "preds/exp374_stop_isoform_residue_mask_test_proba.csv",
+      "size_bytes": 834584,
+      "sha256": "11730e0f7a033e90e5bc3aed346601479b47959b917fb5654f1f0ba55aadd13b"
+    },
+    {
+      "path": "reports/exp374_stop_isoform_residue_mask/metrics.json",
+      "size_bytes": 40221,
+      "sha256": "15812aca909ef26dd10226be90b3fa1dc9054ac695d621716eba0dbb0d91310b"
+    },
+    {
+      "path": "reproducibility/exp374_stop_isoform_residue_mask/config.resolved.yaml",
+      "size_bytes": 46085,
+      "sha256": "e7444a018e6265ca2bc7c9ec4dc898a09328b3814db1db87a37ec956e2ad47d3"
+    },
+    {
+      "path": "oof/exp662_hierarchical_tfidf_svc_sigmoid.csv",
+      "size_bytes": 3495549,
+      "sha256": "a8d2cf582f3d185c27dabffeb6ac353487ac0d49a13dd8b53cf3c80a4756b27d"
+    },
+    {
+      "path": "preds/exp662_hierarchical_tfidf_svc_sigmoid_test_proba.csv",
+      "size_bytes": 1404078,
+      "sha256": "a4e4ee25fc794c65d1b5fe873fb85d8f1c5644e04bbed1502546fd9294bb7365"
+    },
+    {
+      "path": "reports/exp662_hierarchical_tfidf_svc_sigmoid/metrics.json",
+      "size_bytes": 18908,
+      "sha256": "5e14fd836f2984311578d60e81a71ad0c65aa3b92347722859f1303c241dc55c"
+    },
+    {
+      "path": "reproducibility/exp662_hierarchical_tfidf_svc_sigmoid/config.resolved.yaml",
+      "size_bytes": 1515,
+      "sha256": "1907a47350efb9ee5de3fa36747b56a6b55ec4306a65b550b157dce9d8d733f8"
+    }
+  ]
+}
