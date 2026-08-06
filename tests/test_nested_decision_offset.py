@@ -8,9 +8,11 @@ from open_cancer.constants import CLASS_LABELS
 from open_cancer.nested_decision_offset import (
     NestedDecisionOffsetError,
     apply_class_offset,
+    apply_pairwise_redistribution,
     fit_inner_cross_fitted_probabilities,
     min_class_count_per_inner_fold,
     search_class_offsets,
+    search_pairwise_delta,
 )
 
 N_CLASSES = len(CLASS_LABELS)
@@ -192,3 +194,76 @@ def test_min_class_count_per_inner_fold_matches_manual_count() -> None:
     assert counts[0] == 1
     assert counts[1] == 2
     assert counts[2] == 0  # class 2 never appears in any inner fold
+
+
+def test_apply_pairwise_redistribution_zero_delta_is_identity() -> None:
+    rng = np.random.default_rng(1)
+    raw = rng.dirichlet(np.ones(N_CLASSES), size=10)
+    adjusted = apply_pairwise_redistribution(raw, (0, 5), 0.0)
+    np.testing.assert_allclose(adjusted, raw, atol=1e-10)
+
+
+def test_apply_pairwise_redistribution_never_touches_other_columns() -> None:
+    """The core #604 guarantee: every column outside the pair is byte-identical."""
+    rng = np.random.default_rng(2)
+    raw = rng.dirichlet(np.ones(N_CLASSES), size=25)
+    for delta in (-1.0, -0.3, 0.4, 1.0):
+        adjusted = apply_pairwise_redistribution(raw, (3, 17), delta)
+        other_columns = [i for i in range(N_CLASSES) if i not in (3, 17)]
+        np.testing.assert_array_equal(adjusted[:, other_columns], raw[:, other_columns])
+
+
+def test_apply_pairwise_redistribution_preserves_pair_sum_and_row_sum() -> None:
+    rng = np.random.default_rng(3)
+    raw = rng.dirichlet(np.ones(N_CLASSES), size=25)
+    row_sums_before = raw.sum(axis=1)
+    for delta in (-1.0, -0.3, 0.4, 1.0):
+        adjusted = apply_pairwise_redistribution(raw, (0, 1), delta)
+        pair_sum_before = raw[:, 0] + raw[:, 1]
+        pair_sum_after = adjusted[:, 0] + adjusted[:, 1]
+        np.testing.assert_allclose(pair_sum_after, pair_sum_before, atol=1e-10)
+        np.testing.assert_allclose(adjusted.sum(axis=1), row_sums_before, atol=1e-10)
+
+
+def test_apply_pairwise_redistribution_positive_delta_favors_first_class() -> None:
+    probabilities = np.tile(np.array([[0.3, 0.3] + [0.4 / (N_CLASSES - 2)] * (N_CLASSES - 2)]), (5, 1))
+    adjusted = apply_pairwise_redistribution(probabilities, (0, 1), 2.0)
+    assert (adjusted[:, 0] > probabilities[:, 0]).all()
+    assert (adjusted[:, 1] < probabilities[:, 1]).all()
+
+
+def test_apply_pairwise_redistribution_handles_zero_mass_pair() -> None:
+    probabilities = np.zeros((3, N_CLASSES))
+    probabilities[:, 2] = 1.0  # all mass on an unrelated class
+    adjusted = apply_pairwise_redistribution(probabilities, (0, 1), 1.0)
+    np.testing.assert_allclose(adjusted, probabilities, atol=1e-10)
+
+
+def test_search_pairwise_delta_recovers_favorable_direction() -> None:
+    rng = np.random.default_rng(4)
+    n_per_class = 40
+    targets = np.array([0] * n_per_class + [1] * n_per_class, dtype=np.int64)
+    base = np.full((2 * n_per_class, N_CLASSES), 0.01)
+    # class 0 rows: true class 0, but model currently favors class 1 slightly
+    base[:n_per_class, 0] = 0.35
+    base[:n_per_class, 1] = 0.45
+    # class 1 rows: true class 1, model correctly favors class 1
+    base[n_per_class:, 0] = 0.1
+    base[n_per_class:, 1] = 0.7
+    base = base / base.sum(axis=1, keepdims=True)
+
+    result = search_pairwise_delta(base, targets, (0, 1))
+    # Shifting mass toward class 0 should improve macro F1 for this setup.
+    assert result["delta"] > 0.0
+
+    adjusted = apply_pairwise_redistribution(base, (0, 1), result["delta"])
+    before_f1 = f1_score(targets, base.argmax(axis=1), average="macro", zero_division=0)
+    after_f1 = f1_score(targets, adjusted.argmax(axis=1), average="macro", zero_division=0)
+    assert after_f1 >= before_f1
+
+
+def test_apply_pairwise_redistribution_rejects_same_index_pair() -> None:
+    rng = np.random.default_rng(5)
+    raw = rng.dirichlet(np.ones(N_CLASSES), size=5)
+    with pytest.raises(NestedDecisionOffsetError):
+        apply_pairwise_redistribution(raw, (2, 2), 0.5)

@@ -1,0 +1,85 @@
+{
+  "record_role": "explore",
+  "issue": 606,
+  "parent_roadmap_issue": 502,
+  "roadmap_item": "B0",
+  "target_used": false,
+  "test_distribution_used": false,
+  "public_lb_used": false,
+  "purpose": "Map the #502 Track-B pre-fixed stress axes (B2) to real parser v4 fields, and record which axes have enough canonical outer-train support to be usable in B1 (the actual OOF subgroup evaluation). Thresholds below are rules, not values -- values must be computed per outer fold from that fold's train rows only by scripts/audit_train_only_stress_subgroup_support.py.",
+  "canonical_split": "data/splits/stratified_5fold_seed42.csv",
+  "axes": [
+    {
+      "axis": "mutation_burden",
+      "status": "usable",
+      "field": "mutated_gene_count",
+      "source": "computed inline in scripts/audit_train_only_stress_subgroup_support.py, same rule as sample__mutated_gene_count (src/open_cancer/mutation_features.py:36,348) and the EXP-516 loader (scripts/run_exp516_burden_weighted_sample_weight.py:73-95): count of gene cells in a row with at least one whitespace-separated token whose upper-cased form is not 'WT'.",
+      "buckets": ["<= outer-train Q10", "Q10 < x <= Q90", "> outer-train Q90"],
+      "threshold_rule": "np.quantile(outer_train_values, [0.10, 0.90]) computed independently per outer fold"
+    },
+    {
+      "axis": "parser_semantic_burden",
+      "status": "usable_per_family",
+      "field": "sample__parser_v4_{missense,no_change,nonsense,frameshift,deletion,insertion,duplication_candidate,delins,range_replacement,range_stop,range_no_change}_count",
+      "source": "src/open_cancer/parser_v4_semantic_counts.py::FittedParserV4SemanticCountFamily.transform (stateless family, target-independent, safe to compute once on the full frame; only the bucket definition needs to be fold-local).",
+      "buckets": ["family count == 0", "family count > 0"],
+      "threshold_rule": "presence only (no quantile) -- most families are near-zero support on train (see reports/analysis/local_public_gap notes and PROJECT_CONTEXT.md parser lineage section), so a >0/==0 split is the only bucketing that keeps both sides non-degenerate for most families. Per-family outer-train fold counts must still be audited before B1 uses any specific family; families with < 2 positive rows in an outer-train fold are unusable for that fold.",
+      "note": "deletion/insertion/delins/duplication_candidate families are known near-zero on train (see PROJECT_CONTEXT.md Local-Public gap discussion) -- expect these to fail the per-fold support check; the audit script reports the actual counts rather than assuming."
+    },
+    {
+      "axis": "complex_unresolved",
+      "status": "usable",
+      "field": "sample__parser_v4_unresolved_count",
+      "source": "src/open_cancer/parser_v4_semantic_counts.py (route == 'unresolved' OR parse_status == 'unresolved' on RoutedProteinMutation from src/open_cancer/mutation_parser_contract.py). Note this counter also folds in substitution-route tokens with event_type == 'other_unmappable' (the mapping.get(...) None fallback in _increment_event) -- it is not identical to axis 'nonstandard_notation' below, which isolates only the other_unmappable subset.",
+      "buckets": ["== 0", "> 0"],
+      "threshold_rule": "presence only; add outer-train Q95+ bucket only if the audit script finds enough >0 support per fold"
+    },
+    {
+      "axis": "missingness",
+      "status": "usable",
+      "field": "missing_gene_count",
+      "source": "computed inline, same rule as sample__missing_gene_count (src/open_cancer/mutation_features.py:39,336): count of empty-string gene cells in a row. PROJECT_CONTEXT.md notes test has 237 empty cells total; train support must be checked, not assumed.",
+      "buckets": ["== 0", "> 0"],
+      "threshold_rule": "presence only; add outer-train Q95+ bucket only if the audit script finds enough >0 support per fold"
+    },
+    {
+      "axis": "all_wt_low_mutation",
+      "status": "usable",
+      "field": "mutated_gene_count",
+      "source": "same field as mutation_burden axis, no separate feature exists.",
+      "buckets": ["== 0 (all-WT)", "1-4", ">= 5"],
+      "threshold_rule": "fixed integer cuts, no quantile needed"
+    },
+    {
+      "axis": "annotation_multiplicity",
+      "status": "degenerate_excluded_from_b1",
+      "field": "per-row count of gene cells with non-empty group_gene_cell_annotations(cell).likely_groups",
+      "source": "src/open_cancer/isoform_annotation_multiplicity.py::group_gene_cell_annotations",
+      "buckets": null,
+      "threshold_rule": null,
+      "note": "Already measured and committed: reports/analysis/isoform_annotation_multiplicity/audit.json shows train.cells_with_likely_multiplicity = 0 out of 218,893 non-WT train cells, vs 4,666 on test. Zero train support -- cannot define a non-degenerate train-fold bucket. Excluded from B1; kept here only as a documented zero-support axis per #502's 'do not invent categories that do not exist' rule."
+    },
+    {
+      "axis": "long_inserted_peptide_or_nonstandard_notation",
+      "status": "partially_usable",
+      "sub_axes": [
+        {
+          "name": "long_inserted_peptide",
+          "status": "degenerate_excluded_from_b1",
+          "field": "insertion/delins route payload length (inserted_length on ParsedProteinInsertion / ProteinDuplicationSemanticResult in src/open_cancer/protein_duplication_semantics.py; net_length_change on ProteinDelinsSemanticResult in src/open_cancer/protein_delins_semantics.py)",
+          "note": "route_protein_mutation over the full train set returns 0 insertion and 0 delins tokens (train route counts: substitution 244912, frameshift 9833, range_replacement 239, unresolved 177, deletion 3; see also reports/analysis/protein_delins_semantics/README.md and reports/analysis/protein_duplication_semantics/README.md, and the parser-v4 lineage section of PROJECT_CONTEXT.md). Zero train support -- excluded from B1."
+        },
+        {
+          "name": "nonstandard_notation",
+          "status": "usable",
+          "field": "per-row count of parsed events with event_type == 'other_unmappable'",
+          "source": "src/open_cancer/mutation_parser_contract.py (_NON_PROTEIN_PARTIAL, _AMBIGUOUS_DOUBLE_STOP regexes), documented at PROJECT_CONTEXT.md's '-762fs / *261*' partial-terminal-semantics passage and reports/analysis/partial_terminal_semantics/README.md. Not exposed as its own sample__parser_v4_* counter (it is folded into unresolved_count today) -- computed with a small dedicated loop in the audit script.",
+          "buckets": ["== 0", "> 0"],
+          "threshold_rule": "presence only; train-wide count is small (~174-177 tokens across 6,201 rows per the parser lineage audits), so the audit script must confirm each outer-train fold still has non-trivial >0 support before B1 uses this axis for that fold."
+        }
+      ]
+    }
+  ],
+  "excluded_from_b1": ["annotation_multiplicity", "long_inserted_peptide_or_nonstandard_notation.long_inserted_peptide"],
+  "generation_note": "This contract file documents field mappings and bucket rules only. Per-fold outer-train sample counts (the actual B0 support audit) are produced by running scripts/audit_train_only_stress_subgroup_support.py, which writes reports/analysis/train_only_ood_stress/summary.json and subgroup_support_counts.csv. That script was written but not executed in this session (uv run hand-off)."
+}
