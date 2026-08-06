@@ -66,4 +66,5 @@ uv run python scripts/run_exp610_gated_pair_specialists.py
 - Config: `configs/exp610_gated_pair_specialists.yaml`
 - Metrics: `reports/exp610_gated_pair_specialists/metrics.json`
 - Submission: `submissions/exp610_gated_pair_specialists.csv`
-- 재현 상태: `MANIFEST_COMPLETE`
+- 재현 상태: `NOT_STARTED` — 실행 결과와 resolved config는 보존했지만 독립
+  checkpoint 재추론 검증은 아직 수행하지 않았다.
