@@ -1,0 +1,78 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-640
+issue_number: 640
+slug: exp640_hierarchical_event_stress
+parent_experiment: EXP-567
+component_experiments:
+  - EXP-567
+seed: 42
+
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+
+features:
+  fixed_parent: exp567_lightgbm_parser_cosine
+  parser_contract: v4
+  arms:
+    - name: base
+      added_family: none
+    - name: event_family
+      added_family: hierarchical_event_counts_genes_ratios
+    - name: parser_qc
+      added_family: parser_status_and_multitoken_qc
+    - name: combined
+      added_family: hierarchical_event_plus_parser_qc
+  forbidden_inputs:
+    - test_prevalence
+    - public_leaderboard
+    - raw_token_vocabulary
+
+model:
+  name: lightgbm
+  parameters:
+    n_estimators: 1200
+    learning_rate: 0.03
+    num_leaves: 31
+    max_depth: -1
+    min_child_samples: 20
+    subsample: 0.8
+    subsample_freq: 1
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    early_stopping_rounds: 60
+    checkpoint_selection: macro_f1_validation
+    n_jobs: 8
+    verbosity: -1
+    deterministic: true
+    force_col_wise: true
+
+training:
+  balanced_sample_weight: true
+
+control_gate:
+  expected_base_oof_macro_f1: 0.4477416384
+  absolute_tolerance: 1.0e-8
+  abort_before_ablation_on_failure: true
+
+secondary_split_audit:
+  enabled_after_canonical: true
+  seeds: [142, 242]
+  selection_policy: report_all_never_choose_best_split
+
+notation_stress:
+  train_only_rules:
+    - stop_alias_star_x_ter
+    - proven_case_invariance
+  unsupported_aliases: preserve_as_unresolved
+
+notes: >-
+  EXP-640 holds EXP-567's parser-v4 plus leakage-safe class-cosine LightGBM
+  parent fixed.  The canonical run separates hierarchical event-family,
+  parser-QC, and combined arms.  Secondary split and notation-shift results
+  are audits only; no split is selected by its score and test/Public data do
+  not define features or thresholds.
+
+comparison_metrics_path: reports/exp567_lightgbm_parser_cosine/metrics.json
