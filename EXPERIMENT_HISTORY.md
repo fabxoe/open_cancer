@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 131
+- 실제 실험 수: 132
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4617833378 (`EXP-623`, 26-class 전부 예측)
@@ -248,6 +248,7 @@
 | 2026-08-05T18:57:52.107245+00:00 | EXP-527 | fabxoe | `3cc84bca12b6a2767a35e979248e1fdb468c3114` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 8.56e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp527_parser_v4_class_cosine_loo/comparison.json) |
 | 2026-08-06T03:16:20.112263+00:00 | EXP-579 | fabxoe | `7f02fdab69b04cd1868de4e2ab313cb297d8ec80` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp579_exp527_exp567_fixed_blend/comparison.json) |
 | 2026-08-06T04:03:00.878478+00:00 | EXP-517 | Kangho Park | `2734a27c236ce9b16962792ea056a1b7e4426e05` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.49e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp517_passenger_adjusted_burden/comparison.json) |
+| EXP-620 | COMPLETED | Gomin-art | #620 | EXP-571 Parser QC + LightGBM 규제·multi-seed 안정성 | 0.4453064322 | 미제출 | INFERENCE_VERIFIED | Log Loss·fold 안정성은 개선됐지만 Macro F1 하락·DLBC 붕괴로 REJECTED | [보고서](reports/exp620_lightgbm_regularization_multiseed/README.md) |
 
 ## 상세 실험 로그
 
@@ -5462,3 +5463,28 @@ additive 확장이며 `uv run pytest -q`로 회귀 여부를 재확인했다). "
   있음을 보여주는 사례로 #505 스태킹 로드맵의 첫 성공한 S1 결과다. 현재
   26-class를 전부 예측하는 모델 중 Local 최고 후보로 기록하되, Public 제출은
   팀 논의 후 진행한다.
+
+  
+### [EXP-620] EXP-571 Parser QC LightGBM 규제 및 multi-seed 안정성
+
+- 담당자: Gomin-art
+- Issue/브랜치: #620 / `issue-620-exp-lightgbm-regularization-multiseed`
+- Parent: EXP-571 Parser QC arm
+- 상태: COMPLETED
+- canonical split: stratified 5-fold, seed 42
+- 공식 model seed: 42
+- 진단 model seeds: 142, 242
+- 공식 seed OOF Macro F1: `0.4453064322`
+- 공식 seed Accuracy: `0.4400903080`
+- 공식 seed Log Loss: `1.7857167764`
+- 공식 seed fold std: `0.0063324856`
+- EXP-571 Parser QC 대비 Macro F1: `-0.0061221121`
+- EXP-571 Parser QC 대비 Log Loss: `-0.0496525836`
+- EXP-571 Parser QC 대비 fold std: `-0.0015331099`
+- seed별 OOF Macro F1: `42=0.4453064322`, `142=0.4464893308`, `242=0.4448707485`
+- seed 평균 Macro F1: `0.4455555039`
+- seed 간 Macro F1 표준편차: `0.0006838517`
+- worst-class F1 delta: `DLBC=-0.1752049180`
+- 재현 상태: INFERENCE_VERIFIED
+- 제출 상태: 미제출
+- 판단: 규제 강화로 Log Loss와 fold 안정성은 일관되게 개선됐지만 OOF Macro F1이 하락했고 DLBC 클래스 F1이 사전 허용 기준인 `-0.05`보다 크게 붕괴했다. 세 model seed에서 동일한 하락 방향이 확인되어 우연한 seed 변동이 아닌 과도한 구조 규제의 영향으로 판단하며 현재 preset은 `REJECTED`로 기록한다.

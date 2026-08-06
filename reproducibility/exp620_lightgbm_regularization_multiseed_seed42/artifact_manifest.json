@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-620",
+  "issue_number": 620,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "1b797e0f0086d940bcc8985d18a65d6b8b1144c7",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp620_lightgbm_regularization_multiseed_seed42/data_manifest.json",
+  "environment": "reproducibility/exp620_lightgbm_regularization_multiseed_seed42/environment.json",
+  "release_url": null,
+  "verifier": "Gomin-art",
+  "verified_at": "2026-08-06T08:13:49.029877+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp620_lightgbm_regularization_multiseed_seed42/fold_00.txt",
+      "size_bytes": 7501884,
+      "sha256": "01807e5cbd6fc038102327497e3c39688bd1abd434ecbbf3435f92ba5c305926",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp620_lightgbm_regularization_multiseed_seed42/fold_01.txt",
+      "size_bytes": 7447939,
+      "sha256": "f0b7190d1e2041ed20ed54424fb660bdaf3356368b6f65a55e7ba9fea0d506bd",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp620_lightgbm_regularization_multiseed_seed42/fold_02.txt",
+      "size_bytes": 7197837,
+      "sha256": "ff0819a71efb81fd53e79c753f214e2e792f1c0664fa238a1465f0e4fe869694",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp620_lightgbm_regularization_multiseed_seed42/fold_03.txt",
+      "size_bytes": 6872077,
+      "sha256": "d97297360487ad03e707675bd6da977e13b119dc81f8946b0fd23d5f85bd27e5",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp620_lightgbm_regularization_multiseed_seed42/fold_04.txt",
+      "size_bytes": 5579580,
+      "sha256": "b2ecd26659c7a79b23853ce4e73d022ba8500c322798480cbff3030511946ae2",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp620_lightgbm_regularization_multiseed_seed42.csv",
+      "size_bytes": 3504715,
+      "sha256": "5f5e1fa41c4a46376574068d8a48ecf491c7a09f77e102620d60c38b83d0dbac",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp620_lightgbm_regularization_multiseed_seed42_test_proba.csv",
+      "size_bytes": 1403225,
+      "sha256": "e2c41aea42fa9d6516ab91dede37df18d7d6065bc4c13fa6530810295c636f83",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp620_lightgbm_regularization_multiseed_seed42.csv",
+      "size_bytes": 38130,
+      "sha256": "db2c68aedb246fcdf93a5e5770f9669069aa8412a2a6ff5cc707cf8ac51bcfdd",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp620_lightgbm_regularization_multiseed_seed42/metrics.json",
+      "size_bytes": 11484,
+      "sha256": "464d69505419b40b97a07a932f417d04ae9bc36a4dadc341589ed5163156c371",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp620_lightgbm_regularization_multiseed_seed42/config.resolved.yaml",
+      "size_bytes": 7073,
+      "sha256": "0fc2f2fcb88246a9b3b2a194ef64d193f49a2521baf2fbe63cd22a8519434e77",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}
