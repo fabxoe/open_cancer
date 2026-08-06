@@ -123,6 +123,7 @@
 | EXP-476 | COMPLETED | Gomin-art | #476 | Config 기반 fold-safe recurrent gene·26 class panel + nested Optuna·class weight XGBoost | 0.4223302641 | 0.3223948042 | INFERENCE_VERIFIED | fold std 0.0063799로 안정적이나 EXP-374 대비 Local -0.0044607·Public -0.0238211, 대표 제출 미변경·ARCHIVE | [보고서](reports/exp476_config_feature_pipeline/README.md) |
 | EXP-479 | COMPLETED | fabxoe | #479 | EXP-469 + HGVS-informed range_replacement·range_stop·range_no_change 상호 배타 의미 | 0.4087566023 | 미제출 | INFERENCE_VERIFIED | 고정 XGBoost에서 EXP-469 대비 -0.0030252·안정성/Log Loss 악화; 제출 보류, 의미는 유지하고 비튜닝 native semantic 기준선으로 동결 | [보고서](reports/exp479_parser_v4_native_semantic_range/README.md) |
 | EXP-484 | COMPLETED | 2heej | #484 | EXP-374+EXP-459 고정 0.7/0.3 확률 블렌드(#482 test-like propensity 스크리닝으로 비율 사전 고정) | 0.4320213767 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 +0.0052304·test-like subset도 +0.0022953으로 통과·Log Loss 개선·클래스 붕괴 없음. Fold std +0.0052388는 임계값 초과했으나 전 fold 개선(악화 없음)이 원인 — ADOPT_WITH_CAUTION, Public 제출은 팀 논의 후 | [보고서](reports/exp484_exp374_exp459_blend/README.md) |
+| EXP-496 | COMPLETED | Kangho-Park | #496 | EXP-374 + robust non-simple event gene count(sample__complex_count → gene-level count, EXP-355 R1 재사용) | 0.4273962190 | 미제출 | INFERENCE_VERIFIED | 전체 OOF +0.0006052921(게이트 미달)이나 **test-like 서브셋 -0.0035398863**·Log Loss +0.0475932367 악화로 REJECTED — EXP-355의 Local 전용 REJECT를 test-like 기준으로 재확인 | [보고서](reports/exp496_robust_complex_count_exp374/README.md) |
 | EXP-487 | COMPLETED | fabxoe | #487 | EXP-479 native-v3 semantic schema + outer-train 전용 nested Optuna XGBoost tuning | 0.4228690293 | 미제출 | INFERENCE_VERIFIED | EXP-479 대비 +0.0141124로 native-v3 성능 회복 확인; EXP-374보다 -0.0039219로 낮아 대표 제출 후보는 아니며 튜닝된 native-v3 기준선·다양성 자산으로 보존 | [보고서](reports/exp487_native_v3_nested_xgb_tuning/README.md) |
 | EXP-497 | COMPLETED | 2heej | #497 | N6(#493/#495) isoform eligibility 수정 반영 EXP-374 재실행(EXP-392 재실행도 exploratory_ablation으로 병행) | 0.4267909268 | 미제출 | INFERENCE_VERIFIED | EXP-374·EXP-392 양쪽 모두와 OOF·confusion matrix·제출 SHA-256까지 bit-identical — eligibility 수정이 이 `residue_position(max)` 피처엔 측정 가능한 영향 없음, `NULL_RESULT`로 기록하고 EXP-374/392는 그대로 유지 | [보고서](reports/exp497_isoform_v4_eligibility_rerun/README.md) |
 | EXP-512 | COMPLETED | fabxoe | #512 | EXP-374 + parser v4 환자별 semantic token count 18개 | 0.4258183004 | 0.3329881004 | INFERENCE_VERIFIED | EXP-374 대비 OOF -0.0009726·Public -0.0132278·Log Loss 악화로 전역 count adapter ARCHIVE; parser v4 의미 체계 자체의 기각으로 해석하지 않음 | [보고서](reports/exp512_parser_v4_semantic_counts/README.md) |
@@ -228,6 +229,7 @@
 | 2026-08-05T06:08:34.724720+00:00 | EXP-464 | Kangho-Park | `8068877c6eb96209c69ff4f5fed2d55067782dab` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp464_blend_ratio_sweep/comparison.json) |
 | 2026-08-05T06:20:33.889237+00:00 | EXP-465 | Kangho-Park | `2aaff58e5094162fe9d5fbcaccaf9dfa1e99df1a` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 0(XGBoost checkpoint 재로드 결정론), 제출 SHA-256 byte-level 일치 | 저장 checkpoint 재추론(Model A/B 각각) | INFERENCE_VERIFIED | [comparison](reproducibility/exp465_feature_subset_ensemble/comparison.json) |
 | 2026-08-05T06:46:14.485134+00:00 | EXP-459 | 2heej | `09430f2632c14ef459fb309915368bac561533f2` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.11e-16 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp459_catboost_exp374/comparison.json) |
+| 2026-08-05T10:20:31.471446+00:00 | EXP-496 | Kangho-Park | `6b4c07324d04adb0e388cdae6142b396132ce48d` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 1.30e-07, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp496_robust_complex_count_exp374/comparison.json) |
 | 2026-08-05T10:38:40.130295+00:00 | EXP-497 | 2heej | `16c1e7346af6550c722a971b573a8a775336db58` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치(EXP-374와 byte-level 동일), test 라벨 100%, 확률 최대 차이 1.83e-07 | 미실행(부모와 feature/모델 config 동일 재실행) | INFERENCE_VERIFIED | [comparison](reproducibility/exp497_isoform_v4_eligibility_rerun/comparison.json) |
 | 2026-08-05T13:10:12.733299+00:00 | EXP-476 | Gomin-art | `ca1b4c6e4210e4eb98e1636818e0b7df8c12b852` / [`exp-476-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-476-repro-v1) | SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 2.98e-08, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp476_config_feature_pipeline/comparison.json) |
 | 2026-08-05T15:29:59.157313+00:00 | EXP-487 | fabxoe | `ea5278c0b9342e77d6552c2a3b4039ff550ff81a` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.43e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp487_native_v3_nested_xgb_tuning/comparison.json) |
@@ -4353,6 +4355,49 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   fold 붕괴형 불안정과는 다르다고 판단해 `ADOPT_WITH_CAUTION`으로 기록한다.
   EXP-449(LightGBM) 계열 블렌드가 전부 실패했던 이전 결론("어떤 모델을
   블렌드해도 test-like gate에서 실패한다")에 대한 반례다.
+
+### [EXP-496] EXP-374 + robust non-simple event gene count (complex_count 재평가)
+
+- 상태: COMPLETED
+- 실행자: Kangho-Park
+- Issue/브랜치: #496 / `issue-496-robust-complex-count-exp374`
+- 부모: EXP-374 (재사용 코드: EXP-355의 `RobustNonSimpleGeneCountFamily`)
+- Config: `configs/exp496_robust_complex_count_exp374.yaml`
+- Runner: `scripts/run_exp496_robust_complex_count_exp374.py`
+- 검증: `scripts/check_exp496_test_like_subset.py`
+- 배경: `#292` adversarial validation에서 shift 판별 1위 feature가
+  `sample__complex_count`(gain 245, 2위 대비 4배)로 확인됐다. 원인은 파서
+  버그가 아니라 train에 indel형(deletion/insertion/delins/range) 변이
+  호출이 거의 없고(6,201개 표본 중 "complex" 341건) test에는 흔한
+  (2,546개 표본 중 4,715건) 데이터 자체의 특성이었다. EXP-355(부모
+  EXP-229)가 이미 이 정확한 교체를 시도해 Local 전용 기준으로 REJECTED된
+  적이 있어, 코드를 그대로 재사용해 EXP-374 부모·test-like 필수 검증
+  기준으로 재평가한다.
+- 단일 변경: `sample__complex_count` 제거, `sample__robust_non_simple_event_gene_count`
+  1개 컬럼 추가(새 feature 코드 없음, EXP-355 코드 재사용)
+- Fold Macro F1: 0.4164505421, 0.4273478648, 0.4234336776, 0.4256731322,
+  0.4431264173
+- OOF Macro F1: 0.4273962190 (EXP-374 대비 `+0.0006052921`, 게이트
+  `+0.001` 미달이나 방향은 긍정적)
+- Fold 표준편차: 0.0087833910 (EXP-374 대비 `+0.0002801741`, 게이트
+  `<0.002` 통과)
+- Accuracy / Log Loss: 0.4159006612 / 1.8916580677 (EXP-374 대비 Log
+  Loss `+0.0475932367` 악화)
+- **test-like propensity(#292) subset delta: `-0.0035398863`**(1,666/6,201행,
+  핵심 판정 기준)
+- 최대 클래스 하락/상승: BLCA `-0.0327144120` / LGG `+0.0346825461`(`-0.05`
+  붕괴 없음)
+- Public LB: 미제출(게이트 미달)
+- 재현 상태: `INFERENCE_VERIFIED`(제출 SHA-256 byte-level 일치, 확률 최대
+  차이 `1.30e-07`)
+- 판단: 전체 OOF는 EXP-355(부모 EXP-229 기준 `-0.0053542926`)와 달리
+  소폭이나마 개선됐지만, **test-like 서브셋에서는 방향이 반대로 뒤집혀
+  `-0.0035398863`으로 REJECTED**. raw token count를 gene-level count로
+  "안정화"해도 test 분포에 가까운 샘플에서는 도움이 안 된다 — shift는
+  표현 방식(raw vs gene count)의 문제가 아니라 이 정보를 모델에 넣을지
+  말지 자체의 문제에 가깝다는 재확인. EXP-355/359/496 세 번의 독립 시도로
+  `sample__complex_count` 계열 feature 재설계 탐색은 충분히 소진됐다고
+  판단, 추가 재시도는 진행하지 않는다.
 
 ### [EXP-497] N6 isoform eligibility 수정 반영 EXP-374/392 재실행
 
