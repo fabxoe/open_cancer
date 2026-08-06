@@ -13,6 +13,7 @@ from exp640_hierarchical_event_builders import (
     build_event_family_features,
     build_parser_qc_features,
 )
+from repair_lightgbm_reproducibility import repair_lightgbm_manifest
 
 
 EXPECTED_EXPERIMENT_ID = "EXP-640"
@@ -92,6 +93,13 @@ def main() -> None:
         + "\n",
         encoding="utf-8",
     )
+    for arm_name, _factory in ARMS:
+        repair_lightgbm_manifest(
+            slug=f"exp640_hierarchical_event_stress_{arm_name}",
+            experiment_id=EXPECTED_EXPERIMENT_ID,
+            issue_number=640,
+            verifier="fabxoe",
+        )
     print(json.dumps(summaries, ensure_ascii=False, indent=2))
 
 

@@ -5,6 +5,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,6 +21,7 @@ from exp640_hierarchical_event_builders import (  # noqa: E402
     summarize_hierarchical_events,
 )
 from open_cancer.mutation_parser_contract import route_protein_mutation  # noqa: E402
+from audit_exp640_notation_shift import fitted_subgroup_masks  # noqa: E402
 
 
 def _family(token: str, gene: str = "TP53") -> str:
@@ -85,3 +87,23 @@ def test_row_reordering_preserves_row_alignment() -> None:
     )
     assert np.allclose(event.toarray(), reversed_event.toarray()[::-1])
     assert np.allclose(qc.toarray(), reversed_qc.toarray()[::-1])
+
+
+def test_notation_shift_masks_are_fit_from_outer_train_only() -> None:
+    train_event = np.zeros((4, len(EVENT_FAMILIES) * 3 + 7), dtype=np.float32)
+    valid_event = np.zeros((2, len(EVENT_FAMILIES) * 3 + 7), dtype=np.float32)
+    train_qc = np.zeros((4, 10), dtype=np.float32)
+    valid_qc = np.zeros((2, 10), dtype=np.float32)
+    train_event[:, 0] = [1, 2, 3, 4]
+    valid_event[:, 0] = [0, 1000]
+    train_qc[:, 9] = [0.0, 0.1, 0.2, 0.3]
+    valid_qc[:, 9] = [0.0, 999.0]
+
+    masks, metadata = fitted_subgroup_masks(
+        train_event, valid_event, train_qc, valid_qc
+    )
+
+    assert metadata["burden_q75"] == pytest.approx(3.25)
+    assert metadata["multi_token_ratio_q75"] == pytest.approx(0.225)
+    assert masks["burden_high"].tolist() == [False, True]
+    assert masks["multi_token_high"].tolist() == [False, True]

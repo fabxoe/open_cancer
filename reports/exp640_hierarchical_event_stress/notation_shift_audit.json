@@ -1,0 +1,399 @@
+{
+  "experiment_id": "EXP-640",
+  "scope": "canonical outer-validation rows; rules fitted per outer-train",
+  "test_data_used": false,
+  "public_leaderboard_used": false,
+  "fold_fit_metadata": [
+    {
+      "fold": 0,
+      "burden_q25": 7.0,
+      "burden_q75": 28.0,
+      "unresolved_ratio_q75": 0.0,
+      "complex_gene_count_q75": 0.0,
+      "multi_token_ratio_q75": 0.03846153989434242,
+      "rare_family_max_train_prevalence": 0.01,
+      "rare_families": [
+        "deletion"
+      ]
+    },
+    {
+      "fold": 1,
+      "burden_q25": 7.0,
+      "burden_q75": 27.0,
+      "unresolved_ratio_q75": 0.0,
+      "complex_gene_count_q75": 0.0,
+      "multi_token_ratio_q75": 0.03921568766236305,
+      "rare_family_max_train_prevalence": 0.01,
+      "rare_families": [
+        "deletion"
+      ]
+    },
+    {
+      "fold": 2,
+      "burden_q25": 7.0,
+      "burden_q75": 28.0,
+      "unresolved_ratio_q75": 0.0,
+      "complex_gene_count_q75": 0.0,
+      "multi_token_ratio_q75": 0.03846153989434242,
+      "rare_family_max_train_prevalence": 0.01,
+      "rare_families": [
+        "deletion"
+      ]
+    },
+    {
+      "fold": 3,
+      "burden_q25": 7.0,
+      "burden_q75": 28.0,
+      "unresolved_ratio_q75": 0.0,
+      "complex_gene_count_q75": 0.0,
+      "multi_token_ratio_q75": 0.03846153989434242,
+      "rare_family_max_train_prevalence": 0.01,
+      "rare_families": [
+        "deletion"
+      ]
+    },
+    {
+      "fold": 4,
+      "burden_q25": 7.0,
+      "burden_q75": 28.0,
+      "unresolved_ratio_q75": 0.0,
+      "complex_gene_count_q75": 0.0,
+      "multi_token_ratio_q75": 0.03999999910593033,
+      "rare_family_max_train_prevalence": 0.01,
+      "rare_families": [
+        "deletion"
+      ]
+    }
+  ],
+  "subgroups": {
+    "unresolved_high": {
+      "arms": {
+        "base": {
+          "support": 152,
+          "coverage": 0.02451217545557168,
+          "macro_f1": 0.4720334153413868,
+          "accuracy": 0.6118421052631579,
+          "log_loss": 1.3170635611941008
+        },
+        "event_family": {
+          "support": 152,
+          "coverage": 0.02451217545557168,
+          "macro_f1": 0.47077003901221887,
+          "accuracy": 0.625,
+          "log_loss": 1.4394465035061565,
+          "delta_vs_base": {
+            "macro_f1": -0.0012633763291679534,
+            "accuracy": 0.013157894736842146,
+            "log_loss": 0.12238294231205571
+          }
+        },
+        "parser_qc": {
+          "support": 152,
+          "coverage": 0.02451217545557168,
+          "macro_f1": 0.47757865018645507,
+          "accuracy": 0.625,
+          "log_loss": 1.503725345010973,
+          "delta_vs_base": {
+            "macro_f1": 0.005545234845068248,
+            "accuracy": 0.013157894736842146,
+            "log_loss": 0.18666178381687226
+          }
+        },
+        "combined": {
+          "support": 152,
+          "coverage": 0.02451217545557168,
+          "macro_f1": 0.46021117486942686,
+          "accuracy": 0.5986842105263158,
+          "log_loss": 1.4218602552115414,
+          "delta_vs_base": {
+            "macro_f1": -0.011822240471959955,
+            "accuracy": -0.013157894736842035,
+            "log_loss": 0.10479669401744052
+          }
+        }
+      }
+    },
+    "complex_high": {
+      "arms": {
+        "base": {
+          "support": 249,
+          "coverage": 0.0401548137397194,
+          "macro_f1": 0.527933232585185,
+          "accuracy": 0.6224899598393574,
+          "log_loss": 1.3200429190216745
+        },
+        "event_family": {
+          "support": 249,
+          "coverage": 0.0401548137397194,
+          "macro_f1": 0.5137369482658326,
+          "accuracy": 0.6265060240963856,
+          "log_loss": 1.4463680930381744,
+          "delta_vs_base": {
+            "macro_f1": -0.014196284319352381,
+            "accuracy": 0.004016064257028162,
+            "log_loss": 0.1263251740164999
+          }
+        },
+        "parser_qc": {
+          "support": 249,
+          "coverage": 0.0401548137397194,
+          "macro_f1": 0.5058145951174668,
+          "accuracy": 0.606425702811245,
+          "log_loss": 1.5085555901957222,
+          "delta_vs_base": {
+            "macro_f1": -0.02211863746771814,
+            "accuracy": -0.016064257028112428,
+            "log_loss": 0.18851267117404769
+          }
+        },
+        "combined": {
+          "support": 249,
+          "coverage": 0.0401548137397194,
+          "macro_f1": 0.5020648463994098,
+          "accuracy": 0.606425702811245,
+          "log_loss": 1.4218490359922376,
+          "delta_vs_base": {
+            "macro_f1": -0.02586838618577514,
+            "accuracy": -0.016064257028112428,
+            "log_loss": 0.10180611697056308
+          }
+        }
+      }
+    },
+    "multi_token_high": {
+      "arms": {
+        "base": {
+          "support": 1534,
+          "coverage": 0.24737945492662475,
+          "macro_f1": 0.4567763709487068,
+          "accuracy": 0.5397653194263363,
+          "log_loss": 1.5307370492658852
+        },
+        "event_family": {
+          "support": 1534,
+          "coverage": 0.24737945492662475,
+          "macro_f1": 0.4515628455369813,
+          "accuracy": 0.5365058670143416,
+          "log_loss": 1.6480003475331073,
+          "delta_vs_base": {
+            "macro_f1": -0.005213525411725539,
+            "accuracy": -0.0032594524119947677,
+            "log_loss": 0.11726329826722215
+          }
+        },
+        "parser_qc": {
+          "support": 1534,
+          "coverage": 0.24737945492662475,
+          "macro_f1": 0.45581481925534956,
+          "accuracy": 0.5475880052151239,
+          "log_loss": 1.6812515761007358,
+          "delta_vs_base": {
+            "macro_f1": -0.0009615516933572654,
+            "accuracy": 0.007822685788787531,
+            "log_loss": 0.15051452683485067
+          }
+        },
+        "combined": {
+          "support": 1534,
+          "coverage": 0.24737945492662475,
+          "macro_f1": 0.46496530953288284,
+          "accuracy": 0.546284224250326,
+          "log_loss": 1.5901743440839577,
+          "delta_vs_base": {
+            "macro_f1": 0.00818893858417602,
+            "accuracy": 0.006518904823989646,
+            "log_loss": 0.059437294818072584
+          }
+        }
+      }
+    },
+    "nonstandard_present": {
+      "arms": {
+        "base": {
+          "support": 3340,
+          "coverage": 0.5386228027737462,
+          "macro_f1": 0.44273723813592514,
+          "accuracy": 0.46467065868263474,
+          "log_loss": 1.692095940311793
+        },
+        "event_family": {
+          "support": 3340,
+          "coverage": 0.5386228027737462,
+          "macro_f1": 0.45147375707991877,
+          "accuracy": 0.4691616766467066,
+          "log_loss": 1.8047688123221246,
+          "delta_vs_base": {
+            "macro_f1": 0.008736518943993632,
+            "accuracy": 0.004491017964071864,
+            "log_loss": 0.1126728720103316
+          }
+        },
+        "parser_qc": {
+          "support": 3340,
+          "coverage": 0.5386228027737462,
+          "macro_f1": 0.45473670956759693,
+          "accuracy": 0.4739520958083832,
+          "log_loss": 1.835354796776127,
+          "delta_vs_base": {
+            "macro_f1": 0.011999471431671793,
+            "accuracy": 0.00928143712574847,
+            "log_loss": 0.143258856464334
+          }
+        },
+        "combined": {
+          "support": 3340,
+          "coverage": 0.5386228027737462,
+          "macro_f1": 0.45309724388192,
+          "accuracy": 0.47035928143712574,
+          "log_loss": 1.7534877932363104,
+          "delta_vs_base": {
+            "macro_f1": 0.010360005745994882,
+            "accuracy": 0.005688622754491002,
+            "log_loss": 0.06139185292451743
+          }
+        }
+      }
+    },
+    "burden_low": {
+      "arms": {
+        "base": {
+          "support": 1680,
+          "coverage": 0.2709240445089502,
+          "macro_f1": 0.2009510916539813,
+          "accuracy": 0.39404761904761904,
+          "log_loss": 1.9376579451570148
+        },
+        "event_family": {
+          "support": 1680,
+          "coverage": 0.2709240445089502,
+          "macro_f1": 0.20527335561440754,
+          "accuracy": 0.3976190476190476,
+          "log_loss": 1.9883100837153356,
+          "delta_vs_base": {
+            "macro_f1": 0.004322263960426231,
+            "accuracy": 0.0035714285714285587,
+            "log_loss": 0.050652138558320736
+          }
+        },
+        "parser_qc": {
+          "support": 1680,
+          "coverage": 0.2709240445089502,
+          "macro_f1": 0.2015777016831955,
+          "accuracy": 0.3970238095238095,
+          "log_loss": 2.0289483354857283,
+          "delta_vs_base": {
+            "macro_f1": 0.0006266100292141863,
+            "accuracy": 0.0029761904761904656,
+            "log_loss": 0.09129039032871344
+          }
+        },
+        "combined": {
+          "support": 1680,
+          "coverage": 0.2709240445089502,
+          "macro_f1": 0.2064127869943067,
+          "accuracy": 0.39404761904761904,
+          "log_loss": 1.9612329518406602,
+          "delta_vs_base": {
+            "macro_f1": 0.005461695340325395,
+            "accuracy": 0.0,
+            "log_loss": 0.023575006683645316
+          }
+        }
+      }
+    },
+    "burden_high": {
+      "arms": {
+        "base": {
+          "support": 1598,
+          "coverage": 0.2577003709079181,
+          "macro_f1": 0.354368102609409,
+          "accuracy": 0.5844806007509387,
+          "log_loss": 1.447283442585661
+        },
+        "event_family": {
+          "support": 1598,
+          "coverage": 0.2577003709079181,
+          "macro_f1": 0.3494438402038512,
+          "accuracy": 0.5757196495619524,
+          "log_loss": 1.5867093806815227,
+          "delta_vs_base": {
+            "macro_f1": -0.004924262405557767,
+            "accuracy": -0.008760951188986232,
+            "log_loss": 0.13942593809586157
+          }
+        },
+        "parser_qc": {
+          "support": 1598,
+          "coverage": 0.2577003709079181,
+          "macro_f1": 0.3512602349877382,
+          "accuracy": 0.5894868585732165,
+          "log_loss": 1.6176862155087042,
+          "delta_vs_base": {
+            "macro_f1": -0.0031078676216708123,
+            "accuracy": 0.005006257822277815,
+            "log_loss": 0.17040277292304307
+          }
+        },
+        "combined": {
+          "support": 1598,
+          "coverage": 0.2577003709079181,
+          "macro_f1": 0.3522846953136846,
+          "accuracy": 0.5826032540675845,
+          "log_loss": 1.5300498085457175,
+          "delta_vs_base": {
+            "macro_f1": -0.002083407295724371,
+            "accuracy": -0.001877346683354153,
+            "log_loss": 0.08276636596005638
+          }
+        }
+      }
+    },
+    "rare_event_family_present": {
+      "arms": {
+        "base": {
+          "support": 3,
+          "coverage": 0.0004837929366231253,
+          "macro_f1": 0.038461538461538464,
+          "accuracy": 1.0,
+          "log_loss": 0.23483307010810825
+        },
+        "event_family": {
+          "support": 3,
+          "coverage": 0.0004837929366231253,
+          "macro_f1": 0.038461538461538464,
+          "accuracy": 1.0,
+          "log_loss": 0.5005550009077611,
+          "delta_vs_base": {
+            "macro_f1": 0.0,
+            "accuracy": 0.0,
+            "log_loss": 0.2657219307996528
+          }
+        },
+        "parser_qc": {
+          "support": 3,
+          "coverage": 0.0004837929366231253,
+          "macro_f1": 0.03076923076923077,
+          "accuracy": 0.6666666666666666,
+          "log_loss": 0.7249757952502591,
+          "delta_vs_base": {
+            "macro_f1": -0.007692307692307693,
+            "accuracy": -0.33333333333333337,
+            "log_loss": 0.49014272514215085
+          }
+        },
+        "combined": {
+          "support": 3,
+          "coverage": 0.0004837929366231253,
+          "macro_f1": 0.038461538461538464,
+          "accuracy": 1.0,
+          "log_loss": 0.2822777143810997,
+          "delta_vs_base": {
+            "macro_f1": 0.0,
+            "accuracy": 0.0,
+            "log_loss": 0.04744464427299147
+          }
+        }
+      }
+    }
+  }
+}
