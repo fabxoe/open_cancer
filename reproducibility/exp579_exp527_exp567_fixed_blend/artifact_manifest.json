@@ -1,0 +1,66 @@
+{
+  "experiment_id": "EXP-579",
+  "issue_number": 579,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "7f02fdab69b04cd1868de4e2ab313cb297d8ec80",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp579_exp527_exp567_fixed_blend/data_manifest.json",
+  "environment": "reproducibility/exp579_exp527_exp567_fixed_blend/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-06T03:16:20.112263+00:00",
+  "artifacts": [
+    {
+      "kind": "submission",
+      "path": "submissions/exp579_exp527_exp567_fixed_blend.csv",
+      "size_bytes": 38238,
+      "sha256": "0af3699cd36ad19c621b5ebb65f4dc037753926cc2b26c5434b72cd97f28ddbd",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp579_exp527_exp567_fixed_blend.csv",
+      "size_bytes": 3335979,
+      "sha256": "a0c72f32cb7794f156ee605d7e126a6fc443b673b1459a928291e35865075017",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp579_exp527_exp567_fixed_blend_test_proba.csv",
+      "size_bytes": 1335325,
+      "sha256": "7312787c77cb646e2205dde02d35c7a4cef353c1026e224e7f82c370dd795a48",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp579_exp527_exp567_fixed_blend/metrics.json",
+      "size_bytes": 11201,
+      "sha256": "88c34c5d653cf5da040263f7e49fee1715c36c1cff67d1d0d44ced08588f4097",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp579_exp527_exp567_fixed_blend/config.resolved.yaml",
+      "size_bytes": 1924,
+      "sha256": "055f910d5cc5e892c0ecc0e0f01c78460658806ac0a2dd3396d37a719f6730ca",
+      "storage_uri": null
+    },
+    {
+      "kind": "comparison",
+      "path": "reproducibility/exp579_exp527_exp567_fixed_blend/comparison.json",
+      "size_bytes": 477,
+      "sha256": "2ade06cb3f34019c29332c098cb899fc1ff6dd7e51134efd10ffc24f351f0a4b",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

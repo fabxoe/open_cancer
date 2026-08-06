@@ -7,13 +7,13 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 116
+- 실제 실험 수: 117
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4479925392 (`EXP-521`, train self-inclusion 탐색 결과)
-- 최고 leakage-safe Local OOF Macro F1: 0.4468722707 (`EXP-527`)
+- 최고 leakage-safe Local OOF Macro F1: 0.4477416384 (`EXP-567`)
 - 최고 Public LB Macro F1: 0.346215922 (`EXP-374`)
-- 최고 재현 검증 모델: `EXP-527` (`INFERENCE_VERIFIED`)
+- 최고 재현 검증 모델: `EXP-567` (`INFERENCE_VERIFIED`)
 - 최종 갱신일: 2026-08-06
 
 ## 실험 요약
@@ -136,6 +136,7 @@
 | EXP-565 | COMPLETED | fabxoe | #565 | EXP-527 parser-v4 부모 피처만 LightGBM에 입력(class-cosine 제외) | 0.4272525489 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 -0.0196197218·fold std 악화; 3-arm 중 parser-only L1 기준점, 단독 ARCHIVE | [보고서](reports/exp565_lightgbm_parser_only/README.md) |
 | EXP-566 | COMPLETED | fabxoe | #566 | EXP-527 fold-safe LOO class-cosine 26개만 LightGBM에 입력(parser 부모 피처 제외) | 0.2674060456 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 -0.1794662251; cosine-only는 parser 표현을 대체하지 못해 ARCHIVE | [보고서](reports/exp566_lightgbm_cosine_only/README.md) |
 | EXP-567 | COMPLETED | fabxoe | #567 | EXP-527 parser-v4 부모 피처 + fold-safe LOO class-cosine 26개를 LightGBM에 입력 | 0.4477416384 | 미제출 | INFERENCE_VERIFIED | parser-only 대비 +0.0204890896·EXP-527 대비 +0.0008693677; cosine은 중복 노이즈가 아닌 보조 지도 압축으로 판정, Local 후보 채택 | [보고서](reports/exp567_lightgbm_parser_cosine/README.md) |
+| EXP-579 | COMPLETED | fabxoe | #579 | EXP-527 XGBoost + EXP-567 LightGBM 사전 고정 0.5/0.5 확률 평균 | 0.4431736484 | 미제출 | INFERENCE_VERIFIED | 최고 부모 EXP-567 대비 -0.0045680·Log Loss 악화로 ARCHIVE; 모델 다양성이 단순 평균 개선으로 이어지지 않음 | [보고서](reports/exp579_exp527_exp567_fixed_blend/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -229,6 +230,7 @@
 | 2026-08-05T18:22:27.697340+00:00 | EXP-521 | fabxoe | `eee39c928e60e12eb2c24fd56edbe0c025522da9` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.46e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp521_parser_v4_class_cosine/comparison.json) |
 | 2026-08-05T18:37:03.224031+00:00 | EXP-522 | fabxoe | `cfe6ec6793491dc55b2eb36896909c658e81ae66` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.22e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp522_parser_v4_class_likelihood/comparison.json) |
 | 2026-08-05T18:57:52.107245+00:00 | EXP-527 | fabxoe | `3cc84bca12b6a2767a35e979248e1fdb468c3114` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 8.56e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp527_parser_v4_class_cosine_loo/comparison.json) |
+| 2026-08-06T03:16:20.112263+00:00 | EXP-579 | fabxoe | `7f02fdab69b04cd1868de4e2ab313cb297d8ec80` / 태그 없음 | 부모 artifact SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 0, 제출 SHA-256 byte-level 일치 | 새 학습 없음(inference-only blend) | INFERENCE_VERIFIED | [comparison](reproducibility/exp579_exp527_exp567_fixed_blend/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -4722,3 +4724,28 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   유의미하게 보완한다. 단순 중복 노이즈가 아니라 **지도 압축 보조 피처**로
   판정하고 EXP-567을 Local 후보로 채택한다. EXP-527 대비 개선폭은 작으므로
   Public 결과를 보고 가중치나 피처를 역조정하지 않는다.
+
+### [EXP-579] EXP-527·EXP-567 고정 0.5/0.5 확률 평균
+
+- 상태/실행자: COMPLETED / fabxoe
+- Issue/브랜치: #579 / `issue-579-exp527-exp567-fixed-blend`
+- 소스 commit: `7f02fdab69b04cd1868de4e2ab313cb297d8ec80`
+- 시작/종료: 2026-08-06T03:16:19.427027+00:00 /
+  2026-08-06T03:16:20.009820+00:00
+- 부모: EXP-527 XGBoost, EXP-567 LightGBM
+- Config/Runner: `configs/exp579_exp527_exp567_fixed_blend.yaml` /
+  `scripts/run_exp579_exp527_exp567_fixed_blend.py`
+- 사전 고정: 두 부모 OOF/test 확률의 산술 평균, 가중치 `0.5/0.5`
+- Fold Macro F1: 0.4378545934, 0.4425817423, 0.4406437062,
+  0.4443546757, 0.4482113371
+- OOF Macro F1 / fold std: 0.4431736484 / 0.0034879454
+- Accuracy / Log Loss: 0.4300919207 / 1.8770651386
+- EXP-567 대비: F1 `-0.0045679900`, fold std `-0.0011105171`,
+  Log Loss `+0.0634606358`
+- EXP-527 대비: F1 `-0.0036986223`
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — 부모 확률 계약 일치, 제출 SHA-256
+  byte-level 일치, OOF/test 확률 최대 절대 차이 0
+- 판단: fold 안정성은 개선됐지만 두 부모보다 Macro F1이 낮고 최고 부모보다
+  Log Loss도 악화되어 `ARCHIVE`. 고정 0.5/0.5 블렌드 트랙은 종료하고
+  Public/test 기반 가중치 재탐색은 하지 않는다.
