@@ -147,6 +147,7 @@
 | EXP-610 | COMPLETED | fabxoe | #610 | EXP-527 26-class base + outer-train 전용 KIPAN/KIRC·GBMLGG/LGG gated binary specialist | 0.4298424283 | 미제출 | NOT_STARTED | EXP-527 대비 -0.0170298424·fold std/Log Loss 악화, KIRC·LGG F1 대폭 하락으로 ARCHIVE; 타 노트북식 hard gated reranker는 현재 강한 base에 재현되지 않음 | [보고서](reports/exp610_gated_pair_specialists/README.md) |
 | EXP-516 | COMPLETED | Kangho Park | #516 | EXP-374 + fold-train 하위 25% burden quantile 샘플에 balanced_sample_weight 1.5배 추가 곱(저burden 오분류 완화 가설) | 0.4221650046 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0046259222(게이트 +0.001 미달)·LUAD -0.0640/DLBC -0.0505 클래스 붕괴로 ARCHIVE; 표적 저burden 8클래스 중 4개만 개선(KIRC/LAML/THYM/KIPAN)·4개는 악화(GBMLGG/PRAD/PCPG/SARC)로 가설 부분 지지에 그침 | [보고서](reports/exp516_burden_weighted_sample_weight/README.md) |
 | EXP-596 | COMPLETED | 2heej | #596 | 동결 Feature Spec v1 + RandomForest (#505 스태킹 다양성 후보) | 0.4052772619 | 미제출 | INFERENCE_VERIFIED | CatBoost v1 최고 대비 -0.0141799675, Logistic v1보다는 높음; #505 S0 다양성 게이트 판정은 EXP-123/125/127 OOF 필요 — 판정 보류 | [보고서](reports/exp596_random_forest_v1/README.md) |
+| EXP-597 | COMPLETED | 2heej | #597 | 동결 Feature Spec v1 + BernoulliNB (#505 스태킹 다양성 후보) | 0.1762560191 | 미제출 | INFERENCE_VERIFIED | v1 계열 최저(EXP-123 0.3763)의 절반 이하·Log Loss 18.44로 자릿수가 다르게 나쁨, 소수 클래스 보완 신호도 없어 ARCHIVE | [보고서](reports/exp597_bernoulli_nb_v1/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -5240,3 +5241,30 @@ Cycle #170/173, POLE #181/226, functional_role_burden #257)에 이어 이번
   시점에는 오류 상관·라벨 불일치율을 계산하지 못했다. EXP-123/125/127 중
   하나 이상의 OOF를 확보해 오류 다양성을 확인한 뒤 최종 채택/기각을
   판정한다.
+
+### [EXP-597] 동결 Feature Spec v1 + BernoulliNB
+
+- 상태/실행자: COMPLETED / 2heej
+- Issue/브랜치: #597 / `issue-597-bernoulli-nb-v1`
+- Config/Runner: `configs/exp597_bernoulli_nb_v1.yaml` /
+  `scripts/run_exp597_bernoulli_nb_v1.py`
+- 목적: #505 스태킹 로드맵 S0 다양성 감사 후보 확보. 동결 Feature Spec v1
+  (EXP-094와 동일 입력, EXP-123/125/127과 동일 조건)에서 지금까지의 모든
+  v1 모델이 판별형(discriminative)이었던 것과 달리 생성형(generative)
+  `BernoulliNB`(alpha=1.0)를 시도했다.
+- Fold Macro F1: 0.1826, 0.1833, 0.1785, 0.1693, 0.1629
+- OOF Macro F1 / fold std: 0.1762560191 / 0.0079665976
+- Accuracy / Log Loss: 0.1825512014 / 18.4437344683
+- v1 계열 비교: EXP-123(Logistic) 0.3763324825, EXP-125(LightGBM)
+  0.4189078364, EXP-127(CatBoost) 0.4194572294 대비 EXP-597은 최저(EXP-123)
+  의 절반 이하. 클래스별 F1 최저 0.0221로 v1 계열 중 전 클래스 최저
+  수준이며, 소수 클래스를 보완하는 신호는 관찰되지 않았다.
+- Log Loss 18.4437는 v1 계열 다른 모델(1.5~2대)과 자릿수가 다르게 크다 —
+  ~4,000개 상호 상관된 희소 이진 피처에서 `BernoulliNB`의 독립성 가정이
+  심하게 깨지며 확률이 과신된 것으로 보인다.
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+- 판단: 생성형 모델이 판별형 모델과 다른 오류를 만든다는 가설은 방향은
+  맞았지만 절대 성능 격차가 너무 커서(-0.20 이상) #505 S0 다양성 게이트의
+  "최고 기준 모델 대비 0.004 이내 하락"과 "소수 클래스 F1 반복 보완" 조건을
+  모두 충족하지 못한다. `ARCHIVE`하고 스태킹 입력 후보에서 제외한다.

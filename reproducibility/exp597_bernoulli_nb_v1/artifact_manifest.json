@@ -1,0 +1,107 @@
+{
+  "experiment_id": "EXP-597",
+  "issue_number": 597,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "beec703bb535a388c3aa29533108be4e33671ee7",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp597_bernoulli_nb_v1/data_manifest.json",
+  "environment": "reproducibility/exp597_bernoulli_nb_v1/environment.json",
+  "release_url": null,
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp597_bernoulli_nb_v1/fold_00.joblib",
+      "size_bytes": 14610791,
+      "sha256": "bef4dd8647461b6fb220da4aa2aa568a771413199378f86e1fe121c921a2cc5f",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp597_bernoulli_nb_v1/fold_01.joblib",
+      "size_bytes": 14610791,
+      "sha256": "5261c54c694b884a7c3fcb47baf2c8e9a9eb253ffb9000b5d97041fbf73086cf",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp597_bernoulli_nb_v1/fold_02.joblib",
+      "size_bytes": 14610791,
+      "sha256": "5e1b2714ae0101a26b77a585b6b0890084ecdcdf8b447d4730754200e7499593",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp597_bernoulli_nb_v1/fold_03.joblib",
+      "size_bytes": 14610791,
+      "sha256": "ce142d091b9efe07b0efb8a66eff42a358f176c4adf61acaeaf04e87aca96faa",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp597_bernoulli_nb_v1/fold_04.joblib",
+      "size_bytes": 14610791,
+      "sha256": "5957d5a5249a4e4c22e0104c9e06b658b03360926c2bc81abf01911e70556fa1",
+      "storage_uri": null
+    },
+    {
+      "kind": "feature_spec_manifest",
+      "path": "data/processed/exp597_bernoulli_nb_v1_features/feature_spec_manifest.json",
+      "size_bytes": 1845,
+      "sha256": "37131f9311bb79da398fccd5bb5a074f045beca23027d38d1191c4e41fba67de",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof",
+      "path": "oof/exp597_bernoulli_nb_v1.csv",
+      "size_bytes": 3665902,
+      "sha256": "7ad1db49b3a01ef99d132fcc8611b38575dea87e792f7d10da5523633a100f6a",
+      "storage_uri": null
+    },
+    {
+      "kind": "report_metrics",
+      "path": "reports/exp597_bernoulli_nb_v1/metrics.json",
+      "size_bytes": 11413,
+      "sha256": "af20321b8eecbad3138e07bd3bb20788ffc20b777f61959d40f9154fb59315db",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp597_bernoulli_nb_v1.csv",
+      "size_bytes": 38370,
+      "sha256": "8c1235f9c02da4a817ebe02dd2b938b81ba9507cc143a523e988c9a8d5c0f258",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp597_bernoulli_nb_v1_test_proba.csv",
+      "size_bytes": 1428460,
+      "sha256": "7c5d62471b6b9f683ddaf06cb6eef44f74c9728f161167088d781890864d9056",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp597_bernoulli_nb_v1/config.resolved.yaml",
+      "size_bytes": 2983,
+      "sha256": "3db95a30d77f51c332670939b1ef3a6265fb4fddb229f1149e88960b52740605",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reproducibility/exp597_bernoulli_nb_v1/metrics.json",
+      "size_bytes": 11413,
+      "sha256": "af20321b8eecbad3138e07bd3bb20788ffc20b777f61959d40f9154fb59315db",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "oof_label_agreement": 1.0,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "oof_macro_f1_delta": 0.0,
+    "passed": true
+  }
+}
