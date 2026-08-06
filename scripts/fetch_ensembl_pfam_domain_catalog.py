@@ -73,25 +73,38 @@ def main() -> None:
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     fetched = 0
     skipped_cached = 0
+    failed_protein_ids: list[str] = []
     for protein_id in protein_ids:
         cache_path = RAW_DIR / f"{protein_id}.json"
         if cache_path.is_file():
             skipped_cached += 1
             continue
-        features = _fetch_one(protein_id)
+        try:
+            features = _fetch_one(protein_id)
+        except RuntimeError as exc:
+            print(f"실패, 건너뜀: {protein_id} ({exc})")
+            failed_protein_ids.append(protein_id)
+            continue
         cache_path.write_text(
             json.dumps(features, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
         )
         fetched += 1
         if fetched % 200 == 0:
-            print(f"...{fetched}건 신규 조회, {skipped_cached}건 캐시 재사용")
+            print(f"...{fetched}건 신규 조회, {skipped_cached}건 캐시 재사용, {len(failed_protein_ids)}건 실패")
         time.sleep(REQUEST_INTERVAL_SECONDS)
 
-    print(f"완료: 전체 protein {len(protein_ids)}개, 신규 조회 {fetched}건, 캐시 재사용 {skipped_cached}건")
+    print(
+        f"완료: 전체 protein {len(protein_ids)}개, 신규 조회 {fetched}건, "
+        f"캐시 재사용 {skipped_cached}건, 실패 {len(failed_protein_ids)}건"
+    )
+    if failed_protein_ids:
+        print("실패한 protein_id는 스크립트를 다시 실행하면 캐시된 나머지는 건너뛰고 재시도됩니다.")
 
     domain_count_by_protein = {}
     for protein_id in protein_ids:
         cache_path = RAW_DIR / f"{protein_id}.json"
+        if not cache_path.is_file():
+            continue
         features = json.loads(cache_path.read_text(encoding="utf-8"))
         domain_count_by_protein[protein_id] = len(features)
 
@@ -116,6 +129,8 @@ def main() -> None:
             "documentation_url": "https://rest.ensembl.org/documentation/info/overlap_translation",
             "protein_id_source": str(ANNOTATION_CACHE.relative_to(ROOT)),
             "protein_id_count": len(protein_ids),
+            "protein_id_cached_count": len(domain_count_by_protein),
+            "protein_id_failed_this_run": failed_protein_ids,
             "raw_response_dir": str(RAW_DIR.relative_to(ROOT)),
         },
         "license": {
@@ -139,7 +154,8 @@ def main() -> None:
             "total_domain_features": sum(domain_count_by_protein.values()),
         },
         "raw_response_files_sha256": {
-            protein_id: sha256_file(RAW_DIR / f"{protein_id}.json") for protein_id in protein_ids
+            protein_id: sha256_file(RAW_DIR / f"{protein_id}.json")
+            for protein_id in domain_count_by_protein
         },
     }
     MANIFEST_PATH.write_text(
