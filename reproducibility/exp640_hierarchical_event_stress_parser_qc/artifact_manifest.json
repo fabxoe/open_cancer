@@ -1,0 +1,93 @@
+{
+  "experiment_id": "EXP-640",
+  "issue_number": 640,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "541682233e596259382d08c908d4cb73f7f164cc",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp640_hierarchical_event_stress_parser_qc/data_manifest.json",
+  "environment": "reproducibility/exp640_hierarchical_event_stress_parser_qc/environment.json",
+  "release_url": null,
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-06T10:10:17.504167+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp640_hierarchical_event_stress_parser_qc/fold_00.txt",
+      "size_bytes": 4973653,
+      "sha256": "04d89410bc9d165c9302bcddb97690fd73ec63063ede56d036d504400da52290",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp640_hierarchical_event_stress_parser_qc/fold_01.txt",
+      "size_bytes": 6281475,
+      "sha256": "baf05455f50e1cc09b68d08a3fc8f4aeb151dd9b3a376f4d699a1df8646e7ab6",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp640_hierarchical_event_stress_parser_qc/fold_02.txt",
+      "size_bytes": 5511324,
+      "sha256": "79a67a031855ddbc44844783a1e1238fcdcf75428fc9491bf964e65e7166984a",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp640_hierarchical_event_stress_parser_qc/fold_03.txt",
+      "size_bytes": 7198049,
+      "sha256": "1f53ec1c51cddea6d2007a54b685452faa41e8bff74341062edeadd929dac4a0",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp640_hierarchical_event_stress_parser_qc/fold_04.txt",
+      "size_bytes": 2032383,
+      "sha256": "47ad672ef8ce070679aa08db51b04cdd8990432744f513da622bb3fb5a659dfc",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp640_hierarchical_event_stress_parser_qc.csv",
+      "size_bytes": 3470272,
+      "sha256": "1b4c60280c80b53a3013db753ef6f840bbeb5aa276bb35a3ce1df4c58c19412c",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp640_hierarchical_event_stress_parser_qc_test_proba.csv",
+      "size_bytes": 1387133,
+      "sha256": "853c76c8ac6942be17955b5a383954f88b9c5a66cef830a6789cfb8c2c599e1d",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp640_hierarchical_event_stress_parser_qc.csv",
+      "size_bytes": 38192,
+      "sha256": "8bb59336a15e9f7c29246d4414c2a983cd4c1e4bf4926558d80a2724d7ca55b6",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp640_hierarchical_event_stress_parser_qc/metrics.json",
+      "size_bytes": 11414,
+      "sha256": "9ea522500351d8a6db78a649cb4949a0ba63c1eb3901cb17d14b7c13c02b98a5",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp640_hierarchical_event_stress_parser_qc/config.resolved.yaml",
+      "size_bytes": 6843,
+      "sha256": "59e668de3f293aa25b1942ff2aefff9c76cce7291a92475347788385460d503b",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

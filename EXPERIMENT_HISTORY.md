@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 137
+- 실제 실험 수: 138
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4647479423 (`EXP-628`, 26-class 전부 예측)
@@ -155,6 +155,7 @@
 | EXP-628 | COMPLETED | 2heej | #628 | EXP-527+EXP-596 확률 블렌드 가중치 leave-one-outer-fold-out nested 선택(0.05 간격 grid, look-ahead 없음) | 0.4647479423 | 미제출 | INFERENCE_VERIFIED | EXP-623(0.5/0.5) 대비 +0.0029646045·fold std -0.0027327243(개선)·클래스 붕괴 없음; 5개 fold 전부 독립적으로 동일 가중치(0.35/0.65) 선택 — `ADOPT_WITH_CAUTION`, 현재 26-class 전부 예측하는 최고 Local 후보 | [보고서](reports/exp628_nested_blend_weight_exp527_exp596/README.md) |
 | EXP-634 | COMPLETED | 2heej | #634 | EXP-527+EXP-596 cross-fitted L2 Logistic Regression 스태킹, `class_weight=null`(#505 S2) | 0.3274295444 | 미제출 | INFERENCE_VERIFIED | EXP-628 대비 -0.1373183979 폭락, fold std +0.0333528273 악화, DLBC·SARC·THYM F1=0 등 소수 클래스 6개 붕괴(Log Loss는 -0.00002로 거의 불변) — EXP-137과 같은 실패 패턴이 더 심하게 재현됨, `ARCHIVE`; `class_weight="balanced"` 재시도가 유력한 다음 수 | [보고서](reports/exp634_cross_fitted_stacking_exp527_exp596/README.md) |
 | EXP-639 | COMPLETED | fabxoe | #639 | EXP-527 + parser-v4 fold-safe Hotspot-12 유전자 indicator·sample 요약 3개 | 0.4546505201 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0077782494·Log Loss 개선이나 fold std +0.0048500, LGG -0.1123·KIRC -0.0512 붕괴로 `ARCHIVE_AS_PRIMARY`; 정보 다양성·앙상블 후보로 보존 | [보고서](reports/exp639_parser_v4_hotspot12/README.md) |
+| EXP-640 | COMPLETED | fabxoe | #640 | EXP-567 LightGBM 고정 + parser-v4 계층 event family·parser QC 4-arm 및 train-only notation-shift 감사 | 0.4520752637 (Parser QC arm) | 미제출 | INFERENCE_VERIFIED | Parser QC는 EXP-567 대비 +0.0043336253이나 complex-high F1 -0.0221·주요 subgroup Log Loss 악화; 전체 family·combined도 채택 gate 실패로 `ARCHIVE_AS_PRIMARY`, QC 분리 ablation만 후속 후보 | [보고서](reports/exp640_hierarchical_event_stress/README.md) |
 | EXP-621 | COMPLETED | Kangho-Park | #621 | EXP-604와 동일 쌍 내부 확률 재분배(재학습 없음), `regularization_lambda` 0.001→0.02로 강화(EXP-604 후속) | 0.4280073811 | 미제출 | NOT_STARTED | EXP-374 대비 Macro F1 +0.0012164543(게이트 +0.001 근소 통과)·fold std -0.0005200278(개선)·Log Loss +0.0023699809(근소 악화)·비대상 22클래스 절대 F1 변화 합 0.0172821978(게이트 0.015 초과)로 REJECTED — δ 크기는 EXP-604 대비 3분의 1~2분의 1로 줄었으나 collateral·Log Loss 두 게이트를 여전히 통과 못함 | [보고서](reports/exp621_pairwise_redistribution_regularized/README.md) |
 | EXP-643 | COMPLETED | 2heej | #643 | EXP-374 legacy 피처 + RandomForest(EXP-596과 동일 하이퍼파라미터, legacy 계보 두 번째 모델 다양성 후보) | 0.3999667430 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0268241839로 단독 품질 게이트 미달(wildcard 허용치도 초과)이나 다양성 게이트 명확히 통과(vs EXP-374 오류상관 0.6488·불일치 34.83%, vs EXP-459 오류상관 0.7606·불일치 28.79%) — EXP-459와 동일하게 blend/stacking 자산으로 보존, 단독 채택 아님 | [보고서](reports/exp643_random_forest_exp374/README.md) |
 
@@ -5692,6 +5693,44 @@ additive 확장이며 `uv run pytest -q`로 회귀 여부를 재확인했다). "
   Log Loss 개선은 residue hotspot 정보가 있음을 보여주지만, fold 변동성과
   LGG·KIRC 붕괴 때문에 단독 주력 모델 채택 기준은 실패했다. 임계값을
   사후 조정하지 않고 OOF 오류 상관을 확인한 후 다양성·블렌드 후보로만 보존한다.
+
+### [EXP-640] 계층형 mutation event family와 train-only notation-shift 감사
+
+- 상태/실행자: COMPLETED / fabxoe
+- Issue/브랜치: #640 / `issue-640-hierarchical-event-stress`
+- 소스 commit: `541682233e596259382d08c908d4cb73f7f164cc`
+- 실행 시각: 2026-08-06T09:55:57.674804+00:00 ~
+  2026-08-06T10:14:56.799737+00:00
+- Config/Runner: `configs/exp640_hierarchical_event_stress.yaml` /
+  `scripts/run_exp640_hierarchical_event_stress.py`
+- 부모: EXP-567. LightGBM·canonical split·seed·class order와 부모 피처를
+  고정하고 Base, Event family 37개, Parser QC 10개, Combined 47개 arm을
+  비교했다.
+- Base OOF Macro F1: 0.4477416384 — EXP-567과 정확히 같아 `1e-8` 통제
+  재현 gate 통과.
+- Event family: OOF 0.4469083486, fold std 0.0046775175, Log Loss
+  1.9053587929. Base 대비 -0.0008332898로 기각.
+- Parser QC: OOF 0.4520752637, fold std 0.0047918500, Log Loss
+  1.9370387304. Base 대비 +0.0043336253이나 DLBC -0.037341, BLCA
+  -0.033422, BRCA -0.027719.
+- Combined: OOF 0.4492108773, fold std 0.0097035693, Log Loss
+  1.8640317124. Base 대비 +0.0014692388이나 BLCA -0.061591로 클래스
+  붕괴 gate를 위반하고 fold 변동성이 두 배 이상으로 증가.
+- Train-only notation-shift 감사: 각 fold의 outer-train에서만 subgroup
+  경계를 fit했다. Parser QC의 Macro F1 변화는 unresolved-high +0.005545,
+  nonstandard-present +0.011999였지만 complex-high -0.022119,
+  burden-high -0.003108이었고 주요 모든 subgroup의 Log Loss가 악화됐다.
+  test·Public은 subgroup 정의와 판단에 사용하지 않았다.
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — 네 arm 모두 저장 checkpoint 추론으로
+  제출 SHA-256·라벨·확률 일치.
+- 판단: **ARCHIVE_AS_PRIMARY / KEEP_PARSER_QC_NARROW_ABLATION**. 계층
+  event family 전체 묶음과 Combined는 채택하지 않는다. Parser QC 10개도
+  새 표기 구간 전반의 강건성을 증명하지 못했으므로 한꺼번에 채택하지 않고,
+  success/status와 multi-token/unresolved count를 분리한 후속 실험만 허용한다.
+  주력 arm이 없어 secondary split audit는 실행하지 않았다.
+- Metrics/Report: `reports/exp640_hierarchical_event_stress/` 및
+  `reports/exp640_hierarchical_event_stress_<arm>/metrics.json`
 
 ### [EXP-643] EXP-374 legacy 피처 + RandomForest (legacy 모델 다양성)
 
