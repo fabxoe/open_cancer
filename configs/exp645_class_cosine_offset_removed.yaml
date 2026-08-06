@@ -1,0 +1,75 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-645
+issue_number: 645
+slug: class_cosine_offset_removed
+parent_experiment: EXP-527
+component_experiments: []
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  parent: exp374_stop_isoform_residue_mask
+  parser_v4_patient_semantic_vector:
+    enabled: true
+    definition_version: 1.0.0
+    fit_scope: stateless
+    include_directly_in_model: false
+  class_profile:
+    enabled: true
+    definition_version: 1.0.0
+    method: cosine
+    fit_scope: outer_train_only
+    train_transform: leave_one_out_target_class
+    validation_test_transform: full_outer_train_centroid
+    output_dimension: 26
+    zero_vector_policy: all_zero_scores
+    common_offset_removal:
+      enabled: true
+      method: row_wise_mean_centering
+      description: >-
+        After computing the 26 raw cosine scores per row (identical to
+        EXP-527), subtract that row's own mean across the 26 scores before
+        feeding them to the model. This is a deterministic per-row transform
+        with no fitted parameters and no cross-row statistics, so it cannot
+        leak across folds or between train/validation/test.
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - exp374_stop_isoform_residue_mask
+    - parser_v4_26_class_cosine_profile_leave_one_out_offset_removed
+notes: >-
+  Issue #645. Single-variable ablation of EXP-527: every other condition is
+  fixed (identical XGBoost hyperparameters, identical parent feature set,
+  identical leave-one-out class-cosine fit/transform), only the 26 raw
+  cosine scores are additionally row-mean-centered before being appended to
+  the model input. Motivated by Issue #530's EXP-527 generalization audit
+  (reports/analysis/exp527_generalization_audit/README.md), which found all
+  26 class-cosine scores rise together on test (domain classifier OOF AUC
+  0.647015) -- a common per-row shift rather than a class-specific one.
+  PROJECT_CONTEXT.md already documents mean non-WT mutation count differs
+  sharply between train (35.30) and test (78.13), a plausible driver of
+  this common shift via cosine's sensitivity to token composition density.
+  Adoption is judged strictly on canonical OOF Macro F1 vs EXP-527; test
+  AUC and Public LB are not used to select or tune this transform, per the
+  #530 report's explicit instruction.
+comparison_metrics_path: reports/exp527_parser_v4_class_cosine_loo/metrics.json
