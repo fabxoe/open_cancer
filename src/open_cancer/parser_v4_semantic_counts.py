@@ -11,6 +11,7 @@ from scipy import sparse
 from open_cancer.canonical_mutation_events import parse_canonical_gene_cell
 from open_cancer.feature_family import FeatureFamilyDescriptor
 from open_cancer.parser_native_v2_features import native_v2_primary_family
+from open_cancer.sparse_gene_cells import extract_non_wt_gene_cells
 
 
 PARSER_V4_SEMANTIC_COUNT_VERSION = "1.0.0"
@@ -104,14 +105,14 @@ class FittedParserV4SemanticCountFamily:
         if missing:
             raise ValueError(f"입력에 유전자 열이 없습니다: {missing[:5]}")
         matrix = np.zeros((len(frame), len(FEATURE_NAMES)), dtype=np.float32)
-        for gene in self.gene_columns:
-            values = frame[gene].to_numpy(dtype=object, copy=False)
-            for row_index, cell in enumerate(values):
-                if not isinstance(cell, str) or not cell.strip() or cell.strip().upper() == "WT":
-                    continue
-                parsed = parse_canonical_gene_cell(cell)
-                for event in parsed.events:
-                    _increment_event(matrix[row_index], event, gene_symbol=gene)
+        cells = extract_non_wt_gene_cells(frame, self.gene_columns)
+        for row_index, gene_index, cell in zip(
+            cells.row_indices, cells.gene_indices, cells.values
+        ):
+            parsed = parse_canonical_gene_cell(cell)
+            gene = self.gene_columns[int(gene_index)]
+            for event in parsed.events:
+                _increment_event(matrix[int(row_index)], event, gene_symbol=gene)
         return sparse.csr_matrix(matrix)
 
 

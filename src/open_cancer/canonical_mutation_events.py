@@ -12,6 +12,7 @@ from open_cancer.mutation_parser_contract import RoutedProteinMutation, route_pr
 
 
 CANONICAL_EVENT_IDENTITY_VERSION = "1.0.0"
+CANONICAL_CELL_CACHE_SIZE = 262_144
 _RAW_PAYLOAD_KEYS = {
     "raw",
     "raw_token",
@@ -70,11 +71,10 @@ class CanonicalGeneCell:
         return bool(self.events)
 
 
-def parse_canonical_gene_cell(cell: object) -> CanonicalGeneCell:
-    """Parse one competition cell once and retain source-token ordering."""
+@lru_cache(maxsize=CANONICAL_CELL_CACHE_SIZE)
+def _parse_canonical_gene_cell_text(cell: str) -> CanonicalGeneCell:
+    """Compile one non-WT source cell under the frozen parser contract."""
 
-    if not isinstance(cell, str) or not cell.strip() or cell.strip().upper() == "WT":
-        return CanonicalGeneCell((), ())
     events = tuple(
         route_canonical_token(token)
         for raw in cell.split()
@@ -85,3 +85,28 @@ def parse_canonical_gene_cell(cell: object) -> CanonicalGeneCell:
         event_sha256=tuple(canonical_event_sha256(event) for event in events),
     )
 
+
+def parse_canonical_gene_cell(cell: object) -> CanonicalGeneCell:
+    """Parse one competition cell once and retain source-token ordering."""
+
+    if not isinstance(cell, str) or not cell.strip() or cell.strip().upper() == "WT":
+        return CanonicalGeneCell((), ())
+    return _parse_canonical_gene_cell_text(cell)
+
+
+def clear_canonical_event_caches() -> None:
+    """Clear compiled token/cell caches, primarily for deterministic benchmarks."""
+
+    route_canonical_token.cache_clear()
+    _parse_canonical_gene_cell_text.cache_clear()
+
+
+def canonical_event_cache_info() -> dict[str, Any]:
+    """Return cache statistics without exposing functools internals to callers."""
+
+    token = route_canonical_token.cache_info()
+    cell = _parse_canonical_gene_cell_text.cache_info()
+    return {
+        "token": token._asdict(),
+        "cell": cell._asdict(),
+    }

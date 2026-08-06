@@ -21,6 +21,7 @@ from open_cancer.feature_family import FeatureFamilyDescriptor
 from open_cancer.hashing import sha256_file
 from open_cancer.mutation_parser_contract import RoutedProteinMutation
 from open_cancer.parser_native_v2_features import native_v2_primary_family
+from open_cancer.sparse_gene_cells import extract_non_wt_gene_cells
 
 
 PARSER_NATIVE_V3_FEATURE_VERSION = "3.0.0"
@@ -151,29 +152,23 @@ class FittedParserNativeV3SemanticRangeFamily:
         values: list[float] = []
         sample_counts = np.zeros((len(frame), width), dtype=np.float32)
 
-        for gene_index, gene in enumerate(self.gene_columns):
-            gene_values = frame[gene].to_numpy(dtype=object, copy=False)
-            non_wt = np.fromiter(
-                (
-                    isinstance(cell, str)
-                    and bool(cell.strip())
-                    and cell.strip().upper() != "WT"
-                    for cell in gene_values
-                ),
-                dtype=bool,
-                count=len(frame),
-            )
-            for row_index in np.flatnonzero(non_wt):
-                parsed = parse_native_v3_gene_cell(gene, gene_values[row_index])
-                consequence_counts = dict(parsed.model_consequence_counts)
-                for consequence in parsed.model_consequences:
-                    index = consequence_index[consequence]
-                    sample_counts[row_index, index] += float(
-                        consequence_counts[consequence]
-                    )
-                    rows.append(int(row_index))
-                    columns.append(width + gene_index * width + index)
-                    values.append(1.0)
+        cells = extract_non_wt_gene_cells(frame, self.gene_columns)
+        for row_index_raw, gene_index_raw, cell in zip(
+            cells.row_indices, cells.gene_indices, cells.values
+        ):
+            row_index = int(row_index_raw)
+            gene_index = int(gene_index_raw)
+            gene = self.gene_columns[gene_index]
+            parsed = parse_native_v3_gene_cell(gene, cell)
+            consequence_counts = dict(parsed.model_consequence_counts)
+            for consequence in parsed.model_consequences:
+                index = consequence_index[consequence]
+                sample_counts[row_index, index] += float(
+                    consequence_counts[consequence]
+                )
+                rows.append(row_index)
+                columns.append(width + gene_index * width + index)
+                values.append(1.0)
 
         sample_rows, sample_columns = np.nonzero(sample_counts)
         rows.extend(sample_rows.tolist())
