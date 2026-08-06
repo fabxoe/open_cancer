@@ -1,0 +1,128 @@
+{
+  "experiment_id": "EXP-514",
+  "issue_number": 514,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "e56228401be0f50116d67a8154e1fb243ebd0891",
+  "source_tag": null,
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp514_kidney_glioma_lineage_burden/data_manifest.json",
+  "environment": "reproducibility/exp514_kidney_glioma_lineage_burden/environment.json",
+  "release_url": null,
+  "verifier": "Kangho Park",
+  "verified_at": "2026-08-06T04:02:02.217045+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp514_kidney_glioma_lineage_burden/fold_00.json",
+      "size_bytes": 10225557,
+      "sha256": "168b9316a2aba354dd05aabf68a3f0ddf3cb6561a3b17f017715a35db02bae97",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp514_kidney_glioma_lineage_burden/fold_01.json",
+      "size_bytes": 10383025,
+      "sha256": "9ef2afb2291596d293b67432cc7a0f4f05b0830ec1d7b94789478dc7d26df9b8",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp514_kidney_glioma_lineage_burden/fold_02.json",
+      "size_bytes": 4853164,
+      "sha256": "905d85f1e2ab218532dd0dc10a0a34263539e2cbbe93c65896c496477abf56a9",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp514_kidney_glioma_lineage_burden/fold_03.json",
+      "size_bytes": 6790752,
+      "sha256": "284b5d767a99377d074fb605cffd84bfa86c268ae029190a1b746b51ffbd157f",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp514_kidney_glioma_lineage_burden/fold_04.json",
+      "size_bytes": 6811033,
+      "sha256": "6d25c5209ade56d927f12d43ce8de54b99fcdfbd926bdac3af0f7bb79c9a757a",
+      "storage_uri": null
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp514_kidney_glioma_lineage_burden.csv",
+      "size_bytes": 38083,
+      "sha256": "3adefbc57b6b6afb353fe5e7129a52f4fe8cabc283c50fca73ce5e83fa92652d",
+      "storage_uri": null
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp514_kidney_glioma_lineage_burden.csv",
+      "size_bytes": 2100316,
+      "sha256": "e10541ea14c51db5a486921f8f47c852c97c0db196e4542a54e755e9b8a414f4",
+      "storage_uri": null
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp514_kidney_glioma_lineage_burden_test_proba.csv",
+      "size_bytes": 825980,
+      "sha256": "95efd4f2ed43256cac23aa07e5a24d3a94a15a1aad33417a36b2762bf6a17bab",
+      "storage_uri": null
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp514_kidney_glioma_lineage_burden/metrics.json",
+      "size_bytes": 43516,
+      "sha256": "52b7f41e6edd887ca1ff3aba918effe95afa4ac99e8bdb84c87f0f71e96a1c83",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp514_kidney_glioma_lineage_burden/config.resolved.yaml",
+      "size_bytes": 43037,
+      "sha256": "9fb0f248534432c44a30990471a2a6fa89aa70dc0da26f4be70c459c7f1a91f8",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp514_kidney_glioma_lineage_burden/fold_00_checkpoint_audit.json",
+      "size_bytes": 25565,
+      "sha256": "5cc97763db2fce851b43d827147a355b2c93363b3426b0d93f69d82af3b5168d",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp514_kidney_glioma_lineage_burden/fold_01_checkpoint_audit.json",
+      "size_bytes": 28254,
+      "sha256": "5fb79c3fe21847525c01c0e3f4ae55d41ba3219a147b7c7ed85028d6ca452667",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp514_kidney_glioma_lineage_burden/fold_02_checkpoint_audit.json",
+      "size_bytes": 30251,
+      "sha256": "75c60016f8ae508ccf471aa4dacacdb8f0dea7eef55316036d6b279ba3d39782",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp514_kidney_glioma_lineage_burden/fold_03_checkpoint_audit.json",
+      "size_bytes": 30243,
+      "sha256": "d58606ca05506584bfde8a4ac15f020b128a63c26ba22b2ed40f6c563722e5f5",
+      "storage_uri": null
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp514_kidney_glioma_lineage_burden/fold_04_checkpoint_audit.json",
+      "size_bytes": 28012,
+      "sha256": "bc3cc9d4809321d17bf10b8c930f40fa17f92a0086e0a970c7ccf6cb50b508c9",
+      "storage_uri": null
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 121
+- 실제 실험 수: 122
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4533650721 (`EXP-589`, 원래 26-class 평가)
@@ -123,6 +123,7 @@
 | EXP-476 | COMPLETED | Gomin-art | #476 | Config 기반 fold-safe recurrent gene·26 class panel + nested Optuna·class weight XGBoost | 0.4223302641 | 0.3223948042 | INFERENCE_VERIFIED | fold std 0.0063799로 안정적이나 EXP-374 대비 Local -0.0044607·Public -0.0238211, 대표 제출 미변경·ARCHIVE | [보고서](reports/exp476_config_feature_pipeline/README.md) |
 | EXP-479 | COMPLETED | fabxoe | #479 | EXP-469 + HGVS-informed range_replacement·range_stop·range_no_change 상호 배타 의미 | 0.4087566023 | 미제출 | INFERENCE_VERIFIED | 고정 XGBoost에서 EXP-469 대비 -0.0030252·안정성/Log Loss 악화; 제출 보류, 의미는 유지하고 비튜닝 native semantic 기준선으로 동결 | [보고서](reports/exp479_parser_v4_native_semantic_range/README.md) |
 | EXP-484 | COMPLETED | 2heej | #484 | EXP-374+EXP-459 고정 0.7/0.3 확률 블렌드(#482 test-like propensity 스크리닝으로 비율 사전 고정) | 0.4320213767 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 +0.0052304·test-like subset도 +0.0022953으로 통과·Log Loss 개선·클래스 붕괴 없음. Fold std +0.0052388는 임계값 초과했으나 전 fold 개선(악화 없음)이 원인 — ADOPT_WITH_CAUTION, Public 제출은 팀 논의 후 | [보고서](reports/exp484_exp374_exp459_blend/README.md) |
+| EXP-514 | COMPLETED | Kangho-Park | #514 | EXP-374 + KIRC/KIPAN·GBMLGG/LGG 계통 특이 fixed driver 유전자 burden 4열(단일 family ablation) | 0.4269665262 | 미제출 | INFERENCE_VERIFIED | OOF +0.0001756(게이트 +0.001 미달)·fold std +0.0023869(게이트 0.002 초과 악화)로 ARCHIVE; 클래스 붕괴는 없음. 가설 타겟 KIPAN +0.0037/KIRC +0.0278/LGG +0.0172 개선, GBMLGG -0.0167 악화로 순효과 상쇄 | [보고서](reports/exp514_kidney_glioma_lineage_burden/README.md) |
 | EXP-496 | COMPLETED | Kangho-Park | #496 | EXP-374 + robust non-simple event gene count(sample__complex_count → gene-level count, EXP-355 R1 재사용) | 0.4273962190 | 미제출 | INFERENCE_VERIFIED | 전체 OOF +0.0006052921(게이트 미달)이나 **test-like 서브셋 -0.0035398863**·Log Loss +0.0475932367 악화로 REJECTED — EXP-355의 Local 전용 REJECT를 test-like 기준으로 재확인 | [보고서](reports/exp496_robust_complex_count_exp374/README.md) |
 | EXP-515 | COMPLETED | Kangho-Park | #515 | EXP-374 OOF + KIPAN/KIRC·GBMLGG/LGG 한정 post-hoc decision offset(재학습 없음, EXP-233/276 후속) | 0.4296769353 | 미제출 | NOT_STARTED | Macro F1 +0.0028860(게이트 미달)이나 Log Loss +0.0285328 악화·비대상 22클래스 절대 F1 변화 합 0.0993876(허용치 0.01의 약 9.9배)로 REJECTED — 재정규화가 26클래스를 zero-sum으로 묶어 탐색 대상을 좁혀도 다른 클래스 보호 불가함을 확인 | [보고서](reports/exp515_scoped_pairwise_decision_offset/README.md) |
 | EXP-487 | COMPLETED | fabxoe | #487 | EXP-479 native-v3 semantic schema + outer-train 전용 nested Optuna XGBoost tuning | 0.4228690293 | 미제출 | INFERENCE_VERIFIED | EXP-479 대비 +0.0141124로 native-v3 성능 회복 확인; EXP-374보다 -0.0039219로 낮아 대표 제출 후보는 아니며 튜닝된 native-v3 기준선·다양성 자산으로 보존 | [보고서](reports/exp487_native_v3_nested_xgb_tuning/README.md) |
@@ -4355,6 +4356,73 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   fold 붕괴형 불안정과는 다르다고 판단해 `ADOPT_WITH_CAUTION`으로 기록한다.
   EXP-449(LightGBM) 계열 블렌드가 전부 실패했던 이전 결론("어떤 모델을
   블렌드해도 test-like gate에서 실패한다")에 대한 반례다.
+
+### [EXP-514] KIRC/KIPAN·GBMLGG/LGG 계통 특이 driver 유전자 고정 패널
+
+- 상태: COMPLETED
+- 실행자: Kangho Park
+- Issue/브랜치: #514 / `issue-514-kidney-glioma-lineage-burden`
+- 소스 commit: `e56228401be0f50116d67a8154e1fb243ebd0891`
+- 시작/종료: 2026-08-06T02:20:50Z / 2026-08-06T04:01:55Z (약 101분, 5-fold XGBoost)
+
+#### 실행
+- Config: `configs/exp514_kidney_glioma_lineage_burden.yaml`
+- Metrics: `reports/exp514_kidney_glioma_lineage_burden/metrics.json`
+- Report: `reports/exp514_kidney_glioma_lineage_burden/README.md`
+- 부모: EXP-374 (컴포넌트: EXP-374)
+- 배경: EXP-374 OOF 오답노트 분석에서 최대 혼동쌍이 KIPAN↔KIRC(390건 합산,
+  클래스별 F1 KIPAN 0.2215/KIRC 0.1760)와 GBMLGG↔LGG(288건 합산, GBMLGG
+  0.3198/LGG 0.4186)였다. 두 쌍 모두 TCGA 라벨링 특성(KIPAN은 KIRC 조직형을
+  포함하는 pan-kidney 라벨, GBMLGG는 LGG 조직형을 포함하는 병합 glioma
+  라벨)으로 알려져 있지만, 독립적인 ccRCC/glioma driver 유전자 문헌에서 고정한
+  compact burden 피처가 tree 모델의 분리에 여전히 도움이 되는지 검증했다.
+- 방법: `knowledge/kirc_kidney_glioma_lineage_v1.json`에 `kidney_vhl_mtor`
+  (VHL, MTOR, TSC1, TSC2, PTEN, MET, FH)와 `glioma_who_idh`(IDH1, IDH2, ATRX,
+  TP53, NF1, PTEN, EGFR) 2개 그룹을 고정하고, 기존
+  `open_cancer.abc_c_features.fixed_pathway_burden_family`(EXP-096/374와 동일
+  로직)를 새 지식 파일 경로로 재사용해 `mutated_gene_count`/`lof_gene_count`
+  4열을 계산했다. EXP-374의 stop 표기 무관 파서, hotspot-34, Ensembl
+  residue-position mask, canonical pathway-20 burden, pathway 변이유형 조성
+  50열 후보는 전부 그대로 유지한 단일 family ablation이다(신규 코드는
+  `scripts/run_exp514_kidney_glioma_lineage_burden.py`의
+  `KidneyGliomaLineageFoldBuilder`뿐).
+- 의미 중복 사전점검: 신규 4열을 기존 pathway-burden 20열 + 조성 50열(총
+  70열)과 6,201개 train 행 전체에서 byte-level 전수 비교한 결과 완전히 동일한
+  열은 없었다(`VHL, FH, IDH1, IDH2, ATRX`는 기존 canonical pathway에 아예
+  없던 유전자, `MTOR/PTEN/TSC1/TSC2/MET/EGFR/NF1/TP53`은 부분적으로 겹치지만
+  그룹 구성이 달라 합산값도 다름). 상세 표는 보고서 참조.
+
+#### 결과
+- Fold Macro F1: 0.4225164849, 0.4239416114, 0.4144610523, 0.4245547442,
+  0.4470387350
+- OOF Macro F1: 0.4269665262 (EXP-374 대비 `+0.0001755994`, 게이트 기준
+  `+0.001` 미달)
+- Fold 표준편차: 0.0108901206 (EXP-374 대비 `+0.0023869037`, 게이트 기준
+  `0.002` 초과 악화)
+- Accuracy / Log Loss: 0.4126753749 / 1.8722743988 (EXP-374 대비 Log Loss
+  `+0.0282095671`)
+- 가설 타겟 클래스 F1(EXP-374 → EXP-514): KIPAN 0.2214983713 → 0.2252252253
+  (`+0.0037268539`), KIRC 0.1759530792 → 0.2037037037 (`+0.0277506245`),
+  GBMLGG 0.3197831978 → 0.3031123139 (`-0.0166708839`), LGG 0.4186046512 →
+  0.4358523726 (`+0.0172477214`)
+- 클래스 F1 붕괴: 없음(전체 26개 클래스 중 최대 하락은 BLCA `-0.0362`)
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — checkpoint 재추론으로 submission
+  SHA-256 byte-level 일치, test 라벨 100% 일치, 확률 최대 절대 차이
+  `1.39e-7`
+
+#### 산출물과 결론
+- Metrics/Report: `reports/exp514_kidney_glioma_lineage_burden/`
+- Reproduction: `reproducibility/exp514_kidney_glioma_lineage_burden/`
+- 결론: `ARCHIVE`. KIPAN/KIRC 혼동쌍은 가설 방향대로 뚜렷하게 개선됐지만
+  (KIRC 단독 `+0.0278`) GBMLGG가 반대로 악화돼 두 혼동쌍의 순효과가 상쇄되며
+  전체 OOF Macro F1 개선폭이 gate 기준에 크게 못 미쳤고, fold 표준편차도
+  악화돼 채택하지 않는다. EXP-374를 계속 대표 실험으로 유지한다.
+
+#### 선택 메모
+후속 후보: (1) KIPAN/KIRC 그룹만 단독으로 추가하는 ablation으로 GBMLGG 악화가
+glioma 그룹에서 기인하는지 분리 확인, (2) 이번 fold 표준편차 악화가 이 4열의
+재현 가능한 특성인지 다른 seed로 반복 검증.
 
 ### [EXP-515] KIPAN/KIRC·GBMLGG/LGG 한정 post-hoc decision offset — 기각(ARCHIVE)
 

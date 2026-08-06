@@ -1,0 +1,17 @@
+{
+  "name": "kirc_kidney_glioma_lineage_driver_genes",
+  "version": "1.0.0",
+  "license": "N/A - hand-curated gene-lineage membership derived from published cancer-genetics literature (ccRCC VHL-HIF-mTOR axis; WHO CNS5 IDH-based glioma classification); not extracted from a single licensed dataset file.",
+  "source": "Manually curated from independent cancer-genetics literature on ccRCC/KIRC pathway driver genes (VHL-HIF-mTOR axis: VHL, MTOR, TSC1, TSC2, PTEN, MET, FH) and WHO CNS5 IDH-based glioma classification driver genes (IDH1, IDH2, ATRX, TP53, NF1, PTEN, EGFR). Gene selection is independent of this competition's SUBCLASS distribution, OOF performance, test data, or Public LB.",
+  "source_url": "N/A: hand-curated literature gene panel; no single downloadable source file or repository commit to cite (unlike knowledge/canonical_pathways_sanchez_vega_v1.json, which mirrors one external PathwayMapper JSON file).",
+  "source_commit": null,
+  "source_sha256": null,
+  "article_doi": null,
+  "extraction_policy": "Two fixed gene lists chosen from independent ccRCC and glioma driver-gene literature (not from PathwayMapper or any other single downloadable catalog), then intersected with this competition's actual 4,384-gene panel in data/raw/train.csv. Textbook driver genes absent from the panel (e.g. PBRM1, SETD2, BAP1, KDM5C, TFE3, TERT, CIC, FUBP1) were excluded because they do not exist as columns in the competition CSV, not because of any target-based selection. PTEN intentionally appears in both groups because it is a real shared tumor suppressor in both the PI3K/mTOR (kidney) and glioma driver pathways; it is not deduplicated away.",
+  "selection_policy": "Fixed before this experiment's OOF run and independent of SUBCLASS distribution, fold assignment, validation, test data, and Public LB. Motivated by EXP-374 OOF error analysis identifying KIPAN<->KIRC and GBMLGG<->LGG as the two largest confusion pairs, but the gene membership itself comes from external cancer-genetics literature about ccRCC/glioma driver biology, not from this dataset's per-class mutation frequencies.",
+  "organizer_approval_reference": "https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180 (same fixed-external-gene-group-membership / competition-CSV-only-values pattern already covered by this comment for the sibling knowledge/canonical_pathways_sanchez_vega_v1.json fixed_pathway_burden family; this knowledge file follows the identical pattern with a different, independently literature-curated gene panel).",
+  "pathways": {
+    "kidney_vhl_mtor": ["VHL", "MTOR", "TSC1", "TSC2", "PTEN", "MET", "FH"],
+    "glioma_who_idh": ["IDH1", "IDH2", "ATRX", "TP53", "NF1", "PTEN", "EGFR"]
+  }
+}
