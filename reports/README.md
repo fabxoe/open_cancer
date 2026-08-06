@@ -78,6 +78,8 @@ seed나 단일 하이퍼파라미터만 바꾼 작은 비교 실험은 장문 �
 `reports/analysis/`에 둡니다. 이는 새 실험 점수를 만드는 폴더가 아니며 실제
 입력·산출물 해시와 해석 한계를 함께 기록합니다.
 
+- [Compact clinical mutation baseline 설계 감사](analysis/compact_clinical_baseline/README.md)
+
 - [Residue-position indicator 의미 감사](analysis/residue_position_semantics_qc.md)
 - [Vera EXP-094 후속 검토](analysis/vera_exp094_followup.md)
 - [ABC-Stack OOF 포트폴리오 감사](analysis/abc_oof_portfolio_audit.md)
