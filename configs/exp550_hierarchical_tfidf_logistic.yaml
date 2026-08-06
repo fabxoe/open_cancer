@@ -1,0 +1,40 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-550
+issue_number: 550
+slug: hierarchical_tfidf_logistic
+parent_experiment: EXP-545
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  tokenizer: canonical_event_tokenizer_v1
+  adapter: hierarchical_event_adapter_v1
+  position_bin_width: 100
+  detail_minimum_patient_support: 2
+  global_minimum_patient_support: 1
+  normalization: raw
+  tfidf:
+    norm: l2
+    use_idf: true
+    smooth_idf: true
+    sublinear_tf: false
+model:
+  class: sklearn.linear_model.LogisticRegression
+  C: 1.0
+  penalty: l2
+  solver: lbfgs
+  class_weight: balanced
+  max_iter: 1000
+  tol: 0.0001
+  random_state: 42
+training:
+  checkpoint_selection: fitted_probability_model
+  primary_metric: macro_f1
+  class_order: project_constant
+notes: >-
+  Issue #550. EXP-545 tokenizer, hierarchical adapter, outer-train-only TF-IDF,
+  canonical split and class weighting are fixed. Only LinearSVC is replaced by
+  one pre-registered multinomial probability model. predict_proba is stored;
+  decision-score softmax is not used.
