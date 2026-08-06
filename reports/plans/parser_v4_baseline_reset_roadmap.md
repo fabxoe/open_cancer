@@ -148,8 +148,8 @@ semantic parser
 | N4-OPT | native v3 전용 nested XGBoost tuning | 미발급 | 미발급 | 미발급 | PLANNED | N/A | outer fold 외부 정보 사용 금지 | multi-seed 검증 |
 | N4-MS | native v3 tuned 후보 multi-seed 안정성 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | Local gate·클래스 안정성 판단 | N5 동결 여부 |
 | N5 | Parser-native semantic baseline 동결 | #479 | EXP-479 | 미발급 | COMPLETED | 0.4087566023 | HGVS 의미 기준선 동결·성능 최적화는 후속 단계 | N4-S·SHAP 진행 |
-| N6 | isoform 독립 재검증 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N5 완료 대기 |
-| N7 | driver 독립 재검증 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N5 완료 대기 |
+| N6 | isoform 독립 재검증 | #493 | EXP-497 | #495(교체)/#499(재실행 기록) | COMPLETED | 0.4267909268(EXP-497, EXP-374와 bit-identical) | legacy substitution 정규식이 stop `X` 표기 10,397건(2.14%)을 놓치던 버그를 v4로 교체·수정했으나, `residue_position` gene-level `max` 집계 특성상 OOF에는 측정 가능한 영향 없음(`NULL_RESULT`); correctness 수정 자체는 유지 | N7 진행 |
+| N7 | driver 독립 재검증 | #584 | 해당 없음 | 미발급 | COMPLETED | N/A | `driver_event_signature.py`(Task #390)는 애초부터 legacy `mutation_features`를 import하지 않고 parser v4 계약의 `protein_duplication_semantics`만 사용 — migration 대상 없음. 또한 어떤 Feature Family·모델 runner에도 연결되지 않은 QC 전용 코드(`scripts/audit_driver_event_signature.py` 외 소비자 없음)라 OOF 영향 자체가 성립하지 않음 | N8 진행 |
 | N8 | pathway·hotspot 재검증·Feature Spec 동결 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N6·N7 판단 |
 | N9 | nested Optuna | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N8 동결 대기 |
 | N10 | 모델 다양화·앙상블·최종 재현 | 미발급 | 미발급 | 미발급 | PLANNED | N/A | - | N9 완료 대기 |
