@@ -200,6 +200,16 @@ def main() -> None:
         "per_class_regression_limit": min(per_class_delta.values()) >= -gates["per_class_max_regression"],
     }
     passed = all(gate_results.values())
+    gate_comparison = {
+        "parent_experiment": "EXP-545",
+        "macro_f1_delta": macro_f1 - gates["parent_macro_f1"],
+        "log_loss_delta": oof_log_loss - gates["parent_log_loss"],
+        "fold_std_delta": fold_std - gates["parent_fold_std"],
+        "minimum_per_class_f1_delta": min(per_class_delta.values()),
+        "per_class_f1_delta": per_class_delta,
+        "gate_results": gate_results,
+        "passed": passed,
+    }
 
     oof_dir = ROOT / "oof"
     pred_dir = ROOT / "preds"
@@ -254,18 +264,10 @@ def main() -> None:
             "submission": _relative(submission_path),
             "models": _relative(model_dir),
         },
-        "comparison": {
-            "parent_experiment": "EXP-545",
-            "macro_f1_delta": macro_f1 - gates["parent_macro_f1"],
-            "log_loss_delta": oof_log_loss - gates["parent_log_loss"],
-            "fold_std_delta": fold_std - gates["parent_fold_std"],
-            "minimum_per_class_f1_delta": min(per_class_delta.values()),
-            "gate_results": gate_results,
-            "passed": passed,
-        },
     }
     metrics_path = report_dir / "metrics.json"
     _write_json(metrics_path, metrics)
+    _write_json(report_dir / "gate_comparison.json", gate_comparison)
     validate_json_document(metrics_path, ROOT / "schemas/experiment_metrics.schema.json")
 
     resolved_config = {**config, "source_commit": source_commit, "runner": _relative(Path(__file__))}
@@ -339,9 +341,9 @@ def main() -> None:
         "EXP-545의 유일한 변경으로 outer-train 내부 3-fold sigmoid calibration을 적용했다.",
         "Outer validation과 test는 모든 vocabulary, TF-IDF, calibration 학습에서 제외했다.",
         "",
-        f"- OOF Macro F1: `{macro_f1:.10f}` (Δ `{metrics['comparison']['macro_f1_delta']:+.10f}`)",
-        f"- OOF Log Loss: `{oof_log_loss:.10f}` (Δ `{metrics['comparison']['log_loss_delta']:+.10f}`)",
-        f"- Fold 표준편차: `{fold_std:.10f}` (Δ `{metrics['comparison']['fold_std_delta']:+.10f}`)",
+        f"- OOF Macro F1: `{macro_f1:.10f}` (Δ `{gate_comparison['macro_f1_delta']:+.10f}`)",
+        f"- OOF Log Loss: `{oof_log_loss:.10f}` (Δ `{gate_comparison['log_loss_delta']:+.10f}`)",
+        f"- Fold 표준편차: `{fold_std:.10f}` (Δ `{gate_comparison['fold_std_delta']:+.10f}`)",
         f"- 공동 게이트: `{'PASS' if passed else 'FAIL'}`",
         f"- 재현 상태: `{'INFERENCE_VERIFIED' if comparison['passed'] else 'FAILED'}`",
         f"- Submission SHA-256: `{submission_validation['sha256']}`",
@@ -351,7 +353,7 @@ def main() -> None:
         *[f"- {name}: `{value}`" for name, value in gate_results.items()],
     ]
     (report_dir / "README.md").write_text("\n".join(report_lines) + "\n", encoding="utf-8")
-    print(json.dumps({"oof": metrics["oof"], "comparison": metrics["comparison"], "reproducibility": comparison}, ensure_ascii=False, indent=2))
+    print(json.dumps({"oof": metrics["oof"], "comparison": gate_comparison, "reproducibility": comparison}, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":
