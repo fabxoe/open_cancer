@@ -1,0 +1,39 @@
+run_mode: experiment
+record_role: official
+experiment_id: EXP-567
+issue_number: 567
+slug: exp567_lightgbm_parser_cosine
+parent_experiment: EXP-527
+component_experiments: []
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mode: parser_v4_parent_plus_class_cosine_26
+model:
+  name: lightgbm
+  parameters:
+    n_estimators: 1200
+    learning_rate: 0.03
+    num_leaves: 31
+    max_depth: -1
+    min_child_samples: 20
+    subsample: 0.8
+    subsample_freq: 1
+    colsample_bytree: 0.8
+    reg_alpha: 0.0
+    reg_lambda: 1.0
+    early_stopping_rounds: 60
+    checkpoint_selection: macro_f1_validation
+    n_jobs: 8
+    verbosity: -1
+    deterministic: true
+    force_col_wise: true
+training:
+  balanced_sample_weight: true
+notes: >-
+  Issue #567, Task #564. EXP-527's full parser-v4 parent features and its
+  leakage-safe leave-one-out 26-class cosine scores enter LightGBM. Settings
+  are fixed across EXP-565/566/567.
+comparison_metrics_path: reports/exp527_parser_v4_class_cosine_loo/metrics.json
