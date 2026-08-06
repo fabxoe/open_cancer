@@ -1,5 +1,7 @@
 run_mode: experiment
 record_role: official
+experiment_id: EXP-596
+issue_number: 596
 slug: random_forest_v1
 parent_experiment: EXP-094
 seed: 42
