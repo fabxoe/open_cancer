@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 132
+- 실제 실험 수: 133
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4647479423 (`EXP-628`, 26-class 전부 예측)
@@ -138,6 +138,7 @@
 | EXP-545 | COMPLETED | fabxoe | #545 | EXP-541 hierarchical vocabulary에 outer-train TF-IDF + row-L2 적용 | 0.4396775272 | 미제출 | NOT_STARTED | EXP-541 대비 +0.0673036513, EXP-527 대비 -0.0071947435, fold std 0.0038151877; 확률 보정 전 다양성 후보 | [보고서](reports/exp545_hierarchical_tfidf_linear/README.md) |
 | EXP-550 | COMPLETED | fabxoe | #550 | EXP-545 TF-IDF 입력 + multinomial Logistic Regression predict_proba | 0.4324730859 | 미제출 | NOT_STARTED | EXP-545 대비 -0.0072044·fold std 악화, EXP-527보다 F1·Log Loss 열세로 단독 확률 모델 ARCHIVE | [보고서](reports/exp550_hierarchical_tfidf_logistic/README.md) |
 | EXP-558 | COMPLETED | fabxoe | #558 | parser-v4 compact clinical features + XGBoost | 0.4133226110 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 +0.0089430·fold std 개선으로 새 compact baseline 채택, 최근 최고보다 낮아 제출 보류 | [보고서](reports/exp558_compact_clinical_xgb/README.md) |
+| EXP-563 | COMPLETED | fabxoe | #563 | EXP-527 + fold-safe 유전자 residue-event 집중도 4개(50-aa bin, 평균 HHI·entropy) | 0.4398386191 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 -0.0070336516·Log Loss 악화로 평균 집중도 조합 ARCHIVE; Hotspot-12는 별도 검증 | [보고서](reports/exp563_residue_event_concentration/README.md) |
 | EXP-565 | COMPLETED | fabxoe | #565 | EXP-527 parser-v4 부모 피처만 LightGBM에 입력(class-cosine 제외) | 0.4272525489 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 -0.0196197218·fold std 악화; 3-arm 중 parser-only L1 기준점, 단독 ARCHIVE | [보고서](reports/exp565_lightgbm_parser_only/README.md) |
 | EXP-566 | COMPLETED | fabxoe | #566 | EXP-527 fold-safe LOO class-cosine 26개만 LightGBM에 입력(parser 부모 피처 제외) | 0.2674060456 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 -0.1794662251; cosine-only는 parser 표현을 대체하지 못해 ARCHIVE | [보고서](reports/exp566_lightgbm_cosine_only/README.md) |
 | EXP-567 | COMPLETED | fabxoe | #567 | EXP-527 parser-v4 부모 피처 + fold-safe LOO class-cosine 26개를 LightGBM에 입력 | 0.4477416384 | 미제출 | INFERENCE_VERIFIED | parser-only 대비 +0.0204890896·EXP-527 대비 +0.0008693677; cosine은 중복 노이즈가 아닌 보조 지도 압축으로 판정, Local 후보 채택 | [보고서](reports/exp567_lightgbm_parser_cosine/README.md) |
@@ -4949,6 +4950,34 @@ glioma 그룹에서 기인하는지 분리 확인, (2) 이번 fold 표준편차 
   EXP-005보다 성능과 fold 안정성이 개선됐다. 다만 EXP-512·최근 최고 모델보다
   낮고 Log Loss가 악화되어 단독 제출은 보류한다. mutated→truncating→summary→
   recurrent→ref-AA×consequence ablation으로 실제 기여를 분리한다.
+
+### [EXP-563] Fold-safe residue-event concentration
+
+- 상태/실행자: COMPLETED / fabxoe
+- Issue/브랜치: #563 / `issue-563-parser-v4-residue-concentration`
+- 소스 commit: `6f073191af5e710f0ef440e5ff40d49ce5f4070a`
+- 시작/종료: 2026-08-06T03:33:10.305802+00:00 /
+  2026-08-06T03:46:13.239289+00:00 (783.23초)
+- 부모: EXP-527
+- Config: `configs/exp563_residue_event_concentration.yaml`
+- Runner: `scripts/run_exp563_residue_event_concentration.py`
+- Metrics/Report: `reports/exp563_residue_event_concentration/`
+- 변경: outer-train의 parser-v4 position-eligible residue를 50-aa bin으로
+  집계해 top-bin hit fraction, 평균 observed-bin share, 평균 HHI, 평균
+  normalized entropy 네 개를 추가했다. patient-gene-bin 중복 제거와 support
+  20 gate를 적용하고 validation/test는 동결 profile만 lookup했다.
+- Fold Macro F1: 0.4367912652, 0.4437515113, 0.4518220135,
+  0.4310622565, 0.4341083088
+- OOF Macro F1: 0.4398386191 (EXP-527 대비 `-0.0070336516`)
+- Fold 평균/표준편차: 0.4395070711 / 0.0074499693
+- Accuracy / Log Loss: 0.4260603129 / 2.0543270111
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — submission SHA-256 byte-level 일치,
+  test label 100%, 확률 최대 절대 차이 `1.4016495e-7`.
+- 판단: 평균 집중도 네 피처는 Macro F1·Log Loss를 모두 악화시켜 ARCHIVE한다.
+  이는 Hotspot-12, 상대 길이 Concentration, Green's contagion 또는 저-entropy
+  유전자 개수 규칙을 시험한 결과가 아니므로 이진 hotspot family는 별도
+  Task·Experiment Issue에서 독립 검증한다.
 
 ### [EXP-565] LightGBM parser-v4 parent only
 
