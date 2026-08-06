@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 127
+- 실제 실험 수: 128
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4533650721 (`EXP-589`, 원래 26-class 평가)
@@ -142,6 +142,7 @@
 | EXP-566 | COMPLETED | fabxoe | #566 | EXP-527 fold-safe LOO class-cosine 26개만 LightGBM에 입력(parser 부모 피처 제외) | 0.2674060456 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 -0.1794662251; cosine-only는 parser 표현을 대체하지 못해 ARCHIVE | [보고서](reports/exp566_lightgbm_cosine_only/README.md) |
 | EXP-567 | COMPLETED | fabxoe | #567 | EXP-527 parser-v4 부모 피처 + fold-safe LOO class-cosine 26개를 LightGBM에 입력 | 0.4477416384 | 미제출 | INFERENCE_VERIFIED | parser-only 대비 +0.0204890896·EXP-527 대비 +0.0008693677; cosine은 중복 노이즈가 아닌 보조 지도 압축으로 판정, Local 후보 채택 | [보고서](reports/exp567_lightgbm_parser_cosine/README.md) |
 | EXP-579 | COMPLETED | fabxoe | #579 | EXP-527 XGBoost + EXP-567 LightGBM 사전 고정 0.5/0.5 확률 평균 | 0.4431736484 | 미제출 | INFERENCE_VERIFIED | 최고 부모 EXP-567 대비 -0.0045680·Log Loss 악화로 ARCHIVE; 모델 다양성이 단순 평균 개선으로 이어지지 않음 | [보고서](reports/exp579_exp527_exp567_fixed_blend/README.md) |
+| EXP-571 | COMPLETED | Gomin-art | #571 | Parser-v4 QC 요약 및 event span 피처 ablation | 0.4514285443 | 미제출 | INFERENCE_VERIFIED | Parser QC arm 채택, event span은 후속 조합 후보 | [보고서](reports/exp571_data_centric_features_parser_v4/README.md) |
 | EXP-589 | COMPLETED | fabxoe | #589 | EXP-527의 KIRC→KIPAN·LGG→GBMLGG 24-class 학습·class-cosine 재구성 | 0.4533650721 (원래 26-class 평가; 병합 24-class 0.5086284091) | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 +0.0064928014·fold std 개선; 두 원래 클래스 F1=0을 포함해도 Local 최고. 24-class 제출은 KIRC·LGG를 전혀 출력하지 않는 고위험 구조라 진단·다양성 후보로 보존 | [보고서](reports/exp589_merged_24class/README.md) |
 | EXP-592 | COMPLETED | fabxoe | #592 | EXP-589 + outer-train 전용 KIPAN/KIRC·GBMLGG/LGG binary specialist 확률 분할 | 0.4393703541 | 미제출 | INFERENCE_VERIFIED | EXP-589 대비 -0.0139947180·KIRC F1 0.0837359로 ARCHIVE; hard-routing 사후 진단도 0.4434467829로 부모 미달, 현재 specialist track 종료 | [보고서](reports/exp592_hierarchical_pair_specialists/README.md) |
 | EXP-610 | COMPLETED | fabxoe | #610 | EXP-527 26-class base + outer-train 전용 KIPAN/KIRC·GBMLGG/LGG gated binary specialist | 0.4298424283 | 미제출 | NOT_STARTED | EXP-527 대비 -0.0170298424·fold std/Log Loss 악화, KIRC·LGG F1 대폭 하락으로 ARCHIVE; 타 노트북식 hard gated reranker는 현재 강한 base에 재현되지 않음 | [보고서](reports/exp610_gated_pair_specialists/README.md) |
@@ -5049,6 +5050,15 @@ glioma 그룹에서 기인하는지 분리 확인, (2) 이번 fold 표준편차 
   Log Loss도 악화되어 `ARCHIVE`. 고정 0.5/0.5 블렌드 트랙은 종료하고
   Public/test 기반 가중치 재탐색은 하지 않는다.
 
+### [EXP-571] Parser-v4 QC 요약 및 event span 피처 단독 ablation (Parent: EXP-567) 
+- 담당자: Gomin-art
+- Issue/브랜치: #571 / `issue-571-exp-data-centric-features-parser-v4`
+- Parent: EXP-567
+- 상태: COMPLETED
+- Base OOF Macro F1: `0.4477416384`
+- Parser QC OOF Macro F1: `0.4514285443` (+0.0036869059)
+- Event span OOF Macro F1: `0.4508327972` (+0.0030911588)
+- 결론: Parser QC arm 채택, event span은 후속 조합 후보
 ### [EXP-589] KIRC→KIPAN·LGG→GBMLGG 24-class XGBoost
 
 - 상태/실행자: COMPLETED / fabxoe
