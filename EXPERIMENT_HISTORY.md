@@ -4548,7 +4548,7 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
 - 상태: COMPLETED
 - 실행자: fabxoe
 - Issue/브랜치: #545 / `issue-545-hierarchical-tfidf-linear`
-- 소스 commit: `fbeafe19d9fe75da4a13649f20872441d810ba35`
+- 소스 commit: `eddbcdef3fc71a2711cdd68621899d3ac1e6731d`
 - 시작/종료: 2026-08-06T00:08:54.070043+00:00 /
   2026-08-06T00:10:37.292418+00:00 (103.28초)
 - Config: `configs/exp545_hierarchical_tfidf_linear.yaml`
@@ -4570,5 +4570,6 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
 - 판단: 사전 정의된 sparse-linear 종료 기준을 통과했다. TF-IDF가 단순
   row-L2보다 핵심적인 개선 요소이며 fold 안정성도 좋다. 다만 LinearSVC
   decision score의 softmax 확률은 보정되지 않아 단독 확률 앙상블에 바로
-  사용하지 않는다. EXP-527·tree 계열과 OOF 다양성을 감사하고 별도의
-  fold-safe calibration 또는 Logistic Regression 후보로 이어간다.
+  사용하지 않는다. EXP-527과 예측 라벨 불일치율 `50.7983%`, 정오답 상관
+  `0.487465`로 다양성 gate를 통과했으며, 별도의 fold-safe calibration 또는
+  Logistic Regression 후보로 이어간다.
