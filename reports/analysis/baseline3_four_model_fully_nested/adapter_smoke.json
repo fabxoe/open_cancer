@@ -1,0 +1,5302 @@
+[
+  {
+    "model": "EXP-639",
+    "stage": "inner_validation_prediction",
+    "fit_rows": 3720,
+    "validation_rows": 1240,
+    "fit_sha256": "624d40cb832a578963c5482735ff0b9d914d10009ef3f7617332025a383da4b5",
+    "validation_sha256": "201c265d16f2a979199660fdf86229537e1a7f081a32e7ca3060bc45320474c5",
+    "macro_f1": 0.36264501987245484,
+    "runtime_seconds": 3.5234813764691353,
+    "feature_audit": {
+      "fit_scope": "explicit_fit_indices_only",
+      "feature_dimension": 35206,
+      "feature_names_sha256": "e01ef55dd9e6cf42b04a4881dd730c294a3be2ec26b4c7af629fb189c87f1d43",
+      "fold_feature_registry": {
+        "fixed_pathway_burden": {
+          "definition_version": "2.1.0",
+          "enabled": true,
+          "output_dimension": 20,
+          "feature_names_sha256": "215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06",
+          "fit_scope": "stateless",
+          "external_knowledge": [
+            {
+              "source": "PathwayMapper canonical pathway templates derived from Sanchez-Vega et al., Cell 2018",
+              "version": "pathway-mapper-7d29965",
+              "license": "AGPL-3.0",
+              "sha256": "fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f",
+              "uri": "https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json"
+            }
+          ]
+        },
+        "pathway_mutation_type_composition": {
+          "definition_version": "2.1.0",
+          "enabled": true,
+          "output_dimension": 50,
+          "feature_names_sha256": "df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d",
+          "fit_scope": "stateless",
+          "external_knowledge": [
+            {
+              "source": "PathwayMapper canonical pathway templates derived from Sanchez-Vega et al., Cell 2018",
+              "version": "pathway-mapper-7d29965",
+              "license": "AGPL-3.0",
+              "sha256": "fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f",
+              "uri": "https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json"
+            }
+          ]
+        },
+        "semantic_equivalence_filter": {
+          "definition_version": "1.0.0",
+          "enabled": true,
+          "output_dimension": 61,
+          "feature_names_sha256": "82cb0c77c633d7ba1aef831707662217bd3c49ab34c5f74fb12e7364afa8795f",
+          "fit_scope": "fold_train",
+          "external_knowledge": null,
+          "dropped": {
+            "sample__pathway_cell_cycle__complex_gene_count": "ADAMTS5__complex",
+            "sample__pathway_hippo__complex_gene_count": "LCK__nonsense",
+            "sample__pathway_myc__complex_gene_count": "sample__missing_gene_count",
+            "sample__pathway_notch__complex_gene_count": "CREBBP__complex",
+            "sample__pathway_nrf2__complex_gene_count": "sample__missing_gene_count",
+            "sample__pathway_pi3k__complex_gene_count": "ANPEP__nonsense",
+            "sample__pathway_rtk_ras__complex_gene_count": "GNG2__nonsense",
+            "sample__pathway_tgf_beta__complex_gene_count": "sample__missing_gene_count",
+            "sample__pathway_tp53__complex_gene_count": "ADAMTS5__complex"
+          }
+        },
+        "parser_v4_patient_semantic_vector": {
+          "definition_version": "1.0.0",
+          "enabled": true,
+          "output_dimension": 66242,
+          "feature_names_sha256": "6dc4d6b06401fa777a3225d544fcb390ad7e916ba8868002e2fdd0e6ee5dc2d7",
+          "fit_scope": "stateless",
+          "external_knowledge": null,
+          "included_directly_in_model": false
+        },
+        "parser_v4_class_profile_cosine": {
+          "definition_version": "1.0.0",
+          "enabled": true,
+          "output_dimension": 26,
+          "feature_names_sha256": "24aad664928896bfc7018310595d0d8b6ebf1f55128afd619f1af32feb2e1b21",
+          "fit_scope": "fold_train",
+          "external_knowledge": null,
+          "profile_audit": {
+            "definition_version": "1.0.0",
+            "method": "cosine",
+            "class_labels": [
+              "ACC",
+              "BLCA",
+              "BRCA",
+              "CESC",
+              "COAD",
+              "DLBC",
+              "GBMLGG",
+              "HNSC",
+              "KIPAN",
+              "KIRC",
+              "LAML",
+              "LGG",
+              "LIHC",
+              "LUAD",
+              "LUSC",
+              "OV",
+              "PAAD",
+              "PCPG",
+              "PRAD",
+              "SARC",
+              "SKCM",
+              "STES",
+              "TGCT",
+              "THCA",
+              "THYM",
+              "UCEC"
+            ],
+            "class_support": {
+              "ACC": 44,
+              "BLCA": 62,
+              "BRCA": 472,
+              "CESC": 93,
+              "COAD": 133,
+              "DLBC": 23,
+              "GBMLGG": 277,
+              "HNSC": 134,
+              "KIPAN": 309,
+              "KIRC": 200,
+              "LAML": 95,
+              "LGG": 137,
+              "LIHC": 95,
+              "LUAD": 111,
+              "LUSC": 107,
+              "OV": 151,
+              "PAAD": 72,
+              "PCPG": 87,
+              "PRAD": 160,
+              "SARC": 118,
+              "SKCM": 166,
+              "STES": 227,
+              "TGCT": 74,
+              "THCA": 194,
+              "THYM": 60,
+              "UCEC": 119
+            },
+            "input_dimension": 66242,
+            "output_dimension": 26,
+            "alpha": 1.0,
+            "include_class_prior": false,
+            "profile_sha256": "8c675986209dc1a77c60644debdc5fbf1370d68c734514ec2cade11b1449f066",
+            "feature_names_sha256": "24aad664928896bfc7018310595d0d8b6ebf1f55128afd619f1af32feb2e1b21",
+            "train_transform": "leave_one_out_target_class",
+            "validation_test_transform": "full_outer_train_centroid"
+          }
+        },
+        "residue_hotspot12": {
+          "definition_version": "1.0.0",
+          "enabled": true,
+          "output_dimension": 4387,
+          "feature_names_sha256": "507efd2b675686700fa1909f53e4a7b015b00629e432b0064e9d1796e497393f",
+          "fit_scope": "fold_train",
+          "external_knowledge": null,
+          "fit_audit": {
+            "family": "residue_hotspot12",
+            "version": "1.0.0",
+            "fit_scope": "fold_train",
+            "parser_contract_key": "normalizer=4.0.0|router=4.0.0|identity=1.0.0",
+            "event_scope": "parser_v4_substitution_missense_resolved_positive_position",
+            "deduplication_unit": "patient_gene_residue_position",
+            "window_width": 12,
+            "min_event_support": 5,
+            "min_window_fraction": 0.4,
+            "candidate_gene_count": 3733,
+            "selected_gene_count": 250,
+            "selected_genes": [
+              "ACTR3",
+              "AGER",
+              "AKAP7",
+              "AKT1",
+              "ALDH7A1",
+              "APOE",
+              "ARF4",
+              "ARF6",
+              "ARL3",
+              "ARPC5L",
+              "ASB13",
+              "ATG4B",
+              "ATOH8",
+              "B4GALT4",
+              "BAG1",
+              "BCL10",
+              "BCL2A1",
+              "BID",
+              "BLVRB",
+              "BNIP3",
+              "BRAF",
+              "BTC",
+              "C1QBP",
+              "CACYBP",
+              "CASP7",
+              "CBR1",
+              "CCK",
+              "CCL24",
+              "CD69",
+              "CD7",
+              "CD70",
+              "CD81",
+              "CD83",
+              "CD99",
+              "CDA",
+              "CDC34",
+              "CDK2",
+              "CDKN2C",
+              "CEBPA",
+              "CENPA",
+              "CKB",
+              "CLDN3",
+              "CLEC4A",
+              "CLPS",
+              "CLTB",
+              "COPE",
+              "COPZ2",
+              "COX4I1",
+              "COX5A",
+              "COX6B1",
+              "COX7A1",
+              "COX8A",
+              "CSRP3",
+              "CTNNB1",
+              "CTSO",
+              "CXCL2",
+              "CXCL9",
+              "CYB5B",
+              "DCUN1D1",
+              "DRAM1",
+              "DSCC1",
+              "DTYMK",
+              "DUSP14",
+              "EBI3",
+              "EBP",
+              "EDN2",
+              "EEF1B2",
+              "EGLN3",
+              "EI24",
+              "EIF1AX",
+              "EIF3J",
+              "EIF4E",
+              "EIF5A",
+              "ELOVL5",
+              "EXOSC4",
+              "EXOSC5",
+              "FABP1",
+              "FABP2",
+              "FBXO6",
+              "FCGR2B",
+              "FEN1",
+              "FGF9",
+              "FHL2",
+              "FKBP2",
+              "FLT3LG",
+              "FSHB",
+              "GCA",
+              "GCH1",
+              "GHRL",
+              "GLRX",
+              "GM2A",
+              "GNG2",
+              "GP9",
+              "GREM1",
+              "GRHPR",
+              "GSTM2",
+              "HBEGF",
+              "HES1",
+              "HLA-DQA1",
+              "HMGCL",
+              "HMOX2",
+              "HOXD11",
+              "HPN",
+              "HRAS",
+              "HSD11B2",
+              "HSPB2",
+              "ICAM2",
+              "IDH1",
+              "IDH2",
+              "IDUA",
+              "IFITM3",
+              "IL10",
+              "IL15",
+              "IL1B",
+              "IL23A",
+              "ING3",
+              "INSIG1",
+              "KCNE2",
+              "KLF7",
+              "KLK10",
+              "LITAF",
+              "LMO2",
+              "LRIG1",
+              "LSM4",
+              "LXN",
+              "MADCAM1",
+              "MAL2",
+              "MALL",
+              "MAP3K8",
+              "MAPK12",
+              "MDH2",
+              "METTL7B",
+              "MFAP5",
+              "MGP",
+              "MRAP",
+              "MREG",
+              "MRPL11",
+              "MRPL40",
+              "MVB12A",
+              "MYD88",
+              "MYL12B",
+              "MYOG",
+              "NABP1",
+              "NANP",
+              "NDP",
+              "NDUFA8",
+              "NDUFB3",
+              "NDUFB5",
+              "NDUFB6",
+              "NDUFS4",
+              "NHP2",
+              "NKX6-1",
+              "NMU",
+              "NOG",
+              "OAZ3",
+              "OGFR",
+              "ORC6",
+              "PDHB",
+              "PEBP1",
+              "PFN2",
+              "PGAM1",
+              "PGF",
+              "PIN1",
+              "PLSCR1",
+              "PNP",
+              "POLR2C",
+              "POLR2I",
+              "POP4",
+              "PPBP",
+              "PPP3R1",
+              "PPP4R2",
+              "PRDX5",
+              "PRDX6",
+              "PRKAB1",
+              "PSMA7",
+              "PSMC3IP",
+              "PTGIR",
+              "PURA",
+              "RAB31",
+              "RAB5A",
+              "RAB9A",
+              "RAC1",
+              "RALA",
+              "RBM38",
+              "RBX1",
+              "RCAN1",
+              "RCHY1",
+              "REEP1",
+              "REEP5",
+              "RFC2",
+              "RHOF",
+              "RHOG",
+              "RNF4",
+              "RPA3",
+              "RPE",
+              "RPL22",
+              "RPL6",
+              "RPS2",
+              "RPS5",
+              "RPS6",
+              "RRAD",
+              "S100A11",
+              "S100A13",
+              "SCAMP1",
+              "SDHD",
+              "SERTAD1",
+              "SH3BGRL2",
+              "SLC25A10",
+              "SLC25A11",
+              "SLC2A8",
+              "SNCB",
+              "SNCG",
+              "SNRPD3",
+              "SNX24",
+              "SOCS2",
+              "SPC25",
+              "SPINT2",
+              "SRD5A1",
+              "SRGN",
+              "SRP19",
+              "STK25",
+              "STX12",
+              "TAGLN",
+              "TCL1A",
+              "TGFA",
+              "THEM4",
+              "THY1",
+              "TIMP2",
+              "TK2",
+              "TMEM50A",
+              "TNFRSF18",
+              "TNNC1",
+              "TNNC2",
+              "TNNI1",
+              "TSHB",
+              "U2AF1",
+              "UBE2E1",
+              "UBE2I",
+              "UBE2L6",
+              "UBE2N",
+              "UQCR10",
+              "USP18",
+              "VAMP4",
+              "VAMP5",
+              "VBP1",
+              "VEGFA",
+              "XCL1",
+              "YWHAB",
+              "YWHAH",
+              "YWHAZ"
+            ],
+            "window_profiles": [
+              {
+                "gene": "ACTR3",
+                "window_start": 147,
+                "window_end": 158,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "AGER",
+                "window_start": 391,
+                "window_end": 402,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "AKAP7",
+                "window_start": 280,
+                "window_end": 291,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 6
+              },
+              {
+                "gene": "AKT1",
+                "window_start": 17,
+                "window_end": 28,
+                "total_event_support": 15,
+                "window_event_support": 6,
+                "window_fraction": 0.4,
+                "patient_support": 15
+              },
+              {
+                "gene": "ALDH7A1",
+                "window_start": 404,
+                "window_end": 415,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "APOE",
+                "window_start": 130,
+                "window_end": 141,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "ARF4",
+                "window_start": 149,
+                "window_end": 160,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "ARF6",
+                "window_start": 171,
+                "window_end": 182,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "ARL3",
+                "window_start": 132,
+                "window_end": 143,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "ARPC5L",
+                "window_start": 126,
+                "window_end": 137,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "ASB13",
+                "window_start": 139,
+                "window_end": 150,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "ATG4B",
+                "window_start": 7,
+                "window_end": 18,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "ATOH8",
+                "window_start": 150,
+                "window_end": 161,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "B4GALT4",
+                "window_start": 58,
+                "window_end": 69,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "BAG1",
+                "window_start": 175,
+                "window_end": 186,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "BCL10",
+                "window_start": 79,
+                "window_end": 90,
+                "total_event_support": 6,
+                "window_event_support": 4,
+                "window_fraction": 0.6666666666666666,
+                "patient_support": 6
+              },
+              {
+                "gene": "BCL2A1",
+                "window_start": 110,
+                "window_end": 121,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "BID",
+                "window_start": 8,
+                "window_end": 19,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "BLVRB",
+                "window_start": 127,
+                "window_end": 138,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "BNIP3",
+                "window_start": 141,
+                "window_end": 152,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "BRAF",
+                "window_start": 594,
+                "window_end": 605,
+                "total_event_support": 254,
+                "window_event_support": 211,
+                "window_fraction": 0.8307086614173228,
+                "patient_support": 246
+              },
+              {
+                "gene": "BTC",
+                "window_start": 62,
+                "window_end": 73,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "C1QBP",
+                "window_start": 212,
+                "window_end": 223,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CACYBP",
+                "window_start": 141,
+                "window_end": 152,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CASP7",
+                "window_start": 224,
+                "window_end": 235,
+                "total_event_support": 12,
+                "window_event_support": 5,
+                "window_fraction": 0.4166666666666667,
+                "patient_support": 12
+              },
+              {
+                "gene": "CBR1",
+                "window_start": 138,
+                "window_end": 149,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CCK",
+                "window_start": 102,
+                "window_end": 113,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "CCL24",
+                "window_start": 107,
+                "window_end": 118,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CD69",
+                "window_start": 95,
+                "window_end": 106,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "CD7",
+                "window_start": 80,
+                "window_end": 91,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "CD70",
+                "window_start": 182,
+                "window_end": 193,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "CD81",
+                "window_start": 65,
+                "window_end": 76,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 6
+              },
+              {
+                "gene": "CD83",
+                "window_start": 81,
+                "window_end": 92,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "CD99",
+                "window_start": 92,
+                "window_end": 103,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CDA",
+                "window_start": 80,
+                "window_end": 91,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CDC34",
+                "window_start": 74,
+                "window_end": 85,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CDK2",
+                "window_start": 13,
+                "window_end": 24,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "CDKN2C",
+                "window_start": 61,
+                "window_end": 72,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "CEBPA",
+                "window_start": 289,
+                "window_end": 300,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CENPA",
+                "window_start": 129,
+                "window_end": 140,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CKB",
+                "window_start": 7,
+                "window_end": 18,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "CLDN3",
+                "window_start": 50,
+                "window_end": 61,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 4
+              },
+              {
+                "gene": "CLEC4A",
+                "window_start": 202,
+                "window_end": 213,
+                "total_event_support": 12,
+                "window_event_support": 5,
+                "window_fraction": 0.4166666666666667,
+                "patient_support": 12
+              },
+              {
+                "gene": "CLPS",
+                "window_start": 82,
+                "window_end": 93,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "CLTB",
+                "window_start": 2,
+                "window_end": 13,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "COPE",
+                "window_start": 12,
+                "window_end": 23,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "COPZ2",
+                "window_start": 85,
+                "window_end": 96,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "COX4I1",
+                "window_start": 102,
+                "window_end": 113,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 4
+              },
+              {
+                "gene": "COX5A",
+                "window_start": 55,
+                "window_end": 66,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "COX6B1",
+                "window_start": 2,
+                "window_end": 13,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "COX7A1",
+                "window_start": 54,
+                "window_end": 65,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "COX8A",
+                "window_start": 44,
+                "window_end": 55,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CSRP3",
+                "window_start": 8,
+                "window_end": 19,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "CTNNB1",
+                "window_start": 32,
+                "window_end": 43,
+                "total_event_support": 110,
+                "window_event_support": 60,
+                "window_fraction": 0.5454545454545454,
+                "patient_support": 99
+              },
+              {
+                "gene": "CTSO",
+                "window_start": 293,
+                "window_end": 304,
+                "total_event_support": 14,
+                "window_event_support": 7,
+                "window_fraction": 0.5,
+                "patient_support": 14
+              },
+              {
+                "gene": "CXCL2",
+                "window_start": 48,
+                "window_end": 59,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CXCL9",
+                "window_start": 25,
+                "window_end": 36,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "CYB5B",
+                "window_start": 54,
+                "window_end": 65,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 4
+              },
+              {
+                "gene": "DCUN1D1",
+                "window_start": 192,
+                "window_end": 203,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "DRAM1",
+                "window_start": 135,
+                "window_end": 146,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "DSCC1",
+                "window_start": 65,
+                "window_end": 76,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "DTYMK",
+                "window_start": 192,
+                "window_end": 203,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "DUSP14",
+                "window_start": 17,
+                "window_end": 28,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "EBI3",
+                "window_start": 123,
+                "window_end": 134,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "EBP",
+                "window_start": 70,
+                "window_end": 81,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "EDN2",
+                "window_start": 84,
+                "window_end": 95,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 8
+              },
+              {
+                "gene": "EEF1B2",
+                "window_start": 43,
+                "window_end": 54,
+                "total_event_support": 11,
+                "window_event_support": 7,
+                "window_fraction": 0.6363636363636364,
+                "patient_support": 11
+              },
+              {
+                "gene": "EGLN3",
+                "window_start": 58,
+                "window_end": 69,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "EI24",
+                "window_start": 120,
+                "window_end": 131,
+                "total_event_support": 5,
+                "window_event_support": 4,
+                "window_fraction": 0.8,
+                "patient_support": 5
+              },
+              {
+                "gene": "EIF1AX",
+                "window_start": 2,
+                "window_end": 13,
+                "total_event_support": 10,
+                "window_event_support": 6,
+                "window_fraction": 0.6,
+                "patient_support": 10
+              },
+              {
+                "gene": "EIF3J",
+                "window_start": 146,
+                "window_end": 157,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "EIF4E",
+                "window_start": 13,
+                "window_end": 24,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "EIF5A",
+                "window_start": 46,
+                "window_end": 57,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "ELOVL5",
+                "window_start": 11,
+                "window_end": 22,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 4
+              },
+              {
+                "gene": "EXOSC4",
+                "window_start": 180,
+                "window_end": 191,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 8
+              },
+              {
+                "gene": "EXOSC5",
+                "window_start": 24,
+                "window_end": 35,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "FABP1",
+                "window_start": 60,
+                "window_end": 71,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "FABP2",
+                "window_start": 102,
+                "window_end": 113,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "FBXO6",
+                "window_start": 21,
+                "window_end": 32,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "FCGR2B",
+                "window_start": 268,
+                "window_end": 279,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 9
+              },
+              {
+                "gene": "FEN1",
+                "window_start": 320,
+                "window_end": 331,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "FGF9",
+                "window_start": 103,
+                "window_end": 114,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "FHL2",
+                "window_start": 195,
+                "window_end": 206,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 8
+              },
+              {
+                "gene": "FKBP2",
+                "window_start": 36,
+                "window_end": 47,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "FLT3LG",
+                "window_start": 60,
+                "window_end": 71,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "FSHB",
+                "window_start": 82,
+                "window_end": 93,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "GCA",
+                "window_start": 37,
+                "window_end": 48,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "GCH1",
+                "window_start": 100,
+                "window_end": 111,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "GHRL",
+                "window_start": 51,
+                "window_end": 62,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 8
+              },
+              {
+                "gene": "GLRX",
+                "window_start": 72,
+                "window_end": 83,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "GM2A",
+                "window_start": 106,
+                "window_end": 117,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "GNG2",
+                "window_start": 55,
+                "window_end": 66,
+                "total_event_support": 5,
+                "window_event_support": 5,
+                "window_fraction": 1.0,
+                "patient_support": 5
+              },
+              {
+                "gene": "GP9",
+                "window_start": 104,
+                "window_end": 115,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 6
+              },
+              {
+                "gene": "GREM1",
+                "window_start": 111,
+                "window_end": 122,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 6
+              },
+              {
+                "gene": "GRHPR",
+                "window_start": 29,
+                "window_end": 40,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "GSTM2",
+                "window_start": 96,
+                "window_end": 107,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 4
+              },
+              {
+                "gene": "HBEGF",
+                "window_start": 128,
+                "window_end": 139,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "HES1",
+                "window_start": 35,
+                "window_end": 46,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "HLA-DQA1",
+                "window_start": 51,
+                "window_end": 62,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "HMGCL",
+                "window_start": 260,
+                "window_end": 271,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "HMOX2",
+                "window_start": 17,
+                "window_end": 28,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 6
+              },
+              {
+                "gene": "HOXD11",
+                "window_start": 272,
+                "window_end": 283,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "HPN",
+                "window_start": 208,
+                "window_end": 219,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "HRAS",
+                "window_start": 61,
+                "window_end": 72,
+                "total_event_support": 43,
+                "window_event_support": 25,
+                "window_fraction": 0.5813953488372093,
+                "patient_support": 42
+              },
+              {
+                "gene": "HSD11B2",
+                "window_start": 307,
+                "window_end": 318,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "HSPB2",
+                "window_start": 66,
+                "window_end": 77,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "ICAM2",
+                "window_start": 142,
+                "window_end": 153,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "IDH1",
+                "window_start": 132,
+                "window_end": 143,
+                "total_event_support": 264,
+                "window_event_support": 246,
+                "window_fraction": 0.9318181818181818,
+                "patient_support": 263
+              },
+              {
+                "gene": "IDH2",
+                "window_start": 133,
+                "window_end": 144,
+                "total_event_support": 35,
+                "window_event_support": 15,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 32
+              },
+              {
+                "gene": "IDUA",
+                "window_start": 374,
+                "window_end": 385,
+                "total_event_support": 22,
+                "window_event_support": 9,
+                "window_fraction": 0.4090909090909091,
+                "patient_support": 21
+              },
+              {
+                "gene": "IFITM3",
+                "window_start": 31,
+                "window_end": 42,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "IL10",
+                "window_start": 125,
+                "window_end": 136,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 7
+              },
+              {
+                "gene": "IL15",
+                "window_start": 112,
+                "window_end": 123,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 8
+              },
+              {
+                "gene": "IL1B",
+                "window_start": 41,
+                "window_end": 52,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "IL23A",
+                "window_start": 47,
+                "window_end": 58,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "ING3",
+                "window_start": 188,
+                "window_end": 199,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "INSIG1",
+                "window_start": 249,
+                "window_end": 260,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "KCNE2",
+                "window_start": 42,
+                "window_end": 53,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "KLF7",
+                "window_start": 12,
+                "window_end": 23,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "KLK10",
+                "window_start": 106,
+                "window_end": 117,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "LITAF",
+                "window_start": 20,
+                "window_end": 31,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "LMO2",
+                "window_start": 101,
+                "window_end": 112,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "LRIG1",
+                "window_start": 24,
+                "window_end": 35,
+                "total_event_support": 74,
+                "window_event_support": 32,
+                "window_fraction": 0.43243243243243246,
+                "patient_support": 57
+              },
+              {
+                "gene": "LSM4",
+                "window_start": 53,
+                "window_end": 64,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "LXN",
+                "window_start": 113,
+                "window_end": 124,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "MADCAM1",
+                "window_start": 254,
+                "window_end": 265,
+                "total_event_support": 11,
+                "window_event_support": 6,
+                "window_fraction": 0.5454545454545454,
+                "patient_support": 10
+              },
+              {
+                "gene": "MAL2",
+                "window_start": 71,
+                "window_end": 82,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 4
+              },
+              {
+                "gene": "MALL",
+                "window_start": 46,
+                "window_end": 57,
+                "total_event_support": 12,
+                "window_event_support": 6,
+                "window_fraction": 0.5,
+                "patient_support": 12
+              },
+              {
+                "gene": "MAP3K8",
+                "window_start": 442,
+                "window_end": 453,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "MAPK12",
+                "window_start": 311,
+                "window_end": 322,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "MDH2",
+                "window_start": 210,
+                "window_end": 221,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "METTL7B",
+                "window_start": 77,
+                "window_end": 88,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "MFAP5",
+                "window_start": 153,
+                "window_end": 164,
+                "total_event_support": 9,
+                "window_event_support": 5,
+                "window_fraction": 0.5555555555555556,
+                "patient_support": 8
+              },
+              {
+                "gene": "MGP",
+                "window_start": 81,
+                "window_end": 92,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "MRAP",
+                "window_start": 154,
+                "window_end": 165,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "MREG",
+                "window_start": 188,
+                "window_end": 199,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "MRPL11",
+                "window_start": 88,
+                "window_end": 99,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "MRPL40",
+                "window_start": 91,
+                "window_end": 102,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "MVB12A",
+                "window_start": 100,
+                "window_end": 111,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "MYD88",
+                "window_start": 173,
+                "window_end": 184,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "MYL12B",
+                "window_start": 9,
+                "window_end": 20,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "MYOG",
+                "window_start": 139,
+                "window_end": 150,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "NABP1",
+                "window_start": 98,
+                "window_end": 109,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "NANP",
+                "window_start": 79,
+                "window_end": 90,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "NDP",
+                "window_start": 34,
+                "window_end": 45,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "NDUFA8",
+                "window_start": 23,
+                "window_end": 34,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "NDUFB3",
+                "window_start": 65,
+                "window_end": 76,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "NDUFB5",
+                "window_start": 19,
+                "window_end": 30,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "NDUFB6",
+                "window_start": 55,
+                "window_end": 66,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "NDUFS4",
+                "window_start": 165,
+                "window_end": 176,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "NHP2",
+                "window_start": 134,
+                "window_end": 145,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "NKX6-1",
+                "window_start": 227,
+                "window_end": 238,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "NMU",
+                "window_start": 18,
+                "window_end": 29,
+                "total_event_support": 7,
+                "window_event_support": 5,
+                "window_fraction": 0.7142857142857143,
+                "patient_support": 7
+              },
+              {
+                "gene": "NOG",
+                "window_start": 88,
+                "window_end": 99,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "OAZ3",
+                "window_start": 25,
+                "window_end": 36,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "OGFR",
+                "window_start": 556,
+                "window_end": 567,
+                "total_event_support": 22,
+                "window_event_support": 11,
+                "window_fraction": 0.5,
+                "patient_support": 17
+              },
+              {
+                "gene": "ORC6",
+                "window_start": 225,
+                "window_end": 236,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "PDHB",
+                "window_start": 329,
+                "window_end": 340,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "PEBP1",
+                "window_start": 54,
+                "window_end": 65,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "PFN2",
+                "window_start": 123,
+                "window_end": 134,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "PGAM1",
+                "window_start": 140,
+                "window_end": 151,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "PGF",
+                "window_start": 127,
+                "window_end": 138,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "PIN1",
+                "window_start": 143,
+                "window_end": 154,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "PLSCR1",
+                "window_start": 12,
+                "window_end": 23,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "PNP",
+                "window_start": 57,
+                "window_end": 68,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "POLR2C",
+                "window_start": 115,
+                "window_end": 126,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "POLR2I",
+                "window_start": 8,
+                "window_end": 19,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "POP4",
+                "window_start": 18,
+                "window_end": 29,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "PPBP",
+                "window_start": 69,
+                "window_end": 80,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "PPP3R1",
+                "window_start": 98,
+                "window_end": 109,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "PPP4R2",
+                "window_start": 76,
+                "window_end": 87,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "PRDX5",
+                "window_start": 157,
+                "window_end": 168,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "PRDX6",
+                "window_start": 102,
+                "window_end": 113,
+                "total_event_support": 9,
+                "window_event_support": 6,
+                "window_fraction": 0.6666666666666666,
+                "patient_support": 9
+              },
+              {
+                "gene": "PRKAB1",
+                "window_start": 78,
+                "window_end": 89,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "PSMA7",
+                "window_start": 119,
+                "window_end": 130,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "PSMC3IP",
+                "window_start": 211,
+                "window_end": 222,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "PTGIR",
+                "window_start": 261,
+                "window_end": 272,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "PURA",
+                "window_start": 158,
+                "window_end": 169,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "RAB31",
+                "window_start": 175,
+                "window_end": 186,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "RAB5A",
+                "window_start": 144,
+                "window_end": 155,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "RAB9A",
+                "window_start": 63,
+                "window_end": 74,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 4
+              },
+              {
+                "gene": "RAC1",
+                "window_start": 29,
+                "window_end": 40,
+                "total_event_support": 21,
+                "window_event_support": 14,
+                "window_fraction": 0.6666666666666666,
+                "patient_support": 20
+              },
+              {
+                "gene": "RALA",
+                "window_start": 131,
+                "window_end": 142,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "RBM38",
+                "window_start": 160,
+                "window_end": 171,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "RBX1",
+                "window_start": 50,
+                "window_end": 61,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "RCAN1",
+                "window_start": 203,
+                "window_end": 214,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "RCHY1",
+                "window_start": 214,
+                "window_end": 225,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "REEP1",
+                "window_start": 163,
+                "window_end": 174,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "REEP5",
+                "window_start": 76,
+                "window_end": 87,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "RFC2",
+                "window_start": 96,
+                "window_end": 107,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "RHOF",
+                "window_start": 172,
+                "window_end": 183,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "RHOG",
+                "window_start": 136,
+                "window_end": 147,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "RNF4",
+                "window_start": 179,
+                "window_end": 190,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "RPA3",
+                "window_start": 3,
+                "window_end": 14,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "RPE",
+                "window_start": 162,
+                "window_end": 173,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 6
+              },
+              {
+                "gene": "RPL22",
+                "window_start": 86,
+                "window_end": 97,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "RPL6",
+                "window_start": 193,
+                "window_end": 204,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "RPS2",
+                "window_start": 75,
+                "window_end": 86,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "RPS5",
+                "window_start": 108,
+                "window_end": 119,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "RPS6",
+                "window_start": 222,
+                "window_end": 233,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "RRAD",
+                "window_start": 271,
+                "window_end": 282,
+                "total_event_support": 21,
+                "window_event_support": 9,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 21
+              },
+              {
+                "gene": "S100A11",
+                "window_start": 54,
+                "window_end": 65,
+                "total_event_support": 6,
+                "window_event_support": 4,
+                "window_fraction": 0.6666666666666666,
+                "patient_support": 6
+              },
+              {
+                "gene": "S100A13",
+                "window_start": 86,
+                "window_end": 97,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "SCAMP1",
+                "window_start": 170,
+                "window_end": 181,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "SDHD",
+                "window_start": 117,
+                "window_end": 128,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "SERTAD1",
+                "window_start": 18,
+                "window_end": 29,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "SH3BGRL2",
+                "window_start": 52,
+                "window_end": 63,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "SLC25A10",
+                "window_start": 242,
+                "window_end": 253,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "SLC25A11",
+                "window_start": 106,
+                "window_end": 117,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "SLC2A8",
+                "window_start": 448,
+                "window_end": 459,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "SNCB",
+                "window_start": 59,
+                "window_end": 70,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 6
+              },
+              {
+                "gene": "SNCG",
+                "window_start": 96,
+                "window_end": 107,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "SNRPD3",
+                "window_start": 96,
+                "window_end": 107,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "SNX24",
+                "window_start": 38,
+                "window_end": 49,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "SOCS2",
+                "window_start": 94,
+                "window_end": 105,
+                "total_event_support": 13,
+                "window_event_support": 6,
+                "window_fraction": 0.46153846153846156,
+                "patient_support": 11
+              },
+              {
+                "gene": "SPC25",
+                "window_start": 5,
+                "window_end": 16,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "SPINT2",
+                "window_start": 125,
+                "window_end": 136,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "SRD5A1",
+                "window_start": 205,
+                "window_end": 216,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "SRGN",
+                "window_start": 82,
+                "window_end": 93,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "SRP19",
+                "window_start": 120,
+                "window_end": 131,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "STK25",
+                "window_start": 272,
+                "window_end": 283,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "STX12",
+                "window_start": 204,
+                "window_end": 215,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "TAGLN",
+                "window_start": 24,
+                "window_end": 35,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "TCL1A",
+                "window_start": 43,
+                "window_end": 54,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "TGFA",
+                "window_start": 21,
+                "window_end": 32,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "THEM4",
+                "window_start": 17,
+                "window_end": 28,
+                "total_event_support": 16,
+                "window_event_support": 10,
+                "window_fraction": 0.625,
+                "patient_support": 16
+              },
+              {
+                "gene": "THY1",
+                "window_start": 39,
+                "window_end": 50,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "TIMP2",
+                "window_start": 94,
+                "window_end": 105,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "TK2",
+                "window_start": 201,
+                "window_end": 212,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "TMEM50A",
+                "window_start": 83,
+                "window_end": 94,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 4
+              },
+              {
+                "gene": "TNFRSF18",
+                "window_start": 125,
+                "window_end": 136,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "TNNC1",
+                "window_start": 147,
+                "window_end": 158,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 6
+              },
+              {
+                "gene": "TNNC2",
+                "window_start": 65,
+                "window_end": 76,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "TNNI1",
+                "window_start": 16,
+                "window_end": 27,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "TSHB",
+                "window_start": 33,
+                "window_end": 44,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "U2AF1",
+                "window_start": 24,
+                "window_end": 35,
+                "total_event_support": 15,
+                "window_event_support": 11,
+                "window_fraction": 0.7333333333333333,
+                "patient_support": 15
+              },
+              {
+                "gene": "UBE2E1",
+                "window_start": 42,
+                "window_end": 53,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "UBE2I",
+                "window_start": 83,
+                "window_end": 94,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "UBE2L6",
+                "window_start": 124,
+                "window_end": 135,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "UBE2N",
+                "window_start": 70,
+                "window_end": 81,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "UQCR10",
+                "window_start": 5,
+                "window_end": 16,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "USP18",
+                "window_start": 37,
+                "window_end": 48,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "VAMP4",
+                "window_start": 11,
+                "window_end": 22,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "VAMP5",
+                "window_start": 8,
+                "window_end": 19,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "VBP1",
+                "window_start": 63,
+                "window_end": 74,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 8
+              },
+              {
+                "gene": "VEGFA",
+                "window_start": 66,
+                "window_end": 77,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "XCL1",
+                "window_start": 71,
+                "window_end": 82,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "YWHAB",
+                "window_start": 41,
+                "window_end": 52,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "YWHAH",
+                "window_start": 40,
+                "window_end": 51,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "YWHAZ",
+                "window_start": 207,
+                "window_end": 218,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              }
+            ],
+            "window_profiles_sha256": "83dc9d0afef038772aaf8749c18f9154d63a843460022875b682301ac183c107",
+            "feature_names_sha256": "507efd2b675686700fa1909f53e4a7b015b00629e432b0064e9d1796e497393f",
+            "gene_columns_sha256": "fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff",
+            "fraction_denominator": "eligible_missense_events_in_selected_genes",
+            "fit_audit": {
+              "row_count": 3720,
+              "genes_with_any_eligible_event": 4204,
+              "candidate_gene_count": 3733,
+              "selected_gene_count": 250,
+              "total_eligible_event_support": 93462
+            },
+            "target_used_for_fit": false,
+            "validation_used_for_fit": false,
+            "test_distribution_used_for_fit": false
+          }
+        }
+      },
+      "base_features_dropped": [],
+      "device": "cuda",
+      "n_estimators": 2,
+      "validation_used_for_checkpoint": false,
+      "scope_name": "smoke_EXP-639"
+    }
+  },
+  {
+    "model": "EXP-639",
+    "stage": "final_refit_test_prediction",
+    "fit_rows": 6201,
+    "validation_rows": 2546,
+    "fit_sha256": "2118d1cf44fc9f84333930265463c310f3870ab718fbee46389fb8301f9343cc",
+    "validation_sha256": null,
+    "runtime_seconds": 3.513037383556366,
+    "feature_audit": {
+      "fit_scope": "explicit_fit_indices_only",
+      "feature_dimension": 35209,
+      "feature_names_sha256": "68a3491cde3afb3db71ebc8104969e450161c77263edd4cd2ec66e0f011eefc0",
+      "fold_feature_registry": {
+        "fixed_pathway_burden": {
+          "definition_version": "2.1.0",
+          "enabled": true,
+          "output_dimension": 20,
+          "feature_names_sha256": "215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06",
+          "fit_scope": "stateless",
+          "external_knowledge": [
+            {
+              "source": "PathwayMapper canonical pathway templates derived from Sanchez-Vega et al., Cell 2018",
+              "version": "pathway-mapper-7d29965",
+              "license": "AGPL-3.0",
+              "sha256": "fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f",
+              "uri": "https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json"
+            }
+          ]
+        },
+        "pathway_mutation_type_composition": {
+          "definition_version": "2.1.0",
+          "enabled": true,
+          "output_dimension": 50,
+          "feature_names_sha256": "df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d",
+          "fit_scope": "stateless",
+          "external_knowledge": [
+            {
+              "source": "PathwayMapper canonical pathway templates derived from Sanchez-Vega et al., Cell 2018",
+              "version": "pathway-mapper-7d29965",
+              "license": "AGPL-3.0",
+              "sha256": "fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f",
+              "uri": "https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json"
+            }
+          ]
+        },
+        "semantic_equivalence_filter": {
+          "definition_version": "1.0.0",
+          "enabled": true,
+          "output_dimension": 64,
+          "feature_names_sha256": "a0d0e69c2d7a090ea1d5a7ac7af6f86e99fa9a005275cc93d18157e116935d42",
+          "fit_scope": "fold_train",
+          "external_knowledge": null,
+          "dropped": {
+            "sample__pathway_cell_cycle__complex_gene_count": "TP53__complex",
+            "sample__pathway_hippo__complex_gene_count": "TAOK2__complex",
+            "sample__pathway_myc__complex_gene_count": "sample__missing_gene_count",
+            "sample__pathway_nrf2__complex_gene_count": "sample__missing_gene_count",
+            "sample__pathway_tgf_beta__complex_gene_count": "sample__missing_gene_count",
+            "sample__pathway_tp53__complex_gene_count": "TP53__complex"
+          }
+        },
+        "parser_v4_patient_semantic_vector": {
+          "definition_version": "1.0.0",
+          "enabled": true,
+          "output_dimension": 66242,
+          "feature_names_sha256": "6dc4d6b06401fa777a3225d544fcb390ad7e916ba8868002e2fdd0e6ee5dc2d7",
+          "fit_scope": "stateless",
+          "external_knowledge": null,
+          "included_directly_in_model": false
+        },
+        "parser_v4_class_profile_cosine": {
+          "definition_version": "1.0.0",
+          "enabled": true,
+          "output_dimension": 26,
+          "feature_names_sha256": "24aad664928896bfc7018310595d0d8b6ebf1f55128afd619f1af32feb2e1b21",
+          "fit_scope": "fold_train",
+          "external_knowledge": null,
+          "profile_audit": {
+            "definition_version": "1.0.0",
+            "method": "cosine",
+            "class_labels": [
+              "ACC",
+              "BLCA",
+              "BRCA",
+              "CESC",
+              "COAD",
+              "DLBC",
+              "GBMLGG",
+              "HNSC",
+              "KIPAN",
+              "KIRC",
+              "LAML",
+              "LGG",
+              "LIHC",
+              "LUAD",
+              "LUSC",
+              "OV",
+              "PAAD",
+              "PCPG",
+              "PRAD",
+              "SARC",
+              "SKCM",
+              "STES",
+              "TGCT",
+              "THCA",
+              "THYM",
+              "UCEC"
+            ],
+            "class_support": {
+              "ACC": 72,
+              "BLCA": 104,
+              "BRCA": 786,
+              "CESC": 155,
+              "COAD": 223,
+              "DLBC": 38,
+              "GBMLGG": 461,
+              "HNSC": 223,
+              "KIPAN": 515,
+              "KIRC": 334,
+              "LAML": 158,
+              "LGG": 229,
+              "LIHC": 158,
+              "LUAD": 184,
+              "LUSC": 178,
+              "OV": 253,
+              "PAAD": 120,
+              "PCPG": 147,
+              "PRAD": 266,
+              "SARC": 198,
+              "SKCM": 276,
+              "STES": 379,
+              "TGCT": 124,
+              "THCA": 324,
+              "THYM": 98,
+              "UCEC": 198
+            },
+            "input_dimension": 66242,
+            "output_dimension": 26,
+            "alpha": 1.0,
+            "include_class_prior": false,
+            "profile_sha256": "1b99d2cce651e0f4ff65afacc376a3a2c6bebeb61317fccd0a2ab28314471503",
+            "feature_names_sha256": "24aad664928896bfc7018310595d0d8b6ebf1f55128afd619f1af32feb2e1b21",
+            "train_transform": "leave_one_out_target_class",
+            "validation_test_transform": "full_outer_train_centroid"
+          }
+        },
+        "residue_hotspot12": {
+          "definition_version": "1.0.0",
+          "enabled": true,
+          "output_dimension": 4387,
+          "feature_names_sha256": "507efd2b675686700fa1909f53e4a7b015b00629e432b0064e9d1796e497393f",
+          "fit_scope": "fold_train",
+          "external_knowledge": null,
+          "fit_audit": {
+            "family": "residue_hotspot12",
+            "version": "1.0.0",
+            "fit_scope": "fold_train",
+            "parser_contract_key": "normalizer=4.0.0|router=4.0.0|identity=1.0.0",
+            "event_scope": "parser_v4_substitution_missense_resolved_positive_position",
+            "deduplication_unit": "patient_gene_residue_position",
+            "window_width": 12,
+            "min_event_support": 5,
+            "min_window_fraction": 0.4,
+            "candidate_gene_count": 4068,
+            "selected_gene_count": 217,
+            "selected_genes": [
+              "AKT1S1",
+              "APOC1",
+              "APOC2",
+              "APOE",
+              "ARF4",
+              "ARF6",
+              "ARHGDIA",
+              "ARPC5L",
+              "ARTN",
+              "BAX",
+              "BLCAP",
+              "BLVRB",
+              "BRAF",
+              "BRF2",
+              "C8G",
+              "CALM1",
+              "CBR3",
+              "CCL11",
+              "CCL13",
+              "CCL24",
+              "CCL25",
+              "CCL4",
+              "CCL5",
+              "CD69",
+              "CDA",
+              "CDKN2B",
+              "CEBPG",
+              "CENPA",
+              "CENPM",
+              "CKS2",
+              "CLDN14",
+              "CLDN3",
+              "CLDN7",
+              "CLNS1A",
+              "CLPS",
+              "CMPK1",
+              "COPZ2",
+              "COX5A",
+              "COX5B",
+              "COX6A1",
+              "COX6B1",
+              "COX6C",
+              "COX7A1",
+              "COX7B",
+              "COX8A",
+              "CRABP1",
+              "CREG1",
+              "CTNNB1",
+              "CXCL1",
+              "CXCL13",
+              "CXCL2",
+              "CXCL3",
+              "CXCL6",
+              "CYB5B",
+              "CYCS",
+              "DBI",
+              "DIABLO",
+              "DUSP1",
+              "DYNLL2",
+              "DYNLT3",
+              "EBP",
+              "EDN2",
+              "EEF1B2",
+              "EIF1",
+              "EIF1AX",
+              "EIF4E",
+              "EIF4E3",
+              "EIF4EBP1",
+              "EXOSC2",
+              "FABP1",
+              "FABP2",
+              "FCER1G",
+              "FGF16",
+              "FHL2",
+              "FKBP2",
+              "FSHB",
+              "GABARAPL1",
+              "GABARAPL2",
+              "GAL",
+              "GHRL",
+              "GLRX",
+              "GLRX2",
+              "GNG12",
+              "GNG2",
+              "GNGT2",
+              "GRPEL1",
+              "GSTM1",
+              "GYPE",
+              "HBQ1",
+              "HLA-DQA1",
+              "HMOX2",
+              "HRAS",
+              "IAPP",
+              "ID2",
+              "IDH1",
+              "IER3",
+              "IFI27",
+              "IL10",
+              "IL15",
+              "IL18BP",
+              "IL2",
+              "IMP3",
+              "INSIG1",
+              "LAMTOR5",
+              "LGALS1",
+              "LIF",
+              "LRIG1",
+              "LY6E",
+              "MADCAM1",
+              "MALL",
+              "MARCKS",
+              "MGP",
+              "MGST3",
+              "MLLT11",
+              "MPC2",
+              "MRPS11",
+              "MRPS12",
+              "MSRB1",
+              "MSRB2",
+              "MYL12A",
+              "MYL7",
+              "NBL1",
+              "NDUFA1",
+              "NDUFA4",
+              "NDUFA6",
+              "NDUFA7",
+              "NDUFB3",
+              "NDUFC2",
+              "NDUFS4",
+              "NME1",
+              "NMU",
+              "NOP16",
+              "NT5C",
+              "NUDT4",
+              "NUPR1",
+              "OSTC",
+              "PCP4",
+              "PDAP1",
+              "PDZK1IP1",
+              "PF4",
+              "PHF5A",
+              "PHLDA2",
+              "PIN1",
+              "PLAC8",
+              "PNP",
+              "POLR2D",
+              "POLR2I",
+              "POLR2J",
+              "POLR3K",
+              "PPP3R1",
+              "PRAF2",
+              "PRDX6",
+              "PROK2",
+              "PSMC3IP",
+              "PTRH2",
+              "RAB22A",
+              "RABIF",
+              "RAC1",
+              "RHOF",
+              "RNF4",
+              "RPL14",
+              "RPL22",
+              "RPL39",
+              "RPL39L",
+              "RPS10",
+              "RPS14",
+              "RPS19",
+              "RPS2",
+              "RPS6",
+              "RPS9",
+              "S100A1",
+              "S100A10",
+              "S100A11",
+              "S100A12",
+              "S100A13",
+              "SCGB1A1",
+              "SEC11A",
+              "SH3BGRL2",
+              "SNCG",
+              "SNRPD2",
+              "SNRPD3",
+              "SOD1",
+              "SPC24",
+              "SRM",
+              "SRXN1",
+              "SSR3",
+              "STOM",
+              "SUPT4H1",
+              "TAF9",
+              "TFF1",
+              "TFF2",
+              "TGFA",
+              "THEM4",
+              "THY1",
+              "TIMM8B",
+              "TIMM9",
+              "TIMP1",
+              "TMBIM6",
+              "TMEM9B",
+              "TNFRSF18",
+              "TNNC1",
+              "TNP1",
+              "TP53INP2",
+              "TPRKB",
+              "TSHB",
+              "TXN",
+              "TXNL4A",
+              "U2AF1",
+              "UBE2C",
+              "UBE2I",
+              "UBE2L6",
+              "UFM1",
+              "UQCR10",
+              "USP18",
+              "VAMP5",
+              "YWHAB",
+              "YWHAH"
+            ],
+            "window_profiles": [
+              {
+                "gene": "AKT1S1",
+                "window_start": 163,
+                "window_end": 174,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "APOC1",
+                "window_start": 49,
+                "window_end": 60,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "APOC2",
+                "window_start": 34,
+                "window_end": 45,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "APOE",
+                "window_start": 130,
+                "window_end": 141,
+                "total_event_support": 15,
+                "window_event_support": 7,
+                "window_fraction": 0.4666666666666667,
+                "patient_support": 14
+              },
+              {
+                "gene": "ARF4",
+                "window_start": 149,
+                "window_end": 160,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "ARF6",
+                "window_start": 139,
+                "window_end": 150,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "ARHGDIA",
+                "window_start": 132,
+                "window_end": 143,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "ARPC5L",
+                "window_start": 126,
+                "window_end": 137,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "ARTN",
+                "window_start": 8,
+                "window_end": 19,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "BAX",
+                "window_start": 82,
+                "window_end": 93,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "BLCAP",
+                "window_start": 78,
+                "window_end": 89,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "BLVRB",
+                "window_start": 127,
+                "window_end": 138,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "BRAF",
+                "window_start": 594,
+                "window_end": 605,
+                "total_event_support": 428,
+                "window_event_support": 359,
+                "window_fraction": 0.8387850467289719,
+                "patient_support": 417
+              },
+              {
+                "gene": "BRF2",
+                "window_start": 71,
+                "window_end": 82,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "C8G",
+                "window_start": 114,
+                "window_end": 125,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 8
+              },
+              {
+                "gene": "CALM1",
+                "window_start": 107,
+                "window_end": 118,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "CBR3",
+                "window_start": 124,
+                "window_end": 135,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CCL11",
+                "window_start": 71,
+                "window_end": 82,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "CCL13",
+                "window_start": 63,
+                "window_end": 74,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 8
+              },
+              {
+                "gene": "CCL24",
+                "window_start": 70,
+                "window_end": 81,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "CCL25",
+                "window_start": 130,
+                "window_end": 141,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "CCL4",
+                "window_start": 34,
+                "window_end": 45,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CCL5",
+                "window_start": 16,
+                "window_end": 27,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "CD69",
+                "window_start": 87,
+                "window_end": 98,
+                "total_event_support": 12,
+                "window_event_support": 5,
+                "window_fraction": 0.4166666666666667,
+                "patient_support": 12
+              },
+              {
+                "gene": "CDA",
+                "window_start": 75,
+                "window_end": 86,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "CDKN2B",
+                "window_start": 112,
+                "window_end": 123,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 6
+              },
+              {
+                "gene": "CEBPG",
+                "window_start": 87,
+                "window_end": 98,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CENPA",
+                "window_start": 129,
+                "window_end": 140,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "CENPM",
+                "window_start": 136,
+                "window_end": 147,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CKS2",
+                "window_start": 57,
+                "window_end": 68,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "CLDN14",
+                "window_start": 142,
+                "window_end": 153,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 8
+              },
+              {
+                "gene": "CLDN3",
+                "window_start": 47,
+                "window_end": 58,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 5
+              },
+              {
+                "gene": "CLDN7",
+                "window_start": 172,
+                "window_end": 183,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 8
+              },
+              {
+                "gene": "CLNS1A",
+                "window_start": 64,
+                "window_end": 75,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "CLPS",
+                "window_start": 11,
+                "window_end": 22,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 8
+              },
+              {
+                "gene": "CMPK1",
+                "window_start": 121,
+                "window_end": 132,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "COPZ2",
+                "window_start": 85,
+                "window_end": 96,
+                "total_event_support": 8,
+                "window_event_support": 5,
+                "window_fraction": 0.625,
+                "patient_support": 8
+              },
+              {
+                "gene": "COX5A",
+                "window_start": 71,
+                "window_end": 82,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "COX5B",
+                "window_start": 112,
+                "window_end": 123,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "COX6A1",
+                "window_start": 8,
+                "window_end": 19,
+                "total_event_support": 6,
+                "window_event_support": 4,
+                "window_fraction": 0.6666666666666666,
+                "patient_support": 6
+              },
+              {
+                "gene": "COX6B1",
+                "window_start": 2,
+                "window_end": 13,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "COX6C",
+                "window_start": 7,
+                "window_end": 18,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "COX7A1",
+                "window_start": 48,
+                "window_end": 59,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "COX7B",
+                "window_start": 12,
+                "window_end": 23,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "COX8A",
+                "window_start": 44,
+                "window_end": 55,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "CRABP1",
+                "window_start": 54,
+                "window_end": 65,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "CREG1",
+                "window_start": 208,
+                "window_end": 219,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CTNNB1",
+                "window_start": 31,
+                "window_end": 42,
+                "total_event_support": 190,
+                "window_event_support": 102,
+                "window_fraction": 0.5368421052631579,
+                "patient_support": 176
+              },
+              {
+                "gene": "CXCL1",
+                "window_start": 69,
+                "window_end": 80,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "CXCL13",
+                "window_start": 49,
+                "window_end": 60,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 8
+              },
+              {
+                "gene": "CXCL2",
+                "window_start": 48,
+                "window_end": 59,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "CXCL3",
+                "window_start": 98,
+                "window_end": 109,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "CXCL6",
+                "window_start": 94,
+                "window_end": 105,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 8
+              },
+              {
+                "gene": "CYB5B",
+                "window_start": 46,
+                "window_end": 57,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 7
+              },
+              {
+                "gene": "CYCS",
+                "window_start": 36,
+                "window_end": 47,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "DBI",
+                "window_start": 10,
+                "window_end": 21,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "DIABLO",
+                "window_start": 182,
+                "window_end": 193,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "DUSP1",
+                "window_start": 343,
+                "window_end": 354,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "DYNLL2",
+                "window_start": 60,
+                "window_end": 71,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "DYNLT3",
+                "window_start": 77,
+                "window_end": 88,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "EBP",
+                "window_start": 70,
+                "window_end": 81,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "EDN2",
+                "window_start": 84,
+                "window_end": 95,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "EEF1B2",
+                "window_start": 43,
+                "window_end": 54,
+                "total_event_support": 22,
+                "window_event_support": 12,
+                "window_fraction": 0.5454545454545454,
+                "patient_support": 22
+              },
+              {
+                "gene": "EIF1",
+                "window_start": 48,
+                "window_end": 59,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "EIF1AX",
+                "window_start": 4,
+                "window_end": 15,
+                "total_event_support": 21,
+                "window_event_support": 13,
+                "window_fraction": 0.6190476190476191,
+                "patient_support": 21
+              },
+              {
+                "gene": "EIF4E",
+                "window_start": 13,
+                "window_end": 24,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "EIF4E3",
+                "window_start": 182,
+                "window_end": 193,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "EIF4EBP1",
+                "window_start": 86,
+                "window_end": 97,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "EXOSC2",
+                "window_start": 10,
+                "window_end": 21,
+                "total_event_support": 11,
+                "window_event_support": 5,
+                "window_fraction": 0.45454545454545453,
+                "patient_support": 11
+              },
+              {
+                "gene": "FABP1",
+                "window_start": 60,
+                "window_end": 71,
+                "total_event_support": 12,
+                "window_event_support": 6,
+                "window_fraction": 0.5,
+                "patient_support": 12
+              },
+              {
+                "gene": "FABP2",
+                "window_start": 102,
+                "window_end": 113,
+                "total_event_support": 10,
+                "window_event_support": 5,
+                "window_fraction": 0.5,
+                "patient_support": 10
+              },
+              {
+                "gene": "FCER1G",
+                "window_start": 36,
+                "window_end": 47,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "FGF16",
+                "window_start": 11,
+                "window_end": 22,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "FHL2",
+                "window_start": 195,
+                "window_end": 206,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "FKBP2",
+                "window_start": 36,
+                "window_end": 47,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "FSHB",
+                "window_start": 82,
+                "window_end": 93,
+                "total_event_support": 12,
+                "window_event_support": 5,
+                "window_fraction": 0.4166666666666667,
+                "patient_support": 12
+              },
+              {
+                "gene": "GABARAPL1",
+                "window_start": 105,
+                "window_end": 116,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 6
+              },
+              {
+                "gene": "GABARAPL2",
+                "window_start": 111,
+                "window_end": 122,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "GAL",
+                "window_start": 40,
+                "window_end": 51,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "GHRL",
+                "window_start": 51,
+                "window_end": 62,
+                "total_event_support": 11,
+                "window_event_support": 5,
+                "window_fraction": 0.45454545454545453,
+                "patient_support": 11
+              },
+              {
+                "gene": "GLRX",
+                "window_start": 72,
+                "window_end": 83,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "GLRX2",
+                "window_start": 56,
+                "window_end": 67,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "GNG12",
+                "window_start": 2,
+                "window_end": 13,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "GNG2",
+                "window_start": 55,
+                "window_end": 66,
+                "total_event_support": 9,
+                "window_event_support": 7,
+                "window_fraction": 0.7777777777777778,
+                "patient_support": 9
+              },
+              {
+                "gene": "GNGT2",
+                "window_start": 46,
+                "window_end": 57,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "GRPEL1",
+                "window_start": 204,
+                "window_end": 215,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 8
+              },
+              {
+                "gene": "GSTM1",
+                "window_start": 30,
+                "window_end": 41,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "GYPE",
+                "window_start": 3,
+                "window_end": 14,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "HBQ1",
+                "window_start": 111,
+                "window_end": 122,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "HLA-DQA1",
+                "window_start": 51,
+                "window_end": 62,
+                "total_event_support": 14,
+                "window_event_support": 6,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 13
+              },
+              {
+                "gene": "HMOX2",
+                "window_start": 17,
+                "window_end": 28,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 8
+              },
+              {
+                "gene": "HRAS",
+                "window_start": 60,
+                "window_end": 71,
+                "total_event_support": 70,
+                "window_event_support": 37,
+                "window_fraction": 0.5285714285714286,
+                "patient_support": 69
+              },
+              {
+                "gene": "IAPP",
+                "window_start": 10,
+                "window_end": 21,
+                "total_event_support": 9,
+                "window_event_support": 5,
+                "window_fraction": 0.5555555555555556,
+                "patient_support": 9
+              },
+              {
+                "gene": "ID2",
+                "window_start": 81,
+                "window_end": 92,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "IDH1",
+                "window_start": 132,
+                "window_end": 143,
+                "total_event_support": 435,
+                "window_event_support": 411,
+                "window_fraction": 0.9448275862068966,
+                "patient_support": 434
+              },
+              {
+                "gene": "IER3",
+                "window_start": 118,
+                "window_end": 129,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "IFI27",
+                "window_start": 56,
+                "window_end": 67,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "IL10",
+                "window_start": 125,
+                "window_end": 136,
+                "total_event_support": 12,
+                "window_event_support": 5,
+                "window_fraction": 0.4166666666666667,
+                "patient_support": 11
+              },
+              {
+                "gene": "IL15",
+                "window_start": 107,
+                "window_end": 118,
+                "total_event_support": 15,
+                "window_event_support": 6,
+                "window_fraction": 0.4,
+                "patient_support": 15
+              },
+              {
+                "gene": "IL18BP",
+                "window_start": 22,
+                "window_end": 33,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "IL2",
+                "window_start": 82,
+                "window_end": 93,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "IMP3",
+                "window_start": 174,
+                "window_end": 185,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "INSIG1",
+                "window_start": 245,
+                "window_end": 256,
+                "total_event_support": 15,
+                "window_event_support": 6,
+                "window_fraction": 0.4,
+                "patient_support": 15
+              },
+              {
+                "gene": "LAMTOR5",
+                "window_start": 18,
+                "window_end": 29,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "LGALS1",
+                "window_start": 99,
+                "window_end": 110,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "LIF",
+                "window_start": 173,
+                "window_end": 184,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "LRIG1",
+                "window_start": 24,
+                "window_end": 35,
+                "total_event_support": 110,
+                "window_event_support": 44,
+                "window_fraction": 0.4,
+                "patient_support": 84
+              },
+              {
+                "gene": "LY6E",
+                "window_start": 114,
+                "window_end": 125,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 7
+              },
+              {
+                "gene": "MADCAM1",
+                "window_start": 254,
+                "window_end": 265,
+                "total_event_support": 23,
+                "window_event_support": 10,
+                "window_fraction": 0.43478260869565216,
+                "patient_support": 21
+              },
+              {
+                "gene": "MALL",
+                "window_start": 46,
+                "window_end": 57,
+                "total_event_support": 17,
+                "window_event_support": 8,
+                "window_fraction": 0.47058823529411764,
+                "patient_support": 17
+              },
+              {
+                "gene": "MARCKS",
+                "window_start": 18,
+                "window_end": 29,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "MGP",
+                "window_start": 81,
+                "window_end": 92,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "MGST3",
+                "window_start": 119,
+                "window_end": 130,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "MLLT11",
+                "window_start": 78,
+                "window_end": 89,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 7
+              },
+              {
+                "gene": "MPC2",
+                "window_start": 59,
+                "window_end": 70,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "MRPS11",
+                "window_start": 118,
+                "window_end": 129,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "MRPS12",
+                "window_start": 84,
+                "window_end": 95,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "MSRB1",
+                "window_start": 78,
+                "window_end": 89,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "MSRB2",
+                "window_start": 56,
+                "window_end": 67,
+                "total_event_support": 11,
+                "window_event_support": 5,
+                "window_fraction": 0.45454545454545453,
+                "patient_support": 11
+              },
+              {
+                "gene": "MYL12A",
+                "window_start": 64,
+                "window_end": 75,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 5
+              },
+              {
+                "gene": "MYL7",
+                "window_start": 82,
+                "window_end": 93,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "NBL1",
+                "window_start": 29,
+                "window_end": 40,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "NDUFA1",
+                "window_start": 44,
+                "window_end": 55,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "NDUFA4",
+                "window_start": 33,
+                "window_end": 44,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "NDUFA6",
+                "window_start": 120,
+                "window_end": 131,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 8
+              },
+              {
+                "gene": "NDUFA7",
+                "window_start": 6,
+                "window_end": 17,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "NDUFB3",
+                "window_start": 62,
+                "window_end": 73,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "NDUFC2",
+                "window_start": 59,
+                "window_end": 70,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "NDUFS4",
+                "window_start": 159,
+                "window_end": 170,
+                "total_event_support": 12,
+                "window_event_support": 5,
+                "window_fraction": 0.4166666666666667,
+                "patient_support": 12
+              },
+              {
+                "gene": "NME1",
+                "window_start": 123,
+                "window_end": 134,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "NMU",
+                "window_start": 18,
+                "window_end": 29,
+                "total_event_support": 20,
+                "window_event_support": 10,
+                "window_fraction": 0.5,
+                "patient_support": 19
+              },
+              {
+                "gene": "NOP16",
+                "window_start": 135,
+                "window_end": 146,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "NT5C",
+                "window_start": 68,
+                "window_end": 79,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "NUDT4",
+                "window_start": 153,
+                "window_end": 164,
+                "total_event_support": 10,
+                "window_event_support": 5,
+                "window_fraction": 0.5,
+                "patient_support": 10
+              },
+              {
+                "gene": "NUPR1",
+                "window_start": 52,
+                "window_end": 63,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "OSTC",
+                "window_start": 4,
+                "window_end": 15,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "PCP4",
+                "window_start": 9,
+                "window_end": 20,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "PDAP1",
+                "window_start": 147,
+                "window_end": 158,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 7
+              },
+              {
+                "gene": "PDZK1IP1",
+                "window_start": 77,
+                "window_end": 88,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "PF4",
+                "window_start": 48,
+                "window_end": 59,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "PHF5A",
+                "window_start": 38,
+                "window_end": 49,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "PHLDA2",
+                "window_start": 28,
+                "window_end": 39,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "PIN1",
+                "window_start": 143,
+                "window_end": 154,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "PLAC8",
+                "window_start": 48,
+                "window_end": 59,
+                "total_event_support": 12,
+                "window_event_support": 5,
+                "window_fraction": 0.4166666666666667,
+                "patient_support": 12
+              },
+              {
+                "gene": "PNP",
+                "window_start": 57,
+                "window_end": 68,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "POLR2D",
+                "window_start": 76,
+                "window_end": 87,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "POLR2I",
+                "window_start": 8,
+                "window_end": 19,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "POLR2J",
+                "window_start": 28,
+                "window_end": 39,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "POLR3K",
+                "window_start": 85,
+                "window_end": 96,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "PPP3R1",
+                "window_start": 98,
+                "window_end": 109,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "PRAF2",
+                "window_start": 11,
+                "window_end": 22,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "PRDX6",
+                "window_start": 102,
+                "window_end": 113,
+                "total_event_support": 12,
+                "window_event_support": 6,
+                "window_fraction": 0.5,
+                "patient_support": 12
+              },
+              {
+                "gene": "PROK2",
+                "window_start": 111,
+                "window_end": 122,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "PSMC3IP",
+                "window_start": 211,
+                "window_end": 222,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "PTRH2",
+                "window_start": 62,
+                "window_end": 73,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "RAB22A",
+                "window_start": 31,
+                "window_end": 42,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "RABIF",
+                "window_start": 113,
+                "window_end": 124,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "RAC1",
+                "window_start": 29,
+                "window_end": 40,
+                "total_event_support": 34,
+                "window_event_support": 19,
+                "window_fraction": 0.5588235294117647,
+                "patient_support": 33
+              },
+              {
+                "gene": "RHOF",
+                "window_start": 172,
+                "window_end": 183,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "RNF4",
+                "window_start": 179,
+                "window_end": 190,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "RPL14",
+                "window_start": 179,
+                "window_end": 190,
+                "total_event_support": 6,
+                "window_event_support": 4,
+                "window_fraction": 0.6666666666666666,
+                "patient_support": 6
+              },
+              {
+                "gene": "RPL22",
+                "window_start": 86,
+                "window_end": 97,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "RPL39",
+                "window_start": 16,
+                "window_end": 27,
+                "total_event_support": 7,
+                "window_event_support": 5,
+                "window_fraction": 0.7142857142857143,
+                "patient_support": 7
+              },
+              {
+                "gene": "RPL39L",
+                "window_start": 21,
+                "window_end": 32,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "RPS10",
+                "window_start": 115,
+                "window_end": 126,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "RPS14",
+                "window_start": 9,
+                "window_end": 20,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "RPS19",
+                "window_start": 18,
+                "window_end": 29,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "RPS2",
+                "window_start": 75,
+                "window_end": 86,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "RPS6",
+                "window_start": 222,
+                "window_end": 233,
+                "total_event_support": 11,
+                "window_event_support": 5,
+                "window_fraction": 0.45454545454545453,
+                "patient_support": 11
+              },
+              {
+                "gene": "RPS9",
+                "window_start": 79,
+                "window_end": 90,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "S100A1",
+                "window_start": 68,
+                "window_end": 79,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "S100A10",
+                "window_start": 95,
+                "window_end": 106,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "S100A11",
+                "window_start": 54,
+                "window_end": 65,
+                "total_event_support": 9,
+                "window_event_support": 5,
+                "window_fraction": 0.5555555555555556,
+                "patient_support": 9
+              },
+              {
+                "gene": "S100A12",
+                "window_start": 81,
+                "window_end": 92,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "S100A13",
+                "window_start": 29,
+                "window_end": 40,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "SCGB1A1",
+                "window_start": 78,
+                "window_end": 89,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "SEC11A",
+                "window_start": 87,
+                "window_end": 98,
+                "total_event_support": 8,
+                "window_event_support": 4,
+                "window_fraction": 0.5,
+                "patient_support": 8
+              },
+              {
+                "gene": "SH3BGRL2",
+                "window_start": 52,
+                "window_end": 63,
+                "total_event_support": 8,
+                "window_event_support": 5,
+                "window_fraction": 0.625,
+                "patient_support": 8
+              },
+              {
+                "gene": "SNCG",
+                "window_start": 96,
+                "window_end": 107,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "SNRPD2",
+                "window_start": 73,
+                "window_end": 84,
+                "total_event_support": 12,
+                "window_event_support": 5,
+                "window_fraction": 0.4166666666666667,
+                "patient_support": 12
+              },
+              {
+                "gene": "SNRPD3",
+                "window_start": 94,
+                "window_end": 105,
+                "total_event_support": 11,
+                "window_event_support": 5,
+                "window_fraction": 0.45454545454545453,
+                "patient_support": 11
+              },
+              {
+                "gene": "SOD1",
+                "window_start": 42,
+                "window_end": 53,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "SPC24",
+                "window_start": 99,
+                "window_end": 110,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "SRM",
+                "window_start": 129,
+                "window_end": 140,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "SRXN1",
+                "window_start": 103,
+                "window_end": 114,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "SSR3",
+                "window_start": 102,
+                "window_end": 113,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "STOM",
+                "window_start": 158,
+                "window_end": 169,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "SUPT4H1",
+                "window_start": 62,
+                "window_end": 73,
+                "total_event_support": 6,
+                "window_event_support": 3,
+                "window_fraction": 0.5,
+                "patient_support": 6
+              },
+              {
+                "gene": "TAF9",
+                "window_start": 80,
+                "window_end": 91,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "TFF1",
+                "window_start": 16,
+                "window_end": 27,
+                "total_event_support": 6,
+                "window_event_support": 4,
+                "window_fraction": 0.6666666666666666,
+                "patient_support": 6
+              },
+              {
+                "gene": "TFF2",
+                "window_start": 79,
+                "window_end": 90,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "TGFA",
+                "window_start": 19,
+                "window_end": 30,
+                "total_event_support": 10,
+                "window_event_support": 5,
+                "window_fraction": 0.5,
+                "patient_support": 10
+              },
+              {
+                "gene": "THEM4",
+                "window_start": 17,
+                "window_end": 28,
+                "total_event_support": 25,
+                "window_event_support": 13,
+                "window_fraction": 0.52,
+                "patient_support": 24
+              },
+              {
+                "gene": "THY1",
+                "window_start": 39,
+                "window_end": 50,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "TIMM8B",
+                "window_start": 62,
+                "window_end": 73,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "TIMM9",
+                "window_start": 6,
+                "window_end": 17,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "TIMP1",
+                "window_start": 88,
+                "window_end": 99,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "TMBIM6",
+                "window_start": 64,
+                "window_end": 75,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "TMEM9B",
+                "window_start": 188,
+                "window_end": 199,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "TNFRSF18",
+                "window_start": 123,
+                "window_end": 134,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "TNNC1",
+                "window_start": 140,
+                "window_end": 151,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 9
+              },
+              {
+                "gene": "TNP1",
+                "window_start": 43,
+                "window_end": 54,
+                "total_event_support": 10,
+                "window_event_support": 7,
+                "window_fraction": 0.7,
+                "patient_support": 10
+              },
+              {
+                "gene": "TP53INP2",
+                "window_start": 61,
+                "window_end": 72,
+                "total_event_support": 7,
+                "window_event_support": 3,
+                "window_fraction": 0.42857142857142855,
+                "patient_support": 7
+              },
+              {
+                "gene": "TPRKB",
+                "window_start": 130,
+                "window_end": 141,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "TSHB",
+                "window_start": 32,
+                "window_end": 43,
+                "total_event_support": 13,
+                "window_event_support": 6,
+                "window_fraction": 0.46153846153846156,
+                "patient_support": 13
+              },
+              {
+                "gene": "TXN",
+                "window_start": 82,
+                "window_end": 93,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "TXNL4A",
+                "window_start": 36,
+                "window_end": 47,
+                "total_event_support": 7,
+                "window_event_support": 4,
+                "window_fraction": 0.5714285714285714,
+                "patient_support": 7
+              },
+              {
+                "gene": "U2AF1",
+                "window_start": 24,
+                "window_end": 35,
+                "total_event_support": 25,
+                "window_event_support": 18,
+                "window_fraction": 0.72,
+                "patient_support": 25
+              },
+              {
+                "gene": "UBE2C",
+                "window_start": 125,
+                "window_end": 136,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "UBE2I",
+                "window_start": 83,
+                "window_end": 94,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "UBE2L6",
+                "window_start": 124,
+                "window_end": 135,
+                "total_event_support": 10,
+                "window_event_support": 4,
+                "window_fraction": 0.4,
+                "patient_support": 10
+              },
+              {
+                "gene": "UFM1",
+                "window_start": 2,
+                "window_end": 13,
+                "total_event_support": 5,
+                "window_event_support": 3,
+                "window_fraction": 0.6,
+                "patient_support": 5
+              },
+              {
+                "gene": "UQCR10",
+                "window_start": 5,
+                "window_end": 16,
+                "total_event_support": 5,
+                "window_event_support": 2,
+                "window_fraction": 0.4,
+                "patient_support": 5
+              },
+              {
+                "gene": "USP18",
+                "window_start": 37,
+                "window_end": 48,
+                "total_event_support": 15,
+                "window_event_support": 6,
+                "window_fraction": 0.4,
+                "patient_support": 15
+              },
+              {
+                "gene": "VAMP5",
+                "window_start": 8,
+                "window_end": 19,
+                "total_event_support": 13,
+                "window_event_support": 9,
+                "window_fraction": 0.6923076923076923,
+                "patient_support": 13
+              },
+              {
+                "gene": "YWHAB",
+                "window_start": 41,
+                "window_end": 52,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              },
+              {
+                "gene": "YWHAH",
+                "window_start": 71,
+                "window_end": 82,
+                "total_event_support": 9,
+                "window_event_support": 4,
+                "window_fraction": 0.4444444444444444,
+                "patient_support": 9
+              }
+            ],
+            "window_profiles_sha256": "481128ebaa34dbe8e241022ddfc895ade03d04ccf8fc58729916c4cb1374f14c",
+            "feature_names_sha256": "507efd2b675686700fa1909f53e4a7b015b00629e432b0064e9d1796e497393f",
+            "gene_columns_sha256": "fa63b715c465a557b42670e8563ac4dee1bd6d8378cf8c500dfcbda72bc436ff",
+            "fraction_denominator": "eligible_missense_events_in_selected_genes",
+            "fit_audit": {
+              "row_count": 6201,
+              "genes_with_any_eligible_event": 4222,
+              "candidate_gene_count": 4068,
+              "selected_gene_count": 217,
+              "total_eligible_event_support": 161010
+            },
+            "target_used_for_fit": false,
+            "validation_used_for_fit": false,
+            "test_distribution_used_for_fit": false
+          }
+        }
+      },
+      "base_features_dropped": [],
+      "device": "cuda",
+      "n_estimators": 2,
+      "validation_used_for_checkpoint": false,
+      "scope_name": "smoke_final_refit_EXP-639"
+    }
+  },
+  {
+    "model": "EXP-545",
+    "stage": "inner_validation_prediction",
+    "fit_rows": 3720,
+    "validation_rows": 1240,
+    "fit_sha256": "624d40cb832a578963c5482735ff0b9d914d10009ef3f7617332025a383da4b5",
+    "validation_sha256": "201c265d16f2a979199660fdf86229537e1a7f081a32e7ca3060bc45320474c5",
+    "macro_f1": 0.4331351489768806,
+    "runtime_seconds": 1.403636910021305,
+    "feature_audit": {
+      "fit_scope": "explicit_fit_indices_only",
+      "detail_dimension": 71669,
+      "global_dimension": 440,
+      "feature_sha256": "5ca8143a407933c4f7ba5c18670ce6e6f5e6210fabb98ee01c4c10cf9413b4c7",
+      "adapter_sha256": "d3bd69ad88cefc7ad3e892c5990df879e1880cceafd809a62aedc23b949d9ea3",
+      "idf_sha256": "1729297bd8d2a4efd3b41dbea7c431efc7ff0150466fc24ac85143d74960f458",
+      "prediction_oov": {
+        "patient_count": 1240,
+        "detail_occurrences": 238515,
+        "detail_oov_occurrences": 49814,
+        "detail_oov_rate": 0.20885059639854936,
+        "detail_oov_recovered_occurrences": 49802,
+        "detail_oov_recovery_rate": 0.9997591038663829,
+        "unrecovered_detail_occurrences": 12,
+        "patients_with_detail_oov": 1192,
+        "patients_with_unrecovered_detail": 10,
+        "global_occurrences": 297534,
+        "global_oov_occurrences": 12,
+        "global_oov_rate": 4.033152513662304e-05
+      }
+    }
+  },
+  {
+    "model": "EXP-545",
+    "stage": "final_refit_test_prediction",
+    "fit_rows": 6201,
+    "validation_rows": 2546,
+    "fit_sha256": "2118d1cf44fc9f84333930265463c310f3870ab718fbee46389fb8301f9343cc",
+    "validation_sha256": null,
+    "runtime_seconds": 2.716398537158966,
+    "feature_audit": {
+      "fit_scope": "explicit_fit_indices_only",
+      "detail_dimension": 100451,
+      "global_dimension": 459,
+      "feature_sha256": "a5edc6fe4165d28e44daaa84678548a266beead43d362320b3ce6d175e82ec13",
+      "adapter_sha256": "88639362fdf96d870f461fc075e65c0d47c03d1127b6a7ba161ab2f7014a239a",
+      "idf_sha256": "64104538a91f851433976992cdf8880b51dcb6b687b1a727a82406b0e99b40db",
+      "prediction_oov": {
+        "patient_count": 2546,
+        "detail_occurrences": 1447794,
+        "detail_oov_occurrences": 383892,
+        "detail_oov_rate": 0.2651565070721387,
+        "detail_oov_recovered_occurrences": 288141,
+        "detail_oov_recovery_rate": 0.7505782876433997,
+        "unrecovered_detail_occurrences": 95751,
+        "patients_with_detail_oov": 2461,
+        "patients_with_unrecovered_detail": 1022,
+        "global_occurrences": 1785306,
+        "global_oov_occurrences": 98399,
+        "global_oov_rate": 0.055116041731781557
+      }
+    }
+  },
+  {
+    "model": "EXP-127",
+    "stage": "inner_validation_prediction",
+    "fit_rows": 3720,
+    "validation_rows": 1240,
+    "fit_sha256": "624d40cb832a578963c5482735ff0b9d914d10009ef3f7617332025a383da4b5",
+    "validation_sha256": "201c265d16f2a979199660fdf86229537e1a7f081a32e7ca3060bc45320474c5",
+    "macro_f1": 0.10751590882125385,
+    "runtime_seconds": 6.170747920870781,
+    "feature_audit": {
+      "fit_scope": "explicit_fit_indices_only",
+      "feature_dimension": 35119,
+      "feature_names_sha256": "8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf",
+      "task_type": "GPU",
+      "iterations": 2,
+      "validation_used_for_checkpoint": false
+    }
+  },
+  {
+    "model": "EXP-127",
+    "stage": "final_refit_test_prediction",
+    "fit_rows": 6201,
+    "validation_rows": 2546,
+    "fit_sha256": "2118d1cf44fc9f84333930265463c310f3870ab718fbee46389fb8301f9343cc",
+    "validation_sha256": null,
+    "runtime_seconds": 1.0565128810703754,
+    "feature_audit": {
+      "fit_scope": "explicit_fit_indices_only",
+      "feature_dimension": 35119,
+      "feature_names_sha256": "8e2a261e07fe1015866e3f74f6eb6d8005504e2835d018d834686aad1d0a0baf",
+      "task_type": "GPU",
+      "iterations": 2,
+      "validation_used_for_checkpoint": false
+    }
+  },
+  {
+    "model": "EXP-334",
+    "stage": "inner_validation_prediction",
+    "fit_rows": 3720,
+    "validation_rows": 1240,
+    "fit_sha256": "624d40cb832a578963c5482735ff0b9d914d10009ef3f7617332025a383da4b5",
+    "validation_sha256": "201c265d16f2a979199660fdf86229537e1a7f081a32e7ca3060bc45320474c5",
+    "macro_f1": 0.3119828662127606,
+    "runtime_seconds": 1.358285341411829,
+    "feature_audit": {
+      "fit_scope": "explicit_fit_indices_only",
+      "feature_dimension": 35180,
+      "feature_names_sha256": "b7a8253c7be3bf80ddae63d8b076c78e215c720d613d97c65c411a365cf837c3",
+      "fold_feature_registry": {
+        "fixed_pathway_burden": {
+          "definition_version": "1.0.0",
+          "enabled": true,
+          "output_dimension": 20,
+          "feature_names_sha256": "215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06",
+          "fit_scope": "stateless",
+          "external_knowledge": [
+            {
+              "source": "PathwayMapper canonical pathway templates derived from Sanchez-Vega et al., Cell 2018",
+              "version": "pathway-mapper-7d29965",
+              "license": "AGPL-3.0",
+              "sha256": "fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f",
+              "uri": "https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json"
+            }
+          ]
+        },
+        "pathway_mutation_type_composition": {
+          "definition_version": "1.0.0",
+          "enabled": true,
+          "output_dimension": 50,
+          "feature_names_sha256": "df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d",
+          "fit_scope": "stateless",
+          "external_knowledge": [
+            {
+              "source": "PathwayMapper canonical pathway templates derived from Sanchez-Vega et al., Cell 2018",
+              "version": "pathway-mapper-7d29965",
+              "license": "AGPL-3.0",
+              "sha256": "fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f",
+              "uri": "https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json"
+            }
+          ]
+        },
+        "semantic_equivalence_filter": {
+          "definition_version": "1.0.0",
+          "enabled": true,
+          "output_dimension": 61,
+          "feature_names_sha256": "82cb0c77c633d7ba1aef831707662217bd3c49ab34c5f74fb12e7364afa8795f",
+          "fit_scope": "fold_train",
+          "external_knowledge": null,
+          "dropped": {
+            "sample__pathway_cell_cycle__complex_gene_count": "ADAMTS5__complex",
+            "sample__pathway_hippo__complex_gene_count": "LCK__nonsense",
+            "sample__pathway_myc__complex_gene_count": "sample__missing_gene_count",
+            "sample__pathway_notch__complex_gene_count": "CREBBP__complex",
+            "sample__pathway_nrf2__complex_gene_count": "sample__missing_gene_count",
+            "sample__pathway_pi3k__complex_gene_count": "ANPEP__nonsense",
+            "sample__pathway_rtk_ras__complex_gene_count": "GNG2__nonsense",
+            "sample__pathway_tgf_beta__complex_gene_count": "sample__missing_gene_count",
+            "sample__pathway_tp53__complex_gene_count": "ADAMTS5__complex"
+          }
+        }
+      },
+      "base_features_dropped": [],
+      "device": "cuda",
+      "n_estimators": 2,
+      "validation_used_for_checkpoint": false,
+      "scope_name": "smoke_EXP-334"
+    }
+  },
+  {
+    "model": "EXP-334",
+    "stage": "final_refit_test_prediction",
+    "fit_rows": 6201,
+    "validation_rows": 2546,
+    "fit_sha256": "2118d1cf44fc9f84333930265463c310f3870ab718fbee46389fb8301f9343cc",
+    "validation_sha256": null,
+    "runtime_seconds": 0.16800683736801147,
+    "feature_audit": {
+      "fit_scope": "explicit_fit_indices_only",
+      "feature_dimension": 35183,
+      "feature_names_sha256": "9d1f07770133b4096224e011570f1950030e9414990cbcbe05288a448df1907b",
+      "fold_feature_registry": {
+        "fixed_pathway_burden": {
+          "definition_version": "1.0.0",
+          "enabled": true,
+          "output_dimension": 20,
+          "feature_names_sha256": "215399b62284ff0a5b28575baa153998fa8fc736c62a53edc6ee7d3d0eaeca06",
+          "fit_scope": "stateless",
+          "external_knowledge": [
+            {
+              "source": "PathwayMapper canonical pathway templates derived from Sanchez-Vega et al., Cell 2018",
+              "version": "pathway-mapper-7d29965",
+              "license": "AGPL-3.0",
+              "sha256": "fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f",
+              "uri": "https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json"
+            }
+          ]
+        },
+        "pathway_mutation_type_composition": {
+          "definition_version": "1.0.0",
+          "enabled": true,
+          "output_dimension": 50,
+          "feature_names_sha256": "df6ed8e2e249f4af3f6360e7bf5ea8fa0e2bee633c4f54c83c8447d80764fb4d",
+          "fit_scope": "stateless",
+          "external_knowledge": [
+            {
+              "source": "PathwayMapper canonical pathway templates derived from Sanchez-Vega et al., Cell 2018",
+              "version": "pathway-mapper-7d29965",
+              "license": "AGPL-3.0",
+              "sha256": "fa263a35bf0d7614be373bcdb6b69399e618513359eb7e6c5f334b0e9244132f",
+              "uri": "https://github.com/iVis-at-Bilkent/pathway-mapper/blob/7d29965de6ac8d0c6ec18c383f6dff8a48d562e7/packages/pathway-mapper/src/data/pathways.json"
+            }
+          ]
+        },
+        "semantic_equivalence_filter": {
+          "definition_version": "1.0.0",
+          "enabled": true,
+          "output_dimension": 64,
+          "feature_names_sha256": "a0d0e69c2d7a090ea1d5a7ac7af6f86e99fa9a005275cc93d18157e116935d42",
+          "fit_scope": "fold_train",
+          "external_knowledge": null,
+          "dropped": {
+            "sample__pathway_cell_cycle__complex_gene_count": "TP53__complex",
+            "sample__pathway_hippo__complex_gene_count": "TAOK2__complex",
+            "sample__pathway_myc__complex_gene_count": "sample__missing_gene_count",
+            "sample__pathway_nrf2__complex_gene_count": "sample__missing_gene_count",
+            "sample__pathway_tgf_beta__complex_gene_count": "sample__missing_gene_count",
+            "sample__pathway_tp53__complex_gene_count": "TP53__complex"
+          }
+        }
+      },
+      "base_features_dropped": [],
+      "device": "cuda",
+      "n_estimators": 2,
+      "validation_used_for_checkpoint": false,
+      "scope_name": "smoke_final_refit_EXP-334"
+    }
+  }
+]

@@ -1,0 +1,138 @@
+{
+  "artifacts": {
+    "base_probabilities": {
+      "EXP-127": {
+        "oof": "oof/baseline3_four_model_fully_nested_exp127.csv",
+        "test": "preds/baseline3_four_model_fully_nested_exp127_test_proba.csv"
+      },
+      "EXP-334": {
+        "oof": "oof/baseline3_four_model_fully_nested_exp334.csv",
+        "test": "preds/baseline3_four_model_fully_nested_exp334_test_proba.csv"
+      },
+      "EXP-545": {
+        "oof": "oof/baseline3_four_model_fully_nested_exp545.csv",
+        "test": "preds/baseline3_four_model_fully_nested_exp545_test_proba.csv"
+      },
+      "EXP-639": {
+        "oof": "oof/baseline3_four_model_fully_nested_exp639.csv",
+        "test": "preds/baseline3_four_model_fully_nested_exp639_test_proba.csv"
+      }
+    },
+    "fit_scope_audit": "reports/analysis/baseline3_four_model_fully_nested/fit_scope_audit.csv",
+    "oof": "oof/baseline3_four_model_fully_nested.csv",
+    "submission": "submissions/baseline3_four_model_fully_nested.csv",
+    "test_probabilities": "preds/baseline3_four_model_fully_nested_test_proba.csv"
+  },
+  "base_fit_count": 104,
+  "candidate_order": [
+    "EXP-639",
+    "EXP-545",
+    "EXP-127",
+    "EXP-334"
+  ],
+  "checkpoint_policy": "fixed_iterations_without_outer_validation_selection",
+  "config_sha256": {
+    "EXP-127": "c9d128af3cfd2fbf0865714b4a15f6ce9804d3abe6191b20abe971badbc9bee5",
+    "EXP-334": "664f5a1037ee6633203a05256e61fc762f8775ea74629226aca7d87160bd4a6a",
+    "EXP-545": "4ebf0ab6f6083c10b1e12e5bec5597631f8110d1ff50689aaebc3b06804d3797",
+    "EXP-639": "15bd350dbbed17ac171bcb76ac636ba94dea7a51389bc080cff28a4fa9ffc3f9"
+  },
+  "exp334_parameter_policy": "deterministic median of five pre-existing EXP-285 fold configs",
+  "expected_base_fit_count": 104,
+  "folds": [
+    {
+      "inner_meta_shape": [
+        4960,
+        104
+      ],
+      "macro_f1": 0.5452354185080028,
+      "outer_fold": 0,
+      "outer_train_row_count": 4960,
+      "outer_validation_row_count": 1241
+    },
+    {
+      "inner_meta_shape": [
+        4961,
+        104
+      ],
+      "macro_f1": 0.572101170423031,
+      "outer_fold": 1,
+      "outer_train_row_count": 4961,
+      "outer_validation_row_count": 1240
+    },
+    {
+      "inner_meta_shape": [
+        4961,
+        104
+      ],
+      "macro_f1": 0.5623386477842561,
+      "outer_fold": 2,
+      "outer_train_row_count": 4961,
+      "outer_validation_row_count": 1240
+    },
+    {
+      "inner_meta_shape": [
+        4961,
+        104
+      ],
+      "macro_f1": 0.5715352052440588,
+      "outer_fold": 3,
+      "outer_train_row_count": 4961,
+      "outer_validation_row_count": 1240
+    },
+    {
+      "inner_meta_shape": [
+        4961,
+        104
+      ],
+      "macro_f1": 0.5617553540398351,
+      "outer_fold": 4,
+      "outer_train_row_count": 4961,
+      "outer_validation_row_count": 1240
+    }
+  ],
+  "historical_oof_loaded": false,
+  "inner_folds_per_outer": 4,
+  "input_sha256": {
+    "split": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf",
+    "test": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0",
+    "train": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab"
+  },
+  "method": "fully_nested_base_refit_stacking",
+  "oof": {
+    "accuracy": 0.5729721012739881,
+    "log_loss": 1.5287267153169015,
+    "macro_f1": 0.5625638284324229,
+    "per_class_f1": {
+      "ACC": 0.8533333333333334,
+      "BLCA": 0.5625,
+      "BRCA": 0.5702547247329499,
+      "CESC": 0.4672897196261682,
+      "COAD": 0.7769784172661871,
+      "DLBC": 0.684931506849315,
+      "GBMLGG": 0.651685393258427,
+      "HNSC": 0.3444730077120823,
+      "KIPAN": 0.6519742883379247,
+      "KIRC": 0.8031496062992126,
+      "LAML": 0.5384615384615384,
+      "LGG": 0.7326315789473684,
+      "LIHC": 0.4332129963898917,
+      "LUAD": 0.42990654205607476,
+      "LUSC": 0.6051282051282051,
+      "OV": 0.4624624624624625,
+      "PAAD": 0.371900826446281,
+      "PCPG": 0.36464088397790057,
+      "PRAD": 0.3723797780517879,
+      "SARC": 0.19902912621359223,
+      "SKCM": 0.8893129770992366,
+      "STES": 0.5414364640883977,
+      "TGCT": 0.6025641025641025,
+      "THCA": 0.6962962962962963,
+      "THYM": 0.330188679245283,
+      "UCEC": 0.690537084398977
+    }
+  },
+  "outer_folds": 5,
+  "record_role": "local_analysis_not_official_experiment",
+  "runtime_seconds": 4393.646382521838
+}

@@ -1,0 +1,13 @@
+{
+  "train_rows": 6201,
+  "test_rows": 2546,
+  "candidate_order": [
+    "EXP-639",
+    "EXP-545",
+    "EXP-127",
+    "EXP-334"
+  ],
+  "outer_inner_split_count": 20,
+  "all_split_intersections_zero": true,
+  "split_sha256": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf"
+}
