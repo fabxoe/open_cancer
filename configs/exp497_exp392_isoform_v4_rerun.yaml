@@ -1,0 +1,117 @@
+run_mode: experiment
+record_role: exploratory_ablation
+experiment_id: EXP-497
+issue_number: 497
+slug: exp392_isoform_v4_rerun
+parent_experiment: EXP-392
+component_experiments: [EXP-229, EXP-313, EXP-369, EXP-374, EXP-392]
+seed: 42
+split:
+  path: data/splits/stratified_5fold_seed42.csv
+  n_splits: 5
+features:
+  mutation_type:
+    enabled: true
+    parser:
+      name: stop_notation_invariant_v2
+      definition_version: 2.1.0
+      equivalent_stop_alternates: ["*", X, Ter]
+      other_v1_semantics_preserved: true
+  robust_aggregates:
+    - sample__mutated_gene_count_log1p
+    - sample__total_variant_count_log1p
+    - sample__multi_variant_gene_count_log1p
+  residue_position:
+    enabled: true
+    aggregates: [max]
+    missing_policy: zero
+    complex_tokens: include
+    transform: raw
+    isoform_semantic_mask:
+      enabled: true
+      manifest_path: knowledge/ensembl_isoform_annotation_v1.json
+      manifest_sha256: 568ea31f5b7fc7ff47d181fe552d39f3b9185f8d0a76cbb2a49d06be022d5bc0
+      annotation_cache_path: data/external/ensembl_release_116/competition_gene_isoform_index.json
+      annotation_cache_sha256: b9565339f1755d5b07e782c39064207310fa6c254b2e915a15492f4f38903daa
+      trusted_categories:
+        - CANONICAL_MATCH
+        - MANE_MATCH
+        - OTHER_ISOFORM_MATCH
+      masked_categories:
+        - COMPLEX_OR_UNMAPPABLE
+        - OUTSIDE_ALL_KNOWN_ISOFORMS
+        - POSITION_VALID_REF_MISMATCH
+range_semantic_indicators:
+  enabled: true
+  definition_version: 1.0.0
+  fit_scope: fold_train
+  values: [range_stop, range_no_change]
+  representation: gene_presence
+  preserve_existing_features: true
+  semantic_equivalence_filter: fold_train_against_parent
+hotspots:
+  table: extended_34
+  evidence_scope: additions_15
+  minimum_matching_train_rows: 5
+  stop_notation_normalization: true
+external_knowledge:
+  file: knowledge/canonical_pathways_sanchez_vega_v1.json
+  organizer_approval_reference: https://github.com/fabxoe/open_cancer/issues/96#issuecomment-5151028180
+  source_commit: 7d29965de6ac8d0c6ec18c383f6dff8a48d562e7
+  source_sha256: a625675d03fa314eb27f3ab731524de13621a35aecd8edb7c67878f2d89ae07a
+abc_families:
+  fixed_pathway_burden:
+    enabled: true
+    definition_version: 2.1.0
+    fit_scope: stateless
+    groups: 10
+    values: [mutated_gene_count, lof_gene_count]
+    stop_notation_normalization: true
+    output_dimension: 20
+  pathway_mutation_type_composition:
+    enabled: true
+    definition_version: 2.1.0
+    fit_scope: stateless
+    groups: 10
+    values:
+      - missense_gene_count
+      - synonymous_gene_count
+      - nonsense_gene_count
+      - frameshift_gene_count
+      - complex_gene_count
+    stop_notation_normalization: true
+    candidate_output_dimension: 50
+    semantic_equivalence_filter: fold_train_against_feature_spec_v1
+model:
+  objective: multi:softprob
+  n_estimators: 500
+  learning_rate: 0.05
+  max_depth: 6
+  min_child_weight: 1.0
+  subsample: 0.8
+  colsample_bytree: 0.8
+  reg_alpha: 0.0
+  reg_lambda: 1.0
+  eval_metric: mlogloss
+  early_stopping_rounds: 30
+  tree_method: hist
+  device: cpu
+  n_jobs: 8
+  verbosity: 0
+training:
+  balanced_sample_weight: true
+  checkpoint_selection: macro_f1_validation
+  missing_policy: separate per-gene and per-sample missing indicators
+  feature_types:
+    - exp374_stop_normalized_isoform_mask_feature_spec
+    - fold_train_range_stop_no_change_gene_presence
+notes: >-
+  Issue #497 (N6 follow-up, roadmap #422 §12), exploratory_ablation sibling
+  of the official exp497_isoform_v4_eligibility_rerun config. Same rerun of
+  the isoform eligibility fix (Issue #493/PR #495) applied on top of EXP-392
+  (EXP-374 + fold-train range-stop/no-change gene indicators) instead of
+  EXP-374 directly, to check whether the eligibility fix's effect is
+  consistent across the two adopted lineage members. Not the canonical
+  result for this Issue -- see exp497_isoform_v4_eligibility_rerun.yaml for
+  the official EXP-374-parented rerun.
+comparison_metrics_path: reports/exp392_range_semantic_indicators/metrics.json
