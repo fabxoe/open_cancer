@@ -1,0 +1,135 @@
+{
+  "experiment_id": "EXP-512",
+  "issue_number": 512,
+  "reproducibility_status": "INFERENCE_VERIFIED",
+  "source_commit": "96129f56f7d9a6d22a3c6e5c087a5164d91a0522",
+  "source_tag": "exp-512-repro-v1",
+  "dirty_worktree": false,
+  "data_manifest": "reproducibility/exp512_parser_v4_semantic_counts/data_manifest.json",
+  "environment": "reproducibility/exp512_parser_v4_semantic_counts/environment.json",
+  "release_url": "https://github.com/fabxoe/open_cancer/releases/tag/exp-512-repro-v1",
+  "verifier": "fabxoe",
+  "verified_at": "2026-08-05T14:57:58.381923+00:00",
+  "artifacts": [
+    {
+      "kind": "checkpoint",
+      "path": "models/exp512_parser_v4_semantic_counts/fold_00.json",
+      "size_bytes": 9917304,
+      "sha256": "d0ff308ba358896a01445261a86c163faff817d3d657802df04786cb65c346f9",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-512-repro-v1/exp512_parser_v4_semantic_counts_repro.tar.gz#models/exp512_parser_v4_semantic_counts/fold_00.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp512_parser_v4_semantic_counts/fold_01.json",
+      "size_bytes": 5067843,
+      "sha256": "6d1c085d1f03049c8edc9a788032b516c68bb768ad2bf760759e3f94aed23ffd",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-512-repro-v1/exp512_parser_v4_semantic_counts_repro.tar.gz#models/exp512_parser_v4_semantic_counts/fold_01.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp512_parser_v4_semantic_counts/fold_02.json",
+      "size_bytes": 8076611,
+      "sha256": "70309ae731bb4b4b91d31e54c0e51e109d9ab7339fece1e6c1f0be3173ab4756",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-512-repro-v1/exp512_parser_v4_semantic_counts_repro.tar.gz#models/exp512_parser_v4_semantic_counts/fold_02.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp512_parser_v4_semantic_counts/fold_03.json",
+      "size_bytes": 7804265,
+      "sha256": "b248b8300f6fc317d588f9b3741f8193ffe6cec89b5721bcd43a8862d7b0b28c",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-512-repro-v1/exp512_parser_v4_semantic_counts_repro.tar.gz#models/exp512_parser_v4_semantic_counts/fold_03.json"
+    },
+    {
+      "kind": "checkpoint",
+      "path": "models/exp512_parser_v4_semantic_counts/fold_04.json",
+      "size_bytes": 12271376,
+      "sha256": "4022a1c58639f5838450fa42ed797cbe4962e529ab0baf4b9bd352834c107848",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-512-repro-v1/exp512_parser_v4_semantic_counts_repro.tar.gz#models/exp512_parser_v4_semantic_counts/fold_04.json"
+    },
+    {
+      "kind": "submission",
+      "path": "submissions/exp512_parser_v4_semantic_counts.csv",
+      "size_bytes": 38103,
+      "sha256": "2f1ffc1c6c91535e613e46ea084efcec4a53e9f3a3c5717d7144b2cd2b2f2c21",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-512-repro-v1/exp512_parser_v4_semantic_counts_repro.tar.gz#submissions/exp512_parser_v4_semantic_counts.csv"
+    },
+    {
+      "kind": "oof_probability",
+      "path": "oof/exp512_parser_v4_semantic_counts.csv",
+      "size_bytes": 2107056,
+      "sha256": "64123b7985df1563049425c870a9979bc2784922ffee4e77a2e50c3d7782de4e",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-512-repro-v1/exp512_parser_v4_semantic_counts_repro.tar.gz#oof/exp512_parser_v4_semantic_counts.csv"
+    },
+    {
+      "kind": "test_probability",
+      "path": "preds/exp512_parser_v4_semantic_counts_test_proba.csv",
+      "size_bytes": 828016,
+      "sha256": "1b93925a697cb095794e88c549636c561577ea57bbb138452a8bc4105ad57390",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-512-repro-v1/exp512_parser_v4_semantic_counts_repro.tar.gz#preds/exp512_parser_v4_semantic_counts_test_proba.csv"
+    },
+    {
+      "kind": "metrics",
+      "path": "reports/exp512_parser_v4_semantic_counts/metrics.json",
+      "size_bytes": 40101,
+      "sha256": "16465f42fbac7e49e788ed7111d5be87d1412d632e2c96f827dde0cb3bf008a5",
+      "storage_uri": null
+    },
+    {
+      "kind": "resolved_config",
+      "path": "reproducibility/exp512_parser_v4_semantic_counts/config.resolved.yaml",
+      "size_bytes": 36231,
+      "sha256": "bdb6210059a773632f46c7d2176a196a332d6c870f10db5308a0477b396daf0f",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-512-repro-v1/exp512_parser_v4_semantic_counts_repro.tar.gz#reproducibility/exp512_parser_v4_semantic_counts/config.resolved.yaml"
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp512_parser_v4_semantic_counts/fold_00_checkpoint_audit.json",
+      "size_bytes": 24473,
+      "sha256": "e1448738ca2b4cb9d7a4349a1e6eb449b489c34ee42fc3bb48eba838325adbe1",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-512-repro-v1/exp512_parser_v4_semantic_counts_repro.tar.gz#models/exp512_parser_v4_semantic_counts/fold_00_checkpoint_audit.json"
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp512_parser_v4_semantic_counts/fold_01_checkpoint_audit.json",
+      "size_bytes": 27054,
+      "sha256": "d8a15135df3b06812ee0dd331e3d40c2f7b1a904264b433a80d890e30d8cccc8",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-512-repro-v1/exp512_parser_v4_semantic_counts_repro.tar.gz#models/exp512_parser_v4_semantic_counts/fold_01_checkpoint_audit.json"
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp512_parser_v4_semantic_counts/fold_02_checkpoint_audit.json",
+      "size_bytes": 29747,
+      "sha256": "16827489f0c8f67eadb1260a54208090ef80c09d1699759f44f8558b2eb9e78e",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-512-repro-v1/exp512_parser_v4_semantic_counts_repro.tar.gz#models/exp512_parser_v4_semantic_counts/fold_02_checkpoint_audit.json"
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp512_parser_v4_semantic_counts/fold_03_checkpoint_audit.json",
+      "size_bytes": 28689,
+      "sha256": "54008c3b75020775bad1904fe547e998a5bf3ce993a21b73782ae06edff0ab3b",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-512-repro-v1/exp512_parser_v4_semantic_counts_repro.tar.gz#models/exp512_parser_v4_semantic_counts/fold_03_checkpoint_audit.json"
+    },
+    {
+      "kind": "checkpoint_iteration_audit",
+      "path": "models/exp512_parser_v4_semantic_counts/fold_04_checkpoint_audit.json",
+      "size_bytes": 27926,
+      "sha256": "3a4dfbcc36d5e413bfc13750453faa3cb68b263f72b551f6fed35f4a7ae3c2c7",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-512-repro-v1/exp512_parser_v4_semantic_counts_repro.tar.gz#models/exp512_parser_v4_semantic_counts/fold_04_checkpoint_audit.json"
+    },
+    {
+      "kind": "release_bundle",
+      "path": "release-assets/exp512_parser_v4_semantic_counts_repro.tar.gz",
+      "size_bytes": 12816735,
+      "sha256": "640346dc0dba2631aebea4e52a2ed5d920294111497bfa4587e18e575494e15a",
+      "storage_uri": "https://github.com/fabxoe/open_cancer/releases/download/exp-512-repro-v1/exp512_parser_v4_semantic_counts_repro.tar.gz"
+    }
+  ],
+  "verification": {
+    "data_hashes_match": true,
+    "submission_sha256_match": true,
+    "test_label_agreement": 1.0,
+    "probability_atol": 1e-06,
+    "probability_rtol": 1e-06,
+    "passed": true
+  }
+}

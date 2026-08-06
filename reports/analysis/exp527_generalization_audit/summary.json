@@ -1,0 +1,95 @@
+{
+  "issue": 530,
+  "analysis_only": true,
+  "profile_domain_auc": 0.6470150013814513,
+  "profile_domain_fold_auc": [
+    0.6352068884178264,
+    0.6559558823529411,
+    0.6499564294315229,
+    0.6410133722035618,
+    0.6592393370936054
+  ],
+  "largest_absolute_profile_shift": {
+    "profile_class": "ACC",
+    "train_mean": 0.507598418753307,
+    "test_mean": 0.552559539936161,
+    "mean_delta_test_minus_train": 0.044961121182854,
+    "standardized_mean_difference": 0.24981792527215857,
+    "train_std": 0.1877745821898895,
+    "test_std": 0.17182290652924023,
+    "train_p01": 0.0,
+    "test_p01": 0.0,
+    "train_p10": 0.25920262932777405,
+    "test_p10": 0.32262948155403137,
+    "train_p50": 0.5193407535552979,
+    "test_p50": 0.5737524926662445,
+    "train_p90": 0.7464829087257385,
+    "test_p90": 0.7470142841339111,
+    "train_p99": 0.8690679669380188,
+    "test_p99": 0.8999036580324181
+  },
+  "oof": {
+    "rows": 6201,
+    "error_indicator_correlation": 0.6338189829403867,
+    "both_correct": 2070,
+    "exp374_only_correct": 490,
+    "exp527_only_correct": 621,
+    "both_wrong": 3020,
+    "prediction_changed": 2371,
+    "prediction_changed_ratio": 0.3823576842444767,
+    "mean_absolute_probability_delta": 0.0258632352508648,
+    "exp374_prediction": {
+      "mean_max_probability": 0.459966951311724,
+      "mean_margin": 0.3093793761160764,
+      "mean_entropy": 1.8243516135201165
+    },
+    "exp527_prediction": {
+      "mean_max_probability": 0.3189967387681019,
+      "mean_margin": 0.2067299021269634,
+      "mean_entropy": 2.5282053444185215
+    },
+    "exp374_oof_sha256": "4d4f9182fca8e6023d775b77ace463cad3a80144206f82f9653d98b11345da9a",
+    "exp527_oof_sha256": "994716ad2c91789a9d9307957c21c1472b8a3d4254dfd52679dfda8477c0e094"
+  },
+  "blank_test": {
+    "actual_blank_cells": 237,
+    "affected_rows": 128,
+    "causal_interpretation_allowed": false,
+    "note": "Association-only: no checkpoint counterfactual blank-to-WT inference was run.",
+    "affected": {
+      "rows": 128,
+      "exp374": {
+        "mean_max_probability": 0.514784482109375,
+        "mean_margin": 0.378776128109375,
+        "mean_entropy": 1.7754905528219525
+      },
+      "exp527": {
+        "mean_max_probability": 0.3746160281640625,
+        "mean_margin": 0.26886737437499997,
+        "mean_entropy": 2.484379971618436
+      },
+      "mean_absolute_exp527_minus_exp374_probability_delta": 0.02510653353333233,
+      "prediction_disagreement_ratio": 0.28125
+    },
+    "unaffected": {
+      "rows": 2418,
+      "exp374": {
+        "mean_max_probability": 0.4441907598333333,
+        "mean_margin": 0.28870448877799837,
+        "mean_entropy": 1.884628947082647
+      },
+      "exp527": {
+        "mean_max_probability": 0.321439655688172,
+        "mean_margin": 0.21750078697477254,
+        "mean_entropy": 2.588673672607315
+      },
+      "mean_absolute_exp527_minus_exp374_probability_delta": 0.0260820211987489,
+      "prediction_disagreement_ratio": 0.3829611248966088
+    }
+  },
+  "input_sha256": {
+    "train": "92418b8441d058cfc68e939dd88725610750be4bc8edc51253cffc72fc4fc0ab",
+    "test": "e7e7f29a9b6251308e470ae3fb040a6da0cd8fcb0adb87e67f7761631c6a1ef0",
+    "split": "1a99b82e758948fdf70c014b8270b73f0de805cd2450d119fcb20c08a9b169cf"
+  }
+}

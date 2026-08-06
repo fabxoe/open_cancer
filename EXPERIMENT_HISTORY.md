@@ -7,13 +7,14 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 103
+- 실제 실험 수: 114
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
-- 최고 Local OOF Macro F1: 0.4351340093 (`EXP-334`)
+- 최고 Local OOF Macro F1: 0.4479925392 (`EXP-521`, train self-inclusion 탐색 결과)
+- 최고 leakage-safe Local OOF Macro F1: 0.4468722707 (`EXP-527`)
 - 최고 Public LB Macro F1: 0.346215922 (`EXP-374`)
-- 최고 재현 검증 모델: `EXP-334` (`INFERENCE_VERIFIED`)
-- 최종 갱신일: 2026-08-05
+- 최고 재현 검증 모델: `EXP-527` (`INFERENCE_VERIFIED`)
+- 최종 갱신일: 2026-08-06
 
 ## 실험 요약
 
@@ -122,6 +123,17 @@
 | EXP-476 | COMPLETED | Gomin-art | #476 | Config 기반 fold-safe recurrent gene·26 class panel + nested Optuna·class weight XGBoost | 0.4223302641 | 0.3223948042 | INFERENCE_VERIFIED | fold std 0.0063799로 안정적이나 EXP-374 대비 Local -0.0044607·Public -0.0238211, 대표 제출 미변경·ARCHIVE | [보고서](reports/exp476_config_feature_pipeline/README.md) |
 | EXP-479 | COMPLETED | fabxoe | #479 | EXP-469 + HGVS-informed range_replacement·range_stop·range_no_change 상호 배타 의미 | 0.4087566023 | 미제출 | INFERENCE_VERIFIED | 고정 XGBoost에서 EXP-469 대비 -0.0030252·안정성/Log Loss 악화; 제출 보류, 의미는 유지하고 비튜닝 native semantic 기준선으로 동결 | [보고서](reports/exp479_parser_v4_native_semantic_range/README.md) |
 | EXP-484 | COMPLETED | 2heej | #484 | EXP-374+EXP-459 고정 0.7/0.3 확률 블렌드(#482 test-like propensity 스크리닝으로 비율 사전 고정) | 0.4320213767 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 +0.0052304·test-like subset도 +0.0022953으로 통과·Log Loss 개선·클래스 붕괴 없음. Fold std +0.0052388는 임계값 초과했으나 전 fold 개선(악화 없음)이 원인 — ADOPT_WITH_CAUTION, Public 제출은 팀 논의 후 | [보고서](reports/exp484_exp374_exp459_blend/README.md) |
+| EXP-487 | COMPLETED | fabxoe | #487 | EXP-479 native-v3 semantic schema + outer-train 전용 nested Optuna XGBoost tuning | 0.4228690293 | 미제출 | INFERENCE_VERIFIED | EXP-479 대비 +0.0141124로 native-v3 성능 회복 확인; EXP-374보다 -0.0039219로 낮아 대표 제출 후보는 아니며 튜닝된 native-v3 기준선·다양성 자산으로 보존 | [보고서](reports/exp487_native_v3_nested_xgb_tuning/README.md) |
+| EXP-512 | COMPLETED | fabxoe | #512 | EXP-374 + parser v4 환자별 semantic token count 18개 | 0.4258183004 | 0.3329881004 | INFERENCE_VERIFIED | EXP-374 대비 OOF -0.0009726·Public -0.0132278·Log Loss 악화로 전역 count adapter ARCHIVE; parser v4 의미 체계 자체의 기각으로 해석하지 않음 | [보고서](reports/exp512_parser_v4_semantic_counts/README.md) |
+| EXP-521 | COMPLETED | fabxoe | #521 | EXP-374 + fold-safe parser-v4 26-class cosine semantic profile | 0.4479925392 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 +0.0212016124·fold std -0.0047146798로 현재 Local 최고; Log Loss는 +0.0670036077로 악화되어 Public 제출 전 주의 필요 | [보고서](reports/exp521_parser_v4_class_cosine/README.md) |
+| EXP-522 | COMPLETED | fabxoe | #522 | EXP-374 + fold-safe parser-v4 26-class smoothed mean log-likelihood profile | 0.4045242129 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0222667140·EXP-521 대비 -0.0434683264·Log Loss 큰 악화로 ARCHIVE; alpha=1 전체-vocabulary likelihood 종료 | [보고서](reports/exp522_parser_v4_class_likelihood/README.md) |
+| EXP-527 | COMPLETED | fabxoe | #527 | EXP-521 class cosine의 outer-train target-class centroid에 leave-one-out 적용 | 0.4468722707 | 미제출 | INFERENCE_VERIFIED | EXP-521 대비 -0.0011202685이나 EXP-374 대비 +0.0200813439 유지; self-inclusion 제거한 leakage-safe 공식 기준선 채택 | [보고서](reports/exp527_parser_v4_class_cosine_loo/README.md) |
+| EXP-539 | COMPLETED | fabxoe | #539 | parser-v4 hierarchical detail/global raw-count + LinearSVC | 0.3662402061 | 미제출 | NOT_STARTED | row-L2 효과를 분리하기 위한 raw-count 기준선; 전 fold 수렴 경고와 낮은 성능으로 단독 제출 제외 | [보고서](reports/exp539_hierarchical_raw_linear/README.md) |
+| EXP-541 | COMPLETED | fabxoe | #541 | EXP-539 hierarchical 입력에 row-L2 normalization만 적용 | 0.3723738759 | 미제출 | NOT_STARTED | EXP-539 대비 +0.0061336698이고 수렴 경고는 해소됐으나 Log Loss가 +0.3033132553 악화되어 단독 제출 제외 | [보고서](reports/exp541_hierarchical_row_l2_linear/README.md) |
+| EXP-545 | COMPLETED | fabxoe | #545 | EXP-541 hierarchical vocabulary에 outer-train TF-IDF + row-L2 적용 | 0.4396775272 | 미제출 | NOT_STARTED | EXP-541 대비 +0.0673036513, EXP-527 대비 -0.0071947435, fold std 0.0038151877; 확률 보정 전 다양성 후보 | [보고서](reports/exp545_hierarchical_tfidf_linear/README.md) |
+| EXP-550 | COMPLETED | fabxoe | #550 | EXP-545 TF-IDF 입력 + multinomial Logistic Regression predict_proba | 0.4324730859 | 미제출 | NOT_STARTED | EXP-545 대비 -0.0072044·fold std 악화, EXP-527보다 F1·Log Loss 열세로 단독 확률 모델 ARCHIVE | [보고서](reports/exp550_hierarchical_tfidf_logistic/README.md) |
+| EXP-558 | COMPLETED | fabxoe | #558 | parser-v4 compact clinical features + XGBoost | 0.4133226110 | 미제출 | INFERENCE_VERIFIED | EXP-005 대비 +0.0089430·fold std 개선으로 새 compact baseline 채택, 최근 최고보다 낮아 제출 보류 | [보고서](reports/exp558_compact_clinical_xgb/README.md) |
+| EXP-565 | COMPLETED | fabxoe | #565 | EXP-527 parser-v4 부모 피처만 LightGBM에 입력(class-cosine 제외) | 0.4272525489 | 미제출 | INFERENCE_VERIFIED | EXP-527 대비 -0.0196197218·fold std 악화; 3-arm 중 parser-only L1 기준점, 단독 ARCHIVE | [보고서](reports/exp565_lightgbm_parser_only/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -151,6 +163,7 @@
 | 2026-08-04T17:49:07+09:00 | EXP-369 | #369 | `submissions/exp369_stop_notation_normalization.csv` (제출 ID `1510848`) | `9c1fad8c118928f23157b7558a1b73fa16af22a34966a244841ac539fed5bdd3` | 0.3407944343 | 팀 Public 최고 갱신<span style="display:block">EXP-229 대비 +0.0204345510·EXP-223 대비 +0.0175509093</span><span style="display:block">확인 당시 참가 4팀 중 4위·팀 제출 23회</span> | INFERENCE_VERIFIED |
 | 2026-08-04T18:29:26+09:00 | EXP-374 | #374 | `submissions/exp374_stop_isoform_residue_mask.csv` (제출 ID `1510884`) | `6ebae265d36ce5b87748cdb40c412fc9563e64a69c0194d92b43cc1af4e6d006` | 0.346215922 | 팀 Public 최고 갱신<span style="display:block">EXP-369 대비 +0.0054214877</span><span style="display:block">대표 제출로 선택</span> | INFERENCE_VERIFIED |
 | 2026-08-05T19:05:30+09:00 | EXP-476 | #476 | `submissions/exp476_config_feature_pipeline.csv` (제출 ID `1512307`) | `0501cbcc23999d31fe428d8c9030e6a8895a9e8433e8ba438e81f635e22847cb` | 0.3223948042 | EXP-374 최고 대비 -0.0238211178<span style="display:block">확인 당시 팀 4위·팀 제출 25회·대표 제출은 EXP-374 유지</span> | INFERENCE_VERIFIED |
+| 2026-08-05T23:58:45+09:00 | EXP-512 | #512 | `submissions/exp512_parser_v4_semantic_counts.csv` (제출 ID `1512887`) | `2f1ffc1c6c91535e613e46ea084efcec4a53e9f3a3c5717d7144b2cd2b2f2c21` | 0.3329881004 | EXP-374 최고 대비 -0.0132278216<span style="display:block;color:#8b949e">미달·대표/팀 순위 미갱신</span><span style="display:block">확인 당시 팀 4위·팀 제출 26회·대표 제출은 EXP-374 유지</span> | INFERENCE_VERIFIED |
 
 ## 재현성 검증 이력
 
@@ -210,6 +223,10 @@
 | 2026-08-05T06:20:33.889237+00:00 | EXP-465 | Kangho-Park | `2aaff58e5094162fe9d5fbcaccaf9dfa1e99df1a` / 태그 없음 | SHA-256 일치 | test 라벨 100%, 확률 최대 차이 0(XGBoost checkpoint 재로드 결정론), 제출 SHA-256 byte-level 일치 | 저장 checkpoint 재추론(Model A/B 각각) | INFERENCE_VERIFIED | [comparison](reproducibility/exp465_feature_subset_ensemble/comparison.json) |
 | 2026-08-05T06:46:14.485134+00:00 | EXP-459 | 2heej | `09430f2632c14ef459fb309915368bac561533f2` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 일치, test 라벨 100%, 확률 최대 차이 1.11e-16 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp459_catboost_exp374/comparison.json) |
 | 2026-08-05T13:10:12.733299+00:00 | EXP-476 | Gomin-art | `ca1b4c6e4210e4eb98e1636818e0b7df8c12b852` / [`exp-476-repro-v1`](https://github.com/fabxoe/open_cancer/releases/tag/exp-476-repro-v1) | SHA-256 일치 | OOF·test 라벨 100%, 확률 최대 차이 2.98e-08, 제출 SHA-256 byte-level 일치 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp476_config_feature_pipeline/comparison.json) |
+| 2026-08-05T15:29:59.157313+00:00 | EXP-487 | fabxoe | `ea5278c0b9342e77d6552c2a3b4039ff550ff81a` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.43e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp487_native_v3_nested_xgb_tuning/comparison.json) |
+| 2026-08-05T18:22:27.697340+00:00 | EXP-521 | fabxoe | `eee39c928e60e12eb2c24fd56edbe0c025522da9` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.46e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp521_parser_v4_class_cosine/comparison.json) |
+| 2026-08-05T18:37:03.224031+00:00 | EXP-522 | fabxoe | `cfe6ec6793491dc55b2eb36896909c658e81ae66` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 1.22e-07 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp522_parser_v4_class_likelihood/comparison.json) |
+| 2026-08-05T18:57:52.107245+00:00 | EXP-527 | fabxoe | `3cc84bca12b6a2767a35e979248e1fdb468c3114` / 태그 없음 | SHA-256 일치 | 제출 SHA-256 byte-level 일치, test 라벨 100%, 확률 최대 차이 8.56e-08 | 미실행 | INFERENCE_VERIFIED | [comparison](reproducibility/exp527_parser_v4_class_cosine_loo/comparison.json) |
 
 ## 상세 실험 로그
 
@@ -4328,3 +4345,323 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
   fold 붕괴형 불안정과는 다르다고 판단해 `ADOPT_WITH_CAUTION`으로 기록한다.
   EXP-449(LightGBM) 계열 블렌드가 전부 실패했던 이전 결론("어떤 모델을
   블렌드해도 test-like gate에서 실패한다")에 대한 반례다.
+
+### [EXP-487] Parser native-v3 nested XGBoost tuning
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #487 / `issue-487-native-v3-nested-xgboost-tuning`
+- 부모: EXP-479
+- 실행 소스 commit: `ea5278c0b9342e77d6552c2a3b4039ff550ff81a`
+- 시작/종료: 2026-08-05T08:52:12.389089+00:00 /
+  2026-08-05T15:29:53.966222+00:00 (23,862.02초, 약 6시간 38분)
+- Config: `configs/exp487_native_v3_nested_xgb_tuning.yaml`
+- Runner: `scripts/run_exp487_native_v3_nested_xgb_tuning.py`
+- Metrics/Report: `reports/exp487_native_v3_nested_xgb_tuning/`
+- 고정 조건: EXP-479의 parser contract, native-v3 semantic schema,
+  mutation presence, sample token-count aggregation, gene consequence presence,
+  canonical 5-fold, balanced sample weight, Macro-F1 checkpoint 정책.
+- 튜닝: outer fold별 outer-train 안에서만 3-fold inner CV와 TPE 30 trials를
+  수행했다. outer validation·test·Public LB는 파라미터 선택에 사용하지 않았다.
+- Fold Macro F1: 0.4199910583, 0.4384034520, 0.4200012784,
+  0.4079556465, 0.4242124218
+- OOF Macro F1: 0.4228690293
+  - EXP-479 대비 `+0.0141124270`
+  - EXP-374 대비 `-0.0039218975`
+  - EXP-512 대비 `-0.0029492711`
+- Fold 평균 / 표준편차: 0.4221127714 / 0.0097895767
+- Accuracy / Log Loss: 0.4184808902 / 1.8564265966
+- checkpoint 비교: 학습 metric(mlogloss)-best OOF 0.4161409876에서
+  validation Macro-F1-best 0.4228690293으로 `+0.0067280417`. 선택에는 각 outer
+  fold validation만 사용했고 test·Public은 사용하지 않았다.
+- Public LB: 미제출
+- Submission: `submissions/exp487_native_v3_nested_xgb_tuning.csv`, SHA-256
+  `446daa39ae8d0cf8737960d28f47072493944ceab7258a4b66bb7231ce8c3cc4`
+- 재현 상태: `INFERENCE_VERIFIED` — checkpoint 재추론에서 submission
+  SHA-256 byte 일치, test label 100%, 확률 최대 절대 차이 `1.43e-7`.
+- 판단: nested tuning으로 EXP-479의 비튜닝 native-v3 성능을 크게 회복했으므로
+  native-v3 표현이 무효였다는 해석은 기각한다. 다만 EXP-374와 현재 상위 후보를
+  넘지 못했으므로 대표 제출 후보로 승격하지 않고, 튜닝된 native-v3 기준선과
+  오류 다양성 비교 자산으로 보존한다.
+
+### [EXP-512] Parser v4 환자별 semantic token count 18개
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #512 / `issue-512-parser-v4-semantic-counts`
+- 부모: EXP-374
+- 소스 commit: `96129f56f7d9a6d22a3c6e5c087a5164d91a0522`
+- 시작/종료: 2026-08-05T14:40:17.222100+00:00 /
+  2026-08-05T14:57:56.187026+00:00 (1059.39초)
+- Config: `configs/exp512_parser_v4_semantic_counts.yaml`
+- Runner: `scripts/run_exp512_parser_v4_semantic_counts.py`
+- Metrics/Report: `reports/exp512_parser_v4_semantic_counts/`
+- 유일한 변경: EXP-374의 모든 기존 피처·모델·fold·seed·checkpoint 정책을
+  유지하고 parser v4가 판정한 환자별 semantic token count 18개를 추가했다.
+- Fold Macro F1: 0.4252238369, 0.4225060175, 0.4120400910,
+  0.4252197776, 0.4430732916
+- OOF Macro F1: 0.4258183004 (EXP-374 대비 `-0.0009726264`)
+- Fold 표준편차: 0.0099904460 (EXP-374 대비 `+0.0014872291`)
+- Accuracy / Log Loss: 0.4133204322 / 1.8659275770 (Log Loss
+  `+0.0218627453`)
+- Public LB: 0.3329881004 (제출 ID `1512887`, EXP-374 대비
+  `-0.0132278216`)
+- 재현 상태: `INFERENCE_VERIFIED` — checkpoint 재추론에서 submission
+  SHA-256 byte 일치, test label 100%, 확률 최대 절대 차이 `1.42e-7`.
+- 판단: 환자 전역 semantic count adapter는 Local·Public·Log Loss 모두 개선하지
+  못해 `ARCHIVE`한다. parser v4 의미 체계 자체는 유지하며, gene×semantic family와
+  ref/alt·위치·범위 구조를 보존하는 후속 표현과 구분한다.
+
+### [EXP-521] Parser-v4 26-class cosine semantic profile
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #521 / `issue-521-parser-v4-class-cosine`
+- 소스 commit: `eee39c928e60e12eb2c24fd56edbe0c025522da9`
+- 시작/종료: 2026-08-05T18:11:54.177356+00:00 /
+  2026-08-05T18:22:25.836542+00:00 (632.18초)
+- Config: `configs/exp521_parser_v4_class_cosine.yaml`
+- Runner: `scripts/run_exp521_parser_v4_class_cosine.py`
+- Metrics/Report: `reports/exp521_parser_v4_class_cosine/`
+- 부모: EXP-374
+- 유일한 모델 입력 변경: 각 outer-train에서만 fit한 parser-v4 환자 semantic
+  vector의 26-class cosine centroid score를 EXP-374에 추가.
+- Fold Macro F1: 0.4421265043, 0.4537929201, 0.4484942701,
+  0.4461857691, 0.4467389390
+- OOF Macro F1: 0.4479925392 (EXP-374 대비 `+0.0212016124`)
+- Fold 표준편차: 0.0037885371 (EXP-374 대비 `-0.0047146798`)
+- Accuracy / Log Loss: 0.4289630705 / 1.9110684395
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — submission SHA-256 byte-level 일치,
+  test label 100%, 확률 최대 절대 차이 `1.46e-7`.
+- 판단: Local Macro F1·fold 안정성은 현재 최고로 B단계 채택 후보.
+  다만 Log Loss가 EXP-374 대비 `+0.0670036077`로 악화되어 Public 일반화를
+  주의해야 한다. 동일 정보의 smoothed likelihood C단계를 다음으로 비교한다.
+
+### [EXP-522] Parser-v4 26-class smoothed likelihood profile
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #522 / `issue-522-parser-v4-class-likelihood`
+- 소스 commit: `cfe6ec6793491dc55b2eb36896909c658e81ae66`
+- 시작/종료: 2026-08-05T18:32:47.152545+00:00 /
+  2026-08-05T18:37:02.139926+00:00 (254.99초)
+- Config: `configs/exp522_parser_v4_class_likelihood.yaml`
+- Runner: `scripts/run_exp522_parser_v4_class_likelihood.py`
+- Metrics/Report: `reports/exp522_parser_v4_class_likelihood/`
+- 부모: EXP-374
+- 변경: EXP-521과 동일한 환자 semantic vector에서 cosine 26개 대신
+  alpha=1, class-prior 없는 mean log-likelihood 26개를 outer-train에서만 fit.
+- Fold Macro F1: 0.3961122583, 0.4075343046, 0.3970186800,
+  0.4201506820, 0.3983945398
+- OOF Macro F1: 0.4045242129 (EXP-374 대비 `-0.0222667140`,
+  EXP-521 대비 `-0.0434683264`)
+- Fold 표준편차: 0.0091168816
+- Accuracy / Log Loss: 0.4000967586 / 2.3159396648
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — submission SHA-256 byte-level 일치,
+  test label 100%, 확률 최대 절대 차이 `1.22e-7`.
+- 판단: 성능·fold 안정성·Log Loss 모두 실패해 `ARCHIVE`. 66,242차원
+  희소 vocabulary에 alpha=1을 일괄 적용한 likelihood 방식은 종료하고,
+  EXP-521 cosine을 선택 후보로 유지한다.
+
+### [EXP-527] Parser-v4 leave-one-out 26-class cosine profile
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #527 / `issue-527-parser-v4-class-cosine-loo`
+- 소스 commit: `3cc84bca12b6a2767a35e979248e1fdb468c3114`
+- 시작/종료: 2026-08-05T18:51:41.986118+00:00 /
+  2026-08-05T18:57:51.127081+00:00 (369.14초)
+- Config: `configs/exp527_parser_v4_class_cosine_loo.yaml`
+- Runner: `scripts/run_exp527_parser_v4_class_cosine_loo.py`
+- Metrics/Report: `reports/exp527_parser_v4_class_cosine_loo/`
+- 부모: EXP-521 (실제 기반 피처는 EXP-374)
+- 유일한 변경: outer-train target-class cosine centroid에서 해당 행을 제외.
+- Fold Macro F1: 0.4343333042, 0.4506124547, 0.4487400982,
+  0.4500989150, 0.4511656678
+- OOF Macro F1: 0.4468722707 (EXP-521 대비 `-0.0011202685`,
+  EXP-374 대비 `+0.0200813439`)
+- Fold 표준편차: 0.0063793185
+- Accuracy / Log Loss: 0.4339622642 / 2.0274887085
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED` — submission SHA-256 byte-level 일치,
+  test label 100%, 확률 최대 절대 차이 `8.56e-08`.
+- 판단: EXP-521 상승의 대부분이 self-inclusion 제거 후에도 유지되어
+  parser-v4 class cosine을 실질적 신호로 채택한다. 후속 비교에서는 EXP-521이
+  아닌 leakage-safe EXP-527을 사용한다.
+
+### [EXP-539] Parser-v4 hierarchical raw-count LinearSVC 기준선
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #539 / `issue-539-hierarchical-raw-linear`
+- 소스 commit: `128d85e240ff624b8fe528dcd5b72a7953dc844a`
+- Config: `configs/exp539_hierarchical_raw_linear.yaml`
+- Runner: `scripts/run_exp539_hierarchical_raw_linear.py`
+- Metrics/Report: `reports/exp539_hierarchical_raw_linear/`
+- 입력: parser-v4 canonical event token을 gene-specific detail과
+  gene-agnostic global fallback으로 계층화. detail 최소 train support 2,
+  global 최소 train support 1, raw count, `LinearSVC(C=1,
+  class_weight=balanced)`.
+- Fold Macro F1: 0.3501667568, 0.3734695615, 0.3736720319,
+  0.3599046813, 0.3655963038
+- OOF Macro F1: 0.3662402061
+- Fold 평균/표준편차: 0.3645618671 / 0.0088579993
+- Accuracy / decision-score softmax Log Loss: 0.3667150460 /
+  2.5453414917
+- 실행 주의: 모든 fold가 10,000 iteration에서 `LinearSVC` 수렴 경고를
+  기록했다.
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+- 판단: 계층형 vocabulary 자체의 raw-count 기준선으로만 보존한다. 점수가
+  낮고 수렴 경고가 있어 단독 제출 후보에서 제외하며, 다음 독립 실험에서
+  동일 입력의 row-L2 normalization 효과만 비교한다.
+
+### [EXP-541] Parser-v4 hierarchical row-L2 LinearSVC
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #541 / `issue-541-hierarchical-row-l2`
+- 소스 commit: `0f99129d47ec05c95c470d115e9db322e96561f2`
+- 시작/종료: 2026-08-05T23:57:04.242153+00:00 /
+  2026-08-05T23:58:52.074484+00:00 (107.89초)
+- Config: `configs/exp541_hierarchical_row_l2_linear.yaml`
+- Runner: `scripts/run_exp541_hierarchical_row_l2_linear.py`
+- Metrics/Report: `reports/exp541_hierarchical_row_l2_linear/`
+- 부모: EXP-539
+- 유일한 변경: hierarchical detail/global count 행렬의 각 sample 행을 L2
+  norm 1로 정규화. tokenizer, vocabulary support, canonical split 및
+  `LinearSVC` 설정은 EXP-539와 동일.
+- Fold Macro F1: 0.3556247073, 0.3681402771, 0.3754698017,
+  0.3819582611, 0.3799920782
+- OOF Macro F1: 0.3723738759 (EXP-539 대비 `+0.0061336698`)
+- Fold 표준편차: 0.0095691856 (EXP-539 대비 `+0.0007111863`)
+- Accuracy / decision-score softmax Log Loss: 0.3868730850 /
+  2.8486547470 (Log Loss `+0.3033132553`)
+- 수렴: EXP-539의 전 fold 수렴 경고가 row-L2에서는 발생하지 않음.
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+- 판단: row-L2는 hard-label Macro F1과 최적화 수렴을 개선했지만 확률
+  품질을 크게 악화했다. 단독 제출 후보에서는 제외하고, 계층형 표현의
+  오류 구조·확률 보정 가능성을 진단하는 비교 자산으로 보존한다.
+
+### [EXP-545] Parser-v4 hierarchical TF-IDF row-L2 LinearSVC
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #545 / `issue-545-hierarchical-tfidf-linear`
+- 소스 commit: `eddbcdef3fc71a2711cdd68621899d3ac1e6731d`
+- 시작/종료: 2026-08-06T00:11:02.826293+00:00 /
+  2026-08-06T00:12:50.901393+00:00 (108.13초)
+- Config: `configs/exp545_hierarchical_tfidf_linear.yaml`
+- Runner: `scripts/run_exp545_hierarchical_tfidf_linear.py`
+- Metrics/Report: `reports/exp545_hierarchical_tfidf_linear/`
+- 부모: EXP-541
+- 유일한 변경: hierarchical count 행렬에 outer-train-only
+  `TfidfTransformer(norm=l2, smooth_idf=true, sublinear_tf=false)`를 fit.
+  validation/test는 transform-only이며 vocabulary·모델·split은 동일.
+- Fold Macro F1: 0.4336844768, 0.4425497381, 0.4444567044,
+  0.4414751591, 0.4379133188
+- OOF Macro F1: 0.4396775272 (EXP-541 대비 `+0.0673036513`,
+  EXP-527 대비 `-0.0071947435`)
+- Fold 평균/표준편차: 0.4400158794 / 0.0038151877
+- Accuracy / decision-score softmax Log Loss: 0.4279954846 /
+  2.7787079811
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+- 판단: 사전 정의된 sparse-linear 종료 기준을 통과했다. TF-IDF가 단순
+  row-L2보다 핵심적인 개선 요소이며 fold 안정성도 좋다. 다만 LinearSVC
+  decision score의 softmax 확률은 보정되지 않아 단독 확률 앙상블에 바로
+  사용하지 않는다. EXP-527과 예측 라벨 불일치율 `50.7983%`, 정오답 상관
+  `0.487465`로 다양성 gate를 통과했으며, 별도의 fold-safe calibration 또는
+  Logistic Regression 후보로 이어간다.
+
+### [EXP-550] Parser-v4 hierarchical TF-IDF multinomial Logistic Regression
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #550 / `issue-550-parser-v4-tfidf-logreg`
+- 소스 commit: `7161caa39e893531c1c796c7f270bcbdd3e6396b`
+- 시작/종료: 2026-08-06T00:24:03.083214+00:00 /
+  2026-08-06T00:25:56.203182+00:00 (113.18초)
+- Config: `configs/exp550_hierarchical_tfidf_logistic.yaml`
+- Runner: `scripts/run_exp550_hierarchical_tfidf_logistic.py`
+- Metrics/Report: `reports/exp550_hierarchical_tfidf_logistic/`
+- 부모: EXP-545
+- 유일한 변경: tokenizer·hierarchical vocabulary·support threshold·outer-train
+  TF-IDF·canonical split·class weight를 유지하고 `LinearSVC(C=1)`만
+  L2 multinomial `LogisticRegression(C=1, solver=lbfgs)`로 교체했다.
+  OOF와 test에는 임의 softmax가 아니라 `predict_proba`를 저장했다.
+- Fold Macro F1: 0.4055176766, 0.4282710635, 0.4500994258,
+  0.4330492830, 0.4370160072
+- OOF Macro F1: 0.4324730859 (EXP-545 대비 `-0.0072044413`,
+  EXP-527 대비 `-0.0143991848`)
+- Fold 평균/표준편차: 0.4307906912 / 0.0145722806
+- Accuracy / predict_proba Log Loss: 0.4191259474 / 2.3007948399
+  (EXP-527 대비 Log Loss `+0.2733061607`)
+- 최적화: 모든 fold가 31~34 iteration에서 수렴했다.
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+- 판단: EXP-545의 hard-label 성능을 유지하지 못했고 fold 변동성이 크게
+  증가했으며, 적법한 확률을 산출했음에도 EXP-527보다 Log Loss가 나쁘다.
+  단독 확률 모델은 `ARCHIVE`한다. TF-IDF sparse representation과 EXP-545의
+  오류 다양성은 유지하며, 후속은 LinearSVC 경계를 outer-train 내부에서만
+  sigmoid calibration하는 별도 실험으로 제한한다.
+
+### [EXP-558] Parser-v4 compact clinical feature XGBoost baseline
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #558 / `issue-558-compact-clinical-xgb`
+- 소스 commit: `704d7d4df868b487bf52033b38abe2bb855d02ad`
+- 시작/종료: 2026-08-06T01:30:56.701172+00:00 /
+  2026-08-06T01:37:31.481040+00:00 (395.13초)
+- Config: `configs/exp558_compact_clinical_xgb.yaml`
+- Runner: `scripts/run_exp558_compact_clinical_xgb.py`
+- Metrics/Report: `reports/exp558_compact_clinical_xgb/`
+- 부모/비교: EXP-005, EXP-003
+- 피처: parser-v4를 의미 판정기로 사용한 fold-train observed mutation
+  presence, truncating presence, 환자 support 5 이상 exact recurrent
+  missense의 유전자 presence, 14개 compact patient summary. 공통 runner의
+  기존 base 피처는 전부 제거했다.
+- Fold별 feature dimension: 7,785, 7,815, 7,786, 7,851, 7,831
+- Fold Macro F1: 0.4111242643, 0.4175693659, 0.4009731443,
+  0.4133951038, 0.4173161316
+- OOF Macro F1: 0.4133226110 (EXP-005 대비 `+0.0089429523`)
+- Fold 평균/표준편차: 0.4120756020 / 0.0060589651
+- Accuracy / Log Loss: 0.4033220448 / 1.9797550440
+- Checkpoint 비교: mlogloss-best OOF 0.4076253653 대비 Macro-F1-best
+  `+0.0056972457`. fold 2가 iteration 19를 선택해 Log Loss가 크게 악화된
+  점은 validation checkpoint 낙관 편향 경고로 기록한다.
+- Public LB: 미제출
+- Submission: `submissions/exp558_compact_clinical_xgb.csv`
+  (`c2c4128c7b50db68a5d0e298f2d78cc1eb94a4d75c43bfde90821ab516dbe0c2`)
+- 재현 상태: `INFERENCE_VERIFIED`
+- 판단: 공유 문서의 compact architecture는 독립 baseline으로 유효하며
+  EXP-005보다 성능과 fold 안정성이 개선됐다. 다만 EXP-512·최근 최고 모델보다
+  낮고 Log Loss가 악화되어 단독 제출은 보류한다. mutated→truncating→summary→
+  recurrent→ref-AA×consequence ablation으로 실제 기여를 분리한다.
+
+### [EXP-565] LightGBM parser-v4 parent only
+
+- 상태/실행자: COMPLETED / fabxoe
+- Issue/브랜치: #565 / `issue-565-lightgbm-parser-only`
+- 소스 commit: `e58e0ac6ab32ff2c25c15b50811b978af24dc824`
+- 시작/종료: 2026-08-06T02:15:19.633007+00:00 /
+  2026-08-06T02:20:37.026960+00:00
+- 부모: EXP-527
+- Config/Runner: `configs/exp565_lightgbm_parser_only.yaml` /
+  `scripts/run_exp565_lightgbm_parser_only.py`
+- 단일 arm: EXP-527의 parser-v4 부모 피처만 유지하고 26개 class-cosine은
+  제외. 세 LightGBM arm 공통 설정과 validation Macro F1 checkpoint 사용.
+- Fold Macro F1: 0.4129549238, 0.4284829407, 0.4192353662,
+  0.4209726006, 0.4548071621
+- OOF Macro F1 / fold std: 0.4272525489 / 0.0146212064
+- Accuracy / Log Loss: 0.4236413482 / 1.8319022146
+- EXP-527 대비: F1 `-0.0196197218`, 라벨 불일치율 `40.0903%`,
+  정오답 상관 `0.6196193`
+- Public LB: 미제출
+- 재현 상태: `INFERENCE_VERIFIED`
+- 판단: parser-only LightGBM은 EXP-527보다 낮고 불안정하여 단독
+  `ARCHIVE`. class-cosine 추가 효과를 판정하는 L1 기준으로 보존한다.
