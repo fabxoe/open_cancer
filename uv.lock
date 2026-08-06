@@ -408,6 +408,20 @@ wheels = [
 ]
 
 [[package]]
+name = "deslib"
+version = "0.3.7"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "scikit-learn" },
+    { name = "scipy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/68/af/8a61b8f298620883d392d1cabe41d5f7ebfeda2edd521f00d897b5de4669/DESlib-0.3.7.tar.gz", hash = "sha256:c20b373087d79ac6a50afccefb1929d496cf9ca41b8a42ab4325a56b7b976ca1", size = 132710, upload-time = "2024-04-12T03:07:33.275Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e7/d7/8a9bcd4fb1242019514e6af7150380d1e2fcbdd281f2d1c03776afbf51b1/DESlib-0.3.7-py3-none-any.whl", hash = "sha256:150bb25f12ab26e12199f8cbe967ba84fb995f679c4b3acdb2228b2eb049ea6b", size = 172558, upload-time = "2024-04-12T03:07:31.248Z" },
+]
+
+[[package]]
 name = "et-xmlfile"
 version = "2.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1410,6 +1424,7 @@ name = "open-cancer"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "deslib" },
     { name = "imbalanced-learn" },
     { name = "ipykernel" },
     { name = "jsonschema" },
@@ -1439,6 +1454,7 @@ experiment = [
 
 [package.metadata]
 requires-dist = [
+    { name = "deslib", specifier = "==0.3.7" },
     { name = "imbalanced-learn", specifier = ">=0.14" },
     { name = "ipykernel", specifier = ">=6.29" },
     { name = "jsonschema", specifier = ">=4.23" },
