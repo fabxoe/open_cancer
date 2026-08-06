@@ -19,6 +19,9 @@ from exp571_data_centric_feature_builders import (  # noqa: E402
     summarize_frame,
     summarize_tokens,
 )
+from run_exp571_data_centric_features_parser_v4 import (  # noqa: E402
+    ALLOWED_VERIFICATION_FIELDS,
+)
 
 
 def test_mutation_tokens_preserve_blank_and_wt_policy() -> None:
@@ -60,3 +63,13 @@ def test_summarize_frame_is_row_aligned_and_stateless() -> None:
     assert np.allclose(qc.toarray(), repeated_qc.toarray()[::-1])
     assert np.allclose(span.toarray(), repeated_span.toarray()[::-1])
 
+
+def test_reproducibility_verification_fields_match_current_schema() -> None:
+    allowed = set(ALLOWED_VERIFICATION_FIELDS)
+    assert "data_hashes_match" in allowed
+    assert "submission_sha256_match" in allowed
+    assert "passed" in allowed
+    assert "verified_at" not in allowed
+    assert "original_submission_sha256" not in allowed
+    assert "reproduced_submission_sha256" not in allowed
+    assert "test_probability_max_abs_diff" not in allowed
