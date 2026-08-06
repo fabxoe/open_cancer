@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- 실제 실험 수: 109
+- 실제 실험 수: 110
 - 실험 ID 규칙: GitHub Experiment Issue #N → EXP-NNN
 - 다음 실험: Experiment Issue를 먼저 생성하고 발급된 번호를 사용
 - 최고 Local OOF Macro F1: 0.4479925392 (`EXP-521`, train self-inclusion 탐색 결과)
@@ -129,6 +129,7 @@
 | EXP-522 | COMPLETED | fabxoe | #522 | EXP-374 + fold-safe parser-v4 26-class smoothed mean log-likelihood profile | 0.4045242129 | 미제출 | INFERENCE_VERIFIED | EXP-374 대비 -0.0222667140·EXP-521 대비 -0.0434683264·Log Loss 큰 악화로 ARCHIVE; alpha=1 전체-vocabulary likelihood 종료 | [보고서](reports/exp522_parser_v4_class_likelihood/README.md) |
 | EXP-527 | COMPLETED | fabxoe | #527 | EXP-521 class cosine의 outer-train target-class centroid에 leave-one-out 적용 | 0.4468722707 | 미제출 | INFERENCE_VERIFIED | EXP-521 대비 -0.0011202685이나 EXP-374 대비 +0.0200813439 유지; self-inclusion 제거한 leakage-safe 공식 기준선 채택 | [보고서](reports/exp527_parser_v4_class_cosine_loo/README.md) |
 | EXP-539 | COMPLETED | fabxoe | #539 | parser-v4 hierarchical detail/global raw-count + LinearSVC | 0.3662402061 | 미제출 | NOT_STARTED | row-L2 효과를 분리하기 위한 raw-count 기준선; 전 fold 수렴 경고와 낮은 성능으로 단독 제출 제외 | [보고서](reports/exp539_hierarchical_raw_linear/README.md) |
+| EXP-541 | COMPLETED | fabxoe | #541 | EXP-539 hierarchical 입력에 row-L2 normalization만 적용 | 0.3723738759 | 미제출 | NOT_STARTED | EXP-539 대비 +0.0061336698이고 수렴 경고는 해소됐으나 Log Loss가 +0.3033132553 악화되어 단독 제출 제외 | [보고서](reports/exp541_hierarchical_row_l2_linear/README.md) |
 
 ## 리더보드 제출 이력
 
@@ -4512,3 +4513,31 @@ COAD는 EXP-219 대비로도 4개 전부 양의 방향(`+0.0034`~`+0.0109`)을
 - 판단: 계층형 vocabulary 자체의 raw-count 기준선으로만 보존한다. 점수가
   낮고 수렴 경고가 있어 단독 제출 후보에서 제외하며, 다음 독립 실험에서
   동일 입력의 row-L2 normalization 효과만 비교한다.
+
+### [EXP-541] Parser-v4 hierarchical row-L2 LinearSVC
+
+- 상태: COMPLETED
+- 실행자: fabxoe
+- Issue/브랜치: #541 / `issue-541-hierarchical-row-l2`
+- 소스 commit: `0f99129d47ec05c95c470d115e9db322e96561f2`
+- 시작/종료: 2026-08-05T23:57:04.242153+00:00 /
+  2026-08-05T23:58:52.074484+00:00 (107.89초)
+- Config: `configs/exp541_hierarchical_row_l2_linear.yaml`
+- Runner: `scripts/run_exp541_hierarchical_row_l2_linear.py`
+- Metrics/Report: `reports/exp541_hierarchical_row_l2_linear/`
+- 부모: EXP-539
+- 유일한 변경: hierarchical detail/global count 행렬의 각 sample 행을 L2
+  norm 1로 정규화. tokenizer, vocabulary support, canonical split 및
+  `LinearSVC` 설정은 EXP-539와 동일.
+- Fold Macro F1: 0.3556247073, 0.3681402771, 0.3754698017,
+  0.3819582611, 0.3799920782
+- OOF Macro F1: 0.3723738759 (EXP-539 대비 `+0.0061336698`)
+- Fold 표준편차: 0.0095691856 (EXP-539 대비 `+0.0007111863`)
+- Accuracy / decision-score softmax Log Loss: 0.3868730850 /
+  2.8486547470 (Log Loss `+0.3033132553`)
+- 수렴: EXP-539의 전 fold 수렴 경고가 row-L2에서는 발생하지 않음.
+- Public LB: 미제출
+- 재현 상태: `NOT_STARTED`
+- 판단: row-L2는 hard-label Macro F1과 최적화 수렴을 개선했지만 확률
+  품질을 크게 악화했다. 단독 제출 후보에서는 제외하고, 계층형 표현의
+  오류 구조·확률 보정 가능성을 진단하는 비교 자산으로 보존한다.
